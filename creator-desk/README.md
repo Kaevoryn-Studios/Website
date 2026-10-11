@@ -25,6 +25,10 @@ This is a frontend prototype, not a production private app. It has no login, rol
 
 The project-list import is a convenience for reference only; it must not invent missing statuses or overwrite the source website's content. Changes made here are local drafts and do not publish to the public site.
 
+## Automated checks
+
+A GitHub Actions smoke-test workflow runs on pull requests touching this folder. It checks embedded JavaScript syntax, duplicate HTML IDs, all seven official statuses, install/offline-shell wiring, and project-site-relative links. The first run passed: [Creator Desk smoke tests](https://github.com/Kaevoryn-Studios/Website/actions/runs/38181572987).
+
 ## Suggested test checklist
 
 - [ ] Test narrow phone width and tablet/desktop layouts
