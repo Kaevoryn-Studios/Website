@@ -27,7 +27,11 @@ The project-list import is a convenience for reference only; it must not invent 
 
 ## Automated checks
 
-A GitHub Actions smoke-test workflow runs on pull requests touching this folder. It checks embedded JavaScript syntax, duplicate HTML IDs, all seven official statuses, install/offline-shell wiring, and project-site-relative links. The first run passed: [Creator Desk smoke tests](https://github.com/Kaevoryn-Studios/Website/actions/runs/38181572987).
+A GitHub Actions smoke-test workflow runs on pull requests touching this folder. It checks embedded JavaScript syntax, duplicate HTML IDs, all seven official statuses, install/offline-shell wiring, project-site-relative links, save-failure recovery, and backup preservation. [View Creator Desk smoke-test runs](https://github.com/Kaevoryn-Studios/Website/actions).
+
+## Production security plan
+
+See [PRODUCTION-READINESS.md](./PRODUCTION-READINESS.md) for the provider-neutral checklist for authentication, server-side storage, authorization, backups, and controlled publishing. These are future requirements, not implemented features.
 
 ## Suggested test checklist
 
