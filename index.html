@@ -460,6 +460,38 @@
       color: #aebdcd;
     }
 
+
+    /* ---------- EXPLORE THE ECOSYSTEM ---------- */
+    #ecosystem { padding: 100px 20px; }
+    .ecosystem-grid { max-width: 1100px; margin: auto; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+    .ecosystem-card { display: block; min-height: 205px; padding: 28px; border: 1px solid rgba(130,110,255,.28); border-radius: 16px; text-decoration: none; color: #fff; background: linear-gradient(145deg, rgba(0,220,255,.055), rgba(80,50,180,.12)); transition: transform .3s ease, border-color .3s ease, box-shadow .3s ease; }
+    .ecosystem-card:hover, .ecosystem-card:focus-visible { transform: translateY(-5px); border-color: rgba(101,234,255,.75); box-shadow: 0 0 28px rgba(0,220,255,.12); outline: none; }
+    .ecosystem-card .ecosystem-icon { font-size: 26px; margin-bottom: 13px; }
+    .ecosystem-card h3 { font-size: 20px; margin-bottom: 8px; }
+    .ecosystem-card p { color: #aebdcd; font-size: 14px; }
+    .status-guide { max-width: 1100px; margin: 38px auto 0; padding: 24px; border: 1px solid rgba(0,220,255,.16); border-radius: 14px; background: rgba(0,0,0,.2); }
+    .status-guide h3 { color: #eafaff; font-size: 15px; letter-spacing: 2px; margin-bottom: 14px; }
+    .status-list { display: flex; flex-wrap: wrap; gap: 10px; }
+    .status-item { color: #c7d4e2; font-size: 12px; border: 1px solid rgba(130,160,190,.22); border-radius: 999px; padding: 7px 11px; }
+    .project-card { display: flex; flex-direction: column; align-items: flex-start; }
+    .project-card .project-status { display: inline-block; color: #c7d4e2; border: 1px solid rgba(130,160,190,.28); border-radius: 999px; padding: 4px 9px; margin: 0 0 14px; font-size: 10px; letter-spacing: .6px; }
+    .project-card .project-link { display: inline-flex; margin-top: auto; padding-top: 20px; color: #65eaff; font-size: 11px; letter-spacing: 1.5px; text-decoration: none; }
+    .project-card .project-link:hover, .project-card .project-link:focus-visible { color: #fff; text-decoration: underline; }
+    /* ---------- DREAMER EXPERIENCE ---------- */
+    .dreamer-paths { width: min(900px, 100%); margin: 28px auto 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .dreamer-path { color: #e9faff; border: 1px solid rgba(101,234,255,.24); background: rgba(2,10,28,.68); border-radius: 12px; padding: 16px; cursor: pointer; text-align: left; font: inherit; transition: border-color .2s ease, background .2s ease; }
+    .dreamer-path:hover, .dreamer-path:focus-visible, .dreamer-path[aria-pressed="true"] { border-color: #65eaff; background: rgba(0,150,210,.14); outline: none; }
+    .dreamer-path strong { display: block; font-size: 15px; margin-bottom: 4px; }
+    .dreamer-path span { color: #aebdcd; font-size: 12px; }
+    .dreamer-next { display: inline-flex; margin-top: 22px; padding: 12px 18px; color: #07121b; background: #8af3ff; border-radius: 999px; text-decoration: none; font-size: 11px; font-weight: bold; letter-spacing: 1.5px; }
+    .dreamer-next:hover, .dreamer-next:focus-visible { background: #fff; outline: 2px solid #65eaff; outline-offset: 3px; }
+    .golden-message { width: min(700px, 100%); }
+    @media (max-width: 750px) {
+      .ecosystem-grid { grid-template-columns: 1fr; }
+      .ecosystem-card { min-height: auto; }
+      .dreamer-paths { grid-template-columns: 1fr; }
+    }
+
     /* ---------- VISION ---------- */
 
     #vision {
@@ -1043,7 +1075,8 @@
 
   <nav>
     <a href="#home">HOME</a>
-    <a href="#worlds">WORLDS</a>
+    <a href="#worlds">PROJECTS</a>
+    <a href="#ecosystem">EXPLORE</a>
     <a href="#vision">VISION</a>
     <a href="#contact">CONNECT</a>
   </nav>
@@ -1164,6 +1197,53 @@
 
     </div>
 
+  </section>
+
+
+  <!-- EXPLORE THE KAEVORYN ECOSYSTEM -->
+  <section id="ecosystem">
+    <div class="section-title">
+      <span>YOUR NEXT IMPOSSIBLE IDEA</span>
+      <h2>Choose a universe.</h2>
+      <p>Explore the creative directions that make up Kaevoryn Studios. Some doors are still being imagined; this is where their journeys begin.</p>
+    </div>
+    <div class="ecosystem-grid">
+      <a class="ecosystem-card" href="#games"><div class="ecosystem-icon" aria-hidden="true">🎮</div><h3>Games</h3><p>Interactive adventures, challenges, and experiences that invite you inside.</p></a>
+      <a class="ecosystem-card" href="#world-building"><div class="ecosystem-icon" aria-hidden="true">🌌</div><h3>Worlds & Experiences</h3><p>Original universes, places, characters, and impossible things to discover.</p></a>
+      <a class="ecosystem-card" href="#music"><div class="ecosystem-icon" aria-hidden="true">🎵</div><h3>Music & Sound</h3><p>Songs, soundscapes, themes, and audio that give each creation a pulse.</p></a>
+      <a class="ecosystem-card" href="#shows"><div class="ecosystem-icon" aria-hidden="true">📺</div><h3>Shows & Series</h3><p>Stories and characters built to unfold across episodes and seasons.</p></a>
+      <a class="ecosystem-card" href="#films"><div class="ecosystem-icon" aria-hidden="true">🎬</div><h3>Films & Cinematic Stories</h3><p>Big-screen ideas, visual storytelling, and journeys beyond the ordinary.</p></a>
+      <a class="ecosystem-card" href="#software"><div class="ecosystem-icon" aria-hidden="true">⚙️</div><h3>Software & Creation Tools</h3><p>Technology and creative tools designed to help turn imagination into something real.</p></a>
+    </div>
+    <div class="status-guide">
+      <h3>THE KAEVORYN FEATURE STATUS KEY</h3>
+      <div class="status-list" aria-label="Official feature status definitions">
+        <span class="status-item">💡 Concept — imagining the idea</span>
+        <span class="status-item">🔭 Exploring — researching possibilities</span>
+        <span class="status-item">🧪 Prototype — testing an early version</span>
+        <span class="status-item">🧩 Planned — possible future inclusion</span>
+        <span class="status-item">🛠️ In Development — actively being built</span>
+        <span class="status-item">✅ Released — available to experience</span>
+        <span class="status-item">⏳ Future — long-term possibility</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ECOSYSTEM DIRECTORY -->
+  <section id="ecosystem-directory" style="padding: 15px 20px 95px;">
+    <div class="section-title">
+      <span>THE DIRECTORY</span>
+      <h2>Every idea has a beginning.</h2>
+      <p>These are the creative departments of the Kaevoryn universe. This directory is a roadmap, not a claim that every experience is already released.</p>
+    </div>
+    <div class="projects">
+      <article class="project-card" id="games"><span>🎮 GAMES</span><h3>Interactive Worlds</h3><p>From survival horror to experiences that challenge what players expect. Explore the project directory above for currently named game concepts.</p><span class="project-status">🧩 Planned — ecosystem area</span></article>
+      <article class="project-card" id="world-building"><span>🌌 WORLDS</span><h3>Worlds Beyond the Screen</h3><p>Original settings, lore, characters, and connected experiences that can grow across projects.</p><span class="project-status">🧩 Planned — ecosystem area</span></article>
+      <article class="project-card" id="music"><span>🎵 MUSIC & SOUND</span><h3>Give Imagination a Voice</h3><p>Original Kaevoryn music, themes, and sound work, gathered under the Music & Sound creative archive.</p><span class="project-status">🧩 Planned — ecosystem area</span></article>
+      <article class="project-card" id="shows"><span>📺 SHOWS & SERIES</span><h3>Stories That Keep Unfolding</h3><p>Series concepts, characters, and story worlds with room to grow over time.</p><span class="project-status">🧩 Planned — ecosystem area</span></article>
+      <article class="project-card" id="films"><span>🎬 FILMS</span><h3>Cinematic Possibilities</h3><p>Film ideas and cinematic storytelling, with dedicated space to develop each project as it takes shape.</p><span class="project-status">🧩 Planned — ecosystem area</span></article>
+      <article class="project-card" id="software"><span>⚙️ SOFTWARE</span><h3>Tools for the Impossible</h3><p>Creative technology and software concepts, including the named Infinity Vision AI and Infinity Motion Studio projects.</p><span class="project-status">🧩 Planned — ecosystem area</span></article>
+    </div>
   </section>
 
   <!-- VISION -->
@@ -1354,17 +1434,17 @@
       message.classList.add("revealed");
 
       message.innerHTML = `
-        <span>INVITATION DETECTED.</span>
-
-        <strong>
-          WELCOME, GOLDEN DREAMER.
-        </strong>
-
-        <p>
-          You have discovered something not meant for everyone.
-          Early access to selected Kaevoryn spectacles,
-          worlds, music, and future creations awaits.
-        </p>
+        <span>Something is waiting...</span>
+        <strong>Your imagination belongs here.</strong>
+        <p>Choose the kind of dream you want to bring to life. This is a starting point for your journey—not an account, membership, or access system.</p>
+        <div class="dreamer-paths" role="group" aria-label="Choose your dreamer path">
+          <button class="dreamer-path" type="button" data-path="World Builder" aria-pressed="false"><strong>🌌 World Builder</strong><span>Create a universe, its lore, and its possibilities.</span></button>
+          <button class="dreamer-path" type="button" data-path="Game Creator" aria-pressed="false"><strong>🎮 Game Creator</strong><span>Imagine a challenge, adventure, or interactive world.</span></button>
+          <button class="dreamer-path" type="button" data-path="Sound Dreamer" aria-pressed="false"><strong>🎵 Sound Dreamer</strong><span>Give a feeling, character, or world its own sound.</span></button>
+          <button class="dreamer-path" type="button" data-path="Story Architect" aria-pressed="false"><strong>🎬 Story Architect</strong><span>Build a story for a show, film, or another experience.</span></button>
+        </div>
+        <p id="dreamer-selection" aria-live="polite">Select a path to begin.</p>
+        <a class="dreamer-next" id="dreamer-contact" href="mailto:contact.kaevorynstudios@gmail.com?subject=My%20Kaevoryn%20Dreamer%20Journey">START A CONVERSATION</a>
       `;
 
     }
@@ -1444,7 +1524,23 @@ fetch("content/projects.json")
       const description = document.createElement("p");
       description.textContent = project.description || "";
 
-      card.append(category, title, description);
+      if (project.status) {
+        const status = document.createElement("span");
+        status.className = "project-status";
+        status.textContent = project.status;
+        card.append(category, title, description, status);
+      } else {
+        card.append(category, title, description);
+      }
+
+      if (project.slug) {
+        const link = document.createElement("a");
+        link.className = "project-link";
+        link.href = "projects/" + project.slug + ".html";
+        link.textContent = "EXPLORE PROJECT →";
+        link.setAttribute("aria-label", "Explore " + (project.title || "project"));
+        card.append(link);
+      }
       return card;
     });
 
@@ -1452,5 +1548,17 @@ fetch("content/projects.json")
   })
   .catch(error => console.log("Project content loading error:", error));
 </script>
+
+  document.addEventListener("click", event => {
+    const choice = event.target.closest(".dreamer-path");
+    if (!choice) return;
+    document.querySelectorAll(".dreamer-path").forEach(button => button.setAttribute("aria-pressed", String(button === choice)));
+    const path = choice.dataset.path;
+    const selection = document.getElementById("dreamer-selection");
+    const contact = document.getElementById("dreamer-contact");
+    if (selection) selection.textContent = "Your chosen path: " + path + ". Your idea is the beginning.";
+    if (contact) contact.href = "mailto:contact.kaevorynstudios@gmail.com?subject=" + encodeURIComponent("My Kaevoryn Dreamer Journey — " + path);
+  });
+
 </body>
 </html>
