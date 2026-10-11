@@ -24,6 +24,14 @@
     h1{margin:18px 0;font-size:clamp(38px,8vw,78px);line-height:1.02;letter-spacing:-2px;background:linear-gradient(100deg,#fff,#78efff,#9b7cff);-webkit-background-clip:text;background-clip:text;color:transparent}
     .lead{max-width:720px;color:#d1dce8;font-size:clamp(17px,2.5vw,22px)}
     .divider{width:90px;height:2px;margin:34px 0;background:linear-gradient(90deg,#65eaff,#9b7cff)}
+.project-art{position:relative;display:grid;place-items:center;width:min(100%,760px);height:260px;margin:0 auto 34px;overflow:hidden;border:1px solid rgba(255,91,115,.22);border-radius:20px;background:radial-gradient(ellipse at 50% 68%,rgba(180,22,46,.2),transparent 38%),linear-gradient(180deg,#080711,#100b19 60%,#050409)}
+    .forge-portal{position:relative;width:150px;height:190px;border:2px solid rgba(255,94,119,.72);border-radius:50% 50% 12% 12%;transform:perspective(280px) rotateX(8deg);box-shadow:0 0 22px rgba(255,40,76,.3),inset 0 0 30px rgba(255,40,76,.18)}
+    .forge-portal::before{content:"";position:absolute;inset:12px;border:1px solid rgba(255,165,175,.38);border-radius:50% 50% 12% 12%;box-shadow:0 0 28px rgba(255,40,76,.22)}
+    .forge-portal::after{content:"";position:absolute;left:50%;bottom:-1px;width:5px;height:72%;transform:translateX(-50%);background:linear-gradient(transparent,#ff6379,transparent);box-shadow:0 0 22px #ff405e}
+    .forge-label{position:absolute;bottom:22px;color:#ff9aa8;font-size:10px;letter-spacing:4px}
+    .forge-ember{position:absolute;width:4px;height:4px;border-radius:50%;background:#ff7a69;box-shadow:0 0 14px #ff405e;left:24%;top:30%}
+    .forge-ember.two{left:73%;top:47%;width:3px;height:3px}
+    @media(max-width:520px){.project-art{height:210px}.forge-portal{height:150px;width:120px}}
     .panel{margin-top:36px;padding:clamp(24px,5vw,38px);border:1px solid rgba(0,220,255,.2);border-radius:18px;background:linear-gradient(145deg,rgba(0,220,255,.07),rgba(80,50,180,.1))}
     h2{font-size:23px;margin-bottom:12px}
     .panel p,.panel li{color:#b9c8d9}
@@ -45,6 +53,7 @@
     <h1>Escape From The Nightmare Forge</h1>
     <p class="lead">Something is waiting inside the Forge. Find a way deeper.</p>
     <div class="divider" aria-hidden="true"></div>
+    <div class="project-art" role="img" aria-label="A mysterious crimson portal glowing inside a dark, industrial void"><div class="forge-portal"></div><span class="forge-ember"></span><span class="forge-ember two"></span><span class="forge-label">THE FORGE IS WAITING</span></div>
     <section class="panel">
       <h2>Enter the unknown</h2>
       <p>Escape From The Nightmare Forge is a Kaevoryn survival-horror game concept centered on mystery, danger, and the urge to discover what lies deeper inside the Forge.</p>
