@@ -158,6 +158,33 @@
       font-size: 16px;
     }
 
+    /* ---------- CONTACT ACTION ---------- */
+
+    .contact-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 28px;
+      padding: 13px 22px;
+      border: 1px solid rgba(101, 234, 255, .65);
+      border-radius: 999px;
+      color: #e8fbff;
+      background: linear-gradient(135deg, rgba(0, 220, 255, .12), rgba(100, 60, 255, .16));
+      text-decoration: none;
+      font-size: 11px;
+      font-weight: bold;
+      letter-spacing: 2px;
+      transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
+    }
+
+    .contact-link:hover,
+    .contact-link:focus-visible {
+      transform: translateY(-3px);
+      border-color: #65eaff;
+      box-shadow: 0 0 24px rgba(0, 220, 255, .25);
+      outline: none;
+    }
+
     /* ---------- HERO ---------- */
 
     #home {
@@ -1232,6 +1259,12 @@
         The impossible is waiting to be created.
       </p>
 
+      <a
+        class="contact-link"
+        href="mailto:contact.kaevorynstudios@gmail.com"
+        aria-label="Email Kaevoryn Studios"
+      >CONTACT KAEVORYN STUDIOS</a>
+
     </div>
 
   </section>
@@ -1305,26 +1338,85 @@
   </script>
 <script>
 fetch("content/site.json")
-  .then(response => response.json())
+  .then(response => {
+    if (!response.ok) throw new Error("Could not load site content.");
+    return response.json();
+  })
   .then(data => {
-
     if (data.home) {
-      document.querySelector(".hero-kicker").textContent = data.home.kicker;
-      document.querySelector(".hero h1").textContent = data.home.title;
-      document.querySelector(".hero h2").textContent = data.home.subtitle;
-      document.querySelector(".hero-text").textContent = data.home.description;
-      document.querySelector(".hero-question").textContent = data.home.question;
+      document.querySelector(".hero-kicker").textContent = data.home.kicker || "";
+      document.querySelector(".hero h1").textContent = data.home.title || "";
+      document.querySelector(".hero h2").textContent = data.home.subtitle || "";
+      document.querySelector(".hero-text").textContent = data.home.description || "";
+      document.querySelector(".hero-question").textContent = data.home.question || "";
     }
 
     if (data.vision) {
-      document.querySelector("#vision .section-title span").textContent = data.vision.eyebrow;
-      document.querySelector("#vision h2").textContent = data.vision.title;
-      document.querySelector(".philosophy-main").textContent = data.vision.philosophy;
-      document.querySelector(".philosophy-sub").textContent = data.vision.description;
+      document.querySelector("#vision .section-title span").textContent = data.vision.eyebrow || "";
+      document.querySelector("#vision h2").textContent = data.vision.title || "";
+      document.querySelector(".philosophy-main").textContent = data.vision.philosophy || "";
+      document.querySelector(".philosophy-sub").textContent = data.vision.description || "";
     }
 
+    if (data.golden) {
+      document.querySelector("#golden .section-title span").textContent = data.golden.eyebrow || "";
+      document.querySelector("#golden .section-title h2").textContent = data.golden.title || "";
+      document.querySelector("#golden .section-title p").textContent = data.golden.description || "";
+      document.querySelector(".golden-ticket-label").textContent = data.golden.label || "";
+      document.querySelector(".golden-ticket strong").textContent = data.golden.invitation || "";
+
+      const ticketText = document.querySelectorAll(".golden-ticket > span");
+      if (ticketText[1]) ticketText[1].textContent = data.golden.access || "";
+      if (ticketText[3]) ticketText[3].textContent = data.golden.create || "";
+      if (ticketText[4]) ticketText[4].textContent = data.golden.quote || "";
+      if (ticketText[5]) ticketText[5].textContent = data.golden.dreamer || "";
+      if (ticketText[6]) ticketText[6].textContent = data.golden.hidden || "";
+    }
+
+    if (data.contact) {
+      document.querySelector("#contact .section-title span").textContent = data.contact.eyebrow || "";
+      document.querySelector("#contact h2").textContent = data.contact.title || "";
+      document.querySelector("#contact .section-title p").textContent = data.contact.description || "";
+    }
+
+    if (data.footer) {
+      document.querySelector("footer strong").textContent = data.footer.title || "";
+      document.querySelector("footer p").textContent = data.footer.slogan || "";
+    }
   })
-  .catch(error => console.log("CMS loading error:", error));
+  .catch(error => console.log("Site content loading error:", error));
+
+fetch("content/projects.json")
+  .then(response => {
+    if (!response.ok) throw new Error("Could not load projects.");
+    return response.json();
+  })
+  .then(projects => {
+    if (!Array.isArray(projects)) return;
+
+    const container = document.querySelector(".projects");
+    if (!container) return;
+
+    const cards = projects.map(project => {
+      const card = document.createElement("article");
+      card.className = "project-card";
+
+      const category = document.createElement("span");
+      category.textContent = project.category || "PROJECT";
+
+      const title = document.createElement("h3");
+      title.textContent = project.title || "Untitled Project";
+
+      const description = document.createElement("p");
+      description.textContent = project.description || "";
+
+      card.append(category, title, description);
+      return card;
+    });
+
+    if (cards.length) container.replaceChildren(...cards);
+  })
+  .catch(error => console.log("Project content loading error:", error));
 </script>
 </body>
 </html>
