@@ -24,6 +24,14 @@
     h1{margin:18px 0;font-size:clamp(38px,8vw,78px);line-height:1.02;letter-spacing:-2px;background:linear-gradient(100deg,#fff,#78efff,#9b7cff);-webkit-background-clip:text;background-clip:text;color:transparent}
     .lead{max-width:720px;color:#d1dce8;font-size:clamp(17px,2.5vw,22px)}
     .divider{width:90px;height:2px;margin:34px 0;background:linear-gradient(90deg,#65eaff,#9b7cff)}
+.project-art{position:relative;display:flex;align-items:center;justify-content:center;gap:12px;width:min(100%,760px);height:260px;margin:0 auto 34px;overflow:hidden;border:1px solid rgba(155,124,255,.25);border-radius:20px;background:radial-gradient(ellipse at 50% 50%,rgba(100,60,255,.18),transparent 48%),linear-gradient(135deg,#030813,#100b25)}
+    .motion-orbit{position:absolute;width:250px;height:125px;border:1px solid rgba(101,234,255,.55);border-radius:50%;transform:rotate(-28deg);box-shadow:0 0 30px rgba(0,220,255,.12)}
+    .motion-orbit.two{width:310px;height:160px;border-color:rgba(155,124,255,.5);transform:rotate(28deg)}
+    .motion-beam{position:relative;z-index:1;width:4px;height:100px;border-radius:999px;background:linear-gradient(transparent,#8af3ff,#fff,#9b7cff,transparent);box-shadow:0 0 22px rgba(101,234,255,.8);transform:rotate(28deg)}
+    .motion-beam:nth-of-type(2){height:145px;transform:rotate(28deg);opacity:.75}
+    .motion-beam:nth-of-type(3){height:78px;transform:rotate(28deg);opacity:.55}
+    .motion-label{position:absolute;bottom:22px;color:#b9adff;font-size:10px;letter-spacing:4px}
+    @media(max-width:520px){.project-art{height:210px}.motion-orbit{width:190px;height:100px}.motion-orbit.two{width:240px;height:125px}}
     .panel{margin-top:36px;padding:clamp(24px,5vw,38px);border:1px solid rgba(0,220,255,.2);border-radius:18px;background:linear-gradient(145deg,rgba(0,220,255,.07),rgba(80,50,180,.1))}
     h2{font-size:23px;margin-bottom:12px}
     .panel p,.panel li{color:#b9c8d9}
@@ -45,6 +53,7 @@
     <h1>Infinity Motion Studio</h1>
     <p class="lead">Tools and technology for creating cinematic motion and experiences.</p>
     <div class="divider" aria-hidden="true"></div>
+    <div class="project-art" role="img" aria-label="Abstract cyan and violet motion trails orbiting a cinematic light source"><div class="motion-orbit"></div><div class="motion-orbit two"></div><span class="motion-beam"></span><span class="motion-beam"></span><span class="motion-beam"></span><span class="motion-label">MOTION / FRAME / POSSIBILITY</span></div>
     <section class="panel">
       <h2>Bring motion to imagination</h2>
       <p>Infinity Motion Studio is a Kaevoryn project focused on the possibilities of tools and technology for cinematic motion and creative experiences.</p>
