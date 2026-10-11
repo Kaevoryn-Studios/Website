@@ -24,6 +24,12 @@
     h1{margin:18px 0;font-size:clamp(38px,8vw,78px);line-height:1.02;letter-spacing:-2px;background:linear-gradient(100deg,#fff,#78efff,#9b7cff);-webkit-background-clip:text;background-clip:text;color:transparent}
     .lead{max-width:720px;color:#d1dce8;font-size:clamp(17px,2.5vw,22px)}
     .divider{width:90px;height:2px;margin:34px 0;background:linear-gradient(90deg,#65eaff,#9b7cff)}
+.project-art{position:relative;display:grid;place-items:center;width:min(100%,760px);height:260px;margin:0 auto 34px;overflow:hidden;border:1px solid rgba(101,234,255,.18);border-radius:20px;background:radial-gradient(ellipse at center,rgba(0,180,255,.15),transparent 42%),linear-gradient(145deg,rgba(2,12,32,.95),rgba(26,13,60,.82))}
+    .project-art::before,.project-art::after{content:"";position:absolute;width:190px;height:190px;border:1px solid rgba(101,234,255,.45);border-radius:50%;box-shadow:0 0 40px rgba(0,220,255,.12),inset 0 0 35px rgba(0,220,255,.08)}
+    .project-art::after{width:142px;height:142px;border-color:rgba(155,124,255,.7);transform:rotateX(68deg) rotateZ(-24deg)}
+    .art-core{position:relative;width:66px;height:66px;border-radius:50%;background:radial-gradient(circle,#fff 0%,#8af3ff 22%,#008dff 55%,transparent 76%);box-shadow:0 0 28px #00d9ff,0 0 75px rgba(70,60,255,.65);z-index:1}
+    .art-label{position:absolute;bottom:22px;color:#8feeff;font-size:10px;letter-spacing:4px}
+    @media(max-width:520px){.project-art{height:210px}.project-art::before{width:150px;height:150px}.project-art::after{width:112px;height:112px}}
     .panel{margin-top:36px;padding:clamp(24px,5vw,38px);border:1px solid rgba(0,220,255,.2);border-radius:18px;background:linear-gradient(145deg,rgba(0,220,255,.07),rgba(80,50,180,.1))}
     h2{font-size:23px;margin-bottom:12px}
     .panel p,.panel li{color:#b9c8d9}
@@ -45,6 +51,7 @@
     <h1>Infinity Vision AI</h1>
     <p class="lead">An evolving intelligence concept built to support future Kaevoryn experiences.</p>
     <div class="divider" aria-hidden="true"></div>
+    <div class="project-art" role="img" aria-label="Abstract luminous AI core surrounded by orbital rings"><div class="art-core"></div><span class="art-label">INFINITY / CORE SIGNAL</span></div>
     <section class="panel">
       <h2>Intelligence for experiences yet to be imagined</h2>
       <p>Infinity Vision AI is presented as a Kaevoryn project focused on the possibilities of artificial intelligence across future creative experiences.</p>
