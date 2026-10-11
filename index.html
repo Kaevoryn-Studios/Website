@@ -1549,7 +1549,8 @@ fetch("content/projects.json")
   .catch(error => console.log("Project content loading error:", error));
 </script>
 
-  document.addEventListener("click", event => {
+<script>
+document.addEventListener("click", event => {
     const choice = event.target.closest(".dreamer-path");
     if (!choice) return;
     document.querySelectorAll(".dreamer-path").forEach(button => button.setAttribute("aria-pressed", String(button === choice)));
@@ -1559,6 +1560,7 @@ fetch("content/projects.json")
     if (selection) selection.textContent = "Your chosen path: " + path + ". Your idea is the beginning.";
     if (contact) contact.href = "mailto:contact.kaevorynstudios@gmail.com?subject=" + encodeURIComponent("My Kaevoryn Dreamer Journey — " + path);
   });
+</script>
 
 </body>
 </html>
