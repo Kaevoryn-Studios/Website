@@ -122,6 +122,9 @@ content:
       - name: description
         label: Description
         type: text
+      - name: slug
+        label: Project Page Slug
+        type: string
       - name: image
         label: Image
         type: image
