@@ -40,6 +40,6 @@ test("mobile install controls and offline shell are wired", () => {
 
 test("project references use GitHub Pages project-site-relative paths", () => {
   assert.match(html, /fetch\("\.\.\/content\/projects\.json"\)/);
-  assert.match(html, /"\.\.\/projects\/"\+p\.slug\+"\."+ "html"/);
+  assert.match(html, /"\.\.\/projects\/"\+p\.slug\+"\.html"/);
   assert.doesNotMatch(html, /fetch\("\.\.\/\.\.\/content\/projects\.json"\)/);
 });
