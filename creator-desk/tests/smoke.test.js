@@ -43,3 +43,14 @@ test("project references use GitHub Pages project-site-relative paths", () => {
   assert.match(html, /"\.\.\/projects\/"\+p\.slug\+"\.html"/);
   assert.doesNotMatch(html, /fetch\("\.\.\/\.\.\/content\/projects\.json"\)/);
 });
+
+test("save failure recovery guards are present", () => {
+  assert.ok(html.includes("if(!persist()){entries=previousEntries;render();notify(\"Could not save this entry"));
+  assert.ok(html.includes("if(!persist()){entries=previousEntries;hiddenSiteProjects=previousHidden;render();notify(\"Could not save the deletion"));
+  assert.ok(html.includes("if(!persist()){entries=previousEntries;hiddenSiteProjects=previousHidden;render();notify(\"Import could not be saved"));
+});
+
+test("backup carries the hidden website-reference list", () => {
+  assert.ok(html.includes("hiddenSiteProjects:[...hiddenSiteProjects]"));
+  assert.ok(html.includes("data.hiddenSiteProjects.filter(x=>typeof x===\"string\")"));
+});
