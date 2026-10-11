@@ -6,6 +6,10 @@
 
 The current Creator Desk is a browser-only prototype. It stores drafts in local storage, has no user authentication or server-side database, does not sync across devices, and cannot publish to the public website. Browser storage is not a secure private vault. Do not put credentials or sensitive material in it.
 
+## Authentication design
+
+See [AUTHENTICATION-DESIGN.md](./AUTHENTICATION-DESIGN.md) for the proposed owner sign-in experience, passkey/biometric boundaries, recovery, and security acceptance checklist. This is a plan only; no real login is implemented.
+
 ## Required before real private use
 
 1. **Choose and configure an identity provider.** Require authenticated sessions; keep provider secrets and administrative credentials on the server, never in browser JavaScript or the public repository.
