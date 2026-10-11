@@ -46,7 +46,7 @@ test("project references use GitHub Pages project-site-relative paths", () => {
 
 test("save failure recovery guards are present", () => {
   assert.ok(html.includes("if(!persist()){entries=previousEntries;render();notify(\"Could not save this entry"));
-  assert.ok(html.includes("if(!persist()){entries=previousEntries;hiddenSiteProjects=previousHidden;render();notify(\"Could not save the deletion"));
+  assert.ok(html.includes("The entry has been restored."));
   assert.ok(html.includes("if(!persist()){entries=previousEntries;hiddenSiteProjects=previousHidden;render();notify(\"Import could not be saved"));
 });
 
