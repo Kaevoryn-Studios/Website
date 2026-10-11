@@ -10,6 +10,11 @@
     name="description"
     content="Kaevoryn Studios — Imagination Made Possible. Games, AI, worlds, stories, experiences, and future creations."
   >
+  <meta name="theme-color" content="#01020a">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Kaevoryn Studios — Create the Impossible">
+  <meta property="og:description" content="Imagination Made Possible. Explore Kaevoryn's games, AI, worlds, stories, and future creations.">
+  <meta property="og:url" content="https://kaevoryn-studios.github.io/Website/">
 
   <style>
     * {
@@ -20,6 +25,21 @@
 
     html {
       scroll-behavior: smooth;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
     }
 
     body {
@@ -276,6 +296,12 @@
       justify-content: center;
 
       cursor: pointer;
+    }
+
+    .core-wrap:focus-visible {
+      outline: 2px solid #65eaff;
+      outline-offset: 10px;
+      border-radius: 50%;
     }
 
     .core-ring {
@@ -1049,8 +1075,13 @@
 
       <div
         class="core-wrap"
-        aria-label="Kaevoryn Core"
+        role="button"
+        tabindex="0"
+        aria-label="Reveal the Golden Invitation"
+        aria-controls="golden"
+        aria-expanded="false"
         onclick="revealGoldenInvitation()"
+        onkeydown="if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); revealGoldenInvitation(); }"
       >
         <div class="core-ring"></div>
         <div class="core"></div>
@@ -1289,6 +1320,9 @@
         document.getElementById("golden");
 
       golden.style.display = "block";
+
+      const core = document.querySelector(".core-wrap");
+      if (core) core.setAttribute("aria-expanded", "true");
 
       golden.scrollIntoView({
         behavior: "smooth",
