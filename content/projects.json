@@ -2,17 +2,20 @@
   {
     "category": "AI CORE",
     "title": "Infinity Vision AI",
-    "description": "An evolving intelligence built to power future Kaevoryn experiences."
+    "description": "An evolving intelligence built to power future Kaevoryn experiences.",
+    "slug": "infinity-vision-ai"
   },
   {
     "category": "SURVIVAL HORROR",
     "title": "Escape From The Nightmare Forge",
-    "description": "Something is waiting inside the Forge. Find a way deeper."
+    "description": "Something is waiting inside the Forge. Find a way deeper.",
+    "slug": "escape-from-the-nightmare-forge"
   },
   {
     "category": "MOTION",
     "title": "Infinity Motion Studio",
-    "description": "Tools and technology for creating cinematic motion and experiences."
+    "description": "Tools and technology for creating cinematic motion and experiences.",
+    "slug": "infinity-motion-studio"
   },
   {
     "category": "FUTURE PROJECT",
