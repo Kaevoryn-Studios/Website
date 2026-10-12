@@ -68,6 +68,12 @@ test("imported hidden website references are bounded", () => {
   assert.match(html, /data\.hiddenSiteProjects\.filter\(x=>typeof x==="string"&&x\.length<=200\)\.slice\(0,1000\)/);
 });
 
+test("imported links are restricted to web URLs or relative website references", () => {
+  assert.match(html, /startsWith\("http:\/\/"\)/);
+  assert.match(html, /startsWith\("https:\/\/"\)/);
+  assert.match(html, /startsWith\("\.\.\/"\)/);
+});
+
 test("backup carries the hidden website-reference list", () => {
   assert.ok(html.includes("hiddenSiteProjects:[...hiddenSiteProjects]"));
   assert.ok(html.includes("data.hiddenSiteProjects.filter(x=>typeof x===\"string\")"));
