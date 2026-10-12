@@ -56,6 +56,10 @@ with local_site() as url, sync_playwright() as p:
         require(page.locator('nav[aria-label="Primary navigation"] a[aria-current="page"][href="explore.html"]').count() == 1, f"{label}: Explore is identified as the current page")
         for path in ("games.html","worlds.html","music.html","shows.html","films.html","software.html"):
             require(page.locator(f'a[href="{path}"]').count() == 1, f"{label}: Explore links to {path}")
+        for path in ("games.html","worlds.html","music.html","shows.html","films.html","software.html"):
+            page.goto(url+path, wait_until="networkidle")
+            require(page.locator('nav[aria-label="Primary navigation"] a[aria-current="location"][href="explore.html"]').count() == 1, f"{label}: {path} marks Explore as the active section")
+            require(page.locator("#main-content h1").is_visible(), f"{label}: {path} has a visible main heading")
         page.goto(url+"invitation.html", wait_until="networkidle")
         page.get_by_role("button", name="ACCEPT THE INVITATION").click()
         require(page.locator(".dreamer-path").count() == 4 and page.locator("#dreamer-paths").is_visible(), f"{label}: invitation reveals four dreamer paths")
