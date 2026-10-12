@@ -101,6 +101,18 @@ require("@media (max-width: 640px)" in html and
         "@media (max-width: 980px)" in html,
         "tablet and mobile layout breakpoints are present")
 
+require(".directory-card .project-status" in html and
+        'border-radius: 999px' in html,
+        "department status labels receive distinct pill styling")
+require(".golden-ticket:focus-visible" in html,
+        "Golden Invitation ticket has a visible keyboard focus state")
+require("min-height: 34px" in html and
+        "nav a:not(.nav-brand)" in html,
+        "mobile navigation links have a larger touch area")
+require("overflow-wrap: anywhere" in html,
+        "long labels can wrap without forcing horizontal overflow")
+
+
 style_open = len(re.findall(r"<style\b", html, re.I))
 style_close = len(re.findall(r"</style\s*>", html, re.I))
 script_open = len(re.findall(r"<script\b", html, re.I))
