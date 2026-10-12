@@ -64,6 +64,10 @@ test("backup import limits size and count and sanitizes imported fields", () => 
   assert.match(html, /source:"local"/);
 });
 
+test("imported hidden website references are bounded", () => {
+  assert.match(html, /data\.hiddenSiteProjects\.filter\(x=>typeof x==="string"&&x\.length<=200\)\.slice\(0,1000\)/);
+});
+
 test("backup carries the hidden website-reference list", () => {
   assert.ok(html.includes("hiddenSiteProjects:[...hiddenSiteProjects]"));
   assert.ok(html.includes("data.hiddenSiteProjects.filter(x=>typeof x===\"string\")"));
