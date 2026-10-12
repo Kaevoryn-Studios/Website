@@ -76,7 +76,7 @@ test("imported links are restricted to web URLs or relative website references",
 
 test("backup carries the hidden website-reference list", () => {
   assert.ok(html.includes("hiddenSiteProjects:[...hiddenSiteProjects]"));
-  assert.ok(html.includes("data.hiddenSiteProjects.filter(x=>typeof x===\"string\")"));
+  assert.ok(html.includes("data.hiddenSiteProjects.filter(x=>typeof x===\"string\"&&x.length<=200).slice(0,1000)"));
 });
 
 test("security documentation clearly labels authentication and backend as not implemented", () => {
