@@ -100,3 +100,13 @@ test("production checklist links the security test plan", () => {
   assert.match(securityPlan, /Database authorization tests/);
   assert.match(securityPlan, /Publishing and launch gates/);
 });
+
+test("entry text is rendered as text rather than interpreted as HTML", () => {
+  assert.match(html, /function el\(tag,cls,text\)\{const node=document\.createElement\(tag\);if\(cls\)node\.className=cls;if\(text!==undefined\)node\.textContent=text;return node\}/);
+  assert.doesNotMatch(html, /\.innerHTML\s*=/, "untrusted entry content must not be parsed as HTML");
+});
+
+test("external entry links open without granting the new tab opener access", () => {
+  assert.match(html, /a\.target="_blank";a\.rel="noopener noreferrer"/);
+  assert.match(html, /if\(\/\^https\?:\\\/\\\/\/i\.test\(valid\)\|\|valid\.startsWith\("\.\.\/"\)\)/);
+});
