@@ -1625,6 +1625,173 @@
       .directory-card { transition: none; }
     }
 
+  
+    /* ---------- FINAL POLISH: SPACING, READABILITY, AND SMALL SCREENS ---------- */
+    :root {
+      --content-width: 1120px;
+      --section-space: clamp(68px, 8vw, 112px);
+    }
+    main > section:not(#home) {
+      scroll-margin-top: 96px;
+    }
+    .section-title {
+      padding-inline: 8px;
+    }
+    .section-title p {
+      text-wrap: pretty;
+    }
+    .projects,
+    .ecosystem-grid,
+    .directory-grid {
+      width: min(100%, var(--content-width));
+    }
+    .project-card,
+    .ecosystem-card,
+    .directory-card,
+    .status-guide {
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
+    .project-card p,
+    .ecosystem-card p,
+    .directory-card p {
+      text-wrap: pretty;
+    }
+    .status-guide h3 {
+      line-height: 1.5;
+    }
+    .status-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+    .status-item {
+      display: flex;
+      align-items: flex-start;
+      min-height: 42px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+    }
+    .directory-card {
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.025), 0 16px 36px rgba(0,0,0,.12);
+    }
+    .directory-card .project-status {
+      line-height: 1.5;
+    }
+    .golden-ticket {
+      max-width: 100%;
+      white-space: normal;
+      line-height: 1.65;
+    }
+    .golden-ticket > span {
+      overflow-wrap: anywhere;
+    }
+    .golden-ticket:focus-visible,
+    .dreamer-path:focus-visible,
+    .dreamer-next:focus-visible,
+    .contact-link:focus-visible,
+    .project-link:focus-visible {
+      outline: 3px solid #fff;
+      outline-offset: 4px;
+    }
+    .project-link {
+      min-height: 44px;
+      align-items: center;
+    }
+    @media (max-width: 760px) {
+      nav {
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 10px 16px;
+      }
+      nav .nav-brand {
+        flex: 1 0 100%;
+        justify-content: center;
+        margin: 0;
+      }
+      nav a {
+        padding-block: 5px;
+      }
+      #home {
+        padding-top: 178px;
+      }
+      .projects,
+      .ecosystem-grid,
+      .directory-grid {
+        grid-template-columns: 1fr;
+      }
+      .project-card,
+      .ecosystem-card,
+      .directory-card {
+        min-height: 0;
+      }
+      .status-list {
+        grid-template-columns: 1fr;
+      }
+      .status-guide {
+        padding: 20px;
+      }
+      .golden-wrap {
+        width: 100%;
+      }
+      .golden-ticket {
+        width: 100%;
+        padding: 38px 22px;
+        transform: none;
+        clip-path: none;
+        border-radius: 16px;
+      }
+      .golden-ticket:hover {
+        transform: translateY(-3px);
+      }
+      .golden-ticket-label {
+        font-size: 10px;
+        letter-spacing: 3px;
+      }
+      .golden-ticket strong {
+        font-size: clamp(25px, 7vw, 40px);
+        letter-spacing: 1px;
+        line-height: 1.2;
+      }
+      .golden-emblem {
+        width: 64px;
+        height: 64px;
+      }
+      .golden-create {
+        font-size: 13px;
+        letter-spacing: 2px;
+      }
+      .golden-quote {
+        font-size: 14px;
+      }
+      .golden-hidden {
+        font-size: 11px;
+        letter-spacing: 1px;
+      }
+    }
+    @media (max-width: 380px) {
+      nav {
+        gap: 7px 10px;
+        padding-inline: 10px;
+      }
+      nav a {
+        font-size: 8px;
+        letter-spacing: .45px;
+      }
+      .hero h1 {
+        font-size: clamp(42px, 13vw, 52px);
+        letter-spacing: -2px;
+      }
+      .status-guide {
+        padding: 16px;
+      }
+      .golden-ticket {
+        padding: 32px 16px;
+      }
+    }
+
   </style>
 </head>
 
