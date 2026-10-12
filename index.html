@@ -1444,12 +1444,44 @@
       .hero-action, .project-card, .ecosystem-card { transition: none; }
     }
 
-  </style>
+  
+    /* Keyboard users can bypass repeated navigation. */
+    .skip-link {
+      position: fixed;
+      top: 12px;
+      left: 12px;
+      z-index: 10000;
+      padding: 12px 16px;
+      border: 1px solid var(--cyan, #7de7ff);
+      border-radius: 10px;
+      background: #07101d;
+      color: #fff;
+      font-weight: 700;
+      transform: translateY(-160%);
+      transition: transform .18s ease;
+    }
+    .skip-link:focus {
+      transform: translateY(0);
+      outline: 3px solid #fff;
+      outline-offset: 3px;
+    }
+    #main-content {
+      display: block;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .skip-link {
+        transition: none;
+      }
+    }
+</style>
 </head>
 
 <body>
 
   <div class="stars"></div>
+
+  <!-- ACCESSIBILITY -->
+  <a class="skip-link" href="#main-content">Skip to main content</a>
 
   <!-- NAVIGATION -->
 
@@ -1461,6 +1493,8 @@
     <a href="#vision">VISION</a>
     <a class="nav-connect" href="#contact">CONNECT <span aria-hidden="true">↗</span></a>
   </nav>
+
+  <main id="main-content">
 
   <!-- HOME -->
 
@@ -1765,6 +1799,8 @@
     </div>
 
   </section>
+
+  </main>
 
   <!-- FOOTER -->
 
