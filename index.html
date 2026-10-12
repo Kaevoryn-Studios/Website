@@ -1473,6 +1473,15 @@
         transition: none;
       }
     }
+
+    /* Honor reduced-motion preferences across every animated component. */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation: none !important;
+        scroll-behavior: auto !important;
+        transition: none !important;
+      }
+    }
 </style>
 </head>
 
@@ -1827,7 +1836,7 @@
       if (core) core.setAttribute("aria-expanded", "true");
 
       golden.scrollIntoView({
-        behavior: "smooth",
+        behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
         block: "center"
       });
 
