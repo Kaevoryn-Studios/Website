@@ -40,7 +40,7 @@ with local_site() as url, sync_playwright() as p:
         require(page.locator("nav[aria-label='Primary navigation']").is_visible(), f"{label}: primary navigation is visible")
         require(page.locator("#main-content").is_visible(), f"{label}: main content is visible")
         for href in ("projects.html","explore.html","vision.html","invitation.html","contact.html"):
-            require(page.locator(f'nav a[href="{href}"]').is_visible(), f"{label}: {href} has a visible navigation link")
+            require(page.locator(f'nav[aria-label="Primary navigation"] a[href="{href}"]').is_visible(), f"{label}: {href} has a visible navigation link")
         require(page.locator(".portal-card").count() == 6, f"{label}: homepage presents six clickable destinations")
         dims = page.evaluate("() => ({viewport:document.documentElement.clientWidth,document:document.documentElement.scrollWidth})")
         require(dims["document"] <= dims["viewport"] + 1, f"{label}: no horizontal overflow ({dims['document']}px / {dims['viewport']}px)")
