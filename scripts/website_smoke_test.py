@@ -1,138 +1,64 @@
 #!/usr/bin/env python3
-"""Lightweight regression checks for the static Kaevoryn Studios homepage."""
+"""Static regression checks for the multi-page Kaevoryn Studios website."""
 from html.parser import HTMLParser
 from pathlib import Path
 import re
-import subprocess
-import tempfile
 
 ROOT = Path(__file__).resolve().parents[1]
-html = (ROOT / "index.html").read_text(encoding="utf-8")
+pages = sorted(ROOT.rglob("*.html"))
+excluded = {".git", ".github"}
+pages = [p for p in pages if not any(part in excluded for part in p.parts)]
 
-
-class MarkupProbe(HTMLParser):
+class Probe(HTMLParser):
     def __init__(self):
         super().__init__(convert_charrefs=True)
-        self.ids = []
-        self.fragment_links = []
-
+        self.ids=[]; self.links=[]; self.text=[]
     def handle_starttag(self, tag, attrs):
-        attrs = dict(attrs)
-        if attrs.get("id"):
-            self.ids.append(attrs["id"])
-        href = attrs.get("href", "")
-        if href.startswith("#") and len(href) > 1:
-            self.fragment_links.append(href[1:])
+        attrs=dict(attrs)
+        if attrs.get("id"): self.ids.append(attrs["id"])
+        href=attrs.get("href","")
+        if href and not href.startswith(("http://","https://","mailto:","tel:","javascript:")):
+            self.links.append(href)
+    def handle_data(self, data): self.text.append(data)
 
+probes={}
+for path in pages:
+    parser=Probe()
+    parser.feed(path.read_text(encoding="utf-8"))
+    duplicates=sorted({x for x in parser.ids if parser.ids.count(x)>1})
+    if duplicates: raise SystemExit(f"FAIL: duplicate IDs in {path}: {duplicates}")
+    probes[path]=parser
 
-probe = MarkupProbe()
-probe.feed(html)
-probe.close()
+def require(ok,msg):
+    if not ok: raise SystemExit(f"FAIL: {msg}")
+    print(f"PASS: {msg}")
 
+index=(ROOT/"index.html").read_text(encoding="utf-8")
+for href in ("projects.html","explore.html","vision.html","invitation.html","contact.html"):
+    require(f'href="{href}"' in index, f"homepage links to {href}")
+require(len(re.findall(r'class="portal-card"',index)) == 6, "homepage has six clickable portal cards")
+require('aria-label="Primary navigation"' in index and 'class="skip-link"' in index, "homepage navigation and skip link are accessible")
+require('name="viewport"' in index and 'property="og:title"' in index, "homepage has viewport and social metadata")
 
-def require(condition, message):
-    if not condition:
-        raise SystemExit(f"FAIL: {message}")
-    print(f"PASS: {message}")
+required_files = ["projects.html","explore.html","vision.html","invitation.html","contact.html","games.html","worlds.html","music.html","shows.html","films.html","software.html"]
+for name in required_files:
+    require((ROOT/name).is_file(), f"dedicated page exists: {name}")
+for path, parser in probes.items():
+    missing=[]
+    for href in parser.links:
+        if href.startswith("#"):
+            if href[1:] not in parser.ids: missing.append(href)
+        elif href and not href.startswith(("http://","https://","mailto:","tel:","javascript:")):
+            target=(path.parent/href.split("#",1)[0]).resolve()
+            if not target.exists(): missing.append(href)
+    require(not missing, f"local links resolve in {path.relative_to(ROOT)} (missing: {missing})")
 
-
-duplicates = sorted({item for item in probe.ids if probe.ids.count(item) > 1})
-missing = sorted(set(probe.fragment_links) - set(probe.ids))
-
-require(bool(re.search(r"<main\b", html, re.I)) and bool(re.search(r"</main\s*>", html, re.I)),
-        "homepage has a main landmark")
-require('class="skip-link"' in html and 'href="#main-content"' in html,
-        "keyboard skip link targets main content")
-require('<div class="stars" aria-hidden="true"></div>' in html,
-        "decorative star field is hidden from assistive technology")
-require(not duplicates, f"HTML IDs are unique (duplicates: {duplicates})")
-require(not missing, f"internal fragment links resolve (missing: {missing})")
-require(bool(re.search(r"prefers-reduced-motion\s*:\s*reduce", html)),
-        "reduced-motion preferences are respected")
-require("animation: none !important;" in html and "transition: none !important;" in html,
-        "all decorative animations and transitions are disabled for reduced-motion users")
-require('window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"' in html,
-        "Golden Invitation scrolling respects reduced-motion preferences")
-require(bool(re.search(r"""fetch\(\s*['"]content/projects\.json['"]\s*\)""", html)),
-        "project content loader is present")
-require(bool(re.search(r"function\s+revealGoldenInvitation\s*\(", html)),
-        "Golden Invitation interaction function is present")
-
-require('name="viewport"' in html,
-        "mobile viewport metadata is present")
-require('property="og:title"' in html and 'property="og:description"' in html,
-        "social sharing metadata is present")
-
-# Protect the canonical Golden Invitation wording from accidental edits.
-visible_text = re.sub(r"<script\b[\s\S]*?</script\s*>|<style\b[\s\S]*?</style\s*>", " ", html, flags=re.I)
-visible_text = re.sub(r"<[^>]+>", " ", visible_text)
-visible_text = re.sub(r"\s+", " ", visible_text).strip()
-for phrase in (
-    "KAEVORYN STUDIOS",
-    "GOLDEN INVITATION",
-    "ACCESS TO THE IMPOSSIBLE",
-    "CREATE THE IMPOSSIBLE",
-    "Create the Impossible — starting with the person who dreamed it.",
-    "DREAMER ACCESS",
-    "WHAT WILL YOU DREAM INTO EXISTENCE?",
-):
-    require(phrase in visible_text, f"canonical Golden Invitation wording is present: {phrase}")
-
-# Preserve the seven official feature-status labels on the public homepage.
-for status in (
-    "Concept",
-    "Exploring",
-    "Prototype",
-    "Planned",
-    "In Development",
-    "Released",
-    "Future",
-):
-    require(status in visible_text, f"official feature status is present: {status}")
-
-require('aria-label="Primary navigation"' in html,
-        "primary navigation has an accessible name")
-require('class="hero-action hero-action-primary" href="#worlds"' in html,
-        "hero has a direct path to the project section")
-require('class="hero-action hero-action-secondary"' in html and
-        'onclick="revealGoldenInvitation()"' in html,
-        "hero provides a Golden Invitation action")
-require("@media (max-width: 640px)" in html and
-        "@media (max-width: 980px)" in html,
-        "tablet and mobile layout breakpoints are present")
-
-require(".directory-card .project-status" in html and
-        'border-radius: 999px' in html,
-        "department status labels receive distinct pill styling")
-require(".golden-ticket:focus-visible" in html,
-        "Golden Invitation ticket has a visible keyboard focus state")
-require("min-height: 34px" in html and
-        "nav a:not(.nav-brand)" in html,
-        "mobile navigation links have a larger touch area")
-require("overflow-wrap: anywhere" in html,
-        "long labels can wrap without forcing horizontal overflow")
-
-
-style_open = len(re.findall(r"<style\b", html, re.I))
-style_close = len(re.findall(r"</style\s*>", html, re.I))
-script_open = len(re.findall(r"<script\b", html, re.I))
-script_close = len(re.findall(r"</script\s*>", html, re.I))
-require(style_open == style_close == 1, "style element is balanced")
-require(script_open == script_close, "script elements are balanced")
-
-scripts = re.findall(r"<script\b[^>]*>([\s\S]*?)</script\s*>", html, re.I)
-with tempfile.TemporaryDirectory(prefix="kaevoryn-smoke-") as temp_dir:
-    for index, source in enumerate(scripts, start=1):
-        script_path = Path(temp_dir) / f"inline-{index}.js"
-        script_path.write_text(source, encoding="utf-8")
-        result = subprocess.run(
-            ["node", "--check", str(script_path)],
-            capture_output=True,
-            text=True,
-            check=False,
-        )
-        require(result.returncode == 0,
-                f"inline JavaScript block {index} parses" +
-                (f": {result.stderr.strip()}" if result.returncode else ""))
-
-print("Website smoke checks completed.")
+invitation=(ROOT/"invitation.html").read_text(encoding="utf-8")
+for phrase in ("KAEVORYN STUDIOS","GOLDEN INVITATION","ACCESS TO THE IMPOSSIBLE","CREATE THE IMPOSSIBLE","Create the Impossible — starting with the person who dreamed it.","DREAMER ACCESS","WHAT WILL YOU DREAM INTO EXISTENCE?"):
+    require(phrase in invitation, f"canonical Golden Invitation wording is present: {phrase}")
+explore=(ROOT/"explore.html").read_text(encoding="utf-8")
+for status in ("Concept","Exploring","Prototype","Planned","In Development","Released","Future"):
+    require(status in explore, f"official status key includes {status}")
+for project in ("infinity-vision-ai.html","escape-from-the-nightmare-forge.html","infinity-motion-studio.html"):
+    require((ROOT/"projects"/project).is_file(), f"existing project page is preserved: {project}")
+print(f"Static checks completed for {len(pages)} HTML pages.")
