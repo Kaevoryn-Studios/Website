@@ -15,6 +15,11 @@ test("embedded Creator Desk JavaScript parses", () => {
   assert.doesNotThrow(() => new vm.Script(match[1]));
 });
 
+test("entry action buttons have item-specific accessible names", () => {
+  assert.match(html, /edit\.setAttribute\("aria-label","Edit "\+item\.title\)/);
+  assert.match(html, /del\.setAttribute\("aria-label","Delete "\+item\.title\)/);
+});
+
 test("HTML IDs are unique", () => {
   const ids = [...html.matchAll(/\bid="([^"]+)"/g)].map(match => match[1]);
   assert.equal(ids.length, new Set(ids).size, "duplicate id attributes break labels and controls");
