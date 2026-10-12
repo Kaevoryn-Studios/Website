@@ -10,6 +10,10 @@ The current Creator Desk is a browser-only prototype. It stores drafts in local 
 
 See [AUTHENTICATION-DESIGN.md](./AUTHENTICATION-DESIGN.md) for the proposed owner sign-in experience, passkey/biometric boundaries, recovery, and security acceptance checklist. This is a plan only; no real login is implemented.
 
+## Backend architecture proposal
+
+See [BACKEND-ARCHITECTURE.md](./BACKEND-ARCHITECTURE.md) for the provisional provider evaluation, proposed data model, and security gates. Supabase is only the first candidate to evaluate; no backend has been provisioned or connected.
+
 ## Required before real private use
 
 1. **Choose and configure an identity provider.** Require authenticated sessions; keep provider secrets and administrative credentials on the server, never in browser JavaScript or the public repository.
