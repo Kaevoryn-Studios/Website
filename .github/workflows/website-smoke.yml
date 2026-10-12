@@ -6,7 +6,7 @@ on:
     paths:
       - "*.html"
       - "site.css"
-      - "invitation.js"
+      - "*.js"
       - "content/**"
       - "projects/**"
       - "scripts/website_smoke_test.py"
