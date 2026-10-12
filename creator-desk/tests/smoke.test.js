@@ -50,6 +50,12 @@ test("save failure recovery guards are present", () => {
   assert.ok(html.includes("if(!persist()){entries=previousEntries;hiddenSiteProjects=previousHidden;render();notify(\"Import could not be saved"));
 });
 
+test("failed hidden-reference backup save rolls imported entries back", () => {
+  assert.match(html, /Import could not save the website-reference list/);
+  assert.match(html, /localStorage\.setItem\(KEY,JSON\.stringify\(entries\)\)/);
+  assert.match(html, /entries=previousEntries;hiddenSiteProjects=previousHidden/);
+});
+
 test("backup carries the hidden website-reference list", () => {
   assert.ok(html.includes("hiddenSiteProjects:[...hiddenSiteProjects]"));
   assert.ok(html.includes("data.hiddenSiteProjects.filter(x=>typeof x===\"string\")"));
