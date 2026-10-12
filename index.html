@@ -1493,7 +1493,139 @@
         transition: none !important;
       }
     }
-</style>
+
+    /* ---------- FINAL LAYOUT PASS: CLEAR RHYTHM + RESPONSIVE HIERARCHY ---------- */
+    :root {
+      --layout-gutter: clamp(18px, 4.5vw, 56px);
+      --panel-line: rgba(132, 167, 207, .19);
+    }
+    body { line-height: 1.65; }
+    nav {
+      justify-content: space-between;
+      gap: clamp(12px, 2vw, 26px);
+      padding: 15px var(--layout-gutter);
+      background: rgba(3, 6, 17, .88);
+      border-bottom-color: rgba(101, 234, 255, .12);
+    }
+    nav .nav-brand { margin-right: auto; }
+    nav .nav-brand span:last-child { white-space: nowrap; }
+    nav a { white-space: nowrap; }
+    #home { min-height: min(900px, 100svh); }
+    .hero { width: min(100%, 1040px); }
+    .hero-text { line-height: 1.85; }
+    .hero-actions { gap: 14px; }
+    #worlds {
+      padding: clamp(76px, 9vw, 112px) var(--layout-gutter);
+    }
+    #worlds .section-title { margin-bottom: clamp(30px, 4vw, 48px); }
+    .projects {
+      width: min(100%, 1120px);
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-items: stretch;
+    }
+    .project-card {
+      min-width: 0;
+      min-height: 255px;
+      padding: clamp(24px, 3vw, 36px);
+      border: 1px solid var(--panel-line);
+      border-radius: 20px;
+      background:
+        radial-gradient(circle at 100% 0%, rgba(91, 81, 193, .12), transparent 44%),
+        linear-gradient(145deg, rgba(13, 24, 44, .9), rgba(7, 10, 24, .88));
+    }
+    .project-card h3 { overflow-wrap: anywhere; }
+    .project-card p { line-height: 1.8; }
+    .directory-section {
+      padding: clamp(76px, 9vw, 110px) var(--layout-gutter) !important;
+      border-top: 1px solid rgba(101, 234, 255, .08);
+      background: linear-gradient(180deg, rgba(5, 8, 20, .12), rgba(12, 16, 34, .3));
+    }
+    .directory-section .section-title { margin-bottom: clamp(30px, 4vw, 44px); }
+    .directory-grid {
+      width: min(100%, 1100px);
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: clamp(14px, 1.8vw, 22px);
+      align-items: stretch;
+    }
+    .directory-card {
+      min-width: 0;
+      min-height: 248px;
+      padding: clamp(22px, 2.4vw, 30px);
+      border-color: var(--panel-line);
+      border-radius: 20px;
+      background:
+        radial-gradient(circle at 100% 0%, rgba(92, 77, 190, .09), transparent 46%),
+        linear-gradient(145deg, rgba(12, 21, 39, .8), rgba(7, 10, 23, .72));
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.025);
+      transition: transform .25s ease, border-color .25s ease, background .25s ease;
+    }
+    .directory-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(101, 234, 255, .42);
+    }
+    .directory-card h3 { overflow-wrap: anywhere; }
+    .directory-card p { line-height: 1.8; }
+    .directory-card .project-status {
+      max-width: 100%;
+      line-height: 1.55;
+      white-space: normal;
+    }
+    .status-guide {
+      width: min(100%, 1100px);
+      margin: clamp(28px, 4vw, 42px) auto 0;
+      padding: clamp(20px, 3vw, 30px);
+    }
+    .status-list { align-items: flex-start; }
+    .status-item { max-width: 100%; white-space: normal; }
+    #vision, #golden, #contact { padding-inline: var(--layout-gutter); }
+    #vision .section-title, #golden .section-title, #contact .section-title {
+      width: min(100%, 780px);
+    }
+    #contact { padding-bottom: clamp(82px, 10vw, 120px); }
+    footer { padding-inline: var(--layout-gutter); }
+
+    @media (max-width: 980px) {
+      nav { flex-wrap: wrap; justify-content: center; }
+      nav .nav-brand { margin-right: auto; }
+      .directory-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 640px) {
+      nav {
+        display: flex;
+        gap: 8px 13px;
+        padding: 10px 12px;
+      }
+      nav .nav-brand {
+        width: 100%;
+        margin: 0 0 3px;
+        justify-content: center;
+      }
+      nav a { font-size: 9px; letter-spacing: .7px; }
+      nav a.nav-connect { padding: 6px 9px; }
+      #home { padding: 170px 18px 66px; }
+      .hero h1 { font-size: clamp(48px, 14vw, 78px); }
+      .hero h2 { max-width: 34ch; margin-inline: auto; }
+      .hero-text { max-width: 36ch; }
+      .hero-question { max-width: 25ch; margin-inline: auto; }
+      .hero-actions { width: 100%; }
+      .hero-action { width: min(100%, 320px); }
+      #worlds { padding: 70px 18px; }
+      .projects { grid-template-columns: 1fr; gap: 14px; }
+      .project-card { min-height: 0; padding: 25px; }
+      .directory-section { padding: 70px 18px !important; }
+      .directory-grid { grid-template-columns: 1fr; gap: 14px; }
+      .directory-card { min-height: 0; padding: 24px; }
+      .status-guide { padding: 20px 16px; }
+      .status-list { gap: 8px; }
+      .status-item { width: 100%; border-radius: 10px; }
+      #vision, #golden, #contact { padding-inline: 18px; }
+      .golden-ticket { width: 100%; min-height: 0; padding: 34px 20px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .directory-card { transition: none; }
+    }
+
+  </style>
 </head>
 
 <body>
