@@ -78,6 +78,29 @@ for phrase in (
 ):
     require(phrase in visible_text, f"canonical Golden Invitation wording is present: {phrase}")
 
+# Preserve the seven official feature-status labels on the public homepage.
+for status in (
+    "Concept",
+    "Exploring",
+    "Prototype",
+    "Planned",
+    "In Development",
+    "Released",
+    "Future",
+):
+    require(status in visible_text, f"official feature status is present: {status}")
+
+require('aria-label="Primary navigation"' in html,
+        "primary navigation has an accessible name")
+require('class="hero-action hero-action-primary" href="#worlds"' in html,
+        "hero has a direct path to the project section")
+require('class="hero-action hero-action-secondary"' in html and
+        'onclick="revealGoldenInvitation()"' in html,
+        "hero provides a Golden Invitation action")
+require("@media (max-width: 640px)" in html and
+        "@media (max-width: 980px)" in html,
+        "tablet and mobile layout breakpoints are present")
+
 style_open = len(re.findall(r"<style\b", html, re.I))
 style_close = len(re.findall(r"</style\s*>", html, re.I))
 script_open = len(re.findall(r"<script\b", html, re.I))
