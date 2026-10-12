@@ -14,6 +14,10 @@ See [AUTHENTICATION-DESIGN.md](./AUTHENTICATION-DESIGN.md) for the proposed owne
 
 See [BACKEND-ARCHITECTURE.md](./BACKEND-ARCHITECTURE.md) for the provisional provider evaluation, proposed data model, and security gates. Supabase is only the first candidate to evaluate; no backend has been provisioned or connected.
 
+## Security test plan
+
+See [SECURITY-TEST-PLAN.md](./SECURITY-TEST-PLAN.md) for explicit tests covering authentication, database authorization, data validation, backups, publishing approval, and launch gates. These are planned tests, not evidence that a production backend has passed them.
+
 ## Required before real private use
 
 1. **Choose and configure an identity provider.** Require authenticated sessions; keep provider secrets and administrative credentials on the server, never in browser JavaScript or the public repository.
@@ -27,6 +31,7 @@ See [BACKEND-ARCHITECTURE.md](./BACKEND-ARCHITECTURE.md) for the provisional pro
 
 ## Suggested delivery gates
 
+- [ ] Create a dedicated Kaevoryn organization/project and review exact pricing before provisioning.
 - [ ] Pick the backend/identity provider and review its costs, data location, and recovery options.
 - [ ] Implement authenticated server endpoints and per-record authorization.
 - [ ] Add schema validation and automated authorization tests.
