@@ -54,3 +54,20 @@ test("backup carries the hidden website-reference list", () => {
   assert.ok(html.includes("hiddenSiteProjects:[...hiddenSiteProjects]"));
   assert.ok(html.includes("data.hiddenSiteProjects.filter(x=>typeof x===\"string\")"));
 });
+
+test("security documentation clearly labels authentication and backend as not implemented", () => {
+  const auth = fs.readFileSync(path.join(root, "..", "AUTHENTICATION-DESIGN.md"), "utf8");
+  const backend = fs.readFileSync(path.join(root, "..", "BACKEND-ARCHITECTURE.md"), "utf8");
+  const readiness = fs.readFileSync(path.join(root, "..", "PRODUCTION-READINESS.md"), "utf8");
+  assert.match(auth, /No login has been implemented/i);
+  assert.match(backend, /not a configured service/i);
+  assert.match(readiness, /no user authentication or server-side database/i);
+});
+
+test("production checklist links the security test plan", () => {
+  const readiness = fs.readFileSync(path.join(root, "..", "PRODUCTION-READINESS.md"), "utf8");
+  const securityPlan = fs.readFileSync(path.join(root, "..", "SECURITY-TEST-PLAN.md"), "utf8");
+  assert.match(readiness, /SECURITY-TEST-PLAN\.md/);
+  assert.match(securityPlan, /Database authorization tests/);
+  assert.match(securityPlan, /Publishing and launch gates/);
+});
