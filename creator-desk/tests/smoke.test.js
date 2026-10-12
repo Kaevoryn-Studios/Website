@@ -56,6 +56,14 @@ test("failed hidden-reference backup save rolls imported entries back", () => {
   assert.match(html, /entries=previousEntries;hiddenSiteProjects=previousHidden/);
 });
 
+test("backup import limits size and count and sanitizes imported fields", () => {
+  assert.match(html, /file\.size>2\*1024\*1024/);
+  assert.match(html, /incoming\.length>1000/);
+  assert.match(html, /title:x\.title\.trim\(\)\.slice\(0,140\)/);
+  assert.match(html, /notes:safe\(x\.notes\)\.slice\(0,4000\)/);
+  assert.match(html, /source:"local"/);
+});
+
 test("backup carries the hidden website-reference list", () => {
   assert.ok(html.includes("hiddenSiteProjects:[...hiddenSiteProjects]"));
   assert.ok(html.includes("data.hiddenSiteProjects.filter(x=>typeof x===\"string\")"));
