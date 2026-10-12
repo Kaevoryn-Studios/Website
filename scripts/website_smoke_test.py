@@ -64,9 +64,9 @@ require('property="og:title"' in html and 'property="og:description"' in html,
         "social sharing metadata is present")
 
 # Protect the canonical Golden Invitation wording from accidental edits.
-visible_text = re.sub(r"<script\\b[\\s\\S]*?</script\\s*>|<style\\b[\\s\\S]*?</style\\s*>", " ", html, flags=re.I)
+visible_text = re.sub(r"<script\b[\s\S]*?</script\s*>|<style\b[\s\S]*?</style\s*>", " ", html, flags=re.I)
 visible_text = re.sub(r"<[^>]+>", " ", visible_text)
-visible_text = re.sub(r"\\s+", " ", visible_text).strip()
+visible_text = re.sub(r"\s+", " ", visible_text).strip()
 for phrase in (
     "KAEVORYN STUDIOS",
     "GOLDEN INVITATION",
