@@ -47,6 +47,10 @@ require(not duplicates, f"HTML IDs are unique (duplicates: {duplicates})")
 require(not missing, f"internal fragment links resolve (missing: {missing})")
 require(bool(re.search(r"prefers-reduced-motion\s*:\s*reduce", html)),
         "reduced-motion preferences are respected")
+require("animation: none !important;" in html and "transition: none !important;" in html,
+        "all decorative animations and transitions are disabled for reduced-motion users")
+require('window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"' in html,
+        "Golden Invitation scrolling respects reduced-motion preferences")
 require(bool(re.search(r"""fetch\(\s*['"]content/projects\.json['"]\s*\)""", html)),
         "project content loader is present")
 require(bool(re.search(r"function\s+revealGoldenInvitation\s*\(", html)),
