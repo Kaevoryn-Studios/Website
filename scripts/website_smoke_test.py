@@ -43,6 +43,8 @@ require(bool(re.search(r"<main\b", html, re.I)) and bool(re.search(r"</main\s*>"
         "homepage has a main landmark")
 require('class="skip-link"' in html and 'href="#main-content"' in html,
         "keyboard skip link targets main content")
+require('<div class="stars" aria-hidden="true"></div>' in html,
+        "decorative star field is hidden from assistive technology")
 require(not duplicates, f"HTML IDs are unique (duplicates: {duplicates})")
 require(not missing, f"internal fragment links resolve (missing: {missing})")
 require(bool(re.search(r"prefers-reduced-motion\s*:\s*reduce", html)),
