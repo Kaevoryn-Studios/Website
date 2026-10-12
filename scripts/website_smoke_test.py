@@ -39,27 +39,27 @@ def require(condition, message):
 duplicates = sorted({item for item in probe.ids if probe.ids.count(item) > 1})
 missing = sorted(set(probe.fragment_links) - set(probe.ids))
 
-require(bool(re.search(r"<main\\b", html, re.I)) and bool(re.search(r"</main\\s*>", html, re.I)),
+require(bool(re.search(r"<main\b", html, re.I)) and bool(re.search(r"</main\s*>", html, re.I)),
         "homepage has a main landmark")
 require('class="skip-link"' in html and 'href="#main-content"' in html,
         "keyboard skip link targets main content")
 require(not duplicates, f"HTML IDs are unique (duplicates: {duplicates})")
 require(not missing, f"internal fragment links resolve (missing: {missing})")
-require(bool(re.search(r"prefers-reduced-motion\\s*:\\s*reduce", html)),
+require(bool(re.search(r"prefers-reduced-motion\s*:\s*reduce", html)),
         "reduced-motion preferences are respected")
-require(bool(re.search(r"""fetch\\(\\s*['"]content/projects\\.json['"]\\s*\\)""", html)),
+require(bool(re.search(r"""fetch\(\s*['"]content/projects\.json['"]\s*\)""", html)),
         "project content loader is present")
-require(bool(re.search(r"function\\s+revealGoldenInvitation\\s*\\(", html)),
+require(bool(re.search(r"function\s+revealGoldenInvitation\s*\(", html)),
         "Golden Invitation interaction function is present")
 
-style_open = len(re.findall(r"<style\\b", html, re.I))
-style_close = len(re.findall(r"</style\\s*>", html, re.I))
-script_open = len(re.findall(r"<script\\b", html, re.I))
-script_close = len(re.findall(r"</script\\s*>", html, re.I))
+style_open = len(re.findall(r"<style\b", html, re.I))
+style_close = len(re.findall(r"</style\s*>", html, re.I))
+script_open = len(re.findall(r"<script\b", html, re.I))
+script_close = len(re.findall(r"</script\s*>", html, re.I))
 require(style_open == style_close == 1, "style element is balanced")
 require(script_open == script_close, "script elements are balanced")
 
-scripts = re.findall(r"<script\\b[^>]*>([\\s\\S]*?)</script\\s*>", html, re.I)
+scripts = re.findall(r"<script\b[^>]*>([\s\S]*?)</script\s*>", html, re.I)
 with tempfile.TemporaryDirectory(prefix="kaevoryn-smoke-") as temp_dir:
     for index, source in enumerate(scripts, start=1):
         script_path = Path(temp_dir) / f"inline-{index}.js"
