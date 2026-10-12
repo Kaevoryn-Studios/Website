@@ -38,6 +38,10 @@ with local_site() as url, sync_playwright() as p:
         page = browser.new_page(viewport={"width":width,"height":height}, reduced_motion="reduce")
         page.goto(url, wait_until="networkidle")
         require(page.locator("nav[aria-label='Primary navigation']").is_visible(), f"{label}: primary navigation is visible")
+        require(page.locator('nav[aria-label="Primary navigation"] a[aria-current="page"][href="index.html"]').count() == 1, f"{label}: homepage is identified as the current page")
+        page.keyboard.press("Tab")
+        require(page.locator(".skip-link").evaluate("(el) => el === document.activeElement"), f"{label}: keyboard users can focus the skip link first")
+        require(page.locator(".skip-link").is_visible(), f"{label}: focused skip link is visible")
         require(page.locator("#main-content").is_visible(), f"{label}: main content is visible")
         for href in ("projects.html","explore.html","vision.html","invitation.html","contact.html"):
             require(page.locator(f'nav[aria-label="Primary navigation"] a[href="{href}"]').is_visible(), f"{label}: {href} has a visible navigation link")
@@ -45,9 +49,11 @@ with local_site() as url, sync_playwright() as p:
         dims = page.evaluate("() => ({viewport:document.documentElement.clientWidth,document:document.documentElement.scrollWidth})")
         require(dims["document"] <= dims["viewport"] + 1, f"{label}: no horizontal overflow ({dims['document']}px / {dims['viewport']}px)")
         page.goto(url+"projects.html", wait_until="networkidle")
+        require(page.locator('nav[aria-label="Primary navigation"] a[aria-current="page"][href="projects.html"]').count() == 1, f"{label}: project directory is identified as the current page")
         for path in ("projects/infinity-vision-ai.html","projects/escape-from-the-nightmare-forge.html","projects/infinity-motion-studio.html"):
             require(page.locator(f'a[href="{path}"]').count() == 1, f"{label}: project directory links to {path}")
         page.goto(url+"explore.html", wait_until="networkidle")
+        require(page.locator('nav[aria-label="Primary navigation"] a[aria-current="page"][href="explore.html"]').count() == 1, f"{label}: Explore is identified as the current page")
         for path in ("games.html","worlds.html","music.html","shows.html","films.html","software.html"):
             require(page.locator(f'a[href="{path}"]').count() == 1, f"{label}: Explore links to {path}")
         page.goto(url+"invitation.html", wait_until="networkidle")
