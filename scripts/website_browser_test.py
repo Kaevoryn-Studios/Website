@@ -44,7 +44,12 @@ with local_site() as url, sync_playwright() as p:
         require(page.locator(".skip-link").is_visible(), f"{label}: focused skip link is visible")
         require(page.locator("#main-content").is_visible(), f"{label}: main content is visible")
         for href in ("projects.html","explore.html","vision.html","invitation.html","contact.html"):
-            require(page.locator(f'nav[aria-label="Primary navigation"] a[href="{href}"]').is_visible(), f"{label}: {href} has a visible navigation link")
+            link = page.locator(f'nav[aria-label="Primary navigation"] a[href="{href}"]')
+            require(link.is_visible(), f"{label}: {href} has a visible navigation link")
+            require(link.get_attribute("href") == href, f"{label}: {href} navigates to a separate page, not a homepage anchor")
+        page.locator('nav[aria-label="Primary navigation"] a[href="projects.html"]').click()
+        require(urlparse(page.url).path.endswith("/projects.html") and not urlparse(page.url).fragment, f"{label}: clicking Projects opens a separate page without anchor scrolling")
+        page.goto(url, wait_until="networkidle")
         require(page.locator(".portal-card").count() == 6, f"{label}: homepage presents six clickable destinations")
         dims = page.evaluate("() => ({viewport:document.documentElement.clientWidth,document:document.documentElement.scrollWidth})")
         require(dims["document"] <= dims["viewport"] + 1, f"{label}: no horizontal overflow ({dims['document']}px / {dims['viewport']}px)")
