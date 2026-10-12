@@ -122,6 +122,9 @@ content:
       - name: description
         label: Description
         type: text
+      - name: status
+        label: Official Status
+        type: string
       - name: slug
         label: Project Page Slug
         type: string

@@ -148,6 +148,38 @@
       text-shadow: 0 0 15px #00d9ff;
     }
 
+    nav a:focus-visible {
+      color: #7eefff;
+      outline: 2px solid #65eaff;
+      outline-offset: 5px;
+      border-radius: 2px;
+    }
+
+    /* Keep the primary navigation usable on narrow screens. */
+    @media (max-width: 600px) {
+      nav {
+        flex-wrap: wrap;
+        gap: 10px 18px;
+        padding: 12px 10px;
+      }
+
+      nav a {
+        font-size: 10px;
+        letter-spacing: 1px;
+      }
+    }
+
+    @media (max-width: 360px) {
+      nav {
+        gap: 8px 12px;
+      }
+
+      nav a {
+        font-size: 9px;
+        letter-spacing: .6px;
+      }
+    }
+
     /* ---------- GENERAL ---------- */
 
     section {
@@ -481,6 +513,14 @@
     .dreamer-paths { width: min(900px, 100%); margin: 28px auto 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
     .dreamer-path { color: #e9faff; border: 1px solid rgba(101,234,255,.24); background: rgba(2,10,28,.68); border-radius: 12px; padding: 16px; cursor: pointer; text-align: left; font: inherit; transition: border-color .2s ease, background .2s ease; }
     .dreamer-path:hover, .dreamer-path:focus-visible, .dreamer-path[aria-pressed="true"] { border-color: #65eaff; background: rgba(0,150,210,.14); outline: none; }
+    /* Make keyboard focus unmistakable even on glowing card and button surfaces. */
+    .contact-link:focus-visible,
+    .ecosystem-card:focus-visible,
+    .dreamer-path:focus-visible {
+      outline: 2px solid #65eaff;
+      outline-offset: 4px;
+    }
+
     .dreamer-path strong { display: block; font-size: 15px; margin-bottom: 4px; }
     .dreamer-path span { color: #aebdcd; font-size: 12px; }
     .dreamer-next { display: inline-flex; margin-top: 22px; padding: 12px 18px; color: #07121b; background: #8af3ff; border-radius: 999px; text-decoration: none; font-size: 11px; font-weight: bold; letter-spacing: 1.5px; }
@@ -1069,11 +1109,11 @@
 
 <body>
 
-  <div class="stars"></div>
+  <div class="stars" aria-hidden="true"></div>
 
   <!-- NAVIGATION -->
 
-  <nav>
+  <nav aria-label="Primary navigation">
     <a href="#home">HOME</a>
     <a href="#worlds">PROJECTS</a>
     <a href="#ecosystem">EXPLORE</a>
