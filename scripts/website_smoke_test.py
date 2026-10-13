@@ -72,6 +72,8 @@ try:
     sitemap = ET.parse(sitemap_path).getroot()
 except (ET.ParseError, OSError) as exc:
     raise SystemExit(f"FAIL: sitemap.xml is valid XML: {exc}")
+root_tag = "{http://www.sitemaps.org/schemas/sitemap/0.9}urlset"
+require(sitemap.tag == root_tag, "sitemap uses the standard urlset root element")
 locations = [node.text.strip() for node in sitemap.findall("sm:url/sm:loc", sitemap_ns) if node.text and node.text.strip()]
 require(bool(locations), "sitemap contains at least one URL")
 require(len(locations) == len(set(locations)), "sitemap URLs are unique")
@@ -79,8 +81,10 @@ site_prefix = "https://kaevoryn-studios.github.io/Website/"
 for location in locations:
     parsed = urlparse(location)
     require(location.startswith(site_prefix) and parsed.scheme == "https" and parsed.netloc == "kaevoryn-studios.github.io", f"sitemap URL uses the canonical GitHub Pages origin: {location}")
+    require(not parsed.query and not parsed.fragment, f"sitemap URL has no query string or fragment: {location}")
     relative = unquote(parsed.path[len("/Website/"):])
-    target = ROOT / relative if relative else ROOT / "index.html"
+    target = (ROOT / relative if relative else ROOT / "index.html").resolve()
+    require(target == ROOT.resolve() or ROOT.resolve() in target.parents, f"sitemap URL stays inside the repository: {location}")
     if target.is_dir():
         target = target / "index.html"
     require(target.is_file(), f"sitemap URL resolves to a repository page: {location}")
