@@ -179,3 +179,9 @@ a:focus-visible,button:focus-visible{
   }
   .portal-card:before,.content-card:before{display:none}
 }
+
+/* Project directory artwork: optional, never required for a project card. */
+.project-card{min-width:0}
+.project-artwork{display:block;width:calc(100% + 50px);max-width:none;height:190px;object-fit:cover;margin:-25px -25px 22px;border-bottom:1px solid var(--line);background:linear-gradient(135deg,rgba(126,234,255,.1),rgba(168,149,255,.12))}
+.project-card h2{overflow-wrap:anywhere}
+@media(max-width:520px){.project-artwork{height:200px}}
