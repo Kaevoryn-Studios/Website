@@ -17,3 +17,165 @@ main{width:min(1160px,100%);margin:0 auto;padding:0 24px}.hero{min-height:calc(1
 @media(max-width:800px){.nav-wrap{align-items:flex-start;flex-direction:column;gap:10px;padding:12px 18px}.primary-nav{justify-content:flex-start;gap:8px 18px}.primary-nav a{font-size:10px;padding:4px 0}.hero{min-height:auto;padding:66px 0 52px}.portal-grid{grid-template-columns:repeat(2,minmax(0,1fr));margin-top:34px}.content-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:520px){main{padding:0 18px}.brand-name{font-size:11px}.portal-grid,.content-grid{grid-template-columns:1fr}.portal-card{min-height:94px}.page-hero{padding:54px 0 25px}.content-card{min-height:0}.dreamer-paths{grid-template-columns:1fr}.invitation-panel{padding:28px 20px}.invitation-panel .invitation-studio{letter-spacing:2px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+
+
+/* KAEVORYN MAGIC LAYER — cinematic light, living stars, and gentle energy */
+body{
+  background-size:160% 160%,160% 160%,auto;
+  animation:cosmic-drift 28s ease-in-out infinite alternate;
+}
+body:before{
+  animation:starfield-twinkle 7s ease-in-out infinite alternate;
+}
+@keyframes cosmic-drift{
+  0%{background-position:0% 0%,100% 40%,0 0}
+  100%{background-position:100% 70%,0% 100%,0 0}
+}
+@keyframes starfield-twinkle{
+  0%{opacity:.25;filter:brightness(.85)}
+  100%{opacity:.58;filter:brightness(1.25)}
+}
+.brand-mark{
+  position:relative;
+  isolation:isolate;
+  animation:core-breathe 4.8s ease-in-out infinite;
+}
+.brand-mark:after{
+  content:"";
+  position:absolute;
+  inset:-7px;
+  border:1px solid rgba(126,234,255,.22);
+  border-radius:15px;
+  opacity:0;
+  animation:core-ring 4.8s ease-out infinite;
+  pointer-events:none;
+}
+@keyframes core-breathe{
+  0%,100%{box-shadow:0 0 18px rgba(0,204,255,.12),inset 0 0 10px rgba(126,234,255,.04)}
+  50%{box-shadow:0 0 32px rgba(0,204,255,.3),inset 0 0 16px rgba(126,234,255,.12)}
+}
+@keyframes core-ring{
+  0%{transform:scale(.88);opacity:.55}
+  85%,100%{transform:scale(1.45);opacity:0}
+}
+.hero{
+  position:relative;
+  isolation:isolate;
+}
+.hero:before{
+  content:"";
+  position:absolute;
+  z-index:-1;
+  width:min(68vw,660px);
+  aspect-ratio:1;
+  top:42%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  border-radius:50%;
+  pointer-events:none;
+  background:
+    radial-gradient(circle at 50% 50%,rgba(111,226,255,.16) 0,rgba(98,94,255,.10) 22%,rgba(89,42,190,.07) 38%,transparent 68%),
+    conic-gradient(from 0deg,transparent,rgba(126,234,255,.10),transparent,rgba(168,149,255,.12),transparent);
+  filter:blur(9px);
+  animation:arcane-orbit 22s linear infinite, aura-breathe 7s ease-in-out infinite alternate;
+}
+@keyframes arcane-orbit{to{rotate:360deg}}
+@keyframes aura-breathe{
+  from{opacity:.55;scale:.94}
+  to{opacity:1;scale:1.06}
+}
+.hero h1{
+  text-shadow:0 0 34px rgba(126,234,255,.13);
+  animation:title-arrival .9s cubic-bezier(.2,.75,.25,1) both;
+}
+.hero h2,.hero-copy,.hero-question,.portal-grid{
+  animation:soft-arrival .8s ease-out both;
+}
+.hero h2{animation-delay:.12s}
+.hero-copy{animation-delay:.2s}
+.hero-question{animation-delay:.28s}
+.portal-grid{animation-delay:.36s}
+@keyframes title-arrival{
+  from{opacity:0;filter:blur(12px);transform:translateY(12px);letter-spacing:.04em}
+  to{opacity:1;filter:blur(0);transform:translateY(0)}
+}
+@keyframes soft-arrival{
+  from{opacity:0;transform:translateY(10px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.portal-card,.content-card,.feature-panel,.status-panel{
+  position:relative;
+  overflow:hidden;
+}
+.portal-card:before,.content-card:before{
+  content:"";
+  position:absolute;
+  inset:-1px;
+  border-radius:inherit;
+  pointer-events:none;
+  background:linear-gradient(112deg,transparent 20%,rgba(160,245,255,.10) 43%,rgba(197,173,255,.13) 50%,transparent 68%);
+  transform:translateX(-125%);
+  transition:transform .8s ease;
+}
+.portal-card:hover:before,.portal-card:focus-visible:before,
+.content-card:hover:before,.content-card:focus-visible:before{
+  transform:translateX(125%);
+}
+.portal-card:hover,.portal-card:focus-visible{
+  box-shadow:0 0 0 1px rgba(126,234,255,.12),0 14px 44px rgba(0,170,255,.12),0 0 32px rgba(126,234,255,.08);
+}
+.content-card:hover,.content-card:focus-visible{
+  box-shadow:0 0 0 1px rgba(126,234,255,.10),0 16px 48px rgba(0,170,255,.10);
+}
+.page-hero{
+  position:relative;
+  isolation:isolate;
+}
+.page-hero:before{
+  content:"";
+  position:absolute;
+  z-index:-1;
+  width:min(80vw,700px);
+  height:260px;
+  top:30px;
+  left:50%;
+  transform:translateX(-50%);
+  background:radial-gradient(ellipse,rgba(78,177,255,.13),rgba(132,87,255,.08) 36%,transparent 72%);
+  filter:blur(18px);
+  pointer-events:none;
+  animation:aura-breathe 8s ease-in-out infinite alternate;
+}
+.invitation-panel{
+  animation:invitation-glimmer 9s ease-in-out infinite;
+}
+.invitation-panel:after{
+  content:"";
+  position:absolute;
+  top:-35%;
+  bottom:-35%;
+  left:-70%;
+  width:38%;
+  transform:rotate(18deg);
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.28),rgba(255,246,197,.13),transparent);
+  pointer-events:none;
+  animation:golden-sweep 9s ease-in-out infinite;
+}
+@keyframes golden-sweep{
+  0%,56%{left:-70%;opacity:0}
+  64%{opacity:1}
+  82%,100%{left:140%;opacity:0}
+}
+@keyframes invitation-glimmer{
+  0%,100%{box-shadow:0 0 0 5px rgba(241,203,114,.12),0 25px 80px rgba(0,0,0,.38)}
+  50%{box-shadow:0 0 0 5px rgba(241,203,114,.18),0 25px 80px rgba(0,0,0,.38),0 0 36px rgba(241,203,114,.12)}
+}
+a:focus-visible,button:focus-visible{
+  outline:2px solid var(--cyan);
+  outline-offset:4px;
+}
+@media(prefers-reduced-motion:reduce){
+  body,body:before,.brand-mark,.brand-mark:after,.hero:before,.hero h1,.hero h2,.hero-copy,.hero-question,.portal-grid,.page-hero:before,.invitation-panel,.invitation-panel:after{
+    animation:none!important;
+  }
+  .portal-card:before,.content-card:before{display:none}
+}
