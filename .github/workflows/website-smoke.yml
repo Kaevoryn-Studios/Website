@@ -11,6 +11,7 @@ on:
       - "projects/**"
       - "scripts/website_smoke_test.py"
       - "scripts/website_browser_test.py"
+      - "scripts/website_accessibility_test.py"
       - ".github/workflows/website-smoke.yml"
       - "sitemap.xml"
   workflow_dispatch:
@@ -31,6 +32,23 @@ jobs:
           python-version: "3.x"
       - name: Run website smoke tests
         run: python scripts/website_smoke_test.py
+
+  accessibility-test:
+    name: Infinity Vision AI accessibility
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - name: Install Playwright and Chromium
+        run: |
+          python -m pip install playwright
+          python -m playwright install --with-deps chromium
+      - name: Run accessibility checks
+        run: python scripts/website_accessibility_test.py
 
   browser-test:
     name: Responsive navigation and invitation interactions
