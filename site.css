@@ -318,3 +318,7 @@ body:after {
   .portal-card .portal-icon,
   .invitation-button { transition: none !important; }
 }
+
+
+/* Keep oversized portal artwork from creating horizontal page scroll on narrow screens. */
+.hero { overflow-x: clip; }
