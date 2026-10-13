@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Static regression checks for the multi-page Kaevoryn Studios website."""
 from html.parser import HTMLParser
+import json
 from pathlib import Path
 from urllib.parse import unquote, urlparse
 import re
@@ -63,6 +64,27 @@ for status in ("Concept","Exploring","Prototype","Planned","In Development","Rel
     require(status in explore, f"official status key includes {status}")
 for project in ("infinity-vision-ai.html","escape-from-the-nightmare-forge.html","infinity-motion-studio.html"):
     require((ROOT/"projects"/project).is_file(), f"existing project page is preserved: {project}")
+
+# Project content checks protect the structured directory data used by the
+# content workflow, without assuming that the static HTML cards are generated
+# from this JSON yet.
+projects_data_path = ROOT / "content" / "projects.json"
+try:
+    projects_data = json.loads(projects_data_path.read_text(encoding="utf-8"))
+except (json.JSONDecodeError, OSError) as exc:
+    raise SystemExit(f"FAIL: content/projects.json is valid JSON: {exc}")
+require(isinstance(projects_data, list) and bool(projects_data), "project content is a non-empty JSON list")
+project_slugs = []
+for index, project in enumerate(projects_data):
+    require(isinstance(project, dict), f"project content item {index + 1} is an object")
+    for field in ("category", "title", "description"):
+        require(isinstance(project.get(field), str) and bool(project[field].strip()), f"project content item {index + 1} has a non-empty {field}")
+    slug = project.get("slug")
+    if slug is not None:
+        require(isinstance(slug, str) and bool(slug.strip()), f"project content item {index + 1} has a valid slug")
+        project_slugs.append(slug)
+        require((ROOT / "projects" / f"{slug}.html").is_file(), f"project content slug has a matching project page: {slug}")
+require(len(project_slugs) == len(set(project_slugs)), "project content slugs are unique")
 
 # Sitemap checks catch malformed XML, duplicate entries, and URLs that point to
 # pages that do not exist in this GitHub Pages repository.
