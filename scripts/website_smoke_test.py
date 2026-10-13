@@ -9,6 +9,10 @@ pages = sorted(ROOT.rglob("*.html"))
 excluded = {".git", ".github"}
 pages = [p for p in pages if not any(part in excluded for part in p.parts)]
 
+def require(ok,msg):
+    if not ok: raise SystemExit(f"FAIL: {msg}")
+    print(f"PASS: {msg}")
+
 class Probe(HTMLParser):
     def __init__(self):
         super().__init__(convert_charrefs=True)
@@ -22,16 +26,24 @@ class Probe(HTMLParser):
     def handle_data(self, data): self.text.append(data)
 
 probes={}
+page_titles={}
 for path in pages:
+    source=path.read_text(encoding="utf-8")
     parser=Probe()
-    parser.feed(path.read_text(encoding="utf-8"))
+    parser.feed(source)
+    title_match=re.search(r"<title>\s*(.*?)\s*</title>", source, re.IGNORECASE | re.DOTALL)
+    description_match=re.search(r'<meta\s+name="description"\s+content="([^"]+)">?', source, re.IGNORECASE)
+    require(bool(re.search(r'<html\s+lang="en"(?:\s|>)', source, re.IGNORECASE)), f"{path.relative_to(ROOT)} declares its document language")
+    require(bool(title_match and title_match.group(1).strip()), f"{path.relative_to(ROOT)} has a non-empty page title")
+    require(bool(description_match and description_match.group(1).strip()), f"{path.relative_to(ROOT)} has a non-empty meta description")
+    require(bool(re.search(r'<meta\s+name="viewport"\s+content="[^"]+">?', source, re.IGNORECASE)), f"{path.relative_to(ROOT)} has responsive viewport metadata")
+    if title_match:
+        title=title_match.group(1).strip()
+        require(title not in page_titles, f"page title is unique: {path.relative_to(ROOT)} (also found in {page_titles.get(title, 'another page')})")
+        page_titles[title]=path.relative_to(ROOT).as_posix()
     duplicates=sorted({x for x in parser.ids if parser.ids.count(x)>1})
     if duplicates: raise SystemExit(f"FAIL: duplicate IDs in {path}: {duplicates}")
     probes[path]=parser
-
-def require(ok,msg):
-    if not ok: raise SystemExit(f"FAIL: {msg}")
-    print(f"PASS: {msg}")
 
 index=(ROOT/"index.html").read_text(encoding="utf-8")
 for href in ("projects.html","explore.html","vision.html","invitation.html","contact.html"):
