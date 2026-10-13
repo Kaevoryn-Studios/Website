@@ -24,3 +24,9 @@ Keep website images, illustrations, and visual resources organized by purpose. B
 ## Important
 
 This is the folder structure and workflow guide. Existing visuals should only be moved after the repository's current asset inventory and references have been checked. CSS-drawn effects can remain in the stylesheet unless we intentionally convert them into image assets.
+
+## Initial repository inventory
+
+The repository tree was checked on the `main` branch and the `effects/stronger-visible-magic` draft branch. Neither tree currently contains standalone image files (for example, `.png`, `.jpg`, `.jpeg`, `.webp`, or `.svg`). The HTML pages and `site.css` were also scanned for direct image/media references; the reviewed pages primarily use HTML/CSS visuals and text rather than local image assets.
+
+This is an inventory of the website repository only. It does not include artwork stored outside the repository, such as in design tools, chat attachments, or personal folders. When original artwork is added to the repo, record its purpose and source here or in the relevant folder README, then check every reference before changing paths.
