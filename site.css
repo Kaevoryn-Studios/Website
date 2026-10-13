@@ -275,3 +275,46 @@ body:after {
     animation: none !important;
   }
 }
+
+
+/* KAEVORYN MAGIC — FINAL POLISH PASS: responsive light and living typography */
+.hero h1 {
+  background-size: 220% 100%;
+  background-position: 0% 50%;
+  animation: title-arrival .9s cubic-bezier(.2,.75,.25,1) both,
+             kaevoryn-title-spectrum 14s ease-in-out 1s infinite alternate;
+}
+@keyframes kaevoryn-title-spectrum {
+  from { background-position: 0% 50%; filter: drop-shadow(0 0 8px rgba(126,234,255,.08)); }
+  to { background-position: 100% 50%; filter: drop-shadow(0 0 18px rgba(168,149,255,.18)); }
+}
+.primary-nav a {
+  transition: color .25s ease, text-shadow .25s ease, border-color .25s ease;
+}
+.primary-nav a:hover,
+.primary-nav a:focus-visible {
+  text-shadow: 0 0 14px rgba(126,234,255,.55);
+}
+.portal-card .portal-icon {
+  display: inline-block;
+  transform-origin: center;
+  transition: transform .35s ease, filter .35s ease;
+}
+.portal-card:hover .portal-icon,
+.portal-card:focus-visible .portal-icon {
+  transform: translateY(-2px) scale(1.12);
+  filter: drop-shadow(0 0 9px rgba(126,234,255,.55));
+}
+.invitation-button {
+  transition: transform .25s ease, box-shadow .25s ease, background .25s ease, color .25s ease;
+}
+.invitation-button:hover,
+.invitation-button:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 0 24px rgba(255,230,162,.28);
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero h1 { animation: none !important; }
+  .portal-card .portal-icon,
+  .invitation-button { transition: none !important; }
+}
