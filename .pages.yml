@@ -125,9 +125,18 @@ content:
       - name: slug
         label: Project Page Slug
         type: string
+      - name: link_label
+        label: Project Link Label
+        type: string
+      - name: status
+        label: Status (for non-linked entries)
+        type: string
       - name: image
-        label: Image
+        label: Artwork Image
         type: image
+      - name: image_alt
+        label: Artwork Alternative Text
+        type: string
 
 settings:
   content:

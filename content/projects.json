@@ -3,23 +3,35 @@
     "category": "AI CORE",
     "title": "Infinity Vision AI",
     "description": "An evolving intelligence built to power future Kaevoryn experiences.",
-    "slug": "infinity-vision-ai"
+    "slug": "infinity-vision-ai",
+    "link_label": "EXPLORE PROJECT ↗",
+    "image": "",
+    "image_alt": ""
   },
   {
     "category": "SURVIVAL HORROR",
     "title": "Escape From The Nightmare Forge",
     "description": "Something is waiting inside the Forge. Find a way deeper.",
-    "slug": "escape-from-the-nightmare-forge"
+    "slug": "escape-from-the-nightmare-forge",
+    "link_label": "ENTER THE FORGE ↗",
+    "image": "",
+    "image_alt": ""
   },
   {
     "category": "MOTION",
     "title": "Infinity Motion Studio",
     "description": "Tools and technology for creating cinematic motion and experiences.",
-    "slug": "infinity-motion-studio"
+    "slug": "infinity-motion-studio",
+    "link_label": "EXPLORE PROJECT ↗",
+    "image": "",
+    "image_alt": ""
   },
   {
     "category": "FUTURE PROJECT",
     "title": "Coming Soon",
-    "description": "The next impossible idea is already beginning to take shape."
+    "description": "The next impossible idea is already beginning to take shape.",
+    "status": "⏳ Future",
+    "image": "",
+    "image_alt": ""
   }
 ]

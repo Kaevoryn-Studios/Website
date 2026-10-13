@@ -57,6 +57,10 @@ with local_site() as url, sync_playwright() as p:
         require(page.locator('nav[aria-label="Primary navigation"] a[aria-current="page"][href="projects.html"]').count() == 1, f"{label}: project directory is identified as the current page")
         for path in ("projects/infinity-vision-ai.html","projects/escape-from-the-nightmare-forge.html","projects/infinity-motion-studio.html"):
             require(page.locator(f'a[href="{path}"]').count() == 1, f"{label}: project directory links to {path}")
+        require(page.locator(".project-grid").get_attribute("data-projects-rendered") == "true", f"{label}: project directory renders editable content data")
+        require(page.locator(".project-card").count() == 4, f"{label}: project directory renders all four content entries")
+        require(page.locator(".project-card h2").all_text_contents() == ["Infinity Vision AI", "Escape From The Nightmare Forge", "Infinity Motion Studio", "Coming Soon"], f"{label}: project titles match the content directory")
+        require(page.locator(".project-card").last.evaluate("(el) => el.tagName.toLowerCase()") == "article", f"{label}: future project is not presented as a broken link")
         page.goto(url+"explore.html", wait_until="networkidle")
         require(page.locator('nav[aria-label="Primary navigation"] a[aria-current="page"][href="explore.html"]').count() == 1, f"{label}: Explore is identified as the current page")
         for path in ("games.html","worlds.html","music.html","shows.html","films.html","software.html"):
