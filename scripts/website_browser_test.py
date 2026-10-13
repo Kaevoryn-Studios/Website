@@ -55,6 +55,10 @@ with local_site() as url, sync_playwright() as p:
         require(dims["document"] <= dims["viewport"] + 1, f"{label}: no horizontal overflow ({dims['document']}px / {dims['viewport']}px)")
         page.goto(url+"projects.html", wait_until="networkidle")
         require(page.locator('nav[aria-label="Primary navigation"] a[aria-current="page"][href="projects.html"]').count() == 1, f"{label}: project directory is identified as the current page")
+        require(page.locator('.content-grid').get_attribute('data-project-directory') == 'loaded', f"{label}: project directory renders from content/projects.json")
+        require(page.locator('.content-grid > .content-card').count() == 4, f"{label}: all structured project entries are rendered")
+        for title in ("Infinity Vision AI", "Escape From The Nightmare Forge", "Infinity Motion Studio", "Coming Soon"):
+            require(page.locator('.content-grid > .content-card').filter(has=page.get_by_role("heading", name=title)).count() == 1, f"{label}: project entry appears from structured content: {title}")
         for path in ("projects/infinity-vision-ai.html","projects/escape-from-the-nightmare-forge.html","projects/infinity-motion-studio.html"):
             require(page.locator(f'a[href="{path}"]').count() == 1, f"{label}: project directory links to {path}")
         page.goto(url+"explore.html", wait_until="networkidle")
