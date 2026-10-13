@@ -9,6 +9,10 @@ pages = sorted(ROOT.rglob("*.html"))
 excluded = {".git", ".github"}
 pages = [p for p in pages if not any(part in excluded for part in p.parts)]
 
+def require(ok,msg):
+    if not ok: raise SystemExit(f"FAIL: {msg}")
+    print(f"PASS: {msg}")
+
 class Probe(HTMLParser):
     def __init__(self):
         super().__init__(convert_charrefs=True)
@@ -40,10 +44,6 @@ for path in pages:
     duplicates=sorted({x for x in parser.ids if parser.ids.count(x)>1})
     if duplicates: raise SystemExit(f"FAIL: duplicate IDs in {path}: {duplicates}")
     probes[path]=parser
-
-def require(ok,msg):
-    if not ok: raise SystemExit(f"FAIL: {msg}")
-    print(f"PASS: {msg}")
 
 index=(ROOT/"index.html").read_text(encoding="utf-8")
 for href in ("projects.html","explore.html","vision.html","invitation.html","contact.html"):
