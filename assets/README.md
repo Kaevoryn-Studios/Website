@@ -27,7 +27,7 @@ This is the folder structure and workflow guide. Existing visuals should only be
 
 ## Content-editor media workflow
 
-The repository's `.pages.yml` configures the Pages content editor to read uploaded media from `media/` and publish it under `/media`. Its project entries also include an `image` field. Before using the content editor to add project artwork, confirm the uploaded file's resulting URL and check that the page actually renders that field; a configured field alone does not prove every page template displays it. Keep the original artwork and note the intended page/project when recording the asset.
+The repository's `.pages.yml` configures the Pages content editor to read uploaded media from `media/` and publish it under `/media`. Its project entries also include an `image` field. Before using the content editor to add project artwork, confirm the uploaded file's resulting URL and check that the page actually renders that field; a configured field alone does not prove every page template displays it. Keep the original artwork and note the intended page/project when recording the asset. The current `content/projects.json` entries do not yet contain image values, and `projects.html` currently renders its project cards as static HTML. Therefore, adding an image through the editor alone should not be assumed to update the visible project cards; that would require a separately reviewed template/content integration change.
 
 ## Initial repository inventory
 
