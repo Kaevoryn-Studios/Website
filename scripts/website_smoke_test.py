@@ -72,6 +72,7 @@ project_data = json.loads(project_data_path.read_text(encoding="utf-8"))
 require(project_script_path.is_file(), "project directory renderer exists")
 require('src="scripts/projects.js"' in (ROOT / "projects.html").read_text(encoding="utf-8"), "project directory loads its renderer")
 require("image_alt" in project_editor_path.read_text(encoding="utf-8") and "name: image" in project_editor_path.read_text(encoding="utf-8"), "content editor supports project artwork and alternative text")
+require('imagePath.startsWith("/media/")' in project_script_path.read_text(encoding="utf-8"), "CMS artwork paths are normalized for project-site hosting")
 require(len(project_data) == 4, "project content preserves the three linked projects and future entry")
 project_titles = [entry.get("title") for entry in project_data]
 require(len(project_titles) == len(set(project_titles)), "project content titles are unique")
