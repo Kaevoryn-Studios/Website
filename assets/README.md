@@ -30,3 +30,19 @@ This is the folder structure and workflow guide. Existing visuals should only be
 The repository tree was checked on the `main` branch and the `effects/stronger-visible-magic` draft branch. Neither tree currently contains standalone image files (for example, `.png`, `.jpg`, `.jpeg`, `.webp`, or `.svg`). The HTML pages and `site.css` were also scanned for direct image/media references; the reviewed pages primarily use HTML/CSS visuals and text rather than local image assets.
 
 This is an inventory of the website repository only. It does not include artwork stored outside the repository, such as in design tools, chat attachments, or personal folders. When original artwork is added to the repo, record its purpose and source here or in the relevant folder README, then check every reference before changing paths.
+
+
+## Asset intake checklist
+
+For every new visual, record these details in the relevant folder's README or a small adjacent manifest:
+
+- **Filename:** the exact repository path.
+- **Purpose:** where and why it appears on the site.
+- **Creator/source:** who made it and where the original is stored.
+- **Usage rights:** original, licensed, or permission confirmed; note any limits.
+- **Accessibility:** meaningful alt text for informative images; empty alt text for purely decorative images.
+- **Variants:** source/original and any optimized desktop or mobile exports.
+- **References:** every page, stylesheet, or content file that uses it.
+- **Status:** planned, ready for review, approved, or in use.
+
+Before an asset is considered organized, verify that its file exists, the recorded path matches its actual name, its usage rights are clear, and all page references still resolve. Do not create fake placeholder artwork just to fill a folder.
