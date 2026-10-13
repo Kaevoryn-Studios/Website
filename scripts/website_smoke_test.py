@@ -2,6 +2,7 @@
 """Static regression checks for the multi-page Kaevoryn Studios website."""
 from html.parser import HTMLParser
 from pathlib import Path
+import json
 import re
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -61,4 +62,27 @@ for status in ("Concept","Exploring","Prototype","Planned","In Development","Rel
     require(status in explore, f"official status key includes {status}")
 for project in ("infinity-vision-ai.html","escape-from-the-nightmare-forge.html","infinity-motion-studio.html"):
     require((ROOT/"projects"/project).is_file(), f"existing project page is preserved: {project}")
+
+# The project directory is editable through content/projects.json. Keep its
+# optional artwork metadata and destination pages consistent with the editor.
+project_data_path = ROOT / "content" / "projects.json"
+project_editor_path = ROOT / ".pages.yml"
+project_script_path = ROOT / "scripts" / "projects.js"
+project_data = json.loads(project_data_path.read_text(encoding="utf-8"))
+require(project_script_path.is_file(), "project directory renderer exists")
+require('src="scripts/projects.js"' in (ROOT / "projects.html").read_text(encoding="utf-8"), "project directory loads its renderer")
+require("image_alt" in project_editor_path.read_text(encoding="utf-8") and "name: image" in project_editor_path.read_text(encoding="utf-8"), "content editor supports project artwork and alternative text")
+require(len(project_data) == 4, "project content preserves the three linked projects and future entry")
+project_titles = [entry.get("title") for entry in project_data]
+require(len(project_titles) == len(set(project_titles)), "project content titles are unique")
+for entry in project_data:
+    require(bool(entry.get("title")) and bool(entry.get("description")), "each project entry has a title and description")
+    if entry.get("slug"):
+        require((ROOT / "projects" / (entry["slug"] + ".html")).is_file(), f"project content destination exists: {entry['slug']}")
+    image = entry.get("image", "")
+    if image:
+        require(bool(entry.get("image_alt", "").strip()), f"project artwork has alternative text: {entry['title']}")
+        image_path = ROOT / image.lstrip("/")
+        require(image_path.is_file(), f"project artwork file exists: {entry['title']}")
+
 print(f"Static checks completed for {len(pages)} HTML pages.")
