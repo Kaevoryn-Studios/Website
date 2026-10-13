@@ -1,0 +1,28 @@
+name: Project content integrity
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "content/projects.json"
+      - "projects/**"
+      - "scripts/project_content_test.py"
+      - ".github/workflows/project-content.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  project-content:
+    name: Project data and page links
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - name: Validate project content
+        run: python scripts/project_content_test.py
