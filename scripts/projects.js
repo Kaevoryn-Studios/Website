@@ -20,7 +20,10 @@
       if (typeof project.image === "string" && project.image.trim()) {
         const image = document.createElement("img");
         image.className = "project-artwork";
-        image.src = project.image;
+        const imagePath = project.image.trim();
+        // GitHub Pages project sites live under /Website/, so keep CMS media
+        // paths relative instead of accidentally pointing at the domain root.
+        image.src = imagePath.startsWith("/media/") ? `media/${imagePath.slice("/media/".length)}` : imagePath;
         image.alt = typeof project.image_alt === "string" ? project.image_alt.trim() : "";
         image.loading = "lazy";
         image.decoding = "async";
