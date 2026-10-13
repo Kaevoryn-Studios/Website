@@ -25,6 +25,10 @@ Keep website images, illustrations, and visual resources organized by purpose. B
 
 This is the folder structure and workflow guide. Existing visuals should only be moved after the repository's current asset inventory and references have been checked. CSS-drawn effects can remain in the stylesheet unless we intentionally convert them into image assets.
 
+## Content-editor media workflow
+
+The repository's `.pages.yml` configures the Pages content editor to read uploaded media from `media/` and publish it under `/media`. Its project entries also include an `image` field. Before using the content editor to add project artwork, confirm the uploaded file's resulting URL and check that the page actually renders that field; a configured field alone does not prove every page template displays it. Keep the original artwork and note the intended page/project when recording the asset.
+
 ## Initial repository inventory
 
 The repository tree was checked on the `main` branch and the `effects/stronger-visible-magic` draft branch. Neither tree currently contains standalone image files (for example, `.png`, `.jpg`, `.jpeg`, `.webp`, or `.svg`). The HTML pages and `site.css` were also scanned for direct image/media references; the reviewed pages primarily use HTML/CSS visuals and text rather than local image assets.
