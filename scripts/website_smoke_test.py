@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
 """Static regression checks for the multi-page Kaevoryn Studios website."""
 from html.parser import HTMLParser
+import json
 from pathlib import Path
+from urllib.parse import unquote, urlparse
 import re
+import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[1]
 pages = sorted(ROOT.rglob("*.html"))
@@ -49,7 +52,7 @@ for path, parser in probes.items():
         if href.startswith("#"):
             if href[1:] not in parser.ids: missing.append(href)
         elif href and not href.startswith(("http://","https://","mailto:","tel:","javascript:")):
-            target=(path.parent/href.split("#",1)[0]).resolve()
+            target=(path.parent/href.split("#",1)[0].split("?",1)[0]).resolve()
             if not target.exists(): missing.append(href)
     require(not missing, f"local links resolve in {path.relative_to(ROOT)} (missing: {missing})")
 
@@ -61,4 +64,54 @@ for status in ("Concept","Exploring","Prototype","Planned","In Development","Rel
     require(status in explore, f"official status key includes {status}")
 for project in ("infinity-vision-ai.html","escape-from-the-nightmare-forge.html","infinity-motion-studio.html"):
     require((ROOT/"projects"/project).is_file(), f"existing project page is preserved: {project}")
-print(f"Static checks completed for {len(pages)} HTML pages.")
+
+# Project content checks protect the structured directory data used by the
+# content workflow, without assuming that the static HTML cards are generated
+# from this JSON yet.
+projects_data_path = ROOT / "content" / "projects.json"
+try:
+    projects_data = json.loads(projects_data_path.read_text(encoding="utf-8"))
+except (json.JSONDecodeError, OSError) as exc:
+    raise SystemExit(f"FAIL: content/projects.json is valid JSON: {exc}")
+require(isinstance(projects_data, list) and bool(projects_data), "project content is a non-empty JSON list")
+project_slugs = []
+for index, project in enumerate(projects_data):
+    require(isinstance(project, dict), f"project content item {index + 1} is an object")
+    for field in ("category", "title", "description"):
+        require(isinstance(project.get(field), str) and bool(project[field].strip()), f"project content item {index + 1} has a non-empty {field}")
+    slug = project.get("slug")
+    if slug is not None:
+        require(isinstance(slug, str) and bool(slug.strip()), f"project content item {index + 1} has a valid slug")
+        project_slugs.append(slug)
+        require((ROOT / "projects" / f"{slug}.html").is_file(), f"project content slug has a matching project page: {slug}")
+require(len(project_slugs) == len(set(project_slugs)), "project content slugs are unique")
+
+# Sitemap checks catch malformed XML, duplicate entries, and URLs that point to
+# pages that do not exist in this GitHub Pages repository.
+sitemap_path = ROOT / "sitemap.xml"
+sitemap_ns = {"sm": "http://www.sitemaps.org/schemas/sitemap/0.9"}
+try:
+    sitemap = ET.parse(sitemap_path).getroot()
+except (ET.ParseError, OSError) as exc:
+    raise SystemExit(f"FAIL: sitemap.xml is valid XML: {exc}")
+root_tag = "{http://www.sitemaps.org/schemas/sitemap/0.9}urlset"
+require(sitemap.tag == root_tag, "sitemap uses the standard urlset root element")
+locations = [node.text.strip() for node in sitemap.findall("sm:url/sm:loc", sitemap_ns) if node.text and node.text.strip()]
+require(bool(locations), "sitemap contains at least one URL")
+require(len(locations) == len(set(locations)), "sitemap URLs are unique")
+site_prefix = "https://kaevoryn-studios.github.io/Website/"
+for location in locations:
+    parsed = urlparse(location)
+    require(location.startswith(site_prefix) and parsed.scheme == "https" and parsed.netloc == "kaevoryn-studios.github.io", f"sitemap URL uses the canonical GitHub Pages origin: {location}")
+    require(not parsed.query and not parsed.fragment, f"sitemap URL has no query string or fragment: {location}")
+    relative = unquote(parsed.path[len("/Website/"):])
+    target = (ROOT / relative if relative else ROOT / "index.html").resolve()
+    require(target == ROOT.resolve() or ROOT.resolve() in target.parents, f"sitemap URL stays inside the repository: {location}")
+    if target.is_dir():
+        target = target / "index.html"
+    require(target.is_file(), f"sitemap URL resolves to a repository page: {location}")
+
+robots_path = ROOT / "robots.txt"
+robots = robots_path.read_text(encoding="utf-8") if robots_path.is_file() else ""
+require("Sitemap: https://kaevoryn-studios.github.io/Website/sitemap.xml" in robots, "robots.txt advertises the canonical sitemap")
+print(f"Static checks completed for {len(pages)} HTML pages and {len(locations)} sitemap URLs.")
