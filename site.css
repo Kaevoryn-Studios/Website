@@ -179,3 +179,15 @@ a:focus-visible,button:focus-visible{
   }
   .portal-card:before,.content-card:before{display:none}
 }
+
+
+/* Project artwork is optional until original Kaevoryn assets are ready. */
+.project-card-image{
+  display:block;
+  width:100%;
+  aspect-ratio:16/9;
+  object-fit:cover;
+  border:1px solid rgba(126,234,255,.18);
+  border-radius:11px;
+  margin:0 0 18px;
+}
