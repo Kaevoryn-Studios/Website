@@ -179,3 +179,73 @@ a:focus-visible,button:focus-visible{
   }
   .portal-card:before,.content-card:before{display:none}
 }
+
+
+/* KAEVORYN VISIBLE MAGIC — stronger effects designed to be easy to notice */
+body{position:relative}
+body:after{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:1;
+  pointer-events:none;
+  opacity:.62;
+  background-image:
+    radial-gradient(circle,rgba(255,255,255,.95) 0 1px,transparent 1.8px),
+    radial-gradient(circle,rgba(126,234,255,.95) 0 1.2px,transparent 2.4px),
+    radial-gradient(circle,rgba(197,173,255,.9) 0 1px,transparent 2px);
+  background-size:83px 91px,137px 149px,191px 173px;
+  background-position:13px 19px,47px 71px,89px 31px;
+  animation:visible-stardust 12s linear infinite,visible-twinkle 3.5s ease-in-out infinite alternate;
+}
+@keyframes visible-stardust{
+  from{background-position:13px 19px,47px 71px,89px 31px}
+  to{background-position:13px -130px,47px -110px,89px -170px}
+}
+@keyframes visible-twinkle{from{opacity:.28}to{opacity:.78}}
+.site-header,.site-footer,main{position:relative;z-index:2}
+.hero:before{
+  width:min(78vw,760px);
+  background:
+    radial-gradient(circle,rgba(126,234,255,.24) 0,rgba(98,94,255,.18) 24%,rgba(89,42,190,.12) 42%,transparent 69%),
+    conic-gradient(from 0deg,transparent,rgba(126,234,255,.2),transparent,rgba(168,149,255,.22),transparent);
+  filter:blur(5px);
+}
+.hero:after{
+  content:"";
+  position:absolute;
+  z-index:-1;
+  top:42%;
+  left:50%;
+  width:min(68vw,590px);
+  aspect-ratio:1;
+  transform:translate(-50%,-50%);
+  border-radius:50%;
+  border:1px solid rgba(126,234,255,.3);
+  border-top-color:rgba(126,234,255,.9);
+  border-right-color:rgba(168,149,255,.75);
+  box-shadow:0 0 22px rgba(126,234,255,.12),inset 0 0 26px rgba(126,234,255,.07);
+  pointer-events:none;
+  animation:portal-ring-spin 18s linear infinite;
+}
+@keyframes portal-ring-spin{to{rotate:360deg}}
+.portal-card,.content-card{
+  border-color:rgba(126,234,255,.32);
+  box-shadow:inset 0 0 24px rgba(126,234,255,.025),0 0 18px rgba(94,106,255,.035);
+}
+.portal-icon{
+  color:var(--cyan);
+  text-shadow:0 0 12px rgba(126,234,255,.65),0 0 28px rgba(168,149,255,.38);
+}
+.hero h1{
+  filter:drop-shadow(0 0 18px rgba(126,234,255,.2));
+  animation:title-arrival .9s cubic-bezier(.2,.75,.25,1) both,magic-title-pulse 4s ease-in-out 1s infinite alternate;
+}
+@keyframes magic-title-pulse{
+  from{filter:drop-shadow(0 0 8px rgba(126,234,255,.12))}
+  to{filter:drop-shadow(0 0 24px rgba(126,234,255,.42)) drop-shadow(0 0 42px rgba(168,149,255,.2))}
+}
+@media(prefers-reduced-motion:reduce){
+  body:after,.hero:after{animation:none!important}
+  body:after{opacity:.35}
+}

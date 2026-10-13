@@ -3,6 +3,7 @@
 from html.parser import HTMLParser
 from pathlib import Path
 import re
+from urllib.parse import urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 pages = sorted(ROOT.rglob("*.html"))
@@ -49,7 +50,7 @@ for path, parser in probes.items():
         if href.startswith("#"):
             if href[1:] not in parser.ids: missing.append(href)
         elif href and not href.startswith(("http://","https://","mailto:","tel:","javascript:")):
-            target=(path.parent/href.split("#",1)[0]).resolve()
+            target=(path.parent/urlsplit(href).path).resolve()
             if not target.exists(): missing.append(href)
     require(not missing, f"local links resolve in {path.relative_to(ROOT)} (missing: {missing})")
 
