@@ -16,6 +16,7 @@
 - [x] Basic visual controls for sample content and effects
 - [x] Phone/desktop preview
 - [x] Local browser draft save
+- [x] Local Creation Vault for multiple named drafts and project switching
 - [x] JSON export/import for manual cross-device transfer
 - [x] Sample AI companion suggestions
 - [x] Publishing deliberately disconnected
