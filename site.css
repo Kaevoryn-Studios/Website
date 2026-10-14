@@ -179,3 +179,14 @@ a:focus-visible,button:focus-visible{
   }
   .portal-card:before,.content-card:before{display:none}
 }
+
+
+/* Creator Realm live-published homepage controls */
+.live-core-orb{display:grid;place-items:center;width:82px;height:82px;margin:0 auto 22px;border:1px solid color-mix(in srgb,var(--cyan) 78%,transparent);border-radius:50%;color:var(--cyan);font-size:30px;font-weight:800;background:radial-gradient(circle,color-mix(in srgb,var(--cyan) 18%,transparent),rgba(120,92,205,.1) 60%,transparent);box-shadow:0 0 42px color-mix(in srgb,var(--cyan) 24%,transparent),inset 0 0 25px rgba(120,130,255,.15);position:relative}
+.live-core-orb:before,.live-core-orb:after{content:"";position:absolute;inset:-8px;border:1px solid color-mix(in srgb,var(--cyan) 38%,transparent);border-radius:50%;transform:rotate(-22deg) scaleX(1.12);pointer-events:none}
+.live-core-orb:after{inset:-15px;transform:rotate(38deg) scaleX(1.08);border-style:dashed;opacity:.6}
+.published-portal{display:inline-flex;align-items:center;justify-content:center;gap:10px;margin:24px auto 0;padding:12px 20px;border:1px solid var(--cyan);border-radius:999px;background:color-mix(in srgb,var(--cyan) 9%,transparent);color:#f2fbff;text-decoration:none;font-size:11px;font-weight:800;letter-spacing:1.5px;box-shadow:0 0 24px color-mix(in srgb,var(--cyan) 13%,transparent);transition:transform .2s ease,border-color .2s ease,background .2s ease}
+.published-portal:hover,.published-portal:focus-visible{transform:translateY(-2px);background:color-mix(in srgb,var(--cyan) 17%,transparent);outline:2px solid var(--cyan);outline-offset:3px}
+body.magic-no-particles:before{opacity:0!important;animation:none!important}
+body.magic-reduced-motion,body.magic-reduced-motion:before,body.magic-reduced-motion:after,body.magic-reduced-motion *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+@media(max-width:520px){.live-core-orb{width:70px;height:70px;margin-bottom:18px}.published-portal{margin-top:20px;padding:11px 16px}}
