@@ -108,10 +108,20 @@ button,input,textarea{font:inherit}button{cursor:pointer}button:focus-visible,in
     $("companionResponse").style.opacity="1";
     if(state.reducedMotion){$("particles").style.display="none"}else{$("particles").style.display=state.particles?"block":"none"}
   }
-  function bindInput(id,key,cast){$(id).addEventListener("input",e=>{pushUndo();state[key]=cast?cast(e.target.value):e.target.type==="checkbox"?e.target.checked:e.target.value;render();markChanged()})}
+  function bindInput(id,key,cast){
+    const el=$(id);
+    el.addEventListener("focus",()=>{el.dataset.undoSnapshotTaken="false"});
+    el.addEventListener("change",()=>{el.dataset.undoSnapshotTaken="false"});
+    el.addEventListener("input",e=>{
+      if(el.dataset.undoSnapshotTaken!=="true"){pushUndo();el.dataset.undoSnapshotTaken="true"}
+      state[key]=cast?cast(e.target.value):e.target.type==="checkbox"?e.target.checked:e.target.value;
+      render();markChanged();
+    });
+  }
   bindInput("titleInput","title");bindInput("taglineInput","tagline");bindInput("copyInput","copy");bindInput("portalInput","portal");bindInput("accentInput","accent");bindInput("glowInput","glow",Number);bindInput("particlesToggle","particles");bindInput("reducedMotionToggle","reducedMotion");
-  $("previewTitle").addEventListener("input",()=>{pushUndo();state.title=$("previewTitle").textContent.slice(0,36);$("titleInput").value=state.title;markChanged()});
-  $("previewTitle").addEventListener("blur",render);
+  $("previewTitle").addEventListener("focus",()=>{$("previewTitle").dataset.undoSnapshotTaken="false"});
+  $("previewTitle").addEventListener("input",()=>{const el=$("previewTitle");if(el.dataset.undoSnapshotTaken!=="true"){pushUndo();el.dataset.undoSnapshotTaken="true"}state.title=el.textContent.slice(0,36);$("titleInput").value=state.title;markChanged()});
+  $("previewTitle").addEventListener("blur",()=>{$("previewTitle").dataset.undoSnapshotTaken="false";render()});
   $("visualMode").addEventListener("click",()=>{$("visualMode").setAttribute("aria-pressed","true");$("aiMode").setAttribute("aria-pressed","false");$("companionPanel").style.outline="none";$("canvasPanel").scrollIntoView({behavior:state.reducedMotion?"auto":"smooth",block:"nearest"});notify("Visual editing selected")});
   $("aiMode").addEventListener("click",()=>{$("visualMode").setAttribute("aria-pressed","false");$("aiMode").setAttribute("aria-pressed","true");$("companionPanel").style.outline="1px solid rgba(180,160,255,.55)";$("promptInput").focus();$("companionPanel").scrollIntoView({behavior:state.reducedMotion?"auto":"smooth",block:"nearest"})});
   document.querySelectorAll("[data-select]").forEach(b=>b.addEventListener("click",()=>{selected=b.dataset.select;render()}));
