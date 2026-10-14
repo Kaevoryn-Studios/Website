@@ -38,7 +38,12 @@ with local_site() as base_url, sync_playwright() as p:
         page = browser.new_page(viewport={"width": width, "height": height}, reduced_motion="reduce")
         page.goto(base_url + "creator-realm/index.html", wait_until="networkidle")
         require("Creator's Realm" in page.title(), f"{label}: prototype page loads")
-        require(page.get_by_text("Interactive prototype — not a secure private editor yet.", exact=False).is_visible(), f"{label}: prototype limitations are visible")
+        require(page.locator("#authGate").is_visible(), f"{label}: owner sign-in gate is shown before entering the Realm")
+        require(page.locator("#ownerLoginForm").is_visible(), f"{label}: owner login form is available")
+        require(not page.locator("#cloudSaveBtn").is_visible(), f"{label}: cloud saving is hidden before owner authorization")
+        # Test harness only: exercise the local visual editor without real account credentials.
+        # Production data access is still enforced by Supabase RPC and RLS.
+        page.locator("#authGate").evaluate("(el) => { el.hidden = true; }")
         page.locator('button[data-section="Creations"]').click()
         require(page.locator("#libraryModal").is_visible(), f"{label}: Creation Vault opens")
         require(page.locator(".library-item").filter(has_text="Kaevoryn Homepage").count() == 1, f"{label}: initial project appears in the vault")
@@ -73,6 +78,8 @@ with local_site() as base_url, sync_playwright() as p:
         require(download.suggested_filename == "kaevoryn-creator-realm-draft.json", f"{label}: draft can be exported")
         page.locator("#saveBtn").click()
         page.reload(wait_until="networkidle")
+        require(page.locator("#authGate").is_visible(), f"{label}: reload returns to the owner sign-in gate")
+        page.locator("#authGate").evaluate("(el) => { el.hidden = true; }")
         require(page.locator("#titleInput").input_value() == "DREAM BEYOND", f"{label}: active project draft survives a page reload")
         page.locator('button[data-section="Creations"]').click()
         require(page.locator(".library-item").count() == 2, f"{label}: Creation Vault persists multiple projects")
