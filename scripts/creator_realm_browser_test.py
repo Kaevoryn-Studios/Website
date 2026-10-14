@@ -87,7 +87,7 @@ with local_site() as base_url, sync_playwright() as p:
         page.locator("#importFile").set_input_files({
             "name": "invalid.json",
             "mimeType": "application/json",
-            "buffer": b'{"not":"a Creator's Realm draft"}'
+            "buffer": b'{"not":"supported"}'
         })
         require(page.locator("#titleInput").input_value() == "IMPORTED DREAM", f"{label}: invalid import leaves the current draft unchanged")
         require(page.get_by_role("status").filter(has_text="Import failed").is_visible(), f"{label}: invalid import shows an error")
