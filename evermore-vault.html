@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#050711">
+<meta name="description" content="A private, early-access written Memory Vault concept from Kaevoryn Evermore.">
+<title>Private Memory Vault — Kaevoryn Evermore</title>
+<link rel="stylesheet" href="site.css">
+<style>
+.vault-wrap{max-width:900px;margin:0 auto;padding:42px 0 70px}
+.vault-hero{text-align:center;padding:20px 0 32px}
+.vault-hero h1{font-size:clamp(34px,7vw,62px);line-height:1.08;margin:10px 0;background:linear-gradient(100deg,#fff2c7,#f1cb72 38%,#c7baff 72%,#e8fbff);color:transparent;background-clip:text;-webkit-background-clip:text}
+.vault-hero p{max-width:680px;margin:12px auto;color:var(--muted)}
+.vault-warning{border:1px solid rgba(241,203,114,.3);border-radius:13px;background:rgba(45,34,20,.28);padding:15px 17px;color:#eee0c4;font-size:13px;margin:18px 0 24px}
+.vault-panel{border:1px solid rgba(168,149,255,.26);border-radius:18px;padding:clamp(16px,4vw,26px);background:linear-gradient(145deg,rgba(12,25,44,.9),rgba(34,22,55,.8));margin:16px 0}
+.vault-panel h2{font-size:21px;margin:0 0 12px}
+.vault-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+.vault-field{display:flex;flex-direction:column;gap:6px;min-width:0}
+.vault-field.full{grid-column:1/-1}
+.vault-field label{font-size:12px;color:#e6dcff}
+.vault-field input,.vault-field select,.vault-field textarea{width:100%;border:1px solid rgba(126,234,255,.25);border-radius:10px;padding:12px;background:#080d1b;color:#f8fbff;font:inherit}
+.vault-field textarea{min-height:110px;resize:vertical}
+.vault-button{border:1px solid rgba(241,203,114,.6);border-radius:999px;background:rgba(241,203,114,.1);color:#f9e7b6;padding:12px 17px;font-weight:700;font-size:12px;letter-spacing:.7px;cursor:pointer}
+.vault-button.secondary{border-color:rgba(126,234,255,.3);color:#e6faff;background:rgba(126,234,255,.05)}
+.vault-button.danger{border-color:rgba(255,128,150,.45);color:#ffcbd4;background:rgba(255,90,120,.06)}
+.vault-button:focus-visible,.vault-field input:focus-visible,.vault-field select:focus-visible,.vault-field textarea:focus-visible{outline:2px solid #f1cb72;outline-offset:3px}
+.vault-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:15px}
+.vault-status{border-radius:10px;padding:12px 14px;margin:12px 0;font-size:13px;display:none}
+.vault-status[data-kind="error"]{display:block;border:1px solid rgba(255,128,150,.35);color:#ffcbd4;background:rgba(255,90,120,.07)}
+.vault-status[data-kind="success"],.vault-status[data-kind="info"]{display:block;border:1px solid rgba(126,234,255,.25);color:#d8f8ff;background:rgba(126,234,255,.05)}
+.vault-empty{border:1px dashed rgba(168,149,255,.35);border-radius:13px;padding:22px;text-align:center;color:var(--muted);font-size:13px}
+.vault-collection{padding:16px 0;border-top:1px solid rgba(168,149,255,.18)}
+.vault-collection:first-child{border-top:0}
+.vault-collection h3{margin:0 0 4px;font-size:17px}
+.vault-meta{font-size:12px;color:#d2c6f5}
+.vault-memory{margin:12px 0;padding:14px;border-radius:12px;background:rgba(5,9,20,.55);border:1px solid rgba(126,234,255,.15)}
+.vault-memory h4{margin:0 0 5px;font-size:15px}
+.vault-memory p{margin:8px 0;white-space:pre-wrap;overflow-wrap:anywhere;color:var(--muted);font-size:14px}
+.vault-memory footer{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;color:#b7c5da;font-size:11px}
+.vault-hidden{display:none!important}
+@media(max-width:600px){.vault-form{grid-template-columns:1fr}.vault-field.full{grid-column:auto}.vault-wrap{padding-top:20px}}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main-content">Skip to content</a>
+<header class="site-header"><div class="nav-wrap">
+<a class="brand" href="index.html" aria-label="Kaevoryn Studios home"><span class="brand-mark" aria-hidden="true">K</span><span class="brand-name">KAEVORYN STUDIOS<span class="brand-tag">CREATE THE IMPOSSIBLE</span></span></a>
+<nav class="primary-nav" aria-label="Primary navigation"><a href="index.html">HOME</a><a href="evermore.html">EVERMORE</a><a href="projects.html">PROJECTS</a><a href="creator-realm/">CREATOR’S REALM</a></nav>
+</div></header>
+<main id="main-content" class="vault-wrap">
+<header class="vault-hero"><p class="kicker">KAEVORYN EVERMORE · PRIVATE SPACE</p><h1>Your Memory Vault</h1><p>A gentle place for written memories, meaningful dates, letters, and stories you choose to preserve.</p></header>
+<div class="vault-warning"><strong>Early text-only version.</strong> Do not enter highly sensitive information. Photo, audio, and video uploads are not supported. Use a unique password and sign out on shared devices. Your saved entries are designed to be visible only to your signed-in account.</div>
+<div id="status" class="vault-status" role="status" aria-live="polite"></div>
+<section id="auth-panel" class="vault-panel" aria-labelledby="auth-title">
+<h2 id="auth-title">Enter your private space</h2>
+<p style="color:var(--muted);font-size:13px">Create an account or sign in to manage your written memories. Never share your password with anyone.</p>
+<form id="auth-form" class="vault-form">
+<div class="vault-field full"><label for="email">Email address</label><input id="email" type="email" autocomplete="email" maxlength="254" required></div>
+<div class="vault-field full"><label for="password">Password (at least 8 characters)</label><input id="password" type="password" autocomplete="current-password" minlength="8" required></div>
+<div class="vault-field full"><div class="vault-actions"><button class="vault-button" type="submit" id="sign-in">SIGN IN</button><button class="vault-button secondary" type="button" id="sign-up">CREATE ACCOUNT</button></div></div>
+</form>
+</section>
+<section id="app-panel" class="vault-hidden" aria-label="Your private Memory Vault">
+<div class="vault-panel"><div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap"><div><p class="kicker">YOUR PRIVATE SPACE</p><h2 style="margin:0">Memory collections</h2></div><button class="vault-button secondary" id="sign-out" type="button">SIGN OUT</button></div><p id="account-label" style="font-size:12px;color:var(--muted);overflow-wrap:anywhere"></p>
+<form id="collection-form" class="vault-form">
+<div class="vault-field"><label for="collection-title">Collection name</label><input id="collection-title" maxlength="120" required placeholder="e.g. Family memories"></div>
+<div class="vault-field"><label for="collection-occasion">Occasion</label><select id="collection-occasion"><option value="everyday">Everyday memories</option><option value="birthday">Birthday</option><option value="anniversary">Anniversary</option><option value="holiday">Holiday</option><option value="milestone">Family milestone</option><option value="tribute">Tribute</option><option value="farewell">Farewell</option><option value="other">Other</option></select></div>
+<div class="vault-field"><label for="collection-date">Meaningful date (optional)</label><input id="collection-date" type="date"></div>
+<div class="vault-field"><label for="collection-description">Short note (optional)</label><input id="collection-description" maxlength="2000" placeholder="What this collection means to you"></div>
+<div class="vault-field full"><button class="vault-button" type="submit">CREATE COLLECTION</button></div>
+</form></div>
+<div class="vault-panel"><h2>Save a written memory</h2>
+<form id="memory-form" class="vault-form">
+<div class="vault-field full"><label for="memory-collection">Collection (optional)</label><select id="memory-collection"><option value="">Keep outside a collection</option></select></div>
+<div class="vault-field"><label for="memory-title">Title</label><input id="memory-title" maxlength="120" required placeholder="A moment I'll always remember"></div>
+<div class="vault-field"><label for="memory-type">Memory type</label><select id="memory-type"><option value="story">Story</option><option value="letter">Letter</option><option value="tribute">Tribute</option><option value="favorite_saying">Favorite saying</option><option value="milestone">Milestone</option><option value="other">Other</option></select></div>
+<div class="vault-field"><label for="memory-date">Date (optional)</label><input id="memory-date" type="date"></div>
+<div class="vault-field full"><label for="memory-story">Your memory or words</label><textarea id="memory-story" maxlength="10000" placeholder="Write only what you feel comfortable storing in this early version."></textarea></div>
+<div class="vault-field full"><button class="vault-button" type="submit">SAVE MEMORY</button></div>
+</form></div>
+<div class="vault-panel"><h2>Saved memories</h2><div id="memory-list"><div class="vault-empty">Your private collection will appear here after you sign in.</div></div></div>
+</section>
+<div class="vault-actions" style="justify-content:center"><a class="vault-button secondary" href="evermore.html" style="text-decoration:none">RETURN TO EVERMORE</a></div>
+</main>
+<footer class="site-footer"><div class="footer-brand">KAEVORYN STUDIOS</div><div class="footer-mantra">CREATE THE IMPOSSIBLE</div><p>Imagination Made Possible.</p></footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4/dist/umd/supabase.js"></script>
+<script>
+(function(){
+'use strict';
+const status = document.getElementById('status');
+const authPanel = document.getElementById('auth-panel');
+const appPanel = document.getElementById('app-panel');
+const list = document.getElementById('memory-list');
+const collectionSelect = document.getElementById('memory-collection');
+let client = null;
+let currentUser = null;
+let collections = [];
+let memories = [];
+function showStatus(message,kind){status.textContent=message;status.dataset.kind=kind||'info';}
+function clearStatus(){status.textContent='';status.removeAttribute('data-kind');}
+function safeDate(value){if(!value)return '';const d=new Date(value+'T00:00:00');return Number.isNaN(d.getTime())?'':d.toLocaleDateString(undefined,{year:'numeric',month:'short',day:'numeric'});}
+function element(tag,className,text){const node=document.createElement(tag);if(className)node.className=className;if(text!==undefined)node.textContent=text;return node;}
+function button(label,className,action){const b=element('button','vault-button '+(className||''),label);b.type='button';b.addEventListener('click',action);return b;}
+function setSignedIn(user){currentUser=user;authPanel.classList.toggle('vault-hidden',!!user);appPanel.classList.toggle('vault-hidden',!user);document.getElementById('account-label').textContent=user?'Signed in as '+user.email:'';
+if(!user){collections=[];memories=[];render();}}
+function render(){
+collectionSelect.replaceChildren(new Option('Keep outside a collection',''));
+collections.forEach(c=>collectionSelect.add(new Option(c.title,c.id)));
+list.replaceChildren();
+if(!collections.length&&!memories.length){list.append(element('div','vault-empty','No saved memories yet. Create a collection or save your first written memory above.'));return;}
+collections.forEach(c=>{
+const section=element('section','vault-collection');
+const heading=element('h3','',c.title);section.append(heading);
+const details=[c.occasion.replaceAll('_',' '),safeDate(c.memory_date)].filter(Boolean).join(' · ');
+if(details)section.append(element('div','vault-meta',details));
+if(c.description)section.append(element('p','',c.description));
+section.append(button('DELETE COLLECTION','danger',async()=>{
+if(!window.confirm('Delete this collection and the memories inside it? This cannot be undone.'))return;
+const {error}=await client.from('evermore_collections').delete().eq('id',c.id);
+if(error){showStatus('Could not delete this collection. Please try again.','error');return;}
+showStatus('Collection deleted.','success');await loadData();
+}));
+const items=memories.filter(m=>m.collection_id===c.id);
+items.forEach(m=>section.append(memoryCard(m)));
+list.append(section);
+});
+const unfiled=memories.filter(m=>!m.collection_id);
+if(unfiled.length){const section=element('section','vault-collection');section.append(element('h3','', 'Unfiled memories'));unfiled.forEach(m=>section.append(memoryCard(m)));list.append(section);}
+}
+function memoryCard(m){
+const card=element('article','vault-memory');
+card.append(element('h4','',m.title));
+const meta=[m.memory_type.replaceAll('_',' '),safeDate(m.memory_date)].filter(Boolean).join(' · ');
+card.append(element('div','vault-meta',meta));
+if(m.story)card.append(element('p','',m.story));
+const footer=element('footer');footer.append(element('span','', 'Saved '+safeDate(m.created_at.slice(0,10))));
+footer.append(button('DELETE MEMORY','danger',async()=>{
+if(!window.confirm('Permanently delete this memory?'))return;
+const {error}=await client.from('evermore_memories').delete().eq('id',m.id);
+if(error){showStatus('Could not delete this memory. Please try again.','error');return;}
+showStatus('Memory deleted.','success');await loadData();
+}));
+card.append(footer);return card;
+}
+async function loadData(){
+if(!currentUser)return;
+const [c,m]=await Promise.all([
+client.from('evermore_collections').select('id,title,description,occasion,memory_date,created_at').order('updated_at',{ascending:false}),
+client.from('evermore_memories').select('id,collection_id,title,story,memory_date,memory_type,created_at').order('created_at',{ascending:false})
+]);
+if(c.error||m.error){showStatus('Your vault could not be loaded. Please refresh or sign in again.','error');return;}
+collections=c.data||[];memories=m.data||[];render();
+}
+async function init(){
+if(!window.supabase||!window.supabase.createClient){showStatus('The secure sign-in service did not load. Check your connection and refresh.','error');return;}
+client=window.supabase.createClient('https://itcbyurixjfszmktlwnh.supabase.co','sb_publishable__R3Zpf4cjUo5zmqBzNK6lA_-quWDNJ_', {auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+const {data,error}=await client.auth.getSession();
+if(error){showStatus('Could not check your sign-in session. Please refresh.','error');return;}
+setSignedIn(data.session?data.session.user:null);
+if(data.session)await loadData();
+client.auth.onAuthStateChange((event,session)=>{
+setSignedIn(session?session.user:null);
+if(session){setTimeout(()=>loadData(),0);}
+if(event==='SIGNED_OUT')showStatus('You have signed out.','success');
+});
+}
+document.getElementById('auth-form').addEventListener('submit',async e=>{
+e.preventDefault();clearStatus();
+const email=document.getElementById('email').value.trim();
+const password=document.getElementById('password').value;
+const {data,error}=await client.auth.signInWithPassword({email,password});
+if(error){showStatus('Sign-in failed. Check your email and password, then try again.','error');return;}
+setSignedIn(data.user);await loadData();showStatus('Welcome to your private Memory Vault.','success');
+});
+document.getElementById('sign-up').addEventListener('click',async()=>{
+clearStatus();const email=document.getElementById('email').value.trim();const password=document.getElementById('password').value;
+if(!email||password.length<8){showStatus('Enter a valid email and a password of at least 8 characters.','error');return;}
+const {data,error}=await client.auth.signUp({email,password,options:{emailRedirectTo:window.location.origin+window.location.pathname}});
+if(error){showStatus('Account creation could not be completed. Please check the details and try again.','error');return;}
+if(data.session&&data.user){setSignedIn(data.user);await loadData();showStatus('Your account is ready.','success');}
+else showStatus('Check your email for a confirmation link before signing in. If the link does not return here, the site redirect settings may need updating.','success');
+});
+document.getElementById('sign-out').addEventListener('click',async()=>{
+const {error}=await client.auth.signOut();if(error){showStatus('Sign-out did not complete. Please try again.','error');return;}setSignedIn(null);showStatus('You have signed out.','success');
+});
+document.getElementById('collection-form').addEventListener('submit',async e=>{
+e.preventDefault();if(!currentUser)return;
+const title=document.getElementById('collection-title').value.trim();if(!title)return;
+const row={owner_id:currentUser.id,title,description:document.getElementById('collection-description').value.trim(),occasion:document.getElementById('collection-occasion').value,memory_date:document.getElementById('collection-date').value||null};
+const {error}=await client.from('evermore_collections').insert(row);
+if(error){showStatus('Could not save the collection. Please try again.','error');return;}
+e.target.reset();showStatus('Your collection has been saved privately.','success');await loadData();
+});
+document.getElementById('memory-form').addEventListener('submit',async e=>{
+e.preventDefault();if(!currentUser)return;
+const title=document.getElementById('memory-title').value.trim();if(!title)return;
+const row={owner_id:currentUser.id,collection_id:collectionSelect.value||null,title,story:document.getElementById('memory-story').value,memory_date:document.getElementById('memory-date').value||null,memory_type:document.getElementById('memory-type').value};
+const {error}=await client.from('evermore_memories').insert(row);
+if(error){showStatus('Could not save this memory. Please try again.','error');return;}
+e.target.reset();showStatus('Your memory has been saved privately.','success');await loadData();
+});
+init().catch(()=>showStatus('The Memory Vault could not start. Please refresh and try again.','error'));
+})();
+</script>
+</body></html>
