@@ -6,7 +6,7 @@
 
 ## What this prototype does
 
-Open `index.html` in a modern browser to explore the responsive design sandbox.
+Open `index.html` in a modern browser. The prototype now starts with an owner sign-in gate connected to the dedicated Creator Realm Supabase project.
 
 - Edit the sample homepage title, tagline, supporting copy, and portal label.
 - Adjust the accent color and Core glow intensity.
@@ -16,21 +16,22 @@ Open `index.html` in a modern browser to explore the responsive design sandbox.
 - Undo recent control changes.
 - Manage multiple named projects in the local Creation Vault.
 - Save a draft in the current browser's local storage.
+- Sign in with the allowlisted studio owner account.
+- Save private cloud revisions to the separate Supabase project and load the latest revision from Cloud Drafts.
 - Export a JSON draft file and import that file on another device.
 - Try sample Imagination Companion suggestions.
 
 ## Important limitations
 
-This is **not yet a secure Creator's Realm** and must not be presented as one.
+This is an **early connected prototype, not production-ready**. Draft data is protected by Supabase Auth, a private owner allowlist, and RLS; the static HTML itself is not secret.
 
-- There is no authentication or owner authorization.
-- There is no server-side draft store or cross-device sync.
+- Owner authentication and cloud draft save/load are connected on this branch but still require manual end-to-end owner testing.
 - The Imagination Companion uses sample responses; it does not call an AI service.
-- The Creation Vault works locally only; it is not cloud storage and does not sync across devices automatically.
+- The Creation Vault remains local. Use Cloud Drafts for the separately saved server-side revisions.
 - Publishing and deployment are intentionally not connected.
 - The demo edits sample content only and does not modify the public Kaevoryn website.
 
-Export/import provides a manual bridge between devices, not secure cloud synchronization. Treat exported JSON files as ordinary files and keep them in a private location.
+Export/import remains a manual bridge between devices. Keep exported JSON files in a private location.
 
 ## Quick manual test checklist
 
@@ -51,13 +52,13 @@ See [`SECURITY_ACCEPTANCE_CHECKLIST.md`](SECURITY_ACCEPTANCE_CHECKLIST.md) for t
 
 ## Website integration contract
 
-See [`INTEGRATION_CONTRACT.md`](INTEGRATION_CONTRACT.md) for the intended website route, navigation safety, draft-to-preview-to-approval boundaries, supported first-release fields, and acceptance checklist. The public site's navigation must remain unchanged until owner authentication and server-side authorization are implemented; GitHub Pages alone cannot make a page private.
+See [`INTEGRATION_CONTRACT.md`](INTEGRATION_CONTRACT.md) for the intended website route, navigation safety, draft-to-preview-to-approval boundaries, supported first-release fields, and acceptance checklist. The public site's navigation must remain unchanged until the connected prototype passes manual owner testing and the production integration is reviewed; GitHub Pages alone cannot make a page private.
 
 ## Prepared backend work
 
-- `SCHEMA.sql` is a reviewed draft for owner-allowlisted projects and revisions with RLS and explicit grants.
-- `PRIVATE_BACKEND_SETUP.md` explains how to connect a separate Supabase project safely.
-- Neither file has been applied to a live project. The only currently connected Supabase project found was TikNation, which is intentionally not reused.
+- `SCHEMA.sql` documents the owner-allowlisted projects and revision tables with RLS and explicit grants.
+- `PRIVATE_BACKEND_SETUP.md` records the dedicated project, owner allowlist, integration status, and remaining security checks.
+- The separate Kaevoryn Creator Realm Supabase project is connected on this prototype branch. TikNation's database is not reused.
 
 ## Production path
 
