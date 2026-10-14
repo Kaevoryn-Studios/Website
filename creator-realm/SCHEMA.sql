@@ -1,6 +1,6 @@
--- Kaevoryn Creator's Realm — initial private-draft schema
--- REVIEW ONLY: this file has not been applied to a Supabase project.
--- Apply only to a dedicated Kaevoryn Creator Realm project, never to TikNation.
+-- Kaevoryn Creator's Realm — private-draft schema reference
+-- Installed in the dedicated Kaevoryn Creator Realm project; never apply to TikNation.
+-- Review PRIVATE_BACKEND_SETUP.md before re-running.
 
 create schema if not exists private;
 revoke all on schema private from public, anon, authenticated;
@@ -13,7 +13,7 @@ revoke all on table private.creator_realm_owners from public, anon, authenticate
 
 -- SECURITY DEFINER is used only to check the private allowlist.
 -- Keep the search_path empty and schema-qualify every referenced object.
-create or replace function public.creator_realm_is_owner()
+create or replace function private.creator_realm_is_owner()
 returns boolean
 language sql
 stable
@@ -27,8 +27,9 @@ as $function$
   );
 $function$;
 
-revoke all on function public.creator_realm_is_owner() from public, anon;
-grant execute on function public.creator_realm_is_owner() to authenticated;
+revoke all on function private.creator_realm_is_owner() from public, anon;
+grant usage on schema private to authenticated;
+grant execute on function private.creator_realm_is_owner() to authenticated;
 
 create table if not exists public.creator_realm_projects (
   id uuid primary key default gen_random_uuid(),
@@ -78,7 +79,7 @@ create policy "Realm owner can read projects"
 on public.creator_realm_projects for select
 to authenticated
 using (
-  public.creator_realm_is_owner()
+  private.creator_realm_is_owner()
   and owner_id = (select auth.uid())
 );
 
@@ -87,7 +88,7 @@ create policy "Realm owner can create projects"
 on public.creator_realm_projects for insert
 to authenticated
 with check (
-  public.creator_realm_is_owner()
+  private.creator_realm_is_owner()
   and owner_id = (select auth.uid())
 );
 
@@ -96,11 +97,11 @@ create policy "Realm owner can update projects"
 on public.creator_realm_projects for update
 to authenticated
 using (
-  public.creator_realm_is_owner()
+  private.creator_realm_is_owner()
   and owner_id = (select auth.uid())
 )
 with check (
-  public.creator_realm_is_owner()
+  private.creator_realm_is_owner()
   and owner_id = (select auth.uid())
 );
 
@@ -109,7 +110,7 @@ create policy "Realm owner can delete projects"
 on public.creator_realm_projects for delete
 to authenticated
 using (
-  public.creator_realm_is_owner()
+  private.creator_realm_is_owner()
   and owner_id = (select auth.uid())
 );
 
@@ -118,7 +119,7 @@ create policy "Realm owner can read revisions"
 on public.creator_realm_revisions for select
 to authenticated
 using (
-  public.creator_realm_is_owner()
+  private.creator_realm_is_owner()
   and owner_id = (select auth.uid())
 );
 
@@ -127,7 +128,7 @@ create policy "Realm owner can create revisions"
 on public.creator_realm_revisions for insert
 to authenticated
 with check (
-  public.creator_realm_is_owner()
+  private.creator_realm_is_owner()
   and owner_id = (select auth.uid())
 );
 
@@ -136,11 +137,11 @@ create policy "Realm owner can update revisions"
 on public.creator_realm_revisions for update
 to authenticated
 using (
-  public.creator_realm_is_owner()
+  private.creator_realm_is_owner()
   and owner_id = (select auth.uid())
 )
 with check (
-  public.creator_realm_is_owner()
+  private.creator_realm_is_owner()
   and owner_id = (select auth.uid())
 );
 
@@ -149,7 +150,7 @@ create policy "Realm owner can delete revisions"
 on public.creator_realm_revisions for delete
 to authenticated
 using (
-  public.creator_realm_is_owner()
+  private.creator_realm_is_owner()
   and owner_id = (select auth.uid())
 );
 
@@ -187,9 +188,26 @@ for each row execute function public.creator_realm_guard_published_state();
 
 comment on table private.creator_realm_owners is
   'Server-managed allowlist for the single authorized Creator Realm owner.';
-comment on function public.creator_realm_is_owner() is
+comment on function private.creator_realm_is_owner() is
   'Returns true only when the current authenticated user is in the private owner allowlist.';
 comment on table public.creator_realm_projects is
   'Private Creator Realm projects; access is restricted by RLS and the private owner allowlist.';
 comment on table public.creator_realm_revisions is
   'Private saved project revisions. Deployment approval must be enforced by the future publishing workflow.';
+
+
+-- A narrow browser-callable RPC reports only whether the current session is
+-- the allowlisted owner. It uses invoker security; the private helper performs
+-- the constrained allowlist lookup.
+create or replace function public.creator_realm_owner_status()
+returns boolean
+language sql
+stable
+security invoker
+set search_path = ''
+as $function$
+  select private.creator_realm_is_owner();
+$function$;
+
+revoke all on function public.creator_realm_owner_status() from public, anon;
+grant execute on function public.creator_realm_owner_status() to authenticated;
