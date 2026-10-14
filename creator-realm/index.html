@@ -167,14 +167,14 @@ button,input,textarea{font:inherit}button{cursor:pointer}button:focus-visible,in
       open.addEventListener("click",()=>{
         if(project.id===activeProjectId){$("libraryModal").hidden=true;return}
         if(isDirty&&!confirm("Discard unsaved changes to the current draft before opening another creation?"))return;
-        activeProjectId=project.id;state={...defaultState,...project.state,phone:false,preview:false};selected="title";isDirty=false;persistProjects();render();$("libraryModal").hidden=true;$("workspaceTitle").textContent="Shape your vision";$("workspaceSubtitle").textContent="Choose an element, make it yours, and preview the result.";notify("Opened "+project.name);
+        activeProjectId=project.id;state={...defaultState,...project.state,phone:false,preview:false};selected="title";undoStack=[];isDirty=false;persistProjects();render();$("libraryModal").hidden=true;$("workspaceTitle").textContent="Shape your vision";$("workspaceSubtitle").textContent="Choose an element, make it yours, and preview the result.";notify("Opened "+project.name);
       });
       const remove=document.createElement("button");remove.type="button";remove.className="mini-btn";remove.textContent="Delete";remove.setAttribute("aria-label","Delete "+project.name);
       remove.addEventListener("click",()=>{
         if(projects.length<=1){notify("Keep at least one creation in your vault");return}
         if(!confirm("Delete the local draft '"+project.name+"'? This cannot be undone."))return;
         projects=projects.filter(p=>p.id!==project.id);
-        if(activeProjectId===project.id){activeProjectId=projects[0].id;state={...defaultState,...projects[0].state,phone:false,preview:false};isDirty=false;render()}
+        if(activeProjectId===project.id){activeProjectId=projects[0].id;state={...defaultState,...projects[0].state,phone:false,preview:false};undoStack=[];isDirty=false;render()}
         persistProjects();renderLibrary();notify("Local draft deleted");
       });
       actions.append(open,remove);card.append(details,actions);list.appendChild(card);
@@ -188,7 +188,7 @@ button,input,textarea{font:inherit}button{cursor:pointer}button:focus-visible,in
     if(isDirty&&!confirm("Discard unsaved changes to the current draft before creating a new one?"))return;
     const id=(typeof crypto!=="undefined"&&crypto.randomUUID)?crypto.randomUUID():"project-"+Date.now().toString(36)+"-"+Math.random().toString(36).slice(2,8);
     const fresh={...defaultState,phone:false,preview:false};
-    projects.unshift({id,name:name.slice(0,80),state:fresh,updatedAt:new Date().toISOString()});activeProjectId=id;state=fresh;selected="title";isDirty=false;persistProjects();render();renderLibrary();$("newProjectName").value="";$("libraryModal").hidden=true;$("workspaceTitle").textContent="Shape your vision";$("workspaceSubtitle").textContent="Choose an element, make it yours, and preview the result.";notify("Created "+name);
+    projects.unshift({id,name:name.slice(0,80),state:fresh,updatedAt:new Date().toISOString()});activeProjectId=id;state=fresh;selected="title";undoStack=[];isDirty=false;persistProjects();render();renderLibrary();$("newProjectName").value="";$("libraryModal").hidden=true;$("workspaceTitle").textContent="Shape your vision";$("workspaceSubtitle").textContent="Choose an element, make it yours, and preview the result.";notify("Created "+name);
   });
   $("exportBtn").addEventListener("click",()=>{
     const payload={format:"kaevoryn-creator-realm-draft",version:1,exportedAt:new Date().toISOString(),state:{title:state.title,tagline:state.tagline,copy:state.copy,portal:state.portal,accent:state.accent,glow:state.glow,particles:state.particles,reducedMotion:state.reducedMotion}};
@@ -276,6 +276,7 @@ button,input,textarea{font:inherit}button{cursor:pointer}button:focus-visible,in
     }
     const remembered=localStorage.getItem(activeProjectKey);
     activeProjectId=projects.some(p=>p.id===remembered)?remembered:projects[0].id;
+    undoStack=[];
     state={...defaultState,...projects.find(p=>p.id===activeProjectId).state,phone:false,preview:false};
     try{persistProjects()}catch(e){}
   }
