@@ -39,6 +39,12 @@ with local_site() as base_url, sync_playwright() as p:
         page.goto(base_url + "creator-realm/index.html", wait_until="networkidle")
         require("Creator's Realm" in page.title(), f"{label}: prototype page loads")
         require(page.get_by_text("Interactive prototype — not a secure private editor yet.", exact=False).is_visible(), f"{label}: prototype limitations are visible")
+        page.locator('button[data-section="Creations"]').click()
+        require(page.locator("#libraryModal").is_visible(), f"{label}: Creation Vault opens")
+        require(page.locator(".library-item").filter(has_text="Kaevoryn Homepage").count() == 1, f"{label}: initial project appears in the vault")
+        page.locator("#newProjectName").fill("Beta Project")
+        page.locator("#createProjectForm button[type="submit"]").click()
+        require(not page.locator("#libraryModal").is_visible(), f"{label}: new project creation closes the vault")
         page.locator("#titleInput").fill("DREAM BEYOND")
         require(page.locator("#previewTitle").inner_text() == "DREAM BEYOND", f"{label}: title edit updates the canvas")
         page.locator("#undoBtn").click()
@@ -66,7 +72,14 @@ with local_site() as base_url, sync_playwright() as p:
         require(download.suggested_filename == "kaevoryn-creator-realm-draft.json", f"{label}: draft can be exported")
         page.locator("#saveBtn").click()
         page.reload(wait_until="networkidle")
-        require(page.locator("#titleInput").input_value() == "DREAM BEYOND", f"{label}: local draft survives a page reload")
+        require(page.locator("#titleInput").input_value() == "DREAM BEYOND", f"{label}: active project draft survives a page reload")
+        page.locator('button[data-section="Creations"]').click()
+        require(page.locator(".library-item").count() == 2, f"{label}: Creation Vault persists multiple projects")
+        page.locator(".library-item").filter(has_text="Kaevoryn Homepage").get_by_role("button", name="Open").click()
+        require(page.locator("#titleInput").input_value() == "KAEVORYN", f"{label}: opening another project restores its saved state")
+        page.locator('button[data-section="Creations"]').click()
+        page.locator(".library-item").filter(has_text="Beta Project").get_by_role("button", name="Open").click()
+        require(page.locator("#titleInput").input_value() == "DREAM BEYOND", f"{label}: switching projects restores the selected draft")
         imported = {
             "format": "kaevoryn-creator-realm-draft",
             "version": 1,
