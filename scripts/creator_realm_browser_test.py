@@ -41,6 +41,9 @@ with local_site() as base_url, sync_playwright() as p:
         require(page.get_by_text("Interactive prototype — not a secure private editor yet.", exact=False).is_visible(), f"{label}: prototype limitations are visible")
         page.locator("#titleInput").fill("DREAM BEYOND")
         require(page.locator("#previewTitle").inner_text() == "DREAM BEYOND", f"{label}: title edit updates the canvas")
+        page.locator("#undoBtn").click()
+        require(page.locator("#titleInput").input_value() == "KAEVORYN", f"{label}: undo restores the previous text edit")
+        page.locator("#titleInput").fill("DREAM BEYOND")
         page.locator("#accentInput").evaluate("(el) => { el.value = '#f3d48c'; el.dispatchEvent(new Event('input', { bubbles: true })); }")
         require(page.locator("#accentInput").input_value() == "#f3d48c", f"{label}: accent color control accepts a new color")
         page.locator("#glowInput").evaluate("(el) => { el.value = '82'; el.dispatchEvent(new Event('input', { bubbles: true })); }")
@@ -81,6 +84,13 @@ with local_site() as base_url, sync_playwright() as p:
         page.wait_for_function("document.getElementById('titleInput').value === 'IMPORTED DREAM'")
         require(page.locator("#titleInput").input_value() == "IMPORTED DREAM", f"{label}: a valid exported-style draft can be imported")
         require(page.locator("#glowInput").input_value() == "64", f"{label}: imported settings are restored")
+        page.locator("#importFile").set_input_files({
+            "name": "invalid.json",
+            "mimeType": "application/json",
+            "buffer": b'{"not":"a Creator's Realm draft"}'
+        })
+        require(page.locator("#titleInput").input_value() == "IMPORTED DREAM", f"{label}: invalid import leaves the current draft unchanged")
+        require(page.get_by_role("status").filter(has_text="Import failed").is_visible(), f"{label}: invalid import shows an error")
         dims = page.evaluate("() => ({viewport: document.documentElement.clientWidth, document: document.documentElement.scrollWidth})")
         require(dims["document"] <= dims["viewport"] + 1, f"{label}: no horizontal page overflow ({dims['document']}px / {dims['viewport']}px)")
         page.close()
