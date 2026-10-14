@@ -45,6 +45,7 @@ with local_site() as base_url, sync_playwright() as p:
         page.locator("#newProjectName").fill("Beta Project")
         page.locator('#createProjectForm button[type="submit"]').click()
         require(not page.locator("#libraryModal").is_visible(), f"{label}: new project creation closes the vault")
+        require("Beta Project" in page.locator("#activeProjectLabel").inner_text(), f"{label}: active project name appears in the header")
         page.locator("#titleInput").fill("DREAM BEYOND")
         require(page.locator("#previewTitle").inner_text() == "DREAM BEYOND", f"{label}: title edit updates the canvas")
         page.locator("#undoBtn").click()
