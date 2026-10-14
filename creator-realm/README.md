@@ -14,6 +14,7 @@ Open `index.html` in a modern browser to explore the responsive design sandbox.
 - Switch between phone and desktop preview sizes.
 - Enter preview mode to pause the editing controls.
 - Undo recent control changes.
+- Manage multiple named projects in the local Creation Vault.
 - Save a draft in the current browser's local storage.
 - Export a JSON draft file and import that file on another device.
 - Try sample Imagination Companion suggestions.
@@ -25,7 +26,7 @@ This is **not yet a secure Creator's Realm** and must not be presented as one.
 - There is no authentication or owner authorization.
 - There is no server-side draft store or cross-device sync.
 - The Imagination Companion uses sample responses; it does not call an AI service.
-- The project library is a placeholder.
+- The Creation Vault works locally only; it is not cloud storage and does not sync across devices automatically.
 - Publishing and deployment are intentionally not connected.
 - The demo edits sample content only and does not modify the public Kaevoryn website.
 
