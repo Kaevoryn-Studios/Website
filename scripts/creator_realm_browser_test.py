@@ -80,6 +80,8 @@ with local_site() as base_url, sync_playwright() as p:
         page.locator('button[data-section="Creations"]').click()
         page.locator(".library-item").filter(has_text="Beta Project").get_by_role("button", name="Open").click()
         require(page.locator("#titleInput").input_value() == "DREAM BEYOND", f"{label}: switching projects restores the selected draft")
+        page.locator("#undoBtn").click()
+        require(page.locator("#titleInput").input_value() == "DREAM BEYOND", f"{label}: undo history does not leak across projects")
         imported = {
             "format": "kaevoryn-creator-realm-draft",
             "version": 1,
