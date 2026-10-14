@@ -82,7 +82,7 @@ button,input,textarea{font:inherit}button{cursor:pointer}button:focus-visible,in
 <footer class="bottom-note">KAEVORYN STUDIOS · CREATE THE IMPOSSIBLE · Prototype only — no live files are changed by this page.</footer>
 <div class="modal-backdrop" id="libraryModal" hidden>
   <section class="library-modal" role="dialog" aria-modal="true" aria-labelledby="libraryModalTitle">
-    <row class="field-row" style="align-items:center"><h2 id="libraryModalTitle">Creation Vault</h2><button class="btn subtle" id="closeLibraryBtn" type="button" aria-label="Close creation library">✕ Close</button></row>
+    <div class="field-row" style="align-items:center"><h2 id="libraryModalTitle">Creation Vault</h2><button class="btn subtle" id="closeLibraryBtn" type="button" aria-label="Close creation library">✕ Close</button></div>
     <p class="modal-copy">Manage separate local drafts for your creations. These are stored only in this browser until a secure cloud backend is connected.</p>
     <form class="library-create" id="createProjectForm">
       <input id="newProjectName" type="text" maxlength="80" placeholder="Name your new creation" aria-label="New creation name" required>
@@ -258,7 +258,7 @@ button,input,textarea{font:inherit}button{cursor:pointer}button:focus-visible,in
   document.querySelectorAll("[data-section]").forEach(b=>b.addEventListener("click",()=>{
     document.querySelectorAll("[data-section]").forEach(n=>n.classList.toggle("active",n===b));
     const section=b.dataset.section;
-    const map={"Core":["Shape your vision","Choose an element, make it yours, and preview the result."],"Creations":["My creations","Prototype library preview — project storage is not connected yet."],"Magic Workshop":["Magic workshop","Tune the sample Core glow, color, and particle effects."],"Preview Chamber":["Preview chamber","Switch between phone and desktop, then enter preview mode."],"Release Gate":["Release gate","Publishing is intentionally disabled until secure owner access and approval are implemented."]};
+    const map={"Core":["Shape your vision","Choose an element, make it yours, and preview the result."],"Creations":["My creations","Manage separate local drafts in the Creation Vault."],"Magic Workshop":["Magic workshop","Tune the sample Core glow, color, and particle effects."],"Preview Chamber":["Preview chamber","Switch between phone and desktop, then enter preview mode."],"Release Gate":["Release gate","Publishing is intentionally disabled until secure owner access and approval are implemented."]};
     $("workspaceTitle").textContent=map[section][0];$("workspaceSubtitle").textContent=map[section][1];
     if(section==="Magic Workshop")$("glowInput").focus();if(section==="Preview Chamber")$("previewBtn").focus();
     if(section==="Release Gate")notify("Release disabled — no deployment or publishing is connected");
