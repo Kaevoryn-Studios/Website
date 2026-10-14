@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#080b16">
+<meta name="description" content="Interactive concept prototype for the private Kaevoryn Creator's Realm.">
+<title>Creator's Realm — Kaevoryn Studios Prototype</title>
+<style>
+:root{color-scheme:dark;--bg:#070a14;--panel:#0e1424;--panel2:#121b30;--line:rgba(135,177,255,.18);--cyan:#79e8ff;--violet:#b4a0ff;--gold:#f3d48c;--muted:#9baac4;--accent:#79e8ff;--radius:18px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 14% 0%,rgba(32,135,194,.17),transparent 35%),radial-gradient(ellipse at 92% 24%,rgba(113,64,200,.17),transparent 34%),var(--bg);color:#f6f8ff;font:14px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button,input,textarea{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,textarea:focus-visible,[contenteditable=true]:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}a{color:inherit}
+.topbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:14px;padding:13px clamp(14px,3vw,28px);background:rgba(7,10,20,.88);backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:11px;min-width:0}.brand-mark{display:grid;place-items:center;width:40px;height:40px;border:1px solid rgba(121,232,255,.7);border-radius:13px;color:var(--cyan);font-size:22px;font-weight:800;box-shadow:0 0 25px rgba(50,204,255,.13)}.brand-title{font-size:11px;font-weight:800;letter-spacing:2px}.brand-sub{display:block;color:var(--muted);font-size:10px;letter-spacing:1px;margin-top:2px}.top-actions{display:flex;align-items:center;gap:8px}.status{display:inline-flex;align-items:center;gap:7px;padding:7px 10px;border:1px solid var(--line);border-radius:999px;color:#dce8ff;font-size:11px;white-space:nowrap}.dot{width:7px;height:7px;background:#f2c96d;border-radius:50%;box-shadow:0 0 12px #f2c96d}.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:39px;padding:9px 13px;border:1px solid var(--line);border-radius:12px;background:#141d32;color:#f6f8ff;font-weight:650;font-size:12px;transition:transform .18s,border-color .18s,background .18s}.btn:hover{border-color:rgba(121,232,255,.65);transform:translateY(-1px)}.btn.primary{background:linear-gradient(110deg,#a5f0ff,#b9a7ff);border-color:transparent;color:#101326}.btn.subtle{background:transparent}.btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.notice{margin:16px auto 0;width:min(1600px,100%);padding:0 clamp(14px,2vw,24px)}.notice-inner{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border:1px solid rgba(243,212,140,.3);border-radius:14px;background:rgba(95,68,24,.15);color:#f3dfb0;font-size:12px}.notice-inner strong{color:#fff0c5}
+.layout{width:min(1600px,100%);margin:0 auto;padding:18px clamp(14px,2vw,24px) 34px;display:grid;grid-template-columns:208px minmax(280px,1fr) 300px;gap:16px;align-items:start}
+.panel{border:1px solid var(--line);border-radius:var(--radius);background:linear-gradient(145deg,rgba(16,23,41,.95),rgba(12,17,32,.95));box-shadow:0 18px 60px rgba(0,0,0,.16)}.side{padding:14px;position:sticky;top:84px}.section-label{font-size:10px;text-transform:uppercase;letter-spacing:1.8px;color:#8192b0;font-weight:800;margin:8px 9px 10px}.nav-item{width:100%;display:flex;align-items:center;gap:10px;text-align:left;padding:11px 10px;margin:3px 0;border:1px solid transparent;border-radius:11px;background:transparent;color:#bdc9df;font-size:12px}.nav-item:hover,.nav-item.active{background:rgba(121,232,255,.08);border-color:rgba(121,232,255,.15);color:#fff}.nav-icon{display:grid;place-items:center;width:23px;color:var(--accent);font-size:16px}.side-foot{margin-top:18px;padding:13px 10px 5px;border-top:1px solid var(--line);color:var(--muted);font-size:11px}
+.workspace{min-width:0}.workspace-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin:3px 2px 15px}.eyebrow{font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent);margin:0 0 5px}.workspace-head h1{font-size:clamp(22px,3vw,30px);letter-spacing:-.8px;margin:0}.subtitle{color:var(--muted);font-size:12px;margin:5px 0 0}.mode-switch{display:flex;gap:4px;padding:4px;border:1px solid var(--line);border-radius:13px;background:#0a1020;flex-shrink:0}.mode-switch button{border:0;border-radius:9px;background:transparent;color:var(--muted);padding:8px 10px;font-size:11px}.mode-switch button[aria-pressed=true]{background:#1d2943;color:#fff}
+.canvas-panel{padding:14px;overflow:hidden}.canvas-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:1px 2px 13px}.tool-group{display:flex;gap:6px;align-items:center;flex-wrap:wrap}.mini-btn{border:1px solid var(--line);border-radius:9px;padding:7px 9px;background:#111a2d;color:#cbd7ed;font-size:11px}.mini-btn.active{border-color:rgba(121,232,255,.7);color:var(--cyan)}.viewport{min-height:500px;display:grid;place-items:center;padding:22px;border:1px solid rgba(141,174,255,.17);border-radius:15px;overflow:hidden;background:radial-gradient(ellipse at 50% 32%,rgba(40,108,171,.16),transparent 42%),#080d1a;position:relative;isolation:isolate}.viewport:before{content:"";position:absolute;inset:0;z-index:-1;opacity:.35;background-image:radial-gradient(circle,rgba(255,255,255,.55) .7px,transparent 1px);background-size:49px 49px;background-position:0 0;pointer-events:none}.site-preview{width:100%;max-width:650px;min-height:435px;padding:clamp(22px,4vw,48px) clamp(14px,4vw,40px);border:1px solid rgba(121,232,255,.18);border-radius:17px;background:linear-gradient(150deg,rgba(10,22,41,.96),rgba(23,17,50,.94));text-align:center;position:relative;overflow:hidden;transition:max-width .25s ease}.site-preview.phone{max-width:330px;min-height:500px;padding:32px 18px}.preview-glow{position:absolute;width:270px;aspect-ratio:1;left:50%;top:35px;transform:translateX(-50%);background:radial-gradient(circle, color-mix(in srgb,var(--accent) 24%,transparent),rgba(163,120,255,.10) 34%,transparent 69%);filter:blur(10px);pointer-events:none}.preview-kicker{position:relative;color:var(--accent);font-size:10px;letter-spacing:3px;text-transform:uppercase}.core-orb{position:relative;display:grid;place-items:center;width:112px;height:112px;margin:20px auto 18px;border:1px solid color-mix(in srgb,var(--accent) 70%,transparent);border-radius:50%;color:var(--accent);font-size:39px;background:radial-gradient(circle,rgba(121,232,255,.14),rgba(120,92,205,.1) 58%,transparent);box-shadow:0 0 35px color-mix(in srgb,var(--accent) 19%,transparent),inset 0 0 25px rgba(120,130,255,.12)}.core-orb:before,.core-orb:after{content:"";position:absolute;inset:-9px;border:1px solid color-mix(in srgb,var(--accent) 35%,transparent);border-radius:50%;transform:rotate(-20deg) scaleX(1.12)}.core-orb:after{inset:-17px;transform:rotate(42deg) scaleX(1.08);border-style:dashed;opacity:.65}.site-preview h2{position:relative;margin:0;font-size:clamp(29px,5vw,48px);letter-spacing:-2px;line-height:1.1;background:linear-gradient(110deg,#fff,var(--accent),#c6b8ff);color:transparent;background-clip:text}.site-preview .tagline{position:relative;margin:12px auto 0;font-size:11px;letter-spacing:2px;color:#e4eaff}.preview-copy{position:relative;max-width:400px;margin:16px auto;color:#aebbd3;font-size:12px}.preview-portal{position:relative;display:inline-flex;align-items:center;gap:8px;margin-top:10px;padding:11px 16px;border:1px solid color-mix(in srgb,var(--accent) 50%,transparent);border-radius:999px;background:color-mix(in srgb,var(--accent) 8%,transparent);color:#eefaff;font-size:11px}.preview-particles{position:absolute;inset:0;pointer-events:none;overflow:hidden}.particle{position:absolute;width:3px;height:3px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent);animation:float 6s ease-in-out infinite alternate}.particle:nth-child(1){left:12%;top:23%}.particle:nth-child(2){left:83%;top:19%;animation-delay:-2s}.particle:nth-child(3){left:18%;top:74%;animation-delay:-4s}.particle:nth-child(4){left:87%;top:67%;animation-delay:-1s}.particle:nth-child(5){left:61%;top:11%;animation-delay:-3s}.particle:nth-child(6){left:41%;top:83%;animation-delay:-1.5s}@keyframes float{to{transform:translate3d(10px,-18px,0);opacity:.25}}.editing-hint{display:flex;align-items:center;justify-content:space-between;gap:10px;color:var(--muted);font-size:10px;padding:12px 3px 0}.selection-outline{outline:1px dashed var(--accent);outline-offset:5px;border-radius:3px}.canvas-panel.preview-mode .editing-hint{display:none}
+.inspector{padding:16px;position:sticky;top:84px}.inspector h2{font-size:14px;margin:0}.inspector .intro{font-size:11px;color:var(--muted);margin:5px 0 16px}.field{margin:14px 0}.field label{display:block;color:#c9d4e8;font-size:11px;font-weight:700;margin-bottom:7px}.field input[type=text],.field textarea{width:100%;border:1px solid var(--line);border-radius:10px;background:#090f1e;color:#f6f8ff;padding:10px 11px;font-size:12px}.field textarea{resize:vertical;min-height:76px}.field input[type=color]{width:100%;height:38px;padding:4px;border:1px solid var(--line);border-radius:10px;background:#090f1e}.field input[type=range]{width:100%;accent-color:var(--accent)}.field-row{display:flex;align-items:center;justify-content:space-between;gap:8px}.value{color:var(--accent);font-size:11px}.toggle-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0;border-top:1px solid var(--line);font-size:12px;color:#dce5f5}.toggle{appearance:none;width:36px;height:21px;border-radius:999px;background:#29334b;position:relative;flex-shrink:0;transition:background .2s}.toggle:before{content:"";position:absolute;width:15px;height:15px;left:3px;top:3px;background:#d9e2f3;border-radius:50%;transition:transform .2s}.toggle:checked{background:#438ea8}.toggle:checked:before{transform:translateX(15px);background:#fff}.inspector-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px}.companion{margin-top:14px;padding:14px;border:1px solid rgba(180,160,255,.25);border-radius:15px;background:linear-gradient(145deg,rgba(49,34,83,.22),rgba(10,17,32,.5))}.companion-head{display:flex;align-items:center;gap:9px;margin-bottom:9px}.companion-orb{display:grid;place-items:center;width:32px;height:32px;border:1px solid rgba(180,160,255,.6);border-radius:50%;color:var(--violet);box-shadow:0 0 20px rgba(180,160,255,.12)}.companion-head strong{font-size:12px}.companion-head small{display:block;color:var(--muted);font-size:10px}.prompt{width:100%;min-height:70px;resize:vertical;border:1px solid var(--line);border-radius:10px;padding:10px;background:#090f1e;color:#fff;font-size:12px}.suggestions{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}.suggestion{border:1px solid rgba(180,160,255,.25);border-radius:999px;background:rgba(180,160,255,.07);color:#d8ceff;padding:6px 8px;font-size:10px}.companion-response{min-height:34px;color:#c8d5eb;font-size:11px;margin:10px 0 0}.bottom-note{width:min(1600px,100%);margin:0 auto;padding:0 clamp(14px,2vw,24px) 25px;color:#74849e;font-size:10px;text-align:center}
+.toast{position:fixed;bottom:18px;left:50%;transform:translate(-50%,20px);opacity:0;pointer-events:none;z-index:50;padding:11px 15px;border:1px solid rgba(121,232,255,.35);border-radius:12px;background:#111c31;color:#f4fbff;box-shadow:0 15px 45px #0008;font-size:12px;transition:opacity .2s,transform .2s}.toast.show{opacity:1;transform:translate(-50%,0)}
+@media(max-width:1120px){.layout{grid-template-columns:180px minmax(0,1fr)}.inspector{grid-column:2;position:static;display:grid;grid-template-columns:1fr 1fr;gap:0 18px}.inspector>h2,.inspector>.intro,.inspector>.companion,.inspector>.inspector-actions{grid-column:1/-1}.side{top:80px}.viewport{min-height:440px}}
+@media(max-width:720px){.topbar{align-items:flex-start}.brand-title{font-size:10px;letter-spacing:1.4px}.brand-sub{font-size:9px}.top-actions .status{display:none}.layout{grid-template-columns:1fr;gap:12px;padding-top:12px}.side{position:static;padding:10px;overflow-x:auto;white-space:nowrap}.section-label,.side-foot{display:none}.nav-list{display:flex;gap:5px;min-width:max-content}.nav-item{width:auto;margin:0;padding:9px 10px}.nav-item span:last-child{white-space:nowrap}.workspace-head{flex-direction:column}.mode-switch{width:100%}.mode-switch button{flex:1}.canvas-panel{padding:9px}.viewport{padding:12px;min-height:470px}.site-preview{padding:30px 18px;min-height:410px}.inspector{grid-column:auto;display:block;padding:14px}.inspector>.intro{margin-bottom:8px}.inspector .field{margin:11px 0}.top-actions .btn{padding:8px 10px}.notice{margin-top:10px}.notice-inner{font-size:11px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><div class="brand-mark" aria-hidden="true">K</div><div><div class="brand-title">KAEVORYN · CREATOR'S REALM</div><span class="brand-sub">IMAGINE IT. SHAPE IT. EXPERIENCE IT.</span></div></div>
+  <div class="top-actions"><span class="status"><span class="dot"></span> Prototype · Local draft</span><button class="btn subtle" id="resetBtn" type="button">↺ Reset</button><button class="btn primary" id="saveBtn" type="button">Save draft</button></div>
+</header>
+<div class="notice"><div class="notice-inner"><span aria-hidden="true">⚠</span><div><strong>Interactive prototype — not a secure private editor yet.</strong> This is a design sandbox with sample content only. It has no owner authentication, real AI connection, or live publishing. Changes here do not affect the public Kaevoryn website.</div></div></div>
+<div class="layout">
+  <aside class="panel side" aria-label="Realm navigation">
+    <div class="section-label">Your realm</div>
+    <nav class="nav-list">
+      <button class="nav-item active" type="button" data-section="Core"><span class="nav-icon">◉</span><span>Core workspace</span></button>
+      <button class="nav-item" type="button" data-section="Creations"><span class="nav-icon">✧</span><span>My creations</span></button>
+      <button class="nav-item" type="button" data-section="Magic Workshop"><span class="nav-icon">✴</span><span>Magic workshop</span></button>
+      <button class="nav-item" type="button" data-section="Preview Chamber"><span class="nav-icon">◫</span><span>Preview chamber</span></button>
+      <button class="nav-item" type="button" data-section="Release Gate"><span class="nav-icon">⬡</span><span>Release gate</span></button>
+    </nav>
+    <div class="side-foot">CREATOR STATUS<br><strong style="color:#f2d58e">Prototype mode</strong><br><br>Owner security is not connected in this prototype.</div>
+  </aside>
+  <main class="workspace">
+    <div class="workspace-head"><div><p class="eyebrow">THE CORE IS AWAKENING</p><h1 id="workspaceTitle">Shape your vision</h1><p class="subtitle" id="workspaceSubtitle">Choose an element, make it yours, and preview the result.</p></div><div class="mode-switch" role="group" aria-label="Editing mode"><button type="button" id="visualMode" aria-pressed="true">✦ Visual edit</button><button type="button" id="aiMode" aria-pressed="false">✧ AI companion</button></div></div>
+    <section class="panel canvas-panel" id="canvasPanel" aria-label="Website design canvas">
+      <div class="canvas-toolbar"><div class="tool-group"><button class="mini-btn active" type="button" data-select="title">Select title</button><button class="mini-btn" type="button" data-select="orb">Select Core</button><button class="mini-btn" type="button" data-select="portal">Select portal</button></div><div class="tool-group"><button class="mini-btn" id="deviceBtn" type="button" aria-pressed="false">▯ Phone preview</button><button class="mini-btn" id="previewBtn" type="button" aria-pressed="false">◉ Preview mode</button></div></div>
+      <div class="viewport"><article class="site-preview" id="sitePreview" aria-label="Sample Kaevoryn homepage preview">
+        <div class="preview-glow"></div><div class="preview-particles" id="particles" aria-hidden="true"><i class="particle"></i><i class="particle"></i><i class="particle"></i><i class="particle"></i><i class="particle"></i><i class="particle"></i></div>
+        <div class="preview-kicker" id="previewKicker">PRESENCE DETECTED</div>
+        <div class="core-orb" id="coreOrb" tabindex="0" aria-label="Core visual element">K</div>
+        <h2 id="previewTitle" tabindex="0" contenteditable="true" spellcheck="false" aria-label="Editable homepage title">KAEVORYN</h2>
+        <p class="tagline" id="previewTagline">IMAGINATION MADE POSSIBLE</p>
+        <p class="preview-copy" id="previewCopy">To envision what should be impossible — and create it anyway.</p>
+        <div class="preview-portal" id="previewPortal" tabindex="0">✧ <span id="portalLabel">ENTER THE REALM</span> ↗</div>
+      </article></div>
+      <div class="editing-hint"><span id="selectionHint">Selected: homepage title · Tap the title to edit inline.</span><span id="draftStatus">Unsaved changes</span></div>
+    </section>
+  </main>
+  <aside class="panel inspector" aria-label="Element settings">
+    <h2 id="inspectorTitle">Element properties</h2><p class="intro" id="inspectorIntro">Edit the selected element. Changes appear in the canvas immediately.</p>
+    <div class="field"><label for="titleInput">Homepage title</label><input id="titleInput" type="text" maxlength="36" value="KAEVORYN"></div>
+    <div class="field"><label for="taglineInput">Tagline</label><input id="taglineInput" type="text" maxlength="70" value="IMAGINATION MADE POSSIBLE"></div>
+    <div class="field"><label for="copyInput">Supporting message</label><textarea id="copyInput" maxlength="220">To envision what should be impossible — and create it anyway.</textarea></div>
+    <div class="field"><label for="portalInput">Portal label</label><input id="portalInput" type="text" maxlength="34" value="ENTER THE REALM"></div>
+    <div class="field"><label for="accentInput">Energy color</label><input id="accentInput" type="color" value="#79e8ff"></div>
+    <div class="field"><div class="field-row"><label for="glowInput">Core glow intensity</label><output class="value" id="glowValue">55%</output></div><input id="glowInput" type="range" min="10" max="100" value="55"></div>
+    <label class="toggle-row" for="particlesToggle"><span>Floating magic particles</span><input class="toggle" id="particlesToggle" type="checkbox" checked></label>
+    <label class="toggle-row" for="reducedMotionToggle"><span>Reduce motion</span><input class="toggle" id="reducedMotionToggle" type="checkbox"></label>
+    <div class="inspector-actions"><button class="btn" type="button" id="undoBtn">↶ Undo edit</button><button class="btn" type="button" id="applyBtn">Apply changes</button></div>
+    <section class="companion" id="companionPanel" aria-label="AI companion prototype">
+      <div class="companion-head"><div class="companion-orb">✧</div><div><strong>Imagination Companion</strong><small>Concept assistant · sample responses</small></div></div>
+      <textarea class="prompt" id="promptInput" maxlength="300" placeholder="Describe what you imagine…"></textarea>
+      <div class="suggestions"><button class="suggestion" type="button" data-prompt="Make the Core feel more magical">More magical</button><button class="suggestion" type="button" data-prompt="Make the design calmer for mobile">Mobile-friendly</button><button class="suggestion" type="button" data-prompt="Give the page a golden dreamer feeling">Golden dreamer</button></div>
+      <button class="btn" type="button" id="askBtn" style="width:100%">✧ Prepare suggestion</button>
+      <p class="companion-response" id="companionResponse" aria-live="polite">Tell me your idea. This prototype demonstrates the workflow; it does not connect to a real AI service.</p>
+    </section>
+  </aside>
+</div>
+<footer class="bottom-note">KAEVORYN STUDIOS · CREATE THE IMPOSSIBLE · Prototype only — no live files are changed by this page.</footer>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script>
+(function(){
+  const $=id=>document.getElementById(id);
+  const defaultState={title:"KAEVORYN",tagline:"IMAGINATION MADE POSSIBLE",copy:"To envision what should be impossible — and create it anyway.",portal:"ENTER THE REALM",accent:"#79e8ff",glow:55,particles:true,reducedMotion:false,phone:false,preview:false};
+  let state={...defaultState},undoStack=[],selected="title",toastTimer;
+  const draftKey="kaevoryn-creator-realm-prototype-v1";
+  const inputs={title:$("titleInput"),tagline:$("taglineInput"),copy:$("copyInput"),portal:$("portalInput"),accent:$("accentInput"),glow:$("glowInput"),particles:$("particlesToggle"),reducedMotion:$("reducedMotionToggle")};
+  function notify(message){const t=$("toast");t.textContent=message;t.classList.add("show");clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove("show"),2600)}
+  function snapshot(){return {...state}}
+  function pushUndo(){undoStack.push(snapshot());if(undoStack.length>30)undoStack.shift()}
+  function markChanged(){ $("draftStatus").textContent="Unsaved changes"; $("draftStatus").style.color="#f3d48c" }
+  function render(){
+    $("previewTitle").textContent=state.title;$("previewTagline").textContent=state.tagline;$("previewCopy").textContent=state.copy;$("portalLabel").textContent=state.portal;
+    $("titleInput").value=state.title;$("taglineInput").value=state.tagline;$("copyInput").value=state.copy;$("portalInput").value=state.portal;$("accentInput").value=state.accent;$("glowInput").value=state.glow;$("glowValue").textContent=state.glow+"%";$("particlesToggle").checked=state.particles;$("reducedMotionToggle").checked=state.reducedMotion;
+    document.documentElement.style.setProperty("--accent",state.accent);
+    $("coreOrb").style.boxShadow="0 0 "+Math.round(state.glow*.75)+"px color-mix(in srgb,"+state.accent+" 32%,transparent),inset 0 0 "+Math.round(state.glow*.4)+"px rgba(120,130,255,.12)";
+    $("particles").hidden=!state.particles;
+    $("sitePreview").classList.toggle("phone",state.phone);$("deviceBtn").classList.toggle("active",state.phone);$("deviceBtn").setAttribute("aria-pressed",String(state.phone));$("deviceBtn").textContent=state.phone?"▣ Desktop preview":"▯ Phone preview";
+    $("canvasPanel").classList.toggle("preview-mode",state.preview);$("previewBtn").classList.toggle("active",state.preview);$("previewBtn").setAttribute("aria-pressed",String(state.preview));$("previewBtn").textContent=state.preview?"✎ Exit preview":"◉ Preview mode";
+    document.body.classList.toggle("reduce-motion",state.reducedMotion);
+    document.querySelectorAll("[data-select]").forEach(b=>b.classList.toggle("active",b.dataset.select===selected));
+    ["title","orb","portal"].forEach(key=>{const el=key==="title"?$("previewTitle"):key==="orb"?$("coreOrb"):$("previewPortal");el.classList.toggle("selection-outline",!state.preview&&selected===key)});
+    $("selectionHint").textContent=state.preview?"Preview mode · Editing controls are paused.":("Selected: "+({title:"homepage title",orb:"Core visual",portal:"portal button"}[selected])+" · Change settings on the right.");
+    const editingDisabled=state.preview;Object.values(inputs).forEach(el=>el.disabled=editingDisabled);$("applyBtn").disabled=editingDisabled;$("undoBtn").disabled=editingDisabled;
+    $("previewTitle").contentEditable=String(!state.preview);$("inspectorTitle").textContent=selected==="title"?"Element properties":selected==="orb"?"Core appearance":"Portal properties";
+    $("companionResponse").style.opacity="1";
+    if(state.reducedMotion){$("particles").style.display="none"}else{$("particles").style.display=state.particles?"block":"none"}
+  }
+  function bindInput(id,key,cast){$(id).addEventListener("input",e=>{pushUndo();state[key]=cast?cast(e.target.value):e.target.type==="checkbox"?e.target.checked:e.target.value;render();markChanged()})}
+  bindInput("titleInput","title");bindInput("taglineInput","tagline");bindInput("copyInput","copy");bindInput("portalInput","portal");bindInput("accentInput","accent");bindInput("glowInput","glow",Number);bindInput("particlesToggle","particles");bindInput("reducedMotionToggle","reducedMotion");
+  $("previewTitle").addEventListener("input",()=>{pushUndo();state.title=$("previewTitle").textContent.slice(0,36);$("titleInput").value=state.title;markChanged()});
+  $("previewTitle").addEventListener("blur",render);
+  $("visualMode").addEventListener("click",()=>{$("visualMode").setAttribute("aria-pressed","true");$("aiMode").setAttribute("aria-pressed","false");$("companionPanel").style.outline="none";$("canvasPanel").scrollIntoView({behavior:state.reducedMotion?"auto":"smooth",block:"nearest"});notify("Visual editing selected")});
+  $("aiMode").addEventListener("click",()=>{$("visualMode").setAttribute("aria-pressed","false");$("aiMode").setAttribute("aria-pressed","true");$("companionPanel").style.outline="1px solid rgba(180,160,255,.55)";$("promptInput").focus();$("companionPanel").scrollIntoView({behavior:state.reducedMotion?"auto":"smooth",block:"nearest"})});
+  document.querySelectorAll("[data-select]").forEach(b=>b.addEventListener("click",()=>{selected=b.dataset.select;render()}));
+  $("coreOrb").addEventListener("click",()=>{selected="orb";render()});$("coreOrb").addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();selected="orb";render()}});
+  $("previewPortal").addEventListener("click",()=>{selected="portal";render()});$("previewPortal").addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();selected="portal";render()}});
+  $("deviceBtn").addEventListener("click",()=>{state.phone=!state.phone;render()});
+  $("previewBtn").addEventListener("click",()=>{state.preview=!state.preview;render();notify(state.preview?"Preview enabled — no live changes":"Back to editing")});
+  $("undoBtn").addEventListener("click",()=>{const prev=undoStack.pop();if(!prev){notify("Nothing to undo yet");return}state=prev;render();markChanged();notify("Last edit undone")});
+  $("applyBtn").addEventListener("click",()=>notify("Changes applied to this local preview only"));
+  $("saveBtn").addEventListener("click",()=>{try{localStorage.setItem(draftKey,JSON.stringify(state));$("draftStatus").textContent="Draft saved on this device";$("draftStatus").style.color="#8ce7c6";notify("Prototype draft saved on this device")}catch(e){notify("Could not save in this browser session")}});
+  $("resetBtn").addEventListener("click",()=>{if(!confirm("Reset this prototype to its original sample design? Your locally saved prototype draft will remain until overwritten."))return;pushUndo();state={...defaultState};selected="title";render();markChanged();notify("Sample design reset")});
+  document.querySelectorAll("[data-prompt]").forEach(b=>b.addEventListener("click",()=>{$("promptInput").value=b.dataset.prompt;$("promptInput").focus()}));
+  $("askBtn").addEventListener("click",()=>{
+    const prompt=$("promptInput").value.trim();if(!prompt){notify("Describe an idea first");$("promptInput").focus();return}
+    const p=prompt.toLowerCase();let message="Suggestion prepared: review the design settings and make any changes you want. This demo doesn't send your idea to an AI service.";
+    if(p.includes("magical")||p.includes("magic")||p.includes("glow"))message="Suggested plan: raise the Core glow, keep the cyan–violet atmosphere, and use a restrained particle layer. Review each change before applying it.";
+    else if(p.includes("mobile")||p.includes("phone")||p.includes("calmer"))message="Suggested plan: use the phone preview, keep the main title short, reduce decorative motion, and check that controls remain easy to tap.";
+    else if(p.includes("gold")||p.includes("dreamer"))message="Suggested plan: introduce a restrained golden highlight alongside the cyan and violet palette, keeping the Core and main call to action as the focus.";
+    $("companionResponse").textContent=message;notify("Sample suggestion prepared");
+  });
+  document.querySelectorAll("[data-section]").forEach(b=>b.addEventListener("click",()=>{
+    document.querySelectorAll("[data-section]").forEach(n=>n.classList.toggle("active",n===b));
+    const section=b.dataset.section;
+    const map={"Core":["Shape your vision","Choose an element, make it yours, and preview the result."],"Creations":["My creations","Prototype library preview — project storage is not connected yet."],"Magic Workshop":["Magic workshop","Tune the sample Core glow, color, and particle effects."],"Preview Chamber":["Preview chamber","Switch between phone and desktop, then enter preview mode."],"Release Gate":["Release gate","Publishing is intentionally disabled until secure owner access and approval are implemented."]};
+    $("workspaceTitle").textContent=map[section][0];$("workspaceSubtitle").textContent=map[section][1];
+    if(section==="Magic Workshop")$("glowInput").focus();if(section==="Preview Chamber")$("previewBtn").focus();
+    if(section==="Release Gate")notify("Release disabled — no deployment or publishing is connected");
+    if(section==="Creations")notify("Library is a concept placeholder in this prototype");
+  }));
+  try{const saved=localStorage.getItem(draftKey);if(saved){const parsed=JSON.parse(saved);state={...defaultState,...parsed};$("draftStatus").textContent="Loaded saved local draft";$("draftStatus").style.color="#8ce7c6"}}catch(e){}
+  render();
+})();
+</script>
+</body>
+</html>
