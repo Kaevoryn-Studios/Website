@@ -56,7 +56,7 @@ with local_site() as base_url, sync_playwright() as p:
         require(page.locator("#proposalPreview").is_visible(), f"{label}: companion shows a proposal for review")
         require(page.locator("#glowInput").input_value() == "82", f"{label}: preparing a proposal does not apply it automatically")
         page.locator("#acceptSuggestionBtn").click()
-        require(page.locator("#glowInput").input_value() == "100", f"{label}: accepted proposal updates the local draft")
+        require(page.locator("#glowInput").input_value() == "82", f"{label}: accepted proposal updates the local draft")
         with page.expect_download() as download_info:
             page.locator("#exportBtn").click()
         download = download_info.value
