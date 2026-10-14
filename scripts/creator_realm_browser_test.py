@@ -89,6 +89,7 @@ with local_site() as base_url, sync_playwright() as p:
             "mimeType": "application/json",
             "buffer": b'{"not":"supported"}'
         })
+        page.wait_for_function("document.getElementById('toast').textContent.includes('Import failed')")
         require(page.locator("#titleInput").input_value() == "IMPORTED DREAM", f"{label}: invalid import leaves the current draft unchanged")
         require(page.get_by_role("status").filter(has_text="Import failed").is_visible(), f"{label}: invalid import shows an error")
         dims = page.evaluate("() => ({viewport: document.documentElement.clientWidth, document: document.documentElement.scrollWidth})")
