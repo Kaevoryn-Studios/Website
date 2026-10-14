@@ -29,7 +29,26 @@
 @media(max-width:800px){.evermore-grid{grid-template-columns:1fr}.evermore-card{min-height:0}}
 @media(max-width:520px){.evermore-hero{padding:54px 0 30px}.evermore-emblem{width:84px;height:84px;font-size:34px}.evermore-principles{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){.evermore-emblem{animation:none}}
-</style>
+
+.evermore-preview{margin:0 0 42px;padding:clamp(18px,4vw,32px);border:1px solid rgba(241,203,114,.25);border-radius:22px;background:linear-gradient(145deg,rgba(12,18,36,.94),rgba(34,22,55,.82));box-shadow:0 18px 70px rgba(0,0,0,.18)}
+.evermore-preview-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:22px}
+.evermore-preview h2{margin:0 0 8px;font-size:clamp(23px,4vw,34px)}
+.evermore-preview p{color:var(--muted);font-size:14px}
+.evermore-demo-tag{display:inline-flex;align-items:center;gap:7px;border:1px solid rgba(126,234,255,.28);border-radius:999px;padding:8px 11px;color:#d8f8ff;font-size:10px;letter-spacing:1.1px}
+.evermore-vault{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.evermore-memory{position:relative;overflow:hidden;min-height:155px;padding:17px;border:1px solid rgba(168,149,255,.22);border-radius:15px;background:linear-gradient(145deg,rgba(42,35,75,.66),rgba(12,27,43,.82))}
+.evermore-memory:before{content:"";position:absolute;width:120px;height:120px;right:-40px;top:-50px;border-radius:50%;background:radial-gradient(circle,rgba(241,203,114,.18),transparent 70%);pointer-events:none}
+.evermore-memory .memory-symbol{font-size:22px;color:#f1cb72}
+.evermore-memory h3{position:relative;font-size:16px;margin:15px 0 6px}
+.evermore-memory p{position:relative;font-size:12px;margin:0}
+.evermore-preview-note{margin:15px 0 0;font-size:12px!important}
+.evermore-roadmap{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:18px 0 42px}
+.evermore-stage{padding:18px 17px;border-left:2px solid rgba(241,203,114,.65);background:rgba(10,17,34,.55);border-radius:0 13px 13px 0}
+.evermore-stage small{color:#f1cb72;letter-spacing:1.2px;font-size:10px}
+.evermore-stage h3{font-size:16px;margin:9px 0}
+.evermore-stage p{font-size:13px;color:var(--muted);margin:0}
+@media(max-width:700px){.evermore-vault,.evermore-roadmap{grid-template-columns:1fr}.evermore-memory{min-height:125px}}
+\n</style>
 </head>
 <body>
 <a class="skip-link" href="#main-content">Skip to content</a>
@@ -48,7 +67,20 @@
 <p class="evermore-mantra">Love remembered. Moments treasured. Stories that live on.</p>
 </header>
 <div class="evermore-notice"><strong>Early concept · In development</strong><br>This page introduces the vision. Private photo uploads, cloud memory storage, and AI animations are not available here yet. Please don’t upload personal photographs or recordings to this concept page.</div>
-<section class="evermore-grid" aria-label="The Evermore vision">
+
+<section class="evermore-preview" aria-labelledby="vault-preview-title">
+  <div class="evermore-preview-head">
+    <div><p class="kicker">A GLIMPSE OF WHAT'S AHEAD</p><h2 id="vault-preview-title">A place for the moments that matter.</h2><p>Imagine opening your own quiet space and finding the stories you chose to keep, gathered together with care.</p></div>
+    <span class="evermore-demo-tag">✧ VISUAL CONCEPT · DEMO ONLY</span>
+  </div>
+  <div class="evermore-vault" aria-label="Illustrative Memory Vault examples">
+    <article class="evermore-memory"><span class="memory-symbol" aria-hidden="true">♡</span><h3>Little Things We Remember</h3><p>Small stories, favorite sayings, and everyday moments.</p></article>
+    <article class="evermore-memory"><span class="memory-symbol" aria-hidden="true">✧</span><h3>Days Worth Celebrating</h3><p>Birthdays, anniversaries, family traditions, and milestones.</p></article>
+    <article class="evermore-memory"><span class="memory-symbol" aria-hidden="true">☾</span><h3>Words From the Heart</h3><p>Letters, reflections, and messages you want to preserve.</p></article>
+  </div>
+  <p class="evermore-preview-note"><strong>Important:</strong> This is a visual preview only. It does not accept uploads, save memories, or create an account. Please do not enter private or personal information here.</p>
+</section>
+\n<section class="evermore-grid" aria-label="The Evermore vision">
 <article class="evermore-card"><div class="evermore-icon" aria-hidden="true">♡</div><h2>The Memory Vault</h2><p>A private collection for photographs, personal stories, voice recordings, favorite sayings, and the little details that make a person unforgettable.</p><ul><li>Organize by person or occasion</li><li>Add dates, captions, and stories</li><li>Keep memories private by default</li></ul></article>
 <article class="evermore-card"><div class="evermore-icon" aria-hidden="true">✧</div><h2>Special Moments</h2><p>Create a remembrance for a birthday, anniversary, holiday, family milestone, or a quiet day when you simply miss someone.</p><ul><li>Tributes and memory timelines</li><li>Letters and personal farewells</li><li>Optional sharing with trusted family</li></ul></article>
 <article class="evermore-card"><div class="evermore-icon" aria-hidden="true">☼</div><h2>Living Memories</h2><p>Over time, explore gentle photo animation, meaningful music, and short memory films made from materials you have permission to use.</p><ul><li>Respectful photo-to-video tools</li><li>Original recordings preserved</li><li>Generated content clearly labeled</li></ul></article>
@@ -66,7 +98,17 @@
 <h2>Start with the memories. Grow the magic carefully.</h2>
 <p>Our first goal is a simple, secure Memory Vault. Photo animation, authorized voice experiences, and immersive digital remembrance can follow in later stages—once privacy, cost, and technology are ready.</p>
 </section>
-<div class="evermore-actions"><a class="evermore-button" href="index.html">RETURN TO KAEVORYN ↗</a><a class="evermore-button secondary" href="creator-realm/">OPEN CREATOR’S REALM ↗</a></div>
+
+<section aria-labelledby="evermore-roadmap-title">
+  <p class="kicker">A CAREFUL JOURNEY</p>
+  <h2 id="evermore-roadmap-title">One meaningful step at a time.</h2>
+  <div class="evermore-roadmap">
+    <article class="evermore-stage"><small>STAGE 01</small><h3>Keep the memories</h3><p>Plan the private vault, memory collections, captions, dates, and export or delete controls.</p></article>
+    <article class="evermore-stage"><small>STAGE 02</small><h3>Tell the story</h3><p>Shape personal tributes and family timelines, with sharing controlled by the owner.</p></article>
+    <article class="evermore-stage"><small>STAGE 03</small><h3>Bring moments to life</h3><p>Explore optional photo animation and clearly labeled generated experiences only after consent, privacy, and costs are addressed.</p></article>
+  </div>
+</section>
+\n<div class="evermore-actions"><a class="evermore-button" href="index.html">RETURN TO KAEVORYN ↗</a><a class="evermore-button secondary" href="creator-realm/">OPEN CREATOR’S REALM ↗</a></div>
 </main>
 <footer class="site-footer"><div class="footer-brand">KAEVORYN STUDIOS</div><div class="footer-mantra">CREATE THE IMPOSSIBLE</div><nav class="footer-links" aria-label="Footer navigation"><a href="projects.html">Projects</a><a href="explore.html">Explore</a><a href="vision.html">Our Vision</a><a href="invitation.html">Golden Invitation</a><a href="contact.html">Connect</a><a href="creator-realm/">Creator’s Realm</a></nav><p>Imagination Made Possible.</p></footer>
 </body></html>
