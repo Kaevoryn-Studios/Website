@@ -8,6 +8,8 @@ on:
       - "site.css"
       - "*.js"
       - "content/**"
+      - "creator-realm/**"
+      - "scripts/creator_realm_browser_test.py"
       - "projects/**"
       - "scripts/website_smoke_test.py"
       - "scripts/website_browser_test.py"
@@ -48,3 +50,5 @@ jobs:
           python -m playwright install --with-deps chromium
       - name: Run responsive browser checks
         run: python scripts/website_browser_test.py
+      - name: Run Creator's Realm browser checks
+        run: python scripts/creator_realm_browser_test.py
