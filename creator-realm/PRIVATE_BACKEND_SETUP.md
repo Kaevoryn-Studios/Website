@@ -1,46 +1,38 @@
-# Private backend setup — not yet connected
+# Creator Realm private backend — current status
 
-This document prepares the backend step for Creator's Realm. No Supabase project was created, and `SCHEMA.sql` has not been run.
+## Connected components
 
-## Critical separation
+- Dedicated Supabase project: **Kaevoryn Creator Realm** (project ref: itcbyurixjfszmktlwnh), separate from TikNation.
+- Region: US East.
+- Owner Auth account: contact.kaevorynstudios@gmail.com.
+- Owner UUID is registered in the private.creator_realm_owners table; the browser must not hardcode that UUID.
+- Draft projects and revision tables have RLS enabled and require both the authenticated owner session and matching auth.uid().
+- The owner-status RPC is public.creator_realm_owner_status(). It uses invoker security and calls the private allowlist helper; only authenticated sessions can execute it.
+- The prototype file creator-realm/index.html on branch prototype/creators-realm-v1 now contains the owner sign-in gate and client-side draft save/load integration using the project's publishable key. A publishable key is intended for browser use; never put a secret or service-role key in the repository.
+- Saving a draft writes a new JSON revision. Loading a draft reads the latest revision. Neither action changes the public homepage.
 
-Create a **separate** Supabase project for Kaevoryn Creator's Realm. Do not reuse the TikNation project. A public GitHub Pages frontend must never contain a Supabase `service_role` key or any secret key.
+## Required security boundaries
 
-Supabase's current security guidance separates Data API grants from Row Level Security (RLS): grants decide which roles can reach a table, and RLS decides which rows those roles can read or change. Both are required. Read the current [Securing your API guide](https://supabase.com/docs/guides/api/securing-your-api) and [RLS guide](https://supabase.com/docs/guides/database/postgres/row-level-security) before applying the schema.
+- GitHub Pages is a static host. The sign-in gate improves the owner experience, but it does not make the HTML file itself secret. Actual draft data is protected by Supabase Auth, the private owner allowlist, and RLS.
+- Public registration is not offered by the prototype UI. The allowlist and RLS must remain the real authorization boundary even if an unapproved user obtains a Supabase Auth account.
+- The public website's default branch has not been changed by this prototype work. Do not merge PR #16 until the owner login, cloud save/load, responsive tests, and security checks are reviewed.
+- The publish action remains disabled. A future publishing service must validate the exact approved revision, require explicit owner approval, deploy server-side, record the result, and preserve a rollback target.
+- Do not store passwords, service-role keys, GitHub write tokens, or AI secrets in GitHub files, public JavaScript, screenshots, or chat.
 
-## Planned setup sequence
+## Manual owner test
 
-1. Create a dedicated project named **Kaevoryn Creator Realm** in the chosen Supabase organization. Check the Dashboard's current project cost/free-plan limits before confirming creation.
-2. Create or invite only the owner's Auth account.
-3. Disable public sign-ups after the owner account exists. This project is not for public registration.
-4. Open the new project's SQL Editor and review/run `SCHEMA.sql` once.
-5. In Authentication → Users, copy the owner's exact user UUID.
-6. Replace `<OWNER_AUTH_USER_UUID>` in the following statement with that UUID and run it in the SQL Editor:
+1. Open the prototype branch preview only after the GitHub checks pass.
+2. Sign in using the owner email and the password saved in your password manager.
+3. Confirm the owner gate disappears and the header reports an owner session.
+4. Change a visible field and tap **Save to cloud**.
+5. Confirm a revision number appears. Open **Cloud drafts**, load the saved draft, and verify the change returns.
+6. Sign out and confirm the sign-in gate returns.
+7. Do not try publishing; it is intentionally unavailable.
 
-   ```sql
-   insert into private.creator_realm_owners (user_id)
-   values ('<OWNER_AUTH_USER_UUID>');
-   ```
+## Security follow-up
 
-   This allowlist insert is intentionally separate from the schema so the owner identity is not guessed or hardcoded in repository files.
+Run Supabase Security Advisors after schema or policy changes. The informational warning for private.creator_realm_owners having RLS but no direct policies is intentional: client roles have no direct table grants; the narrowly scoped private helper performs the allowlist check. Enable Supabase leaked-password protection in Auth security settings when available for this project. Keep the database trigger that rejects browser-authenticated attempts to set published or published_at.
 
-7. In the project's Data API settings, confirm the `public` schema is exposed for the client API if the frontend will use `supabase-js`. The schema grants no table access to `anon`, and RLS plus the private owner allowlist restricts authenticated access.
-8. Run Supabase Security Advisors and verify anonymous requests cannot read or write either table, a signed-in non-owner is denied, and the allowlisted owner can save/read a draft. Also verify an authenticated browser request cannot set either a project or revision to `published` or set `published_at`; the schema's trigger should reject that attempt.
-9. Only after those checks, connect a **publishable** key and project URL to the frontend. Publishable keys are designed to be exposed in browser apps; secret/service-role keys are not.
-10. Keep actual publishing disabled until the release workflow enforces explicit approval of the exact revision and preserves rollback.
+## Cost and scope
 
-## What the schema supports
-
-- Projects with owner, name, lifecycle status, and timestamps.
-- Versioned JSON revisions linked to their parent project.
-- Private owner allowlisting stored in a non-exposed schema.
-- RLS policies on both public tables, with explicit minimum grants.
-- Ownership checks on insert and update so the owner identifier cannot be reassigned.
-- A database trigger blocks browser-authenticated clients from setting `published` or `published_at`; the trusted deployment service is the only intended publication path.
-
-## Important limitations
-
-- This SQL is a **prepared draft**, not an applied or verified live database migration.
-- The project has not been created; therefore no login, cloud draft sync, or backend security test is active yet.
-- The schema does not deploy website changes. A future publishing service must validate and deploy only an owner-approved revision.
-- Do not put credentials in GitHub commits, public JavaScript, screenshots, or chat messages. Use the project's settings and secure secret storage.
+The project creation was checked at **$0/month at creation time**. This is not a guarantee that all usage or future services will always be free. The current integration covers owner authentication and private cloud draft storage only; live AI and publishing are not connected.
