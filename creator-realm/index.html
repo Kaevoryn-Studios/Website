@@ -19,6 +19,7 @@ button,input,textarea{font:inherit}button{cursor:pointer}button:focus-visible,in
 .canvas-panel{padding:14px;overflow:hidden}.canvas-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:1px 2px 13px}.tool-group{display:flex;gap:6px;align-items:center;flex-wrap:wrap}.mini-btn{border:1px solid var(--line);border-radius:9px;padding:7px 9px;background:#111a2d;color:#cbd7ed;font-size:11px}.mini-btn.active{border-color:rgba(121,232,255,.7);color:var(--cyan)}.viewport{min-height:500px;display:grid;place-items:center;padding:22px;border:1px solid rgba(141,174,255,.17);border-radius:15px;overflow:hidden;background:radial-gradient(ellipse at 50% 32%,rgba(40,108,171,.16),transparent 42%),#080d1a;position:relative;isolation:isolate}.viewport:before{content:"";position:absolute;inset:0;z-index:-1;opacity:.35;background-image:radial-gradient(circle,rgba(255,255,255,.55) .7px,transparent 1px);background-size:49px 49px;background-position:0 0;pointer-events:none}.site-preview{width:100%;max-width:650px;min-height:435px;padding:clamp(22px,4vw,48px) clamp(14px,4vw,40px);border:1px solid rgba(121,232,255,.18);border-radius:17px;background:linear-gradient(150deg,rgba(10,22,41,.96),rgba(23,17,50,.94));text-align:center;position:relative;overflow:hidden;transition:max-width .25s ease}.site-preview.phone{max-width:330px;min-height:500px;padding:32px 18px}.preview-glow{position:absolute;width:270px;aspect-ratio:1;left:50%;top:35px;transform:translateX(-50%);background:radial-gradient(circle, color-mix(in srgb,var(--accent) 24%,transparent),rgba(163,120,255,.10) 34%,transparent 69%);filter:blur(10px);pointer-events:none}.preview-kicker{position:relative;color:var(--accent);font-size:10px;letter-spacing:3px;text-transform:uppercase}.core-orb{position:relative;display:grid;place-items:center;width:112px;height:112px;margin:20px auto 18px;border:1px solid color-mix(in srgb,var(--accent) 70%,transparent);border-radius:50%;color:var(--accent);font-size:39px;background:radial-gradient(circle,rgba(121,232,255,.14),rgba(120,92,205,.1) 58%,transparent);box-shadow:0 0 35px color-mix(in srgb,var(--accent) 19%,transparent),inset 0 0 25px rgba(120,130,255,.12)}.core-orb:before,.core-orb:after{content:"";position:absolute;inset:-9px;border:1px solid color-mix(in srgb,var(--accent) 35%,transparent);border-radius:50%;transform:rotate(-20deg) scaleX(1.12)}.core-orb:after{inset:-17px;transform:rotate(42deg) scaleX(1.08);border-style:dashed;opacity:.65}.site-preview h2{position:relative;margin:0;font-size:clamp(29px,5vw,48px);letter-spacing:-2px;line-height:1.1;background:linear-gradient(110deg,#fff,var(--accent),#c6b8ff);color:transparent;background-clip:text}.site-preview .tagline{position:relative;margin:12px auto 0;font-size:11px;letter-spacing:2px;color:#e4eaff}.preview-copy{position:relative;max-width:400px;margin:16px auto;color:#aebbd3;font-size:12px}.preview-portal{position:relative;display:inline-flex;align-items:center;gap:8px;margin-top:10px;padding:11px 16px;border:1px solid color-mix(in srgb,var(--accent) 50%,transparent);border-radius:999px;background:color-mix(in srgb,var(--accent) 8%,transparent);color:#eefaff;font-size:11px}.preview-particles{position:absolute;inset:0;pointer-events:none;overflow:hidden}.particle{position:absolute;width:3px;height:3px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent);animation:float 6s ease-in-out infinite alternate}.particle:nth-child(1){left:12%;top:23%}.particle:nth-child(2){left:83%;top:19%;animation-delay:-2s}.particle:nth-child(3){left:18%;top:74%;animation-delay:-4s}.particle:nth-child(4){left:87%;top:67%;animation-delay:-1s}.particle:nth-child(5){left:61%;top:11%;animation-delay:-3s}.particle:nth-child(6){left:41%;top:83%;animation-delay:-1.5s}@keyframes float{to{transform:translate3d(10px,-18px,0);opacity:.25}}.editing-hint{display:flex;align-items:center;justify-content:space-between;gap:10px;color:var(--muted);font-size:10px;padding:12px 3px 0}.selection-outline{outline:1px dashed var(--accent);outline-offset:5px;border-radius:3px}.canvas-panel.preview-mode .editing-hint{display:none}
 .inspector{padding:16px;position:sticky;top:84px}.inspector h2{font-size:14px;margin:0}.inspector .intro{font-size:11px;color:var(--muted);margin:5px 0 16px}.field{margin:14px 0}.field label{display:block;color:#c9d4e8;font-size:11px;font-weight:700;margin-bottom:7px}.field input[type=text],.field textarea{width:100%;border:1px solid var(--line);border-radius:10px;background:#090f1e;color:#f6f8ff;padding:10px 11px;font-size:12px}.field textarea{resize:vertical;min-height:76px}.field input[type=color]{width:100%;height:38px;padding:4px;border:1px solid var(--line);border-radius:10px;background:#090f1e}.field input[type=range]{width:100%;accent-color:var(--accent)}.field-row{display:flex;align-items:center;justify-content:space-between;gap:8px}.value{color:var(--accent);font-size:11px}.toggle-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0;border-top:1px solid var(--line);font-size:12px;color:#dce5f5}.toggle{appearance:none;width:36px;height:21px;border-radius:999px;background:#29334b;position:relative;flex-shrink:0;transition:background .2s}.toggle:before{content:"";position:absolute;width:15px;height:15px;left:3px;top:3px;background:#d9e2f3;border-radius:50%;transition:transform .2s}.toggle:checked{background:#438ea8}.toggle:checked:before{transform:translateX(15px);background:#fff}.inspector-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px}.companion{margin-top:14px;padding:14px;border:1px solid rgba(180,160,255,.25);border-radius:15px;background:linear-gradient(145deg,rgba(49,34,83,.22),rgba(10,17,32,.5))}.companion-head{display:flex;align-items:center;gap:9px;margin-bottom:9px}.companion-orb{display:grid;place-items:center;width:32px;height:32px;border:1px solid rgba(180,160,255,.6);border-radius:50%;color:var(--violet);box-shadow:0 0 20px rgba(180,160,255,.12)}.companion-head strong{font-size:12px}.companion-head small{display:block;color:var(--muted);font-size:10px}.prompt{width:100%;min-height:70px;resize:vertical;border:1px solid var(--line);border-radius:10px;padding:10px;background:#090f1e;color:#fff;font-size:12px}.suggestions{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}.suggestion{border:1px solid rgba(180,160,255,.25);border-radius:999px;background:rgba(180,160,255,.07);color:#d8ceff;padding:6px 8px;font-size:10px}.companion-response{min-height:34px;color:#c8d5eb;font-size:11px;margin:10px 0 0}.bottom-note{width:min(1600px,100%);margin:0 auto;padding:0 clamp(14px,2vw,24px) 25px;color:#74849e;font-size:10px;text-align:center}
 .toast{position:fixed;bottom:18px;left:50%;transform:translate(-50%,20px);opacity:0;pointer-events:none;z-index:50;padding:11px 15px;border:1px solid rgba(121,232,255,.35);border-radius:12px;background:#111c31;color:#f4fbff;box-shadow:0 15px 45px #0008;font-size:12px;transition:opacity .2s,transform .2s}.toast.show{opacity:1;transform:translate(-50%,0)}
+.modal-backdrop{position:fixed;inset:0;z-index:60;display:grid;place-items:center;padding:16px;background:rgba(2,5,13,.78);backdrop-filter:blur(12px)}.modal-backdrop[hidden]{display:none!important}.library-modal{width:min(620px,100%);max-height:min(82vh,760px);overflow:auto;padding:20px;border:1px solid rgba(121,232,255,.28);border-radius:20px;background:linear-gradient(145deg,#111a2e,#0a1020);box-shadow:0 25px 100px #000a}.library-modal h2{font-size:20px;margin:0}.library-modal .modal-copy{font-size:12px;color:var(--muted);margin:6px 0 18px}.library-create{display:flex;gap:8px;margin:12px 0 16px}.library-create input{flex:1;min-width:0;border:1px solid var(--line);border-radius:10px;background:#090f1e;color:#fff;padding:10px;font-size:12px}.library-list{display:grid;gap:8px}.library-item{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px;border:1px solid var(--line);border-radius:13px;background:rgba(255,255,255,.025)}.library-item strong{display:block;font-size:12px;overflow-wrap:anywhere}.library-item small{display:block;color:var(--muted);font-size:10px;margin-top:3px}.library-item-actions{display:flex;gap:6px;flex-shrink:0}.library-item-actions .mini-btn{padding:7px 8px}.library-empty{padding:16px;border:1px dashed var(--line);border-radius:12px;color:var(--muted);font-size:12px;text-align:center}
 @media(max-width:1120px){.layout{grid-template-columns:180px minmax(0,1fr)}.inspector{grid-column:2;position:static;display:grid;grid-template-columns:1fr 1fr;gap:0 18px}.inspector>h2,.inspector>.intro,.inspector>.companion,.inspector>.inspector-actions{grid-column:1/-1}.side{top:80px}.viewport{min-height:440px}}
 @media(max-width:720px){.topbar{align-items:flex-start;flex-wrap:wrap}.top-actions{width:100%;justify-content:flex-end;flex-wrap:wrap}.top-actions .btn{flex:1}.brand-title{font-size:10px;letter-spacing:1.4px}.brand-sub{font-size:9px}.top-actions .status{display:none}.layout{grid-template-columns:1fr;gap:12px;padding-top:12px}.side{position:static;padding:10px;overflow-x:auto;white-space:nowrap}.section-label,.side-foot{display:none}.nav-list{display:flex;gap:5px;min-width:max-content}.nav-item{width:auto;margin:0;padding:9px 10px}.nav-item span:last-child{white-space:nowrap}.workspace-head{flex-direction:column}.mode-switch{width:100%}.mode-switch button{flex:1}.canvas-panel{padding:9px}.viewport{padding:12px;min-height:470px}.site-preview{padding:30px 18px;min-height:410px}.inspector{grid-column:auto;display:block;padding:14px}.inspector>.intro{margin-bottom:8px}.inspector .field{margin:11px 0}.top-actions .btn{padding:8px 10px}.notice{margin-top:10px}.notice-inner{font-size:11px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
@@ -79,18 +80,31 @@ button,input,textarea{font:inherit}button{cursor:pointer}button:focus-visible,in
   </aside>
 </div>
 <footer class="bottom-note">KAEVORYN STUDIOS · CREATE THE IMPOSSIBLE · Prototype only — no live files are changed by this page.</footer>
+<div class="modal-backdrop" id="libraryModal" hidden>
+  <section class="library-modal" role="dialog" aria-modal="true" aria-labelledby="libraryModalTitle">
+    <row class="field-row" style="align-items:center"><h2 id="libraryModalTitle">Creation Vault</h2><button class="btn subtle" id="closeLibraryBtn" type="button" aria-label="Close creation library">✕ Close</button></row>
+    <p class="modal-copy">Manage separate local drafts for your creations. These are stored only in this browser until a secure cloud backend is connected.</p>
+    <form class="library-create" id="createProjectForm">
+      <input id="newProjectName" type="text" maxlength="80" placeholder="Name your new creation" aria-label="New creation name" required>
+      <button class="btn primary" type="submit">＋ Create</button>
+    </form>
+    <div class="library-list" id="libraryList"></div>
+  </section>
+</div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script>
 (function(){
   const $=id=>document.getElementById(id);
   const defaultState={title:"KAEVORYN",tagline:"IMAGINATION MADE POSSIBLE",copy:"To envision what should be impossible — and create it anyway.",portal:"ENTER THE REALM",accent:"#79e8ff",glow:55,particles:true,reducedMotion:false,phone:false,preview:false};
-  let state={...defaultState},undoStack=[],selected="title",toastTimer;
+  let state={...defaultState},undoStack=[],selected="title",toastTimer,projects=[],activeProjectId=null,isDirty=false;
   const draftKey="kaevoryn-creator-realm-prototype-v1";
+  const projectsKey="kaevoryn-creator-realm-projects-v1";
+  const activeProjectKey="kaevoryn-creator-realm-active-project-v1";
   const inputs={title:$("titleInput"),tagline:$("taglineInput"),copy:$("copyInput"),portal:$("portalInput"),accent:$("accentInput"),glow:$("glowInput"),particles:$("particlesToggle"),reducedMotion:$("reducedMotionToggle")};
   function notify(message){const t=$("toast");t.textContent=message;t.classList.add("show");clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove("show"),2600)}
   function snapshot(){return {...state}}
   function pushUndo(){undoStack.push(snapshot());if(undoStack.length>30)undoStack.shift()}
-  function markChanged(){ $("draftStatus").textContent="Unsaved changes"; $("draftStatus").style.color="#f3d48c" }
+  function markChanged(){isDirty=true;$("draftStatus").textContent="Unsaved changes";$("draftStatus").style.color="#f3d48c"}
   function render(){
     $("previewTitle").textContent=state.title;$("previewTagline").textContent=state.tagline;$("previewCopy").textContent=state.copy;$("portalLabel").textContent=state.portal;
     $("titleInput").value=state.title;$("taglineInput").value=state.tagline;$("copyInput").value=state.copy;$("portalInput").value=state.portal;$("accentInput").value=state.accent;$("glowInput").value=state.glow;$("glowValue").textContent=state.glow+"%";$("particlesToggle").checked=state.particles;$("reducedMotionToggle").checked=state.reducedMotion;
@@ -131,7 +145,51 @@ button,input,textarea{font:inherit}button{cursor:pointer}button:focus-visible,in
   $("previewBtn").addEventListener("click",()=>{state.preview=!state.preview;render();notify(state.preview?"Preview enabled — no live changes":"Back to editing")});
   $("undoBtn").addEventListener("click",()=>{const prev=undoStack.pop();if(!prev){notify("Nothing to undo yet");return}state=prev;render();markChanged();notify("Last edit undone")});
   $("applyBtn").addEventListener("click",()=>notify("Changes applied to this local preview only"));
-  $("saveBtn").addEventListener("click",()=>{try{localStorage.setItem(draftKey,JSON.stringify(state));$("draftStatus").textContent="Draft saved on this device";$("draftStatus").style.color="#8ce7c6";notify("Prototype draft saved on this device")}catch(e){notify("Could not save in this browser session")}});
+  $("saveBtn").addEventListener("click",()=>{try{
+    const savedState={...state,phone:false,preview:false};
+    localStorage.setItem(draftKey,JSON.stringify(savedState));
+    const project=projects.find(p=>p.id===activeProjectId);
+    if(project){project.state=savedState;project.updatedAt=new Date().toISOString();persistProjects()}
+    isDirty=false;$("draftStatus").textContent="Draft saved on this device";$("draftStatus").style.color="#8ce7c6";notify("Draft saved on this device");
+  }catch(e){notify("Could not save in this browser session")}});
+  function persistProjects(){localStorage.setItem(projectsKey,JSON.stringify(projects));if(activeProjectId)localStorage.setItem(activeProjectKey,activeProjectId)}
+  function renderLibrary(){
+    const list=$("libraryList");list.replaceChildren();
+    if(!projects.length){const empty=document.createElement("div");empty.className="library-empty";empty.textContent="No local creations yet. Create your first draft above.";list.appendChild(empty);return}
+    projects.forEach(project=>{
+      const card=document.createElement("article");card.className="library-item";
+      const details=document.createElement("div");details.style.minWidth="0";
+      const name=document.createElement("strong");name.textContent=project.name;
+      const meta=document.createElement("small");meta.textContent=project.id===activeProjectId?(isDirty?"Current project · Unsaved changes":"Current project"):"Saved locally";
+      details.append(name,meta);
+      const actions=document.createElement("div");actions.className="library-item-actions";
+      const open=document.createElement("button");open.type="button";open.className="mini-btn";open.textContent="Open";
+      open.addEventListener("click",()=>{
+        if(project.id===activeProjectId){$("libraryModal").hidden=true;return}
+        if(isDirty&&!confirm("Discard unsaved changes to the current draft before opening another creation?"))return;
+        activeProjectId=project.id;state={...defaultState,...project.state,phone:false,preview:false};selected="title";isDirty=false;persistProjects();render();$("libraryModal").hidden=true;$("workspaceTitle").textContent="Shape your vision";$("workspaceSubtitle").textContent="Choose an element, make it yours, and preview the result.";notify("Opened "+project.name);
+      });
+      const remove=document.createElement("button");remove.type="button";remove.className="mini-btn";remove.textContent="Delete";remove.setAttribute("aria-label","Delete "+project.name);
+      remove.addEventListener("click",()=>{
+        if(projects.length<=1){notify("Keep at least one creation in your vault");return}
+        if(!confirm("Delete the local draft '"+project.name+"'? This cannot be undone."))return;
+        projects=projects.filter(p=>p.id!==project.id);
+        if(activeProjectId===project.id){activeProjectId=projects[0].id;state={...defaultState,...projects[0].state,phone:false,preview:false};isDirty=false;render()}
+        persistProjects();renderLibrary();notify("Local draft deleted");
+      });
+      actions.append(open,remove);card.append(details,actions);list.appendChild(card);
+    });
+  }
+  $("closeLibraryBtn").addEventListener("click",()=>{$("libraryModal").hidden=true});
+  $("libraryModal").addEventListener("click",event=>{if(event.target===$("libraryModal"))$("libraryModal").hidden=true});
+  $("createProjectForm").addEventListener("submit",event=>{
+    event.preventDefault();const name=$("newProjectName").value.trim();
+    if(!name){notify("Give your creation a name first");return}
+    if(isDirty&&!confirm("Discard unsaved changes to the current draft before creating a new one?"))return;
+    const id=(typeof crypto!=="undefined"&&crypto.randomUUID)?crypto.randomUUID():"project-"+Date.now().toString(36)+"-"+Math.random().toString(36).slice(2,8);
+    const fresh={...defaultState,phone:false,preview:false};
+    projects.unshift({id,name:name.slice(0,80),state:fresh,updatedAt:new Date().toISOString()});activeProjectId=id;state=fresh;selected="title";isDirty=false;persistProjects();render();renderLibrary();$("newProjectName").value="";$("libraryModal").hidden=true;$("workspaceTitle").textContent="Shape your vision";$("workspaceSubtitle").textContent="Choose an element, make it yours, and preview the result.";notify("Created "+name);
+  });
   $("exportBtn").addEventListener("click",()=>{
     const payload={format:"kaevoryn-creator-realm-draft",version:1,exportedAt:new Date().toISOString(),state:{title:state.title,tagline:state.tagline,copy:state.copy,portal:state.portal,accent:state.accent,glow:state.glow,particles:state.particles,reducedMotion:state.reducedMotion}};
     const blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});
@@ -204,9 +262,24 @@ button,input,textarea{font:inherit}button{cursor:pointer}button:focus-visible,in
     $("workspaceTitle").textContent=map[section][0];$("workspaceSubtitle").textContent=map[section][1];
     if(section==="Magic Workshop")$("glowInput").focus();if(section==="Preview Chamber")$("previewBtn").focus();
     if(section==="Release Gate")notify("Release disabled — no deployment or publishing is connected");
-    if(section==="Creations")notify("Library is a concept placeholder in this prototype");
+    if(section==="Creations"){renderLibrary();$("libraryModal").hidden=false;$("newProjectName").focus()}
   }));
-  try{const saved=localStorage.getItem(draftKey);if(saved){const parsed=JSON.parse(saved);state={...defaultState,...parsed};$("draftStatus").textContent="Loaded saved local draft";$("draftStatus").style.color="#8ce7c6"}}catch(e){}
+  function initializeProjects(){
+    try{
+      const stored=JSON.parse(localStorage.getItem(projectsKey)||"[]");
+      if(Array.isArray(stored))projects=stored.filter(p=>p&&typeof p.id==="string"&&typeof p.name==="string"&&p.state&&typeof p.state==="object").map(p=>({...p,state:{...defaultState,...p.state,phone:false,preview:false}}));
+    }catch(e){projects=[]}
+    if(!projects.length){
+      let initialState={...defaultState};
+      try{const saved=localStorage.getItem(draftKey);if(saved)initialState={...defaultState,...JSON.parse(saved),phone:false,preview:false}}catch(e){}
+      projects=[{id:"kaevoryn-home",name:"Kaevoryn Homepage",state:initialState,updatedAt:new Date().toISOString()}];
+    }
+    const remembered=localStorage.getItem(activeProjectKey);
+    activeProjectId=projects.some(p=>p.id===remembered)?remembered:projects[0].id;
+    state={...defaultState,...projects.find(p=>p.id===activeProjectId).state,phone:false,preview:false};
+    try{persistProjects()}catch(e){}
+  }
+  initializeProjects();
   render();
 })();
 </script>
