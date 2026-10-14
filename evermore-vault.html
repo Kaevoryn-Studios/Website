@@ -97,7 +97,7 @@ let client = null;
 let currentUser = null;
 let collections = [];
 let memories = [];
-function showStatus(message,kind){status.textContent=message;status.dataset.kind=kind||'info';}
+function showStatus(message,kind){status.textContent=message;status.dataset.kind=kind||'info';status.scrollIntoView({behavior:'smooth',block:'center'});}
 function clearStatus(){status.textContent='';status.removeAttribute('data-kind');}
 function safeDate(value){if(!value)return '';const d=new Date(value+'T00:00:00');return Number.isNaN(d.getTime())?'':d.toLocaleDateString(undefined,{year:'numeric',month:'short',day:'numeric'});}
 function element(tag,className,text){const node=document.createElement(tag);if(className)node.className=className;if(text!==undefined)node.textContent=text;return node;}
@@ -185,12 +185,20 @@ document.getElementById('sign-out').addEventListener('click',async()=>{
 const {error}=await client.auth.signOut();if(error){showStatus('Sign-out did not complete. Please try again.','error');return;}setSignedIn(null);showStatus('You have signed out.','success');
 });
 document.getElementById('collection-form').addEventListener('submit',async e=>{
-e.preventDefault();if(!currentUser)return;
-const title=document.getElementById('collection-title').value.trim();if(!title)return;
+e.preventDefault();if(!currentUser){showStatus('Please sign in again before creating a collection.','error');return;}
+const form=e.currentTarget;
+const submitButton=form.querySelector('button[type="submit"]');
+const title=document.getElementById('collection-title').value.trim();
+if(!title){showStatus('Enter a name for your collection first.','error');document.getElementById('collection-title').focus();return;}
 const row={owner_id:currentUser.id,title,description:document.getElementById('collection-description').value.trim(),occasion:document.getElementById('collection-occasion').value,memory_date:document.getElementById('collection-date').value||null};
+const originalLabel=submitButton.textContent;
+submitButton.disabled=true;submitButton.textContent='SAVING…';
+try{
 const {error}=await client.from('evermore_collections').insert(row);
-if(error){showStatus('Could not save the collection. Please try again.','error');return;}
-e.target.reset();showStatus('Your collection has been saved privately.','success');await loadData();
+if(error){console.error('Evermore collection save failed:',error);showStatus(error.code==='42501'?'The save was blocked by privacy permissions. Please tell us this exact message so we can fix the account rules.':'The collection could not be saved. Please check your connection and try again.','error');return;}
+form.reset();await loadData();showStatus('Your collection was saved privately. Look below under Saved memories to see it.','success');
+}catch(error){console.error('Evermore collection save failed:',error);showStatus('Something interrupted the save. Please refresh the page and try again.','error');}
+finally{submitButton.disabled=false;submitButton.textContent=originalLabel;}
 });
 document.getElementById('memory-form').addEventListener('submit',async e=>{
 e.preventDefault();if(!currentUser)return;
