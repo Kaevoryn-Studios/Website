@@ -43,7 +43,7 @@ with local_site() as base_url, sync_playwright() as p:
         require(page.locator("#libraryModal").is_visible(), f"{label}: Creation Vault opens")
         require(page.locator(".library-item").filter(has_text="Kaevoryn Homepage").count() == 1, f"{label}: initial project appears in the vault")
         page.locator("#newProjectName").fill("Beta Project")
-        page.locator("#createProjectForm button[type="submit"]").click()
+        page.locator('#createProjectForm button[type="submit"]').click()
         require(not page.locator("#libraryModal").is_visible(), f"{label}: new project creation closes the vault")
         page.locator("#titleInput").fill("DREAM BEYOND")
         require(page.locator("#previewTitle").inner_text() == "DREAM BEYOND", f"{label}: title edit updates the canvas")
