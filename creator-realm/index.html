@@ -33,6 +33,7 @@ button,input,textarea{font:inherit}button{cursor:pointer}button:focus-visible,in
 .cloud-item{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px;margin:8px 0;border:1px solid var(--line);border-radius:12px;background:#0b1222}
 .cloud-item strong{display:block;font-size:12px}.cloud-item small{display:block;color:var(--muted);font-size:10px;margin-top:4px}
 .cloud-empty{padding:20px;border:1px dashed var(--line);border-radius:12px;color:var(--muted);font-size:12px;text-align:center}
+.release-panel{padding:clamp(18px,3vw,28px);margin-top:14px}.release-panel h2{margin:0;font-size:clamp(20px,3vw,27px)}.release-copy{max-width:760px;color:#b9c7df;font-size:12px}.release-source{display:flex;flex-direction:column;gap:5px;margin:18px 0;padding:13px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.025);font-size:12px}.release-source strong{color:var(--cyan)}.release-source span{color:#dbe6f8;overflow-wrap:anywhere}.release-actions{display:flex;flex-wrap:wrap;gap:8px}.release-actions a{text-decoration:none}.release-status{min-height:20px;margin:14px 0 0;color:#c2d0e6;font-size:12px}
 </style>
 </head>
 <body>
@@ -45,14 +46,14 @@ button,input,textarea{font:inherit}button{cursor:pointer}button:focus-visible,in
       <div class="field"><label for="ownerPassword">Password</label><input id="ownerPassword" name="password" type="password" autocomplete="current-password" placeholder="Enter your owner password" required></div>
       <button class="btn primary" id="ownerLoginBtn" type="submit">Unlock Creator Realm</button><div class="auth-message" id="authMessage" role="status" aria-live="polite"></div>
     </form>
-    <p class="auth-foot">Cloud drafts are protected by Supabase authentication, owner authorization, and database row-level security. Publishing remains disabled.</p>
+    <p class="auth-foot">Cloud drafts are protected by Supabase authentication, owner authorization, and database row-level security. Publishing updates only the approved public homepage settings.</p>
   </section>
 </div>
 <header class="topbar">
   <div class="brand"><div class="brand-mark" aria-hidden="true">K</div><div><div class="brand-title">KAEVORYN · CREATOR'S REALM</div><span class="brand-sub">IMAGINE IT. SHAPE IT. EXPERIENCE IT.</span></div></div>
   <div class="top-actions"><span class="status"><span class="dot"></span><span id="activeProjectLabel">Local draft</span></span><button class="btn subtle" id="importBtn" type="button">Import</button><input id="importFile" type="file" accept="application/json,.json" hidden><button class="btn subtle" id="exportBtn" type="button">Export</button><button class="btn subtle" id="resetBtn" type="button">↺ Reset</button><button class="btn subtle" id="cloudLoadBtn" type="button">Cloud drafts</button><button class="btn subtle" id="cloudSaveBtn" type="button">Save to cloud</button><button class="btn subtle" id="signOutBtn" type="button">Sign out</button><button class="btn primary" id="saveBtn" type="button">Save locally</button></div>
 </header>
-<div class="notice"><div class="notice-inner"><span aria-hidden="true">✦</span><div><strong id="connectionNoticeTitle">Owner authentication is being checked.</strong> Cloud drafts save privately to this separate Creator Realm database. The public website is not changed by saving, previewing, or editing here. AI and publishing remain disconnected.</div></div></div>
+<div class="notice"><div class="notice-inner"><span aria-hidden="true">✦</span><div><strong id="connectionNoticeTitle">Owner authentication is being checked.</strong> Cloud drafts stay private. The public website changes only when you review the saved draft in Release Gate and explicitly confirm publishing. The companion remains a sample assistant.</div></div></div>
 <div class="layout">
   <aside class="panel side" aria-label="Realm navigation">
     <div class="section-label">Your realm</div>
@@ -63,7 +64,7 @@ button,input,textarea{font:inherit}button{cursor:pointer}button:focus-visible,in
       <button class="nav-item" type="button" data-section="Preview Chamber"><span class="nav-icon">◫</span><span>Preview chamber</span></button>
       <button class="nav-item" type="button" data-section="Release Gate"><span class="nav-icon">⬡</span><span>Release gate</span></button>
     </nav>
-    <div class="side-foot">CREATOR STATUS<br><strong style="color:#f2d58e">Prototype mode</strong><br><br>Owner security is not connected in this prototype.</div>
+    <div class="side-foot">CREATOR STATUS<br><strong style="color:#f2d58e">Prototype mode</strong><br><br>Owner access is verified by the private cloud service.</div>
   </aside>
   <main class="workspace">
     <div class="workspace-head"><div><p class="eyebrow">THE CORE IS AWAKENING</p><h1 id="workspaceTitle">Shape your vision</h1><p class="subtitle" id="workspaceSubtitle">Choose an element, make it yours, and preview the result.</p></div><div class="mode-switch" role="group" aria-label="Editing mode"><button type="button" id="visualMode" aria-pressed="true">✦ Visual edit</button><button type="button" id="aiMode" aria-pressed="false">✧ AI companion</button></div></div>
@@ -79,6 +80,14 @@ button,input,textarea{font:inherit}button{cursor:pointer}button:focus-visible,in
         <div class="preview-portal" id="previewPortal" tabindex="0">✧ <span id="portalLabel">ENTER THE REALM</span> ↗</div>
       </article></div>
       <div class="editing-hint"><span id="selectionHint">Selected: homepage title · Tap the title to edit inline.</span><span id="draftStatus">Unsaved changes</span></div>
+    </section>
+    <section class="panel release-panel" id="releaseGatePanel" hidden aria-labelledby="releaseGateHeading">
+      <p class="eyebrow">OWNER APPROVAL REQUIRED</p>
+      <h2 id="releaseGateHeading">Publish to the live Kaevoryn homepage</h2>
+      <p class="release-copy">Only a saved cloud revision can be published. This updates the public homepage title, tagline, supporting message, portal label, energy color, Core glow, particles, and reduced-motion preference. Your other drafts remain private.</p>
+      <div class="release-source"><strong>Publishing source</strong><span id="publishSource">Save a draft to the cloud first.</span></div>
+      <div class="release-actions"><button class="btn primary" type="button" id="publishBtn">Approve &amp; publish saved revision</button><a class="btn subtle" href="https://kaevoryn-studios.github.io/Website/" target="_blank" rel="noopener noreferrer">Open live homepage ↗</a></div>
+      <p class="release-status" id="publishStatus" role="status" aria-live="polite">Nothing has been published by this workspace yet.</p>
     </section>
   </main>
   <aside class="panel inspector" aria-label="Element settings">
@@ -101,11 +110,11 @@ button,input,textarea{font:inherit}button{cursor:pointer}button:focus-visible,in
     </section>
   </aside>
 </div>
-<footer class="bottom-note">KAEVORYN STUDIOS · CREATE THE IMPOSSIBLE · Prototype only — no live files are changed by this page.</footer>
+<footer class="bottom-note">KAEVORYN STUDIOS · CREATE THE IMPOSSIBLE · Private drafts stay private until you approve publishing in Release Gate.</footer>
 <div class="modal-backdrop" id="libraryModal" hidden>
   <section class="library-modal" role="dialog" aria-modal="true" aria-labelledby="libraryModalTitle">
     <div class="field-row" style="align-items:center"><h2 id="libraryModalTitle">Creation Vault</h2><button class="btn subtle" id="closeLibraryBtn" type="button" aria-label="Close creation library">✕ Close</button></div>
-    <p class="modal-copy">Manage separate local drafts for your creations. These are stored only in this browser until a secure cloud backend is connected.</p>
+    <p class="modal-copy">Manage separate local creations in this browser. Use Cloud drafts to save or load private cloud revisions; publishing is managed in Release Gate.</p>
     <form class="library-create" id="createProjectForm">
       <input id="newProjectName" type="text" maxlength="80" placeholder="Name your new creation" aria-label="New creation name" required>
       <button class="btn primary" type="submit">＋ Create</button>
@@ -132,7 +141,7 @@ button,input,textarea{font:inherit}button{cursor:pointer}button:focus-visible,in
   function notify(message){const t=$("toast");t.textContent=message;t.classList.add("show");clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove("show"),2600)}
   function snapshot(){return {...state}}
   function pushUndo(){undoStack.push(snapshot());if(undoStack.length>30)undoStack.shift()}
-  function markChanged(){isDirty=true;$("draftStatus").textContent="Unsaved changes";$("draftStatus").style.color="#f3d48c"}
+  function markChanged(){isDirty=true;$("draftStatus").textContent="Unsaved changes";$("draftStatus").style.color="#f3d48c";if($("releaseGatePanel")&&!$("releaseGatePanel").hidden)updateReleaseGateStatus()}
   function render(){
     const activeProject=projects.find(p=>p.id===activeProjectId);$("activeProjectLabel").textContent=activeProject?activeProject.name+" · Local draft":"Local draft";
     $("previewTitle").textContent=state.title;$("previewTagline").textContent=state.tagline;$("previewCopy").textContent=state.copy;$("portalLabel").textContent=state.portal;
@@ -287,10 +296,11 @@ button,input,textarea{font:inherit}button{cursor:pointer}button:focus-visible,in
   document.querySelectorAll("[data-section]").forEach(b=>b.addEventListener("click",()=>{
     document.querySelectorAll("[data-section]").forEach(n=>n.classList.toggle("active",n===b));
     const section=b.dataset.section;
-    const map={"Core":["Shape your vision","Choose an element, make it yours, and preview the result."],"Creations":["My creations","Manage separate local drafts in the Creation Vault."],"Magic Workshop":["Magic workshop","Tune the sample Core glow, color, and particle effects."],"Preview Chamber":["Preview chamber","Switch between phone and desktop, then enter preview mode."],"Release Gate":["Release gate","Publishing is intentionally disabled until secure owner access and approval are implemented."]};
+    const map={"Core":["Shape your vision","Choose an element, make it yours, and preview the result."],"Creations":["My creations","Manage separate local drafts in the Creation Vault."],"Magic Workshop":["Magic workshop","Tune the Core glow, color, and particle effects."],"Preview Chamber":["Preview chamber","Switch between phone and desktop, then enter preview mode."],"Release Gate":["Release gate","Review a saved cloud revision and explicitly approve the live homepage update."]};
     $("workspaceTitle").textContent=map[section][0];$("workspaceSubtitle").textContent=map[section][1];
+    $("canvasPanel").hidden=section==="Release Gate";$("releaseGatePanel").hidden=section!=="Release Gate";
     if(section==="Magic Workshop")$("glowInput").focus();if(section==="Preview Chamber")$("previewBtn").focus();
-    if(section==="Release Gate")notify("Release disabled — no deployment or publishing is connected");
+    if(section==="Release Gate"){updateReleaseGateStatus();$("publishBtn").focus();}
     if(section==="Creations"){renderLibrary();$("libraryModal").hidden=false;$("newProjectName").focus()}
   }));
   function initializeProjects(){
@@ -317,7 +327,7 @@ button,input,textarea{font:inherit}button{cursor:pointer}button:focus-visible,in
     $("activeProjectLabel").textContent=authorized?"Owner session · "+(realmUser.email||"Authorized"):"Sign in required";
     $("connectionNoticeTitle").textContent=authorized?"Owner session active — cloud drafts are connected.":"Owner authentication is being checked.";
     const sideFoot=document.querySelector(".side-foot");
-    if(sideFoot)sideFoot.innerHTML=authorized?'CREATOR STATUS<br><strong style="color:#8ce7c6">Owner verified</strong><br><br>Cloud drafts enabled. Publishing remains locked.':'CREATOR STATUS<br><strong style="color:#f2d58e">Sign-in required</strong><br><br>Private owner access is checked by Supabase.';
+    if(sideFoot)sideFoot.innerHTML=authorized?'CREATOR STATUS<br><strong style="color:#8ce7c6">Owner verified</strong><br><br>Cloud drafts enabled. Review before publishing.':'CREATOR STATUS<br><strong style="color:#f2d58e">Sign-in required</strong><br><br>Private owner access is checked by Supabase.';
   }
   async function validateOwnerSession(session){
     if(!session||!session.user){realmUser=null;realmOwner=false;setConnectionUi(false);return false}
@@ -337,6 +347,57 @@ button,input,textarea{font:inherit}button{cursor:pointer}button:focus-visible,in
   realmSupabase.auth.onAuthStateChange((_event,session)=>{Promise.resolve().then(()=>validateOwnerSession(session))});
   (async()=>{try{const {data,error}=await realmSupabase.auth.getSession();if(error)throw error;await validateOwnerSession(data.session)}catch(error){setConnectionUi(false);setAuthMessage("Could not check the session. Refresh this page and try again.")}})();
   function currentDraftContent(){return {title:String(state.title).slice(0,36),tagline:String(state.tagline).slice(0,70),copy:String(state.copy).slice(0,220),portal:String(state.portal).slice(0,34),accent:/^#[0-9a-fA-F]{6}$/.test(state.accent)?state.accent:"#79e8ff",glow:Math.min(100,Math.max(10,Number(state.glow)||55)),particles:Boolean(state.particles),reducedMotion:Boolean(state.reducedMotion)}}
+  function updateReleaseGateStatus(message){
+    const project=projects.find(p=>p.id===activeProjectId);
+    $("publishSource").textContent=project?(project.name+(project.cloudProjectId?" · linked to private cloud drafts":" · local only")):"No active creation";
+    if(message){$("publishStatus").textContent=message;return}
+    if(!project||!project.cloudProjectId)$("publishStatus").textContent="Save this creation to the cloud before publishing.";
+    else if(isDirty)$("publishStatus").textContent="You have unsaved edits. Save to cloud again before publishing.";
+    else $("publishStatus").textContent="Ready to review and publish the latest saved cloud revision. Nothing changes until you confirm.";
+  }
+  $("publishBtn").addEventListener("click",async()=>{
+    if(!realmOwner||!realmUser){updateReleaseGateStatus("Sign in with the authorized owner account before publishing.");notify("Owner sign-in required");return}
+    const project=projects.find(p=>p.id===activeProjectId);
+    if(!project||!project.cloudProjectId){updateReleaseGateStatus("Save this creation to the cloud first, then return here.");notify("Save to cloud first");return}
+    if(isDirty){updateReleaseGateStatus("Save your latest edits to cloud before publishing.");notify("Unsaved edits — save to cloud first");return}
+    const button=$("publishBtn");button.disabled=true;button.textContent="Checking saved revision…";
+    try{
+      const {data:revisions,error:revisionReadError}=await realmSupabase.from("creator_realm_revisions").select("id,revision_number,content").eq("project_id",project.cloudProjectId).order("revision_number",{ascending:false}).limit(1);
+      if(revisionReadError)throw revisionReadError;
+      if(!revisions||!revisions.length)throw new Error("No saved cloud revision was found for this creation.");
+      const revision=revisions[0],incoming=revision.content||{};
+      const publication={
+        title:typeof incoming.title==="string"?incoming.title.slice(0,36):defaultState.title,
+        tagline:typeof incoming.tagline==="string"?incoming.tagline.slice(0,70):defaultState.tagline,
+        copy:typeof incoming.copy==="string"?incoming.copy.slice(0,220):defaultState.copy,
+        portal:typeof incoming.portal==="string"?incoming.portal.slice(0,34):defaultState.portal,
+        accent:typeof incoming.accent==="string"&&/^#[0-9a-fA-F]{6}$/.test(incoming.accent)?incoming.accent:defaultState.accent,
+        glow:Number.isFinite(incoming.glow)?Math.min(100,Math.max(10,incoming.glow)):defaultState.glow,
+        particles:typeof incoming.particles==="boolean"?incoming.particles:defaultState.particles,
+        reducedMotion:typeof incoming.reducedMotion==="boolean"?incoming.reducedMotion:defaultState.reducedMotion
+      };
+      const approved=confirm("Publish \""+project.name+"\" revision "+revision.revision_number+" to the public Kaevoryn homepage now? Visitors will see these changes. Your other private drafts will remain private.");
+      if(!approved){updateReleaseGateStatus("Publication cancelled. The public homepage was not changed.");return}
+      button.textContent="Publishing…";
+      const publishedAt=new Date().toISOString();
+      const {error:publishError}=await realmSupabase.from("creator_realm_publication").upsert({singleton:true,content:publication,published_by:realmUser.id,published_at:publishedAt},{onConflict:"singleton"});
+      if(publishError)throw publishError;
+      let metadataWarning="";
+      const {error:revisionStatusError}=await realmSupabase.from("creator_realm_revisions").update({status:"published",approved_at:publishedAt,published_at:publishedAt}).eq("id",revision.id).eq("project_id",project.cloudProjectId);
+      if(revisionStatusError)metadataWarning=" The homepage is live, but the revision status label could not be updated.";
+      const {error:projectStatusError}=await realmSupabase.from("creator_realm_projects").update({status:"published",published_at:publishedAt,updated_at:publishedAt}).eq("id",project.cloudProjectId);
+      if(projectStatusError)metadataWarning=" The homepage is live, but the project status label could not be updated.";
+      isDirty=false;
+      const success="Published cloud revision "+revision.revision_number+" to the live homepage."+metadataWarning+" Open the homepage in a new tab and refresh to verify.";
+      $("draftStatus").textContent="Published revision "+revision.revision_number;$("draftStatus").style.color="#8ce7c6";
+      updateReleaseGateStatus(success);notify("Kaevoryn homepage published successfully");
+    }catch(error){
+      console.error("Creator Realm publishing failed",error);
+      const detail=error&&typeof error.message==="string"?error.message:"Unknown error";
+      updateReleaseGateStatus("Publishing failed: "+detail+" Your saved cloud draft is still available.");
+      notify("Publish failed — see the Release Gate status");
+    }finally{button.disabled=false;button.textContent="Approve & publish saved revision"}
+  });
   $("cloudSaveBtn").addEventListener("click",async()=>{
     if(!realmOwner||!realmUser){notify("Sign in with the authorized owner account first");return}
     const button=$("cloudSaveBtn");button.disabled=true;button.textContent="Saving…";
@@ -348,7 +409,7 @@ button,input,textarea{font:inherit}button{cursor:pointer}button:focus-visible,in
       const revisionNumber=(latest&&latest.length?latest[0].revision_number:0)+1;
       const {error:revisionError}=await realmSupabase.from("creator_realm_revisions").insert({project_id:cloudProjectId,owner_id:realmUser.id,revision_number:revisionNumber,content:currentDraftContent(),status:"draft"});if(revisionError)throw revisionError;
       const {error:updateError}=await realmSupabase.from("creator_realm_projects").update({updated_at:new Date().toISOString(),status:"draft"}).eq("id",cloudProjectId);if(updateError)throw updateError;
-      project.state={...currentDraftContent(),phone:false,preview:false};project.updatedAt=new Date().toISOString();persistProjects();isDirty=false;$("draftStatus").textContent="Cloud revision "+revisionNumber+" saved";$("draftStatus").style.color="#8ce7c6";notify("Private cloud draft saved — revision "+revisionNumber);
+      project.state={...currentDraftContent(),phone:false,preview:false};project.updatedAt=new Date().toISOString();persistProjects();isDirty=false;$("draftStatus").textContent="Cloud revision "+revisionNumber+" saved";$("draftStatus").style.color="#8ce7c6";updateReleaseGateStatus();notify("Private cloud draft saved — revision "+revisionNumber);
     }catch(error){console.error("Creator Realm cloud save failed",error);const detail=error&&typeof error.message==="string"?error.message:"Unknown error";$("draftStatus").textContent="Cloud save failed: "+detail;$("draftStatus").style.color="#f2d58e";notify("Cloud save failed — see the status message below the workspace. Your local draft is still available.")}
     finally{button.disabled=false;button.textContent="Save to cloud"}
   });
@@ -369,7 +430,7 @@ button,input,textarea{font:inherit}button{cursor:pointer}button:focus-visible,in
     const loadedState={...defaultState,title:typeof incoming.title==="string"?incoming.title.slice(0,36):defaultState.title,tagline:typeof incoming.tagline==="string"?incoming.tagline.slice(0,70):defaultState.tagline,copy:typeof incoming.copy==="string"?incoming.copy.slice(0,220):defaultState.copy,portal:typeof incoming.portal==="string"?incoming.portal.slice(0,34):defaultState.portal,accent:validAccent?incoming.accent:defaultState.accent,glow:Number.isFinite(incoming.glow)?Math.min(100,Math.max(10,incoming.glow)):defaultState.glow,particles:typeof incoming.particles==="boolean"?incoming.particles:defaultState.particles,reducedMotion:typeof incoming.reducedMotion==="boolean"?incoming.reducedMotion:defaultState.reducedMotion,phone:false,preview:false};
     let localProject=projects.find(p=>p.cloudProjectId===cloudProject.id);
     if(!localProject){localProject={id:"local-"+cloudProject.id,name:cloudProject.name,state:loadedState,updatedAt:cloudProject.updated_at,cloudProjectId:cloudProject.id};projects.unshift(localProject)}else{localProject.name=cloudProject.name;localProject.state=loadedState;localProject.updatedAt=cloudProject.updated_at}
-    activeProjectId=localProject.id;state=loadedState;selected="title";undoStack=[];isDirty=false;persistProjects();render();renderLibrary();$("workspaceTitle").textContent="Shape your vision";$("workspaceSubtitle").textContent="Choose an element, make it yours, and preview the result."; $("draftStatus").textContent="Loaded cloud revision "+revision.revision_number;$("draftStatus").style.color="#8ce7c6";$("cloudDraftModal").hidden=true;notify("Loaded "+cloudProject.name+" · revision "+revision.revision_number);
+    activeProjectId=localProject.id;state=loadedState;selected="title";undoStack=[];isDirty=false;persistProjects();render();renderLibrary();$("workspaceTitle").textContent="Shape your vision";$("workspaceSubtitle").textContent="Choose an element, make it yours, and preview the result."; $("draftStatus").textContent="Loaded cloud revision "+revision.revision_number;$("draftStatus").style.color="#8ce7c6";updateReleaseGateStatus();$("cloudDraftModal").hidden=true;notify("Loaded "+cloudProject.name+" · revision "+revision.revision_number);
   }
   $("cloudLoadBtn").addEventListener("click",openCloudDrafts);$("closeCloudDraftsBtn").addEventListener("click",()=>$("cloudDraftModal").hidden=true);$("cloudDraftModal").addEventListener("click",event=>{if(event.target===$("cloudDraftModal"))$("cloudDraftModal").hidden=true});
 })();
