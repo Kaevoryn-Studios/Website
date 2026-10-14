@@ -45,6 +45,10 @@ Export/import provides a manual bridge between devices, not secure cloud synchro
 9. Try importing an unrelated or malformed JSON file; the page should reject it.
 10. Confirm that no control publishes or changes the live site.
 
+## Website integration contract
+
+See [`INTEGRATION_CONTRACT.md`](INTEGRATION_CONTRACT.md) for the intended website route, navigation safety, draft-to-preview-to-approval boundaries, supported first-release fields, and acceptance checklist. The public site's navigation must remain unchanged until owner authentication and server-side authorization are implemented; GitHub Pages alone cannot make a page private.
+
 ## Prepared backend work
 
 - `SCHEMA.sql` is a reviewed draft for owner-allowlisted projects and revisions with RLS and explicit grants.
