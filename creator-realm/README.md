@@ -44,6 +44,12 @@ Export/import provides a manual bridge between devices, not secure cloud synchro
 9. Try importing an unrelated or malformed JSON file; the page should reject it.
 10. Confirm that no control publishes or changes the live site.
 
+## Prepared backend work
+
+- `SCHEMA.sql` is a reviewed draft for owner-allowlisted projects and revisions with RLS and explicit grants.
+- `PRIVATE_BACKEND_SETUP.md` explains how to connect a separate Supabase project safely.
+- Neither file has been applied to a live project. The only currently connected Supabase project found was TikNation, which is intentionally not reused.
+
 ## Production path
 
 ### Phase A — Foundation
