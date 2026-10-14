@@ -74,7 +74,7 @@ button,input,textarea{font:inherit}button{cursor:pointer}button:focus-visible,in
       <textarea class="prompt" id="promptInput" maxlength="300" placeholder="Describe what you imagine…"></textarea>
       <div class="suggestions"><button class="suggestion" type="button" data-prompt="Make the Core feel more magical">More magical</button><button class="suggestion" type="button" data-prompt="Make the design calmer for mobile">Mobile-friendly</button><button class="suggestion" type="button" data-prompt="Give the page a golden dreamer feeling">Golden dreamer</button></div>
       <button class="btn" type="button" id="askBtn" style="width:100%">✧ Prepare suggestion</button>
-      <p class="companion-response" id="companionResponse" aria-live="polite">Tell me your idea. This prototype demonstrates the workflow; it does not connect to a real AI service.</p>
+      <p class="companion-response" id="companionResponse" aria-live="polite">Tell me your idea. This prototype demonstrates the workflow; it does not connect to a real AI service.</p><div id="proposalPreview" hidden style="margin-top:10px;padding:11px;border:1px solid rgba(121,232,255,.24);border-radius:10px;background:rgba(121,232,255,.05)"><strong style="font-size:11px">Proposed changes</strong><p id="proposalSummary" style="font-size:11px;color:#c8d5eb;margin:6px 0 10px"></p><div class="inspector-actions" style="margin-top:0"><button class="btn" type="button" id="dismissSuggestionBtn">Keep current</button><button class="btn primary" type="button" id="acceptSuggestionBtn">Apply proposal</button></div></div>
     </section>
   </aside>
 </div>
@@ -147,13 +147,45 @@ button,input,textarea{font:inherit}button{cursor:pointer}button:focus-visible,in
   });
   $("resetBtn").addEventListener("click",()=>{if(!confirm("Reset this prototype to its original sample design? Your locally saved prototype draft will remain until overwritten."))return;pushUndo();state={...defaultState};selected="title";render();markChanged();notify("Sample design reset")});
   document.querySelectorAll("[data-prompt]").forEach(b=>b.addEventListener("click",()=>{$("promptInput").value=b.dataset.prompt;$("promptInput").focus()}));
+  let pendingProposal=null;
+  function showProposal(proposal,message){
+    pendingProposal=proposal;
+    $("companionResponse").textContent=message;
+    $("proposalSummary").textContent=proposal.summary;
+    $("proposalPreview").hidden=false;
+    notify("Review the proposed changes before applying");
+  }
   $("askBtn").addEventListener("click",()=>{
     const prompt=$("promptInput").value.trim();if(!prompt){notify("Describe an idea first");$("promptInput").focus();return}
-    const p=prompt.toLowerCase();let message="Suggestion prepared: review the design settings and make any changes you want. This demo doesn't send your idea to an AI service.";
-    if(p.includes("magical")||p.includes("magic")||p.includes("glow"))message="Suggested plan: raise the Core glow, keep the cyan–violet atmosphere, and use a restrained particle layer. Review each change before applying it.";
-    else if(p.includes("mobile")||p.includes("phone")||p.includes("calmer"))message="Suggested plan: use the phone preview, keep the main title short, reduce decorative motion, and check that controls remain easy to tap.";
-    else if(p.includes("gold")||p.includes("dreamer"))message="Suggested plan: introduce a restrained golden highlight alongside the cyan and violet palette, keeping the Core and main call to action as the focus.";
-    $("companionResponse").textContent=message;notify("Sample suggestion prepared");
+    const p=prompt.toLowerCase();
+    $("proposalPreview").hidden=true;pendingProposal=null;
+    if(p.includes("magical")||p.includes("magic")||p.includes("glow")){
+      showProposal({glow:Math.min(100,Math.max(state.glow,80)),particles:true,summary:"Raise the Core glow to at least 80% and enable a restrained particle layer. You can still adjust both values afterward."},"I prepared a sample proposal for a more magical Core. Nothing has changed yet.");
+    }else if(p.includes("mobile")||p.includes("phone")||p.includes("calmer")){
+      showProposal({reducedMotion:true,glow:Math.min(state.glow,40),phone:true,summary:"Enable reduced motion, soften the Core glow, and switch the canvas to phone preview. Check the layout before keeping these changes."},"I prepared a sample proposal for a calmer mobile experience. Nothing has changed yet.");
+    }else if(p.includes("gold")||p.includes("dreamer")){
+      showProposal({accent:"#f3d48c",glow:Math.max(state.glow,60),summary:"Change the accent to a warm golden highlight and gently increase the Core glow. This replaces the current accent color in the sample preview."},"I prepared a sample golden-dreamer palette proposal. Nothing has changed yet.");
+    }else{
+      $("companionResponse").textContent="I can demonstrate three prepared proposal types in this prototype: magical Core, calmer mobile, or golden dreamer. No live AI is connected, so try one of those examples.";
+      notify("Try one of the supported sample suggestions");
+    }
+  });
+  $("acceptSuggestionBtn").addEventListener("click",()=>{
+    if(!pendingProposal)return;
+    pushUndo();const proposal=pendingProposal;
+    if(typeof proposal.glow==="number")state.glow=proposal.glow;
+    if(typeof proposal.particles==="boolean")state.particles=proposal.particles;
+    if(typeof proposal.reducedMotion==="boolean")state.reducedMotion=proposal.reducedMotion;
+    if(typeof proposal.accent==="string")state.accent=proposal.accent;
+    if(typeof proposal.phone==="boolean")state.phone=proposal.phone;
+    pendingProposal=null;$("proposalPreview").hidden=true;render();markChanged();
+    $("companionResponse").textContent="Proposal applied to the local draft. Review the canvas, undo if needed, and save when ready.";
+    notify("Proposal applied to local draft only");
+  });
+  $("dismissSuggestionBtn").addEventListener("click",()=>{
+    pendingProposal=null;$("proposalPreview").hidden=true;
+    $("companionResponse").textContent="Proposal dismissed. Your design remains unchanged.";
+    notify("Proposal dismissed");
   });
   document.querySelectorAll("[data-section]").forEach(b=>b.addEventListener("click",()=>{
     document.querySelectorAll("[data-section]").forEach(n=>n.classList.toggle("active",n===b));
