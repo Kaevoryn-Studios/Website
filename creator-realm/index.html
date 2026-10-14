@@ -349,7 +349,7 @@ button,input,textarea{font:inherit}button{cursor:pointer}button:focus-visible,in
       const {error:revisionError}=await realmSupabase.from("creator_realm_revisions").insert({project_id:cloudProjectId,owner_id:realmUser.id,revision_number:revisionNumber,content:currentDraftContent(),status:"draft"});if(revisionError)throw revisionError;
       const {error:updateError}=await realmSupabase.from("creator_realm_projects").update({updated_at:new Date().toISOString(),status:"draft"}).eq("id",cloudProjectId);if(updateError)throw updateError;
       project.state={...currentDraftContent(),phone:false,preview:false};project.updatedAt=new Date().toISOString();persistProjects();isDirty=false;$("draftStatus").textContent="Cloud revision "+revisionNumber+" saved";$("draftStatus").style.color="#8ce7c6";notify("Private cloud draft saved — revision "+revisionNumber);
-    }catch(error){console.error("Creator Realm cloud save failed",error);notify("Cloud save failed. Your local draft is still available.")}
+    }catch(error){console.error("Creator Realm cloud save failed",error);const detail=error&&typeof error.message==="string"?error.message:"Unknown error";$("draftStatus").textContent="Cloud save failed: "+detail;$("draftStatus").style.color="#f2d58e";notify("Cloud save failed — see the status message below the workspace. Your local draft is still available.")}
     finally{button.disabled=false;button.textContent="Save to cloud"}
   });
   async function openCloudDrafts(){
