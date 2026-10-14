@@ -78,6 +78,7 @@ with local_site() as base_url, sync_playwright() as p:
             "mimeType": "application/json",
             "buffer": json.dumps(imported).encode("utf-8")
         })
+        page.wait_for_function("document.getElementById('titleInput').value === 'IMPORTED DREAM'")
         require(page.locator("#titleInput").input_value() == "IMPORTED DREAM", f"{label}: a valid exported-style draft can be imported")
         require(page.locator("#glowInput").input_value() == "64", f"{label}: imported settings are restored")
         dims = page.evaluate("() => ({viewport: document.documentElement.clientWidth, document: document.documentElement.scrollWidth})")
