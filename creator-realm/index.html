@@ -27,7 +27,7 @@ button,input,textarea{font:inherit}button{cursor:pointer}button:focus-visible,in
 <body>
 <header class="topbar">
   <div class="brand"><div class="brand-mark" aria-hidden="true">K</div><div><div class="brand-title">KAEVORYN · CREATOR'S REALM</div><span class="brand-sub">IMAGINE IT. SHAPE IT. EXPERIENCE IT.</span></div></div>
-  <div class="top-actions"><span class="status"><span class="dot"></span> Prototype · Local draft</span><button class="btn subtle" id="resetBtn" type="button">↺ Reset</button><button class="btn primary" id="saveBtn" type="button">Save draft</button></div>
+  <div class="top-actions"><span class="status"><span class="dot"></span> Prototype · Local draft</span><button class="btn subtle" id="importBtn" type="button">Import</button><input id="importFile" type="file" accept="application/json,.json" hidden><button class="btn subtle" id="exportBtn" type="button">Export</button><button class="btn subtle" id="resetBtn" type="button">↺ Reset</button><button class="btn primary" id="saveBtn" type="button">Save draft</button></div>
 </header>
 <div class="notice"><div class="notice-inner"><span aria-hidden="true">⚠</span><div><strong>Interactive prototype — not a secure private editor yet.</strong> This is a design sandbox with sample content only. It has no owner authentication, real AI connection, or live publishing. Changes here do not affect the public Kaevoryn website.</div></div></div>
 <div class="layout">
@@ -122,6 +122,29 @@ button,input,textarea{font:inherit}button{cursor:pointer}button:focus-visible,in
   $("undoBtn").addEventListener("click",()=>{const prev=undoStack.pop();if(!prev){notify("Nothing to undo yet");return}state=prev;render();markChanged();notify("Last edit undone")});
   $("applyBtn").addEventListener("click",()=>notify("Changes applied to this local preview only"));
   $("saveBtn").addEventListener("click",()=>{try{localStorage.setItem(draftKey,JSON.stringify(state));$("draftStatus").textContent="Draft saved on this device";$("draftStatus").style.color="#8ce7c6";notify("Prototype draft saved on this device")}catch(e){notify("Could not save in this browser session")}});
+  $("exportBtn").addEventListener("click",()=>{
+    const payload={format:"kaevoryn-creator-realm-draft",version:1,exportedAt:new Date().toISOString(),state:{title:state.title,tagline:state.tagline,copy:state.copy,portal:state.portal,accent:state.accent,glow:state.glow,particles:state.particles,reducedMotion:state.reducedMotion}};
+    const blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});
+    const url=URL.createObjectURL(blob);const link=document.createElement("a");link.href=url;link.download="kaevoryn-creator-realm-draft.json";document.body.appendChild(link);link.click();link.remove();URL.revokeObjectURL(url);
+    notify("Draft exported as a JSON backup");
+  });
+  $("importBtn").addEventListener("click",()=> $("importFile").click());
+  $("importFile").addEventListener("change",async event=>{
+    const file=event.target.files&&event.target.files[0];if(!file)return;
+    try{
+      if(file.size>1024*1024)throw new Error("File is larger than 1 MB");
+      const parsed=JSON.parse(await file.text());
+      if(!parsed||parsed.format!=="kaevoryn-creator-realm-draft"||parsed.version!==1||!parsed.state)throw new Error("This isn't a supported Creator's Realm draft");
+      const incoming=parsed.state;
+      if(typeof incoming.title!=="string"||typeof incoming.tagline!=="string"||typeof incoming.copy!=="string"||typeof incoming.portal!=="string")throw new Error("The draft is missing text fields");
+      if(typeof incoming.accent!=="string"||!/^#[0-9a-fA-F]{6}$/.test(incoming.accent))throw new Error("The draft color is invalid");
+      if(!Number.isFinite(incoming.glow)||incoming.glow<10||incoming.glow>100)throw new Error("The Core glow value is invalid");
+      if(typeof incoming.particles!=="boolean"||typeof incoming.reducedMotion!=="boolean")throw new Error("The draft settings are invalid");
+      pushUndo();state={...defaultState,title:incoming.title.slice(0,36),tagline:incoming.tagline.slice(0,70),copy:incoming.copy.slice(0,220),portal:incoming.portal.slice(0,34),accent:incoming.accent,glow:incoming.glow,particles:incoming.particles,reducedMotion:incoming.reducedMotion,phone:false,preview:false};
+      render();markChanged();notify("Draft imported — save it on this device when ready");
+    }catch(error){notify("Import failed: "+error.message)}
+    event.target.value="";
+  });
   $("resetBtn").addEventListener("click",()=>{if(!confirm("Reset this prototype to its original sample design? Your locally saved prototype draft will remain until overwritten."))return;pushUndo();state={...defaultState};selected="title";render();markChanged();notify("Sample design reset")});
   document.querySelectorAll("[data-prompt]").forEach(b=>b.addEventListener("click",()=>{$("promptInput").value=b.dataset.prompt;$("promptInput").focus()}));
   $("askBtn").addEventListener("click",()=>{
