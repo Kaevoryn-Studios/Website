@@ -1,0 +1,122 @@
+#!/usr/bin/env python3
+"""Browser smoke checks for the Creator's Realm concept prototype."""
+import json
+from http.server import ThreadingHTTPServer, SimpleHTTPRequestHandler
+from pathlib import Path
+from threading import Thread
+from contextlib import contextmanager
+from playwright.sync_api import sync_playwright
+
+ROOT = Path(__file__).resolve().parents[1]
+
+class QuietHandler(SimpleHTTPRequestHandler):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, directory=str(ROOT), **kwargs)
+    def log_message(self, *_args):
+        pass
+
+@contextmanager
+def local_site():
+    server = ThreadingHTTPServer(("127.0.0.1", 0), QuietHandler)
+    thread = Thread(target=server.serve_forever, daemon=True)
+    thread.start()
+    try:
+        yield f"http://127.0.0.1:{server.server_port}/"
+    finally:
+        server.shutdown()
+        thread.join(timeout=2)
+        server.server_close()
+
+def require(condition, message):
+    if not condition:
+        raise AssertionError(message)
+    print(f"PASS: {message}")
+
+with local_site() as base_url, sync_playwright() as p:
+    browser = p.chromium.launch()
+    for label, width, height in (("small phone", 320, 720), ("phone", 390, 844), ("tablet", 768, 1024), ("desktop", 1440, 900)):
+        page = browser.new_page(viewport={"width": width, "height": height}, reduced_motion="reduce")
+        page.goto(base_url + "creator-realm/index.html", wait_until="networkidle")
+        require("Creator's Realm" in page.title(), f"{label}: prototype page loads")
+        require(page.locator("#authGate").is_visible(), f"{label}: owner sign-in gate is shown before entering the Realm")
+        require(page.locator("#ownerLoginForm").is_visible(), f"{label}: owner login form is available")
+        require(not page.locator("#cloudSaveBtn").is_visible(), f"{label}: cloud saving is hidden before owner authorization")
+        # Test harness only: exercise the local visual editor without real account credentials.
+        # Production data access is still enforced by Supabase RPC and RLS.
+        page.locator("#authGate").evaluate("(el) => { el.hidden = true; }")
+        page.locator('button[data-section="Creations"]').click()
+        require(page.locator("#libraryModal").is_visible(), f"{label}: Creation Vault opens")
+        require(page.locator(".library-item").filter(has_text="Kaevoryn Homepage").count() == 1, f"{label}: initial project appears in the vault")
+        page.locator("#newProjectName").fill("Beta Project")
+        page.locator('#createProjectForm button[type="submit"]').click()
+        require(not page.locator("#libraryModal").is_visible(), f"{label}: new project creation closes the vault")
+        require("Beta Project" in page.locator("#activeProjectLabel").inner_text(), f"{label}: active project name appears in the header")
+        page.locator("#titleInput").fill("DREAM BEYOND")
+        require(page.locator("#previewTitle").inner_text() == "DREAM BEYOND", f"{label}: title edit updates the canvas")
+        page.locator("#undoBtn").click()
+        require(page.locator("#titleInput").input_value() == "KAEVORYN", f"{label}: undo restores the previous text edit")
+        page.locator("#titleInput").fill("DREAM BEYOND")
+        page.locator("#accentInput").evaluate("(el) => { el.value = '#f3d48c'; el.dispatchEvent(new Event('input', { bubbles: true })); }")
+        require(page.locator("#accentInput").input_value() == "#f3d48c", f"{label}: accent color control accepts a new color")
+        page.locator("#glowInput").evaluate("(el) => { el.value = '82'; el.dispatchEvent(new Event('input', { bubbles: true })); }")
+        require(page.locator("#glowValue").inner_text() == "82%", f"{label}: Core glow slider updates its value")
+        page.locator("#deviceBtn").click()
+        require("phone" in page.locator("#sitePreview").get_attribute("class"), f"{label}: phone preview can be enabled")
+        page.locator("#deviceBtn").click()
+        page.locator("#previewBtn").click()
+        require(page.locator("#titleInput").is_disabled(), f"{label}: preview mode pauses editing")
+        page.locator("#previewBtn").click()
+        page.locator("#promptInput").fill("Make the Core feel more magical")
+        page.locator("#askBtn").click()
+        require(page.locator("#proposalPreview").is_visible(), f"{label}: companion shows a proposal for review")
+        require(page.locator("#glowInput").input_value() == "82", f"{label}: preparing a proposal does not apply it automatically")
+        page.locator("#acceptSuggestionBtn").click()
+        require(page.locator("#glowInput").input_value() == "82", f"{label}: accepted proposal updates the local draft")
+        with page.expect_download() as download_info:
+            page.locator("#exportBtn").click()
+        download = download_info.value
+        require(download.suggested_filename == "kaevoryn-creator-realm-draft.json", f"{label}: draft can be exported")
+        page.locator("#saveBtn").click()
+        page.reload(wait_until="networkidle")
+        require(page.locator("#authGate").is_visible(), f"{label}: reload returns to the owner sign-in gate")
+        page.locator("#authGate").evaluate("(el) => { el.hidden = true; }")
+        require(page.locator("#titleInput").input_value() == "DREAM BEYOND", f"{label}: active project draft survives a page reload")
+        page.locator('button[data-section="Creations"]').click()
+        require(page.locator(".library-item").count() == 2, f"{label}: Creation Vault persists multiple projects")
+        page.locator(".library-item").filter(has_text="Kaevoryn Homepage").get_by_role("button", name="Open").click()
+        require(page.locator("#titleInput").input_value() == "KAEVORYN", f"{label}: opening another project restores its saved state")
+        page.locator('button[data-section="Creations"]').click()
+        page.locator(".library-item").filter(has_text="Beta Project").get_by_role("button", name="Open").click()
+        require(page.locator("#titleInput").input_value() == "DREAM BEYOND", f"{label}: switching projects restores the selected draft")
+        page.locator("#undoBtn").click()
+        require(page.locator("#titleInput").input_value() == "DREAM BEYOND", f"{label}: undo history does not leak across projects")
+        imported = {
+            "format": "kaevoryn-creator-realm-draft",
+            "version": 1,
+            "state": {
+                "title": "IMPORTED DREAM", "tagline": "CREATE THE IMPOSSIBLE",
+                "copy": "A test import.", "portal": "ENTER THE REALM",
+                "accent": "#b4a0ff", "glow": 64, "particles": False, "reducedMotion": True
+            }
+        }
+        page.locator("#importFile").set_input_files({
+            "name": "draft.json",
+            "mimeType": "application/json",
+            "buffer": json.dumps(imported).encode("utf-8")
+        })
+        page.wait_for_function("document.getElementById('titleInput').value === 'IMPORTED DREAM'")
+        require(page.locator("#titleInput").input_value() == "IMPORTED DREAM", f"{label}: a valid exported-style draft can be imported")
+        require(page.locator("#glowInput").input_value() == "64", f"{label}: imported settings are restored")
+        page.locator("#importFile").set_input_files({
+            "name": "invalid.json",
+            "mimeType": "application/json",
+            "buffer": b'{"not":"supported"}'
+        })
+        page.wait_for_function("document.getElementById('toast').textContent.includes('Import failed')")
+        require(page.locator("#titleInput").input_value() == "IMPORTED DREAM", f"{label}: invalid import leaves the current draft unchanged")
+        require(page.get_by_role("status").filter(has_text="Import failed").is_visible(), f"{label}: invalid import shows an error")
+        dims = page.evaluate("() => ({viewport: document.documentElement.clientWidth, document: document.documentElement.scrollWidth})")
+        require(dims["document"] <= dims["viewport"] + 1, f"{label}: no horizontal page overflow ({dims['document']}px / {dims['viewport']}px)")
+        page.close()
+    browser.close()
+print("Creator's Realm browser checks completed.")
