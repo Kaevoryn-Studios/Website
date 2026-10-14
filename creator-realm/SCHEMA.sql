@@ -152,6 +152,38 @@ using (
   and owner_id = (select auth.uid())
 );
 
+
+-- Defense in depth: browser-authenticated clients must never be able to mark
+-- a revision or project as published. Only a trusted server-side service role
+-- may perform the final publication transition. Keep that service credential
+-- out of the browser and out of this repository.
+create or replace function public.creator_realm_guard_published_state()
+returns trigger
+language plpgsql
+set search_path = ''
+as $function$
+begin
+  if (new.status = 'published' or new.published_at is not null)
+     and coalesce(auth.role(), '') <> 'service_role' then
+    raise exception 'Publishing is only allowed through the trusted deployment service'
+      using errcode = '42501';
+  end if;
+  return new;
+end;
+$function$;
+
+revoke all on function public.creator_realm_guard_published_state() from public, anon, authenticated;
+
+drop trigger if exists creator_realm_projects_guard_published on public.creator_realm_projects;
+create trigger creator_realm_projects_guard_published
+before insert or update on public.creator_realm_projects
+for each row execute function public.creator_realm_guard_published_state();
+
+drop trigger if exists creator_realm_revisions_guard_published on public.creator_realm_revisions;
+create trigger creator_realm_revisions_guard_published
+before insert or update on public.creator_realm_revisions
+for each row execute function public.creator_realm_guard_published_state();
+
 comment on table private.creator_realm_owners is
   'Server-managed allowlist for the single authorized Creator Realm owner.';
 comment on function public.creator_realm_is_owner() is
