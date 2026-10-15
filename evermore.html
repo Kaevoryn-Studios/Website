@@ -60,7 +60,45 @@ main>*:not(.evermore-living-memories){position:relative;z-index:1}
 .memory-galaxy{position:absolute;width:210px;height:300px;opacity:.92;filter:drop-shadow(0 0 22px rgba(127,221,255,.2));animation:galaxy-person-float 14s ease-in-out infinite alternate!important;will-change:transform;pointer-events:none}
 .memory-galaxy-one{left:3%;top:17%}
 .memory-galaxy-two{right:2%;top:48%;transform:scale(.82);animation-delay:-7s!important;filter:drop-shadow(0 0 24px rgba(187,142,255,.24))}
-.galaxy-head,.galaxy-body,.galaxy-arm,.galaxy-leg{display:none!important}
+/* Restore recognizable human forms, sculpted from luminous nebula rather than dotted outlines. */
+.memory-galaxy .galaxy-head,
+.memory-galaxy .galaxy-body,
+.memory-galaxy .galaxy-arm,
+.memory-galaxy .galaxy-leg {
+  display:block!important;
+  position:absolute;
+  background:
+    radial-gradient(ellipse at 34% 28%,rgba(255,255,255,.92),transparent 19%),
+    radial-gradient(ellipse at 43% 43%,rgba(132,225,255,.76),rgba(133,121,255,.46) 48%,rgba(168,112,255,.16) 73%,transparent 100%);
+  box-shadow:0 0 18px rgba(126,220,255,.28),0 0 34px rgba(168,149,255,.18);
+  mix-blend-mode:screen;
+}
+.memory-galaxy .galaxy-head {
+  width:52px;height:59px;left:79px;top:18px;
+  border-radius:48% 48% 44% 44%;
+  filter:blur(4px);
+}
+.memory-galaxy .galaxy-body {
+  width:94px;height:135px;left:58px;top:78px;
+  border-radius:47% 47% 34% 34%;
+  filter:blur(8px);
+}
+.memory-galaxy .galaxy-arm {
+  width:29px;height:112px;top:86px;
+  border-radius:50%;filter:blur(7px);
+}
+.memory-galaxy .galaxy-arm-left {left:38px;transform:rotate(25deg);transform-origin:top center}
+.memory-galaxy .galaxy-arm-right {right:37px;transform:rotate(-25deg);transform-origin:top center}
+.memory-galaxy .galaxy-leg {
+  width:34px;height:105px;top:188px;
+  border-radius:48%;filter:blur(7px);
+}
+.memory-galaxy .galaxy-leg-left {left:69px;transform:rotate(6deg);transform-origin:top center}
+.memory-galaxy .galaxy-leg-right {right:69px;transform:rotate(-6deg);transform-origin:top center}
+.memory-galaxy i {z-index:3}
+@media(max-width:700px){
+  .memory-galaxy{scale:.68}
+}
 .memory-galaxy:before{content:"";position:absolute;inset:0;border-radius:48% 52% 44% 56%;background:
 radial-gradient(ellipse 25% 13% at 50% 13%,rgba(238,250,255,.5),rgba(164,222,255,.22) 45%,transparent 100%),
 radial-gradient(ellipse 35% 23% at 49% 28%,rgba(105,190,255,.32),rgba(80,115,230,.12) 56%,transparent 100%),
