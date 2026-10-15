@@ -92,6 +92,15 @@
     .project-art.scene-glitch{animation:scene-glitch .28s steps(2,end) 2}.project-art.scene-glitch .forge-portal{filter:brightness(2.4) hue-rotate(25deg)}
     .scene-message{position:absolute;z-index:3;top:18px;left:12px;right:12px;text-align:center;color:#ffd9df;font-size:clamp(9px,2vw,12px);font-weight:bold;letter-spacing:2.5px;text-shadow:0 0 12px #f03;opacity:0;transform:translateY(-5px);pointer-events:none}
     .scene-message.show{animation:message-haunt 3.3s ease both}
+    .haunt-flash{position:absolute;inset:0;z-index:4;pointer-events:none;opacity:0;background:radial-gradient(ellipse at center,rgba(255,15,45,.35),rgba(255,0,20,.12) 55%,transparent 78%)}
+    .project-art.haunt-red .haunt-flash{opacity:1}
+    .project-art.haunt-glitch{filter:contrast(1.7) saturate(1.8) brightness(1.2);box-shadow:inset 0 0 35px rgba(255,0,35,.8)}
+    .project-art.haunt-glitch .forge-portal{filter:brightness(2.5) saturate(2.5)}
+    .monster{opacity:.96;filter:drop-shadow(0 0 18px rgba(255,0,35,.55))}
+    .monster .eyes{width:7px;height:5px;box-shadow:12px 0 12px 4px #f04,0 0 18px 5px #ff1744}
+    .host-presence.host-left,.host-presence.host-right{opacity:1;filter:drop-shadow(0 0 30px rgba(255,0,30,.65))}
+    .scene-message.show{opacity:1}
+
     .monster.left{left:7%;transform:scale(.83);animation-delay:-2s}.monster.right{right:7%;transform:scale(1.05);animation-delay:-4s}
     .nightmare-controls{position:relative;z-index:5;display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin:0 auto 22px}
     .nightmare-control{border:1px solid rgba(255,70,95,.6);background:rgba(8,0,7,.9);color:#ffe9ed;border-radius:999px;padding:11px 15px;font:700 10px Arial,sans-serif;letter-spacing:1.4px;cursor:pointer}
@@ -142,6 +151,7 @@
       <div class="forge-portal"></div><span class="forge-ember"></span><span class="forge-ember two"></span>
       <div class="host-presence" id="theHost" aria-hidden="true"><span class="host-head"></span><span class="host-neck"></span><span class="host-body"></span><span class="host-name">THE HOST</span></div>
       <span class="scene-message" id="sceneMessage" aria-live="polite"></span>
+      <span class="haunt-flash" aria-hidden="true"></span>
       <div class="monster left" aria-hidden="true"><span class="eyes"></span></div><div class="monster right" aria-hidden="true"><span class="eyes"></span></div>
       <span class="forge-label">THE FORGE IS WAITING</span>
     </div>
@@ -222,6 +232,7 @@
     }
     function haunt(){
       if(!randomOn || document.hidden)return;
+      scene.classList.add('haunt-red','haunt-glitch');setTimeout(()=>scene.classList.remove('haunt-red'),220);setTimeout(()=>scene.classList.remove('haunt-glitch'),650);
       const events=[
         ()=>{scene.classList.remove('scene-glitch');void scene.offsetWidth;scene.classList.add('scene-glitch');whisper('DID YOU SEE THAT?')},
         ()=>{host.classList.remove('host-left','host-right','host-fade');host.classList.add(Math.random()>.5?'host-left':'host-right');whisper('I WAS CLOSER A MOMENT AGO.')},
@@ -232,7 +243,7 @@
       events[Math.floor(Math.random()*events.length)]();scheduleHaunt();
     }
     function scheduleHaunt(){clearTimeout(hauntTimer);if(randomOn&&!document.hidden){hauntTimer=setTimeout(haunt,8000+Math.random()*8000)}}
-    function announceHaunting(){whisper('THE HOST IS WATCHING YOU.');scene.classList.remove('scene-glitch');void scene.offsetWidth;scene.classList.add('scene-glitch');host.classList.remove('host-left','host-right','host-fade');host.classList.add(Math.random()>.5?'host-left':'host-right');scheduleHaunt()}
+    function announceHaunting(){whisper('THE HOST IS WATCHING YOU.');scene.classList.add('haunt-red','haunt-glitch');host.classList.remove('host-left','host-right','host-fade');host.classList.add(Math.random()>.5?'host-left':'host-right');setTimeout(()=>scene.classList.remove('haunt-red'),220);setTimeout(()=>scene.classList.remove('haunt-glitch'),650);scheduleHaunt()}
     function interactScene(){
       const lines=['THE HOST IS LISTENING.','SOMETHING MOVED BEHIND YOU.','YOU SHOULD NOT HAVE TOUCHED THAT.','IT KNOWS YOU ARE HERE.'];
       whisper(lines[Math.floor(Math.random()*lines.length)]);
