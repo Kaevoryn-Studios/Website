@@ -49,36 +49,16 @@
 .evermore-stage p{font-size:13px;color:var(--muted);margin:0}
 @media(max-width:700px){.evermore-vault,.evermore-roadmap{grid-template-columns:1fr}.evermore-memory{min-height:125px}}
 \n
-/* Evermore Living Memories: visible, symbolic light forms */
+/* Evermore Living Memories: clearly visible drifting lights, no ghost silhouettes */
 main{position:relative;isolation:isolate;min-height:100vh}
-.evermore-living-memories{position:absolute;inset:0;min-height:100%;overflow:hidden;pointer-events:none;z-index:0;contain:paint;opacity:1;background:radial-gradient(ellipse at 8% 18%,rgba(88,185,255,.12),transparent 24%),radial-gradient(ellipse at 92% 37%,rgba(165,112,255,.13),transparent 27%),radial-gradient(ellipse at 12% 78%,rgba(126,234,255,.08),transparent 22%)}
+.evermore-living-memories{position:absolute;inset:0;min-height:100%;overflow:hidden;pointer-events:none;z-index:0;contain:paint;opacity:1;background:radial-gradient(ellipse at 8% 18%,rgba(88,185,255,.14),transparent 27%),radial-gradient(ellipse at 92% 37%,rgba(165,112,255,.16),transparent 30%),radial-gradient(ellipse at 12% 78%,rgba(126,234,255,.1),transparent 25%)}
 main>*:not(.evermore-living-memories){position:relative;z-index:1}
-.memory-orb{position:absolute;width:clamp(13px,1.6vw,21px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fffde9 0 9%,#d9faff 20%,#9c8dff 46%,rgba(126,234,255,.08) 74%,transparent 78%);box-shadow:0 0 18px rgba(173,208,255,.75),0 0 42px rgba(168,149,255,.42);opacity:.85;animation:memory-drift var(--drift,18s) ease-in-out infinite alternate;animation-delay:var(--delay,0s)}
-.memory-orb:nth-child(1){left:7%;top:12%;--drift:21s;--delay:-4s}.memory-orb:nth-child(2){left:87%;top:17%;width:24px;--drift:25s;--delay:-11s}.memory-orb:nth-child(3){left:14%;top:37%;width:16px;--drift:19s;--delay:-8s}.memory-orb:nth-child(4){left:92%;top:43%;width:13px;--drift:23s;--delay:-3s}.memory-orb:nth-child(5){left:5%;top:63%;width:21px;--drift:27s;--delay:-15s}.memory-orb:nth-child(6){left:84%;top:74%;width:17px;--drift:22s;--delay:-6s}.memory-orb:nth-child(7){left:24%;top:84%;width:12px;--drift:17s;--delay:-10s}.memory-orb:nth-child(8){left:73%;top:91%;width:22px;--drift:26s;--delay:-18s}
-.memory-soul{position:absolute;width:clamp(36px,5vw,58px);height:clamp(84px,12vw,138px);opacity:.3;filter:drop-shadow(0 0 18px rgba(151,213,255,.6));animation:soul-drift 24s ease-in-out infinite alternate;transform-origin:center}
-.memory-soul:before{content:"";position:absolute;top:0;left:34%;width:32%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 35% 25%,rgba(255,255,255,1),rgba(170,224,255,.75) 45%,rgba(168,149,255,.16) 78%,transparent);box-shadow:0 0 24px rgba(159,214,255,.55)}
-.memory-soul:after{content:"";position:absolute;top:27%;left:8%;width:84%;height:70%;border-radius:0;background:linear-gradient(180deg,rgba(235,250,255,.95),rgba(126,234,255,.78) 52%,rgba(168,149,255,.48));clip-path:polygon(36% 0,64% 0,73% 13%,91% 24%,100% 44%,87% 49%,73% 32%,69% 53%,78% 73%,72% 100%,57% 100%,52% 72%,47% 72%,42% 100%,27% 100%,31% 73%,39% 53%,33% 32%,17% 49%,0 44%,9% 24%,27% 13%)}
-.memory-soul.soul-one{left:9%;top:22%;--turn:-7deg;animation-delay:-7s}.memory-soul.soul-two{right:8%;top:53%;--turn:6deg;animation-delay:-15s;transform:scale(.8)}
-@keyframes memory-drift{0%{transform:translate3d(0,0,0) scale(.85);opacity:.5}50%{opacity:1}100%{transform:translate3d(16px,-28px,0) scale(1.14);opacity:.8}}
-@keyframes soul-drift{0%{transform:translate3d(0,12px,0) rotate(var(--turn,0deg));opacity:.18}100%{transform:translate3d(9px,-20px,0) rotate(var(--turn,0deg));opacity:.34}}
-@media(max-width:700px){.evermore-living-memories{opacity:.95}.memory-soul{opacity:.24}.memory-soul.soul-two{right:3%}.memory-orb:nth-child(2),.memory-orb:nth-child(4){left:auto;right:4%}}
-@media(prefers-reduced-motion:reduce){.memory-orb,.memory-soul{animation:none!important}.evermore-living-memories{opacity:.7}}
-
-
-/* Keep Living Memories moving after page restores and tab returns */
-.evermore-living-memories .memory-orb,
-.evermore-living-memories .memory-soul{animation-play-state:running;will-change:transform,opacity}
-@media(prefers-reduced-motion:reduce){.evermore-living-memories .memory-orb,.evermore-living-memories .memory-soul{animation-duration:30s!important;animation-iteration-count:infinite!important}}
-
-/* Hard override: global site reduced-motion rules must not freeze this decorative feature */
-.evermore-living-memories .memory-orb{animation:memory-drift var(--drift,18s) ease-in-out infinite alternate!important;animation-delay:var(--delay,0s)!important}
-.evermore-living-memories .memory-soul{animation:soul-drift 24s ease-in-out infinite alternate!important;animation-delay:-7s!important}
-.evermore-living-memories .memory-soul.soul-two{animation-delay:-15s!important}
-@media(prefers-reduced-motion:reduce){
- .evermore-living-memories .memory-orb{animation:memory-drift 24s ease-in-out infinite alternate!important}
- .evermore-living-memories .memory-soul{animation:soul-drift 30s ease-in-out infinite alternate!important}
-}
-
+.memory-orb{position:absolute;display:block;width:clamp(18px,3vw,30px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 32% 28%,#fff 0 9%,#e9ffff 18%,#a6eaff 35%,#9b7cff 58%,rgba(126,234,255,.08) 78%,transparent 82%);box-shadow:0 0 18px 5px rgba(173,208,255,.65),0 0 38px 12px rgba(168,149,255,.35);opacity:.96;animation:memory-drift var(--drift,8s) ease-in-out infinite alternate!important;animation-delay:var(--delay,0s)!important;will-change:transform}
+.memory-orb:nth-child(1){left:7%;top:12%;--drift:7s;--delay:-2s}.memory-orb:nth-child(2){left:87%;top:17%;width:28px;--drift:9s;--delay:-5s}.memory-orb:nth-child(3){left:14%;top:37%;width:23px;--drift:6s;--delay:-3s}.memory-orb:nth-child(4){left:92%;top:43%;width:20px;--drift:8s;--delay:-1s}.memory-orb:nth-child(5){left:5%;top:63%;width:29px;--drift:10s;--delay:-6s}.memory-orb:nth-child(6){left:84%;top:74%;width:24px;--drift:7s;--delay:-4s}.memory-orb:nth-child(7){left:24%;top:84%;width:19px;--drift:6s;--delay:-2s}.memory-orb:nth-child(8){left:73%;top:91%;width:30px;--drift:9s;--delay:-7s}
+.memory-orb:after{content:"";position:absolute;left:50%;top:100%;width:2px;height:38px;transform:translateX(-50%);border-radius:50%;background:linear-gradient(to bottom,rgba(224,246,255,.75),transparent);filter:blur(1px)}
+@keyframes memory-drift{0%{transform:translate3d(-12px,34px,0) scale(.78);opacity:.65}50%{opacity:1}100%{transform:translate3d(22px,-72px,0) scale(1.18);opacity:.98}}
+@media(max-width:700px){.evermore-living-memories{opacity:1}.memory-orb:nth-child(2),.memory-orb:nth-child(4){left:auto;right:4%}}
+@media(prefers-reduced-motion:reduce){.evermore-living-memories .memory-orb{animation-duration:12s!important;animation-iteration-count:infinite!important}}
 </style>
 </head>
 <body>
@@ -93,7 +73,6 @@ main>*:not(.evermore-living-memories){position:relative;z-index:1}
 <div class="evermore-living-memories" aria-hidden="true">
   <span class="memory-orb"></span><span class="memory-orb"></span><span class="memory-orb"></span><span class="memory-orb"></span>
   <span class="memory-orb"></span><span class="memory-orb"></span><span class="memory-orb"></span><span class="memory-orb"></span>
-  <span class="memory-soul soul-one"></span><span class="memory-soul soul-two"></span>
 </div>
 
 <header class="evermore-hero">
