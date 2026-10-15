@@ -271,6 +271,28 @@ filter:blur(15px);mix-blend-mode:screen;animation:nebula-breathe 9s ease-in-out 
  .evermore-living-memories .memory-galaxy-one{animation-duration:22s!important}
  .evermore-living-memories .memory-galaxy-two{animation-duration:26s!important}
 }
+
+/* Evermore teleport effect: fade away, shift unseen, reappear elsewhere. */
+.evermore-living-memories .memory-galaxy-one{animation:memory-teleport-a 20s ease-in-out infinite!important}
+.evermore-living-memories .memory-galaxy-two{animation:memory-teleport-b 24s ease-in-out infinite!important;animation-delay:-7s!important}
+@keyframes memory-teleport-a{
+0%,12%{opacity:1;transform:translate3d(-8vw,12vh,0) rotate(-5deg)}
+16%,20%{opacity:0;transform:translate3d(26vw,-18vh,0)}
+25%,40%{opacity:1;transform:translate3d(26vw,-18vh,0) rotate(8deg)}
+44%,48%{opacity:0;transform:translate3d(70vw,15vh,0)}
+53%,68%{opacity:1;transform:translate3d(70vw,15vh,0) rotate(-8deg)}
+72%,76%{opacity:0;transform:translate3d(-8vw,12vh,0)}
+81%,100%{opacity:1;transform:translate3d(-8vw,12vh,0) rotate(-5deg)}
+}
+@keyframes memory-teleport-b{
+0%,15%{opacity:1;transform:translate3d(5vw,-12vh,0) scale(.82) rotate(4deg)}
+19%,23%{opacity:0;transform:translate3d(-54vw,14vh,0) scale(.82)}
+28%,43%{opacity:1;transform:translate3d(-54vw,14vh,0) scale(.82) rotate(-8deg)}
+47%,51%{opacity:0;transform:translate3d(-76vw,-16vh,0) scale(.82)}
+56%,71%{opacity:1;transform:translate3d(-76vw,-16vh,0) scale(.82) rotate(7deg)}
+75%,79%{opacity:0;transform:translate3d(5vw,-12vh,0) scale(.82)}
+84%,100%{opacity:1;transform:translate3d(5vw,-12vh,0) scale(.82) rotate(4deg)}
+}
 </style>
 </head>
 <body>
