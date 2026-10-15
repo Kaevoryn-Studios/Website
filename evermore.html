@@ -56,6 +56,21 @@ main>*:not(.evermore-living-memories){position:relative;z-index:1}
 .memory-orb{position:absolute;display:block;width:clamp(18px,3vw,30px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 32% 28%,#fff 0 9%,#e9ffff 18%,#a6eaff 35%,#9b7cff 58%,rgba(126,234,255,.08) 78%,transparent 82%);box-shadow:0 0 18px 5px rgba(173,208,255,.65),0 0 38px 12px rgba(168,149,255,.35);opacity:.96;animation:memory-drift var(--drift,8s) ease-in-out infinite alternate!important;animation-delay:var(--delay,0s)!important;will-change:transform}
 .memory-orb:nth-child(1){left:7%;top:12%;--drift:7s;--delay:-2s}.memory-orb:nth-child(2){left:87%;top:17%;width:28px;--drift:9s;--delay:-5s}.memory-orb:nth-child(3){left:14%;top:37%;width:23px;--drift:6s;--delay:-3s}.memory-orb:nth-child(4){left:92%;top:43%;width:20px;--drift:8s;--delay:-1s}.memory-orb:nth-child(5){left:5%;top:63%;width:29px;--drift:10s;--delay:-6s}.memory-orb:nth-child(6){left:84%;top:74%;width:24px;--drift:7s;--delay:-4s}.memory-orb:nth-child(7){left:24%;top:84%;width:19px;--drift:6s;--delay:-2s}.memory-orb:nth-child(8){left:73%;top:91%;width:30px;--drift:9s;--delay:-7s}
 .memory-orb:after{content:"";position:absolute;left:50%;top:100%;width:2px;height:38px;transform:translateX(-50%);border-radius:50%;background:linear-gradient(to bottom,rgba(224,246,255,.75),transparent);filter:blur(1px)}
+/* Human-shaped galaxy memories: stardust figures, not ghost silhouettes */
+.memory-galaxy{position:absolute;width:74px;height:180px;opacity:.88;filter:drop-shadow(0 0 12px rgba(127,221,255,.65));animation:galaxy-person-float 8s ease-in-out infinite alternate!important;will-change:transform}
+.memory-galaxy-one{left:8%;top:19%}.memory-galaxy-two{right:8%;top:52%;transform:scale(.82);animation-delay:-4s!important;filter:drop-shadow(0 0 12px rgba(187,142,255,.7))}
+.galaxy-head,.galaxy-body,.galaxy-arm,.galaxy-leg{position:absolute;display:block;background:radial-gradient(circle at 30% 30%,#fff 0 2%,#bdf8ff 10%,#a5a0ff 27%,rgba(105,205,255,.2) 62%,transparent 76%);box-shadow:0 0 14px rgba(145,220,255,.8),inset 0 0 8px rgba(255,255,255,.65)}
+.galaxy-head{width:30px;height:30px;border-radius:50%;left:22px;top:4px;background:radial-gradient(circle at 35% 30%,#fff 0 5%,#c5faff 20%,#a7a0ff 45%,rgba(112,200,255,.12) 74%,transparent 78%)}
+.galaxy-body{width:35px;height:72px;left:20px;top:37px;border-radius:45% 45% 30% 30%;clip-path:polygon(20% 0,80% 0,100% 45%,82% 55%,72% 28%,70% 100%,30% 100%,28% 28%,18% 55%,0 45%);background:radial-gradient(ellipse at 45% 30%,#fff, #b8f6ff 18%,#8f8cff 42%,rgba(70,170,255,.15) 72%,transparent)}
+.galaxy-arm{width:13px;height:66px;top:39px;border-radius:50%;transform-origin:top center}
+.galaxy-arm-left{left:19px;transform:rotate(20deg)}.galaxy-arm-right{left:43px;transform:rotate(-20deg)}
+.galaxy-leg{width:13px;height:68px;top:101px;border-radius:45%;transform-origin:top center}
+.galaxy-leg-left{left:27px;transform:rotate(4deg)}.galaxy-leg-right{left:39px;transform:rotate(-4deg)}
+.memory-galaxy i{position:absolute;display:block;width:4px;height:4px;border-radius:50%;background:#fff;box-shadow:0 0 7px 2px #a9f4ff,0 0 15px 4px rgba(170,135,255,.7);animation:galaxy-star-pulse 2.8s ease-in-out infinite alternate}
+.memory-galaxy i:nth-of-type(1){left:8px;top:23px}.memory-galaxy i:nth-of-type(2){left:59px;top:45px;animation-delay:-1s}.memory-galaxy i:nth-of-type(3){left:7px;top:86px;animation-delay:-.5s}.memory-galaxy i:nth-of-type(4){left:61px;top:110px;animation-delay:-1.5s}.memory-galaxy i:nth-of-type(5){left:19px;top:150px;animation-delay:-.8s}.memory-galaxy i:nth-of-type(6){left:52px;top:165px;animation-delay:-2s}
+@keyframes galaxy-person-float{0%{translate:-5px 18px;rotate:-3deg}100%{translate:9px -24px;rotate:3deg}}
+@keyframes galaxy-star-pulse{0%{opacity:.35;scale:.7}100%{opacity:1;scale:1.5}}
+@media(max-width:700px){.memory-galaxy{scale:.78}.memory-galaxy-one{left:0;top:20%}.memory-galaxy-two{right:0;top:52%}}
 @keyframes memory-drift{0%{transform:translate3d(-12px,34px,0) scale(.78);opacity:.65}50%{opacity:1}100%{transform:translate3d(22px,-72px,0) scale(1.18);opacity:.98}}
 @media(max-width:700px){.evermore-living-memories{opacity:1}.memory-orb:nth-child(2),.memory-orb:nth-child(4){left:auto;right:4%}}
 @media(prefers-reduced-motion:reduce){.evermore-living-memories .memory-orb{animation-duration:12s!important;animation-iteration-count:infinite!important}}
@@ -73,6 +88,8 @@ main>*:not(.evermore-living-memories){position:relative;z-index:1}
 <div class="evermore-living-memories" aria-hidden="true">
   <span class="memory-orb"></span><span class="memory-orb"></span><span class="memory-orb"></span><span class="memory-orb"></span>
   <span class="memory-orb"></span><span class="memory-orb"></span><span class="memory-orb"></span><span class="memory-orb"></span>
+  <div class="memory-galaxy memory-galaxy-one" aria-hidden="true"><span class="galaxy-head"></span><span class="galaxy-body"></span><span class="galaxy-arm galaxy-arm-left"></span><span class="galaxy-arm galaxy-arm-right"></span><span class="galaxy-leg galaxy-leg-left"></span><span class="galaxy-leg galaxy-leg-right"></span><i></i><i></i><i></i><i></i><i></i><i></i></div>
+  <div class="memory-galaxy memory-galaxy-two" aria-hidden="true"><span class="galaxy-head"></span><span class="galaxy-body"></span><span class="galaxy-arm galaxy-arm-left"></span><span class="galaxy-arm galaxy-arm-right"></span><span class="galaxy-leg galaxy-leg-left"></span><span class="galaxy-leg galaxy-leg-right"></span><i></i><i></i><i></i><i></i><i></i><i></i></div>
 </div>
 
 <header class="evermore-hero">
