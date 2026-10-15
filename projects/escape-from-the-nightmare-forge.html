@@ -221,7 +221,7 @@
       message.textContent=text;message.classList.remove('show');void message.offsetWidth;message.classList.add('show');
     }
     function haunt(){
-      if(!randomOn || document.hidden || reduceMotion)return;
+      if(!randomOn || document.hidden)return;
       const events=[
         ()=>{scene.classList.remove('scene-glitch');void scene.offsetWidth;scene.classList.add('scene-glitch');whisper('DID YOU SEE THAT?')},
         ()=>{host.classList.remove('host-left','host-right','host-fade');host.classList.add(Math.random()>.5?'host-left':'host-right');whisper('I WAS CLOSER A MOMENT AGO.')},
@@ -231,7 +231,8 @@
       ];
       events[Math.floor(Math.random()*events.length)]();scheduleHaunt();
     }
-    function scheduleHaunt(){clearTimeout(hauntTimer);clearTimeout(scareTimer);if(randomOn&&!reduceMotion&&!document.hidden){hauntTimer=setTimeout(haunt,18000+Math.random()*26000)}}
+    function scheduleHaunt(){clearTimeout(hauntTimer);if(randomOn&&!document.hidden){hauntTimer=setTimeout(haunt,8000+Math.random()*8000)}}
+    function announceHaunting(){whisper('THE HOST IS WATCHING YOU.');scene.classList.remove('scene-glitch');void scene.offsetWidth;scene.classList.add('scene-glitch');host.classList.remove('host-left','host-right','host-fade');host.classList.add(Math.random()>.5?'host-left':'host-right');scheduleHaunt()}
     function interactScene(){
       const lines=['THE HOST IS LISTENING.','SOMETHING MOVED BEHIND YOU.','YOU SHOULD NOT HAVE TOUCHED THAT.','IT KNOWS YOU ARE HERE.'];
       whisper(lines[Math.floor(Math.random()*lines.length)]);
@@ -240,11 +241,11 @@
     }
     soundButton.addEventListener('click',toggleSound);
     scareButton.addEventListener('click',jumpScare);
-    randomButton.addEventListener('click',()=>{randomOn=!randomOn;randomButton.setAttribute('aria-pressed',String(randomOn));randomButton.textContent=randomOn?'☠ RANDOM HAUNTINGS: ON':'☠ RANDOM HAUNTINGS: OFF';if(randomOn)scheduleHaunt();else{clearTimeout(hauntTimer);clearTimeout(scareTimer);host.classList.remove('host-left','host-right','host-fade');message.classList.remove('show')}});
+    randomButton.addEventListener('click',()=>{randomOn=!randomOn;randomButton.setAttribute('aria-pressed',String(randomOn));randomButton.textContent=randomOn?'☠ RANDOM HAUNTINGS: ON':'☠ RANDOM HAUNTINGS: OFF';if(randomOn)announceHaunting();else{clearTimeout(hauntTimer);clearTimeout(scareTimer);host.classList.remove('host-left','host-right','host-fade');message.classList.remove('show')}});
     scene.addEventListener('click',interactScene);
     scene.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();interactScene()}});
     dismiss.addEventListener('click',()=>{scare.classList.remove('show');scare.setAttribute('aria-hidden','true')});
-    scheduleHaunt();
+    setTimeout(()=>{if(randomOn&&!document.hidden)announceHaunting()},1200);
     document.addEventListener('visibilitychange',()=>{if(document.hidden){clearTimeout(thunderTimer);clearTimeout(scareTimer);clearTimeout(hauntTimer)}else{if(soundOn)scheduleThunder();scheduleHaunt()}});
     window.addEventListener('pagehide',()=>{clearTimeout(thunderTimer);clearTimeout(scareTimer);clearTimeout(hauntTimer);if(audio)audio.close()});
   })();
