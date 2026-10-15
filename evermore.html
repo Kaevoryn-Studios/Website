@@ -168,11 +168,18 @@ main>*:not(.evermore-living-memories){position:relative;z-index:1}
     const layer=document.querySelector('.evermore-living-memories');
     if(!layer)return;
     layer.querySelectorAll('.memory-orb,.memory-soul').forEach(function(item){
-      item.style.animationPlayState='running';
-      item.style.animation='none';
+      /* Inline !important beats the site's global reduced-motion rule, which otherwise freezes these effects. */
+      const animation=item.classList.contains('memory-soul')
+        ? 'soul-drift 24s ease-in-out infinite alternate'
+        : 'memory-drift var(--drift,18s) ease-in-out infinite alternate';
+      const delay=item.classList.contains('soul-two') ? '-15s'
+        : item.classList.contains('soul-one') ? '-7s'
+        : 'var(--delay,0s)';
+      item.style.setProperty('animation','none','important');
       void item.offsetHeight;
-      item.style.animation='';
-      item.style.animationPlayState='running';
+      item.style.setProperty('animation',animation,'important');
+      item.style.setProperty('animation-delay',delay,'important');
+      item.style.setProperty('animation-play-state','running','important');
     });
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',wakeLivingMemories,{once:true});else wakeLivingMemories();
