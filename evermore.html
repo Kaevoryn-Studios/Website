@@ -125,7 +125,6 @@ filter:blur(15px);mix-blend-mode:screen;animation:nebula-breathe 9s ease-in-out 
 .memory-galaxy {
   width:170px !important;
   height:260px !important;
-  opacity:.76 !important;
   animation:galaxy-person-float 11s ease-in-out infinite alternate !important;
   filter:drop-shadow(0 0 18px rgba(127,221,255,.22)) !important;
 }
@@ -171,7 +170,7 @@ filter:blur(15px);mix-blend-mode:screen;animation:nebula-breathe 9s ease-in-out 
 
 
 /* Cosmic memory silhouettes: richer nebula color and sharper starlight, not pale cloud blobs. */
-.memory-galaxy{width:190px!important;height:285px!important;opacity:.9!important;filter:saturate(1.8) drop-shadow(0 0 18px rgba(72,126,255,.25))!important;animation:galaxy-person-float 17s ease-in-out infinite alternate!important}.memory-galaxy-two{animation-delay:-8s!important;filter:saturate(1.9) drop-shadow(0 0 18px rgba(168,83,255,.28))!important}.memory-galaxy:before,.memory-galaxy:after{display:none!important;content:none!important}.memory-galaxy .galaxy-head,.memory-galaxy .galaxy-body,.memory-galaxy .galaxy-arm,.memory-galaxy .galaxy-leg,.memory-galaxy>i{display:none!important}.memory-person-art{display:block!important;width:100%;height:100%;overflow:visible;opacity:.96;filter:saturate(1.55) contrast(1.2);animation:nebula-wisp 8s ease-in-out infinite alternate;transform-origin:center}.memory-galaxy-two .memory-person-art{animation-delay:-4s;opacity:.92}@keyframes nebula-wisp{from{transform:scale(.97) rotate(-1deg);opacity:.78}to{transform:scale(1.03) rotate(1deg);opacity:1}}@keyframes galaxy-person-float{0%{translate:-8px 28px;rotate:-2deg}50%{translate:7px -8px;rotate:1deg}100%{translate:-4px -48px;rotate:-1deg}}@media(max-width:700px){.memory-galaxy{scale:.65!important}.memory-galaxy-one{left:-5%!important;top:21%!important}.memory-galaxy-two{right:-5%!important;top:52%!important}}
+.memory-galaxy{width:190px!important;height:285px!important;filter:saturate(1.8) drop-shadow(0 0 18px rgba(72,126,255,.25))!important;animation:galaxy-person-float 17s ease-in-out infinite alternate!important}.memory-galaxy-two{animation-delay:-8s!important;filter:saturate(1.9) drop-shadow(0 0 18px rgba(168,83,255,.28))!important}.memory-galaxy:before,.memory-galaxy:after{display:none!important;content:none!important}.memory-galaxy .galaxy-head,.memory-galaxy .galaxy-body,.memory-galaxy .galaxy-arm,.memory-galaxy .galaxy-leg,.memory-galaxy>i{display:none!important}.memory-person-art{display:block!important;width:100%;height:100%;overflow:visible;opacity:.96;filter:saturate(1.55) contrast(1.2);animation:nebula-wisp 8s ease-in-out infinite alternate;transform-origin:center}.memory-galaxy-two .memory-person-art{animation-delay:-4s;opacity:.92}@keyframes nebula-wisp{from{transform:scale(.97) rotate(-1deg);opacity:.78}to{transform:scale(1.03) rotate(1deg);opacity:1}}@keyframes galaxy-person-float{0%{translate:-8px 28px;rotate:-2deg}50%{translate:7px -8px;rotate:1deg}100%{translate:-4px -48px;rotate:-1deg}}@media(max-width:700px){.memory-galaxy{scale:.65!important}.memory-galaxy-one{left:-5%!important;top:21%!important}.memory-galaxy-two{right:-5%!important;top:52%!important}}
 /* Push the light into blue, violet and magenta nebula tones instead of white mist. */
 .memory-galaxy-one .memory-person-art linearGradient stop:nth-child(1){stop-color:#526dff!important}
 .memory-galaxy-one .memory-person-art linearGradient stop:nth-child(2){stop-color:#18cfff!important}
@@ -181,7 +180,7 @@ filter:blur(15px);mix-blend-mode:screen;animation:nebula-breathe 9s ease-in-out 
 .memory-galaxy-two .memory-person-art linearGradient stop:nth-child(3){stop-color:#24cfff!important}
 
 /* Living Memories rebuild: crisp, translucent human-shaped star galaxies, not blurred cloud figures. */
-.memory-galaxy{width:190px!important;height:285px!important;opacity:.96!important;filter:drop-shadow(0 0 10px rgba(74,145,255,.22))!important;animation:galaxy-person-float 17s ease-in-out infinite alternate!important;mix-blend-mode:screen!important}
+.memory-galaxy{width:190px!important;height:285px!important;filter:drop-shadow(0 0 10px rgba(74,145,255,.22))!important;animation:galaxy-person-float 17s ease-in-out infinite alternate!important;mix-blend-mode:screen!important}
 .memory-galaxy-two{animation-delay:-8s!important;filter:drop-shadow(0 0 12px rgba(172,82,255,.25))!important}
 .memory-galaxy:before,.memory-galaxy:after{display:none!important;content:none!important}
 .memory-galaxy .galaxy-head,.memory-galaxy .galaxy-body,.memory-galaxy .galaxy-arm,.memory-galaxy .galaxy-leg,.memory-galaxy>i{display:none!important}
@@ -453,6 +452,18 @@ filter:blur(15px);mix-blend-mode:screen;animation:nebula-breathe 9s ease-in-out 
   function wakeLivingMemories(){
     const layer=document.querySelector('.evermore-living-memories');
     if(!layer)return;
+    /* Explicitly restart the galaxy figures too. Their opacity must remain animatable. */
+    layer.querySelectorAll('.memory-galaxy').forEach(function(item,index){
+      const animation=index===0
+        ? 'evermore-float-teleport-a 18s ease-in-out infinite'
+        : 'evermore-float-teleport-b 21s ease-in-out infinite';
+      item.style.setProperty('animation','none','important');
+      item.style.setProperty('opacity','1');
+      void item.offsetHeight;
+      item.style.setProperty('animation',animation,'important');
+      item.style.setProperty('animation-delay',index===0?'0s':'-8s','important');
+      item.style.setProperty('animation-play-state','running','important');
+    });
     layer.querySelectorAll('.memory-orb,.memory-soul').forEach(function(item){
       /* Inline !important beats the site's global reduced-motion rule, which otherwise freezes these effects. */
       const animation=item.classList.contains('memory-soul')
