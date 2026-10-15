@@ -120,6 +120,55 @@ filter:blur(15px);mix-blend-mode:screen;animation:nebula-breathe 9s ease-in-out 
 @keyframes memory-drift{0%{transform:translate3d(-12px,34px,0) scale(.78);opacity:.65}50%{opacity:1}100%{transform:translate3d(22px,-72px,0) scale(1.18);opacity:.98}}
 @media(max-width:700px){.evermore-living-memories{opacity:1}.memory-orb:nth-child(2),.memory-orb:nth-child(4){left:auto;right:4%}}
 @media(prefers-reduced-motion:reduce){.evermore-living-memories .memory-orb{animation-duration:12s!important;animation-iteration-count:infinite!important}}
+
+/* Refinement: wispy, slender galaxy silhouettes with clearly visible drifting */
+.memory-galaxy {
+  width:170px !important;
+  height:260px !important;
+  opacity:.76 !important;
+  animation:galaxy-person-float 11s ease-in-out infinite alternate !important;
+  filter:drop-shadow(0 0 18px rgba(127,221,255,.22)) !important;
+}
+.memory-galaxy-two { animation-delay:-5.5s !important; }
+.memory-galaxy .galaxy-head {
+  width:39px !important;height:45px !important;left:65px !important;top:12px !important;
+  border-radius:48% 52% 46% 44% !important;filter:blur(3px) !important;
+}
+.memory-galaxy .galaxy-body {
+  width:70px !important;height:112px !important;left:49px !important;top:57px !important;
+  border-radius:48% 48% 30% 30% !important;
+  clip-path:polygon(27% 0,73% 0,100% 28%,78% 57%,72% 100%,28% 100%,22% 57%,0 28%) !important;
+  filter:blur(7px) !important;
+}
+.memory-galaxy .galaxy-arm {
+  width:17px !important;height:104px !important;top:63px !important;
+  border-radius:55% 45% 50% 50% !important;filter:blur(6px) !important;
+}
+.memory-galaxy .galaxy-arm-left {left:36px !important;transform:rotate(27deg) !important}
+.memory-galaxy .galaxy-arm-right {right:36px !important;transform:rotate(-27deg) !important}
+.memory-galaxy .galaxy-leg {
+  width:23px !important;height:91px !important;top:153px !important;
+  border-radius:50% !important;filter:blur(6px) !important;
+}
+.memory-galaxy .galaxy-leg-left {left:56px !important;transform:rotate(5deg) !important}
+.memory-galaxy .galaxy-leg-right {right:56px !important;transform:rotate(-5deg) !important}
+.memory-galaxy:before {
+  border-radius:50% 50% 43% 43% !important;
+  filter:blur(18px) !important;
+  opacity:.72 !important;
+}
+.memory-galaxy:after { inset:8% -22% !important; opacity:.55 !important; filter:blur(8px) !important; }
+@keyframes galaxy-person-float {
+  0% { translate:-8px 34px; rotate:-2deg; }
+  50% { translate:8px -4px; rotate:1deg; }
+  100% { translate:-3px -54px; rotate:-1deg; }
+}
+@media(max-width:700px) {
+  .memory-galaxy { scale:.60 !important; }
+  .memory-galaxy-one { left:-5% !important; top:21% !important; }
+  .memory-galaxy-two { right:-5% !important; top:52% !important; }
+}
+
 </style>
 </head>
 <body>
