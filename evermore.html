@@ -189,6 +189,41 @@ filter:blur(15px);mix-blend-mode:screen;animation:nebula-breathe 9s ease-in-out 
 .memory-galaxy-two .memory-person-art{animation-delay:-4s;opacity:.96!important}
 @keyframes nebula-wisp{from{transform:scale(.985) rotate(-.5deg);opacity:.82}to{transform:scale(1.015) rotate(.5deg);opacity:1}}
 @media(max-width:700px){.memory-galaxy{scale:.64!important}.memory-galaxy-one{left:-5%!important;top:21%!important}.memory-galaxy-two{right:-5%!important;top:52%!important}}
+
+/* Enchanted drift: separate flight paths, rotating star orbits, and gentle cosmic breathing. */
+.memory-galaxy{animation:memory-flight-one 22s ease-in-out infinite!important;will-change:translate,rotate}
+.memory-galaxy-two{animation:memory-flight-two 27s ease-in-out infinite!important;animation-delay:-11s!important}
+.memory-person-art{animation:memory-nebula-breathe 9s ease-in-out infinite alternate!important}
+.memory-galaxy-two .memory-person-art{animation-delay:-4.5s!important}
+.memory-person-art .memory-orbit{transform-box:view-box;transform-origin:100px 150px;animation:memory-orbit-turn 38s linear infinite}
+.memory-galaxy-two .memory-person-art .memory-orbit{animation-duration:47s;animation-direction:reverse}
+.memory-person-art .orbit-star{filter:drop-shadow(0 0 4px #7cecff);animation:memory-star-flash 2.8s ease-in-out infinite alternate}
+.memory-person-art .orbit-star-two{animation-delay:-1.1s}
+.memory-person-art .orbit-star-three{animation-delay:-2s}
+@keyframes memory-flight-one{
+  0%{translate:-9px 24px;rotate:-2deg}
+  22%{translate:8px 2px;rotate:1deg}
+  48%{translate:15px -35px;rotate:2.5deg}
+  73%{translate:-7px -12px;rotate:-1deg}
+  100%{translate:-9px 24px;rotate:-2deg}
+}
+@keyframes memory-flight-two{
+  0%{translate:10px -20px;rotate:2deg}
+  25%{translate:-12px -38px;rotate:-1.5deg}
+  52%{translate:-16px 5px;rotate:-2.5deg}
+  78%{translate:7px 30px;rotate:1deg}
+  100%{translate:10px -20px;rotate:2deg}
+}
+@keyframes memory-orbit-turn{from{rotate:0deg}to{rotate:360deg}}
+@keyframes memory-nebula-breathe{from{transform:scale(.99);opacity:.86}to{transform:scale(1.015);opacity:1}}
+@keyframes memory-star-flash{from{opacity:.35;scale:.8}to{opacity:1;scale:1.35}}
+@media(max-width:700px){
+ .memory-galaxy{animation-duration:25s!important}
+ .memory-galaxy-two{animation-duration:29s!important}
+}
+@media(prefers-reduced-motion:reduce){
+ .memory-galaxy,.memory-galaxy-two,.memory-person-art,.memory-person-art .memory-orbit,.memory-person-art .orbit-star{animation-duration:30s!important}
+}
 </style>
 </head>
 <body>
@@ -209,7 +244,7 @@ filter:blur(15px);mix-blend-mode:screen;animation:nebula-breathe 9s ease-in-out 
  <linearGradient id="lineA" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#13cfff" stop-opacity=".08"/><stop offset=".45" stop-color="#8d65ff" stop-opacity=".95"/><stop offset=".7" stop-color="#426cff" stop-opacity=".9"/><stop offset="1" stop-color="#ffffff" stop-opacity=".65"/></linearGradient>
  <radialGradient id="coreA"><stop stop-color="#fff" stop-opacity=".95"/><stop offset=".25" stop-color="#8d65ff" stop-opacity=".7"/><stop offset="1" stop-color="#426cff" stop-opacity="0"/></radialGradient>
  <clipPath id="clipA"><path d="M100 22C82 22 73 38 77 55S91 75 101 72 121 54 116 39 108 22 100 22ZM82 77C64 83 58 99 55 118L47 148Q46 160 54 153L73 119 76 160Q78 186 65 220L49 269Q48 282 60 274L88 229 99 178 109 229 136 274Q146 284 145 269L130 218Q120 183 123 158L126 119 145 151Q151 159 151 147L136 107Q128 82 105 77Z M78 91Q56 111 43 140L24 167Q19 175 30 175Q57 157 80 122Z M121 91Q145 112 160 140L180 166Q186 174 174 175Q147 156 122 122Z"/></clipPath>
-</defs>
+</defs><g class="memory-orbit" fill="none" stroke="#67ddff" stroke-opacity=".42" stroke-width=".8"><ellipse cx="100" cy="150" rx="86" ry="112" transform="rotate(-24 100 150)" stroke-dasharray="1 7"/><ellipse cx="100" cy="150" rx="91" ry="72" transform="rotate(28 100 150)" stroke="#b88aff" stroke-opacity=".32" stroke-dasharray="2 9"/><circle class="orbit-star" cx="22" cy="112" r="2.2" fill="#fff"/><circle class="orbit-star orbit-star-two" cx="174" cy="197" r="1.7" fill="#a9efff"/><circle class="orbit-star orbit-star-three" cx="125" cy="34" r="1.5" fill="#d7a8ff"/></g>
 <g clip-path="url(#clipA)">
  <path d="M100 22C82 22 73 38 77 55S91 75 101 72 121 54 116 39 108 22 100 22ZM82 77C64 83 58 99 55 118L47 148Q46 160 54 153L73 119 76 160Q78 186 65 220L49 269Q48 282 60 274L88 229 99 178 109 229 136 274Q146 284 145 269L130 218Q120 183 123 158L126 119 145 151Q151 159 151 147L136 107Q128 82 105 77Z M78 91Q56 111 43 140L24 167Q19 175 30 175Q57 157 80 122Z M121 91Q145 112 160 140L180 166Q186 174 174 175Q147 156 122 122Z" fill="url(#bodyA)"/>
  <g fill="none" stroke-linecap="round">
@@ -231,7 +266,7 @@ filter:blur(15px);mix-blend-mode:screen;animation:nebula-breathe 9s ease-in-out 
  <linearGradient id="lineB" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#9d63ff" stop-opacity=".08"/><stop offset=".45" stop-color="#19d9ff" stop-opacity=".95"/><stop offset=".7" stop-color="#e94cff" stop-opacity=".9"/><stop offset="1" stop-color="#ffffff" stop-opacity=".65"/></linearGradient>
  <radialGradient id="coreB"><stop stop-color="#fff" stop-opacity=".95"/><stop offset=".25" stop-color="#19d9ff" stop-opacity=".7"/><stop offset="1" stop-color="#e94cff" stop-opacity="0"/></radialGradient>
  <clipPath id="clipB"><path d="M100 22C82 22 73 38 77 55S91 75 101 72 121 54 116 39 108 22 100 22ZM82 77C64 83 58 99 55 118L47 148Q46 160 54 153L73 119 76 160Q78 186 65 220L49 269Q48 282 60 274L88 229 99 178 109 229 136 274Q146 284 145 269L130 218Q120 183 123 158L126 119 145 151Q151 159 151 147L136 107Q128 82 105 77Z M78 91Q56 111 43 140L24 167Q19 175 30 175Q57 157 80 122Z M121 91Q145 112 160 140L180 166Q186 174 174 175Q147 156 122 122Z"/></clipPath>
-</defs>
+</defs><g class="memory-orbit" fill="none" stroke="#bd82ff" stroke-opacity=".42" stroke-width=".8"><ellipse cx="100" cy="150" rx="86" ry="112" transform="rotate(25 100 150)" stroke-dasharray="1 7"/><ellipse cx="100" cy="150" rx="91" ry="72" transform="rotate(-31 100 150)" stroke="#47dfff" stroke-opacity=".32" stroke-dasharray="2 9"/><circle class="orbit-star" cx="22" cy="112" r="2.2" fill="#fff"/><circle class="orbit-star orbit-star-two" cx="174" cy="197" r="1.7" fill="#e2b0ff"/><circle class="orbit-star orbit-star-three" cx="125" cy="34" r="1.5" fill="#8cecff"/></g>
 <g clip-path="url(#clipB)">
  <path d="M100 22C82 22 73 38 77 55S91 75 101 72 121 54 116 39 108 22 100 22ZM82 77C64 83 58 99 55 118L47 148Q46 160 54 153L73 119 76 160Q78 186 65 220L49 269Q48 282 60 274L88 229 99 178 109 229 136 274Q146 284 145 269L130 218Q120 183 123 158L126 119 145 151Q151 159 151 147L136 107Q128 82 105 77Z M78 91Q56 111 43 140L24 167Q19 175 30 175Q57 157 80 122Z M121 91Q145 112 160 140L180 166Q186 174 174 175Q147 156 122 122Z" fill="url(#bodyB)"/>
  <g fill="none" stroke-linecap="round">
