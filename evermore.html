@@ -56,27 +56,29 @@ main>*:not(.evermore-living-memories){position:relative;z-index:1}
 .memory-orb{position:absolute;display:block;width:clamp(18px,3vw,30px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 32% 28%,#fff 0 9%,#e9ffff 18%,#a6eaff 35%,#9b7cff 58%,rgba(126,234,255,.08) 78%,transparent 82%);box-shadow:0 0 18px 5px rgba(173,208,255,.65),0 0 38px 12px rgba(168,149,255,.35);opacity:.96;animation:memory-drift var(--drift,8s) ease-in-out infinite alternate!important;animation-delay:var(--delay,0s)!important;will-change:transform}
 .memory-orb:nth-child(1){left:7%;top:12%;--drift:7s;--delay:-2s}.memory-orb:nth-child(2){left:87%;top:17%;width:28px;--drift:9s;--delay:-5s}.memory-orb:nth-child(3){left:14%;top:37%;width:23px;--drift:6s;--delay:-3s}.memory-orb:nth-child(4){left:92%;top:43%;width:20px;--drift:8s;--delay:-1s}.memory-orb:nth-child(5){left:5%;top:63%;width:29px;--drift:10s;--delay:-6s}.memory-orb:nth-child(6){left:84%;top:74%;width:24px;--drift:7s;--delay:-4s}.memory-orb:nth-child(7){left:24%;top:84%;width:19px;--drift:6s;--delay:-2s}.memory-orb:nth-child(8){left:73%;top:91%;width:30px;--drift:9s;--delay:-7s}
 .memory-orb:after{content:"";position:absolute;left:50%;top:100%;width:2px;height:38px;transform:translateX(-50%);border-radius:50%;background:linear-gradient(to bottom,rgba(224,246,255,.75),transparent);filter:blur(1px)}
-/* Living galaxy memories: broad nebula silhouettes, never segmented stick figures */
-.memory-galaxy{position:absolute;width:190px;height:280px;opacity:.9;filter:drop-shadow(0 0 18px rgba(127,221,255,.28));animation:galaxy-person-float 12s ease-in-out infinite alternate!important;will-change:transform;pointer-events:none}
-.memory-galaxy-one{left:4%;top:18%}
-.memory-galaxy-two{right:3%;top:49%;transform:scale(.82);animation-delay:-6s!important;filter:drop-shadow(0 0 20px rgba(187,142,255,.3))}
+/* Living Memories: sculpted nebula light with sparse stars, no dotted outlines */
+.memory-galaxy{position:absolute;width:210px;height:300px;opacity:.92;filter:drop-shadow(0 0 22px rgba(127,221,255,.2));animation:galaxy-person-float 14s ease-in-out infinite alternate!important;will-change:transform;pointer-events:none}
+.memory-galaxy-one{left:3%;top:17%}
+.memory-galaxy-two{right:2%;top:48%;transform:scale(.82);animation-delay:-7s!important;filter:drop-shadow(0 0 24px rgba(187,142,255,.24))}
 .galaxy-head,.galaxy-body,.galaxy-arm,.galaxy-leg{display:none!important}
 .memory-galaxy:before{content:"";position:absolute;inset:0;border-radius:48% 52% 44% 56%;background:
-radial-gradient(ellipse at 50% 16%,rgba(221,248,255,.38),transparent 13%),
-radial-gradient(ellipse at 47% 27%,rgba(116,211,255,.32),transparent 24%),
-radial-gradient(ellipse at 48% 47%,rgba(147,119,255,.30),transparent 31%),
-radial-gradient(ellipse at 35% 61%,rgba(93,203,255,.26),transparent 23%),
-radial-gradient(ellipse at 66% 66%,rgba(244,204,125,.18),transparent 22%),
-radial-gradient(ellipse at 50% 40%,rgba(26,32,78,.18),transparent 60%);
-filter:blur(9px);mix-blend-mode:screen;animation:nebula-breathe 7s ease-in-out infinite alternate}
-.memory-galaxy:after{content:"";position:absolute;inset:5% -14%;border-radius:50%;background:repeating-radial-gradient(ellipse at 50% 43%,transparent 0 7px,rgba(151,226,255,.10) 8px 9px,transparent 11px 16px);mask-image:radial-gradient(ellipse at center,#000 12%,transparent 70%);transform:rotate(-24deg);animation:nebula-rings 18s linear infinite}
-.memory-galaxy i{position:absolute;display:block;width:2px;height:2px;border-radius:50%;background:#fff;box-shadow:0 0 5px 2px #a9f4ff,0 0 12px 3px rgba(170,135,255,.65);animation:galaxy-star-pulse 2.8s ease-in-out infinite alternate}
+radial-gradient(ellipse 25% 13% at 50% 13%,rgba(238,250,255,.5),rgba(164,222,255,.22) 45%,transparent 100%),
+radial-gradient(ellipse 35% 23% at 49% 28%,rgba(105,190,255,.32),rgba(80,115,230,.12) 56%,transparent 100%),
+radial-gradient(ellipse 45% 27% at 48% 46%,rgba(143,109,255,.32),rgba(80,79,193,.13) 55%,transparent 100%),
+radial-gradient(ellipse 26% 25% at 32% 55%,rgba(98,206,255,.28),transparent 100%),
+radial-gradient(ellipse 27% 26% at 68% 57%,rgba(255,211,135,.22),transparent 100%),
+radial-gradient(ellipse 34% 22% at 38% 76%,rgba(90,175,255,.25),transparent 100%),
+radial-gradient(ellipse 33% 22% at 65% 77%,rgba(155,115,255,.23),transparent 100%),
+radial-gradient(ellipse at 50% 48%,rgba(28,30,76,.12),transparent 68%);
+filter:blur(15px);mix-blend-mode:screen;animation:nebula-breathe 9s ease-in-out infinite alternate}
+.memory-galaxy:after{content:"";position:absolute;inset:4% -12%;border-radius:50%;background:radial-gradient(ellipse at 50% 45%,transparent 33%,rgba(122,205,255,.13) 44%,rgba(183,143,255,.09) 50%,transparent 66%);filter:blur(12px);transform:rotate(-24deg);animation:nebula-rings 24s linear infinite}
+.memory-galaxy i{position:absolute;display:block;width:2px;height:2px;border-radius:50%;background:#fff;box-shadow:0 0 4px 1px rgba(169,244,255,.8),0 0 9px 2px rgba(170,135,255,.4);animation:galaxy-star-pulse 3.8s ease-in-out infinite alternate}
 .memory-galaxy i:nth-of-type(1){left:18%;top:21%}.memory-galaxy i:nth-of-type(2){left:75%;top:28%;animation-delay:-1s}.memory-galaxy i:nth-of-type(3){left:9%;top:46%;animation-delay:-.5s}.memory-galaxy i:nth-of-type(4){left:84%;top:55%;animation-delay:-1.5s}.memory-galaxy i:nth-of-type(5){left:28%;top:78%;animation-delay:-.8s}.memory-galaxy i:nth-of-type(6){left:69%;top:83%;animation-delay:-2s}
-@keyframes galaxy-person-float{0%{translate:-8px 16px;rotate:-2deg}100%{translate:10px -22px;rotate:2deg}}
-@keyframes galaxy-star-pulse{0%{opacity:.25;scale:.7}100%{opacity:1;scale:1.8}}
-@keyframes nebula-breathe{0%{scale:.92;opacity:.55}100%{scale:1.08;opacity:1}}
+@keyframes galaxy-person-float{0%{translate:-7px 14px;rotate:-1.5deg}100%{translate:9px -18px;rotate:1.5deg}}
+@keyframes galaxy-star-pulse{0%{opacity:.2;scale:.8}100%{opacity:.85;scale:1.35}}
+@keyframes nebula-breathe{0%{scale:.94;opacity:.62}100%{scale:1.06;opacity:1}}
 @keyframes nebula-rings{0%{rotate:0deg;translate:-2px 0}100%{rotate:360deg;translate:2px 0}}
-@media(max-width:700px){.memory-galaxy{scale:.72}.memory-galaxy-one{left:-3%;top:21%}.memory-galaxy-two{right:-3%;top:52%}}
+@media(max-width:700px){.memory-galaxy{scale:.72}.memory-galaxy-one{left:-4%;top:21%}.memory-galaxy-two{right:-4%;top:52%}}
 @keyframes memory-drift{0%{transform:translate3d(-12px,34px,0) scale(.78);opacity:.65}50%{opacity:1}100%{transform:translate3d(22px,-72px,0) scale(1.18);opacity:.98}}
 @media(max-width:700px){.evermore-living-memories{opacity:1}.memory-orb:nth-child(2),.memory-orb:nth-child(4){left:auto;right:4%}}
 @media(prefers-reduced-motion:reduce){.evermore-living-memories .memory-orb{animation-duration:12s!important;animation-iteration-count:infinite!important}}
