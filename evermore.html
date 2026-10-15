@@ -48,7 +48,23 @@
 .evermore-stage h3{font-size:16px;margin:9px 0}
 .evermore-stage p{font-size:13px;color:var(--muted);margin:0}
 @media(max-width:700px){.evermore-vault,.evermore-roadmap{grid-template-columns:1fr}.evermore-memory{min-height:125px}}
-\n</style>
+\n
+/* Evermore Living Memories: decorative, symbolic light forms */
+.evermore-living-memories{position:absolute;inset:0 0 auto;height:100%;min-height:100%;overflow:hidden;pointer-events:none;z-index:0;contain:paint;opacity:.82}
+main{position:relative;isolation:isolate}
+main>*:not(.evermore-living-memories){position:relative;z-index:1}
+.memory-orb{position:absolute;width:clamp(9px,1.1vw,15px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff9d8 0 8%,#d9faff 18%,#9c8dff 43%,rgba(126,234,255,.08) 74%,transparent 78%);box-shadow:0 0 15px rgba(173,208,255,.48),0 0 36px rgba(168,149,255,.22);opacity:.62;animation:memory-drift var(--drift,18s) ease-in-out infinite alternate;animation-delay:var(--delay,0s)}
+.memory-orb:nth-child(1){left:7%;top:12%;--drift:21s;--delay:-4s}.memory-orb:nth-child(2){left:87%;top:17%;width:20px;--drift:25s;--delay:-11s}.memory-orb:nth-child(3){left:14%;top:37%;width:11px;--drift:19s;--delay:-8s}.memory-orb:nth-child(4){left:92%;top:43%;width:9px;--drift:23s;--delay:-3s}.memory-orb:nth-child(5){left:5%;top:63%;width:16px;--drift:27s;--delay:-15s}.memory-orb:nth-child(6){left:84%;top:74%;width:12px;--drift:22s;--delay:-6s}.memory-orb:nth-child(7){left:24%;top:84%;width:8px;--drift:17s;--delay:-10s}.memory-orb:nth-child(8){left:73%;top:91%;width:17px;--drift:26s;--delay:-18s}
+.memory-soul{position:absolute;width:clamp(28px,4vw,48px);height:clamp(70px,10vw,118px);opacity:.16;filter:drop-shadow(0 0 12px rgba(151,213,255,.38));animation:soul-drift 24s ease-in-out infinite alternate;transform-origin:center}
+.memory-soul:before{content:"";position:absolute;top:0;left:34%;width:32%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 35% 25%,rgba(255,255,255,.95),rgba(170,224,255,.45) 45%,rgba(168,149,255,.08) 78%,transparent);box-shadow:0 0 18px rgba(159,214,255,.32)}
+.memory-soul:after{content:"";position:absolute;top:27%;left:10%;width:80%;height:62%;border-radius:48% 48% 36% 36% / 22% 22% 70% 70%;background:linear-gradient(180deg,rgba(205,239,255,.65),rgba(168,149,255,.24) 54%,rgba(126,234,255,0));clip-path:polygon(28% 0,72% 0,100% 32%,77% 51%,95% 100%,50% 82%,5% 100%,23% 51%,0 32%)}
+.memory-soul.soul-one{left:9%;top:22%;--turn:-7deg;animation-delay:-7s}.memory-soul.soul-two{right:8%;top:53%;--turn:6deg;animation-delay:-15s;transform:scale(.8)}
+@keyframes memory-drift{0%{transform:translate3d(0,0,0) scale(.8);opacity:.25}50%{opacity:.72}100%{transform:translate3d(16px,-28px,0) scale(1.14);opacity:.5}}
+@keyframes soul-drift{0%{transform:translate3d(0,12px,0) rotate(var(--turn,0deg));opacity:.08}100%{transform:translate3d(9px,-20px,0) rotate(var(--turn,0deg));opacity:.2}}
+@media(max-width:700px){.evermore-living-memories{opacity:.62}.memory-soul{opacity:.11}.memory-soul.soul-two{right:3%}.memory-orb:nth-child(2),.memory-orb:nth-child(4){left:auto;right:4%}}
+@media(prefers-reduced-motion:reduce){.memory-orb,.memory-soul{animation:none!important}.evermore-living-memories{opacity:.45}}
+
+</style>
 </head>
 <body>
 <a class="skip-link" href="#main-content">Skip to content</a>
@@ -58,6 +74,13 @@
 <a href="index.html">HOME</a><a href="projects.html">PROJECTS</a><a href="explore.html">EXPLORE</a><a href="vision.html">VISION</a><a href="invitation.html">GOLDEN INVITATION</a><a href="contact.html">CONNECT</a><a href="creator-realm/">CREATOR’S REALM</a>
 </nav></div></header>
 <main id="main-content">
+
+<div class="evermore-living-memories" aria-hidden="true">
+  <span class="memory-orb"></span><span class="memory-orb"></span><span class="memory-orb"></span><span class="memory-orb"></span>
+  <span class="memory-orb"></span><span class="memory-orb"></span><span class="memory-orb"></span><span class="memory-orb"></span>
+  <span class="memory-soul soul-one"></span><span class="memory-soul soul-two"></span>
+</div>
+
 <header class="evermore-hero">
 <p class="kicker">A NEW EXPERIENCE IS TAKING SHAPE</p>
 <div class="evermore-emblem" aria-hidden="true">✧</div>
