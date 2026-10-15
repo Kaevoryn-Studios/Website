@@ -79,7 +79,7 @@
     .host-presence{position:absolute;z-index:1;left:50%;top:50%;width:120px;height:220px;transform:translate(-50%,-42%);opacity:.82;filter:drop-shadow(0 0 24px rgba(255,0,30,.22));pointer-events:none}
     .host-head{position:absolute;top:4px;left:35px;width:52px;height:62px;border-radius:46% 46% 38% 38%;background:radial-gradient(ellipse at 50% 30%,#241017,#050307 72%);box-shadow:inset 0 -8px 14px #000}
     .host-head::before,.host-head::after{content:"";position:absolute;top:27px;width:8px;height:3px;background:#ff2447;box-shadow:0 0 12px 4px rgba(255,0,40,.7);animation:eyes-blink 7s infinite}
-    .host-head::before{left:11px;transform:rotate(8deg)}.host-head::after{right:11px;transform:rotate(-8deg)}
+    .host-head::before{left:11px;transform:translate(var(--eye-x,0px),var(--eye-y,0px)) rotate(8deg)}.host-head::after{right:11px;transform:translate(var(--eye-x,0px),var(--eye-y,0px)) rotate(-8deg)}
     .host-body{position:absolute;left:12px;top:55px;width:96px;height:152px;background:linear-gradient(90deg,#020104,#11070c 45%,#030105);clip-path:polygon(25% 0,75% 0,100% 100%,0 100%);filter:drop-shadow(0 0 14px #000)}
     .host-neck{position:absolute;left:53px;top:53px;width:16px;height:26px;background:#090308}
     .host-presence.host-left{left:28%;transform:translate(-50%,-42%) scale(.88)}.host-presence.host-right{left:72%;transform:translate(-50%,-42%) scale(.88)}.host-presence.host-fade{opacity:.06;filter:blur(5px)}
@@ -88,7 +88,7 @@
     .monster::before{content:"";position:absolute;left:19px;top:10px;width:32px;height:40px;border-radius:48% 48% 35% 35%;background:#030205;box-shadow:0 0 0 1px rgba(80,0,20,.4)}
     .monster::after{content:"";position:absolute;left:3px;top:44px;width:64px;height:104px;background:linear-gradient(90deg,#010103,#10040a,#010103);clip-path:polygon(30% 0,70% 0,100% 100%,60% 75%,48% 100%,34% 76%,0 100%)}
     .monster .eyes{position:absolute;z-index:1;left:25px;top:27px;width:5px;height:3px;background:#ff2847;box-shadow:12px 0 9px 2px #f04;transform:rotate(-4deg);animation:eyes-blink 4.2s infinite}
-    .project-art::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:1;background:repeating-linear-gradient(0deg,transparent 0 3px,rgba(255,0,35,.025) 4px 5px);mix-blend-mode:screen}
+    .project-art::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:1;background:repeating-linear-gradient(0deg,transparent 0 3px,rgba(255,0,35,.025) 4px 5px);mix-blend-mode:screen}\n    .forge-shadow{position:absolute;z-index:0;left:50%;top:50%;width:88px;height:210px;opacity:0;transform:translate(-50%,-40%) scale(.72);filter:blur(2px);transition:opacity .12s,transform .12s;pointer-events:none}\n    .forge-shadow::before{content:"";position:absolute;inset:0;background:#000;clip-path:polygon(38% 0,62% 0,73% 12%,69% 28%,83% 40%,100% 100%,64% 83%,53% 100%,43% 83%,0 100%,21% 42%,32% 27%,27% 12%);box-shadow:0 0 25px #000}\n    .forge-shadow::after{content:"";position:absolute;left:34%;top:19%;width:8px;height:3px;background:#ff203f;box-shadow:24px 0 0 #ff203f,0 0 12px 4px rgba(255,0,45,.7),24px 0 12px 4px rgba(255,0,45,.7)}\n    .project-art.reveal-shadow .forge-shadow{opacity:.96;transform:translate(-50%,-48%) scale(1.08);filter:blur(.4px)}\n    .project-art.dread-1{box-shadow:inset 0 0 70px rgba(100,0,25,.35),0 0 42px rgba(100,0,20,.25)}\n    .project-art.dread-2{background:radial-gradient(ellipse at 50% 90%,rgba(190,0,35,.34),transparent 45%),linear-gradient(180deg,#020004,#080108 60%,#000)}\n    .project-art.dread-2 .forge-portal{filter:brightness(1.28);box-shadow:0 0 42px rgba(255,0,45,.55),inset 0 0 45px rgba(255,0,45,.42)}\n    .project-art.dread-3{animation:dread-throb 5s ease-in-out infinite;box-shadow:inset 0 0 100px rgba(150,0,30,.5),0 0 48px rgba(150,0,30,.35)}\n    .project-art.dread-3 .forge-shadow{opacity:.18;filter:blur(3px);transform:translate(-50%,-48%) scale(1.2)}\n    @keyframes dread-throb{0%,100%{filter:brightness(.82)}50%{filter:brightness(1.12) contrast(1.12)}}
     .project-art.scene-glitch{animation:scene-glitch .28s steps(2,end) 2}.project-art.scene-glitch .forge-portal{filter:brightness(2.4) hue-rotate(25deg)}
     .scene-message{position:absolute;z-index:3;top:18px;left:12px;right:12px;text-align:center;color:#ffd9df;font-size:clamp(9px,2vw,12px);font-weight:bold;letter-spacing:2.5px;text-shadow:0 0 12px #f03;opacity:0;transform:translateY(-5px);pointer-events:none}
     .scene-message.show{animation:message-haunt 3.3s ease both}
@@ -148,7 +148,7 @@
       <button class="nightmare-control random-toggle" id="randomToggle" type="button" aria-pressed="true">☠ RANDOM HAUNTINGS: ON</button>
     </div>
     <div class="project-art" id="nightmareScene" role="button" tabindex="0" aria-label="Interact with the nightmare scene. A crimson portal is watched by monsters and the Host">
-      <div class="forge-portal"></div><span class="forge-ember"></span><span class="forge-ember two"></span>
+      <div class="forge-shadow" aria-hidden="true"></div><div class="forge-portal"></div><span class="forge-ember"></span><span class="forge-ember two"></span>
       <div class="host-presence" id="theHost" aria-hidden="true"><span class="host-head"></span><span class="host-neck"></span><span class="host-body"></span><span class="host-name">THE HOST</span></div>
       <span class="scene-message" id="sceneMessage" aria-live="polite"></span>
       <span class="haunt-flash" aria-hidden="true"></span>
@@ -206,7 +206,7 @@
       if(Math.random()>.35){lightning.classList.remove('flash');void lightning.offsetWidth;lightning.classList.add('flash')}
     }
     function scheduleThunder(){clearTimeout(thunderTimer);if(soundOn)thunderTimer=setTimeout(()=>{thunder();scheduleThunder()},6500+Math.random()*9500)}
-    function flashLightning(){lightning.classList.remove('flash');void lightning.offsetWidth;lightning.classList.add('flash')}
+    function flashLightning(){lightning.classList.remove('flash');void lightning.offsetWidth;lightning.classList.add('flash');scene.classList.add('reveal-shadow');setTimeout(()=>scene.classList.remove('reveal-shadow'),420)}
     function scheduleVisualLightning(){clearTimeout(visualLightningTimer);if(document.hidden)return;visualLightningTimer=setTimeout(()=>{flashLightning();if(Math.random()>.58)setTimeout(flashLightning,180);scheduleVisualLightning()},3200+Math.random()*6500)}
     async function toggleSound(){
       if(!soundOn){
@@ -247,21 +247,22 @@
     function scheduleHaunt(){clearTimeout(hauntTimer);if(randomOn&&!document.hidden){hauntTimer=setTimeout(haunt,8000+Math.random()*8000)}}
     function announceHaunting(){whisper('THE HOST IS WATCHING YOU.');scene.classList.add('haunt-red','haunt-glitch');host.classList.remove('host-left','host-right','host-fade');host.classList.add(Math.random()>.5?'host-left':'host-right');setTimeout(()=>scene.classList.remove('haunt-red'),220);setTimeout(()=>scene.classList.remove('haunt-glitch'),650);scheduleHaunt()}
     function interactScene(){
+      scene.classList.add("reveal-shadow");setTimeout(()=>scene.classList.remove("reveal-shadow"),700);
       const lines=['THE HOST IS LISTENING.','SOMETHING MOVED BEHIND YOU.','YOU SHOULD NOT HAVE TOUCHED THAT.','IT KNOWS YOU ARE HERE.'];
       whisper(lines[Math.floor(Math.random()*lines.length)]);
       scene.classList.remove('scene-glitch');void scene.offsetWidth;scene.classList.add('scene-glitch');
       if(Math.random()<.24)jumpScare();
     }
-    soundButton.addEventListener('click',toggleSound);
+    let dreadLevel=0, dreadTimer=null;\n    function scheduleDread(){clearTimeout(dreadTimer);if(document.hidden)return;dreadTimer=setTimeout(()=>{if(randomOn){dreadLevel=Math.min(3,dreadLevel+1);scene.classList.remove("dread-1","dread-2","dread-3");if(dreadLevel)scene.classList.add("dread-"+dreadLevel);if(dreadLevel===2)whisper("IT IS LEARNING YOUR SHAPE.");if(dreadLevel===3)whisper("YOU WERE NEVER ALONE.");}scheduleDread()},22000+Math.random()*9000)}\n    scene.addEventListener("pointermove",event=>{const rect=scene.getBoundingClientRect();const dx=(event.clientX-(rect.left+rect.width/2))/rect.width;const dy=(event.clientY-(rect.top+rect.height/2))/rect.height;host.style.setProperty("--eye-x",(dx*5).toFixed(1)+"px");host.style.setProperty("--eye-y",(dy*3).toFixed(1)+"px")},{passive:true});\n    scene.addEventListener("pointerleave",()=>{host.style.setProperty("--eye-x","0px");host.style.setProperty("--eye-y","0px")},{passive:true});\n    soundButton.addEventListener('click',toggleSound);
     scareButton.addEventListener('click',jumpScare);
-    randomButton.addEventListener('click',()=>{randomOn=!randomOn;randomButton.setAttribute('aria-pressed',String(randomOn));randomButton.textContent=randomOn?'☠ RANDOM HAUNTINGS: ON':'☠ RANDOM HAUNTINGS: OFF';if(randomOn)announceHaunting();else{clearTimeout(hauntTimer);clearTimeout(scareTimer);host.classList.remove('host-left','host-right','host-fade');message.classList.remove('show')}});
+    randomButton.addEventListener('click',()=>{randomOn=!randomOn;randomButton.setAttribute('aria-pressed',String(randomOn));randomButton.textContent=randomOn?'☠ RANDOM HAUNTINGS: ON':'☠ RANDOM HAUNTINGS: OFF';if(randomOn){announceHaunting();scheduleDread()}else{clearTimeout(hauntTimer);clearTimeout(scareTimer);clearTimeout(dreadTimer);dreadLevel=0;scene.classList.remove("dread-1","dread-2","dread-3","reveal-shadow");host.classList.remove('host-left','host-right','host-fade');message.classList.remove('show')}});
     scene.addEventListener('click',interactScene);
     scene.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();interactScene()}});
     dismiss.addEventListener('click',()=>{scare.classList.remove('show');scare.setAttribute('aria-hidden','true')});
     setTimeout(()=>{if(randomOn&&!document.hidden)announceHaunting()},1200);
-    scheduleVisualLightning();
-    document.addEventListener('visibilitychange',()=>{if(document.hidden){clearTimeout(thunderTimer);clearTimeout(scareTimer);clearTimeout(hauntTimer);clearTimeout(visualLightningTimer)}else{if(soundOn)scheduleThunder();scheduleHaunt();scheduleVisualLightning()}});
-    window.addEventListener('pagehide',()=>{clearTimeout(thunderTimer);clearTimeout(scareTimer);clearTimeout(hauntTimer);clearTimeout(visualLightningTimer);if(audio)audio.close()});
+    scheduleVisualLightning();\n    scheduleDread();
+    document.addEventListener('visibilitychange',()=>{if(document.hidden){clearTimeout(thunderTimer);clearTimeout(scareTimer);clearTimeout(hauntTimer);clearTimeout(visualLightningTimer);clearTimeout(dreadTimer)}else{if(soundOn)scheduleThunder();scheduleHaunt();scheduleVisualLightning();scheduleDread()}});
+    window.addEventListener('pagehide',()=>{clearTimeout(thunderTimer);clearTimeout(scareTimer);clearTimeout(hauntTimer);clearTimeout(visualLightningTimer);clearTimeout(dreadTimer);if(audio)audio.close()});
   })();
   </script>
 </body>
