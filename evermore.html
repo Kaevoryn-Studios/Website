@@ -224,6 +224,50 @@ filter:blur(15px);mix-blend-mode:screen;animation:nebula-breathe 9s ease-in-out 
 @media(prefers-reduced-motion:reduce){
  .memory-galaxy,.memory-galaxy-two,.memory-person-art,.memory-person-art .memory-orbit,.memory-person-art .orbit-star{animation-duration:30s!important}
 }
+
+/* High-visibility motion pass: obvious diagonal drift plus visible orbit paths. */
+.evermore-living-memories .memory-galaxy-one{
+ animation:memory-flight-one 12s ease-in-out infinite!important;
+}
+.evermore-living-memories .memory-galaxy-two{
+ animation:memory-flight-two 15s ease-in-out infinite!important;
+ animation-delay:-6s!important;
+}
+.evermore-living-memories .memory-person-art{
+ animation:memory-nebula-breathe 6s ease-in-out infinite alternate!important;
+}
+.evermore-living-memories .memory-person-art .memory-orbit{
+ stroke-opacity:.9!important;
+ stroke-width:1.4!important;
+ animation:memory-orbit-turn 16s linear infinite!important;
+}
+.evermore-living-memories .memory-galaxy-two .memory-person-art .memory-orbit{
+ animation-duration:21s!important;
+ animation-direction:reverse!important;
+}
+.evermore-living-memories .memory-person-art .orbit-star{
+ opacity:1!important;
+ filter:drop-shadow(0 0 5px #7cecff);
+ animation:memory-star-flash 1.8s ease-in-out infinite alternate!important;
+}
+@keyframes memory-flight-one{
+  0%{transform:translate3d(-18px,22px,0) rotate(-3deg)}
+  25%{transform:translate3d(24px,-10px,0) rotate(2deg)}
+  50%{transform:translate3d(32px,-48px,0) rotate(4deg)}
+  75%{transform:translate3d(-20px,-20px,0) rotate(-2deg)}
+  100%{transform:translate3d(-18px,22px,0) rotate(-3deg)}
+}
+@keyframes memory-flight-two{
+  0%{transform:translate3d(22px,-28px,0) scale(.82) rotate(3deg)}
+  25%{transform:translate3d(-24px,-44px,0) scale(.82) rotate(-3deg)}
+  50%{transform:translate3d(-30px,10px,0) scale(.82) rotate(-4deg)}
+  75%{transform:translate3d(18px,38px,0) scale(.82) rotate(2deg)}
+  100%{transform:translate3d(22px,-28px,0) scale(.82) rotate(3deg)}
+}
+@media(max-width:700px){
+ .evermore-living-memories .memory-galaxy-one{animation-duration:14s!important}
+ .evermore-living-memories .memory-galaxy-two{animation-duration:17s!important}
+}
 </style>
 </head>
 <body>
