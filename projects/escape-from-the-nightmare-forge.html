@@ -123,6 +123,23 @@
     .scare-face::after{content:"";position:absolute;left:37%;top:61%;width:28%;height:17%;background:repeating-linear-gradient(90deg,#f8dce1 0 5px,#16050b 5px 10px);clip-path:polygon(0 0,100% 0,85% 100%,15% 100%)}
     .scare-caption{position:absolute;bottom:10%;color:#ff264b;font-size:clamp(14px,4vw,24px);letter-spacing:6px;text-shadow:0 0 20px #f03}
     .scare-dismiss{position:absolute;right:18px;top:18px;z-index:2;pointer-events:auto}
+
+    /* CREEPY CRAWLERS: visible movement, not just silhouettes */
+    .crawler{position:absolute;z-index:3;width:24px;height:13px;border-radius:55% 45% 50% 50%;background:radial-gradient(ellipse at 35% 30%,#3b1a24,#050205 68%);filter:drop-shadow(0 0 5px rgba(255,0,40,.55));pointer-events:none}
+    .crawler::before{content:"";position:absolute;left:-7px;top:-6px;width:38px;height:25px;background:linear-gradient(28deg,transparent 42%,#080307 44% 49%,transparent 51%),linear-gradient(-28deg,transparent 42%,#080307 44% 49%,transparent 51%),linear-gradient(65deg,transparent 43%,#10050a 45% 49%,transparent 51%),linear-gradient(-65deg,transparent 43%,#10050a 45% 49%,transparent 51%);background-size:19px 13px;background-repeat:repeat-x}
+    .crawler::after{content:"";position:absolute;right:3px;top:4px;width:3px;height:3px;border-radius:50%;background:#ff163b;box-shadow:5px 0 5px 1px #f03}
+    .crawler.crawl-one{left:-32px;bottom:25%;animation:crawler-cross 11s linear infinite}
+    .crawler.crawl-two{right:-34px;bottom:12%;transform:scale(.72);animation:crawler-cross-reverse 14s linear 3s infinite}
+    .drop-spider{position:absolute;z-index:3;right:23%;top:-6px;width:18px;height:18px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#4b1826,#030104 70%);box-shadow:0 0 8px rgba(255,0,40,.35);pointer-events:none;animation:spider-drop 9s ease-in-out infinite}
+    .drop-spider::before{content:"";position:absolute;left:8px;bottom:13px;width:1px;height:180px;background:linear-gradient(rgba(180,100,110,.6),rgba(180,100,110,.05));transform:translateY(-100%);transform-origin:bottom}
+    .drop-spider::after{content:"";position:absolute;inset:-5px;background:linear-gradient(35deg,transparent 42%,#080307 44% 49%,transparent 51%),linear-gradient(-35deg,transparent 42%,#080307 44% 49%,transparent 51%);background-size:12px 12px}
+    .project-art.crawler-rush .crawler.crawl-one{animation-duration:2.2s;filter:drop-shadow(0 0 9px #f03)}
+    .project-art.crawler-rush .crawler.crawl-two{animation-duration:2.8s;filter:drop-shadow(0 0 9px #f03)}
+    .project-art.crawler-rush .drop-spider{animation-duration:1.6s}
+    @keyframes crawler-cross{0%{left:-32px;transform:translateY(0) rotate(8deg)}20%{transform:translateY(-5px) rotate(-8deg)}48%{transform:translateY(3px) rotate(8deg)}75%{transform:translateY(-4px) rotate(-6deg)}100%{left:calc(100% + 35px);transform:translateY(0) rotate(8deg)}}
+    @keyframes crawler-cross-reverse{0%{right:-34px;transform:scale(.72) translateY(0)}35%{transform:scale(.72) translateY(-5px)}70%{transform:scale(.72) translateY(4px)}100%{right:calc(100% + 35px);transform:scale(.72) translateY(0)}}
+    @keyframes spider-drop{0%,12%,100%{top:-8px}35%,49%{top:44%}65%{top:37%}82%{top:-8px}}
+
     @keyframes nightmare-pulse{from{filter:brightness(.7)}to{filter:brightness(1.15)}}
     @keyframes portal-throb{0%,100%{filter:brightness(.8)}50%{filter:brightness(1.45)}}
     @keyframes ember-rise{0%{transform:translateY(30px);opacity:0}25%{opacity:1}100%{transform:translateY(-90px);opacity:0}}
@@ -158,7 +175,7 @@
       <button class="nightmare-control random-toggle" id="randomToggle" type="button" aria-pressed="true">☠ RANDOM HAUNTINGS: ON</button>
     </div>
     <div class="project-art" id="nightmareScene" role="button" tabindex="0" aria-label="Interact with the nightmare scene. A crimson portal is watched by monsters and the Host">
-      <div class="forge-shadow" aria-hidden="true"></div><div class="forge-portal"></div><span class="forge-ember"></span><span class="forge-ember two"></span>
+      <div class="forge-shadow" aria-hidden="true"></div><div class="crawler crawl-one" aria-hidden="true"></div><div class="crawler crawl-two" aria-hidden="true"></div><div class="drop-spider" aria-hidden="true"></div><div class="forge-portal"></div><span class="forge-ember"></span><span class="forge-ember two"></span>
       <div class="host-presence" id="theHost" aria-hidden="true"><span class="host-head"></span><span class="host-neck"></span><span class="host-body"></span><span class="host-name">THE HOST</span></div>
       <span class="scene-message" id="sceneMessage" aria-live="polite"></span>
       <span class="haunt-flash" aria-hidden="true"></span>
@@ -244,7 +261,8 @@
     }
     function haunt(){
       if(!randomOn || document.hidden)return;
-      scene.classList.add('haunt-red','haunt-glitch');setTimeout(()=>scene.classList.remove('haunt-red'),220);setTimeout(()=>scene.classList.remove('haunt-glitch'),650);
+      scene.classList.add('haunt-red','haunt-glitch','crawler-rush');
+      setTimeout(()=>scene.classList.remove('crawler-rush'),2600);setTimeout(()=>scene.classList.remove('haunt-red'),220);setTimeout(()=>scene.classList.remove('haunt-glitch'),650);
       const events=[
         ()=>{scene.classList.remove('scene-glitch');void scene.offsetWidth;scene.classList.add('scene-glitch');whisper('DID YOU SEE THAT?')},
         ()=>{host.classList.remove('host-left','host-right','host-fade');host.classList.add(Math.random()>.5?'host-left':'host-right');whisper('I WAS CLOSER A MOMENT AGO.')},
@@ -255,7 +273,7 @@
       events[Math.floor(Math.random()*events.length)]();scheduleHaunt();
     }
     function scheduleHaunt(){clearTimeout(hauntTimer);if(randomOn&&!document.hidden){hauntTimer=setTimeout(haunt,8000+Math.random()*8000)}}
-    function announceHaunting(){whisper('THE HOST IS WATCHING YOU.');scene.classList.add('haunt-red','haunt-glitch');host.classList.remove('host-left','host-right','host-fade');host.classList.add(Math.random()>.5?'host-left':'host-right');setTimeout(()=>scene.classList.remove('haunt-red'),220);setTimeout(()=>scene.classList.remove('haunt-glitch'),650);scheduleHaunt()}
+    function announceHaunting(){whisper('THE HOST IS WATCHING YOU.');scene.classList.add('haunt-red','haunt-glitch','crawler-rush');setTimeout(()=>scene.classList.remove('crawler-rush'),2600);host.classList.remove('host-left','host-right','host-fade');host.classList.add(Math.random()>.5?'host-left':'host-right');setTimeout(()=>scene.classList.remove('haunt-red'),220);setTimeout(()=>scene.classList.remove('haunt-glitch'),650);scheduleHaunt()}
     function interactScene(){
       scene.classList.add("reveal-shadow");setTimeout(()=>scene.classList.remove("reveal-shadow"),700);
       const lines=['THE HOST IS LISTENING.','SOMETHING MOVED BEHIND YOU.','YOU SHOULD NOT HAVE TOUCHED THAT.','IT KNOWS YOU ARE HERE.'];
