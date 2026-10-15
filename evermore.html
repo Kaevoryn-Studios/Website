@@ -57,7 +57,7 @@ main>*:not(.evermore-living-memories){position:relative;z-index:1}
 .memory-orb:nth-child(1){left:7%;top:12%;--drift:21s;--delay:-4s}.memory-orb:nth-child(2){left:87%;top:17%;width:24px;--drift:25s;--delay:-11s}.memory-orb:nth-child(3){left:14%;top:37%;width:16px;--drift:19s;--delay:-8s}.memory-orb:nth-child(4){left:92%;top:43%;width:13px;--drift:23s;--delay:-3s}.memory-orb:nth-child(5){left:5%;top:63%;width:21px;--drift:27s;--delay:-15s}.memory-orb:nth-child(6){left:84%;top:74%;width:17px;--drift:22s;--delay:-6s}.memory-orb:nth-child(7){left:24%;top:84%;width:12px;--drift:17s;--delay:-10s}.memory-orb:nth-child(8){left:73%;top:91%;width:22px;--drift:26s;--delay:-18s}
 .memory-soul{position:absolute;width:clamp(36px,5vw,58px);height:clamp(84px,12vw,138px);opacity:.3;filter:drop-shadow(0 0 18px rgba(151,213,255,.6));animation:soul-drift 24s ease-in-out infinite alternate;transform-origin:center}
 .memory-soul:before{content:"";position:absolute;top:0;left:34%;width:32%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 35% 25%,rgba(255,255,255,1),rgba(170,224,255,.75) 45%,rgba(168,149,255,.16) 78%,transparent);box-shadow:0 0 24px rgba(159,214,255,.55)}
-.memory-soul:after{content:"";position:absolute;top:27%;left:10%;width:80%;height:62%;border-radius:48% 48% 36% 36% / 22% 22% 70% 70%;background:linear-gradient(180deg,rgba(205,239,255,.85),rgba(168,149,255,.42) 54%,rgba(126,234,255,.04));clip-path:polygon(28% 0,72% 0,100% 32%,77% 51%,95% 100%,50% 82%,5% 100%,23% 51%,0 32%)}
+.memory-soul:after{content:"";position:absolute;top:27%;left:8%;width:84%;height:70%;border-radius:0;background:linear-gradient(180deg,rgba(235,250,255,.95),rgba(126,234,255,.78) 52%,rgba(168,149,255,.48));clip-path:polygon(36% 0,64% 0,73% 13%,91% 24%,100% 44%,87% 49%,73% 32%,69% 53%,78% 73%,72% 100%,57% 100%,52% 72%,47% 72%,42% 100%,27% 100%,31% 73%,39% 53%,33% 32%,17% 49%,0 44%,9% 24%,27% 13%)}
 .memory-soul.soul-one{left:9%;top:22%;--turn:-7deg;animation-delay:-7s}.memory-soul.soul-two{right:8%;top:53%;--turn:6deg;animation-delay:-15s;transform:scale(.8)}
 @keyframes memory-drift{0%{transform:translate3d(0,0,0) scale(.85);opacity:.5}50%{opacity:1}100%{transform:translate3d(16px,-28px,0) scale(1.14);opacity:.8}}
 @keyframes soul-drift{0%{transform:translate3d(0,12px,0) rotate(var(--turn,0deg));opacity:.18}100%{transform:translate3d(9px,-20px,0) rotate(var(--turn,0deg));opacity:.34}}
@@ -69,6 +69,16 @@ main>*:not(.evermore-living-memories){position:relative;z-index:1}
 .evermore-living-memories .memory-orb,
 .evermore-living-memories .memory-soul{animation-play-state:running;will-change:transform,opacity}
 @media(prefers-reduced-motion:reduce){.evermore-living-memories .memory-orb,.evermore-living-memories .memory-soul{animation-duration:30s!important;animation-iteration-count:infinite!important}}
+
+/* Hard override: global site reduced-motion rules must not freeze this decorative feature */
+.evermore-living-memories .memory-orb{animation:memory-drift var(--drift,18s) ease-in-out infinite alternate!important;animation-delay:var(--delay,0s)!important}
+.evermore-living-memories .memory-soul{animation:soul-drift 24s ease-in-out infinite alternate!important;animation-delay:-7s!important}
+.evermore-living-memories .memory-soul.soul-two{animation-delay:-15s!important}
+@media(prefers-reduced-motion:reduce){
+ .evermore-living-memories .memory-orb{animation:memory-drift 24s ease-in-out infinite alternate!important}
+ .evermore-living-memories .memory-soul{animation:soul-drift 30s ease-in-out infinite alternate!important}
+}
+
 </style>
 </head>
 <body>
