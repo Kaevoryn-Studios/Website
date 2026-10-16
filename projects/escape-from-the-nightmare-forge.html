@@ -550,7 +550,8 @@
         ()=>{host.classList.remove('host-left','host-right','host-fade');host.classList.add(Math.random()>.5?'host-left':'host-right');whisper('I WAS CLOSER A MOMENT AGO.')},
         ()=>{host.classList.add('host-fade');whisper('DONT LOOK AWAY.');setTimeout(()=>host.classList.remove('host-fade'),2600)},
         ()=>{whisper('THE FORGE KNOWS YOU ARE HERE.');scene.classList.remove('scene-glitch');void scene.offsetWidth;scene.classList.add('scene-glitch')},
-        ()=>{whisper('IT FOUND YOU.');scene.classList.remove('apparition');void scene.offsetWidth;scene.classList.add('apparition');setTimeout(()=>scene.classList.remove('apparition'),800);if(Math.random()<.32)jumpScare()}
+        ()=>{whisper('IT FOUND YOU.');scene.classList.remove('apparition');void scene.offsetWidth;scene.classList.add('apparition');setTimeout(()=>scene.classList.remove('apparition'),800);if(Math.random()<.32)jumpScare()},
+        ()=>{scene.classList.add('blackout');whisper('THE LIGHTS WONT SAVE YOU.');setTimeout(()=>scene.classList.remove('blackout'),560)}
       ];
       events[Math.floor(Math.random()*events.length)]();scheduleHaunt();
     }
