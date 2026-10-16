@@ -312,6 +312,15 @@
       #nightmareScene .crawler.spider-svg.crawl-two{animation:floor-crawl-left-facing 20s linear 1s infinite!important}
     }
 
+
+    /* JS-DRIVEN FLOOR CRAWL: body position is updated directly, independent of CSS keyframe conflicts. */
+    #nightmareScene .crawler.spider-svg.crawl-one,
+    #nightmareScene .crawler.spider-svg.crawl-two{
+      animation:none!important;
+      left:0!important;right:auto!important;bottom:1%!important;top:auto!important;
+      will-change:left,transform;
+    }
+
     /* FINAL CRAWL OVERRIDE: move the entire spider with transform, not left/right keyframes. */
     #nightmareScene .crawler.spider-svg.crawl-one{
       left:0!important;right:auto!important;bottom:1%!important;
@@ -493,6 +502,35 @@
     const host = document.getElementById("theHost");
     const message = document.getElementById("sceneMessage");
     let audio = null, soundOn = false, randomOn = true, nightmareAwake = false, scareTimer = null, thunderTimer = null, hauntTimer = null, visualLightningTimer = null, noiseBuffer = null, droneNodes = [];
+
+    /* Reliable ground travel: JS owns the spider body position; CSS only animates the legs. */
+    function runGroundSpiders(){
+      if(!scene) return;
+      const movers=[
+        {el:scene.querySelector('.crawler.spider-svg.crawl-one'),speed:76,offset:0,scale:1},
+        {el:scene.querySelector('.crawler.spider-svg.crawl-two'),speed:61,offset:.53,scale:.82}
+      ].filter(item=>item.el);
+      const tick=now=>{
+        const width=scene.clientWidth||window.innerWidth;
+        movers.forEach(item=>{
+          const span=width+140;
+          const phase=((now/1000*item.speed/Math.max(span,1)+item.offset)%2+2)%2;
+          const movingRight=phase<1;
+          const progress=movingRight?phase:2-phase;
+          const x=-70+progress*span;
+          item.el.style.setProperty('left',x+'px','important');
+          item.el.style.setProperty('right','auto','important');
+          item.el.style.setProperty('bottom','1%','important');
+          item.el.style.setProperty('top','auto','important');
+          item.el.style.setProperty('transform','rotate('+(movingRight?'90deg':'-90deg')+') scale('+item.scale+')','important');
+          item.el.style.setProperty('animation','none','important');
+        });
+        window.requestAnimationFrame(tick);
+      };
+      window.requestAnimationFrame(tick);
+    }
+    runGroundSpiders();
+
     function setupAudio(){
       if(audio) return;
       const Ctx = window.AudioContext || window.webkitAudioContext;
