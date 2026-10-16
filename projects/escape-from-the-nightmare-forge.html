@@ -190,11 +190,67 @@
     @media(max-width:520px){.host-presence{transform:translate(-50%,-42%) scale(.78)}.monster.left{left:-3%}.monster.right{right:-3%}.nightmare-controls{flex-direction:column}.nightmare-control{width:100%}}
     @media(prefers-reduced-motion:reduce){body::before,.forge-portal,.forge-ember,.fog,.host-head::before,.host-head::after,.monster,.jumpscare.show,.crawler,.drop-spider{animation:none!important}.lightning.flash{animation:lightning-flash .18s linear 1!important}.monster{opacity:.88}.crawler{opacity:1!important}.crawler.crawl-one{left:12%;bottom:17%}.crawler.crawl-two{right:14%;bottom:9%;transform:scale(.82)}.drop-spider{top:22%}.jumpscare.show{opacity:1;visibility:visible}.scare-face{transform:none}}
 
+
+    /* RECOGNIZABLE SPIDERS: eight articulated legs, two body sections, and eyes */
+    .spider-svg{background:none!important;border-radius:0!important;box-shadow:none!important}
+    .spider-svg::before,.spider-svg::after{content:none!important;display:none!important}
+    .spider-svg svg{display:block;width:100%;height:100%;overflow:visible;filter:drop-shadow(0 0 3px rgba(255,0,45,.38))}
+    .page-crawler.spider-svg{width:60px;height:50px;filter:drop-shadow(0 0 8px rgba(255,0,35,.7))}
+    .crawler.spider-svg{width:60px;height:50px;filter:drop-shadow(0 0 6px rgba(255,0,40,.6))}
+    .drop-spider.spider-svg{width:42px;height:38px;filter:drop-shadow(0 0 7px rgba(255,0,40,.7))}
+    .drop-spider.spider-svg::before{content:""!important;display:block!important;left:20px;bottom:30px;height:180px;width:1px;background:linear-gradient(rgba(180,100,110,.7),rgba(180,100,110,.04))}
+    @media(prefers-reduced-motion:reduce){.spider-svg svg{filter:none}}
+
   </style>
 </head>
 <body>
   <div class="stars" aria-hidden="true"></div>
-  <div class="whole-page-haunt" aria-hidden="true"><span class="wall-scratch one"></span><span class="wall-scratch two"></span><span class="wall-scratch three"></span><span class="page-crawler edge-a"></span><span class="page-crawler edge-b"></span><span class="page-crawler edge-c"></span></div>
+  <div class="whole-page-haunt" aria-hidden="true"><span class="wall-scratch one"></span><span class="wall-scratch two"></span><span class="wall-scratch three"></span><span class="page-crawler spider-svg edge-a" aria-hidden="true"><svg viewBox="0 0 72 58" role="presentation" aria-hidden="true" focusable="false">
+  <g fill="none" stroke="#090307" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M29 25 L18 14 L7 16 L3 10"/><path d="M30 29 L16 27 L7 35 L2 34"/><path d="M31 33 L19 39 L13 49 L6 50"/><path d="M34 35 L28 45 L28 54 L22 57"/>
+    <path d="M43 25 L54 14 L65 16 L69 10"/><path d="M42 29 L56 27 L65 35 L70 34"/><path d="M41 33 L53 39 L59 49 L66 50"/><path d="M38 35 L44 45 L44 54 L50 57"/>
+  </g>
+  <g fill="none" stroke="#642031" stroke-width="1.4" stroke-linecap="round">
+    <path d="M29 25 L18 14 L7 16 L3 10"/><path d="M30 29 L16 27 L7 35 L2 34"/><path d="M31 33 L19 39 L13 49 L6 50"/><path d="M34 35 L28 45 L28 54 L22 57"/>
+    <path d="M43 25 L54 14 L65 16 L69 10"/><path d="M42 29 L56 27 L65 35 L70 34"/><path d="M41 33 L53 39 L59 49 L66 50"/><path d="M38 35 L44 45 L44 54 L50 57"/>
+  </g>
+  <ellipse cx="36" cy="35" rx="12" ry="15" fill="#210712" stroke="#6d2437" stroke-width="2"/>
+  <ellipse cx="36" cy="22" rx="9" ry="8" fill="#3a1020" stroke="#8e3046" stroke-width="1.5"/>
+  <path d="M31 17 Q36 12 41 17" fill="none" stroke="#a34255" stroke-width="1.5"/>
+  <g fill="#ff263f"><circle cx="32" cy="21" r="2.1"/><circle cx="40" cy="21" r="2.1"/></g>
+  <g fill="#ff9aa8"><circle cx="31.5" cy="20.5" r=".7"/><circle cx="39.5" cy="20.5" r=".7"/></g>
+  <path d="M31 47 Q36 52 41 47" fill="none" stroke="#080206" stroke-width="2"/>
+</svg></span><span class="page-crawler spider-svg edge-b" aria-hidden="true"><svg viewBox="0 0 72 58" role="presentation" aria-hidden="true" focusable="false">
+  <g fill="none" stroke="#090307" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M29 25 L18 14 L7 16 L3 10"/><path d="M30 29 L16 27 L7 35 L2 34"/><path d="M31 33 L19 39 L13 49 L6 50"/><path d="M34 35 L28 45 L28 54 L22 57"/>
+    <path d="M43 25 L54 14 L65 16 L69 10"/><path d="M42 29 L56 27 L65 35 L70 34"/><path d="M41 33 L53 39 L59 49 L66 50"/><path d="M38 35 L44 45 L44 54 L50 57"/>
+  </g>
+  <g fill="none" stroke="#642031" stroke-width="1.4" stroke-linecap="round">
+    <path d="M29 25 L18 14 L7 16 L3 10"/><path d="M30 29 L16 27 L7 35 L2 34"/><path d="M31 33 L19 39 L13 49 L6 50"/><path d="M34 35 L28 45 L28 54 L22 57"/>
+    <path d="M43 25 L54 14 L65 16 L69 10"/><path d="M42 29 L56 27 L65 35 L70 34"/><path d="M41 33 L53 39 L59 49 L66 50"/><path d="M38 35 L44 45 L44 54 L50 57"/>
+  </g>
+  <ellipse cx="36" cy="35" rx="12" ry="15" fill="#210712" stroke="#6d2437" stroke-width="2"/>
+  <ellipse cx="36" cy="22" rx="9" ry="8" fill="#3a1020" stroke="#8e3046" stroke-width="1.5"/>
+  <path d="M31 17 Q36 12 41 17" fill="none" stroke="#a34255" stroke-width="1.5"/>
+  <g fill="#ff263f"><circle cx="32" cy="21" r="2.1"/><circle cx="40" cy="21" r="2.1"/></g>
+  <g fill="#ff9aa8"><circle cx="31.5" cy="20.5" r=".7"/><circle cx="39.5" cy="20.5" r=".7"/></g>
+  <path d="M31 47 Q36 52 41 47" fill="none" stroke="#080206" stroke-width="2"/>
+</svg></span><span class="page-crawler spider-svg edge-c" aria-hidden="true"><svg viewBox="0 0 72 58" role="presentation" aria-hidden="true" focusable="false">
+  <g fill="none" stroke="#090307" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M29 25 L18 14 L7 16 L3 10"/><path d="M30 29 L16 27 L7 35 L2 34"/><path d="M31 33 L19 39 L13 49 L6 50"/><path d="M34 35 L28 45 L28 54 L22 57"/>
+    <path d="M43 25 L54 14 L65 16 L69 10"/><path d="M42 29 L56 27 L65 35 L70 34"/><path d="M41 33 L53 39 L59 49 L66 50"/><path d="M38 35 L44 45 L44 54 L50 57"/>
+  </g>
+  <g fill="none" stroke="#642031" stroke-width="1.4" stroke-linecap="round">
+    <path d="M29 25 L18 14 L7 16 L3 10"/><path d="M30 29 L16 27 L7 35 L2 34"/><path d="M31 33 L19 39 L13 49 L6 50"/><path d="M34 35 L28 45 L28 54 L22 57"/>
+    <path d="M43 25 L54 14 L65 16 L69 10"/><path d="M42 29 L56 27 L65 35 L70 34"/><path d="M41 33 L53 39 L59 49 L66 50"/><path d="M38 35 L44 45 L44 54 L50 57"/>
+  </g>
+  <ellipse cx="36" cy="35" rx="12" ry="15" fill="#210712" stroke="#6d2437" stroke-width="2"/>
+  <ellipse cx="36" cy="22" rx="9" ry="8" fill="#3a1020" stroke="#8e3046" stroke-width="1.5"/>
+  <path d="M31 17 Q36 12 41 17" fill="none" stroke="#a34255" stroke-width="1.5"/>
+  <g fill="#ff263f"><circle cx="32" cy="21" r="2.1"/><circle cx="40" cy="21" r="2.1"/></g>
+  <g fill="#ff9aa8"><circle cx="31.5" cy="20.5" r=".7"/><circle cx="39.5" cy="20.5" r=".7"/></g>
+  <path d="M31 47 Q36 52 41 47" fill="none" stroke="#080206" stroke-width="2"/>
+</svg></span></div>
   <div class="storm-layer" aria-hidden="true"><div class="fog"></div></div>
   <div class="lightning" id="nightmareLightning" aria-hidden="true"></div>
   <div class="jumpscare" id="nightmareScare" role="dialog" aria-label="Nightmare jump scare" aria-hidden="true">
@@ -213,7 +269,52 @@
       <button class="nightmare-control random-toggle" id="randomToggle" type="button" aria-pressed="true">☠ RANDOM HAUNTINGS: ON</button>
     </div>
     <div class="project-art" id="nightmareScene" role="button" tabindex="0" aria-label="Interact with the nightmare scene. A crimson portal is watched by monsters and the Host">
-      <div class="forge-shadow" aria-hidden="true"></div><div class="crawler crawl-one" aria-hidden="true"></div><div class="crawler crawl-two" aria-hidden="true"></div><div class="drop-spider" aria-hidden="true"></div><div class="forge-portal"></div><span class="forge-ember"></span><span class="forge-ember two"></span>
+      <div class="forge-shadow" aria-hidden="true"></div><div class="crawler spider-svg crawl-one" aria-hidden="true"><svg viewBox="0 0 72 58" role="presentation" aria-hidden="true" focusable="false">
+  <g fill="none" stroke="#090307" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M29 25 L18 14 L7 16 L3 10"/><path d="M30 29 L16 27 L7 35 L2 34"/><path d="M31 33 L19 39 L13 49 L6 50"/><path d="M34 35 L28 45 L28 54 L22 57"/>
+    <path d="M43 25 L54 14 L65 16 L69 10"/><path d="M42 29 L56 27 L65 35 L70 34"/><path d="M41 33 L53 39 L59 49 L66 50"/><path d="M38 35 L44 45 L44 54 L50 57"/>
+  </g>
+  <g fill="none" stroke="#642031" stroke-width="1.4" stroke-linecap="round">
+    <path d="M29 25 L18 14 L7 16 L3 10"/><path d="M30 29 L16 27 L7 35 L2 34"/><path d="M31 33 L19 39 L13 49 L6 50"/><path d="M34 35 L28 45 L28 54 L22 57"/>
+    <path d="M43 25 L54 14 L65 16 L69 10"/><path d="M42 29 L56 27 L65 35 L70 34"/><path d="M41 33 L53 39 L59 49 L66 50"/><path d="M38 35 L44 45 L44 54 L50 57"/>
+  </g>
+  <ellipse cx="36" cy="35" rx="12" ry="15" fill="#210712" stroke="#6d2437" stroke-width="2"/>
+  <ellipse cx="36" cy="22" rx="9" ry="8" fill="#3a1020" stroke="#8e3046" stroke-width="1.5"/>
+  <path d="M31 17 Q36 12 41 17" fill="none" stroke="#a34255" stroke-width="1.5"/>
+  <g fill="#ff263f"><circle cx="32" cy="21" r="2.1"/><circle cx="40" cy="21" r="2.1"/></g>
+  <g fill="#ff9aa8"><circle cx="31.5" cy="20.5" r=".7"/><circle cx="39.5" cy="20.5" r=".7"/></g>
+  <path d="M31 47 Q36 52 41 47" fill="none" stroke="#080206" stroke-width="2"/>
+</svg></div><div class="crawler spider-svg crawl-two" aria-hidden="true"><svg viewBox="0 0 72 58" role="presentation" aria-hidden="true" focusable="false">
+  <g fill="none" stroke="#090307" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M29 25 L18 14 L7 16 L3 10"/><path d="M30 29 L16 27 L7 35 L2 34"/><path d="M31 33 L19 39 L13 49 L6 50"/><path d="M34 35 L28 45 L28 54 L22 57"/>
+    <path d="M43 25 L54 14 L65 16 L69 10"/><path d="M42 29 L56 27 L65 35 L70 34"/><path d="M41 33 L53 39 L59 49 L66 50"/><path d="M38 35 L44 45 L44 54 L50 57"/>
+  </g>
+  <g fill="none" stroke="#642031" stroke-width="1.4" stroke-linecap="round">
+    <path d="M29 25 L18 14 L7 16 L3 10"/><path d="M30 29 L16 27 L7 35 L2 34"/><path d="M31 33 L19 39 L13 49 L6 50"/><path d="M34 35 L28 45 L28 54 L22 57"/>
+    <path d="M43 25 L54 14 L65 16 L69 10"/><path d="M42 29 L56 27 L65 35 L70 34"/><path d="M41 33 L53 39 L59 49 L66 50"/><path d="M38 35 L44 45 L44 54 L50 57"/>
+  </g>
+  <ellipse cx="36" cy="35" rx="12" ry="15" fill="#210712" stroke="#6d2437" stroke-width="2"/>
+  <ellipse cx="36" cy="22" rx="9" ry="8" fill="#3a1020" stroke="#8e3046" stroke-width="1.5"/>
+  <path d="M31 17 Q36 12 41 17" fill="none" stroke="#a34255" stroke-width="1.5"/>
+  <g fill="#ff263f"><circle cx="32" cy="21" r="2.1"/><circle cx="40" cy="21" r="2.1"/></g>
+  <g fill="#ff9aa8"><circle cx="31.5" cy="20.5" r=".7"/><circle cx="39.5" cy="20.5" r=".7"/></g>
+  <path d="M31 47 Q36 52 41 47" fill="none" stroke="#080206" stroke-width="2"/>
+</svg></div><div class="drop-spider spider-svg" aria-hidden="true"><svg viewBox="0 0 72 58" role="presentation" aria-hidden="true" focusable="false">
+  <g fill="none" stroke="#090307" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M29 25 L18 14 L7 16 L3 10"/><path d="M30 29 L16 27 L7 35 L2 34"/><path d="M31 33 L19 39 L13 49 L6 50"/><path d="M34 35 L28 45 L28 54 L22 57"/>
+    <path d="M43 25 L54 14 L65 16 L69 10"/><path d="M42 29 L56 27 L65 35 L70 34"/><path d="M41 33 L53 39 L59 49 L66 50"/><path d="M38 35 L44 45 L44 54 L50 57"/>
+  </g>
+  <g fill="none" stroke="#642031" stroke-width="1.4" stroke-linecap="round">
+    <path d="M29 25 L18 14 L7 16 L3 10"/><path d="M30 29 L16 27 L7 35 L2 34"/><path d="M31 33 L19 39 L13 49 L6 50"/><path d="M34 35 L28 45 L28 54 L22 57"/>
+    <path d="M43 25 L54 14 L65 16 L69 10"/><path d="M42 29 L56 27 L65 35 L70 34"/><path d="M41 33 L53 39 L59 49 L66 50"/><path d="M38 35 L44 45 L44 54 L50 57"/>
+  </g>
+  <ellipse cx="36" cy="35" rx="12" ry="15" fill="#210712" stroke="#6d2437" stroke-width="2"/>
+  <ellipse cx="36" cy="22" rx="9" ry="8" fill="#3a1020" stroke="#8e3046" stroke-width="1.5"/>
+  <path d="M31 17 Q36 12 41 17" fill="none" stroke="#a34255" stroke-width="1.5"/>
+  <g fill="#ff263f"><circle cx="32" cy="21" r="2.1"/><circle cx="40" cy="21" r="2.1"/></g>
+  <g fill="#ff9aa8"><circle cx="31.5" cy="20.5" r=".7"/><circle cx="39.5" cy="20.5" r=".7"/></g>
+  <path d="M31 47 Q36 52 41 47" fill="none" stroke="#080206" stroke-width="2"/>
+</svg></div><div class="forge-portal"></div><span class="forge-ember"></span><span class="forge-ember two"></span>
       <div class="wake-prompt" id="wakePrompt" aria-hidden="false"><strong>THE FORGE IS DORMANT</strong><span>Something is breathing behind the walls.</span><span class="wake-hint">TAP THE SCENE TO WAKE IT</span></div>
       <div class="host-presence" id="theHost" aria-hidden="true"><span class="host-head"></span><span class="host-neck"></span><span class="host-body"></span><span class="host-name">THE HOST</span></div>
       <span class="scene-message" id="sceneMessage" aria-live="polite"></span>
