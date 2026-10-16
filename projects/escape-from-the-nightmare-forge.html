@@ -127,6 +127,19 @@
 
     /* FULL-PAGE HORROR ATMOSPHERE */
     .whole-page-haunt{position:fixed;inset:0;z-index:20;pointer-events:none;overflow:hidden;opacity:0;transition:opacity 1.2s ease}
+    body.nightmare-awake{animation:forge-pulse 7s ease-in-out infinite}
+    body.nightmare-awake main{animation:forge-tremor 9s ease-in-out infinite}
+    @keyframes forge-pulse{0%,100%{background-color:#05040a}50%{background-color:#12030a}}
+    @keyframes forge-tremor{0%,92%,96%,100%{transform:translateX(0)}93%{transform:translateX(-2px)}94%{transform:translateX(3px)}95%{transform:translateX(-1px)}}
+    .wake-prompt{position:absolute;z-index:8;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center;background:radial-gradient(ellipse,rgba(2,1,5,.58),rgba(0,0,0,.9));color:#f8dce2;transition:opacity 1s ease,visibility 1s ease;letter-spacing:2px}
+    .wake-prompt strong{font-size:clamp(1.05rem,3vw,1.7rem);color:#ff657c;text-shadow:0 0 18px #f03;letter-spacing:3px}
+    .wake-prompt span{font-size:.78rem;line-height:1.7;max-width:34ch}
+    .wake-prompt .wake-hint{margin-top:12px;animation:hint-pulse 2.2s ease-in-out infinite}
+    @keyframes hint-pulse{0%,100%{opacity:.45}50%{opacity:1;text-shadow:0 0 14px #f03}}
+    body.nightmare-awake .wake-prompt{opacity:0;visibility:hidden;pointer-events:none}
+    body.nightmare-awake .project-art{box-shadow:0 0 30px rgba(255,0,45,.2),inset 0 0 70px rgba(255,0,35,.18)}
+    body.nightmare-awake .forge-portal{animation-duration:1.8s}
+    body.nightmare-awake .host-presence{filter:drop-shadow(0 0 28px rgba(255,0,35,.8))}
     body.nightmare-awake .whole-page-haunt{opacity:1}
     body:not(.nightmare-awake) .whole-page-haunt *{animation-play-state:paused!important}
     body.nightmare-awake .whole-page-haunt *{animation-play-state:running}
@@ -201,6 +214,7 @@
     </div>
     <div class="project-art" id="nightmareScene" role="button" tabindex="0" aria-label="Interact with the nightmare scene. A crimson portal is watched by monsters and the Host">
       <div class="forge-shadow" aria-hidden="true"></div><div class="crawler crawl-one" aria-hidden="true"></div><div class="crawler crawl-two" aria-hidden="true"></div><div class="drop-spider" aria-hidden="true"></div><div class="forge-portal"></div><span class="forge-ember"></span><span class="forge-ember two"></span>
+      <div class="wake-prompt" id="wakePrompt" aria-hidden="false"><strong>THE FORGE IS DORMANT</strong><span>Something is breathing behind the walls.</span><span class="wake-hint">TAP THE SCENE TO WAKE IT</span></div>
       <div class="host-presence" id="theHost" aria-hidden="true"><span class="host-head"></span><span class="host-neck"></span><span class="host-body"></span><span class="host-name">THE HOST</span></div>
       <span class="scene-message" id="sceneMessage" aria-live="polite"></span>
       <span class="haunt-flash" aria-hidden="true"></span>
@@ -299,7 +313,7 @@
     }
     function scheduleHaunt(){clearTimeout(hauntTimer);if(nightmareAwake&&randomOn&&!document.hidden){hauntTimer=setTimeout(haunt,8000+Math.random()*8000)}}
     function announceHaunting(){whisper('THE HOST IS WATCHING YOU.');scene.classList.add('haunt-red','haunt-glitch','crawler-rush');setTimeout(()=>scene.classList.remove('crawler-rush'),2600);host.classList.remove('host-left','host-right','host-fade');host.classList.add(Math.random()>.5?'host-left':'host-right');setTimeout(()=>scene.classList.remove('haunt-red'),220);setTimeout(()=>scene.classList.remove('haunt-glitch'),650);scheduleHaunt()}
-    function awakenNightmare(){if(nightmareAwake)return;nightmareAwake=true;document.body.classList.add("nightmare-awake");scene.classList.add("nightmare-awake","haunt-red","haunt-glitch","crawler-rush");whisper("YOU WOKE IT. THE HOST IS AWAKE.");host.classList.remove("host-left","host-right","host-fade");host.classList.add(Math.random()>.5?"host-left":"host-right");setTimeout(()=>scene.classList.remove("haunt-red"),900);setTimeout(()=>scene.classList.remove("haunt-glitch","crawler-rush"),1800);scheduleHaunt();scheduleDread();scheduleVisualLightning()}
+    function awakenNightmare(){if(nightmareAwake)return;nightmareAwake=true;document.body.classList.add("nightmare-awake");scene.classList.add("nightmare-awake","haunt-red","haunt-glitch","crawler-rush");whisper("YOU WOKE IT. THE HOST IS AWAKE.");host.classList.remove("host-left","host-right","host-fade");host.classList.add(Math.random()>.5?"host-left":"host-right");setTimeout(()=>scene.classList.remove("haunt-red"),900);setTimeout(()=>scene.classList.remove("haunt-glitch","crawler-rush"),1800);setTimeout(()=>{if(nightmareAwake){scene.classList.add("dread-1");whisper("IT HEARD YOU.")}},4500);setTimeout(()=>{if(nightmareAwake){scene.classList.add("dread-2");whisper("IT IS COMING CLOSER.")}},13000);scheduleHaunt();scheduleDread();scheduleVisualLightning()}
     function interactScene(){
       awakenNightmare();
       scene.classList.add("reveal-shadow");setTimeout(()=>scene.classList.remove("reveal-shadow"),700);
@@ -313,8 +327,8 @@
     scene.addEventListener("pointermove",event=>{const rect=scene.getBoundingClientRect();const dx=(event.clientX-(rect.left+rect.width/2))/rect.width;const dy=(event.clientY-(rect.top+rect.height/2))/rect.height;host.style.setProperty("--eye-x",(dx*5).toFixed(1)+"px");host.style.setProperty("--eye-y",(dy*3).toFixed(1)+"px")},{passive:true});
     scene.addEventListener("pointerleave",()=>{host.style.setProperty("--eye-x","0px");host.style.setProperty("--eye-y","0px")},{passive:true});
     soundButton.addEventListener('click',toggleSound);
-    scareButton.addEventListener('click',jumpScare);
-    randomButton.addEventListener('click',()=>{randomOn=!randomOn;randomButton.setAttribute('aria-pressed',String(randomOn));randomButton.textContent=randomOn?'☠ RANDOM HAUNTINGS: ON':'☠ RANDOM HAUNTINGS: OFF';if(randomOn){announceHaunting();scheduleDread()}else{clearTimeout(hauntTimer);clearTimeout(scareTimer);clearTimeout(dreadTimer);dreadLevel=0;scene.classList.remove("dread-1","dread-2","dread-3","reveal-shadow");host.classList.remove('host-left','host-right','host-fade');message.classList.remove('show')}});
+    scareButton.addEventListener('click',()=>{awakenNightmare();setTimeout(jumpScare,650)});
+    randomButton.addEventListener('click',()=>{randomOn=!randomOn;randomButton.setAttribute('aria-pressed',String(randomOn));randomButton.textContent=randomOn?'☠ RANDOM HAUNTINGS: ON':'☠ RANDOM HAUNTINGS: OFF';if(randomOn){if(nightmareAwake)announceHaunting();scheduleDread()}else{clearTimeout(hauntTimer);clearTimeout(scareTimer);clearTimeout(dreadTimer);dreadLevel=0;scene.classList.remove("dread-1","dread-2","dread-3","reveal-shadow");host.classList.remove('host-left','host-right','host-fade');message.classList.remove('show')}});
     scene.addEventListener('click',interactScene);
     scene.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();interactScene()}});
     dismiss.addEventListener('click',()=>{scare.classList.remove('show');scare.setAttribute('aria-hidden','true')});
