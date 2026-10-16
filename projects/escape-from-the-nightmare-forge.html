@@ -499,18 +499,8 @@
       clip-path:polygon(18% 0,79% 3%,100% 24%,88% 48%,76% 70%,65% 92%,49% 100%,35% 89%,19% 67%,4% 43%,0 19%);
       box-shadow:inset 18px 4px 28px #000,inset -14px -8px 25px #18020a;
     }
-    #nightmareScene .host-head::before{
-      top:48%;left:25%;width:14%;height:2px;
-      background:#ff1836;transform:rotate(13deg);
-      box-shadow:0 0 5px 2px rgba(255,0,35,.45);
-      clip-path:polygon(0 40%,100% 0,72% 100%);
-    }
-    #nightmareScene .host-head::after{
-      top:49%;right:24%;width:11%;height:2px;
-      background:#a60020;transform:rotate(-16deg);
-      box-shadow:0 0 5px 2px rgba(255,0,35,.28);
-      clip-path:polygon(0 0,100% 45%,25% 100%);
-    }
+    #nightmareScene .host-head::before,
+    #nightmareScene .host-head::after{display:none!important}
     #nightmareScene .host-neck{left:42%;top:27%;width:18%;height:13%;background:linear-gradient(90deg,#010103,#10060b,#010103);filter:blur(3px)}
     #nightmareScene .host-body{
       left:3%;top:34%;width:94%;height:64%;
@@ -601,14 +591,18 @@
     function drone(){
       if(!soundOn || !audio) return;
       droneNodes.forEach(node=>{try{node.stop()}catch(e){}});droneNodes=[];
-      const master=audio.createGain();master.gain.value=.0001;master.gain.setTargetAtTime(.42,audio.currentTime,2.8);master.connect(audio.destination);
-      const low=audio.createOscillator(), lowGain=audio.createGain();
-      low.type='sine';low.frequency.value=38;lowGain.gain.value=.8;low.connect(lowGain);lowGain.connect(master);low.start();droneNodes.push(low);
-      const mid=audio.createOscillator(), midGain=audio.createGain(), midFilter=audio.createBiquadFilter();
-      mid.type='sine';mid.frequency.value=53.7;midGain.gain.value=.18;midFilter.type='lowpass';midFilter.frequency.value=90;mid.connect(midFilter);midFilter.connect(midGain);midGain.connect(master);mid.start();droneNodes.push(mid);
-      const breath=audio.createBufferSource(), breathFilter=audio.createBiquadFilter(), breathGain=audio.createGain();
-      breath.buffer=noiseBuffer;breath.loop=true;breathFilter.type='lowpass';breathFilter.frequency.value=320;breathGain.gain.value=.0001;
-      breathGain.gain.setTargetAtTime(.075,audio.currentTime,1.8);breath.connect(breathFilter);breathFilter.connect(breathGain);breathGain.connect(master);breath.start();droneNodes.push(breath);
+      /* A restrained, low-passed air texture. No electronic tones or harsh oscillator buzz. */
+      const source=audio.createBufferSource(), filter=audio.createBiquadFilter(), gain=audio.createGain();
+      source.buffer=noiseBuffer;source.loop=true;
+      filter.type='lowpass';filter.frequency.value=150;filter.Q.value=.35;
+      gain.gain.setValueAtTime(.0001,audio.currentTime);
+      gain.gain.linearRampToValueAtTime(.035,audio.currentTime+3.5);
+      source.connect(filter);filter.connect(gain);gain.connect(audio.destination);source.start();
+      droneNodes.push(source);
+      /* Slow, barely audible breathing-like swells in the filtered ambience. */
+      const lfo=audio.createOscillator(), lfoGain=audio.createGain();
+      lfo.type='sine';lfo.frequency.value=.11;lfoGain.gain.value=.012;
+      lfo.connect(lfoGain);lfoGain.connect(gain.gain);lfo.start();droneNodes.push(lfo);
     }
     function thunder(){
       if(!soundOn || !audio) return;
@@ -642,7 +636,7 @@
         setupAudio();
         if(!audio){soundButton.textContent='SOUND NOT SUPPORTED';return}
         await audio.resume();soundOn=true;soundButton.setAttribute('aria-pressed','true');soundButton.textContent='♫ NIGHTMARE SOUND: ON';
-        drone();thunder();heartbeatPulse();scheduleThunder();
+        drone();
       }else{
         soundOn=false;soundButton.setAttribute('aria-pressed','false');soundButton.textContent='♫ ENABLE NIGHTMARE SOUND';
         clearTimeout(thunderTimer);clearTimeout(heartbeatTimer);droneNodes.forEach(node=>{try{node.stop()}catch(e){}});droneNodes=[];if(audio) await audio.suspend();
