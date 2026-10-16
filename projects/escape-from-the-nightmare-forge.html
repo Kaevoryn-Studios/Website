@@ -126,7 +126,10 @@
 
 
     /* FULL-PAGE HORROR ATMOSPHERE */
-    .whole-page-haunt{position:fixed;inset:0;z-index:20;pointer-events:none;overflow:hidden;opacity:1}
+    .whole-page-haunt{position:fixed;inset:0;z-index:20;pointer-events:none;overflow:hidden;opacity:0;transition:opacity 1.2s ease}
+    body.nightmare-awake .whole-page-haunt{opacity:1}
+    body:not(.nightmare-awake) .whole-page-haunt *{animation-play-state:paused!important}
+    body.nightmare-awake .whole-page-haunt *{animation-play-state:running}
     .whole-page-haunt::before{content:"";position:absolute;inset:-25%;background:radial-gradient(ellipse at 2% 28%,rgba(180,0,35,.28),transparent 28%),radial-gradient(ellipse at 98% 68%,rgba(150,0,30,.25),transparent 30%),linear-gradient(110deg,transparent 35%,rgba(0,0,0,.4) 48%,transparent 62%);animation:wall-shadow 8s ease-in-out infinite alternate}
     .wall-scratch{position:absolute;width:4px;height:clamp(90px,18vh,190px);background:linear-gradient(transparent,rgba(255,25,60,.75),rgba(70,0,15,.5),transparent);filter:drop-shadow(0 0 7px rgba(255,0,40,.45));opacity:.85;transform:rotate(18deg)}
     .wall-scratch.one{left:4%;top:24%}.wall-scratch.two{right:6%;top:58%;height:120px;transform:rotate(-22deg)}.wall-scratch.three{left:12%;bottom:12%;height:95px;transform:rotate(28deg)}
@@ -225,7 +228,7 @@
     const scene = document.getElementById("nightmareScene");
     const host = document.getElementById("theHost");
     const message = document.getElementById("sceneMessage");
-    let audio = null, soundOn = false, randomOn = true, scareTimer = null, thunderTimer = null, hauntTimer = null, visualLightningTimer = null, noiseBuffer = null, droneNodes = [];
+    let audio = null, soundOn = false, randomOn = true, nightmareAwake = false, scareTimer = null, thunderTimer = null, hauntTimer = null, visualLightningTimer = null, noiseBuffer = null, droneNodes = [];
     function setupAudio(){
       if(audio) return;
       const Ctx = window.AudioContext || window.webkitAudioContext;
@@ -256,7 +259,7 @@
     }
     function scheduleThunder(){clearTimeout(thunderTimer);if(soundOn)thunderTimer=setTimeout(()=>{thunder();scheduleThunder()},6500+Math.random()*9500)}
     function flashLightning(){lightning.classList.remove('flash');void lightning.offsetWidth;lightning.classList.add('flash');scene.classList.add('reveal-shadow');setTimeout(()=>scene.classList.remove('reveal-shadow'),420)}
-    function scheduleVisualLightning(){clearTimeout(visualLightningTimer);if(document.hidden)return;visualLightningTimer=setTimeout(()=>{flashLightning();if(Math.random()>.58)setTimeout(flashLightning,180);scheduleVisualLightning()},3200+Math.random()*6500)}
+    function scheduleVisualLightning(){clearTimeout(visualLightningTimer);if(document.hidden||!nightmareAwake)return;visualLightningTimer=setTimeout(()=>{flashLightning();if(Math.random()>.58)setTimeout(flashLightning,180);scheduleVisualLightning()},3200+Math.random()*6500)}
     async function toggleSound(){
       if(!soundOn){
         setupAudio();
@@ -294,9 +297,11 @@
       ];
       events[Math.floor(Math.random()*events.length)]();scheduleHaunt();
     }
-    function scheduleHaunt(){clearTimeout(hauntTimer);if(randomOn&&!document.hidden){hauntTimer=setTimeout(haunt,8000+Math.random()*8000)}}
+    function scheduleHaunt(){clearTimeout(hauntTimer);if(nightmareAwake&&randomOn&&!document.hidden){hauntTimer=setTimeout(haunt,8000+Math.random()*8000)}}
     function announceHaunting(){whisper('THE HOST IS WATCHING YOU.');scene.classList.add('haunt-red','haunt-glitch','crawler-rush');setTimeout(()=>scene.classList.remove('crawler-rush'),2600);host.classList.remove('host-left','host-right','host-fade');host.classList.add(Math.random()>.5?'host-left':'host-right');setTimeout(()=>scene.classList.remove('haunt-red'),220);setTimeout(()=>scene.classList.remove('haunt-glitch'),650);scheduleHaunt()}
+    function awakenNightmare(){if(nightmareAwake)return;nightmareAwake=true;document.body.classList.add("nightmare-awake");scene.classList.add("nightmare-awake","haunt-red","haunt-glitch","crawler-rush");whisper("YOU WOKE IT. THE HOST IS AWAKE.");host.classList.remove("host-left","host-right","host-fade");host.classList.add(Math.random()>.5?"host-left":"host-right");setTimeout(()=>scene.classList.remove("haunt-red"),900);setTimeout(()=>scene.classList.remove("haunt-glitch","crawler-rush"),1800);scheduleHaunt();scheduleDread();scheduleVisualLightning()}
     function interactScene(){
+      awakenNightmare();
       scene.classList.add("reveal-shadow");setTimeout(()=>scene.classList.remove("reveal-shadow"),700);
       const lines=['THE HOST IS LISTENING.','SOMETHING MOVED BEHIND YOU.','YOU SHOULD NOT HAVE TOUCHED THAT.','IT KNOWS YOU ARE HERE.'];
       whisper(lines[Math.floor(Math.random()*lines.length)]);
@@ -304,7 +309,7 @@
       if(Math.random()<.24)jumpScare();
     }
     let dreadLevel=0, dreadTimer=null;
-    function scheduleDread(){clearTimeout(dreadTimer);if(document.hidden)return;dreadTimer=setTimeout(()=>{if(randomOn){dreadLevel=Math.min(3,dreadLevel+1);scene.classList.remove("dread-1","dread-2","dread-3");if(dreadLevel)scene.classList.add("dread-"+dreadLevel);if(dreadLevel===2)whisper("IT IS LEARNING YOUR SHAPE.");if(dreadLevel===3)whisper("YOU WERE NEVER ALONE.");}scheduleDread()},22000+Math.random()*9000)}
+    function scheduleDread(){clearTimeout(dreadTimer);if(document.hidden)return;dreadTimer=setTimeout(()=>{if(nightmareAwake&&randomOn){dreadLevel=Math.min(3,dreadLevel+1);scene.classList.remove("dread-1","dread-2","dread-3");if(dreadLevel)scene.classList.add("dread-"+dreadLevel);if(dreadLevel===2)whisper("IT IS LEARNING YOUR SHAPE.");if(dreadLevel===3)whisper("YOU WERE NEVER ALONE.");}scheduleDread()},22000+Math.random()*9000)}
     scene.addEventListener("pointermove",event=>{const rect=scene.getBoundingClientRect();const dx=(event.clientX-(rect.left+rect.width/2))/rect.width;const dy=(event.clientY-(rect.top+rect.height/2))/rect.height;host.style.setProperty("--eye-x",(dx*5).toFixed(1)+"px");host.style.setProperty("--eye-y",(dy*3).toFixed(1)+"px")},{passive:true});
     scene.addEventListener("pointerleave",()=>{host.style.setProperty("--eye-x","0px");host.style.setProperty("--eye-y","0px")},{passive:true});
     soundButton.addEventListener('click',toggleSound);
@@ -313,10 +318,8 @@
     scene.addEventListener('click',interactScene);
     scene.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();interactScene()}});
     dismiss.addEventListener('click',()=>{scare.classList.remove('show');scare.setAttribute('aria-hidden','true')});
-    setTimeout(()=>{if(randomOn&&!document.hidden)announceHaunting()},1200);
-    scheduleVisualLightning();
-    scheduleDread();
-    document.addEventListener('visibilitychange',()=>{if(document.hidden){clearTimeout(thunderTimer);clearTimeout(scareTimer);clearTimeout(hauntTimer);clearTimeout(visualLightningTimer);clearTimeout(dreadTimer)}else{if(soundOn)scheduleThunder();scheduleHaunt();scheduleVisualLightning();scheduleDread()}});
+    /* The Forge remains dormant until the visitor touches the scene. */
+    document.addEventListener('visibilitychange',()=>{if(document.hidden){clearTimeout(thunderTimer);clearTimeout(scareTimer);clearTimeout(hauntTimer);clearTimeout(visualLightningTimer);clearTimeout(dreadTimer)}else{if(soundOn)scheduleThunder();if(nightmareAwake){scheduleHaunt();scheduleVisualLightning();scheduleDread()}}});
     window.addEventListener('pagehide',()=>{clearTimeout(thunderTimer);clearTimeout(scareTimer);clearTimeout(hauntTimer);clearTimeout(visualLightningTimer);clearTimeout(dreadTimer);if(audio)audio.close()});
   })();
   </script>
