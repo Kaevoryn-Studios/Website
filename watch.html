@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#050711">
+<meta name="description" content="Enter Kaevoryn Watch: a future home for original series, films, trailers, and special productions from Kaevoryn Studios.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Kaevoryn Watch — Kaevoryn Studios">
+<meta property="og:description" content="One home for the stories we bring to life.">
+<title>Kaevoryn Watch — Kaevoryn Studios</title>
+<link rel="stylesheet" href="site.css">
+<style>
+.watch-page .watch-hero{position:relative;overflow:hidden;text-align:center;padding:clamp(48px,9vw,100px) 0 54px}
+.watch-page .watch-hero:before{content:"";position:absolute;z-index:-1;left:50%;top:0;width:min(90vw,850px);height:340px;transform:translateX(-50%);background:radial-gradient(ellipse,rgba(48,180,255,.19),rgba(125,75,255,.11) 43%,transparent 72%);filter:blur(18px);pointer-events:none}
+.watch-page .watch-hero h1{font-size:clamp(48px,9vw,100px);line-height:.98;letter-spacing:-.06em;margin:0;background:linear-gradient(100deg,#fff 10%,#8ceeff 48%,#c0a6ff 82%);color:transparent;background-clip:text;-webkit-background-clip:text}
+.watch-page .watch-hero .lead{max-width:720px;margin:20px auto;color:var(--muted);font-size:clamp(16px,2vw,19px)}
+.watch-page .watch-state{display:inline-flex;margin-top:12px;padding:7px 13px;border:1px solid rgba(168,149,255,.38);border-radius:999px;background:rgba(11,14,32,.7);color:#e8e4ff;font-size:11px;letter-spacing:1px}
+.watch-page .watch-screen{position:relative;display:grid;place-items:center;min-height:clamp(230px,45vw,440px);padding:28px;border:1px solid rgba(126,234,255,.3);border-radius:22px;overflow:hidden;background:radial-gradient(ellipse at 50% 55%,rgba(33,125,199,.22),transparent 43%),linear-gradient(140deg,rgba(10,20,42,.97),rgba(22,14,48,.95));box-shadow:0 24px 70px rgba(0,0,0,.24)}
+.watch-page .watch-screen:before,.watch-page .watch-screen:after{content:"";position:absolute;pointer-events:none;border-radius:50%;border:1px solid rgba(126,234,255,.12);width:60%;aspect-ratio:1}
+.watch-page .watch-screen:after{width:42%;border-color:rgba(168,149,255,.14)}
+.watch-page .screen-core{position:relative;text-align:center;max-width:620px}
+.watch-page .play-mark{display:grid;place-items:center;width:68px;height:68px;margin:0 auto 18px;border:1px solid rgba(126,234,255,.65);border-radius:50%;color:var(--cyan);font-size:25px;box-shadow:0 0 35px rgba(0,194,255,.14)}
+.watch-page .screen-core h2{font-size:clamp(25px,4vw,40px);margin:0 0 8px}
+.watch-page .screen-core p{color:var(--muted);margin:0}
+.watch-page .watch-actions{display:flex;justify-content:center;flex-wrap:wrap;gap:12px;margin:24px 0 70px}
+.watch-page .watch-button{display:inline-flex;justify-content:center;align-items:center;gap:8px;padding:12px 18px;border:1px solid var(--line);border-radius:999px;text-decoration:none;color:#effaff;background:rgba(9,21,40,.75);font-size:12px;font-weight:700;letter-spacing:.6px}
+.watch-page .watch-button.primary{background:linear-gradient(110deg,rgba(0,171,220,.18),rgba(116,85,225,.2));border-color:rgba(126,234,255,.55)}
+.watch-page .watch-button:hover,.watch-page .watch-button:focus-visible{border-color:var(--cyan);outline:2px solid transparent;box-shadow:0 0 25px rgba(126,234,255,.12)}
+.watch-page .watch-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin:22px 0 72px}
+.watch-page .watch-tile{display:flex;flex-direction:column;align-items:flex-start;min-height:220px;padding:22px;border:1px solid var(--line);border-radius:17px;background:linear-gradient(145deg,rgba(12,25,44,.9),rgba(25,19,55,.8))}
+.watch-page .watch-tile .tile-icon{font-size:25px;margin-bottom:14px}
+.watch-page .watch-tile h3{font-size:20px;line-height:1.25;margin:0 0 8px}
+.watch-page .watch-tile p{color:var(--muted);font-size:14px;margin:0 0 16px}
+.watch-page .watch-tile .status-pill{margin-top:auto}
+.watch-page .how-panel{margin-bottom:70px}
+.watch-page .how-panel ol{padding-left:22px;color:var(--muted)}
+.watch-page .how-panel li{padding:5px 0}
+.watch-page .honest-note{font-size:12px;color:#aebbd0}
+@media(max-width:760px){.watch-page .watch-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.watch-page .watch-grid{grid-template-columns:1fr}.watch-page .watch-tile{min-height:0}.watch-page .watch-screen{padding:22px}}
+</style>
+</head>
+<body class="watch-page">
+<a class="skip-link" href="#main-content">Skip to content</a>
+<header class="site-header"><div class="nav-wrap">
+<a class="brand" href="index.html" aria-label="Kaevoryn Studios home"><span class="brand-mark" aria-hidden="true">K</span><span class="brand-name">KAEVORYN STUDIOS<span class="brand-tag">CREATE THE IMPOSSIBLE</span></span></a>
+<nav class="primary-nav" aria-label="Primary navigation"><a href="index.html">HOME</a><a href="projects.html">PROJECTS</a><a href="explore.html">EXPLORE</a><a href="shows.html">SHOWS</a><a href="watch.html" aria-current="page">WATCH</a><a href="vision.html">VISION</a><a href="invitation.html">GOLDEN INVITATION</a><a href="contact.html">CONNECT</a></nav>
+</div></header>
+<main id="main-content">
+<section class="watch-hero">
+<p class="kicker">KAEVORYN STUDIOS PRESENTS</p>
+<h1>KAeVORYN WATCH</h1>
+<p class="lead">One home for the stories we bring to life. Discover original series, cinematic worlds, trailers, music-led spectacles, and future premieres—all in one place.</p>
+<span class="watch-state">THE VIEWING DESTINATION IS TAKING SHAPE</span>
+</section>
+<section class="watch-screen" aria-labelledby="screen-title">
+<div class="screen-core"><span class="play-mark" aria-hidden="true">▶</span><h2 id="screen-title">The screen is waiting for its first story.</h2><p>This is the home for future Kaevoryn videos. A real trailer or episode will appear here when a finished video is ready to publish.</p></div>
+</section>
+<div class="watch-actions"><a class="watch-button primary" href="shows.html">BROWSE SHOWS &amp; SERIES <span aria-hidden="true">→</span></a><a class="watch-button" href="films.html">EXPLORE FILMS <span aria-hidden="true">→</span></a><a class="watch-button" href="contact.html">CONTACT THE STUDIO</a></div>
+<header><p class="kicker">YOUR NEXT DESTINATION</p><h2>Choose what you want to watch.</h2><p style="color:var(--muted)">These are planned viewing categories. Availability will change as productions are completed and released.</p></header>
+<section class="watch-grid" aria-label="Planned viewing categories">
+<article class="watch-tile"><span class="tile-icon" aria-hidden="true">📺</span><h3>Original Series</h3><p>Follow a story across episodes, seasons, and cliffhangers.</p><a class="card-link" href="shows.html">EXPLORE SERIES →</a><span class="status-pill">COMING WITH RELEASES</span></article>
+<article class="watch-tile"><span class="tile-icon" aria-hidden="true">🎬</span><h3>Films &amp; Shorts</h3><p>Standalone cinematic stories, short films, and special releases.</p><a class="card-link" href="films.html">EXPLORE FILMS →</a><span class="status-pill">PLANNED</span></article>
+<article class="watch-tile"><span class="tile-icon" aria-hidden="true">✨</span><h3>Special Productions</h3><p>Future spectacles, seasonal presentations, music videos, and behind-the-scenes features.</p><a class="card-link" href="shows.html">EXPLORE CONCEPTS →</a><span class="status-pill">PLANNED</span></article>
+</section>
+<section class="feature-panel how-panel"><p class="kicker">HOW VIEWING WILL WORK</p><h2>Simple to find. Easy to watch.</h2><ol><li>Choose a show, film, or special.</li><li>Open its page to see the description and available videos.</li><li>Press play on a published trailer or episode when one is available.</li></ol><p class="honest-note">For the first version, videos can be embedded from a supported video host. That avoids the cost and complexity of operating our own streaming servers. We will add actual playback links only when the videos are ready and hosted.</p></section>
+<section class="feature-panel"><h2>Dream the impossible. Bring it to life.</h2><p>Kaevoryn is more than a place. It is the magic in your heart.</p><p><a href="explore.html">← Explore Kaevoryn</a> &nbsp; <a href="shows.html">Browse Shows &amp; Series →</a></p></section>
+</main>
+<footer class="site-footer"><div class="footer-brand">KAEVORYN STUDIOS</div><div class="footer-mantra">CREATE THE IMPOSSIBLE</div><nav class="footer-links" aria-label="Footer navigation"><a href="projects.html">Projects</a><a href="explore.html">Explore</a><a href="shows.html">Shows &amp; Series</a><a href="watch.html">Watch</a><a href="vision.html">Our Vision</a><a href="contact.html">Connect</a></nav><p>Imagination Made Possible.</p></footer>
+</body>
+</html>
