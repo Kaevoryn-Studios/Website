@@ -470,7 +470,7 @@
     const scene = document.getElementById("nightmareScene");
     const host = document.getElementById("theHost");
     const message = document.getElementById("sceneMessage");
-    let audio = null, soundOn = false, randomOn = true, nightmareAwake = false, scareTimer = null, thunderTimer = null, hauntTimer = null, visualLightningTimer = null, noiseBuffer = null, droneNodes = [];
+    let audio = null, soundOn = false, randomOn = true, nightmareAwake = false, scareTimer = null, thunderTimer = null, hauntTimer = null, visualLightningTimer = null, heartbeatTimer = null, noiseBuffer = null, droneNodes = [];
 
     /* Spider movement removed; the new shadow and floor-rift effects are CSS-driven. */
 
@@ -503,6 +503,17 @@
       src.connect(filter);filter.connect(gain);gain.connect(audio.destination);src.start(now);src.stop(now+3.15);
       if(Math.random()>.35){lightning.classList.remove('flash');void lightning.offsetWidth;lightning.classList.add('flash')}
     }
+    function heartbeatPulse(){
+      if(!soundOn || !audio)return;
+      const beat=(delay,frequency,volume)=>{
+        const now=audio.currentTime+delay,osc=audio.createOscillator(),gain=audio.createGain();
+        osc.type='sine';osc.frequency.setValueAtTime(frequency,now);osc.frequency.exponentialRampToValueAtTime(Math.max(24,frequency*.62),now+.13);
+        gain.gain.setValueAtTime(.0001,now);gain.gain.exponentialRampToValueAtTime(volume,now+.025);gain.gain.exponentialRampToValueAtTime(.0001,now+.2);
+        osc.connect(gain);gain.connect(audio.destination);osc.start(now);osc.stop(now+.22);
+      };
+      beat(0,58,.19);beat(.17,46,.13);
+      clearTimeout(heartbeatTimer);heartbeatTimer=setTimeout(heartbeatPulse,2600+Math.random()*1500);
+    }
     function scheduleThunder(){clearTimeout(thunderTimer);if(soundOn)thunderTimer=setTimeout(()=>{thunder();scheduleThunder()},6500+Math.random()*9500)}
     function flashLightning(){lightning.classList.remove('flash');void lightning.offsetWidth;lightning.classList.add('flash');scene.classList.add('reveal-shadow');setTimeout(()=>scene.classList.remove('reveal-shadow'),420)}
     function scheduleVisualLightning(){clearTimeout(visualLightningTimer);if(document.hidden||!nightmareAwake)return;visualLightningTimer=setTimeout(()=>{flashLightning();if(Math.random()>.58)setTimeout(flashLightning,180);scheduleVisualLightning()},3200+Math.random()*6500)}
@@ -511,10 +522,10 @@
         setupAudio();
         if(!audio){soundButton.textContent='SOUND NOT SUPPORTED';return}
         await audio.resume();soundOn=true;soundButton.setAttribute('aria-pressed','true');soundButton.textContent='♫ NIGHTMARE SOUND: ON';
-        drone();thunder();scheduleThunder();
+        drone();thunder();heartbeatPulse();scheduleThunder();
       }else{
         soundOn=false;soundButton.setAttribute('aria-pressed','false');soundButton.textContent='♫ ENABLE NIGHTMARE SOUND';
-        clearTimeout(thunderTimer);droneNodes.forEach(node=>{try{node.stop()}catch(e){}});droneNodes=[];if(audio) await audio.suspend();
+        clearTimeout(thunderTimer);clearTimeout(heartbeatTimer);droneNodes.forEach(node=>{try{node.stop()}catch(e){}});droneNodes=[];if(audio) await audio.suspend();
       }
     }
     function jumpScare(){
@@ -587,8 +598,8 @@
     scene.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();interactScene()}});
     dismiss.addEventListener('click',()=>{scare.classList.remove('show');scare.setAttribute('aria-hidden','true')});
     /* The Forge remains dormant until the visitor touches the scene. */
-    document.addEventListener('visibilitychange',()=>{if(document.hidden){clearTimeout(thunderTimer);clearTimeout(scareTimer);clearTimeout(hauntTimer);clearTimeout(visualLightningTimer);clearTimeout(dreadTimer)}else{if(soundOn)scheduleThunder();if(nightmareAwake){scheduleHaunt();scheduleVisualLightning();scheduleDread()}}});
-    window.addEventListener('pagehide',()=>{clearTimeout(thunderTimer);clearTimeout(scareTimer);clearTimeout(hauntTimer);clearTimeout(visualLightningTimer);clearTimeout(dreadTimer);if(audio)audio.close()});
+    document.addEventListener('visibilitychange',()=>{if(document.hidden){clearTimeout(thunderTimer);clearTimeout(scareTimer);clearTimeout(hauntTimer);clearTimeout(visualLightningTimer);clearTimeout(dreadTimer)}else{if(soundOn){scheduleThunder();heartbeatPulse()}if(nightmareAwake){scheduleHaunt();scheduleVisualLightning();scheduleDread()}}});
+    window.addEventListener('pagehide',()=>{clearTimeout(thunderTimer);clearTimeout(scareTimer);clearTimeout(hauntTimer);clearTimeout(visualLightningTimer);clearTimeout(heartbeatTimer);clearTimeout(dreadTimer);if(audio)audio.close()});
   })();
   </script>
 </body>
