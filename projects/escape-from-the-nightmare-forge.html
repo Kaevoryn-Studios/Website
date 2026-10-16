@@ -201,12 +201,33 @@
     .drop-spider.spider-svg::before{content:""!important;display:block!important;left:20px;bottom:30px;height:180px;width:1px;background:linear-gradient(rgba(180,100,110,.7),rgba(180,100,110,.04))}
     @media(prefers-reduced-motion:reduce){.spider-svg svg{filter:none}}
 
+
+    /* GROUNDED CRAWL: legs cycle in alternating pairs while the body stays low */
+    .spider-svg{transform-style:preserve-3d}
+    .spider-svg .spider-ground-shadow{transform-origin:center;animation:spider-shadow-crawl .22s ease-in-out infinite alternate}
+    .spider-svg .spider-legs path{transform-box:fill-box;transform-origin:center;animation:spider-leg-step .22s ease-in-out infinite alternate}
+    .spider-svg .spider-legs path:nth-child(4n+1),.spider-svg .spider-legs path:nth-child(4n+2){animation-delay:-.11s}
+    .spider-svg svg > g:nth-of-type(2){transform-origin:36px 28px;animation:spider-body-bob .22s ease-in-out infinite alternate}
+    @keyframes spider-leg-step{0%{transform:rotate(-7deg) translateY(1px)}100%{transform:rotate(7deg) translateY(-1px)}}
+    @keyframes spider-body-bob{0%{transform:translateY(1px) rotate(-1deg)}100%{transform:translateY(-1px) rotate(1deg)}}
+    @keyframes spider-shadow-crawl{from{opacity:.7;transform:scaleX(.88)}to{opacity:.95;transform:scaleX(1.08)}}
+    .page-crawler.spider-svg.edge-a{animation:page-crawl-right 12s linear 1s infinite alternate,spider-creep-bob .22s ease-in-out infinite alternate}
+    .page-crawler.spider-svg.edge-b{animation:page-crawl-left 15s linear 2s infinite alternate,spider-creep-bob .22s ease-in-out infinite alternate}
+    .page-crawler.spider-svg.edge-c{animation:page-crawl-up 14s linear 3s infinite alternate,spider-creep-bob .22s ease-in-out infinite alternate}
+    @keyframes spider-creep-bob{from{margin-top:0}to{margin-top:2px}}
+    .crawler.spider-svg.crawl-one{animation:crawler-cross 7s linear infinite,spider-creep-bob .22s ease-in-out infinite alternate}
+    .crawler.spider-svg.crawl-two{animation:crawler-cross-reverse 8s linear 1s infinite,spider-creep-bob .22s ease-in-out infinite alternate}
+    .project-art.crawler-rush .crawler.spider-svg.crawl-one{animation:crawler-cross 2.2s linear infinite,spider-creep-bob .12s ease-in-out infinite alternate}
+    .project-art.crawler-rush .crawler.spider-svg.crawl-two{animation:crawler-cross-reverse 2.8s linear infinite,spider-creep-bob .12s ease-in-out infinite alternate}
+    @media(prefers-reduced-motion:reduce){.spider-svg .spider-ground-shadow,.spider-svg .spider-legs path,.spider-svg svg > g:nth-of-type(2){animation:none!important}}
+
   </style>
 </head>
 <body>
   <div class="stars" aria-hidden="true"></div>
   <div class="whole-page-haunt" aria-hidden="true"><span class="wall-scratch one"></span><span class="wall-scratch two"></span><span class="wall-scratch three"></span><span class="page-crawler spider-svg edge-a" aria-hidden="true"><svg viewBox="0 0 72 58" role="presentation" aria-hidden="true" focusable="false">
-  <g fill="none" stroke="#090307" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
+  <ellipse class="spider-ground-shadow" cx="36" cy="53" rx="23" ry="3.2" fill="#000" opacity=".88"/>
+  <g class="spider-legs" fill="none" stroke="#090307" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
     <path d="M29 25 L18 14 L7 16 L3 10"/><path d="M30 29 L16 27 L7 35 L2 34"/><path d="M31 33 L19 39 L13 49 L6 50"/><path d="M34 35 L28 45 L28 54 L22 57"/>
     <path d="M43 25 L54 14 L65 16 L69 10"/><path d="M42 29 L56 27 L65 35 L70 34"/><path d="M41 33 L53 39 L59 49 L66 50"/><path d="M38 35 L44 45 L44 54 L50 57"/>
   </g>
@@ -221,7 +242,8 @@
   <g fill="#ff9aa8"><circle cx="31.5" cy="20.5" r=".7"/><circle cx="39.5" cy="20.5" r=".7"/></g>
   <path d="M31 47 Q36 52 41 47" fill="none" stroke="#080206" stroke-width="2"/>
 </svg></span><span class="page-crawler spider-svg edge-b" aria-hidden="true"><svg viewBox="0 0 72 58" role="presentation" aria-hidden="true" focusable="false">
-  <g fill="none" stroke="#090307" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
+  <ellipse class="spider-ground-shadow" cx="36" cy="53" rx="23" ry="3.2" fill="#000" opacity=".88"/>
+  <g class="spider-legs" fill="none" stroke="#090307" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
     <path d="M29 25 L18 14 L7 16 L3 10"/><path d="M30 29 L16 27 L7 35 L2 34"/><path d="M31 33 L19 39 L13 49 L6 50"/><path d="M34 35 L28 45 L28 54 L22 57"/>
     <path d="M43 25 L54 14 L65 16 L69 10"/><path d="M42 29 L56 27 L65 35 L70 34"/><path d="M41 33 L53 39 L59 49 L66 50"/><path d="M38 35 L44 45 L44 54 L50 57"/>
   </g>
@@ -236,7 +258,8 @@
   <g fill="#ff9aa8"><circle cx="31.5" cy="20.5" r=".7"/><circle cx="39.5" cy="20.5" r=".7"/></g>
   <path d="M31 47 Q36 52 41 47" fill="none" stroke="#080206" stroke-width="2"/>
 </svg></span><span class="page-crawler spider-svg edge-c" aria-hidden="true"><svg viewBox="0 0 72 58" role="presentation" aria-hidden="true" focusable="false">
-  <g fill="none" stroke="#090307" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
+  <ellipse class="spider-ground-shadow" cx="36" cy="53" rx="23" ry="3.2" fill="#000" opacity=".88"/>
+  <g class="spider-legs" fill="none" stroke="#090307" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
     <path d="M29 25 L18 14 L7 16 L3 10"/><path d="M30 29 L16 27 L7 35 L2 34"/><path d="M31 33 L19 39 L13 49 L6 50"/><path d="M34 35 L28 45 L28 54 L22 57"/>
     <path d="M43 25 L54 14 L65 16 L69 10"/><path d="M42 29 L56 27 L65 35 L70 34"/><path d="M41 33 L53 39 L59 49 L66 50"/><path d="M38 35 L44 45 L44 54 L50 57"/>
   </g>
@@ -270,7 +293,8 @@
     </div>
     <div class="project-art" id="nightmareScene" role="button" tabindex="0" aria-label="Interact with the nightmare scene. A crimson portal is watched by monsters and the Host">
       <div class="forge-shadow" aria-hidden="true"></div><div class="crawler spider-svg crawl-one" aria-hidden="true"><svg viewBox="0 0 72 58" role="presentation" aria-hidden="true" focusable="false">
-  <g fill="none" stroke="#090307" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
+  <ellipse class="spider-ground-shadow" cx="36" cy="53" rx="23" ry="3.2" fill="#000" opacity=".88"/>
+  <g class="spider-legs" fill="none" stroke="#090307" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
     <path d="M29 25 L18 14 L7 16 L3 10"/><path d="M30 29 L16 27 L7 35 L2 34"/><path d="M31 33 L19 39 L13 49 L6 50"/><path d="M34 35 L28 45 L28 54 L22 57"/>
     <path d="M43 25 L54 14 L65 16 L69 10"/><path d="M42 29 L56 27 L65 35 L70 34"/><path d="M41 33 L53 39 L59 49 L66 50"/><path d="M38 35 L44 45 L44 54 L50 57"/>
   </g>
@@ -285,7 +309,8 @@
   <g fill="#ff9aa8"><circle cx="31.5" cy="20.5" r=".7"/><circle cx="39.5" cy="20.5" r=".7"/></g>
   <path d="M31 47 Q36 52 41 47" fill="none" stroke="#080206" stroke-width="2"/>
 </svg></div><div class="crawler spider-svg crawl-two" aria-hidden="true"><svg viewBox="0 0 72 58" role="presentation" aria-hidden="true" focusable="false">
-  <g fill="none" stroke="#090307" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
+  <ellipse class="spider-ground-shadow" cx="36" cy="53" rx="23" ry="3.2" fill="#000" opacity=".88"/>
+  <g class="spider-legs" fill="none" stroke="#090307" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
     <path d="M29 25 L18 14 L7 16 L3 10"/><path d="M30 29 L16 27 L7 35 L2 34"/><path d="M31 33 L19 39 L13 49 L6 50"/><path d="M34 35 L28 45 L28 54 L22 57"/>
     <path d="M43 25 L54 14 L65 16 L69 10"/><path d="M42 29 L56 27 L65 35 L70 34"/><path d="M41 33 L53 39 L59 49 L66 50"/><path d="M38 35 L44 45 L44 54 L50 57"/>
   </g>
@@ -300,7 +325,8 @@
   <g fill="#ff9aa8"><circle cx="31.5" cy="20.5" r=".7"/><circle cx="39.5" cy="20.5" r=".7"/></g>
   <path d="M31 47 Q36 52 41 47" fill="none" stroke="#080206" stroke-width="2"/>
 </svg></div><div class="drop-spider spider-svg" aria-hidden="true"><svg viewBox="0 0 72 58" role="presentation" aria-hidden="true" focusable="false">
-  <g fill="none" stroke="#090307" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
+  <ellipse class="spider-ground-shadow" cx="36" cy="53" rx="23" ry="3.2" fill="#000" opacity=".88"/>
+  <g class="spider-legs" fill="none" stroke="#090307" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
     <path d="M29 25 L18 14 L7 16 L3 10"/><path d="M30 29 L16 27 L7 35 L2 34"/><path d="M31 33 L19 39 L13 49 L6 50"/><path d="M34 35 L28 45 L28 54 L22 57"/>
     <path d="M43 25 L54 14 L65 16 L69 10"/><path d="M42 29 L56 27 L65 35 L70 34"/><path d="M41 33 L53 39 L59 49 L66 50"/><path d="M38 35 L44 45 L44 54 L50 57"/>
   </g>
