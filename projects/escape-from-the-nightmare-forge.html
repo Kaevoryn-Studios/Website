@@ -490,6 +490,47 @@
       body.nightmare-awake #nightmareScene .host-presence{transform:translate(-50%,-42%) scale(1.05)}
     }
 
+    /* Organic, hooded shadow entity — deliberately avoids a robotic face. */
+    #nightmareScene .host-presence{width:clamp(190px,27vw,340px);height:clamp(330px,63vh,590px);opacity:.96;filter:drop-shadow(0 0 42px rgba(70,0,12,.8))}
+    #nightmareScene .host-head{
+      top:2%;left:24%;width:52%;height:32%;
+      border-radius:48% 48% 43% 43% / 36% 36% 62% 62%;
+      background:radial-gradient(ellipse at 50% 28%,#160a10 0%,#070409 44%,#010103 76%);
+      clip-path:polygon(18% 0,79% 3%,100% 24%,88% 48%,76% 70%,65% 92%,49% 100%,35% 89%,19% 67%,4% 43%,0 19%);
+      box-shadow:inset 18px 4px 28px #000,inset -14px -8px 25px #18020a;
+    }
+    #nightmareScene .host-head::before{
+      top:48%;left:25%;width:14%;height:2px;
+      background:#ff1836;transform:rotate(13deg);
+      box-shadow:0 0 5px 2px rgba(255,0,35,.45);
+      clip-path:polygon(0 40%,100% 0,72% 100%);
+    }
+    #nightmareScene .host-head::after{
+      top:49%;right:24%;width:11%;height:2px;
+      background:#a60020;transform:rotate(-16deg);
+      box-shadow:0 0 5px 2px rgba(255,0,35,.28);
+      clip-path:polygon(0 0,100% 45%,25% 100%);
+    }
+    #nightmareScene .host-neck{left:42%;top:27%;width:18%;height:13%;background:linear-gradient(90deg,#010103,#10060b,#010103);filter:blur(3px)}
+    #nightmareScene .host-body{
+      left:3%;top:34%;width:94%;height:64%;
+      background:radial-gradient(ellipse at 50% 0%,#10070c 0%,#050307 42%,#010102 78%);
+      clip-path:polygon(31% 0,67% 0,81% 10%,100% 100%,73% 82%,64% 100%,49% 80%,34% 100%,24% 84%,0 100%,18% 20%);
+      filter:drop-shadow(0 0 25px rgba(0,0,0,.95));
+    }
+    #nightmareScene .host-name{display:none}
+    #nightmareScene .host-presence::before,
+    #nightmareScene .host-presence::after{
+      content:"";position:absolute;z-index:2;top:32%;width:28%;height:45%;
+      background:linear-gradient(180deg,#030205,#080308 55%,transparent);
+      filter:blur(5px);opacity:.85;
+    }
+    #nightmareScene .host-presence::before{left:0;clip-path:polygon(30% 0,100% 8%,70% 100%,18% 76%,0 22%)}
+    #nightmareScene .host-presence::after{right:0;clip-path:polygon(0 8%,70% 0,100% 30%,78% 100%,32% 75%)}
+    @media(max-width:520px){
+      #nightmareScene .host-presence{width:210px;height:390px}
+    }
+
   </style>
 </head>
 <body>
@@ -560,19 +601,26 @@
     function drone(){
       if(!soundOn || !audio) return;
       droneNodes.forEach(node=>{try{node.stop()}catch(e){}});droneNodes=[];
-      [48,49.4].forEach((hz,i)=>{
-        const osc=audio.createOscillator(), gain=audio.createGain(), filter=audio.createBiquadFilter();
-        osc.type=i?'triangle':'sawtooth'; osc.frequency.value=hz;
-        filter.type='lowpass';filter.frequency.value=125;
-        gain.gain.value=i?.045:.065;osc.connect(filter);filter.connect(gain);gain.connect(audio.destination);osc.start();droneNodes.push(osc);
-      });
+      const master=audio.createGain();master.gain.value=.0001;master.gain.setTargetAtTime(.42,audio.currentTime,2.8);master.connect(audio.destination);
+      const low=audio.createOscillator(), lowGain=audio.createGain();
+      low.type='sine';low.frequency.value=38;lowGain.gain.value=.8;low.connect(lowGain);lowGain.connect(master);low.start();droneNodes.push(low);
+      const mid=audio.createOscillator(), midGain=audio.createGain(), midFilter=audio.createBiquadFilter();
+      mid.type='sine';mid.frequency.value=53.7;midGain.gain.value=.18;midFilter.type='lowpass';midFilter.frequency.value=90;mid.connect(midFilter);midFilter.connect(midGain);midGain.connect(master);mid.start();droneNodes.push(mid);
+      const breath=audio.createBufferSource(), breathFilter=audio.createBiquadFilter(), breathGain=audio.createGain();
+      breath.buffer=noiseBuffer;breath.loop=true;breathFilter.type='lowpass';breathFilter.frequency.value=320;breathGain.gain.value=.0001;
+      breathGain.gain.setTargetAtTime(.075,audio.currentTime,1.8);breath.connect(breathFilter);breathFilter.connect(breathGain);breathGain.connect(master);breath.start();droneNodes.push(breath);
     }
     function thunder(){
       if(!soundOn || !audio) return;
       const now=audio.currentTime, src=audio.createBufferSource(), filter=audio.createBiquadFilter(), gain=audio.createGain();
       src.buffer=noiseBuffer;filter.type='lowpass';filter.frequency.setValueAtTime(180,audio.currentTime);filter.frequency.exponentialRampToValueAtTime(38,audio.currentTime+2.8);
-      gain.gain.setValueAtTime(.0001,now);gain.gain.exponentialRampToValueAtTime(.42,now+.06);gain.gain.exponentialRampToValueAtTime(.0001,now+3.1);
-      src.connect(filter);filter.connect(gain);gain.connect(audio.destination);src.start(now);src.stop(now+3.15);
+      gain.gain.setValueAtTime(.0001,now);gain.gain.exponentialRampToValueAtTime(.25,now+.22);gain.gain.exponentialRampToValueAtTime(.0001,now+3.6);
+      src.connect(filter);filter.connect(gain);gain.connect(audio.destination);src.start(now);src.stop(now+3.65);
+      /* A soft sub-bass impact gives the rumble weight without a piercing digital crack. */
+      const sub=audio.createOscillator(),subGain=audio.createGain();
+      sub.type='sine';sub.frequency.setValueAtTime(62,now);sub.frequency.exponentialRampToValueAtTime(29,now+1.7);
+      subGain.gain.setValueAtTime(.0001,now);subGain.gain.exponentialRampToValueAtTime(.32,now+.08);subGain.gain.exponentialRampToValueAtTime(.0001,now+2.2);
+      sub.connect(subGain);subGain.connect(audio.destination);sub.start(now);sub.stop(now+2.25);
       if(Math.random()>.35){lightning.classList.remove('flash');void lightning.offsetWidth;lightning.classList.add('flash')}
     }
     function heartbeatPulse(){
