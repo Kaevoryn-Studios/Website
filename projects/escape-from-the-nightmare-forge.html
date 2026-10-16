@@ -291,6 +291,27 @@
       #nightmareScene .crawler.spider-svg.crawl-two{right:14%;bottom:1%;animation:none!important;transform:rotate(-90deg) scale(.82)}
     }
 
+
+    /* BODY TRAVEL FIX: keep the whole spider moving even when reduced-motion is enabled */
+    #nightmareScene .crawler.spider-svg.crawl-one{
+      position:absolute!important;left:-64px!important;right:auto!important;
+      animation:floor-crawl-right-facing 12s linear infinite!important;
+    }
+    #nightmareScene .crawler.spider-svg.crawl-two{
+      position:absolute!important;left:auto!important;right:-64px!important;
+      animation:floor-crawl-left-facing 14s linear 1s infinite!important;
+    }
+    #nightmareScene.crawler-rush .crawler.spider-svg.crawl-one{
+      animation:floor-crawl-right-facing 3.2s linear infinite!important;
+    }
+    #nightmareScene.crawler-rush .crawler.spider-svg.crawl-two{
+      animation:floor-crawl-left-facing 3.6s linear infinite!important;
+    }
+    @media(prefers-reduced-motion:reduce){
+      #nightmareScene .crawler.spider-svg.crawl-one{animation:floor-crawl-right-facing 18s linear infinite!important}
+      #nightmareScene .crawler.spider-svg.crawl-two{animation:floor-crawl-left-facing 20s linear 1s infinite!important}
+    }
+
   </style>
 </head>
 <body>
