@@ -250,16 +250,16 @@
     }
 
     /* FACE THE TRAVEL DIRECTION: spider heads lead, bodies trail */
-    .page-crawler.spider-svg.edge-a{animation:edge-crawl-down-facing 13s linear 1s infinite alternate!important}
-    .page-crawler.spider-svg.edge-b{animation:edge-crawl-up-facing 15s linear 2s infinite alternate!important}
-    .page-crawler.spider-svg.edge-c{animation:edge-crawl-right-facing 18s linear 3s infinite alternate!important}
-    @keyframes edge-crawl-down-facing{from{top:28%;transform:rotate(180deg)}to{top:67%;transform:rotate(180deg)}}
-    @keyframes edge-crawl-up-facing{from{top:72%;transform:rotate(0deg)}to{top:31%;transform:rotate(0deg)}}
-    @keyframes edge-crawl-right-facing{from{left:10%;transform:rotate(90deg)}to{left:75%;transform:rotate(90deg)}}
+    .page-crawler.spider-svg.edge-a{animation:edge-crawl-turnaround-down 13s linear 1s infinite!important}
+    .page-crawler.spider-svg.edge-b{animation:edge-crawl-turnaround-up 15s linear 2s infinite!important}
+    .page-crawler.spider-svg.edge-c{animation:edge-crawl-turnaround-side 18s linear 3s infinite!important}
+    @keyframes edge-crawl-turnaround-down{0%{top:28%;transform:rotate(180deg)}48%{top:67%;transform:rotate(180deg)}50%{top:67%;transform:rotate(0deg)}98%{top:28%;transform:rotate(0deg)}100%{top:28%;transform:rotate(180deg)}}
+    @keyframes edge-crawl-turnaround-up{0%{top:72%;transform:rotate(0deg)}48%{top:31%;transform:rotate(0deg)}50%{top:31%;transform:rotate(180deg)}98%{top:72%;transform:rotate(180deg)}100%{top:72%;transform:rotate(0deg)}}
+    @keyframes edge-crawl-turnaround-side{0%{left:10%;transform:rotate(90deg)}48%{left:75%;transform:rotate(90deg)}50%{left:75%;transform:rotate(-90deg)}98%{left:10%;transform:rotate(-90deg)}100%{left:10%;transform:rotate(90deg)}}
     .crawler.spider-svg.crawl-one{animation:floor-crawl-right-facing 8s linear infinite!important}
     .crawler.spider-svg.crawl-two{animation:floor-crawl-left-facing 10s linear 1s infinite!important}
-    @keyframes floor-crawl-right-facing{0%{left:-64px;transform:rotate(90deg)}100%{left:calc(100% + 64px);transform:rotate(90deg)}}
-    @keyframes floor-crawl-left-facing{0%{right:-64px;transform:rotate(-90deg) scale(.82)}100%{right:calc(100% + 64px);transform:rotate(-90deg) scale(.82)}}
+    @keyframes floor-crawl-right-facing{0%{left:-64px;transform:rotate(90deg)}48%{left:calc(100% + 64px);transform:rotate(90deg)}50%{left:calc(100% + 64px);transform:rotate(-90deg)}98%{left:-64px;transform:rotate(-90deg)}100%{left:-64px;transform:rotate(90deg)}}
+    @keyframes floor-crawl-left-facing{0%{right:-64px;transform:rotate(-90deg) scale(.82)}48%{right:calc(100% + 64px);transform:rotate(-90deg) scale(.82)}50%{right:calc(100% + 64px);transform:rotate(90deg) scale(.82)}98%{right:-64px;transform:rotate(90deg) scale(.82)}100%{right:-64px;transform:rotate(-90deg) scale(.82)}}
     .project-art.crawler-rush .crawler.spider-svg.crawl-one{animation:floor-crawl-right-facing 2.4s linear infinite!important}
     .project-art.crawler-rush .crawler.spider-svg.crawl-two{animation:floor-crawl-left-facing 2.8s linear infinite!important}
     @media(prefers-reduced-motion:reduce){
@@ -280,12 +280,12 @@
     #nightmareScene .nightmare-floor{position:absolute;z-index:1;left:0;right:0;bottom:0;height:24%;pointer-events:none;background:linear-gradient(180deg,rgba(4,2,7,0) 0%,rgba(8,4,10,.65) 18%,rgba(2,1,4,.98) 100%);border-top:1px solid rgba(105,30,45,.32);box-shadow:0 -8px 20px rgba(0,0,0,.22),inset 0 8px 18px rgba(0,0,0,.25)}
     #nightmareScene .crawler.spider-svg{z-index:4;bottom:1%!important;top:auto!important;filter:drop-shadow(0 3px 2px rgba(0,0,0,.95)) drop-shadow(0 0 5px rgba(255,0,40,.35))}
     #nightmareScene .crawler.spider-svg .spider-ground-shadow{opacity:1!important;fill:#000!important}
-    #nightmareScene .crawler.spider-svg.crawl-one{animation:grounded-right 8s linear infinite!important}
-    #nightmareScene .crawler.spider-svg.crawl-two{animation:grounded-left 10s linear 1s infinite!important}
-    @keyframes grounded-right{from{left:-64px;transform:rotate(90deg)}to{left:calc(100% + 64px);transform:rotate(90deg)}}
-    @keyframes grounded-left{from{right:-64px;transform:rotate(-90deg) scale(.82)}to{right:calc(100% + 64px);transform:rotate(-90deg) scale(.82)}}
-    #nightmareScene.crawler-rush .crawler.spider-svg.crawl-one{animation:grounded-right 2.4s linear infinite!important}
-    #nightmareScene.crawler-rush .crawler.spider-svg.crawl-two{animation:grounded-left 2.8s linear infinite!important}
+    #nightmareScene .crawler.spider-svg.crawl-one{animation:floor-crawl-right-facing 8s linear infinite!important}
+    #nightmareScene .crawler.spider-svg.crawl-two{animation:floor-crawl-left-facing 10s linear 1s infinite!important}
+    
+    
+    #nightmareScene.crawler-rush .crawler.spider-svg.crawl-one{animation:floor-crawl-right-facing 2.4s linear infinite!important}
+    #nightmareScene.crawler-rush .crawler.spider-svg.crawl-two{animation:floor-crawl-left-facing 2.8s linear infinite!important}
     @media(prefers-reduced-motion:reduce){
       #nightmareScene .crawler.spider-svg.crawl-one{left:12%;bottom:1%;animation:none!important;transform:rotate(90deg)}
       #nightmareScene .crawler.spider-svg.crawl-two{right:14%;bottom:1%;animation:none!important;transform:rotate(-90deg) scale(.82)}
