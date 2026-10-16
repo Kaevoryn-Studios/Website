@@ -221,6 +221,34 @@
     .project-art.crawler-rush .crawler.spider-svg.crawl-two{animation:crawler-cross-reverse 2.8s linear infinite,spider-creep-bob .12s ease-in-out infinite alternate}
     @media(prefers-reduced-motion:reduce){.spider-svg .spider-ground-shadow,.spider-svg .spider-legs path,.spider-svg svg > g:nth-of-type(2){animation:none!important}}
 
+
+    /* FIX THE TRAVEL PATH: floor spiders crawl along one level; page spiders stay on the edges */
+    .page-crawler.spider-svg.edge-a{left:1%;top:36%;right:auto;bottom:auto;animation:edge-crawl-down 13s linear 1s infinite alternate}
+    .page-crawler.spider-svg.edge-b{right:1%;top:72%;left:auto;bottom:auto;animation:edge-crawl-up 15s linear 2s infinite alternate}
+    .page-crawler.spider-svg.edge-c{left:24%;bottom:1%;top:auto;right:auto;animation:edge-crawl-side 18s linear 3s infinite alternate}
+    @keyframes edge-crawl-down{from{top:28%;transform:rotate(90deg)}to{top:67%;transform:rotate(90deg)}}
+    @keyframes edge-crawl-up{from{top:72%;transform:rotate(-90deg)}to{top:31%;transform:rotate(-90deg)}}
+    @keyframes edge-crawl-side{from{left:10%;transform:rotate(0deg)}to{left:75%;transform:rotate(0deg)}}
+    .crawler.spider-svg.crawl-one{left:-64px;right:auto;bottom:5%;top:auto;transform:none;animation:floor-crawl-right 8s linear infinite}
+    .crawler.spider-svg.crawl-two{left:auto;right:-64px;bottom:5%;top:auto;transform:scale(.82);animation:floor-crawl-left 10s linear 1s infinite}
+    @keyframes floor-crawl-right{0%{left:-64px;transform:translateY(0)}12%{transform:translateY(-1px)}25%{transform:translateY(0)}37%{transform:translateY(-1px)}50%{transform:translateY(0)}62%{transform:translateY(-1px)}75%{transform:translateY(0)}87%{transform:translateY(-1px)}100%{left:calc(100% + 64px);transform:translateY(0)}}
+    @keyframes floor-crawl-left{0%{right:-64px;transform:scale(.82) translateY(0)}12%{transform:scale(.82) translateY(-1px)}25%{transform:scale(.82) translateY(0)}37%{transform:scale(.82) translateY(-1px)}50%{transform:scale(.82) translateY(0)}62%{transform:scale(.82) translateY(-1px)}75%{transform:scale(.82) translateY(0)}87%{transform:scale(.82) translateY(-1px)}100%{right:calc(100% + 64px);transform:scale(.82) translateY(0)}}
+    .spider-svg .spider-ground-shadow{animation:none!important;opacity:.9;transform:none!important}
+    .spider-svg .spider-legs path{animation:spider-leg-step .18s steps(2,end) infinite alternate}
+    .spider-svg .spider-legs path:nth-child(4n+1),.spider-svg .spider-legs path:nth-child(4n+2){animation-delay:-.09s}
+    .spider-svg svg > g:nth-of-type(2){animation:none!important;transform:none!important}
+    .spider-svg .spider-legs{transform-origin:36px 29px}
+    .project-art.crawler-rush .crawler.spider-svg.crawl-one{animation:floor-crawl-right 2.4s linear infinite}
+    .project-art.crawler-rush .crawler.spider-svg.crawl-two{animation:floor-crawl-left 2.8s linear infinite}
+    @media(prefers-reduced-motion:reduce){
+      .page-crawler.spider-svg.edge-a{left:1%;top:36%;animation:none!important;transform:rotate(90deg)}
+      .page-crawler.spider-svg.edge-b{right:1%;top:72%;animation:none!important;transform:rotate(-90deg)}
+      .page-crawler.spider-svg.edge-c{left:24%;bottom:1%;animation:none!important}
+      .crawler.spider-svg.crawl-one{left:12%;bottom:5%;animation:none!important}
+      .crawler.spider-svg.crawl-two{left:auto;right:14%;bottom:5%;animation:none!important}
+      .spider-svg .spider-legs path{animation:none!important}
+    }
+
   </style>
 </head>
 <body>
