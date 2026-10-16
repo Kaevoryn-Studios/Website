@@ -270,6 +270,23 @@
       .crawler.spider-svg.crawl-two{transform:rotate(-90deg) scale(.82)}
     }
 
+    /* SURFACE CONTACT FIX: remove page-overlay spiders and give scene crawlers a visible floor */
+    .whole-page-haunt .page-crawler.spider-svg{display:none!important}
+    #nightmareScene{isolation:isolate;background:radial-gradient(ellipse at 50% 74%,rgba(180,22,46,.18),transparent 42%),linear-gradient(180deg,#080711 0%,#100b19 62%,#050409 100%)}
+    #nightmareScene .nightmare-floor{position:absolute;z-index:1;left:0;right:0;bottom:0;height:24%;pointer-events:none;background:linear-gradient(180deg,rgba(4,2,7,0) 0%,rgba(8,4,10,.65) 18%,rgba(2,1,4,.98) 100%);border-top:1px solid rgba(105,30,45,.32);box-shadow:0 -8px 20px rgba(0,0,0,.22),inset 0 8px 18px rgba(0,0,0,.25)}
+    #nightmareScene .crawler.spider-svg{z-index:4;bottom:1%!important;top:auto!important;filter:drop-shadow(0 3px 2px rgba(0,0,0,.95)) drop-shadow(0 0 5px rgba(255,0,40,.35))}
+    #nightmareScene .crawler.spider-svg .spider-ground-shadow{opacity:1!important;fill:#000!important}
+    #nightmareScene .crawler.spider-svg.crawl-one{animation:grounded-right 8s linear infinite!important}
+    #nightmareScene .crawler.spider-svg.crawl-two{animation:grounded-left 10s linear 1s infinite!important}
+    @keyframes grounded-right{from{left:-64px;transform:rotate(90deg)}to{left:calc(100% + 64px);transform:rotate(90deg)}}
+    @keyframes grounded-left{from{right:-64px;transform:rotate(-90deg) scale(.82)}to{right:calc(100% + 64px);transform:rotate(-90deg) scale(.82)}}
+    #nightmareScene.crawler-rush .crawler.spider-svg.crawl-one{animation:grounded-right 2.4s linear infinite!important}
+    #nightmareScene.crawler-rush .crawler.spider-svg.crawl-two{animation:grounded-left 2.8s linear infinite!important}
+    @media(prefers-reduced-motion:reduce){
+      #nightmareScene .crawler.spider-svg.crawl-one{left:12%;bottom:1%;animation:none!important;transform:rotate(90deg)}
+      #nightmareScene .crawler.spider-svg.crawl-two{right:14%;bottom:1%;animation:none!important;transform:rotate(-90deg) scale(.82)}
+    }
+
   </style>
 </head>
 <body>
@@ -341,7 +358,7 @@
       <button class="nightmare-control random-toggle" id="randomToggle" type="button" aria-pressed="true">☠ RANDOM HAUNTINGS: ON</button>
     </div>
     <div class="project-art" id="nightmareScene" role="button" tabindex="0" aria-label="Interact with the nightmare scene. A crimson portal is watched by monsters and the Host">
-      <div class="forge-shadow" aria-hidden="true"></div><div class="crawler spider-svg crawl-one" aria-hidden="true"><svg viewBox="0 0 72 58" role="presentation" aria-hidden="true" focusable="false">
+      <div class="nightmare-floor" aria-hidden="true"></div><div class="forge-shadow" aria-hidden="true"></div><div class="crawler spider-svg crawl-one" aria-hidden="true"><svg viewBox="0 0 72 58" role="presentation" aria-hidden="true" focusable="false">
   <ellipse class="spider-ground-shadow" cx="36" cy="53" rx="23" ry="3.2" fill="#000" opacity=".88"/>
   <g class="spider-legs" fill="none" stroke="#090307" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
     <path d="M29 25 L18 14 L7 16 L3 10"/><path d="M30 29 L16 27 L7 35 L2 34"/><path d="M31 33 L19 39 L13 49 L6 50"/><path d="M34 35 L28 45 L28 54 L22 57"/>
