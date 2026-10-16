@@ -80,6 +80,32 @@
 @media(max-width:760px){.furnace-heart{padding:75px 22px}.furnace-inner{grid-template-columns:1fr;gap:28px}.furnace-visual{min-height:300px}.furnace-copy h2{font-size:clamp(38px,9vw,58px)}}
 @media(prefers-reduced-motion:reduce){.furnace-core,.furnace-core:before,.furnace-core:after,.furnace-rings{animation:none!important}.furnace-visual.is-awake .furnace-core,.furnace-visual.is-awake .furnace-rings{animation:none!important;filter:brightness(1.25)}}
 
+
+/* CAMERA 07 — SOMETHING IS MISSING */
+.camera-seven{padding:88px clamp(20px,8vw,120px);border-top:1px solid #ffffff12;background:linear-gradient(180deg,#090808,#0d0909)}
+.camera-seven-inner{max-width:1100px;margin:auto;display:grid;grid-template-columns:.85fr 1.15fr;gap:clamp(28px,7vw,80px);align-items:center}
+.camera-seven-copy h2{font-size:clamp(36px,5.3vw,64px);font-weight:400;line-height:1;letter-spacing:-.04em;margin:18px 0}
+.camera-seven-copy p{font:14px/1.9 Arial,sans-serif;color:#b1a39b}
+.camera-seven-note{margin-top:20px;padding:14px 16px;border-left:2px solid var(--ember);background:#ff572d0a;color:#e5b6a1;font:italic 15px/1.7 Georgia,serif}
+.camera-seven-screen{position:relative;min-height:300px;overflow:hidden;border:1px solid #49312c;background:radial-gradient(ellipse at 50% 55%,#241b19,#050505 75%);box-shadow:inset 0 0 70px #000}
+.camera-seven-screen:before{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,transparent 0 3px,#ffffff0a 4px 5px),linear-gradient(90deg,#0008,transparent 15% 85%,#0008)}
+.camera-seven-hall{position:absolute;inset:0;background:linear-gradient(90deg,#030303 0 15%,transparent 15% 85%,#030303 85%),linear-gradient(180deg,#060606 0 16%,transparent 16% 78%,#020202 78%);clip-path:polygon(0 0,100% 0,100% 100%,0 100%)}
+.camera-seven-door{position:absolute;left:50%;top:18%;bottom:0;width:38%;transform:translateX(-50%);border:1px solid #46342d;background:linear-gradient(90deg,#080707,#211917 50%,#080707);box-shadow:0 0 35px #000}
+.camera-seven-door:before{content:"";position:absolute;inset:12px;border:1px solid #80605222;background:repeating-linear-gradient(90deg,transparent 0 22%,#0006 22.5% 23%)}
+.camera-seven-figure{position:absolute;left:50%;bottom:0;width:70px;height:185px;transform:translateX(-50%);opacity:0;background:linear-gradient(90deg,#030303,#100d0d,#020202);clip-path:polygon(35% 0,65% 0,75% 13%,100% 100%,62% 91%,50% 100%,32% 91%,0 100%,25% 13%);filter:blur(1px);transition:opacity .5s}
+.camera-seven-figure:before{content:"";position:absolute;top:-8px;left:19px;width:32px;height:42px;border-radius:50%;background:#020202}
+.camera-seven-screen[data-stage="1"] .camera-seven-figure{opacity:.8}
+.camera-seven-screen[data-stage="2"] .camera-seven-figure{opacity:1;transform:translateX(-50%) scale(1.22)}
+.camera-seven-screen[data-stage="3"] .camera-seven-figure{opacity:0}
+.camera-seven-screen[data-stage="3"] .camera-seven-door{width:52%;left:50%;background:linear-gradient(90deg,#080707,#32110c 50%,#080707);box-shadow:0 0 35px #a72a1640}
+.camera-seven-label{position:absolute;z-index:3;top:14px;left:15px;right:15px;display:flex;justify-content:space-between;gap:10px;font:9px Arial,sans-serif;letter-spacing:.15em;color:#ff8664}
+.camera-seven-message{position:absolute;z-index:4;left:14px;right:14px;bottom:15px;min-height:36px;padding:10px 12px;background:#050505d9;border:1px solid #ffffff17;color:#e5d2c8;font:11px/1.7 'Courier New',monospace}
+.camera-seven-controls{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.camera-seven-button{border:1px solid #75402f;background:#180e0c;color:#ffc2a4;padding:13px 16px;cursor:pointer;font:10px Arial,sans-serif;letter-spacing:.14em;text-transform:uppercase}
+.camera-seven-button:hover,.camera-seven-button:focus-visible{background:#351710}
+@media(max-width:760px){.camera-seven{padding:70px 22px}.camera-seven-inner{grid-template-columns:1fr;gap:24px}.camera-seven-screen{min-height:270px}}
+@media(prefers-reduced-motion:reduce){.camera-seven-figure{transition:none}}
+
 </style>
 </head>
 <body>
@@ -110,6 +136,24 @@
       <div class="haunt-copy"><small>Recovered transmission</small><p id="haunt-message" aria-live="polite">“If the camera shows an empty room, check the reflection. Not the screen.”</p></div>
       <div class="haunt-controls"><button class="haunt-button" id="trigger-haunt" type="button">Check the feed</button><button class="haunt-button" id="sound-toggle" type="button" aria-pressed="false">Wake the sound</button></div>
       <p class="sound-note">Sound is optional and starts only when you choose it. No sudden loud effects. You can turn it off at any time.</p>
+    </div>
+  </div>
+</section>
+
+
+<section class="camera-seven" id="camera-seven" aria-labelledby="camera-seven-title">
+  <div class="camera-seven-inner">
+    <div class="camera-seven-copy">
+      <div class="kicker">Recovered feed · Camera 07</div>
+      <h2 id="camera-seven-title">Something is missing.</h2>
+      <p>Camera 06 recorded a figure. Camera 07 records the room after it leaves. The problem is that the room changes every time someone checks.</p>
+      <div class="camera-seven-note">“If the feed shows an empty room, do not assume you are alone.”</div>
+      <div class="camera-seven-controls"><button class="camera-seven-button" id="check-camera-seven" type="button">Check Camera 07</button><button class="camera-seven-button" id="close-camera-seven" type="button">Close the feed</button></div>
+    </div>
+    <div class="camera-seven-screen" id="camera-seven-screen" data-stage="0" role="img" aria-label="A grainy security camera view of an empty iron doorway.">
+      <div class="camera-seven-hall"></div><div class="camera-seven-door"></div><div class="camera-seven-figure"></div>
+      <div class="camera-seven-label"><span>CAM 07 / LOWER LEVEL</span><span id="camera-seven-status">STANDBY</span></div>
+      <div class="camera-seven-message" id="camera-seven-message" role="status" aria-live="polite">FEED NOT REQUESTED.</div>
     </div>
   </div>
 </section>
@@ -164,6 +208,9 @@ function stopDrone(){if(audioContext){const ctx=audioContext;droneNodes.forEach(
 soundToggle.addEventListener('click',()=>{if(audioContext){stopDrone();}else{try{startDrone();}catch(e){stopDrone();hauntMessage.textContent='The sound could not start in this browser. The silence remains.';}}});
 if(!matchMedia('(prefers-reduced-motion: reduce)').matches){hauntTimer=window.setTimeout(()=>{if(!watchWindow.classList.contains('is-haunted'))triggerObservationHaunt();},18000+Math.random()*12000);}
 window.addEventListener('pagehide',()=>{if(hauntTimer)window.clearTimeout(hauntTimer);stopDrone();});
+
+
+const cam7=document.getElementById('camera-seven-screen'),cam7Button=document.getElementById('check-camera-seven'),cam7Close=document.getElementById('close-camera-seven'),cam7Status=document.getElementById('camera-seven-status'),cam7Message=document.getElementById('camera-seven-message');let cam7Checks=0;const cam7Lines=[['MOTION: NONE. ROOM: EMPTY.','The corridor is empty. The door is closed.'],['FRAME MISMATCH: FIGURE DETECTED.','A shape stands in the doorway. It was not there one frame ago.'],['SUBJECT DISTANCE: 2.1 METERS.','The figure is closer. The camera has not moved.'],['WHY DO YOU KEEP LOOKING?','The figure is gone. The message remains on the screen.']];cam7Button.addEventListener('click',()=>{cam7Checks++;const stage=Math.min(cam7Checks,3);cam7.dataset.stage=String(stage);cam7Status.textContent=cam7Checks>=4?'SIGNAL COMPROMISED':'REVIEW '+String(cam7Checks).padStart(2,'0');const line=cam7Lines[Math.min(cam7Checks-1,cam7Lines.length-1)];cam7Message.textContent=line[0]+'  '+line[1];if(cam7Checks>=4)cam7Button.textContent='Check again anyway';});cam7Close.addEventListener('click',()=>{cam7.dataset.stage='0';cam7Status.textContent='FEED CLOSED';cam7Message.textContent='The monitor goes dark. From the speakers: one soft knock.';});
 
 const mirrorStage=document.getElementById('mirror-stage'),lookMirror=document.getElementById('look-mirror'),coverMirror=document.getElementById('cover-mirror'),mirrorVoice=document.getElementById('mirror-voice'),mirrorStatus=document.getElementById('mirror-status'),mirrorResult=document.getElementById('mirror-result');let mirrorLookCount=0,mirrorVoiceEnabled=false;const mirrorLines=['Your reflection smiles after you stop.','A handprint appears on the glass. It is on the wrong side.','The figure behind you is gone. The figure in the mirror is closer.','There is no one behind you. There is no one behind you. There is no one behind you.'];function speakMirror(text){if(!mirrorVoiceEnabled)return;const synth=window.speechSynthesis;if(!synth||!window.SpeechSynthesisUtterance){mirrorResult.textContent=text+' (Spoken audio is not supported by this browser.)';return;}synth.cancel();const utterance=new SpeechSynthesisUtterance(text);utterance.rate=.78;utterance.pitch=.58;utterance.volume=.72;const voices=synth.getVoices();const voice=voices.find(v=>/^en/i.test(v.lang)&&/natural|enhanced|google|microsoft/i.test(v.name))||voices.find(v=>/^en/i.test(v.lang));if(voice)utterance.voice=voice;synth.speak(utterance);}mirrorVoice.addEventListener('click',()=>{mirrorVoiceEnabled=!mirrorVoiceEnabled;mirrorVoice.setAttribute('aria-pressed',String(mirrorVoiceEnabled));mirrorVoice.textContent=mirrorVoiceEnabled?'Silence the whispers':'Enable whispers';if(mirrorVoiceEnabled){speakMirror('You took your time. I have been waiting.');mirrorResult.textContent='A voice seeps through the glass: “You took your time. I have been waiting.”';}else{if(window.speechSynthesis)window.speechSynthesis.cancel();mirrorResult.textContent='The voice stops. Something keeps moving behind the glass.';}});lookMirror.addEventListener('click',()=>{mirrorLookCount++;mirrorStage.classList.remove('is-awake');void mirrorStage.offsetWidth;mirrorStage.classList.add('is-awake');mirrorStatus.textContent='REFLECTION FOUND';lookMirror.textContent='Look again';const line=mirrorLines[Math.min(mirrorLookCount-1,mirrorLines.length-1)];mirrorResult.textContent=line;speakMirror(line);});coverMirror.addEventListener('click',()=>{mirrorStage.classList.remove('is-awake');mirrorStatus.textContent='COVERED';const line='You can cover the glass. You cannot cover me.';mirrorResult.textContent='You cover the glass. From beneath the cloth, something taps once.';speakMirror(line);lookMirror.textContent='Look into the mirror';});window.addEventListener('pagehide',()=>{if(window.speechSynthesis)window.speechSynthesis.cancel();});
 const status=document.getElementById('status'),fateButtons=document.querySelectorAll('[data-fate]');let fateChosen=false;const fateLines={open:'The door opens one inch. Heat spills into the corridor—but the furnace light casts six shadows. You came here alone.',walk:'You turn away. Your footsteps retreat down the hall. A second set follows, matching every step… then stops when you stop.',listen:'You press your ear to the iron. Three knocks answer from inside. A fourth comes from directly behind you.'};fateButtons.forEach(button=>button.addEventListener('click',()=>{if(fateChosen)return;fateChosen=true;const fate=button.dataset.fate;status.textContent=fateLines[fate];fateButtons.forEach(b=>{b.disabled=true;});if(fate==='open'){const seam=document.querySelector('.seam'),gate=document.querySelector('.gate-wrap');if(seam)seam.style.filter='brightness(2.4)';if(gate){gate.classList.add('is-awake');gate.style.transform='translateY(-50%) rotateY(-10deg) translateX(4px)';}}if(fate==='listen'){const visual=document.getElementById('furnace-visual');if(visual){visual.classList.remove('is-awake');void visual.offsetWidth;visual.classList.add('is-awake');}}}));
