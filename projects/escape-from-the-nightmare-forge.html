@@ -324,6 +324,37 @@
       transform:scale(.82);transform-origin:center bottom;
     }
     #nightmareScene.nightmare-awake .passing-shadow{animation:shadow-cross 7.5s ease-in-out infinite}
+    /* HIGH-VISIBILITY HORROR PASS: make the effects unmistakable on small screens. */
+    #nightmareScene.nightmare-awake{
+      animation:nightmare-screen-pulse 6.5s steps(1,end) infinite;
+      box-shadow:inset 0 0 75px rgba(255,0,40,.24),inset 0 0 150px rgba(0,0,0,.85);
+    }
+    #nightmareScene.nightmare-awake::before{
+      content:"";position:absolute;z-index:7;inset:0;pointer-events:none;
+      background:radial-gradient(ellipse at center,transparent 24%,rgba(0,0,0,.86) 100%);
+      box-shadow:inset 0 0 55px rgba(255,0,38,.42);
+      animation:nightmare-vignette 4.2s ease-in-out infinite;
+    }
+    #nightmareScene.nightmare-awake .forge-mist{
+      opacity:.95!important;filter:blur(9px);background:
+        radial-gradient(ellipse at 15% 78%,rgba(175,190,210,.32),transparent 35%),
+        radial-gradient(ellipse at 76% 65%,rgba(155,165,190,.28),transparent 38%),
+        linear-gradient(90deg,transparent,rgba(165,175,195,.22),transparent);
+    }
+    #nightmareScene.nightmare-awake .passing-shadow{
+      filter:blur(3px) drop-shadow(0 0 16px rgba(255,0,45,.42));
+    }
+    #nightmareScene.nightmare-awake .nightmare-floor::after{
+      opacity:1!important;filter:drop-shadow(0 0 12px #ff123d) drop-shadow(0 0 24px rgba(255,0,45,.8));
+    }
+    #nightmareScene.apparition .apparition-flash{z-index:9}
+    @keyframes nightmare-screen-pulse{
+      0%,91%,94%,100%{filter:brightness(1) saturate(1)}
+      92%{filter:brightness(.28) saturate(.4)}
+      93%{filter:brightness(1.75) saturate(1.8)}
+    }
+    @keyframes nightmare-vignette{0%,100%{opacity:.45}50%{opacity:1}}
+
     #nightmareScene .nightmare-floor::after{
       content:"";position:absolute;inset:8% 4% 0;
       background:
@@ -492,14 +523,14 @@
         const osc=audio.createOscillator(), gain=audio.createGain(), filter=audio.createBiquadFilter();
         osc.type=i?'triangle':'sawtooth'; osc.frequency.value=hz;
         filter.type='lowpass';filter.frequency.value=125;
-        gain.gain.value=i?.012:.018;osc.connect(filter);filter.connect(gain);gain.connect(audio.destination);osc.start();droneNodes.push(osc);
+        gain.gain.value=i?.045:.065;osc.connect(filter);filter.connect(gain);gain.connect(audio.destination);osc.start();droneNodes.push(osc);
       });
     }
     function thunder(){
       if(!soundOn || !audio) return;
       const now=audio.currentTime, src=audio.createBufferSource(), filter=audio.createBiquadFilter(), gain=audio.createGain();
       src.buffer=noiseBuffer;filter.type='lowpass';filter.frequency.setValueAtTime(180,audio.currentTime);filter.frequency.exponentialRampToValueAtTime(38,audio.currentTime+2.8);
-      gain.gain.setValueAtTime(.0001,now);gain.gain.exponentialRampToValueAtTime(.23,now+.06);gain.gain.exponentialRampToValueAtTime(.0001,now+3.1);
+      gain.gain.setValueAtTime(.0001,now);gain.gain.exponentialRampToValueAtTime(.42,now+.06);gain.gain.exponentialRampToValueAtTime(.0001,now+3.1);
       src.connect(filter);filter.connect(gain);gain.connect(audio.destination);src.start(now);src.stop(now+3.15);
       if(Math.random()>.35){lightning.classList.remove('flash');void lightning.offsetWidth;lightning.classList.add('flash')}
     }
@@ -511,7 +542,7 @@
         gain.gain.setValueAtTime(.0001,now);gain.gain.exponentialRampToValueAtTime(volume,now+.025);gain.gain.exponentialRampToValueAtTime(.0001,now+.2);
         osc.connect(gain);gain.connect(audio.destination);osc.start(now);osc.stop(now+.22);
       };
-      beat(0,58,.19);beat(.17,46,.13);
+      beat(0,58,.32);beat(.17,46,.24);
       clearTimeout(heartbeatTimer);heartbeatTimer=setTimeout(heartbeatPulse,2600+Math.random()*1500);
     }
     function scheduleThunder(){clearTimeout(thunderTimer);if(soundOn)thunderTimer=setTimeout(()=>{thunder();scheduleThunder()},6500+Math.random()*9500)}
@@ -550,7 +581,7 @@
         ()=>{host.classList.remove('host-left','host-right','host-fade');host.classList.add(Math.random()>.5?'host-left':'host-right');whisper('I WAS CLOSER A MOMENT AGO.')},
         ()=>{host.classList.add('host-fade');whisper('DONT LOOK AWAY.');setTimeout(()=>host.classList.remove('host-fade'),2600)},
         ()=>{whisper('THE FORGE KNOWS YOU ARE HERE.');scene.classList.remove('scene-glitch');void scene.offsetWidth;scene.classList.add('scene-glitch')},
-        ()=>{whisper('IT FOUND YOU.');scene.classList.remove('apparition');void scene.offsetWidth;scene.classList.add('apparition');setTimeout(()=>scene.classList.remove('apparition'),800);if(Math.random()<.32)jumpScare()},
+        ()=>{whisper('IT FOUND YOU.');scene.classList.remove('apparition');void scene.offsetWidth;scene.classList.add('apparition');setTimeout(()=>scene.classList.remove('apparition'),800);if(soundOn&&audio){const now=audio.currentTime,osc=audio.createOscillator(),gain=audio.createGain();osc.type='sawtooth';osc.frequency.setValueAtTime(240,now);osc.frequency.exponentialRampToValueAtTime(42,now+.42);gain.gain.setValueAtTime(.0001,now);gain.gain.exponentialRampToValueAtTime(.22,now+.025);gain.gain.exponentialRampToValueAtTime(.0001,now+.5);osc.connect(gain);gain.connect(audio.destination);osc.start(now);osc.stop(now+.52)}if(Math.random()<.32)jumpScare()},
         ()=>{scene.classList.add('blackout');whisper('THE LIGHTS WONT SAVE YOU.');setTimeout(()=>scene.classList.remove('blackout'),560)}
       ];
       events[Math.floor(Math.random()*events.length)]();scheduleHaunt();
