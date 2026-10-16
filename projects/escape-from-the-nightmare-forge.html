@@ -449,6 +449,47 @@
       #nightmareScene .crawler.spider-svg.crawl-two{animation:spider-body-run-left 18s linear 1s infinite!important}
     }
 
+
+    /* FULL-VIEWPORT FORGE: expand the experience beyond the small preview box once awakened. */
+    #nightmareScene.nightmare-awake{
+      position:fixed!important;
+      inset:0!important;
+      width:100vw!important;
+      max-width:none!important;
+      height:100vh!important;
+      height:100dvh!important;
+      margin:0!important;
+      border:0!important;
+      border-radius:0!important;
+      z-index:1!important;
+      overflow:hidden!important;
+      isolation:isolate;
+    }
+    body.nightmare-awake main > :not(#nightmareScene){
+      position:relative;
+      z-index:2;
+    }
+    body.nightmare-awake #nightmareScene::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      z-index:8;
+      pointer-events:none;
+      background:radial-gradient(ellipse at center,transparent 25%,rgba(0,0,0,.18) 58%,rgba(0,0,0,.76) 100%);
+      box-shadow:inset 0 0 140px 35px rgba(0,0,0,.78);
+    }
+    body.nightmare-awake #nightmareScene .forge-portal{
+      transform:perspective(280px) rotateX(8deg) scale(1.45);
+      filter:drop-shadow(0 0 35px rgba(255,0,40,.55));
+    }
+    body.nightmare-awake #nightmareScene .host-presence{
+      transform:translate(-50%,-42%) scale(1.45);
+    }
+    @media(max-width:520px){
+      body.nightmare-awake #nightmareScene .forge-portal{transform:perspective(280px) rotateX(8deg) scale(1.15)}
+      body.nightmare-awake #nightmareScene .host-presence{transform:translate(-50%,-42%) scale(1.05)}
+    }
+
   </style>
 </head>
 <body>
