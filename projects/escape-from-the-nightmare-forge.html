@@ -315,9 +315,28 @@
 
 
     /* NEW DIRECTION: no spiders. Use a grounded, passing shadow and living floor fissures. */
-    .whole-page-haunt .page-crawler,
-    #nightmareScene .crawler.spider-svg,
-    #nightmareScene .drop-spider.spider-svg{display:none!important;visibility:hidden!important;opacity:0!important}
+    /* HARD DISABLE ALL OLD SPIDER ELEMENTS, INCLUDING PAGE-LEVEL CRAWLERS. */
+    .page-crawler,
+    .crawler,
+    .drop-spider,
+    .spider-svg,
+    .page-crawler *,
+    .crawler *,
+    .drop-spider *,
+    .spider-svg *{
+      display:none!important;
+      visibility:hidden!important;
+      opacity:0!important;
+      animation:none!important;
+      pointer-events:none!important;
+    }
+    .page-crawler::before,.page-crawler::after,
+    .crawler::before,.crawler::after,
+    .drop-spider::before,.drop-spider::after,
+    .spider-svg::before,.spider-svg::after{
+      content:none!important;
+      display:none!important;
+    }
     #nightmareScene .passing-shadow{
       position:absolute;z-index:3;left:-45%;bottom:9%;width:34%;height:52%;
       pointer-events:none;opacity:0;filter:blur(7px);
