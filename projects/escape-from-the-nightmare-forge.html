@@ -312,6 +312,38 @@
       #nightmareScene .crawler.spider-svg.crawl-two{animation:floor-crawl-left-facing 20s linear 1s infinite!important}
     }
 
+    /* FINAL CRAWL OVERRIDE: move the entire spider with transform, not left/right keyframes. */
+    #nightmareScene .crawler.spider-svg.crawl-one{
+      left:0!important;right:auto!important;bottom:1%!important;
+      animation:spider-body-run-right 9s linear infinite!important;
+      will-change:transform;
+    }
+    #nightmareScene .crawler.spider-svg.crawl-two{
+      left:auto!important;right:0!important;bottom:1%!important;
+      animation:spider-body-run-left 11s linear 1s infinite!important;
+      will-change:transform;
+    }
+    @keyframes spider-body-run-right{
+      0%{transform:translateX(-90px) rotate(90deg)}
+      49.9%{transform:translateX(calc(100% + 90px)) rotate(90deg)}
+      50%{transform:translateX(calc(100% + 90px)) rotate(-90deg)}
+      99.9%{transform:translateX(-90px) rotate(-90deg)}
+      100%{transform:translateX(-90px) rotate(90deg)}
+    }
+    @keyframes spider-body-run-left{
+      0%{transform:translateX(90px) rotate(-90deg) scale(.82)}
+      49.9%{transform:translateX(calc(-100% - 90px)) rotate(-90deg) scale(.82)}
+      50%{transform:translateX(calc(-100% - 90px)) rotate(90deg) scale(.82)}
+      99.9%{transform:translateX(90px) rotate(90deg) scale(.82)}
+      100%{transform:translateX(90px) rotate(-90deg) scale(.82)}
+    }
+    #nightmareScene.crawler-rush .crawler.spider-svg.crawl-one{animation-duration:3.2s!important}
+    #nightmareScene.crawler-rush .crawler.spider-svg.crawl-two{animation-duration:3.6s!important}
+    @media(prefers-reduced-motion:reduce){
+      #nightmareScene .crawler.spider-svg.crawl-one{animation:spider-body-run-right 16s linear infinite!important}
+      #nightmareScene .crawler.spider-svg.crawl-two{animation:spider-body-run-left 18s linear 1s infinite!important}
+    }
+
   </style>
 </head>
 <body>
