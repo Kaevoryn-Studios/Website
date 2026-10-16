@@ -548,6 +548,28 @@
     scareButton.addEventListener('click',()=>{awakenNightmare();setTimeout(jumpScare,650)});
     randomButton.addEventListener('click',()=>{randomOn=!randomOn;randomButton.setAttribute('aria-pressed',String(randomOn));randomButton.textContent=randomOn?'☠ RANDOM HAUNTINGS: ON':'☠ RANDOM HAUNTINGS: OFF';if(randomOn){if(nightmareAwake)announceHaunting();scheduleDread()}else{clearTimeout(hauntTimer);clearTimeout(scareTimer);clearTimeout(dreadTimer);dreadLevel=0;scene.classList.remove("dread-1","dread-2","dread-3","reveal-shadow");host.classList.remove('host-left','host-right','host-fade');message.classList.remove('show')}});
     scene.addEventListener('click',interactScene);
+    /* FIRST-TOUCH AWAKENING: any tap on the experience starts its visual effects and audio in the user gesture. */
+    let firstTouchAwakened = false;
+    document.addEventListener('pointerdown',event=>{
+      if(firstTouchAwakened || event.target.closest('button,a,input,textarea,select,[role="dialog"]')) return;
+      firstTouchAwakened = true;
+      awakenNightmare();
+      try{
+        setupAudio();
+        if(audio){
+          audio.resume().then(()=>{
+            if(!soundOn){
+              soundOn=true;
+              soundButton.setAttribute('aria-pressed','true');
+              soundButton.textContent='♫ NIGHTMARE SOUND: ON';
+              drone();
+              thunder();
+              scheduleThunder();
+            }
+          }).catch(()=>{});
+        }
+      }catch(error){}
+    },{passive:true});
     scene.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();interactScene()}});
     dismiss.addEventListener('click',()=>{scare.classList.remove('show');scare.setAttribute('aria-hidden','true')});
     /* The Forge remains dormant until the visitor touches the scene. */
