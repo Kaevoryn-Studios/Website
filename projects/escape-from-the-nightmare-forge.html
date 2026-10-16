@@ -315,28 +315,7 @@
 
 
     /* NEW DIRECTION: no spiders. Use a grounded, passing shadow and living floor fissures. */
-    /* HARD DISABLE ALL OLD SPIDER ELEMENTS, INCLUDING PAGE-LEVEL CRAWLERS. */
-    .page-crawler,
-    .crawler,
-    .drop-spider,
-    .spider-svg,
-    .page-crawler *,
-    .crawler *,
-    .drop-spider *,
-    .spider-svg *{
-      display:none!important;
-      visibility:hidden!important;
-      opacity:0!important;
-      animation:none!important;
-      pointer-events:none!important;
-    }
-    .page-crawler::before,.page-crawler::after,
-    .crawler::before,.crawler::after,
-    .drop-spider::before,.drop-spider::after,
-    .spider-svg::before,.spider-svg::after{
-      content:none!important;
-      display:none!important;
-    }
+    /* Spider elements and markup have been removed. */
     #nightmareScene .passing-shadow{
       position:absolute;z-index:3;left:-45%;bottom:9%;width:34%;height:52%;
       pointer-events:none;opacity:0;filter:blur(7px);
@@ -362,6 +341,37 @@
       100%{left:108%;opacity:0;transform:scale(1.05)}
     }
     @keyframes rift-pulse{0%,100%{opacity:.22}45%{opacity:.92}60%{opacity:.5}}
+    /* SUPERNATURAL EFFECTS: crawling fog, an intermittent blackout, and a passing apparition. */
+    #nightmareScene .forge-mist{
+      position:absolute;z-index:2;inset:20% -10% 8%;pointer-events:none;opacity:0;
+      background:
+        radial-gradient(ellipse at 18% 72%,rgba(115,130,155,.16),transparent 38%),
+        radial-gradient(ellipse at 75% 62%,rgba(91,102,125,.14),transparent 34%),
+        linear-gradient(90deg,transparent,rgba(115,125,145,.10),transparent);
+      filter:blur(12px);transform:translateX(-12%);
+    }
+    #nightmareScene.nightmare-awake .forge-mist{opacity:1;animation:mist-drift 13s ease-in-out infinite alternate}
+    #nightmareScene .apparition-flash{
+      position:absolute;z-index:5;inset:0;pointer-events:none;opacity:0;
+      background:radial-gradient(ellipse at 52% 44%,rgba(190,205,220,.28),rgba(15,13,24,.08) 24%,transparent 58%);
+      mix-blend-mode:screen;
+    }
+    #nightmareScene.apparition .apparition-flash{animation:apparition-flash .7s steps(2,end) 1}
+    #nightmareScene.blackout{filter:brightness(.12) saturate(.45)}
+    #nightmareScene.blackout::after{
+      content:"";position:absolute;z-index:8;inset:0;pointer-events:none;
+      background:radial-gradient(ellipse at center,transparent 8%,rgba(0,0,0,.96) 90%);
+      animation:blackout-snap .55s ease-out 1;
+    }
+    #nightmareScene.dread-2 .forge-portal,
+    #nightmareScene.dread-3 .forge-portal{filter:brightness(1.45) saturate(1.8) drop-shadow(0 0 28px rgba(255,0,45,.65))}
+    @keyframes mist-drift{from{transform:translateX(-12%) translateY(3%)}to{transform:translateX(12%) translateY(-4%)}}
+    @keyframes apparition-flash{0%,100%{opacity:0}15%,35%{opacity:.95}50%{opacity:.18}70%{opacity:.8}}
+    @keyframes blackout-snap{0%{opacity:0}15%{opacity:1}100%{opacity:0}}
+    @media(prefers-reduced-motion:reduce){
+      #nightmareScene.nightmare-awake .forge-mist{animation:none;opacity:.45}
+      #nightmareScene.apparition .apparition-flash{animation:none;opacity:.25}
+    }
     #nightmareScene.reveal-shadow .passing-shadow{opacity:1;filter:blur(2px) drop-shadow(0 0 16px rgba(255,0,45,.35))}
     @media(prefers-reduced-motion:reduce){
       #nightmareScene.nightmare-awake .passing-shadow{animation:none;left:34%;opacity:.45}
@@ -412,55 +422,7 @@
 </head>
 <body>
   <div class="stars" aria-hidden="true"></div>
-  <div class="whole-page-haunt" aria-hidden="true"><span class="wall-scratch one"></span><span class="wall-scratch two"></span><span class="wall-scratch three"></span><span class="page-crawler spider-svg edge-a" aria-hidden="true"><svg viewBox="0 0 72 58" role="presentation" aria-hidden="true" focusable="false">
-  <ellipse class="spider-ground-shadow" cx="36" cy="53" rx="23" ry="3.2" fill="#000" opacity=".88"/>
-  <g class="spider-legs" fill="none" stroke="#090307" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M29 25 L18 14 L7 16 L3 10"/><path d="M30 29 L16 27 L7 35 L2 34"/><path d="M31 33 L19 39 L13 49 L6 50"/><path d="M34 35 L28 45 L28 54 L22 57"/>
-    <path d="M43 25 L54 14 L65 16 L69 10"/><path d="M42 29 L56 27 L65 35 L70 34"/><path d="M41 33 L53 39 L59 49 L66 50"/><path d="M38 35 L44 45 L44 54 L50 57"/>
-  </g>
-  <g fill="none" stroke="#642031" stroke-width="1.4" stroke-linecap="round">
-    <path d="M29 25 L18 14 L7 16 L3 10"/><path d="M30 29 L16 27 L7 35 L2 34"/><path d="M31 33 L19 39 L13 49 L6 50"/><path d="M34 35 L28 45 L28 54 L22 57"/>
-    <path d="M43 25 L54 14 L65 16 L69 10"/><path d="M42 29 L56 27 L65 35 L70 34"/><path d="M41 33 L53 39 L59 49 L66 50"/><path d="M38 35 L44 45 L44 54 L50 57"/>
-  </g>
-  <ellipse cx="36" cy="35" rx="12" ry="15" fill="#210712" stroke="#6d2437" stroke-width="2"/>
-  <ellipse cx="36" cy="22" rx="9" ry="8" fill="#3a1020" stroke="#8e3046" stroke-width="1.5"/>
-  <path d="M31 17 Q36 12 41 17" fill="none" stroke="#a34255" stroke-width="1.5"/>
-  <g fill="#ff263f"><circle cx="32" cy="21" r="2.1"/><circle cx="40" cy="21" r="2.1"/></g>
-  <g fill="#ff9aa8"><circle cx="31.5" cy="20.5" r=".7"/><circle cx="39.5" cy="20.5" r=".7"/></g>
-  <path d="M31 47 Q36 52 41 47" fill="none" stroke="#080206" stroke-width="2"/>
-</svg></span><span class="page-crawler spider-svg edge-b" aria-hidden="true"><svg viewBox="0 0 72 58" role="presentation" aria-hidden="true" focusable="false">
-  <ellipse class="spider-ground-shadow" cx="36" cy="53" rx="23" ry="3.2" fill="#000" opacity=".88"/>
-  <g class="spider-legs" fill="none" stroke="#090307" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M29 25 L18 14 L7 16 L3 10"/><path d="M30 29 L16 27 L7 35 L2 34"/><path d="M31 33 L19 39 L13 49 L6 50"/><path d="M34 35 L28 45 L28 54 L22 57"/>
-    <path d="M43 25 L54 14 L65 16 L69 10"/><path d="M42 29 L56 27 L65 35 L70 34"/><path d="M41 33 L53 39 L59 49 L66 50"/><path d="M38 35 L44 45 L44 54 L50 57"/>
-  </g>
-  <g fill="none" stroke="#642031" stroke-width="1.4" stroke-linecap="round">
-    <path d="M29 25 L18 14 L7 16 L3 10"/><path d="M30 29 L16 27 L7 35 L2 34"/><path d="M31 33 L19 39 L13 49 L6 50"/><path d="M34 35 L28 45 L28 54 L22 57"/>
-    <path d="M43 25 L54 14 L65 16 L69 10"/><path d="M42 29 L56 27 L65 35 L70 34"/><path d="M41 33 L53 39 L59 49 L66 50"/><path d="M38 35 L44 45 L44 54 L50 57"/>
-  </g>
-  <ellipse cx="36" cy="35" rx="12" ry="15" fill="#210712" stroke="#6d2437" stroke-width="2"/>
-  <ellipse cx="36" cy="22" rx="9" ry="8" fill="#3a1020" stroke="#8e3046" stroke-width="1.5"/>
-  <path d="M31 17 Q36 12 41 17" fill="none" stroke="#a34255" stroke-width="1.5"/>
-  <g fill="#ff263f"><circle cx="32" cy="21" r="2.1"/><circle cx="40" cy="21" r="2.1"/></g>
-  <g fill="#ff9aa8"><circle cx="31.5" cy="20.5" r=".7"/><circle cx="39.5" cy="20.5" r=".7"/></g>
-  <path d="M31 47 Q36 52 41 47" fill="none" stroke="#080206" stroke-width="2"/>
-</svg></span><span class="page-crawler spider-svg edge-c" aria-hidden="true"><svg viewBox="0 0 72 58" role="presentation" aria-hidden="true" focusable="false">
-  <ellipse class="spider-ground-shadow" cx="36" cy="53" rx="23" ry="3.2" fill="#000" opacity=".88"/>
-  <g class="spider-legs" fill="none" stroke="#090307" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M29 25 L18 14 L7 16 L3 10"/><path d="M30 29 L16 27 L7 35 L2 34"/><path d="M31 33 L19 39 L13 49 L6 50"/><path d="M34 35 L28 45 L28 54 L22 57"/>
-    <path d="M43 25 L54 14 L65 16 L69 10"/><path d="M42 29 L56 27 L65 35 L70 34"/><path d="M41 33 L53 39 L59 49 L66 50"/><path d="M38 35 L44 45 L44 54 L50 57"/>
-  </g>
-  <g fill="none" stroke="#642031" stroke-width="1.4" stroke-linecap="round">
-    <path d="M29 25 L18 14 L7 16 L3 10"/><path d="M30 29 L16 27 L7 35 L2 34"/><path d="M31 33 L19 39 L13 49 L6 50"/><path d="M34 35 L28 45 L28 54 L22 57"/>
-    <path d="M43 25 L54 14 L65 16 L69 10"/><path d="M42 29 L56 27 L65 35 L70 34"/><path d="M41 33 L53 39 L59 49 L66 50"/><path d="M38 35 L44 45 L44 54 L50 57"/>
-  </g>
-  <ellipse cx="36" cy="35" rx="12" ry="15" fill="#210712" stroke="#6d2437" stroke-width="2"/>
-  <ellipse cx="36" cy="22" rx="9" ry="8" fill="#3a1020" stroke="#8e3046" stroke-width="1.5"/>
-  <path d="M31 17 Q36 12 41 17" fill="none" stroke="#a34255" stroke-width="1.5"/>
-  <g fill="#ff263f"><circle cx="32" cy="21" r="2.1"/><circle cx="40" cy="21" r="2.1"/></g>
-  <g fill="#ff9aa8"><circle cx="31.5" cy="20.5" r=".7"/><circle cx="39.5" cy="20.5" r=".7"/></g>
-  <path d="M31 47 Q36 52 41 47" fill="none" stroke="#080206" stroke-width="2"/>
-</svg></span></div>
+  <div class="whole-page-haunt" aria-hidden="true"><span class="wall-scratch one"></span><span class="wall-scratch two"></span><span class="wall-scratch three"></span></div>
   <div class="storm-layer" aria-hidden="true"><div class="fog"></div></div>
   <div class="lightning" id="nightmareLightning" aria-hidden="true"></div>
   <div class="jumpscare" id="nightmareScare" role="dialog" aria-label="Nightmare jump scare" aria-hidden="true">
@@ -479,55 +441,7 @@
       <button class="nightmare-control random-toggle" id="randomToggle" type="button" aria-pressed="true">☠ RANDOM HAUNTINGS: ON</button>
     </div>
     <div class="project-art" id="nightmareScene" role="button" tabindex="0" aria-label="Interact with the nightmare scene. A crimson portal is watched by monsters and the Host">
-      <div class="nightmare-floor" aria-hidden="true"></div><div class="forge-shadow" aria-hidden="true"></div><div class="passing-shadow" aria-hidden="true"></div><div class="crawler spider-svg crawl-one" aria-hidden="true"><svg viewBox="0 0 72 58" role="presentation" aria-hidden="true" focusable="false">
-  <ellipse class="spider-ground-shadow" cx="36" cy="53" rx="23" ry="3.2" fill="#000" opacity=".88"/>
-  <g class="spider-legs" fill="none" stroke="#090307" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M29 25 L18 14 L7 16 L3 10"/><path d="M30 29 L16 27 L7 35 L2 34"/><path d="M31 33 L19 39 L13 49 L6 50"/><path d="M34 35 L28 45 L28 54 L22 57"/>
-    <path d="M43 25 L54 14 L65 16 L69 10"/><path d="M42 29 L56 27 L65 35 L70 34"/><path d="M41 33 L53 39 L59 49 L66 50"/><path d="M38 35 L44 45 L44 54 L50 57"/>
-  </g>
-  <g fill="none" stroke="#642031" stroke-width="1.4" stroke-linecap="round">
-    <path d="M29 25 L18 14 L7 16 L3 10"/><path d="M30 29 L16 27 L7 35 L2 34"/><path d="M31 33 L19 39 L13 49 L6 50"/><path d="M34 35 L28 45 L28 54 L22 57"/>
-    <path d="M43 25 L54 14 L65 16 L69 10"/><path d="M42 29 L56 27 L65 35 L70 34"/><path d="M41 33 L53 39 L59 49 L66 50"/><path d="M38 35 L44 45 L44 54 L50 57"/>
-  </g>
-  <ellipse cx="36" cy="35" rx="12" ry="15" fill="#210712" stroke="#6d2437" stroke-width="2"/>
-  <ellipse cx="36" cy="22" rx="9" ry="8" fill="#3a1020" stroke="#8e3046" stroke-width="1.5"/>
-  <path d="M31 17 Q36 12 41 17" fill="none" stroke="#a34255" stroke-width="1.5"/>
-  <g fill="#ff263f"><circle cx="32" cy="21" r="2.1"/><circle cx="40" cy="21" r="2.1"/></g>
-  <g fill="#ff9aa8"><circle cx="31.5" cy="20.5" r=".7"/><circle cx="39.5" cy="20.5" r=".7"/></g>
-  <path d="M31 47 Q36 52 41 47" fill="none" stroke="#080206" stroke-width="2"/>
-</svg></div><div class="crawler spider-svg crawl-two" aria-hidden="true"><svg viewBox="0 0 72 58" role="presentation" aria-hidden="true" focusable="false">
-  <ellipse class="spider-ground-shadow" cx="36" cy="53" rx="23" ry="3.2" fill="#000" opacity=".88"/>
-  <g class="spider-legs" fill="none" stroke="#090307" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M29 25 L18 14 L7 16 L3 10"/><path d="M30 29 L16 27 L7 35 L2 34"/><path d="M31 33 L19 39 L13 49 L6 50"/><path d="M34 35 L28 45 L28 54 L22 57"/>
-    <path d="M43 25 L54 14 L65 16 L69 10"/><path d="M42 29 L56 27 L65 35 L70 34"/><path d="M41 33 L53 39 L59 49 L66 50"/><path d="M38 35 L44 45 L44 54 L50 57"/>
-  </g>
-  <g fill="none" stroke="#642031" stroke-width="1.4" stroke-linecap="round">
-    <path d="M29 25 L18 14 L7 16 L3 10"/><path d="M30 29 L16 27 L7 35 L2 34"/><path d="M31 33 L19 39 L13 49 L6 50"/><path d="M34 35 L28 45 L28 54 L22 57"/>
-    <path d="M43 25 L54 14 L65 16 L69 10"/><path d="M42 29 L56 27 L65 35 L70 34"/><path d="M41 33 L53 39 L59 49 L66 50"/><path d="M38 35 L44 45 L44 54 L50 57"/>
-  </g>
-  <ellipse cx="36" cy="35" rx="12" ry="15" fill="#210712" stroke="#6d2437" stroke-width="2"/>
-  <ellipse cx="36" cy="22" rx="9" ry="8" fill="#3a1020" stroke="#8e3046" stroke-width="1.5"/>
-  <path d="M31 17 Q36 12 41 17" fill="none" stroke="#a34255" stroke-width="1.5"/>
-  <g fill="#ff263f"><circle cx="32" cy="21" r="2.1"/><circle cx="40" cy="21" r="2.1"/></g>
-  <g fill="#ff9aa8"><circle cx="31.5" cy="20.5" r=".7"/><circle cx="39.5" cy="20.5" r=".7"/></g>
-  <path d="M31 47 Q36 52 41 47" fill="none" stroke="#080206" stroke-width="2"/>
-</svg></div><div class="drop-spider spider-svg" aria-hidden="true"><svg viewBox="0 0 72 58" role="presentation" aria-hidden="true" focusable="false">
-  <ellipse class="spider-ground-shadow" cx="36" cy="53" rx="23" ry="3.2" fill="#000" opacity=".88"/>
-  <g class="spider-legs" fill="none" stroke="#090307" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M29 25 L18 14 L7 16 L3 10"/><path d="M30 29 L16 27 L7 35 L2 34"/><path d="M31 33 L19 39 L13 49 L6 50"/><path d="M34 35 L28 45 L28 54 L22 57"/>
-    <path d="M43 25 L54 14 L65 16 L69 10"/><path d="M42 29 L56 27 L65 35 L70 34"/><path d="M41 33 L53 39 L59 49 L66 50"/><path d="M38 35 L44 45 L44 54 L50 57"/>
-  </g>
-  <g fill="none" stroke="#642031" stroke-width="1.4" stroke-linecap="round">
-    <path d="M29 25 L18 14 L7 16 L3 10"/><path d="M30 29 L16 27 L7 35 L2 34"/><path d="M31 33 L19 39 L13 49 L6 50"/><path d="M34 35 L28 45 L28 54 L22 57"/>
-    <path d="M43 25 L54 14 L65 16 L69 10"/><path d="M42 29 L56 27 L65 35 L70 34"/><path d="M41 33 L53 39 L59 49 L66 50"/><path d="M38 35 L44 45 L44 54 L50 57"/>
-  </g>
-  <ellipse cx="36" cy="35" rx="12" ry="15" fill="#210712" stroke="#6d2437" stroke-width="2"/>
-  <ellipse cx="36" cy="22" rx="9" ry="8" fill="#3a1020" stroke="#8e3046" stroke-width="1.5"/>
-  <path d="M31 17 Q36 12 41 17" fill="none" stroke="#a34255" stroke-width="1.5"/>
-  <g fill="#ff263f"><circle cx="32" cy="21" r="2.1"/><circle cx="40" cy="21" r="2.1"/></g>
-  <g fill="#ff9aa8"><circle cx="31.5" cy="20.5" r=".7"/><circle cx="39.5" cy="20.5" r=".7"/></g>
-  <path d="M31 47 Q36 52 41 47" fill="none" stroke="#080206" stroke-width="2"/>
-</svg></div><div class="forge-portal"></div><span class="forge-ember"></span><span class="forge-ember two"></span>
+      <div class="nightmare-floor" aria-hidden="true"></div><div class="forge-shadow" aria-hidden="true"></div><div class="passing-shadow" aria-hidden="true"></div><div class="forge-mist" aria-hidden="true"></div><div class="apparition-flash" aria-hidden="true"></div><div class="forge-portal"></div><span class="forge-ember"></span><span class="forge-ember two"></span>
       <div class="wake-prompt" id="wakePrompt" aria-hidden="false"><strong>THE FORGE IS DORMANT</strong><span>Something is breathing behind the walls.</span><span class="wake-hint">TAP THE SCENE TO WAKE IT</span></div>
       <div class="host-presence" id="theHost" aria-hidden="true"><span class="host-head"></span><span class="host-neck"></span><span class="host-body"></span><span class="host-name">THE HOST</span></div>
       <span class="scene-message" id="sceneMessage" aria-live="polite"></span>
@@ -621,11 +535,11 @@
       scene.classList.add('haunt-red','haunt-glitch','crawler-rush');
       setTimeout(()=>scene.classList.remove('crawler-rush'),2600);setTimeout(()=>scene.classList.remove('haunt-red'),220);setTimeout(()=>scene.classList.remove('haunt-glitch'),650);
       const events=[
-        ()=>{scene.classList.remove('scene-glitch');void scene.offsetWidth;scene.classList.add('scene-glitch');whisper('DID YOU SEE THAT?')},
+        ()=>{scene.classList.remove('scene-glitch','apparition');void scene.offsetWidth;scene.classList.add('scene-glitch','apparition');setTimeout(()=>scene.classList.remove('apparition'),800);whisper('DID YOU SEE THAT?')},
         ()=>{host.classList.remove('host-left','host-right','host-fade');host.classList.add(Math.random()>.5?'host-left':'host-right');whisper('I WAS CLOSER A MOMENT AGO.')},
         ()=>{host.classList.add('host-fade');whisper('DONT LOOK AWAY.');setTimeout(()=>host.classList.remove('host-fade'),2600)},
         ()=>{whisper('THE FORGE KNOWS YOU ARE HERE.');scene.classList.remove('scene-glitch');void scene.offsetWidth;scene.classList.add('scene-glitch')},
-        ()=>{whisper('IT FOUND YOU.');if(Math.random()<.32)jumpScare()}
+        ()=>{whisper('IT FOUND YOU.');scene.classList.remove('apparition');void scene.offsetWidth;scene.classList.add('apparition');setTimeout(()=>scene.classList.remove('apparition'),800);if(Math.random()<.32)jumpScare()}
       ];
       events[Math.floor(Math.random()*events.length)]();scheduleHaunt();
     }
@@ -635,7 +549,7 @@
     function interactScene(){
       awakenNightmare();
       scene.classList.add("reveal-shadow");setTimeout(()=>scene.classList.remove("reveal-shadow"),700);
-      const lines=['THE HOST IS LISTENING.','SOMETHING MOVED BEHIND YOU.','YOU SHOULD NOT HAVE TOUCHED THAT.','IT KNOWS YOU ARE HERE.'];
+      const lines=['THE HOST IS LISTENING.','SOMETHING MOVED BEHIND YOU.','YOU SHOULD NOT HAVE TOUCHED THAT.','IT KNOWS YOU ARE HERE.','DONT TURN AROUND.','IT IS STANDING IN THE DARK.'];
       whisper(lines[Math.floor(Math.random()*lines.length)]);
       scene.classList.remove('scene-glitch');void scene.offsetWidth;scene.classList.add('scene-glitch');
       if(Math.random()<.24)jumpScare();
