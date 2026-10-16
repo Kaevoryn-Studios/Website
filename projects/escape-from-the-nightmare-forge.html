@@ -313,6 +313,42 @@
     }
 
 
+
+    /* NEW DIRECTION: no spiders. Use a grounded, passing shadow and living floor fissures. */
+    .whole-page-haunt .page-crawler,
+    #nightmareScene .crawler.spider-svg,
+    #nightmareScene .drop-spider.spider-svg{display:none!important;visibility:hidden!important;opacity:0!important}
+    #nightmareScene .passing-shadow{
+      position:absolute;z-index:3;left:-45%;bottom:9%;width:34%;height:52%;
+      pointer-events:none;opacity:0;filter:blur(7px);
+      background:linear-gradient(90deg,transparent,rgba(0,0,0,.95) 28%,rgba(0,0,0,.9) 62%,transparent);
+      clip-path:polygon(28% 0,61% 4%,72% 20%,66% 34%,82% 48%,100% 100%,61% 86%,50% 100%,39% 84%,0 100%,18% 49%,23% 27%);
+      transform:scale(.82);transform-origin:center bottom;
+    }
+    #nightmareScene.nightmare-awake .passing-shadow{animation:shadow-cross 7.5s ease-in-out infinite}
+    #nightmareScene .nightmare-floor::after{
+      content:"";position:absolute;inset:8% 4% 0;
+      background:
+        linear-gradient(112deg,transparent 0 17%,rgba(255,20,55,.0) 17.3%,rgba(255,20,55,.8) 17.6%,transparent 18%),
+        linear-gradient(72deg,transparent 0 38%,rgba(255,20,55,.0) 38.3%,rgba(255,20,55,.7) 38.6%,transparent 39%),
+        linear-gradient(104deg,transparent 0 67%,rgba(255,20,55,.0) 67.3%,rgba(255,20,55,.75) 67.6%,transparent 68%);
+      opacity:0;filter:drop-shadow(0 0 7px #f03);transition:opacity .5s ease;
+    }
+    #nightmareScene.nightmare-awake .nightmare-floor::after{opacity:.8;animation:rift-pulse 3.8s ease-in-out infinite}
+    @keyframes shadow-cross{
+      0%,8%{left:-45%;opacity:0;transform:scale(.72)}
+      20%{opacity:.68}
+      48%{left:108%;opacity:.85;transform:scale(1.05)}
+      56%{opacity:0}
+      100%{left:108%;opacity:0;transform:scale(1.05)}
+    }
+    @keyframes rift-pulse{0%,100%{opacity:.22}45%{opacity:.92}60%{opacity:.5}}
+    #nightmareScene.reveal-shadow .passing-shadow{opacity:1;filter:blur(2px) drop-shadow(0 0 16px rgba(255,0,45,.35))}
+    @media(prefers-reduced-motion:reduce){
+      #nightmareScene.nightmare-awake .passing-shadow{animation:none;left:34%;opacity:.45}
+      #nightmareScene.nightmare-awake .nightmare-floor::after{animation:none;opacity:.5}
+    }
+
     /* JS-DRIVEN FLOOR CRAWL: body position is updated directly, independent of CSS keyframe conflicts. */
     #nightmareScene .crawler.spider-svg.crawl-one,
     #nightmareScene .crawler.spider-svg.crawl-two{
@@ -424,7 +460,7 @@
       <button class="nightmare-control random-toggle" id="randomToggle" type="button" aria-pressed="true">☠ RANDOM HAUNTINGS: ON</button>
     </div>
     <div class="project-art" id="nightmareScene" role="button" tabindex="0" aria-label="Interact with the nightmare scene. A crimson portal is watched by monsters and the Host">
-      <div class="nightmare-floor" aria-hidden="true"></div><div class="forge-shadow" aria-hidden="true"></div><div class="crawler spider-svg crawl-one" aria-hidden="true"><svg viewBox="0 0 72 58" role="presentation" aria-hidden="true" focusable="false">
+      <div class="nightmare-floor" aria-hidden="true"></div><div class="forge-shadow" aria-hidden="true"></div><div class="passing-shadow" aria-hidden="true"></div><div class="crawler spider-svg crawl-one" aria-hidden="true"><svg viewBox="0 0 72 58" role="presentation" aria-hidden="true" focusable="false">
   <ellipse class="spider-ground-shadow" cx="36" cy="53" rx="23" ry="3.2" fill="#000" opacity=".88"/>
   <g class="spider-legs" fill="none" stroke="#090307" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
     <path d="M29 25 L18 14 L7 16 L3 10"/><path d="M30 29 L16 27 L7 35 L2 34"/><path d="M31 33 L19 39 L13 49 L6 50"/><path d="M34 35 L28 45 L28 54 L22 57"/>
@@ -503,33 +539,8 @@
     const message = document.getElementById("sceneMessage");
     let audio = null, soundOn = false, randomOn = true, nightmareAwake = false, scareTimer = null, thunderTimer = null, hauntTimer = null, visualLightningTimer = null, noiseBuffer = null, droneNodes = [];
 
-    /* Reliable ground travel: JS owns the spider body position; CSS only animates the legs. */
-    function runGroundSpiders(){
-      if(!scene) return;
-      const movers=[
-        {el:scene.querySelector('.crawler.spider-svg.crawl-one'),speed:76,offset:0,scale:1},
-        {el:scene.querySelector('.crawler.spider-svg.crawl-two'),speed:61,offset:.53,scale:.82}
-      ].filter(item=>item.el);
-      const tick=now=>{
-        const width=scene.clientWidth||window.innerWidth;
-        movers.forEach(item=>{
-          const span=width+140;
-          const phase=((now/1000*item.speed/Math.max(span,1)+item.offset)%2+2)%2;
-          const movingRight=phase<1;
-          const progress=movingRight?phase:2-phase;
-          const x=-70+progress*span;
-          item.el.style.setProperty('left',x+'px','important');
-          item.el.style.setProperty('right','auto','important');
-          item.el.style.setProperty('bottom','1%','important');
-          item.el.style.setProperty('top','auto','important');
-          item.el.style.setProperty('transform','rotate('+(movingRight?'90deg':'-90deg')+') scale('+item.scale+')','important');
-          item.el.style.setProperty('animation','none','important');
-        });
-        window.requestAnimationFrame(tick);
-      };
-      window.requestAnimationFrame(tick);
-    }
-    runGroundSpiders();
+    /* Spider movement removed; the new shadow and floor-rift effects are CSS-driven. */
+
 
     function setupAudio(){
       if(audio) return;
