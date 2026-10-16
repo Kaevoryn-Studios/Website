@@ -10,8 +10,30 @@
 <meta property="og:description" content="Discover the cinematic spectacles and story worlds being imagined at Kaevoryn Studios.">
 <title>Shows & Series — Kaevoryn Studios</title>
 <link rel="stylesheet" href="site.css">
+<style>
+/* SHOWS & SERIES — page-specific cinematic atmosphere */
+.shows-page .page-hero{padding-bottom:46px}
+.shows-page .page-hero h1{background:linear-gradient(100deg,#fff 5%,#8ceeff 45%,#c0a6ff 78%,#fff);color:transparent;background-clip:text;-webkit-background-clip:text;text-shadow:0 0 36px rgba(126,234,255,.08)}
+.shows-page .page-hero .status-pill{margin-top:22px;background:rgba(8,15,34,.66);border-color:rgba(168,149,255,.34)}
+.shows-page .production-card{isolation:isolate;min-height:260px}
+.shows-page .production-card:after{content:"";position:absolute;z-index:-1;right:-48px;top:-54px;width:150px;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,rgba(126,234,255,.17),rgba(126,234,255,.035) 46%,transparent 70%);pointer-events:none}
+.shows-page .production-card:nth-child(2):after{background:radial-gradient(circle,rgba(168,149,255,.2),rgba(168,149,255,.04) 46%,transparent 70%)}
+.shows-page .production-card:nth-child(3):after{background:radial-gradient(circle,rgba(241,203,114,.15),rgba(168,149,255,.045) 46%,transparent 70%)}
+.shows-page .production-card .card-kicker{position:relative}
+.shows-page .production-card h2{max-width:17ch}
+.shows-page .production-card p{max-width:42ch}
+.shows-page .story-worlds{position:relative;overflow:hidden}
+.shows-page .story-worlds:before{content:"";position:absolute;right:-90px;top:-120px;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(122,86,255,.12),transparent 68%);pointer-events:none}
+.shows-page .story-worlds>*{position:relative}
+.shows-page .story-worlds .content-grid{padding-bottom:0}
+.shows-page .story-worlds .content-card{background:linear-gradient(145deg,rgba(12,20,39,.92),rgba(29,18,49,.78));min-height:205px}
+.shows-page .closing-panel{text-align:center}
+.shows-page .closing-panel h2{background:linear-gradient(100deg,#fff,#8ceeff 52%,#c0a6ff);color:transparent;background-clip:text;-webkit-background-clip:text}
+@media(max-width:520px){.shows-page .production-card{min-height:0}.shows-page .page-hero{padding-bottom:32px}}
+@media(prefers-reduced-motion:reduce){.shows-page .production-card:before,.shows-page .story-worlds:before{animation:none!important}}
+</style>
 </head>
-<body>
+<body class="shows-page">
 <a class="skip-link" href="#main-content">Skip to content</a>
 <header class="site-header">
 <div class="nav-wrap">
@@ -48,7 +70,7 @@
 </div>
 </section>
 
-<section class="feature-panel" aria-labelledby="worlds-heading">
+<section class="feature-panel story-worlds" aria-labelledby="worlds-heading">
 <p class="kicker">STORY WORLDS IN THE WINGS</p>
 <h2 id="worlds-heading">More worlds may find their way here.</h2>
 <p>These ideas are part of the wider creative universe, but they are not being presented as confirmed shows. They may grow into series, films, games, or immersive experiences as the plans develop.</p>
