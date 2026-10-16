@@ -249,6 +249,27 @@
       .spider-svg .spider-legs path{animation:none!important}
     }
 
+    /* FACE THE TRAVEL DIRECTION: spider heads lead, bodies trail */
+    .page-crawler.spider-svg.edge-a{animation:edge-crawl-down-facing 13s linear 1s infinite alternate!important}
+    .page-crawler.spider-svg.edge-b{animation:edge-crawl-up-facing 15s linear 2s infinite alternate!important}
+    .page-crawler.spider-svg.edge-c{animation:edge-crawl-right-facing 18s linear 3s infinite alternate!important}
+    @keyframes edge-crawl-down-facing{from{top:28%;transform:rotate(180deg)}to{top:67%;transform:rotate(180deg)}}
+    @keyframes edge-crawl-up-facing{from{top:72%;transform:rotate(0deg)}to{top:31%;transform:rotate(0deg)}}
+    @keyframes edge-crawl-right-facing{from{left:10%;transform:rotate(90deg)}to{left:75%;transform:rotate(90deg)}}
+    .crawler.spider-svg.crawl-one{animation:floor-crawl-right-facing 8s linear infinite!important}
+    .crawler.spider-svg.crawl-two{animation:floor-crawl-left-facing 10s linear 1s infinite!important}
+    @keyframes floor-crawl-right-facing{0%{left:-64px;transform:rotate(90deg)}100%{left:calc(100% + 64px);transform:rotate(90deg)}}
+    @keyframes floor-crawl-left-facing{0%{right:-64px;transform:rotate(-90deg) scale(.82)}100%{right:calc(100% + 64px);transform:rotate(-90deg) scale(.82)}}
+    .project-art.crawler-rush .crawler.spider-svg.crawl-one{animation:floor-crawl-right-facing 2.4s linear infinite!important}
+    .project-art.crawler-rush .crawler.spider-svg.crawl-two{animation:floor-crawl-left-facing 2.8s linear infinite!important}
+    @media(prefers-reduced-motion:reduce){
+      .page-crawler.spider-svg.edge-a{transform:rotate(180deg)}
+      .page-crawler.spider-svg.edge-b{transform:rotate(0deg)}
+      .page-crawler.spider-svg.edge-c{transform:rotate(90deg)}
+      .crawler.spider-svg.crawl-one{transform:rotate(90deg)}
+      .crawler.spider-svg.crawl-two{transform:rotate(-90deg) scale(.82)}
+    }
+
   </style>
 </head>
 <body>
