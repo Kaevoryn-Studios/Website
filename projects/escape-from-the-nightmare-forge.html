@@ -103,42 +103,46 @@ main{position:relative;z-index:2;display:flex;flex-direction:column;align-items:
  function smoke(t){for(const p of wisps){p.p+=p.speed*(awake?2:1);const x=p.x+Math.sin(t*.00024+p.p)*p.r*.75;const y=p.y+Math.cos(t*.00019+p.p*1.4)*p.r*.48+(awake?Math.sin(t*.0007+p.p)*12:0);const radius=p.r*(awake?1.35:1);const c=Math.sin(p.p+t*.0003);glow(x,y,radius,c>.35?'rgba(150,89,199,ALPHA)':c<-.35?'rgba(66,179,210,ALPHA)':'rgba(206,181,205,ALPHA)',p.a*(awake?2.2:.75));}ctx.save();ctx.globalCompositeOperation='screen';for(let side=-1;side<=1;side+=2){for(let i=0;i<5;i++){const f=i/5,xx=w/2+side*(w*.12+f*w*.2)+Math.sin(t*.0004+i*2+side)*20,yy=h*.52+Math.cos(t*.0007+i)*h*.13;ctx.strokeStyle=rgba(side<0?147:71,side<0?82:183,side<0?194:210,(awake?.08:.025));ctx.lineWidth=18+i*5;ctx.beginPath();ctx.moveTo(w/2+side*20,h*.53);ctx.bezierCurveTo(xx-side*60,yy-60,xx+side*80,yy+35,xx,yy+90);ctx.stroke();}}ctx.restore();}
  function ghost(m,t){const x=m.x+Math.sin(t*.00045+m.p)*12,y=m.y+Math.cos(t*.0007+m.p)*7,s=m.s;ctx.save();ctx.translate(x,y);ctx.scale(s,s);ctx.globalAlpha=m.a*(awake?1.7:1);glow(0,-28,44,'rgba(182,153,215,ALPHA)',.22);ctx.fillStyle=rgba(174,166,202,.13);ctx.beginPath();ctx.ellipse(0,-27,9,13,0,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.moveTo(-10,-14);ctx.quadraticCurveTo(-22,5,-13,22);ctx.lineTo(-5,14);ctx.lineTo(0,29);ctx.lineTo(6,14);ctx.lineTo(14,24);ctx.quadraticCurveTo(22,0,10,-14);ctx.closePath();ctx.fill();ctx.strokeStyle=rgba(196,175,218,.16);ctx.lineWidth=1;ctx.stroke();ctx.restore();}
  function host(t){if(!awake)return;
- // The Host is never drawn. Its presence corrupts the room around the portal.
- const pulse=.5+.5*Math.sin(t*.0021),cx=w/2,cy=h*.46;
- ctx.save();
- // A few horizontal reality-tears cut across the environment, then snap away.
- for(let i=0;i<10;i++){
-   const phase=t*.0007+i*2.17;
-   const y=((i*83+Math.sin(phase)*29+((t*.018+i*47)%(h+70)))%(h+70))-35;
-   const span=(w*.12)+(Math.sin(phase*1.4)*.5+.5)*w*.5;
-   const x=(Math.sin(phase*1.7)*.5+.5)*(w-span);
-   ctx.globalAlpha=(.025+pulse*.055)*(i%3===0?1.5:1);
-   ctx.fillStyle=i%2===0?'#7b42ff':'#31dfff';
-   ctx.fillRect(x,y,span,1+(i%3));
-   ctx.globalAlpha=.12+pulse*.1;
-   ctx.fillStyle='#020109';
-   ctx.fillRect(x-12,y-4,span*.6,7);
+ const cx=w/2,cy=h*.51,scale=Math.min(w/320,1.12)*(revealed?1.08:.94),pulse=.5+.5*Math.sin(t*.0022);
+ ctx.save();ctx.translate(cx,cy);ctx.scale(scale,scale);ctx.globalAlpha=revealed?.98:.82;
+ // A visible supernatural presence: a floating crown of torn darkness around a bright, empty centre.
+ glow(0,0,155,'rgba(93,38,191,ALPHA)',revealed?.24:.12);
+ glow(0,0,94,'rgba(35,196,229,ALPHA)',revealed?.2:.08);
+ // Broken veil: irregular, flowing arcs suggest a presence without forming a person or a blob.
+ ctx.save();ctx.globalCompositeOperation='screen';
+ for(let i=0;i<8;i++){
+   const a0=i*Math.PI/4+t*.00012,rx=66+(i%3)*18,ry=96+(i%4)*12;
+   ctx.beginPath();
+   ctx.ellipse(Math.sin(t*.0003+i)*5,Math.cos(t*.00025+i)*6,rx,ry,a0*.08,a0,a0+.48+(i%2)*.23);
+   ctx.strokeStyle=i%2===0?rgba(68,220,255,.36+pulse*.3):rgba(181,79,255,.32+pulse*.3);
+   ctx.lineWidth=i%3===0?3:1.7;ctx.shadowBlur=12;ctx.shadowColor=i%2===0?'#32dfff':'#a64dff';ctx.stroke();
  }
- // Shadows slide along the outer walls, never joining into a recognizable figure.
- const edges=[{x:0,y:h*.24,dx:1,dy:0},{x:w,y:h*.58,dx:-1,dy:0},{x:w*.18,y:0,dx:0,dy:1},{x:w*.82,y:h,dx:0,dy:-1}];
- for(let i=0;i<edges.length;i++){
-   const p=edges[i],travel=(Math.sin(t*.00043+i*2.1)*.5+.5);
-   const len=Math.min(w,h)*(.13+travel*.1),thick=9+travel*15;
-   const x=p.x+p.dx*travel*len,y=p.y+p.dy*travel*len;
-   const g=ctx.createRadialGradient(x,y,1,x,y,thick*4);
-   g.addColorStop(0,'rgba(0,0,4,.72)');g.addColorStop(.45,'rgba(8,3,20,.38)');g.addColorStop(1,'rgba(7,2,18,0)');
-   ctx.fillStyle=g;ctx.beginPath();ctx.ellipse(x,y,thick*3,thick*2,Math.sin(t*.0003+i),0,Math.PI*2);ctx.fill();
+ ctx.restore();
+ // Distinct dark shards float in a loose vertical constellation, separated by obvious gaps.
+ for(let i=0;i<11;i++){
+   const a=t*.00016+i*2.399,orbit=45+(i%4)*24;
+   const x=Math.cos(a)*orbit,y=Math.sin(a*.91+i*.3)*(72+(i%3)*19)+(i-5)*2;
+   const ww=8+(i%3)*4,hh=17+(i%4)*8,turn=Math.sin(t*.00055+i*1.7)*.45;
+   ctx.save();ctx.translate(x,y);ctx.rotate(turn);
+   const g=ctx.createLinearGradient(-ww,-hh,ww,hh);
+   g.addColorStop(0,'rgba(2,2,10,.98)');g.addColorStop(.5,'rgba(15,8,30,.98)');g.addColorStop(1,'rgba(2,2,8,.88)');
+   ctx.fillStyle=g;ctx.beginPath();
+   ctx.moveTo(-ww*.35,-hh);ctx.quadraticCurveTo(ww*.9,-hh*.45,ww*.35,hh*.25);
+   ctx.quadraticCurveTo(0,hh*1.1,-ww*.7,hh*.45);ctx.quadraticCurveTo(-ww*1.1,-hh*.15,-ww*.35,-hh);
+   ctx.closePath();ctx.fill();
+   ctx.strokeStyle=i%2===0?rgba(73,222,255,.55):rgba(185,83,255,.5);ctx.lineWidth=1.2;ctx.stroke();
+   ctx.restore();
  }
- // Fine cracks briefly bend light toward an empty point in the room.
+ // A central slit of cold light gives the Host a readable focal point, but no eyes or face.
+ const slit=ctx.createLinearGradient(0,-84,0,82);
+ slit.addColorStop(0,'rgba(67,222,255,0)');slit.addColorStop(.25,rgba(68,223,255,.1+pulse*.13));slit.addColorStop(.52,rgba(192,98,255,.22+pulse*.17));slit.addColorStop(.78,rgba(54,215,255,.09+pulse*.12));slit.addColorStop(1,'rgba(67,222,255,0)');
+ ctx.fillStyle=slit;ctx.beginPath();ctx.moveTo(-5,-83);ctx.bezierCurveTo(8,-40,-9,28,4,83);ctx.bezierCurveTo(14,28,0,-36,5,-82);ctx.closePath();ctx.fill();
+ // Threads of shadow peel from the fragments and curl into the surrounding darkness.
  ctx.save();ctx.globalCompositeOperation='screen';
  for(let i=0;i<6;i++){
-   const a=i*Math.PI/3+t*.00006,reach=Math.min(w,h)*(.2+(i%2)*.08);
-   const x=cx+Math.cos(a)*reach,y=cy+Math.sin(a)*reach;
-   ctx.globalAlpha=.06+pulse*.08;
-   ctx.strokeStyle=i%2===0?'#5ce5ff':'#bd69ff';ctx.lineWidth=1;
-   ctx.beginPath();ctx.moveTo(x,y);
-   ctx.lineTo(x+Math.cos(a+.12)*12,y+Math.sin(a-.1)*12);
-   ctx.lineTo(x+Math.cos(a-.18)*19,y+Math.sin(a+.16)*21);ctx.stroke();
+   const side=i%2?1:-1,y=-70+i*27,wave=Math.sin(t*.0006+i*1.8)*12;
+   ctx.strokeStyle=i%2?rgba(65,218,255,.22):rgba(180,80,255,.22);ctx.lineWidth=1.5;
+   ctx.beginPath();ctx.moveTo(side*34,y);ctx.bezierCurveTo(side*(68+wave),y-17,side*(44-wave),y+19,side*(91+wave),y+34);ctx.stroke();
  }
  ctx.restore();ctx.restore();
 }
