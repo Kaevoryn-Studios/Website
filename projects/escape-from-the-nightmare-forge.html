@@ -106,6 +106,21 @@
 @media(max-width:760px){.camera-seven{padding:70px 22px}.camera-seven-inner{grid-template-columns:1fr;gap:24px}.camera-seven-screen{min-height:270px}}
 @media(prefers-reduced-motion:reduce){.camera-seven-figure{transition:none}}
 
+/* Strong, unmistakable Camera 07 visual states */
+.camera-seven-door{transition:width .45s ease,background .45s ease,box-shadow .45s ease}
+.camera-seven-screen[data-stage="1"]{background:radial-gradient(ellipse at 50% 50%,#34231d,#050505 76%)}
+.camera-seven-screen[data-stage="1"] .camera-seven-door{box-shadow:0 0 22px #ff704040,inset 0 0 22px #ff572d18}
+.camera-seven-screen[data-stage="1"] .camera-seven-figure{opacity:1!important;filter:drop-shadow(0 0 12px #ff572d66);animation:cam07Appear .55s ease-out both}
+.camera-seven-screen[data-stage="2"]{background:radial-gradient(ellipse at 50% 65%,#5a1710,#050505 78%)}
+.camera-seven-screen[data-stage="2"] .camera-seven-door{width:48%;background:linear-gradient(90deg,#080707,#3a1a14 50%,#080707);box-shadow:0 0 55px #ff572d66,inset 0 0 30px #ff572d22}
+.camera-seven-screen[data-stage="2"] .camera-seven-figure{opacity:1!important;transform:translateX(-50%) scale(1.48)!important;filter:drop-shadow(0 0 16px #ff572d99)}
+.camera-seven-screen[data-stage="3"]{background:repeating-linear-gradient(0deg,#170706 0 3px,#050505 4px 7px);box-shadow:inset 0 0 95px #ff1d0d55,0 0 22px #ff2d1640}
+.camera-seven-screen[data-stage="3"] .camera-seven-door{width:58%;border-color:#a83322;background:linear-gradient(90deg,#080707,#56170f 50%,#080707);box-shadow:0 0 65px #ff301f88}
+.camera-seven-screen[data-stage="3"] .camera-seven-figure{opacity:0!important}
+.camera-seven-screen[data-stage="3"] .camera-seven-label{color:#ff3d2a;text-shadow:0 0 9px #ff1d0d}
+@keyframes cam07Appear{0%{opacity:0;transform:translateX(-50%) scale(.72)}65%{opacity:1;transform:translateX(-50%) scale(1.08)}100%{opacity:1;transform:translateX(-50%) scale(1)}}
+@media(prefers-reduced-motion:reduce){.camera-seven-screen[data-stage="1"] .camera-seven-figure{animation:none;opacity:1!important}.camera-seven-door{transition:none}}
+ 
 </style>
 </head>
 <body>
