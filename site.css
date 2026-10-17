@@ -205,3 +205,34 @@ body.magic-reduced-motion,body.magic-reduced-motion:before,body.magic-reduced-mo
 .hero:after{content:"";position:absolute;z-index:-1;inset:12% 2% 6%;pointer-events:none;opacity:.34;background-image:radial-gradient(circle,rgba(190,245,255,.85) 0 1px,transparent 1.8px),radial-gradient(circle,rgba(190,160,255,.75) 0 1px,transparent 2px);background-size:113px 137px,167px 191px;background-position:17px 30px,68px 91px;mask-image:linear-gradient(transparent,#000 18%,#000 76%,transparent);animation:core-dust-drift 24s linear infinite alternate}
 @keyframes core-dust-drift{from{transform:translate3d(-7px,8px,0);background-position:17px 30px,68px 91px}to{transform:translate3d(9px,-12px,0);background-position:53px 65px,19px 43px}}
 @media(prefers-reduced-motion:reduce){.core-status,.live-core-orb,.live-core-orb:before,.live-core-orb:after,.hero:after{animation:none!important}.hero:after{opacity:.18}}
+
+
+/* CORE AWAKENING — subtle floating particles around the homepage presence */
+.hero:after{
+  content:"";
+  position:absolute;
+  z-index:-1;
+  inset:5% 0 12%;
+  pointer-events:none;
+  opacity:.48;
+  background-image:
+    radial-gradient(circle,rgba(210,250,255,.95) 0 1px,transparent 1.8px),
+    radial-gradient(circle,rgba(126,234,255,.8) 0 1.2px,transparent 2px),
+    radial-gradient(circle,rgba(190,163,255,.8) 0 1px,transparent 1.9px),
+    radial-gradient(circle,rgba(241,203,114,.7) 0 .8px,transparent 1.7px);
+  background-size:113px 137px,173px 191px,227px 163px,281px 239px;
+  background-position:7px 19px,61px 83px,113px 31px,37px 127px;
+  mask-image:radial-gradient(ellipse at 50% 45%,#000 0%,rgba(0,0,0,.72) 42%,transparent 75%);
+  animation:core-particle-drift 26s linear infinite alternate,core-particle-glimmer 6s ease-in-out infinite alternate;
+}
+.live-core-orb{
+  animation:core-orb-hover 6s ease-in-out infinite,core-orb-glow 4.8s ease-in-out infinite;
+}
+@keyframes core-particle-drift{
+  from{background-position:7px 19px,61px 83px,113px 31px,37px 127px;transform:translate3d(-.4%,0,0) scale(1)}
+  to{background-position:44px -31px,19px 29px,153px 71px,-9px 169px;transform:translate3d(.4%,-.5%,0) scale(1.025)}
+}
+@keyframes core-particle-glimmer{from{opacity:.25;filter:brightness(.8)}to{opacity:.62;filter:brightness(1.25)}}
+@keyframes core-orb-hover{0%,100%{translate:0 0}50%{translate:0 -7px}}
+@keyframes core-orb-glow{0%,100%{filter:brightness(.96)}50%{filter:brightness(1.16)}}
+@media(prefers-reduced-motion:reduce){.hero:after,.live-core-orb{animation:none!important}}
