@@ -236,3 +236,9 @@ body.magic-reduced-motion,body.magic-reduced-motion:before,body.magic-reduced-mo
 @keyframes core-orb-hover{0%,100%{translate:0 0}50%{translate:0 -7px}}
 @keyframes core-orb-glow{0%,100%{filter:brightness(.96)}50%{filter:brightness(1.16)}}
 @media(prefers-reduced-motion:reduce){.hero:after,.live-core-orb{animation:none!important}}
+
+
+/* Visitor-controlled Core atmosphere */
+.magic-effects-toggle{margin:24px auto 0;padding:10px 15px;border:1px solid rgba(126,234,255,.42);border-radius:999px;background:rgba(8,15,34,.7);color:#dffaff;font:700 10px/1.4 Arial,Helvetica,sans-serif;letter-spacing:1.3px;cursor:pointer;transition:border-color .2s ease,background .2s ease}
+.magic-effects-toggle:hover,.magic-effects-toggle:focus-visible{border-color:var(--cyan);background:rgba(28,54,86,.85);outline:2px solid var(--cyan);outline-offset:3px}
+.magic-reduced-motion .magic-effects-toggle{border-color:rgba(241,203,114,.65);color:#fff0c2}
