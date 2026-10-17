@@ -17,8 +17,10 @@
 .night-page .prototype-label{display:inline-block;margin-top:8px;padding:7px 12px;border:1px solid rgba(126,234,255,.34);border-radius:999px;color:#c9f6ff;font-size:10px;font-weight:700;letter-spacing:1.6px}
 .night-stage{position:relative;display:grid;place-items:center;min-height:clamp(420px,67vh,650px);padding:26px 18px;border:1px solid rgba(126,234,255,.25);border-radius:24px;overflow:hidden;isolation:isolate;background:radial-gradient(ellipse at 50% 45%,rgba(39,76,148,.18),transparent 40%),linear-gradient(145deg,#03050e,#0a1026 55%,#080613);box-shadow:0 24px 80px rgba(0,0,0,.28)}
 .night-stage:before{content:"";position:absolute;inset:-25%;z-index:-2;background:radial-gradient(ellipse at 30% 70%,rgba(86,48,168,.16),transparent 38%),radial-gradient(ellipse at 70% 20%,rgba(35,155,205,.14),transparent 40%);opacity:.9;transition:opacity 1.5s ease,transform 2s ease}
-.night-stars{position:absolute;inset:0;z-index:-1;pointer-events:none;background-image:radial-gradient(circle at 14% 22%,#c7f6ff 0 1px,transparent 2px),radial-gradient(circle at 81% 19%,#fff 0 1px,transparent 2px),radial-gradient(circle at 76% 75%,#b3a3ff 0 1px,transparent 2px),radial-gradient(circle at 20% 80%,#fff 0 1px,transparent 2px),radial-gradient(circle at 54% 13%,#bceeff 0 1px,transparent 2px),radial-gradient(circle at 91% 48%,#c8c2ff 0 1px,transparent 2px),radial-gradient(circle at 37% 68%,#fff 0 1px,transparent 2px);opacity:.5}
-.night-portal{position:absolute;top:36%;left:50%;width:min(58vw,300px);aspect-ratio:1;border-radius:50%;transform:translate(-50%,-50%) scale(.2);opacity:0;background:radial-gradient(circle,rgba(238,252,255,.95) 0%,rgba(108,221,255,.62) 5%,rgba(95,106,255,.24) 20%,transparent 66%);filter:drop-shadow(0 0 25px rgba(98,206,255,.3));transition:opacity 1.5s ease,transform 2s cubic-bezier(.2,.8,.2,1)}
+.night-stars{position:absolute;inset:0;z-index:-1;pointer-events:none;background-image:radial-gradient(circle at 14% 22%,#c7f6ff 0 1px,transparent 2px),radial-gradient(circle at 81% 19%,#fff 0 1px,transparent 2px),radial-gradient(circle at 76% 75%,#b3a3ff 0 1px,transparent 2px),radial-gradient(circle at 20% 80%,#fff 0 1px,transparent 2px),radial-gradient(circle at 54% 13%,#bceeff 0 1px,transparent 2px),radial-gradient(circle at 91% 48%,#c8c2ff 0 1px,transparent 2px),radial-gradient(circle at 37% 68%,#fff 0 1px,transparent 2px);opacity:.5;animation:star-drift 18s ease-in-out infinite alternate}
+@keyframes star-drift{from{transform:scale(1);opacity:.38}to{transform:scale(1.08);opacity:.78}}
+.night-portal{position:absolute;top:36%;left:50%;width:min(58vw,300px);aspect-ratio:1;border-radius:50%;transform:translate(-50%,-50%) scale(.2);opacity:0;background:radial-gradient(circle,rgba(238,252,255,.95) 0%,rgba(108,221,255,.62) 5%,rgba(95,106,255,.24) 20%,transparent 66%);filter:drop-shadow(0 0 25px rgba(98,206,255,.3));transition:opacity 1.5s ease,transform 2s cubic-bezier(.2,.8,.2,1);animation:core-breathe 5s ease-in-out infinite alternate}
+@keyframes core-breathe{from{filter:drop-shadow(0 0 16px rgba(98,206,255,.2))}to{filter:drop-shadow(0 0 40px rgba(98,206,255,.62))}}
 .night-orbit{position:absolute;inset:15%;border:1px solid rgba(132,226,255,.5);border-radius:50%;box-shadow:0 0 28px rgba(94,164,255,.15),inset 0 0 20px rgba(105,95,255,.12);transform:rotateX(62deg) scale(.65);opacity:0;transition:opacity 1.3s ease,transform 2s ease}
 .night-orbit.two{inset:22%;border-color:rgba(191,150,255,.55);transform:rotateY(62deg) rotateZ(24deg) scale(.6)}
 .night-horizon{position:absolute;left:-10%;right:-10%;bottom:20%;height:1px;background:linear-gradient(90deg,transparent,rgba(115,223,255,.75),rgba(177,131,255,.75),transparent);opacity:0;box-shadow:0 0 30px rgba(100,180,255,.3);transition:opacity 1.5s ease,transform 1.5s ease}
@@ -35,6 +37,8 @@
 .night-stage[data-act="3"] .night-horizon,.night-stage[data-act="4"] .night-horizon,.night-stage[data-act="5"] .night-horizon{opacity:1}
 .night-stage[data-act="4"] .night-portal,.night-stage[data-act="5"] .night-portal{filter:drop-shadow(0 0 42px rgba(160,135,255,.65));transform:translate(-50%,-50%) scale(1.1)}
 .night-stage[data-act="5"]:before{opacity:1;transform:scale(1.12)}
+.night-stage[data-act="3"] .night-stars,.night-stage[data-act="4"] .night-stars,.night-stage[data-act="5"] .night-stars{opacity:.95;background-image:radial-gradient(circle at 14% 22%,#c7f6ff 0 1px,transparent 2px),radial-gradient(circle at 81% 19%,#fff 0 1px,transparent 2px),radial-gradient(circle at 76% 75%,#b3a3ff 0 1px,transparent 2px),radial-gradient(circle at 20% 80%,#fff 0 1.5px,transparent 3px),radial-gradient(circle at 54% 13%,#bceeff 0 1px,transparent 2px),radial-gradient(circle at 91% 48%,#c8c2ff 0 1.5px,transparent 3px),radial-gradient(circle at 37% 68%,#fff 0 1px,transparent 2px)}
+.night-stage[data-act="5"] .night-horizon{height:2px;box-shadow:0 0 45px rgba(100,180,255,.7)}
 .night-stage[data-act="5"] .night-portal{opacity:1;background:radial-gradient(circle,#fff 0%,#baf7ff 7%,#6cbbff 17%,rgba(119,86,255,.36) 42%,transparent 69%)}
 .night-controls{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap;margin:18px 0 8px}
 .night-controls button,.night-controls a{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:12px 17px;border:1px solid rgba(126,234,255,.42);border-radius:999px;background:rgba(9,17,38,.85);color:#effbff;text-decoration:none;font:700 10px/1.4 Arial,Helvetica,sans-serif;letter-spacing:1.3px;cursor:pointer}
@@ -56,7 +60,7 @@
 <p class="kicker">🌌 AN INTERACTIVE VISUAL PROTOTYPE</p>
 <h1>KAEVORYN<br>NIGHT SPECTACULAR</h1>
 <p class="lead">FIRST LIGHT — a small first step toward the larger nighttime show. Watch the Core awaken, follow the light into new worlds, and bring every spark together in a final declaration.</p>
-<span class="prototype-label">FIRST WEB PROTOTYPE · NO AUDIO YET</span>
+<span class="prototype-label">FIRST WEB PROTOTYPE · OPTIONAL SYNTH SOUND</span>
 </section>
 <section aria-labelledby="stage-title">
 <div class="night-stage" id="nightStage" data-act="0">
@@ -65,9 +69,9 @@
 </div>
 <div class="night-progress" role="progressbar" aria-label="Show progress" aria-valuemin="0" aria-valuemax="5" aria-valuenow="0" id="nightProgress"><span id="nightProgressFill"></span></div>
 <p class="night-status" id="nightStatus" aria-live="polite">Ready when you are.</p>
-<div class="night-controls"><button class="primary" id="startNightShow" type="button">▶ BEGIN FIRST LIGHT</button><button id="pauseNightShow" type="button" hidden>Ⅱ PAUSE</button><button id="skipNightScene" type="button" hidden>SKIP TO FINALE ↗</button><button id="replayNightShow" type="button" hidden>↻ REPLAY</button><a href="shows.html#night-outline-title">VIEW THE SHOW PLAN ↗</a></div>
+<div class="night-controls"><button id="toggleNightAudio" type="button" aria-pressed="false">♫ SOUND: OFF</button><button class="primary" id="startNightShow" type="button">▶ BEGIN FIRST LIGHT</button><button id="pauseNightShow" type="button" hidden>Ⅱ PAUSE</button><button id="skipNightScene" type="button" hidden>SKIP TO FINALE ↗</button><button id="replayNightShow" type="button" hidden>↻ REPLAY</button><a href="shows.html#night-outline-title">VIEW THE SHOW PLAN ↗</a></div>
 </section>
-<section class="feature-panel"><p class="kicker">THE IDEA BEHIND THE LIGHT</p><h2>Because Kaevoryn isn't just a place.</h2><p>It's the magic in your heart.</p><p><strong>Dream the impossible. Bring it to life.</strong></p><p class="night-note">This is an original, browser-based visual proof-of-concept—not the finished venue-scale production. The full show may later include original music, sound design, animation, and physical or projected effects once those assets and production requirements are ready.</p></section>
+<section class="feature-panel"><p class="kicker">THE IDEA BEHIND THE LIGHT</p><h2>Because Kaevoryn isn't just a place.</h2><p>It's the magic in your heart.</p><p><strong>Dream the impossible. Bring it to life.</strong></p><p class="night-note">This is an original, browser-based visual proof-of-concept—not the finished venue-scale production. This prototype includes a quiet, original synthesized atmosphere generated in your browser only when you turn sound on. It is a sound-design test, not the finished score. The full show may later include composed music, richer sound design, animation, and physical or projected effects once those assets and production requirements are ready.</p></section>
 </main>
 <footer class="site-footer"><div class="footer-brand">KAEVORYN STUDIOS</div><div class="footer-mantra">CREATE THE IMPOSSIBLE</div><nav class="footer-links" aria-label="Footer navigation"><a href="projects.html">Projects</a><a href="explore.html">Explore</a><a href="shows.html">Shows &amp; Series</a><a href="watch.html">KAEVORYN WATCH</a><a href="vision.html">Our Vision</a><a href="contact.html">Connect</a></nav><p>Imagination Made Possible.</p></footer>
 <script>
@@ -82,7 +86,26 @@ const scenes=[
 ["ACT V · THE FINALE","CREATE THE IMPOSSIBLE","Every spark returns as one. Dream the impossible. Bring it to life."]
 ];
 let timer=null,sceneIndex=0,paused=false,running=false;
+const soundButton=document.getElementById("toggleNightAudio");
 const reduced=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+let audioContext=null,audioNodes=[],audioOn=false;
+function setAudio(on){
+  audioOn=on;
+  soundButton.setAttribute("aria-pressed",String(on));
+  soundButton.textContent=on?"♫ SOUND: ON":"♫ SOUND: OFF";
+  if(!on){audioNodes.forEach(n=>{try{n.stop()}catch(e){}});audioNodes=[];if(audioContext){audioContext.close().catch(()=>{});audioContext=null;}return;}
+  const AC=window.AudioContext||window.webkitAudioContext;
+  if(!AC){audioOn=false;soundButton.setAttribute("aria-pressed","false");soundButton.textContent="SOUND UNAVAILABLE";status.textContent="This browser does not support the optional sound preview.";return;}
+  audioContext=new AC();
+  const master=audioContext.createGain();master.gain.value=.045;master.connect(audioContext.destination);
+  [[110,0.22,"sine"],[164.81,0.12,"sine"],[220,0.07,"triangle"]].forEach(([freq,vol,type])=>{
+    const osc=audioContext.createOscillator(),gain=audioContext.createGain();
+    osc.type=type;osc.frequency.value=freq;gain.gain.value=vol;
+    osc.connect(gain);gain.connect(master);osc.start();audioNodes.push(osc);
+  });
+  if(audioContext.state==="suspended")audioContext.resume().catch(()=>{});
+}
+soundButton.addEventListener("click",()=>setAudio(!audioOn));
 function render(i){sceneIndex=i;const s=scenes[i];stage.dataset.act=String(i);act.textContent=s[0];title.textContent=s[1];narration.textContent=s[2];progress.setAttribute("aria-valuenow",String(i));fill.style.width=(i/5*100)+"%";}
 function stopTimer(){if(timer!==null){clearTimeout(timer);timer=null;}}
 function controls(complete){start.hidden=running||complete;pause.hidden=!running;pause.textContent=paused?"▶ RESUME":"Ⅱ PAUSE";skip.hidden=!running;replay.hidden=!complete;}
