@@ -49,6 +49,16 @@
 .night-stage[data-act="3"] .night-stars,.night-stage[data-act="4"] .night-stars,.night-stage[data-act="5"] .night-stars{opacity:.95;background-image:radial-gradient(circle at 14% 22%,#c7f6ff 0 1px,transparent 2px),radial-gradient(circle at 81% 19%,#fff 0 1px,transparent 2px),radial-gradient(circle at 76% 75%,#b3a3ff 0 1px,transparent 2px),radial-gradient(circle at 20% 80%,#fff 0 1.5px,transparent 3px),radial-gradient(circle at 54% 13%,#bceeff 0 1px,transparent 2px),radial-gradient(circle at 91% 48%,#c8c2ff 0 1.5px,transparent 3px),radial-gradient(circle at 37% 68%,#fff 0 1px,transparent 2px)}
 .night-stage[data-act="5"] .night-horizon{height:2px;box-shadow:0 0 45px rgba(100,180,255,.7)}
 .night-stage[data-act="5"] .night-portal{opacity:1;background:radial-gradient(circle,#fff 0%,#baf7ff 7%,#6cbbff 17%,rgba(119,86,255,.36) 42%,transparent 69%)}
+
+/* Story-specific visual punctuation: a warm heart beat, then a clean finale. */
+.night-stage:after{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;opacity:0;background:radial-gradient(ellipse at 50% 35%,rgba(255,207,128,.22),transparent 18%),radial-gradient(circle at 43% 34%,rgba(255,232,177,.9) 0 1px,transparent 3px),radial-gradient(circle at 57% 32%,rgba(255,232,177,.85) 0 1px,transparent 3px),radial-gradient(circle at 48% 28%,rgba(255,232,177,.7) 0 1px,transparent 3px),radial-gradient(circle at 53% 40%,rgba(255,232,177,.8) 0 1px,transparent 3px);transition:opacity 1.4s ease}
+.night-stage[data-act="4"]:after{opacity:.95;animation:heart-glow 4s ease-in-out infinite alternate}
+.night-stage[data-act="5"]:after{opacity:.25;background:radial-gradient(ellipse at 50% 35%,rgba(112,223,255,.3),transparent 30%),radial-gradient(ellipse at 50% 35%,rgba(194,155,255,.16),transparent 52%)}
+@keyframes heart-glow{from{filter:brightness(.78);transform:scale(.98)}to{filter:brightness(1.2);transform:scale(1.025)}}
+.night-stage[data-act="5"] .night-portal{animation:finale-bloom 2.4s ease-in-out infinite alternate}
+@keyframes finale-bloom{from{filter:drop-shadow(0 0 24px rgba(98,206,255,.42));}to{filter:drop-shadow(0 0 66px rgba(243,216,142,.78));}}
+@media(prefers-reduced-motion:reduce){.night-stage:after,.night-stage[data-act="4"]:after,.night-stage[data-act="5"] .night-portal{animation:none!important}}
+
 .night-controls{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap;margin:18px 0 8px}
 .night-controls button,.night-controls a{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:12px 17px;border:1px solid rgba(126,234,255,.42);border-radius:999px;background:rgba(9,17,38,.85);color:#effbff;text-decoration:none;font:700 10px/1.4 Arial,Helvetica,sans-serif;letter-spacing:1.3px;cursor:pointer}
 .night-controls .primary{background:linear-gradient(100deg,rgba(25,75,116,.95),rgba(76,44,132,.95));border-color:rgba(161,226,255,.75)}
