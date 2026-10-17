@@ -252,3 +252,5 @@ button.live-core-orb:focus-visible{outline:2px solid var(--cyan);outline-offset:
 .core-response-arrival{animation:core-response-glow .55s ease-out both}
 @keyframes core-response-glow{from{opacity:.25;filter:blur(4px);transform:translateY(4px)}to{opacity:1;filter:blur(0);transform:translateY(0)}}
 @media(prefers-reduced-motion:reduce){.core-response-arrival{animation:none!important}}
+
+.core-invitation{margin:0 auto 20px;color:rgba(180,224,244,.72);font-size:9px;font-weight:700;letter-spacing:2px;text-align:center}
