@@ -242,3 +242,13 @@ body.magic-reduced-motion,body.magic-reduced-motion:before,body.magic-reduced-mo
 .magic-effects-toggle{margin:24px auto 0;padding:10px 15px;border:1px solid rgba(126,234,255,.42);border-radius:999px;background:rgba(8,15,34,.7);color:#dffaff;font:700 10px/1.4 Arial,Helvetica,sans-serif;letter-spacing:1.3px;cursor:pointer;transition:border-color .2s ease,background .2s ease}
 .magic-effects-toggle:hover,.magic-effects-toggle:focus-visible{border-color:var(--cyan);background:rgba(28,54,86,.85);outline:2px solid var(--cyan);outline-offset:3px}
 .magic-reduced-motion .magic-effects-toggle{border-color:rgba(241,203,114,.65);color:#fff0c2}
+
+
+/* Interactive Core presence response */
+button.live-core-orb{appearance:none;-webkit-appearance:none;padding:0;font:800 30px/1 Arial,Helvetica,sans-serif;cursor:pointer;background:radial-gradient(circle,color-mix(in srgb,var(--cyan) 18%,transparent),rgba(120,92,205,.1) 60%,transparent);color:var(--cyan)}
+button.live-core-orb:hover{filter:brightness(1.18)}
+button.live-core-orb:focus-visible{outline:2px solid var(--cyan);outline-offset:9px}
+.core-response{min-height:1.7em;margin:0 auto 4px;max-width:680px;color:#dceeff;font-size:clamp(11px,1.5vw,14px);letter-spacing:1.8px;text-align:center;text-shadow:0 0 18px rgba(126,234,255,.22)}
+.core-response-arrival{animation:core-response-glow .55s ease-out both}
+@keyframes core-response-glow{from{opacity:.25;filter:blur(4px);transform:translateY(4px)}to{opacity:1;filter:blur(0);transform:translateY(0)}}
+@media(prefers-reduced-motion:reduce){.core-response-arrival{animation:none!important}}
