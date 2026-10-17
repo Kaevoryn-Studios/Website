@@ -54,7 +54,7 @@
 <main id="main-content" class="container">
 <section class="night-hero">
 <p class="kicker">🌌 AN INTERACTIVE VISUAL PROTOTYPE</p>
-<h1>KA E V O R Y N<br>NIGHT SPECTACULAR</h1>
+<h1>KAEVORYN<br>NIGHT SPECTACULAR</h1>
 <p class="lead">FIRST LIGHT — a small first step toward the larger nighttime show. Watch the Core awaken, follow the light into new worlds, and bring every spark together in a final declaration.</p>
 <span class="prototype-label">FIRST WEB PROTOTYPE · NO AUDIO YET</span>
 </section>
@@ -85,7 +85,7 @@ let timer=null,sceneIndex=0,paused=false,running=false;
 const reduced=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 function render(i){sceneIndex=i;const s=scenes[i];stage.dataset.act=String(i);act.textContent=s[0];title.textContent=s[1];narration.textContent=s[2];progress.setAttribute("aria-valuenow",String(i));fill.style.width=(i/5*100)+"%";}
 function stopTimer(){if(timer!==null){clearTimeout(timer);timer=null;}}
-function controls(complete){start.hidden=running&&!paused;pause.hidden=!running;pause.textContent=paused?"▶ RESUME":"Ⅱ PAUSE";skip.hidden=!running;replay.hidden=!complete;if(complete){start.hidden=true;pause.hidden=true;skip.hidden=true;}}
+function controls(complete){start.hidden=running||complete;pause.hidden=!running;pause.textContent=paused?"▶ RESUME":"Ⅱ PAUSE";skip.hidden=!running;replay.hidden=!complete;}
 function finish(){stopTimer();running=false;paused=false;render(5);fill.style.width="100%";status.textContent="First Light complete. The dream is yours.";controls(true);}
 function next(){stopTimer();if(!running)return;if(sceneIndex>=4){finish();return;}render(sceneIndex+1);status.textContent="Scene "+(sceneIndex+1)+" of 5";timer=setTimeout(next,reduced?120:2600);}
 function begin(){stopTimer();running=true;paused=false;render(0);status.textContent=reduced?"Reduced-motion mode: scenes change gently.":"The spectacle is beginning…";controls(false);timer=setTimeout(next,reduced?120:2600);}
