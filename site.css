@@ -190,3 +190,18 @@ a:focus-visible,button:focus-visible{
 body.magic-no-particles:before{opacity:0!important;animation:none!important}
 body.magic-reduced-motion,body.magic-reduced-motion:before,body.magic-reduced-motion:after,body.magic-reduced-motion *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
 @media(max-width:520px){.live-core-orb{width:70px;height:70px;margin-bottom:18px}.published-portal{margin-top:20px;padding:11px 16px}}
+
+
+/* THE CORE AWAKENS — focused, layered motion that stays accessible */
+.core-status{margin:0 0 18px;color:#c8f7ff;font-size:10px;font-weight:700;letter-spacing:clamp(2px,.7vw,5px);text-shadow:0 0 18px rgba(126,234,255,.42);animation:core-status-breathe 3.8s ease-in-out infinite}
+@keyframes core-status-breathe{0%,100%{opacity:.62;text-shadow:0 0 10px rgba(126,234,255,.2)}50%{opacity:1;text-shadow:0 0 24px rgba(126,234,255,.65),0 0 44px rgba(168,149,255,.22)}}
+.live-core-orb{isolation:isolate;animation:live-core-pulse 5.5s ease-in-out infinite}
+.live-core-orb:before{animation:core-orbit-one 13s linear infinite}
+.live-core-orb:after{animation:core-orbit-two 19s linear infinite}
+.live-core-orb:focus-visible{outline:2px solid var(--cyan);outline-offset:8px}
+@keyframes live-core-pulse{0%,100%{filter:brightness(.92);box-shadow:0 0 28px color-mix(in srgb,var(--cyan) 20%,transparent),inset 0 0 22px rgba(120,130,255,.12)}50%{filter:brightness(1.2);box-shadow:0 0 58px color-mix(in srgb,var(--cyan) 42%,transparent),inset 0 0 32px rgba(120,130,255,.22)}}
+@keyframes core-orbit-one{from{transform:rotate(-22deg) scaleX(1.12)}to{transform:rotate(338deg) scaleX(1.12)}}
+@keyframes core-orbit-two{from{transform:rotate(38deg) scaleX(1.08)}to{transform:rotate(-322deg) scaleX(1.08)}}
+.hero:after{content:"";position:absolute;z-index:-1;inset:12% 2% 6%;pointer-events:none;opacity:.34;background-image:radial-gradient(circle,rgba(190,245,255,.85) 0 1px,transparent 1.8px),radial-gradient(circle,rgba(190,160,255,.75) 0 1px,transparent 2px);background-size:113px 137px,167px 191px;background-position:17px 30px,68px 91px;mask-image:linear-gradient(transparent,#000 18%,#000 76%,transparent);animation:core-dust-drift 24s linear infinite alternate}
+@keyframes core-dust-drift{from{transform:translate3d(-7px,8px,0);background-position:17px 30px,68px 91px}to{transform:translate3d(9px,-12px,0);background-position:53px 65px,19px 43px}}
+@media(prefers-reduced-motion:reduce){.core-status,.live-core-orb,.live-core-orb:before,.live-core-orb:after,.hero:after{animation:none!important}.hero:after{opacity:.18}}
