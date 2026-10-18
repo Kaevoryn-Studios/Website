@@ -125,8 +125,8 @@ async function verifySession(session){
  ownerCheckPromise=(async()=>{
   try{
    const {data,error}=await client.rpc('creator_realm_owner_status');
-   if(error){setSignedIn(false);setAuthMessage('The owner check could not complete. Please refresh and try again.');return false;}
-   if(data!==true){setSignedIn(false);await client.auth.signOut();setAuthMessage('This account is not authorized for the studio owner console. Use the owner account.');return false;}
+   if(error){setSignedIn(false);setAuthMessage('Owner check failed ('+String(error.code||'RPC')+'). Refresh and try again.');return false;}
+   if(data!==true){setSignedIn(false);await client.auth.signOut();setAuthMessage('Sign-in worked, but this account is not listed as a studio owner. Use the authorized Creator’s Realm owner account.');return false;}
    setSignedIn(true);setAuthMessage('Owner verified. The console is ready.');return true;
   }catch(e){setSignedIn(false);setAuthMessage('Could not verify owner access. Check your connection and try again.');return false;}
   finally{ownerCheckPromise=null;}
@@ -134,12 +134,27 @@ async function verifySession(session){
  return ownerCheckPromise;
 }
 async function initAuth(){
- if(!window.supabase||!window.supabase.createClient){setAuthMessage('Secure sign-in service could not load. Check your connection and refresh.');return}
- client=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
- client.auth.onAuthStateChange((_event,session)=>{Promise.resolve().then(()=>verifySession(session))});
- try{const {data,error}=await client.auth.getSession();if(error)throw error;await verifySession(data.session)}catch(e){setAuthMessage('Could not check your session. Refresh and try again.')}
+ if(!window.supabase||!window.supabase.createClient){setAuthMessage('Secure sign-in library did not load. Refresh the page and try again.');return}
+ try{
+  client=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+  const {data,error}=await client.auth.getSession();
+  if(error)throw error;
+  if(data.session)await verifySession(data.session);
+ }catch(e){setAuthMessage('Could not initialize secure sign-in. Check your connection and refresh.');}
 }
-$('loginForm').addEventListener('submit',async e=>{e.preventDefault();if(authBusy||!client)return;authBusy=true;$('loginBtn').disabled=true;setAuthMessage('Verifying studio owner access…');try{const {data,error}=await client.auth.signInWithPassword({email:$('email').value.trim(),password:$('password').value});if(error||!data.session){setAuthMessage('Sign-in failed. Check the email and password.');return}if(await verifySession(data.session)){$('password').value='';toast('Welcome back, Dream Maker.');}}catch(e){setAuthMessage('Could not connect securely. Try again.')}finally{authBusy=false;$('loginBtn').disabled=false}});
+$('loginForm').addEventListener('submit',async e=>{
+ e.preventDefault();
+ if(authBusy)return;
+ if(!client){setAuthMessage('Secure sign-in is still loading. Refresh this page and try again.');return}
+ authBusy=true;$('loginBtn').disabled=true;setAuthMessage('Signing in and checking studio owner access…');
+ try{
+  const {data,error}=await client.auth.signInWithPassword({email:$('email').value.trim(),password:$('password').value});
+  if(error||!data.session){setAuthMessage(error&&error.message==='Invalid login credentials'?'Email or password was not accepted. Check the same account you use for Creator’s Realm.':'Sign-in could not complete. Please refresh and try again.');return}
+  const allowed=await verifySession(data.session);
+  if(allowed){$('password').value='';toast('Welcome back, Dream Maker.');}
+ }catch(e){setAuthMessage('A connection or sign-in error occurred. Refresh the page and try again.')}
+ finally{authBusy=false;$('loginBtn').disabled=false}
+});
 $('signOutBtn').addEventListener('click',async()=>{stopShow();stopAmbience();if(client)await client.auth.signOut();ownerVerified=false;setSignedIn(false);setAuthMessage('You have signed out.');});
 function safeName(v,fallback){return typeof v==='string'&&v.trim()?v.trim().slice(0,80):fallback}
 function snapshot(){return {format:'kaevoryn-show-control',version:1,showName:safeName($('showName').value,'Untitled show'),subtitle:$('showSubtitle').value.slice(0,120),settings:{color:$('lightColor').value,brightness:Number($('brightness').value),beam:Number($('beamLevel').value),effect:$('effectMode').value,volume:Number($('masterVolume').value),ambience:$('ambienceToggle').checked,reducedMotion:$('reducedMotionToggle').checked,confirmBlackout:$('confirmBlackoutToggle').checked},cues:cues.map(c=>({name:String(c.name).slice(0,50),action:c.action,sound:c.sound,delay:Math.max(0,Math.min(300,Number(c.delay)||0))})),savedAt:new Date().toISOString()}}
