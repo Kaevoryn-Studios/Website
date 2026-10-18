@@ -118,9 +118,20 @@ function toast(msg){const el=$('toast');el.textContent=msg;el.classList.add('sho
 function log(msg){const el=$('operatorLog');const stamp=new Date().toLocaleTimeString();el.textContent=('['+stamp+'] '+msg+'\n'+el.textContent).slice(0,3500)}
 function setAuthMessage(msg){$('authMessage').textContent=msg}
 function setSignedIn(ok){ownerVerified=ok;$('authPanel').hidden=ok;$('console').hidden=!ok;$('signOutBtn').hidden=!ok;$('authBadge').innerHTML=ok?'<span class="dot" style="background:#72efbd"></span>OWNER VERIFIED':'<span class="dot"></span>AUTH CHECK';if(ok){loadLocal();renderCues();log('Owner access verified by server-side owner-status RPC.');}}
+let ownerCheckPromise=null;
 async function verifySession(session){
  if(!session||!session.user){setSignedIn(false);return false}
- try{const {data,error}=await client.rpc('creator_realm_owner_status');if(error||data!==true){setSignedIn(false);await client.auth.signOut();setAuthMessage('This account is not authorized for the studio owner console. Use the owner account.');return false;}setSignedIn(true);setAuthMessage('Owner verified. The console is ready.');return true}catch(e){setSignedIn(false);setAuthMessage('Could not verify owner access. Check your connection and try again.');return false}
+ if(ownerCheckPromise)return ownerCheckPromise;
+ ownerCheckPromise=(async()=>{
+  try{
+   const {data,error}=await client.rpc('creator_realm_owner_status');
+   if(error){setSignedIn(false);setAuthMessage('The owner check could not complete. Please refresh and try again.');return false;}
+   if(data!==true){setSignedIn(false);await client.auth.signOut();setAuthMessage('This account is not authorized for the studio owner console. Use the owner account.');return false;}
+   setSignedIn(true);setAuthMessage('Owner verified. The console is ready.');return true;
+  }catch(e){setSignedIn(false);setAuthMessage('Could not verify owner access. Check your connection and try again.');return false;}
+  finally{ownerCheckPromise=null;}
+ })();
+ return ownerCheckPromise;
 }
 async function initAuth(){
  if(!window.supabase||!window.supabase.createClient){setAuthMessage('Secure sign-in service could not load. Check your connection and refresh.');return}
