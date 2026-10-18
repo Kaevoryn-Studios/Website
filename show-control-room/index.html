@@ -147,7 +147,7 @@ $('forgotPasswordBtn').addEventListener('click',async()=>{
  if(!email){setAuthMessage('Enter your studio owner email first, then tap Forgot password again.');$('email').focus();return}
  $('forgotPasswordBtn').disabled=true;setAuthMessage('Requesting a password-reset email…');
  try{
-  const redirectTo=window.location.origin+window.location.pathname+'?mode=reset';
+  const redirectTo='https://kaevoryn-studios.github.io/Website/show-control-room/?mode=reset';
   const {error}=await client.auth.resetPasswordForEmail(email,{redirectTo});
   if(error){setAuthMessage('Could not request password reset: '+String(error.message||'check Supabase redirect settings').slice(0,180));return}
   setAuthMessage('If that account exists, Supabase will email a password-reset link. Check your inbox and spam folder.');
@@ -265,7 +265,7 @@ applyLights();initAuth();
         'sb_publishable__R3Zpf4cjUo5zmqBzNK6lA_-quWDNJ_',
         { auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true } }
       );
-      var redirectTo = window.location.origin + window.location.pathname + '?mode=reset';
+      var redirectTo = 'https://kaevoryn-studios.github.io/Website/show-control-room/?mode=reset';
       var result = await recoveryClient.auth.resetPasswordForEmail(email, { redirectTo: redirectTo });
       if (result.error) {
         say('Password reset error: ' + String(result.error.message || 'Please try again.').slice(0, 180));
