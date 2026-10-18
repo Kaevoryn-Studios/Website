@@ -180,11 +180,14 @@ async function initAuth(){
   });
   const {data,error}=await client.auth.getSession();
   if(error)throw error;
-  if(new URLSearchParams(window.location.search).get('mode')==='reset'){
+  const recoveryQuery=new URLSearchParams(window.location.search);
+  const recoveryHash=new URLSearchParams(window.location.hash.replace(/^#/,''));
+  const recoveryMode=recoveryQuery.get('mode')==='reset'||recoveryQuery.get('type')==='recovery'||recoveryHash.get('type')==='recovery'||recoveryQuery.has('code')||(recoveryHash.has('access_token')&&recoveryHash.get('type')==='recovery');
+  if(recoveryMode){
    $('loginForm').hidden=true;$('forgotPasswordBtn').hidden=true;$('passwordResetForm').hidden=false;
-   setAuthMessage('If you opened the password-reset email link, choose a new password below.');
+   setAuthMessage('Choose a new password for your owner account. If the email link has expired, request a fresh one.');
   }
-  if(data.session && new URLSearchParams(window.location.search).get('mode')!=='reset')await verifySession(data.session);
+  if(data.session && !recoveryMode)await verifySession(data.session);
  }catch(e){setAuthMessage('Could not initialize secure sign-in. Check your connection and refresh.');}
 }
 $('loginForm').addEventListener('submit',async e=>{
