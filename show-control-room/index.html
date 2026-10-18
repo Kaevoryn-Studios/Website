@@ -30,6 +30,12 @@ main{max-width:1500px;margin:auto;padding:20px clamp(12px,2.5vw,28px) 42px}.page
     <div class="field"><label for="email">Studio owner email</label><input id="email" type="email" autocomplete="username" required></div>
     <div class="field"><label for="password">Password</label><input id="password" type="password" autocomplete="current-password" required></div>
     <button class="btn primary" id="loginBtn" type="submit" style="width:100%">Verify owner access</button>
+    <button class="btn" id="forgotPasswordBtn" type="button" style="width:100%;margin-top:8px">Forgot password?</button>
+  </form>
+  <form id="passwordResetForm" hidden>
+    <div class="field"><label for="newPassword">New password</label><input id="newPassword" type="password" autocomplete="new-password" minlength="8" required></div>
+    <button class="btn primary" id="saveNewPasswordBtn" type="submit" style="width:100%">Save new password</button>
+    <button class="btn" id="cancelPasswordResetBtn" type="button" style="width:100%;margin-top:8px">Back to sign in</button>
   </form>
   <div class="status-msg" id="authMessage" role="status" aria-live="polite">Sign in with the same owner account used for Creator’s Realm.</div>
   <p class="private-note">Diagnostic build: 2026-10-18-D1. Access is checked by the Kaevoryn Supabase owner-status function. A hidden URL alone is not security. This room controls browser effects only; it is not connected to physical equipment.</p>
@@ -135,13 +141,50 @@ async function verifySession(session){
  })();
  return ownerCheckPromise;
 }
+$('forgotPasswordBtn').addEventListener('click',async()=>{
+ if(!client){setAuthMessage('Secure sign-in is still loading. Refresh and try again.');return}
+ const email=$('email').value.trim();
+ if(!email){setAuthMessage('Enter your studio owner email first, then tap Forgot password again.');$('email').focus();return}
+ $('forgotPasswordBtn').disabled=true;setAuthMessage('Requesting a password-reset email…');
+ try{
+  const redirectTo=window.location.origin+window.location.pathname+'?mode=reset';
+  const {error}=await client.auth.resetPasswordForEmail(email,{redirectTo});
+  if(error){setAuthMessage('Could not request password reset: '+String(error.message||'check Supabase redirect settings').slice(0,180));return}
+  setAuthMessage('If that account exists, Supabase will email a password-reset link. Check your inbox and spam folder.');
+ }catch(e){setAuthMessage('Password reset could not be requested. Check your connection and try again.')}
+ finally{$('forgotPasswordBtn').disabled=false}
+});
+$('passwordResetForm').addEventListener('submit',async e=>{
+ e.preventDefault();if(!client)return;
+ const password=$('newPassword').value;
+ if(password.length<8){setAuthMessage('Choose a password with at least 8 characters.');return}
+ $('saveNewPasswordBtn').disabled=true;setAuthMessage('Saving your new password…');
+ try{
+  const {error}=await client.auth.updateUser({password});
+  if(error){setAuthMessage('Could not save the new password: '+String(error.message||'try again').slice(0,180));return}
+  $('newPassword').value='';$('passwordResetForm').hidden=true;$('loginForm').hidden=false;$('forgotPasswordBtn').hidden=false;
+  setAuthMessage('Password updated. Sign in with your new password.');
+ }catch(e){setAuthMessage('Password update failed. Reopen the reset email link and try again.')}
+ finally{$('saveNewPasswordBtn').disabled=false}
+});
+$('cancelPasswordResetBtn').addEventListener('click',()=>{$('passwordResetForm').hidden=true;$('loginForm').hidden=false;$('forgotPasswordBtn').hidden=false;setAuthMessage('Sign in with your owner account.')});
 async function initAuth(){
  if(!window.supabase||!window.supabase.createClient){setAuthMessage('Secure sign-in library did not load. Refresh the page and try again.');return}
  try{
   client=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+  client.auth.onAuthStateChange((event)=>{
+   if(event==='PASSWORD_RECOVERY'){
+    $('loginForm').hidden=true;$('forgotPasswordBtn').hidden=true;$('passwordResetForm').hidden=false;
+    setAuthMessage('Choose a new password for your owner account.');
+   }
+  });
   const {data,error}=await client.auth.getSession();
   if(error)throw error;
-  if(data.session)await verifySession(data.session);
+  if(new URLSearchParams(window.location.search).get('mode')==='reset'){
+   $('loginForm').hidden=true;$('forgotPasswordBtn').hidden=true;$('passwordResetForm').hidden=false;
+   setAuthMessage('If you opened the password-reset email link, choose a new password below.');
+  }
+  if(data.session && new URLSearchParams(window.location.search).get('mode')!=='reset')await verifySession(data.session);
  }catch(e){setAuthMessage('Could not initialize secure sign-in. Check your connection and refresh.');}
 }
 $('loginForm').addEventListener('submit',async e=>{
