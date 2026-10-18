@@ -32,7 +32,7 @@ main{max-width:1500px;margin:auto;padding:20px clamp(12px,2.5vw,28px) 42px}.page
     <button class="btn primary" id="loginBtn" type="submit" style="width:100%">Verify owner access</button>
   </form>
   <div class="status-msg" id="authMessage" role="status" aria-live="polite">Sign in with the same owner account used for Creator’s Realm.</div>
-  <p class="private-note">Access is checked by the Kaevoryn Supabase owner-status function. A hidden URL alone is not security. This room controls browser effects only; it is not connected to physical equipment.</p>
+  <p class="private-note">Diagnostic build: 2026-10-18-D1. Access is checked by the Kaevoryn Supabase owner-status function. A hidden URL alone is not security. This room controls browser effects only; it is not connected to physical equipment.</p>
 </section>
 <main id="console" hidden>
   <div class="page-head"><div><p class="eyebrow">CREATOR COMMAND · LIVE SIMULATION</p><h1>Show Control Room</h1><p>Design the moment. Shape the light. Trigger the sound. Build your show cue by cue.</p></div><div class="head-buttons"><button class="btn" id="saveShowBtn">Save show</button><button class="btn" id="exportBtn">Export show</button><button class="btn danger" id="stopAllBtn">■ STOP ALL</button></div></div>
@@ -104,6 +104,8 @@ main{max-width:1500px;margin:auto;padding:20px clamp(12px,2.5vw,28px) 42px}.page
 <script>
 (function(){
 'use strict';
+window.addEventListener('error',function(e){var m=document.getElementById('authMessage');if(m)m.textContent='Page script error: '+String(e.message||'unknown error')+'. Please report this message.';});
+window.addEventListener('unhandledrejection',function(e){var m=document.getElementById('authMessage');if(m)m.textContent='Sign-in script error: '+String(e.reason&&e.reason.message||e.reason||'unknown error')+'. Please report this message.';});
 const $=id=>document.getElementById(id);
 const SUPABASE_URL='https://itcbyurixjfszmktlwnh.supabase.co';
 const SUPABASE_KEY='sb_publishable__R3Zpf4cjUo5zmqBzNK6lA_-quWDNJ_';
