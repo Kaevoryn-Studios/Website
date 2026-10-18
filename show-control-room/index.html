@@ -239,5 +239,47 @@ window.addEventListener('beforeunload',()=>{clearTimers();stopAmbience()});
 applyLights();initAuth();
 })();
 </script>
+
+<script>
+/* Independent password recovery handler: remains available if the main console script has an error. */
+(function () {
+  document.addEventListener('click', async function (event) {
+    var button = event.target && event.target.closest ? event.target.closest('#forgotPasswordBtn') : null;
+    if (!button) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    var message = document.getElementById('authMessage');
+    var emailField = document.getElementById('email');
+    function say(text) { if (message) message.textContent = text; }
+    var email = emailField ? emailField.value.trim() : '';
+    if (!email) { say('Enter your studio owner email first.'); if (emailField) emailField.focus(); return; }
+    if (!window.supabase || !window.supabase.createClient) {
+      say('Secure sign-in library did not load. Check your connection, then refresh this page.');
+      return;
+    }
+    button.disabled = true;
+    say('Requesting a password-reset email…');
+    try {
+      var recoveryClient = window.supabase.createClient(
+        'https://itcbyurixjfszmktlwnh.supabase.co',
+        'sb_publishable__R3Zpf4cjUo5zmqBzNK6lA_-quWDNJ_',
+        { auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true } }
+      );
+      var redirectTo = window.location.origin + window.location.pathname + '?mode=reset';
+      var result = await recoveryClient.auth.resetPasswordForEmail(email, { redirectTo: redirectTo });
+      if (result.error) {
+        say('Password reset error: ' + String(result.error.message || 'Please try again.').slice(0, 180));
+      } else {
+        say('Reset request sent if this account exists. Check your inbox and spam folder.');
+      }
+    } catch (error) {
+      say('Password reset failed: ' + String(error && error.message || 'Check your connection and try again.').slice(0, 180));
+    } finally {
+      button.disabled = false;
+    }
+  }, true);
+})();
+</script>
+
 </body>
 </html>
