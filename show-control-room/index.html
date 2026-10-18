@@ -27,18 +27,18 @@ main{max-width:1500px;margin:auto;padding:20px clamp(12px,2.5vw,28px) 42px}.page
   <div class="auth-symbol">✧</div><p class="eyebrow">Private creator system</p><h1>Show Control Room</h1>
   <p class="muted">Your command center for browser-based lights, sound, special effects, and timed show cues.</p>
   <form id="loginForm">
-    <div class="field"><label for="email">Studio owner email</label><input id="email" type="email" autocomplete="username" required></div>
+    <div class="field"><label for="email">Studio owner email</label><input id="email" type="email" autocomplete="username" value="contact.kaevorynstudios@gmail.com" required></div>
     <div class="field"><label for="password">Password</label><input id="password" type="password" autocomplete="current-password" required></div>
     <button class="btn primary" id="loginBtn" type="submit" style="width:100%">Verify owner access</button>
-    <button class="btn" id="forgotPasswordBtn" type="button" style="width:100%;margin-top:8px">Forgot password?</button>
   </form>
+  <button class="btn" id="forgotPasswordBtn" type="button" style="width:100%;margin-top:8px">Forgot password?</button>
   <form id="passwordResetForm" hidden>
     <div class="field"><label for="newPassword">New password</label><input id="newPassword" type="password" autocomplete="new-password" minlength="8" required></div>
     <button class="btn primary" id="saveNewPasswordBtn" type="submit" style="width:100%">Save new password</button>
     <button class="btn" id="cancelPasswordResetBtn" type="button" style="width:100%;margin-top:8px">Back to sign in</button>
   </form>
   <div class="status-msg" id="authMessage" role="status" aria-live="polite">Sign in with the same owner account used for Creator’s Realm.</div>
-  <p class="private-note">Diagnostic build: 2026-10-18-D1. Access is checked by the Kaevoryn Supabase owner-status function. A hidden URL alone is not security. This room controls browser effects only; it is not connected to physical equipment.</p>
+  <p class="private-note">Diagnostic build: 2026-10-18-D3. Access is checked by the Kaevoryn Supabase owner-status function. A hidden URL alone is not security. This room controls browser effects only; it is not connected to physical equipment.</p>
 </section>
 <main id="console" hidden>
   <div class="page-head"><div><p class="eyebrow">CREATOR COMMAND · LIVE SIMULATION</p><h1>Show Control Room</h1><p>Design the moment. Shape the light. Trigger the sound. Build your show cue by cue.</p></div><div class="head-buttons"><button class="btn" id="saveShowBtn">Save show</button><button class="btn" id="exportBtn">Export show</button><button class="btn danger" id="stopAllBtn">■ STOP ALL</button></div></div>
