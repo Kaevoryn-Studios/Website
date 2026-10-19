@@ -78,8 +78,8 @@
 <section class="night-hero">
 <p class="kicker">🌌 AN INTERACTIVE VISUAL PROTOTYPE</p>
 <h1>KAEVORYN<br>NIGHT SPECTACULAR</h1>
-<p class="lead">FIRST LIGHT — a small first step toward the larger nighttime show. Watch the Core awaken, follow the light into new worlds, and bring every spark together in a final declaration.</p>
-<span class="prototype-label">FIRST WEB PROTOTYPE · OPTIONAL SYNTH SOUND</span>
+<p class="lead">FIRST LIGHT — a five-act journey from hush to wonder. Let the atmosphere settle, watch the impossible unfold, give each world its own breath, pause for the heart, then bring every motif home.</p>
+<span class="prototype-label">FIVE ACTS · OPTIONAL SYNTH SOUND · YOU CONTROL THE PACE</span>
 </section>
 <section aria-labelledby="stage-title">
 <div class="night-stage" id="nightStage" data-act="0">
@@ -97,15 +97,14 @@
 (function(){
 const stage=document.getElementById("nightStage"),act=document.getElementById("nightAct"),title=document.getElementById("stage-title"),narration=document.getElementById("nightNarration"),status=document.getElementById("nightStatus"),progress=document.getElementById("nightProgress"),fill=document.getElementById("nightProgressFill"),start=document.getElementById("startNightShow"),pause=document.getElementById("pauseNightShow"),skip=document.getElementById("skipNightScene"),replay=document.getElementById("replayNightShow");
 const scenes=[
-["ACT I · THE STILLNESS","A WORLD WAITS IN SILENCE","A quiet sky. A distant shimmer. Somewhere in the darkness, possibility is waiting."],
-["ACT I · THE AWAKENING","ONE LIGHT REMEMBERS","A single spark wakes the Core. Cyan light begins to breathe against the endless night."],
-["ACT II · THE INVITATION","THE WORLD OPENS","Rings of light unfold. A path appears where there was only darkness, inviting us beyond the known."],
-["ACT III · WORLDS IN MOTION","MAGIC TAKES SHAPE","Violet energy joins the blue. Light rises like a living constellation—fantasy and future meeting in one impossible moment."],
-["ACT IV · THE HEART","THE MAGIC WAS WITHIN YOU","The spectacle softens. The light does not belong to the sky alone; it lives in every dreamer."],
-["ACT V · THE FINALE","CREATE THE IMPOSSIBLE","Every spark returns as one. Dream the impossible. Bring it to life."]
+["01 · OPENING — ATMOSPHERE BEFORE SPECTACLE","LET THE WORLD BECOME STILL","No rush. A deep-blue sky, distant stars, and a quiet shimmer invite the audience to settle into the moment. Before the spectacle begins, possibility is already here."],
+["02 · BUILD — REVEAL THE IMPOSSIBLE","THE CORE OPENS A DOOR","A single light awakens. Cyan rings rise from the darkness, violet energy gathers, and a path appears where there was once nothing. The impossible is revealed one layer at a time."],
+["03 · WONDER — LET EACH WORLD BREATHE","A THOUSAND WORLDS, ONE DREAM","Blue becomes violet; starlight becomes a horizon. Each visual world gets its own moment to shine—no rush, no clutter—before the lights gently gather toward the heart."],
+["04 · HEART — CREATE AN EMOTIONAL PAUSE","THE MAGIC WAS WITHIN YOU","The energy softens. A warm golden glow rests inside the cool light, leaving space to feel the wonder and remember the dreamer at the center of it all."],
+["05 · FINALE — BRING EVERY MOTIF TOGETHER","CREATE THE IMPOSSIBLE","The Core, the rings, the horizon, the stars, and the golden spark return as one. The whole world lights up—not just to end the show, but to pass the dream on to you."]
 ];
 const requestedAct=Number(new URLSearchParams(window.location.search).get("act"));
-const startIndex=Number.isInteger(requestedAct)&&requestedAct>=1&&requestedAct<=5?requestedAct:0;
+const startIndex=Number.isInteger(requestedAct)&&requestedAct>=1&&requestedAct<=5?requestedAct:1;
 let timer=null,sceneIndex=0,paused=false,running=false;
 const soundButton=document.getElementById("toggleNightAudio");
 const reduced=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -127,15 +126,15 @@ function setAudio(on){
   if(audioContext.state==="suspended")audioContext.resume().catch(()=>{});
 }
 soundButton.addEventListener("click",()=>setAudio(!audioOn));
-function render(i){sceneIndex=i;const s=scenes[i];stage.dataset.act=String(i);act.textContent=s[0];title.textContent=s[1];narration.textContent=s[2];progress.setAttribute("aria-valuenow",String(i));fill.style.width=(i/5*100)+"%";
-  if(audioContext&&audioOn){const moods=[[110,164.81,220],[130.81,196,261.63],[146.83,220,293.66],[164.81,246.94,329.63],[98,146.83,196],[174.61,261.63,349.23]][i]||[110,164.81,220];audioGains.forEach((item,j)=>{item.osc.frequency.setTargetAtTime(moods[j],audioContext.currentTime,.65);item.gain.gain.setTargetAtTime((i===4?.025:i===5?.15:item.base),audioContext.currentTime,.8);});}
+function render(i){sceneIndex=i;const s=scenes[Math.max(0,Math.min(4,i-1))];stage.dataset.act=String(i);act.textContent=s[0];title.textContent=s[1];narration.textContent=s[2];progress.setAttribute("aria-valuenow",String(i));fill.style.width=(i/5*100)+"%";
+  if(audioContext&&audioOn){const moods=[[110,164.81,220],[130.81,196,261.63],[146.83,220,293.66],[98,146.83,196],[174.61,261.63,349.23]][Math.max(0,Math.min(4,i-1))]||[110,164.81,220];audioGains.forEach((item,j)=>{item.osc.frequency.setTargetAtTime(moods[j],audioContext.currentTime,.65);item.gain.gain.setTargetAtTime((i===4?.025:i===5?.15:item.base),audioContext.currentTime,.8);});}
 }
 function stopTimer(){if(timer!==null){clearTimeout(timer);timer=null;}}
 function controls(complete){start.hidden=running||complete;pause.hidden=!running;pause.textContent=paused?"▶ RESUME":"Ⅱ PAUSE";skip.hidden=!running;replay.hidden=!complete;}
 function finish(){stopTimer();running=false;paused=false;render(5);fill.style.width="100%";status.textContent="First Light complete. The dream is yours.";controls(true);}
-function next(){stopTimer();if(!running)return;if(sceneIndex>=5){finish();return;}render(sceneIndex+1);status.textContent="Scene "+(sceneIndex+1)+" of 5";timer=setTimeout(next,reduced?120:2600);}
-function begin(){stopTimer();running=true;paused=false;render(startIndex);status.textContent=reduced?"Reduced-motion mode: scenes change gently.":"The spectacle is beginning…";controls(false);timer=setTimeout(next,reduced?120:2600);}
-function togglePause(){if(!running)return;if(paused){paused=false;status.textContent="The spectacle continues…";controls(false);timer=setTimeout(next,reduced?120:2600);}else{paused=true;stopTimer();status.textContent="Paused. Resume whenever you're ready.";controls(false);}}
+function next(){stopTimer();if(!running)return;if(sceneIndex>=5){finish();return;}render(sceneIndex+1);status.textContent="Act "+sceneIndex+" of 5";timer=setTimeout(next,reduced?1000:8000);}
+function begin(){stopTimer();running=true;paused=false;render(startIndex);status.textContent=reduced?"Reduced-motion mode: transitions are softened; each act still has time to breathe.":"Act "+sceneIndex+" begins. Let the world breathe.";controls(false);timer=setTimeout(next,reduced?5000:8000);}
+function togglePause(){if(!running)return;if(paused){paused=false;status.textContent="Act "+sceneIndex+" continues…";controls(false);timer=setTimeout(next,reduced?5000:8000);}else{paused=true;stopTimer();status.textContent="Paused. Resume whenever you're ready.";controls(false);}}
 start.addEventListener("click",begin);replay.addEventListener("click",begin);pause.addEventListener("click",togglePause);skip.addEventListener("click",finish);
 render(startIndex);controls(false);
 })();
