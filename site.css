@@ -511,3 +511,44 @@ body[data-time="dusk"] .hero{background:radial-gradient(ellipse at 50% 5%,rgba(1
 body[data-time="night"] .hero{background:radial-gradient(ellipse at 50% 5%,rgba(71,87,191,.12),transparent 58%)}
 @media(max-width:520px){.living-world-controls{padding:16px}.living-world-selects{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){.living-world-controls,.living-world-selects select{transition:none!important}}
+
+
+/* KAEVORYN LIVING WORLD — automatic seasonal particles and gentle ambient transitions */
+.hero{transition:background 5s ease,background-color 5s ease}
+.hero>.living-world-atmosphere{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none;contain:paint}
+.hero>.living-world-atmosphere~*{position:relative;z-index:1}
+.living-world-atmosphere .world-particle{position:absolute;top:-9%;left:var(--particle-left,50%);display:block;color:rgba(193,239,255,.7);font-size:clamp(13px,2.2vw,24px);line-height:1;text-shadow:0 0 12px currentColor;opacity:0;animation:living-world-drift var(--particle-duration,22s) linear var(--particle-delay,0s) infinite}
+.living-world-atmosphere .world-particle:before{content:"✧"}
+.living-world-atmosphere .particle-1{--particle-left:7%;--particle-duration:24s;--particle-delay:-8s}
+.living-world-atmosphere .particle-2{--particle-left:18%;--particle-duration:29s;--particle-delay:-19s;font-size:18px}
+.living-world-atmosphere .particle-3{--particle-left:29%;--particle-duration:21s;--particle-delay:-12s}
+.living-world-atmosphere .particle-4{--particle-left:41%;--particle-duration:27s;--particle-delay:-4s;font-size:16px}
+.living-world-atmosphere .particle-5{--particle-left:53%;--particle-duration:23s;--particle-delay:-17s}
+.living-world-atmosphere .particle-6{--particle-left:64%;--particle-duration:30s;--particle-delay:-10s;font-size:19px}
+.living-world-atmosphere .particle-7{--particle-left:75%;--particle-duration:25s;--particle-delay:-21s}
+.living-world-atmosphere .particle-8{--particle-left:86%;--particle-duration:28s;--particle-delay:-6s;font-size:17px}
+.living-world-atmosphere .particle-9{--particle-left:95%;--particle-duration:22s;--particle-delay:-14s}
+.living-world-atmosphere .particle-10{--particle-left:34%;--particle-duration:31s;--particle-delay:-25s;font-size:14px}
+body[data-season="spring"] .living-world-atmosphere .world-particle{color:#ffc7e8}
+body[data-season="spring"] .living-world-atmosphere .world-particle:before{content:"✿"}
+body[data-season="summer"] .living-world-atmosphere .world-particle{color:#ffe29a}
+body[data-season="summer"] .living-world-atmosphere .world-particle:before{content:"✦"}
+body[data-season="autumn"] .living-world-atmosphere .world-particle{color:#ffbd76}
+body[data-season="autumn"] .living-world-atmosphere .world-particle:before{content:"🍂";font-size:.9em}
+body[data-season="winter"] .living-world-atmosphere .world-particle{color:#d5f3ff}
+body[data-season="winter"] .living-world-atmosphere .world-particle:before{content:"❄"}
+@keyframes living-world-drift{
+  0%{transform:translate3d(0,-3vh,0) rotate(0deg);opacity:0}
+  12%{opacity:.72}
+  82%{opacity:.58}
+  100%{transform:translate3d(6vw,112vh,0) rotate(210deg);opacity:0}
+}
+body[data-time="morning"] .hero{background:radial-gradient(ellipse at 50% 5%,rgba(255,193,128,.15),transparent 60%),linear-gradient(180deg,rgba(38,43,83,.18),transparent 65%)}
+body[data-time="day"] .hero{background:radial-gradient(ellipse at 50% 5%,rgba(95,206,255,.14),transparent 60%),linear-gradient(180deg,rgba(27,58,90,.12),transparent 70%)}
+body[data-time="evening"] .hero{background:radial-gradient(ellipse at 50% 5%,rgba(255,151,102,.16),transparent 60%),linear-gradient(180deg,rgba(72,38,78,.15),transparent 70%)}
+body[data-time="dusk"] .hero{background:radial-gradient(ellipse at 50% 5%,rgba(140,111,255,.18),transparent 60%),linear-gradient(180deg,rgba(20,20,59,.2),transparent 70%)}
+body[data-time="night"] .hero{background:radial-gradient(ellipse at 50% 5%,rgba(71,87,191,.18),transparent 60%),linear-gradient(180deg,rgba(3,6,25,.3),transparent 72%)}
+body.magic-reduced-motion .living-world-atmosphere .world-particle,
+@media(prefers-reduced-motion:reduce){.hero{transition:none!important}}
+@media(prefers-reduced-motion:reduce){.living-world-atmosphere .world-particle{animation:none!important;display:none!important}}
+body.magic-reduced-motion .living-world-atmosphere .world-particle{animation:none!important;display:none!important}
