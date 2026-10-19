@@ -551,3 +551,13 @@ body[data-time="night"] .hero{background:radial-gradient(ellipse at 50% 5%,rgba(
 @media(prefers-reduced-motion:reduce){.hero{transition:none!important}}
 @media(prefers-reduced-motion:reduce){.living-world-atmosphere .world-particle{animation:none!important;display:none!important}}
 body.magic-reduced-motion .living-world-atmosphere .world-particle{animation:none!important;display:none!important}
+
+
+/* LIVING WORLD — let the steady Core reflect the current realm without pulsing */
+body[data-season="spring"] .live-core-orb{filter:drop-shadow(0 0 20px rgba(255,176,222,.24))}
+body[data-season="summer"] .live-core-orb{filter:drop-shadow(0 0 22px rgba(255,219,133,.24))}
+body[data-season="autumn"] .live-core-orb{filter:drop-shadow(0 0 20px rgba(255,160,80,.22))}
+body[data-season="winter"] .live-core-orb{filter:drop-shadow(0 0 22px rgba(175,225,255,.26))}
+body[data-time="night"] .live-core-orb{filter:drop-shadow(0 0 26px rgba(111,128,255,.3))}
+body[data-time="dusk"] .live-core-orb{filter:drop-shadow(0 0 22px rgba(170,119,255,.25))}
+@media(prefers-reduced-motion:reduce){.living-world-atmosphere .world-particle{display:none!important}}
