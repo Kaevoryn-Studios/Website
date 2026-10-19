@@ -529,6 +529,21 @@ body[data-time="night"] .hero{background:radial-gradient(ellipse at 50% 5%,rgba(
 .living-world-atmosphere .particle-8{--particle-left:86%;--particle-duration:28s;--particle-delay:-6s;font-size:17px}
 .living-world-atmosphere .particle-9{--particle-left:95%;--particle-duration:22s;--particle-delay:-14s}
 .living-world-atmosphere .particle-10{--particle-left:34%;--particle-duration:31s;--particle-delay:-25s;font-size:14px}
+.living-world-atmosphere .particle-11{--particle-left:12%;--particle-duration:26s;--particle-delay:-11s;font-size:15px}
+.living-world-atmosphere .particle-12{--particle-left:23%;--particle-duration:32s;--particle-delay:-23s;font-size:20px}
+.living-world-atmosphere .particle-13{--particle-left:36%;--particle-duration:25s;--particle-delay:-7s;font-size:13px}
+.living-world-atmosphere .particle-14{--particle-left:47%;--particle-duration:29s;--particle-delay:-16s;font-size:21px}
+.living-world-atmosphere .particle-15{--particle-left:58%;--particle-duration:24s;--particle-delay:-2s;font-size:15px}
+.living-world-atmosphere .particle-16{--particle-left:69%;--particle-duration:33s;--particle-delay:-27s;font-size:18px}
+.living-world-atmosphere .particle-17{--particle-left:81%;--particle-duration:27s;--particle-delay:-13s;font-size:14px}
+.living-world-atmosphere .particle-18{--particle-left:91%;--particle-duration:30s;--particle-delay:-20s;font-size:19px}
+.living-world-atmosphere .particle-19{--particle-left:4%;--particle-duration:34s;--particle-delay:-30s;font-size:16px}
+.living-world-atmosphere .particle-20{--particle-left:15%;--particle-duration:28s;--particle-delay:-5s;font-size:22px}
+.living-world-atmosphere .particle-21{--particle-left:27%;--particle-duration:31s;--particle-delay:-18s;font-size:14px}
+.living-world-atmosphere .particle-22{--particle-left:44%;--particle-duration:23s;--particle-delay:-9s;font-size:17px}
+.living-world-atmosphere .particle-23{--particle-left:61%;--particle-duration:35s;--particle-delay:-32s;font-size:15px}
+.living-world-atmosphere .particle-24{--particle-left:73%;--particle-duration:26s;--particle-delay:-15s;font-size:20px}
+.living-world-atmosphere .particle-25{--particle-left:97%;--particle-duration:32s;--particle-delay:-24s;font-size:16px}
 body[data-season="spring"] .living-world-atmosphere .world-particle{color:#ffc7e8}
 body[data-season="spring"] .living-world-atmosphere .world-particle:before{content:"✿"}
 body[data-season="summer"] .living-world-atmosphere .world-particle{color:#ffe29a}
@@ -612,6 +627,6 @@ body[data-season] .content-card,body[data-season] .portal-card{transition:border
 
 /* Small-screen performance: keep the atmosphere light on phones */
 @media(max-width:520px){
-  .living-world-atmosphere .world-particle:nth-child(n+8){display:none}
+  .living-world-atmosphere .world-particle:nth-child(n+13){display:none}
   .living-world-atmosphere .world-particle{ text-shadow:0 0 8px currentColor }
 }
