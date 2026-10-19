@@ -548,7 +548,6 @@ body[data-time="day"] .hero{background:radial-gradient(ellipse at 50% 5%,rgba(95
 body[data-time="evening"] .hero{background:radial-gradient(ellipse at 50% 5%,rgba(255,151,102,.16),transparent 60%),linear-gradient(180deg,rgba(72,38,78,.15),transparent 70%)}
 body[data-time="dusk"] .hero{background:radial-gradient(ellipse at 50% 5%,rgba(140,111,255,.18),transparent 60%),linear-gradient(180deg,rgba(20,20,59,.2),transparent 70%)}
 body[data-time="night"] .hero{background:radial-gradient(ellipse at 50% 5%,rgba(71,87,191,.18),transparent 60%),linear-gradient(180deg,rgba(3,6,25,.3),transparent 72%)}
-body.magic-reduced-motion .living-world-atmosphere .world-particle,
 @media(prefers-reduced-motion:reduce){.hero{transition:none!important}}
 @media(prefers-reduced-motion:reduce){.living-world-atmosphere .world-particle{animation:none!important;display:none!important}}
 body.magic-reduced-motion .living-world-atmosphere .world-particle{animation:none!important;display:none!important}
