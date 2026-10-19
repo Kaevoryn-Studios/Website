@@ -104,6 +104,8 @@ const scenes=[
 ["ACT IV · THE HEART","THE MAGIC WAS WITHIN YOU","The spectacle softens. The light does not belong to the sky alone; it lives in every dreamer."],
 ["ACT V · THE FINALE","CREATE THE IMPOSSIBLE","Every spark returns as one. Dream the impossible. Bring it to life."]
 ];
+const requestedAct=Number(new URLSearchParams(window.location.search).get("act"));
+const startIndex=Number.isInteger(requestedAct)&&requestedAct>=1&&requestedAct<=5?requestedAct:0;
 let timer=null,sceneIndex=0,paused=false,running=false;
 const soundButton=document.getElementById("toggleNightAudio");
 const reduced=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -131,11 +133,11 @@ function render(i){sceneIndex=i;const s=scenes[i];stage.dataset.act=String(i);ac
 function stopTimer(){if(timer!==null){clearTimeout(timer);timer=null;}}
 function controls(complete){start.hidden=running||complete;pause.hidden=!running;pause.textContent=paused?"▶ RESUME":"Ⅱ PAUSE";skip.hidden=!running;replay.hidden=!complete;}
 function finish(){stopTimer();running=false;paused=false;render(5);fill.style.width="100%";status.textContent="First Light complete. The dream is yours.";controls(true);}
-function next(){stopTimer();if(!running)return;if(sceneIndex>=4){finish();return;}render(sceneIndex+1);status.textContent="Scene "+(sceneIndex+1)+" of 5";timer=setTimeout(next,reduced?120:2600);}
-function begin(){stopTimer();running=true;paused=false;render(0);status.textContent=reduced?"Reduced-motion mode: scenes change gently.":"The spectacle is beginning…";controls(false);timer=setTimeout(next,reduced?120:2600);}
+function next(){stopTimer();if(!running)return;if(sceneIndex>=5){finish();return;}render(sceneIndex+1);status.textContent="Scene "+(sceneIndex+1)+" of 5";timer=setTimeout(next,reduced?120:2600);}
+function begin(){stopTimer();running=true;paused=false;render(startIndex);status.textContent=reduced?"Reduced-motion mode: scenes change gently.":"The spectacle is beginning…";controls(false);timer=setTimeout(next,reduced?120:2600);}
 function togglePause(){if(!running)return;if(paused){paused=false;status.textContent="The spectacle continues…";controls(false);timer=setTimeout(next,reduced?120:2600);}else{paused=true;stopTimer();status.textContent="Paused. Resume whenever you're ready.";controls(false);}}
 start.addEventListener("click",begin);replay.addEventListener("click",begin);pause.addEventListener("click",togglePause);skip.addEventListener("click",finish);
-render(0);controls(false);
+render(startIndex);controls(false);
 })();
 </script>
 </body>
