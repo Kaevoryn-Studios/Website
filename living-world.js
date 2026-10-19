@@ -21,11 +21,28 @@
     if(hour>=19&&hour<21)return "dusk";
     return "night";
   }
+  function blendClockColor(){
+    const now=new Date();
+    const hour=now.getHours()+now.getMinutes()/60;
+    const stops=[
+      {at:0,c:[13,20,61]},{at:5,c:[255,176,118]},{at:8,c:[255,205,151]},
+      {at:11,c:[88,192,255]},{at:16,c:[102,192,255]},{at:18,c:[255,139,104]},
+      {at:20,c:[151,112,255]},{at:22,c:[40,52,137]},{at:24,c:[13,20,61]}
+    ];
+    let left=stops[0],right=stops[stops.length-1];
+    for(let i=0;i<stops.length-1;i++){
+      if(hour>=stops[i].at&&hour<=stops[i+1].at){left=stops[i];right=stops[i+1];break;}
+    }
+    const amount=(hour-left.at)/(right.at-left.at||1);
+    const rgb=left.c.map((v,i)=>Math.round(v+(right.c[i]-v)*amount));
+    document.documentElement.style.setProperty("--world-clock-glow",rgb.join(","));
+  }
   function apply(){
     const season=seasonChoice&&seasonChoice.value!=="auto"?seasonChoice.value:localSeason();
     const time=timeChoice&&timeChoice.value!=="auto"?timeChoice.value:localTime();
     document.body.dataset.season=season;
     document.body.dataset.time=time;
+    blendClockColor();
     if(status){
       const automatic=(!seasonChoice||seasonChoice.value==="auto")&&(!timeChoice||timeChoice.value==="auto");
       status.textContent=seasonNames[season]+" · "+timeNames[time]+" — "+(automatic?"automatically following your local calendar and clock.":"your chosen atmosphere is active.");
