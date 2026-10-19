@@ -575,3 +575,22 @@ body[data-time="evening"] .site-header{box-shadow:0 8px 30px rgba(255,130,99,.05
 body[data-time="dusk"] .site-header{box-shadow:0 8px 30px rgba(139,105,255,.065)}
 body[data-time="night"] .site-header{box-shadow:0 8px 34px rgba(80,95,215,.08)}
 @media(prefers-reduced-motion:reduce){.site-header{transition:none!important}}
+
+
+/* LIVING WORLD — continuous clock-colour blending, not abrupt time-of-day jumps */
+:root{--world-clock-glow:88,192,255}
+.hero{
+  background:
+    radial-gradient(ellipse at 50% 5%,rgba(var(--world-clock-glow),.16),transparent 62%),
+    linear-gradient(180deg,rgba(var(--world-clock-glow),.055),transparent 72%);
+  transition:background 90s ease;
+}
+.living-world-controls{
+  border-color:rgba(var(--world-clock-glow),.34);
+  box-shadow:0 12px 36px rgba(0,0,0,.16),0 0 26px rgba(var(--world-clock-glow),.055);
+  transition:border-color 90s ease,box-shadow 90s ease;
+}
+.living-world-heading{transition:color 90s ease}
+@media(prefers-reduced-motion:reduce){
+  .hero,.living-world-controls,.living-world-heading{transition:none!important}
+}
