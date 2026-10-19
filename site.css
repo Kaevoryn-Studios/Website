@@ -561,3 +561,17 @@ body[data-season="winter"] .live-core-orb{filter:drop-shadow(0 0 22px rgba(175,2
 body[data-time="night"] .live-core-orb{filter:drop-shadow(0 0 26px rgba(111,128,255,.3))}
 body[data-time="dusk"] .live-core-orb{filter:drop-shadow(0 0 22px rgba(170,119,255,.25))}
 @media(prefers-reduced-motion:reduce){.living-world-atmosphere .world-particle{display:none!important}}
+
+
+/* LIVING WORLD — subtle, shared ambience across the studio pages */
+.site-header{transition:border-color 4s ease,box-shadow 4s ease}
+body[data-season="spring"] .site-header{border-bottom-color:rgba(255,183,225,.28)}
+body[data-season="summer"] .site-header{border-bottom-color:rgba(255,220,145,.28)}
+body[data-season="autumn"] .site-header{border-bottom-color:rgba(255,170,103,.3)}
+body[data-season="winter"] .site-header{border-bottom-color:rgba(178,225,255,.3)}
+body[data-time="morning"] .site-header{box-shadow:0 8px 30px rgba(255,176,111,.045)}
+body[data-time="day"] .site-header{box-shadow:0 8px 30px rgba(75,192,255,.045)}
+body[data-time="evening"] .site-header{box-shadow:0 8px 30px rgba(255,130,99,.055)}
+body[data-time="dusk"] .site-header{box-shadow:0 8px 30px rgba(139,105,255,.065)}
+body[data-time="night"] .site-header{box-shadow:0 8px 34px rgba(80,95,215,.08)}
+@media(prefers-reduced-motion:reduce){.site-header{transition:none!important}}
