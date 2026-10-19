@@ -12,7 +12,9 @@
 <link rel="stylesheet" href="site.css">
 <style>
 /* SHOWS & SERIES — page-specific cinematic atmosphere */
-.shows-page .show-link{cursor:pointer;color:inherit;text-decoration:none}
+.shows-page .show-link,.shows-page .act-link{cursor:pointer;color:inherit;text-decoration:none}
+.shows-page .act-link{display:block;border:1px solid rgba(126,234,255,.2);border-radius:18px;padding:22px;transition:border-color .2s ease,background .2s ease}
+.shows-page .act-link:hover,.shows-page .act-link:focus-visible{border-color:var(--cyan);background:rgba(126,234,255,.06)}
 .shows-page .show-link:focus-visible{outline:2px solid var(--cyan);outline-offset:4px}
 .shows-page .show-link .card-link{display:block;margin-top:auto;padding-top:12px}
 .shows-page .show-details{padding:clamp(22px,4vw,40px);scroll-margin-top:110px}
@@ -85,7 +87,7 @@
 <h2 id="night-outline-title">Kaevoryn Night Spectacular</h2>
 <p>A possible story arc for the signature nighttime production. This is a creative outline—not a confirmed running order, finished production, or scheduled event.</p>
 <div class="content-grid" aria-label="Proposed show sequence">
-<article class="content-card"><span class="card-kicker">ACT I · THE AWAKENING</span><h3>The world begins to glow</h3><p>A quiet, star-filled opening. A pulse of cyan light appears, the soundscape builds, and the audience senses that something extraordinary is waking up.</p></article>
+<a class="content-card act-link" href="night-spectacular.html" aria-label="Open Act I in the First Light interactive preview"><span class="card-kicker">ACT I · THE AWAKENING</span><h3>The world begins to glow</h3><p>A quiet, star-filled opening. A pulse of cyan light appears, the soundscape builds, and the audience senses that something extraordinary is waking up.</p><span class="card-link">OPEN ACT I — FIRST LIGHT →</span></a>
 <article class="content-card"><span class="card-kicker">ACT II · THE INVITATION</span><h3>A world opens its doors</h3><p>Light trails and musical motifs invite dreamers into the Kaevoryn universe, introducing its sense of mystery, discovery, and possibility.</p></article>
 <article class="content-card"><span class="card-kicker">ACT III · WORLDS IN MOTION</span><h3>Magic takes shape</h3><p>Fantasy imagery, futuristic energy, and layered visual effects transform the scene—building wonder without relying on one effect alone.</p></article>
 <article class="content-card"><span class="card-kicker">ACT IV · THE HEART</span><h3>The magic is within you</h3><p>The spectacle slows for an emotional moment: Kaevoryn is more than a place; it is the magic in your heart.</p></article>
