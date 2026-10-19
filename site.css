@@ -454,3 +454,17 @@ body:before{animation:none!important;opacity:.34!important;filter:none!important
 .welcome-spectacle-overlay .spectacle-finale {
   background: transparent !important;
 }
+
+/* WELCOME SPECTACLE — stable cinematic ambient light (static; no animation) */
+.welcome-spectacle-overlay {
+  background:
+    radial-gradient(ellipse at 50% 38%, rgba(52,132,255,.18) 0%, transparent 43%),
+    radial-gradient(ellipse at 18% 78%, rgba(103,63,220,.13) 0%, transparent 38%),
+    radial-gradient(ellipse at 84% 22%, rgba(44,205,255,.10) 0%, transparent 34%),
+    linear-gradient(145deg,#03050e 0%,#080d22 48%,#040611 100%) !important;
+}
+.welcome-spectacle-overlay .spectacle-sky {
+  background:
+    radial-gradient(ellipse at 50% 50%, rgba(91,188,255,.13), transparent 58%),
+    radial-gradient(ellipse at 50% 62%, rgba(139,91,255,.08), transparent 66%) !important;
+}
