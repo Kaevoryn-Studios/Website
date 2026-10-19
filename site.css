@@ -342,3 +342,38 @@ button.live-core-orb:focus-visible{outline:2px solid var(--cyan);outline-offset:
   .welcome-spectacle-overlay .spectacle-sky::before,
   .welcome-spectacle-overlay .spectacle-sky::after{animation:none!important;opacity:.35;transform:none}
 }
+
+
+/* STABILITY FIX — prevent screen flicker during the Welcome Spectacle */
+body{animation:none!important;background-size:auto!important}
+body:before{animation:none!important;opacity:.34!important;filter:none!important}
+.welcome-spectacle-overlay .spectacle-sky::before,
+.welcome-spectacle-overlay .spectacle-sky::after{
+  animation:none!important;
+  opacity:.3!important;
+  transform:none!important;
+  filter:blur(18px)!important;
+}
+.welcome-spectacle-overlay .spectacle-star{
+  animation:none!important;
+  opacity:.55!important;
+  transform:none!important;
+}
+.welcome-spectacle-overlay .vortex-ring,
+.welcome-spectacle-overlay .vortex-core{
+  animation:none!important;
+}
+.welcome-spectacle-overlay .spectacle-vortex{
+  transition:none!important;
+  filter:drop-shadow(0 0 32px rgba(83,174,255,.22))!important;
+}
+.welcome-spectacle-overlay .spectacle-vortex[data-phase="surge"],
+.welcome-spectacle-overlay .spectacle-vortex[data-phase="open"],
+.welcome-spectacle-overlay .spectacle-vortex[data-phase="arrival"],
+.welcome-spectacle-overlay .spectacle-vortex[data-phase="finale"]{
+  filter:drop-shadow(0 0 38px rgba(100,153,255,.28))!important;
+}
+@media(prefers-reduced-motion:reduce){
+  .welcome-spectacle-overlay .spectacle-sky::before,
+  .welcome-spectacle-overlay .spectacle-sky::after{opacity:.2!important}
+}
