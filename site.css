@@ -297,3 +297,48 @@ button.live-core-orb:focus-visible{outline:2px solid var(--cyan);outline-offset:
 @keyframes spectacle-finale-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 @media(max-width:520px){.spectacle-vortex{top:39%;width:min(88vw,44vh,380px)}.spectacle-copy{margin-top:clamp(220px,36vh,300px)}.spectacle-skip{font-size:9px;padding:11px 12px}.spectacle-finale{padding:20px 5px}.spectacle-enter{margin-top:20px}}
 @media(prefers-reduced-motion:reduce){.spectacle-star,.vortex-ring,.vortex-core,.spectacle-scene-arrive .spectacle-copy h2,.spectacle-finale{animation:none!important}.vortex-ring{transform:none!important}.spectacle-launch{transition:none!important}}
+
+
+/* WELCOME SPECTACLE — layered aurora and drifting star mist */
+.welcome-spectacle-overlay .spectacle-sky::before,
+.welcome-spectacle-overlay .spectacle-sky::after{
+  content:"";
+  position:absolute;
+  inset:-18%;
+  pointer-events:none;
+  opacity:0;
+  transform:scale(1.08) rotate(-8deg);
+  background:
+    radial-gradient(ellipse at 22% 38%,rgba(64,210,255,.18),transparent 28%),
+    radial-gradient(ellipse at 76% 61%,rgba(164,94,255,.19),transparent 31%),
+    linear-gradient(118deg,transparent 24%,rgba(91,205,255,.07) 38%,rgba(172,117,255,.10) 48%,transparent 64%);
+  filter:blur(16px);
+  animation:spectacle-aurora-breathe 7.5s ease-in-out infinite alternate;
+}
+.welcome-spectacle-overlay .spectacle-sky::after{
+  opacity:0;
+  transform:scale(1.18) rotate(9deg);
+  background:
+    radial-gradient(ellipse at 68% 28%,rgba(108,143,255,.15),transparent 26%),
+    linear-gradient(72deg,transparent 34%,rgba(126,234,255,.06) 47%,transparent 59%);
+  animation-delay:-3.7s;
+  animation-duration:10s;
+}
+.welcome-spectacle-overlay .spectacle-vortex[data-phase="surge"]{
+  filter:brightness(1.55) drop-shadow(0 0 68px rgba(81,181,255,.55));
+}
+.welcome-spectacle-overlay .spectacle-vortex[data-phase="open"]{
+  filter:brightness(1.22) drop-shadow(0 0 76px rgba(157,110,255,.42));
+}
+.welcome-spectacle-overlay .spectacle-vortex[data-phase="arrival"] .vortex-ring{
+  border-color:rgba(221,203,255,.7);
+  box-shadow:0 0 32px rgba(112,207,255,.24),inset 0 0 30px rgba(157,110,255,.16);
+}
+@keyframes spectacle-aurora-breathe{
+  0%{opacity:.22;transform:scale(1.08) rotate(-8deg) translate3d(-1%,0,0)}
+  100%{opacity:.85;transform:scale(1.18) rotate(5deg) translate3d(1%,1%,0)}
+}
+@media(prefers-reduced-motion:reduce){
+  .welcome-spectacle-overlay .spectacle-sky::before,
+  .welcome-spectacle-overlay .spectacle-sky::after{animation:none!important;opacity:.35;transform:none}
+}
