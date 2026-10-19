@@ -46,6 +46,56 @@
 .shows-page .closing-panel h2{background:linear-gradient(100deg,#fff,#8ceeff 52%,#c0a6ff);color:transparent;background-clip:text;-webkit-background-clip:text}
 @media(max-width:520px){.shows-page .production-card{min-height:0}.shows-page .page-hero{padding-bottom:32px}}
 @media(prefers-reduced-motion:reduce){.shows-page .production-card:before,.shows-page .story-worlds:before{animation:none!important}}
+
+/* Mobile-safe draft actions: keep the actual link hit-area above card decoration. */
+.shows-page .blueprint-actions{
+  position:relative;
+  z-index:20;
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  margin:22px 0 28px;
+}
+.shows-page .blueprint-actions a,
+.shows-page .card-link{
+  position:relative;
+  z-index:5;
+  pointer-events:auto;
+  touch-action:manipulation;
+}
+.shows-page .blueprint-actions a{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:48px;
+  padding:13px 18px;
+  border:1px solid rgba(126,234,255,.55);
+  border-radius:999px;
+  background:rgba(8,194,255,.10);
+  color:#eafaff;
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:.7px;
+  line-height:1.4;
+  text-decoration:none;
+  cursor:pointer;
+}
+.shows-page .blueprint-actions a:hover,
+.shows-page .blueprint-actions a:focus-visible{
+  background:rgba(126,234,255,.2);
+  border-color:var(--cyan);
+  outline:2px solid var(--cyan);
+  outline-offset:3px;
+}
+.shows-page .content-card::before,
+.shows-page .production-card::after{
+  pointer-events:none!important;
+}
+@media(max-width:520px){
+  .shows-page .blueprint-actions{display:grid;grid-template-columns:1fr}
+  .shows-page .blueprint-actions a{width:100%;min-height:50px}
+}
+
 </style>
 </head>
 <body class="shows-page">
