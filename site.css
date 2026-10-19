@@ -487,3 +487,27 @@ body:before{animation:none!important;opacity:.34!important;filter:none!important
   animation: none !important;
   transform: none !important;
 }
+
+
+/* KAEVORYN LIVING WORLD — gentle, stable seasonal and time-of-day color shifts */
+.living-world-controls{width:min(650px,100%);margin:28px auto 0;padding:18px 20px;border:1px solid rgba(126,234,255,.24);border-radius:18px;background:linear-gradient(135deg,rgba(8,19,39,.88),rgba(28,19,55,.76));text-align:left;box-shadow:0 12px 36px rgba(0,0,0,.16)}
+.living-world-heading{display:flex;align-items:center;gap:12px;color:var(--cyan)}
+.living-world-heading>span{font-size:26px}
+.living-world-heading h3{margin:0;font-size:12px;letter-spacing:2px}
+.living-world-heading p{margin:5px 0 0;color:var(--muted);font-size:12px}
+.living-world-selects{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.living-world-selects label{display:flex;flex-direction:column;gap:7px;color:#cfe8ff;font-size:10px;font-weight:700;letter-spacing:1.4px}
+.living-world-selects select{width:100%;min-height:44px;border:1px solid rgba(126,234,255,.28);border-radius:10px;padding:10px;background:#0a1024;color:#f4fbff;font:500 13px Arial,Helvetica,sans-serif;letter-spacing:0}
+.living-world-selects select:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
+.living-world-note{margin:12px 0 0;color:var(--muted);font-size:11px}
+body[data-season="spring"] .hero:after{background-image:radial-gradient(circle,rgba(180,255,214,.75) 0 1px,transparent 2px),radial-gradient(circle,rgba(255,190,235,.65) 0 1px,transparent 2px);opacity:.25}
+body[data-season="summer"] .hero:after{background-image:radial-gradient(circle,rgba(255,225,145,.8) 0 1px,transparent 2px),radial-gradient(circle,rgba(126,234,255,.7) 0 1px,transparent 2px);opacity:.3}
+body[data-season="autumn"] .hero:after{background-image:radial-gradient(circle,rgba(255,177,92,.8) 0 1px,transparent 2px),radial-gradient(circle,rgba(196,137,255,.65) 0 1px,transparent 2px);opacity:.28}
+body[data-season="winter"] .hero:after{background-image:radial-gradient(circle,rgba(224,247,255,.85) 0 1px,transparent 2px),radial-gradient(circle,rgba(150,180,255,.7) 0 1px,transparent 2px);opacity:.3}
+body[data-time="morning"] .hero{background:radial-gradient(ellipse at 50% 5%,rgba(255,193,128,.09),transparent 58%)}
+body[data-time="day"] .hero{background:radial-gradient(ellipse at 50% 5%,rgba(95,206,255,.09),transparent 58%)}
+body[data-time="evening"] .hero{background:radial-gradient(ellipse at 50% 5%,rgba(255,151,102,.10),transparent 58%)}
+body[data-time="dusk"] .hero{background:radial-gradient(ellipse at 50% 5%,rgba(140,111,255,.12),transparent 58%)}
+body[data-time="night"] .hero{background:radial-gradient(ellipse at 50% 5%,rgba(71,87,191,.12),transparent 58%)}
+@media(max-width:520px){.living-world-controls{padding:16px}.living-world-selects{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){.living-world-controls,.living-world-selects select{transition:none!important}}
