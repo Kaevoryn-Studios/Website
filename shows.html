@@ -276,6 +276,39 @@
     { selector: '.scene-storyboard .content-grid > article.content-card', acts: [1, 1, 2, 3, 4, 5] },
     { selector: '.cue-sheet .content-grid > article.content-card', acts: [1, 1, 2, 3, 4, 5] }
   ];
+  /* Cards that are explanatory notes rather than individual show acts still need a real destination. */
+  var namedCardDestinations = {
+    'Rules for the next draft': 'night-spectacular-blueprint.html',
+    'Safety takes priority over the sequence': 'night-spectacular-blueprint.html',
+    'A quiet invitation': 'index.html#welcome-spectacle',
+    'Welcome, Dreamer': 'index.html#welcome-spectacle',
+    'The world opens': 'index.html#welcome-spectacle',
+    'Wonder without getting in the way': 'index.html#welcome-spectacle',
+    'Give the magic a heartbeat': 'night-spectacular.html?act=1',
+    'Build the moment on screen': 'night-spectacular.html?act=3',
+    'Choose the stage': 'night-spectacular-blueprint.html',
+    'Rehearse every cue': 'night-spectacular-blueprint.html'
+  };
+  document.querySelectorAll('.content-card').forEach(function (card) {
+    var heading = card.querySelector('h3');
+    if (!heading) return;
+    var destination = namedCardDestinations[heading.textContent.trim()];
+    if (!destination) return;
+    card.setAttribute('data-preview-href', destination);
+    card.setAttribute('role', 'link');
+    card.setAttribute('tabindex', '0');
+    card.style.cursor = 'pointer';
+    card.addEventListener('click', function (event) {
+      if (event.target.closest('a, button, input, select, textarea')) return;
+      window.location.href = card.getAttribute('data-preview-href');
+    });
+    card.addEventListener('keydown', function (event) {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        window.location.href = card.getAttribute('data-preview-href');
+      }
+    });
+  });
   cardGroups.forEach(function (group) {
     document.querySelectorAll(group.selector).forEach(function (card, index) {
       var act = group.acts[index];
