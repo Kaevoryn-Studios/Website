@@ -416,7 +416,7 @@ body:before{animation:none!important;opacity:.34!important;filter:none!important
 }
 
 
-/* HARD SAFETY FALLBACK — remove all flicker-prone spectacle visuals */
+/* HARD SAFETY FALLBACK — remove flicker-prone motion, retain the static energy core */
 .welcome-spectacle-overlay {
   background: linear-gradient(145deg,#03050e 0%,#080d22 48%,#040611 100%) !important;
 }
@@ -426,9 +426,6 @@ body:before{animation:none!important;opacity:.34!important;filter:none!important
 .welcome-spectacle-overlay .spectacle-sky::before,
 .welcome-spectacle-overlay .spectacle-sky::after,
 .welcome-spectacle-overlay .spectacle-star,
-.welcome-spectacle-overlay .spectacle-vortex,
-.welcome-spectacle-overlay .vortex-ring,
-.welcome-spectacle-overlay .vortex-core,
 .welcome-spectacle-overlay .vortex-ray {
   display: none !important;
   content: none !important;
@@ -469,4 +466,24 @@ body:before{animation:none!important;opacity:.34!important;filter:none!important
     radial-gradient(ellipse at 50% 42%, rgba(91,188,255,.20), transparent 43%),
     radial-gradient(ellipse at 50% 55%, rgba(139,91,255,.12), transparent 62%),
     radial-gradient(ellipse at 50% 50%, rgba(91,188,255,.06), transparent 70%) !important;
+}
+
+/* Static energy core: visible cyan/violet rings and orb, with all motion disabled */
+.welcome-spectacle-overlay .spectacle-vortex {
+  display: block !important;
+  filter: drop-shadow(0 0 34px rgba(83,174,255,.3)) !important;
+}
+.welcome-spectacle-overlay .vortex-ring {
+  display: block !important;
+  border-color: rgba(126,234,255,.56) !important;
+  box-shadow: 0 0 22px rgba(77,154,255,.18), inset 0 0 22px rgba(82,127,255,.12) !important;
+  animation: none !important;
+  transform: none !important;
+}
+.welcome-spectacle-overlay .vortex-core {
+  display: block !important;
+  background: radial-gradient(circle at 37% 32%, #fff 0%, #baf7ff 9%, #5ccaff 23%, #5d64e8 51%, rgba(107,48,194,.58) 70%, transparent 78%) !important;
+  box-shadow: 0 0 28px 9px rgba(91,196,255,.48), 0 0 82px 24px rgba(109,88,255,.28) !important;
+  animation: none !important;
+  transform: none !important;
 }
