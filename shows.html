@@ -263,6 +263,38 @@
 <nav class="footer-links" aria-label="Footer navigation"><a href="projects.html">Projects</a><a href="explore.html">Explore</a><a href="shows.html" aria-current="page">Shows &amp; Series</a><a href="watch.html">Watch</a><a href="vision.html">Our Vision</a><a href="invitation.html">Golden Invitation</a><a href="contact.html">Connect</a></nav>
 <p>Imagination Made Possible.</p>
 </footer>
+
+<script>
+/* Make draft preview cards open from anywhere on the card, not only the small text link. */
+(function () {
+  var cardGroups = [
+    { selector: '.production-blueprint .content-grid > article.content-card', acts: [1, 2, 3, 4, 5, null] },
+    { selector: '.scene-storyboard .content-grid > article.content-card', acts: [1, 1, 2, 3, 4, 5] },
+    { selector: '.cue-sheet .content-grid > article.content-card', acts: [1, 1, 2, 3, 4, 5] }
+  ];
+  cardGroups.forEach(function (group) {
+    document.querySelectorAll(group.selector).forEach(function (card, index) {
+      var act = group.acts[index];
+      if (!act || card.querySelector('a[href]')) return;
+      card.setAttribute('data-preview-href', 'night-spectacular.html?act=' + act);
+      card.setAttribute('role', 'link');
+      card.setAttribute('tabindex', '0');
+      card.style.cursor = 'pointer';
+      card.addEventListener('click', function (event) {
+        if (event.target.closest('a, button, input, select, textarea')) return;
+        window.location.href = card.getAttribute('data-preview-href');
+      });
+      card.addEventListener('keydown', function (event) {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          window.location.href = card.getAttribute('data-preview-href');
+        }
+      });
+    });
+  });
+})();
+</script>
+
 <script src="living-world.js"></script>
 </body>
 </html>
