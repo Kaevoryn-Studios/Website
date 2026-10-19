@@ -275,7 +275,7 @@
   cardGroups.forEach(function (group) {
     document.querySelectorAll(group.selector).forEach(function (card, index) {
       var act = group.acts[index];
-      if (!act || card.querySelector('a[href]')) return;
+      if (!act) return;
       card.setAttribute('data-preview-href', 'night-spectacular.html?act=' + act);
       card.setAttribute('role', 'link');
       card.setAttribute('tabindex', '0');
