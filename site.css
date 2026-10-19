@@ -414,3 +414,43 @@ body:before{animation:none!important;opacity:.34!important;filter:none!important
   opacity:1!important;
   transform:none!important;
 }
+
+
+/* HARD SAFETY FALLBACK — remove all flicker-prone spectacle visuals */
+.welcome-spectacle-overlay {
+  background: linear-gradient(145deg,#03050e 0%,#080d22 48%,#040611 100%) !important;
+}
+.welcome-spectacle-overlay .spectacle-sky {
+  background: radial-gradient(ellipse at 50% 50%,rgba(91,188,255,.08),transparent 58%) !important;
+}
+.welcome-spectacle-overlay .spectacle-sky::before,
+.welcome-spectacle-overlay .spectacle-sky::after,
+.welcome-spectacle-overlay .spectacle-star,
+.welcome-spectacle-overlay .spectacle-vortex,
+.welcome-spectacle-overlay .vortex-ring,
+.welcome-spectacle-overlay .vortex-core,
+.welcome-spectacle-overlay .vortex-ray {
+  display: none !important;
+  content: none !important;
+  animation: none !important;
+  transition: none !important;
+  filter: none !important;
+  box-shadow: none !important;
+}
+.welcome-spectacle-overlay .spectacle-copy,
+.welcome-spectacle-overlay .spectacle-copy h2,
+.welcome-spectacle-overlay .spectacle-finale {
+  animation: none !important;
+  transition: none !important;
+  filter: none !important;
+  opacity: 1 !important;
+  transform: none !important;
+  text-shadow: none !important;
+}
+.welcome-spectacle-overlay .spectacle-copy {
+  margin-top: 0 !important;
+  align-self: center !important;
+}
+.welcome-spectacle-overlay .spectacle-finale {
+  background: transparent !important;
+}
