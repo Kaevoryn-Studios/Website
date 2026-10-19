@@ -284,5 +284,66 @@ applyLights();initAuth();
 })();
 </script>
 
+
+<script>
+/* Independent sign-in fallback: provides visible feedback even if the main console script fails. */
+(function () {
+  var form = document.getElementById('loginForm');
+  var message = document.getElementById('authMessage');
+  var button = document.getElementById('loginBtn');
+  if (!form || !message || !button || !window.supabase || !window.supabase.createClient) return;
+  var fallbackClient = null;
+  var busy = false;
+  function say(text) { message.textContent = text; }
+  form.addEventListener('submit', async function (event) {
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    if (busy) return;
+    var email = document.getElementById('email').value.trim();
+    var password = document.getElementById('password').value;
+    if (!email || !password) { say('Enter both your owner email and password.'); return; }
+    busy = true;
+    button.disabled = true;
+    say('Button responded. Connecting securely to verify your owner account…');
+    try {
+      if (!fallbackClient) fallbackClient = window.supabase.createClient(
+        'https://itcbyurixjfszmktlwnh.supabase.co',
+        'sb_publishable__R3Zpf4cjUo5zmqBzNK6lA_-quWDNJ_',
+        { auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true } }
+      );
+      var result = await fallbackClient.auth.signInWithPassword({ email: email, password: password });
+      if (result.error || !result.data || !result.data.session) {
+        var err = result.error && result.error.message || 'No active session was returned.';
+        say('Sign-in failed: ' + String(err).slice(0, 180));
+        return;
+      }
+      say('Password accepted. Checking studio owner permissions…');
+      var check = await fallbackClient.rpc('creator_realm_owner_status');
+      if (check.error) {
+        say('Password accepted, but owner verification failed: ' + String(check.error.message || check.error.code || 'RPC error').slice(0, 180));
+        return;
+      }
+      if (check.data !== true) {
+        await fallbackClient.auth.signOut();
+        say('This account signed in, but it is not authorized as a Kaevoryn Studios owner. Use the account that owns Creator’s Realm.');
+        return;
+      }
+      document.getElementById('authPanel').hidden = true;
+      document.getElementById('console').hidden = false;
+      document.getElementById('signOutBtn').hidden = false;
+      document.getElementById('authBadge').innerHTML = '<span class="dot" style="background:#72efbd"></span>OWNER VERIFIED';
+      document.getElementById('operatorLog').textContent = '[READY] Owner verified. Browser simulator standing by.';
+      say('Owner verified. The console is ready.');
+      document.getElementById('password').value = '';
+    } catch (error) {
+      say('Sign-in diagnostic: ' + String(error && error.message || error || 'Unknown connection error').slice(0, 180));
+    } finally {
+      busy = false;
+      button.disabled = false;
+    }
+  }, true);
+})();
+</script>
+
 </body>
 </html>
