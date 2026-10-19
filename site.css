@@ -377,3 +377,40 @@ body:before{animation:none!important;opacity:.34!important;filter:none!important
   .welcome-spectacle-overlay .spectacle-sky::before,
   .welcome-spectacle-overlay .spectacle-sky::after{opacity:.2!important}
 }
+
+
+/* EMERGENCY FLICKER GUARD — static, steady Welcome Spectacle */
+.welcome-spectacle-overlay,
+.welcome-spectacle-overlay *{
+  animation:none!important;
+  transition:none!important;
+}
+.welcome-spectacle-overlay .spectacle-sky::before,
+.welcome-spectacle-overlay .spectacle-sky::after{
+  content:none!important;
+  display:none!important;
+}
+.welcome-spectacle-overlay .spectacle-vortex,
+.welcome-spectacle-overlay .vortex-ring,
+.welcome-spectacle-overlay .vortex-core,
+.welcome-spectacle-overlay .spectacle-star,
+.welcome-spectacle-overlay .spectacle-copy,
+.welcome-spectacle-overlay .spectacle-copy h2,
+.welcome-spectacle-overlay .spectacle-finale{
+  animation:none!important;
+  transition:none!important;
+  filter:none!important;
+}
+.welcome-spectacle-overlay .vortex-ring{
+  transform:none!important;
+}
+.welcome-spectacle-overlay .vortex-core{
+  transform:none!important;
+}
+.welcome-spectacle-overlay .spectacle-vortex[data-phase]{
+  filter:none!important;
+}
+.welcome-spectacle-overlay .spectacle-copy h2{
+  opacity:1!important;
+  transform:none!important;
+}
