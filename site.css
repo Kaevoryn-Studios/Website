@@ -594,3 +594,17 @@ body[data-time="night"] .site-header{box-shadow:0 8px 34px rgba(80,95,215,.08)}
 @media(prefers-reduced-motion:reduce){
   .hero,.living-world-controls,.living-world-heading{transition:none!important}
 }
+
+
+/* LIVING WORLD — seasonal accents shared by interior pages */
+body[data-season="spring"] .page-hero:before{background:radial-gradient(ellipse,rgba(255,174,220,.14),rgba(113,235,202,.07) 38%,transparent 72%)}
+body[data-season="summer"] .page-hero:before{background:radial-gradient(ellipse,rgba(255,215,133,.15),rgba(78,202,255,.08) 38%,transparent 72%)}
+body[data-season="autumn"] .page-hero:before{background:radial-gradient(ellipse,rgba(255,151,84,.15),rgba(178,112,255,.08) 38%,transparent 72%)}
+body[data-season="winter"] .page-hero:before{background:radial-gradient(ellipse,rgba(190,234,255,.15),rgba(119,147,255,.09) 38%,transparent 72%)}
+body[data-season="spring"] .content-card,body[data-season="spring"] .portal-card{border-color:rgba(255,190,228,.22)}
+body[data-season="summer"] .content-card,body[data-season="summer"] .portal-card{border-color:rgba(255,220,150,.22)}
+body[data-season="autumn"] .content-card,body[data-season="autumn"] .portal-card{border-color:rgba(255,173,115,.22)}
+body[data-season="winter"] .content-card,body[data-season="winter"] .portal-card{border-color:rgba(190,229,255,.24)}
+body[data-season] .page-hero:before{transition:background 90s ease}
+body[data-season] .content-card,body[data-season] .portal-card{transition:border-color 90s ease,background .22s ease,transform .22s ease}
+@media(prefers-reduced-motion:reduce){body[data-season] .page-hero:before,body[data-season] .content-card,body[data-season] .portal-card{transition:none!important}}
