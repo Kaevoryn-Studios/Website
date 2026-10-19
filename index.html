@@ -124,7 +124,7 @@
   function showScene(scene){
     eyebrow.textContent=scene[0];title.textContent=scene[1];narration.textContent=scene[2];
     vortex.dataset.phase=scene[3];
-    stage.classList.remove("spectacle-scene-arrive");void stage.offsetWidth;stage.classList.add("spectacle-scene-arrive");
+    /* Keep the scene layer mounted and stable: do not force reflow or restart title animations. */
   }
   function finish(){
     clearTimers();vortex.dataset.phase="finale";stage.classList.add("spectacle-complete");
