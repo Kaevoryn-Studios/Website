@@ -187,41 +187,6 @@
 })();
 </script>
 
-<script>
-(function(){
-  const seasonChoice=document.getElementById("seasonChoice");
-  const timeChoice=document.getElementById("timeChoice");
-  const status=document.getElementById("livingWorldStatus");
-  if(!seasonChoice||!timeChoice||!status)return;
-  const seasonNames={spring:"Spring",summer:"Summer",autumn:"Autumn",winter:"Winter"};
-  const timeNames={morning:"Morning",day:"Daytime",evening:"Evening",dusk:"Dusk",night:"Night"};
-  function localSeason(){
-    const month=new Date().getMonth();
-    if(month===2||month===3||month===4)return "spring";
-    if(month>=5&&month<=7)return "summer";
-    if(month>=8&&month<=10)return "autumn";
-    return "winter";
-  }
-  function localTime(){
-    const hour=new Date().getHours();
-    if(hour>=5&&hour<10)return "morning";
-    if(hour>=10&&hour<17)return "day";
-    if(hour>=17&&hour<19)return "evening";
-    if(hour>=19&&hour<21)return "dusk";
-    return "night";
-  }
-  function apply(){
-    const season=seasonChoice.value==="auto"?localSeason():seasonChoice.value;
-    const time=timeChoice.value==="auto"?localTime():timeChoice.value;
-    document.body.dataset.season=season;
-    document.body.dataset.time=time;
-    status.textContent=seasonNames[season]+" · "+timeNames[time]+" — "+(seasonChoice.value==="auto"&&timeChoice.value==="auto"?"automatically following your local calendar and clock.":"your chosen atmosphere is active.");
-  }
-  seasonChoice.addEventListener("change",apply);
-  timeChoice.addEventListener("change",apply);
-  document.addEventListener("visibilitychange",function(){if(!document.hidden)apply();});
-  apply();
-  window.setInterval(apply,60000);
-})();
-</script>
+
+<script src="living-world.js"></script>
 </body></html>
