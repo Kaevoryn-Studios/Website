@@ -608,3 +608,10 @@ body[data-season="winter"] .content-card,body[data-season="winter"] .portal-card
 body[data-season] .page-hero:before{transition:background 90s ease}
 body[data-season] .content-card,body[data-season] .portal-card{transition:border-color 90s ease,background .22s ease,transform .22s ease}
 @media(prefers-reduced-motion:reduce){body[data-season] .page-hero:before,body[data-season] .content-card,body[data-season] .portal-card{transition:none!important}}
+
+
+/* Small-screen performance: keep the atmosphere light on phones */
+@media(max-width:520px){
+  .living-world-atmosphere .world-particle:nth-child(n+8){display:none}
+  .living-world-atmosphere .world-particle{ text-shadow:0 0 8px currentColor }
+}
