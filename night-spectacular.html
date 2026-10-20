@@ -26,6 +26,14 @@
 .night-stage[data-act="4"] .night-aurora{opacity:.35;filter:blur(22px)}
 .night-stage[data-act="5"] .night-aurora{opacity:1;filter:blur(7px);background:repeating-linear-gradient(112deg,transparent 0 5%,rgba(76,225,255,.08) 6%,rgba(240,202,123,.12) 8%,rgba(160,105,255,.14) 11%,transparent 15% 20%)}
 .night-stage[data-act="5"] .night-ring{border-color:rgba(244,217,148,.68);box-shadow:0 0 65px rgba(115,210,255,.3),inset 0 0 42px rgba(190,140,255,.2)}
+.night-world{position:absolute;inset:0;z-index:0;pointer-events:none;opacity:0;overflow:hidden;transition:opacity 1.8s ease;background:radial-gradient(ellipse at 50% 68%,rgba(39,135,194,.16),transparent 38%),linear-gradient(180deg,transparent 35%,rgba(13,27,62,.55) 100%)}
+.night-world:before,.night-world:after{content:"";position:absolute;left:50%;bottom:14%;width:min(42vw,240px);height:48%;transform:translateX(-50%);opacity:0;background:linear-gradient(155deg,rgba(121,232,255,.04),rgba(113,103,255,.24) 48%,rgba(196,162,255,.05));clip-path:polygon(50% 0,100% 32%,83% 100%,17% 100%,0 32%);filter:drop-shadow(0 0 18px rgba(103,198,255,.2));transition:opacity 1.8s ease,transform 2.5s ease}
+.night-world:after{width:min(27vw,150px);height:34%;left:24%;bottom:12%;transform:translateX(-50%) scale(.75);background:linear-gradient(145deg,rgba(143,245,255,.03),rgba(160,117,255,.26),rgba(92,211,255,.06))}
+.night-stage[data-act="3"] .night-world,.night-stage[data-act="5"] .night-world{opacity:1}
+.night-stage[data-act="3"] .night-world:before,.night-stage[data-act="5"] .night-world:before{opacity:.85;transform:translateX(-50%) scale(1)}
+.night-stage[data-act="3"] .night-world:after,.night-stage[data-act="5"] .night-world:after{opacity:.68;transform:translateX(-50%) scale(1)}
+.night-stage[data-act="4"] .night-world{opacity:.25;filter:saturate(.5)}
+.night-stage[data-act="5"] .night-world{background:radial-gradient(ellipse at 50% 55%,rgba(90,209,255,.2),transparent 40%),radial-gradient(ellipse at 50% 72%,rgba(255,214,135,.15),transparent 58%),linear-gradient(180deg,transparent 20%,rgba(20,20,65,.6) 100%)}
 .night-particles{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:0;overflow:hidden;transition:opacity 1.4s ease;background-image:radial-gradient(circle,#c5f8ff 0 1px,transparent 1.8px),radial-gradient(circle,#b9a6ff 0 1px,transparent 2px),radial-gradient(circle,#fff 0 .8px,transparent 1.8px);background-size:137px 151px,191px 173px,113px 197px;background-position:12px 20px,64px 77px,37px 109px;mask-image:linear-gradient(transparent,#000 12%,#000 88%,transparent);animation:particle-drift 18s linear infinite}
 @keyframes particle-drift{from{transform:translate3d(0,18px,0);background-position:12px 20px,64px 77px,37px 109px}to{transform:translate3d(-18px,-32px,0);background-position:149px 171px,255px 250px,150px 306px}}
 .night-stage[data-act="2"] .night-particles,.night-stage[data-act="3"] .night-particles,.night-stage[data-act="4"] .night-particles,.night-stage[data-act="5"] .night-particles{opacity:.48}
@@ -74,7 +82,7 @@
 .night-status{text-align:center;min-height:1.5em;color:var(--muted);font-size:12px}
 .night-note{max-width:820px;margin:18px auto 0;color:var(--muted);font-size:13px;line-height:1.7}
 @media(max-width:560px){.night-stage{min-height:490px;padding:18px 12px}.night-portal{top:33%;width:75vw}.night-scene-copy{margin-top:clamp(225px,33vh,285px)}.night-controls button,.night-controls a{flex:1 1 42%}}
-@media(prefers-reduced-motion:reduce){.night-stage:before,.night-portal,.night-orbit,.night-horizon,.night-light-column,.night-ring,.night-aurora,.night-progress span{transition:none!important}.night-stage *{animation:none!important}.night-particles{animation:none!important;opacity:.38}}
+@media(prefers-reduced-motion:reduce){.night-stage:before,.night-portal,.night-orbit,.night-horizon,.night-light-column,.night-ring,.night-aurora,.night-progress span{transition:none!important}.night-stage *{animation:none!important}.night-particles{animation:none!important;opacity:.38}.night-world,.night-world:before,.night-world:after{transition:none!important}}
 </style>
 </head>
 <body class="night-page">
@@ -89,7 +97,7 @@
 </section>
 <section aria-labelledby="stage-title">
 <div class="night-stage" id="nightStage" data-act="0">
-<div class="night-stars" aria-hidden="true"></div><div class="night-particles" aria-hidden="true"></div><div class="night-aurora" aria-hidden="true"></div><div class="night-ring" aria-hidden="true"></div><div class="night-ring ring-two" aria-hidden="true"></div><div class="night-portal" aria-hidden="true"><span class="night-orbit"></span><span class="night-orbit two"></span></div><div class="night-light-column" aria-hidden="true"></div><div class="night-horizon" aria-hidden="true"></div>
+<div class="night-stars" aria-hidden="true"></div><div class="night-particles" aria-hidden="true"></div><div class="night-world" aria-hidden="true"></div><div class="night-aurora" aria-hidden="true"></div><div class="night-ring" aria-hidden="true"></div><div class="night-ring ring-two" aria-hidden="true"></div><div class="night-portal" aria-hidden="true"><span class="night-orbit"></span><span class="night-orbit two"></span></div><div class="night-light-column" aria-hidden="true"></div><div class="night-horizon" aria-hidden="true"></div>
 <div class="night-scene-copy"><p class="night-act" id="nightAct">BEFORE THE FIRST LIGHT</p><h2 id="stage-title">A WORLD WAITS IN SILENCE</h2><p id="nightNarration" aria-live="polite">A quiet sky. A distant shimmer. Somewhere in the darkness, possibility is waiting.</p></div>
 </div>
 <div class="night-progress" role="progressbar" aria-label="Show progress" aria-valuemin="0" aria-valuemax="5" aria-valuenow="0" id="nightProgress"><span id="nightProgressFill"></span></div>
