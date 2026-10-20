@@ -38,12 +38,14 @@
 .discovery-button span{display:block;color:#9beaff;font-size:10px;font-weight:800;letter-spacing:1px;margin-bottom:8px}
 .discovery-button strong{display:block;font-size:13px;line-height:1.35}
 .discovery-button[aria-pressed="true"]{border-color:#8ceeff;background:linear-gradient(145deg,rgba(24,102,137,.32),rgba(78,49,133,.26));box-shadow:0 0 24px rgba(83,197,255,.08)}
+.citadel-progress{height:4px;margin:18px 0 8px;overflow:hidden;border-radius:99px;background:rgba(185,218,255,.12)}
+.citadel-progress span{display:block;width:20%;height:100%;background:linear-gradient(90deg,#69e4ff,#9a83ff,#f3d88e);transition:width .45s ease}
 .citadel-controls{display:flex;justify-content:center;flex-wrap:wrap;gap:12px;margin:22px 0}
 .citadel-controls button,.citadel-controls a{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:12px 18px;border:1px solid rgba(126,234,255,.42);border-radius:999px;background:rgba(8,194,255,.08);color:#eafaff;font:inherit;font-size:11px;font-weight:800;letter-spacing:.7px;text-decoration:none;cursor:pointer}
 .citadel-status{text-align:center;min-height:1.5em;color:var(--muted);font-size:13px}
 .citadel-note{max-width:850px;margin:28px auto;padding:18px 20px;border:1px solid rgba(168,149,255,.2);border-radius:18px;background:rgba(13,15,34,.65);color:var(--muted);line-height:1.65}
 @media(max-width:760px){.discovery-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.discovery-button:last-child{grid-column:1/-1}.citadel-stage{min-height:420px}}
-@media(prefers-reduced-motion:reduce){.citadel-aura,.citadel-tower,.citadel-gate{transition:none!important}}
+@media(prefers-reduced-motion:reduce){.citadel-aura,.citadel-tower,.citadel-gate,.citadel-progress span{transition:none!important}}
 </style>
 </head>
 <body class="citadel-page">
@@ -65,6 +67,7 @@
 <p id="citadelNarration">At dusk, a sealed gate lights up with tiny constellations. It responds to your arrival with a low, welcoming glow. The Citadel has noticed you.</p>
 </div>
 </div>
+<div class="citadel-progress" id="citadelProgress" role="progressbar" aria-label="Citadel discovery progress" aria-valuemin="1" aria-valuemax="5" aria-valuenow="1"><span id="citadelProgressFill"></span></div>
 <div class="discovery-grid" role="group" aria-label="Choose a Citadel discovery">
 <button class="discovery-button" type="button" data-discovery-button="1" aria-pressed="true"><span>01 · ARRIVAL</span><strong>The Gate That Remembers</strong></button>
 <button class="discovery-button" type="button" data-discovery-button="2" aria-pressed="false"><span>02 · THE HALL</span><strong>Architecture in Motion</strong></button>
@@ -91,12 +94,13 @@ const scenes=[
 ["04 · THE HEART","The Lantern Chamber","A quiet central chamber holds a suspended lantern. Its light grows when you notice a hidden symbol. This place rewards curiosity, never speed."],
 ["05 · THE REVEAL","The Citadel Is a Compass","The towers align into a constellation pointing toward a new horizon. The Citadel was never meant to keep dreams inside. It helps them find their way out."]
 ];
-const stage=document.getElementById("citadelStage"),eyebrow=document.getElementById("citadelEyebrow"),title=document.getElementById("citadel-scene-title"),narration=document.getElementById("citadelNarration"),status=document.getElementById("citadelStatus"),buttons=[...document.querySelectorAll("[data-discovery-button]")];
+const progress=document.getElementById("citadelProgress"),progressFill=document.getElementById("citadelProgressFill"),stage=document.getElementById("citadelStage"),eyebrow=document.getElementById("citadelEyebrow"),title=document.getElementById("citadel-scene-title"),narration=document.getElementById("citadelNarration"),status=document.getElementById("citadelStatus"),buttons=[...document.querySelectorAll("[data-discovery-button]")];
 let current=1;
 function showDiscovery(n){
 current=((n-1+scenes.length)%scenes.length)+1;
 const scene=scenes[current-1];
 stage.dataset.discovery=String(current);
+progress.setAttribute("aria-valuenow",String(current));progressFill.style.width=(current/scenes.length*100)+"%";
 eyebrow.textContent="DISCOVERY "+String(current).padStart(2,"0")+" · "+scene[0].split(" · ")[1];
 title.textContent=scene[1];narration.textContent=scene[2];
 buttons.forEach((button)=>button.setAttribute("aria-pressed",String(Number(button.dataset.discoveryButton)===current)));
