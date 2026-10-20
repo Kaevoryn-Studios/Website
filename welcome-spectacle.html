@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#050711">
+<meta name="description" content="A gentle, skippable first-contact experience for Kaevoryn Studios: a quiet world, an awakening Core, and an invitation to create the impossible.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Kaevoryn Welcome Spectacle — The Core Awakens">
+<meta property="og:description" content="A cinematic welcome experience designed to be skippable, quiet by default, and respectful of reduced motion.">
+<title>Kaevoryn Welcome Spectacle — The Core Awakens | Kaevoryn Studios</title>
+<link rel="stylesheet" href="site.css">
+<style>
+.welcome-page .welcome-hero{text-align:center;padding:clamp(34px,7vw,76px) 0 28px}
+.welcome-page .welcome-hero h1{margin:0;font-size:clamp(36px,8vw,76px);line-height:1.02;letter-spacing:-.045em;background:linear-gradient(100deg,#fff 4%,#8ceeff 45%,#c4a8ff 75%,#ffe0a0);color:transparent;background-clip:text;-webkit-background-clip:text}
+.welcome-page .lead{max-width:740px;margin:18px auto;color:var(--muted);font-size:clamp(15px,2vw,18px)}
+.welcome-label{display:inline-block;margin-top:8px;padding:7px 12px;border:1px solid rgba(126,234,255,.32);border-radius:999px;color:#c9f6ff;font-size:10px;font-weight:800;letter-spacing:1.5px}
+.welcome-stage{position:relative;isolation:isolate;overflow:hidden;display:grid;place-items:center;min-height:clamp(430px,65vh,620px);padding:28px 18px;border:1px solid rgba(126,234,255,.24);border-radius:26px;background:radial-gradient(ellipse at 50% 45%,rgba(40,74,145,.18),transparent 40%),linear-gradient(155deg,#03050e,#0a1026 55%,#100a1c);box-shadow:0 24px 80px rgba(0,0,0,.28)}
+.welcome-stage:before{content:"";position:absolute;inset:-25%;z-index:-2;pointer-events:none;background:radial-gradient(ellipse at 28% 70%,rgba(90,50,180,.2),transparent 38%),radial-gradient(ellipse at 72% 20%,rgba(35,180,218,.16),transparent 42%);opacity:.75;transition:opacity 1.5s ease,transform 2s ease}
+.welcome-stars{position:absolute;inset:0;pointer-events:none;opacity:.6;background-image:radial-gradient(circle at 14% 22%,#d5faff 0 1px,transparent 2px),radial-gradient(circle at 78% 17%,#d5c7ff 0 1px,transparent 2px),radial-gradient(circle at 65% 43%,#d5faff 0 1px,transparent 2px),radial-gradient(circle at 28% 65%,#d5c7ff 0 1px,transparent 2px),radial-gradient(circle at 87% 72%,#d5faff 0 1px,transparent 2px)}
+.welcome-core{position:absolute;left:50%;top:42%;width:min(48vw,240px);aspect-ratio:1;border-radius:50%;transform:translate(-50%,-50%) scale(.35);opacity:.08;pointer-events:none;background:radial-gradient(circle,rgba(255,255,255,.95) 0 2%,rgba(132,239,255,.72) 5%,rgba(93,145,255,.22) 24%,rgba(166,109,255,.12) 42%,transparent 70%);box-shadow:0 0 45px rgba(105,218,255,.16);transition:opacity 1.5s ease,transform 2s cubic-bezier(.2,.8,.2,1)}
+.welcome-orbit{position:absolute;left:50%;top:42%;width:min(66vw,330px);aspect-ratio:1;border:1px solid rgba(129,233,255,.35);border-radius:50%;transform:translate(-50%,-50%) rotateX(65deg) scale(.35);opacity:0;pointer-events:none;box-shadow:0 0 24px rgba(111,194,255,.1),inset 0 0 20px rgba(166,115,255,.08);transition:opacity 1.3s ease,transform 2s ease}
+.welcome-orbit.two{width:min(82vw,410px);border-color:rgba(192,153,255,.3);transform:translate(-50%,-50%) rotateY(62deg) rotateZ(20deg) scale(.35)}
+.welcome-copy{position:relative;z-index:2;max-width:690px;text-align:center;padding:150px 12px 16px}
+.welcome-copy .eyebrow{font-size:11px;letter-spacing:2px;font-weight:800;color:#a9efff}
+.welcome-copy h2{font-size:clamp(29px,5.5vw,52px);line-height:1.08;margin:14px 0;background:linear-gradient(90deg,#fff,#9defff,#d3c0ff);color:transparent;background-clip:text;-webkit-background-clip:text}
+.welcome-copy p{max-width:610px;margin:0 auto;color:#d1d8f2;line-height:1.7}
+.welcome-stage[data-scene="2"]:before,.welcome-stage[data-scene="3"]:before,.welcome-stage[data-scene="4"]:before{opacity:1;transform:scale(1.1)}
+.welcome-stage[data-scene="2"] .welcome-core,.welcome-stage[data-scene="3"] .welcome-core,.welcome-stage[data-scene="4"] .welcome-core{opacity:.75;transform:translate(-50%,-50%) scale(1)}
+.welcome-stage[data-scene="3"] .welcome-orbit,.welcome-stage[data-scene="4"] .welcome-orbit{opacity:.8;transform:translate(-50%,-50%) rotateX(65deg) scale(1)}
+.welcome-stage[data-scene="3"] .welcome-orbit.two,.welcome-stage[data-scene="4"] .welcome-orbit.two{transform:translate(-50%,-50%) rotateY(62deg) rotateZ(20deg) scale(1)}
+.welcome-stage[data-scene="4"] .welcome-core{background:radial-gradient(circle,rgba(255,255,255,.98) 0 3%,rgba(145,244,255,.8) 7%,rgba(116,135,255,.3) 25%,rgba(255,207,132,.18) 44%,transparent 70%);box-shadow:0 0 80px rgba(105,218,255,.32)}
+.welcome-controls{display:flex;justify-content:center;flex-wrap:wrap;gap:12px;margin:22px 0}
+.welcome-controls button,.welcome-controls a{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:12px 18px;border:1px solid rgba(126,234,255,.42);border-radius:999px;background:rgba(8,194,255,.08);color:#eafaff;font:inherit;font-size:11px;font-weight:800;letter-spacing:.7px;text-decoration:none;cursor:pointer;touch-action:manipulation}
+.welcome-controls .primary{background:linear-gradient(110deg,rgba(31,155,202,.3),rgba(130,88,205,.3));border-color:rgba(126,234,255,.65)}
+.welcome-status{text-align:center;min-height:1.5em;color:var(--muted);font-size:13px}
+.welcome-sequence{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:22px 0}
+.welcome-beat{padding:17px;border:1px solid rgba(126,234,255,.18);border-radius:16px;background:rgba(10,16,35,.72)}
+.welcome-beat .number{color:#9beaff;font-size:10px;font-weight:800;letter-spacing:1px}
+.welcome-beat h3{font-size:16px;margin:9px 0}
+.welcome-beat p{font-size:13px;color:var(--muted);line-height:1.55;margin:0}
+.welcome-note{max-width:850px;margin:28px auto;padding:18px 20px;border:1px solid rgba(168,149,255,.2);border-radius:18px;background:rgba(13,15,34,.65);color:var(--muted);line-height:1.65}
+@media(max-width:700px){.welcome-sequence{grid-template-columns:repeat(2,minmax(0,1fr))}.welcome-copy{padding-top:130px}.welcome-stage{min-height:450px}}
+@media(max-width:380px){.welcome-sequence{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){.welcome-stage:before,.welcome-core,.welcome-orbit{transition:none!important}}
+</style>
+</head>
+<body class="welcome-page">
+<a class="skip-link" href="#main-content">Skip to content</a>
+<header class="site-header"><div class="nav-wrap"><a class="brand" href="index.html" aria-label="Kaevoryn Studios home"><span class="brand-mark" aria-hidden="true">K</span><span class="brand-name">KAEVORYN STUDIOS<span class="brand-tag">CREATE THE IMPOSSIBLE</span></span></a><nav class="primary-nav" aria-label="Primary navigation"><a href="index.html">HOME</a><a href="projects.html">PROJECTS</a><a href="explore.html">EXPLORE</a><a href="shows.html" aria-current="page">SHOWS</a><a href="watch.html">WATCH</a><a href="vision.html">VISION</a><a href="invitation.html">GOLDEN INVITATION</a><a href="contact.html">CONNECT</a><a href="evermore.html">EVERMORE</a><a href="creator-realm/">CREATOR’S REALM</a></nav></div></header>
+<main id="main-content" class="container">
+<section class="welcome-hero">
+<p class="kicker">💫 A FIRST-CONTACT EXPERIENCE</p>
+<h1>WELCOME,<br>DREAMER.</h1>
+<p class="lead">The world is quiet. A presence notices you. The Core awakens—not to demand your attention, but to offer you a door into imagination.</p>
+<span class="welcome-label">SKIPPABLE · SOUND OFF · REDUCED-MOTION FRIENDLY</span>
+</section>
+<section aria-labelledby="welcome-scene-title">
+<div class="welcome-stage" id="welcomeStage" data-scene="1">
+<div class="welcome-stars" aria-hidden="true"></div><div class="welcome-core" aria-hidden="true"></div><div class="welcome-orbit" aria-hidden="true"></div><div class="welcome-orbit two" aria-hidden="true"></div>
+<div class="welcome-copy" aria-live="polite">
+<p class="eyebrow" id="welcomeEyebrow">01 · A WORLD AT REST</p>
+<h2 id="welcome-scene-title">Take a breath.</h2>
+<p id="welcomeNarration">A deep-blue world waits in stillness. No sound starts on its own. There is no countdown, no rush, and nothing you need to do yet.</p>
+</div>
+</div>
+<div class="welcome-controls">
+<button type="button" class="primary" id="beginWelcome">BEGIN THE WELCOME →</button>
+<button type="button" id="nextWelcome" hidden>CONTINUE →</button>
+<button type="button" id="skipWelcome">SKIP INTRO ↗</button>
+<button type="button" id="replayWelcome" hidden>↺ EXPERIENCE AGAIN</button>
+<a href="shows.html#welcome-spectacle">BACK TO ALL SHOWS</a>
+</div>
+<p class="welcome-status" id="welcomeStatus" role="status">Ready when you are. Begin or skip at any time.</p>
+</section>
+<section class="welcome-sequence" aria-label="Welcome experience sequence">
+<article class="welcome-beat"><span class="number">01 · STILLNESS</span><h3>A world at rest</h3><p>Give the visitor a calm moment to arrive and settle.</p></article>
+<article class="welcome-beat"><span class="number">02 · RECOGNITION</span><h3>Something notices you</h3><p>A small light responds gently, without startling the visitor.</p></article>
+<article class="welcome-beat"><span class="number">03 · AWAKENING</span><h3>The Core is awakening</h3><p>Cyan rings and violet energy form a doorway into possibility.</p></article>
+<article class="welcome-beat"><span class="number">04 · INVITATION</span><h3>Enter, or continue</h3><p>The visitor chooses what happens next. The welcome never blocks the site.</p></article>
+</section>
+<section class="welcome-note" aria-label="Prototype status"><strong>Development note:</strong> This is a browser-based visual prototype, not a fully produced show or venue installation. The four-beat sequence and controls are implemented in this first pass. Final music, sound design, more advanced visual effects, and hands-on phone/desktop testing remain pending. No audio plays automatically.</section>
+</main>
+<footer class="site-footer"><div class="footer-brand">KAEVORYN STUDIOS</div><div class="footer-mantra">CREATE THE IMPOSSIBLE</div><nav class="footer-links" aria-label="Footer navigation"><a href="projects.html">Projects</a><a href="explore.html">Explore</a><a href="shows.html">Shows &amp; Series</a><a href="watch.html">KAEVORYN WATCH</a><a href="vision.html">Our Vision</a><a href="contact.html">Connect</a></nav><p>Imagination Made Possible.</p></footer>
+<script>
+(function(){
+const scenes=[
+["01 · A WORLD AT REST","Take a breath.","A deep-blue world waits in stillness. No sound starts on its own. There is no countdown, no rush, and nothing you need to do yet."],
+["02 · RECOGNITION","Something notices you.","A small light appears at the edge of the horizon. It responds gently to your presence—curious, not demanding."],
+["03 · AWAKENING","The Core is awakening.","Cyan rings emerge from the dark as violet energy gathers around a growing point of light. A doorway begins to take shape."],
+["04 · INVITATION","Welcome, Golden Dreamer.","The light warms to gold. The door is open, but the choice is yours. Enter the world, explore at your own pace, or skip ahead."]
+];
+const stage=document.getElementById("welcomeStage"),eyebrow=document.getElementById("welcomeEyebrow"),title=document.getElementById("welcome-scene-title"),narration=document.getElementById("welcomeNarration"),status=document.getElementById("welcomeStatus"),begin=document.getElementById("beginWelcome"),next=document.getElementById("nextWelcome"),skip=document.getElementById("skipWelcome"),replay=document.getElementById("replayWelcome");
+let current=0,started=false,complete=false;
+const reduced=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+function render(n){current=Math.max(1,Math.min(4,n));const s=scenes[current-1];stage.dataset.scene=String(current);eyebrow.textContent=s[0];title.textContent=s[1];narration.textContent=s[2];}
+function controls(){begin.hidden=started;next.hidden=!started||complete;skip.hidden=complete;replay.hidden=!complete;}
+function start(){started=true;complete=false;render(1);status.textContent=reduced?"Reduced-motion preference detected. The welcome stays gentle and under your control.":"The welcome has begun. Continue when you're ready.";controls();}
+function continueScene(){if(!started)start();if(current<4){render(current+1);status.textContent="Moment "+current+" of 4. Continue or skip whenever you wish.";}else{complete=true;status.textContent="Welcome, Dreamer. Your journey is yours to choose.";controls();}}
+function skipIntro(){complete=true;started=true;render(4);status.textContent="Welcome skipped ahead. You are free to explore the site.";controls();}
+begin.addEventListener("click",start);next.addEventListener("click",continueScene);skip.addEventListener("click",skipIntro);replay.addEventListener("click",()=>{started=false;complete=false;render(1);status.textContent="Ready when you are. Begin or skip at any time.";controls();});
+render(1);controls();
+})();
+</script>
+<script src="living-world.js"></script>
+</body>
+</html>
