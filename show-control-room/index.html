@@ -299,13 +299,6 @@ applyLights();initAuth();
     email.setAttribute('spellcheck', 'false');
   }
   if (password) password.setAttribute('autocomplete', 'current-password');
-  form.addEventListener('submit', function () {
-    var message = document.getElementById('authMessage');
-    if (message && email && password) {
-      message.textContent = 'Checking sign-in for ' + email.value.trim() +
-        ' (password field: ' + password.value.length + ' characters). Password contents are never displayed.';
-    }
-  }, false);
 })();
 </script>
 
