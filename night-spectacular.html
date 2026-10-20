@@ -83,6 +83,15 @@
 .night-note{max-width:820px;margin:18px auto 0;color:var(--muted);font-size:13px;line-height:1.7}
 @media(max-width:560px){.night-stage{min-height:490px;padding:18px 12px}.night-portal{top:33%;width:75vw}.night-scene-copy{margin-top:clamp(225px,33vh,285px)}.night-controls button,.night-controls a{flex:1 1 42%}}
 @media(prefers-reduced-motion:reduce){.night-stage:before,.night-portal,.night-orbit,.night-horizon,.night-light-column,.night-ring,.night-aurora,.night-progress span{transition:none!important}.night-stage *{animation:none!important}.night-particles{animation:none!important;opacity:.38}.night-world,.night-world:before,.night-world:after{transition:none!important}}
+
+.night-page .transcript-details{margin-top:18px;border:1px solid rgba(126,234,255,.22);border-radius:16px;padding:16px 18px;background:rgba(8,14,30,.6);text-align:left}
+.night-page .transcript-details summary{cursor:pointer;color:#c9f6ff;font-weight:700}
+.night-page .transcript-list{padding-left:24px}
+.night-page .transcript-list li{padding:12px 0;border-bottom:1px solid rgba(126,234,255,.12)}
+.night-page .transcript-list li:last-child{border-bottom:0}
+.night-page .transcript-list h3{margin:0 0 8px;font-size:1rem}
+.night-page .transcript-list p{margin:0;color:var(--muted)}
+.night-page .transcript-details summary:focus-visible{outline:2px solid var(--cyan);outline-offset:4px}
 </style>
 </head>
 <body class="night-page">
@@ -104,6 +113,23 @@
 <p class="night-status" id="nightStatus" aria-live="polite">Ready when you are.</p>
 <div class="night-controls"><button id="toggleNightAudio" type="button" aria-pressed="false">♫ SOUND: OFF</button><button class="primary" id="startNightShow" type="button">▶ BEGIN FIRST LIGHT</button><button id="pauseNightShow" type="button" hidden>Ⅱ PAUSE</button><button id="skipNightScene" type="button" hidden>SKIP TO FINALE ↗</button><button id="replayNightShow" type="button" hidden>↻ REPLAY</button><a href="night-spectacular-blueprint.html">VIEW THE PRODUCTION BLUEPRINT ↗</a></div>
 </section>
+<section class="feature-panel" aria-labelledby="transcript-title">
+<p class="kicker">READ ALONG · ACCESSIBLE SHOW SCRIPT</p>
+<h2 id="transcript-title">The First Light transcript</h2>
+<p class="night-note">This is the written scene text for the current five-act visual preview. It is not recorded voice-over, and the optional browser tones are not the finished score.</p>
+<details class="transcript-details">
+<summary>Open all five acts</summary>
+<ol class="transcript-list">
+<li><h3>Opening — Atmosphere Before Spectacle</h3><p><strong>Let the world become still.</strong> No rush. A deep-blue sky, distant stars, and a quiet shimmer invite the audience to settle into the moment. Before the spectacle begins, possibility is already here.</p></li>
+<li><h3>Build — Reveal the Impossible</h3><p><strong>The Core opens a door.</strong> A single light awakens. Cyan rings rise from the darkness, violet energy gathers, and a path appears where there was once nothing. The impossible is revealed one layer at a time.</p></li>
+<li><h3>Wonder — Let Each World Breathe</h3><p><strong>A thousand worlds, one dream.</strong> Blue becomes violet; starlight becomes a horizon. Each visual world gets its own moment to shine—no rush, no clutter—before the lights gently gather toward the heart.</p></li>
+<li><h3>Heart — Create an Emotional Pause</h3><p><strong>The magic was within you.</strong> The energy softens. A warm golden glow rests inside the cool light, leaving space to feel the wonder and remember the dreamer at the center of it all.</p></li>
+<li><h3>Finale — Bring Every Motif Together</h3><p><strong>Create the Impossible.</strong> The Core, the rings, the horizon, the stars, and the golden spark return as one. The whole world lights up—not just to end the show, but to pass the dream on to you.</p></li>
+</ol>
+</details>
+<p style="margin-top:18px"><a class="button" href="night-spectacular-blueprint.html">OPEN THE FULL PRODUCTION BLUEPRINT →</a></p>
+</section>
+
 <section class="feature-panel"><p class="kicker">THE IDEA BEHIND THE LIGHT</p><h2>Because Kaevoryn isn't just a place.</h2><p>It's the magic in your heart.</p><p><strong>Dream the impossible. Bring it to life.</strong></p><p class="night-note">This is an original, browser-based visual proof-of-concept—not the finished venue-scale production. The current preview moves through five acts in about 40 seconds (shorter in reduced-motion mode); that is a visual demonstration, not the proposed 9-minute-plus show runtime. Optional browser-generated tones play only when you turn sound on. They are a sound-design test, not the finished score. The full production still needs selected music, timed transitions, completed visuals, and technical review before it can be called finished.</p></section>
 </main>
 <footer class="site-footer"><div class="footer-brand">KAEVORYN STUDIOS</div><div class="footer-mantra">CREATE THE IMPOSSIBLE</div><nav class="footer-links" aria-label="Footer navigation"><a href="projects.html">Projects</a><a href="explore.html">Explore</a><a href="shows.html">Shows &amp; Series</a><a href="watch.html">KAEVORYN WATCH</a><a href="vision.html">Our Vision</a><a href="contact.html">Connect</a></nav><p>Imagination Made Possible.</p></footer>
