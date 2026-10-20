@@ -302,5 +302,74 @@ applyLights();initAuth();
 })();
 </script>
 
+
+<script>
+/* Standalone sign-in recovery path. Captures the form before any page handler so login
+   still responds if the main console script fails to initialize. */
+(function () {
+  var form = document.getElementById('loginForm');
+  var button = document.getElementById('loginBtn');
+  var message = document.getElementById('authMessage');
+  var email = document.getElementById('email');
+  var password = document.getElementById('password');
+  if (!form || !button || !message || !window.supabase || !window.supabase.createClient) return;
+  var fallbackClient;
+  try {
+    fallbackClient = window.supabase.createClient(
+      'https://itcbyurixjfszmktlwnh.supabase.co',
+      'sb_publishable__R3Zpf4cjUo5zmqBzNK6lA_-quWDNJ_',
+      { auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true } }
+    );
+  } catch (err) {
+    message.textContent = 'Secure sign-in could not start. Refresh and try again.';
+    return;
+  }
+  form.addEventListener('submit', async function (event) {
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    if (button.disabled) return;
+    if (!email.value.trim() || !password.value) {
+      message.textContent = 'Enter your owner email and password first.';
+      return;
+    }
+    button.disabled = true;
+    message.textContent = 'Connecting securely and checking owner access…';
+    try {
+      var result = await fallbackClient.auth.signInWithPassword({
+        email: email.value.trim(),
+        password: password.value
+      });
+      if (result.error || !result.data || !result.data.session) {
+        message.textContent = result.error && result.error.message === 'Invalid login credentials'
+          ? 'Email or password was not accepted. Check the same account you use for Creator’s Realm.'
+          : 'Sign-in could not complete. Refresh the page and try again.';
+        return;
+      }
+      var owner = await fallbackClient.rpc('creator_realm_owner_status');
+      if (owner.error) {
+        message.textContent = 'Owner check failed (' + String(owner.error.code || 'RPC') + '). Refresh and try again.';
+        return;
+      }
+      if (owner.data !== true) {
+        await fallbackClient.auth.signOut();
+        message.textContent = 'Sign-in worked, but this account is not listed as a studio owner.';
+        return;
+      }
+      document.getElementById('authPanel').hidden = true;
+      document.getElementById('console').hidden = false;
+      document.getElementById('signOutBtn').hidden = false;
+      var badge = document.getElementById('authBadge');
+      if (badge) badge.innerHTML = '<span class="dot" style="background:#72efbd"></span>OWNER VERIFIED';
+      message.textContent = 'Owner verified. The console is ready.';
+      password.value = '';
+    } catch (err) {
+      message.textContent = 'A connection or sign-in error occurred. Refresh and try again.';
+    } finally {
+      button.disabled = false;
+    }
+  }, true);
+})();
+</script>
+
 </body>
 </html>
