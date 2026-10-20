@@ -26,6 +26,12 @@
 .night-stage[data-act="4"] .night-aurora{opacity:.35;filter:blur(22px)}
 .night-stage[data-act="5"] .night-aurora{opacity:1;filter:blur(7px);background:repeating-linear-gradient(112deg,transparent 0 5%,rgba(76,225,255,.08) 6%,rgba(240,202,123,.12) 8%,rgba(160,105,255,.14) 11%,transparent 15% 20%)}
 .night-stage[data-act="5"] .night-ring{border-color:rgba(244,217,148,.68);box-shadow:0 0 65px rgba(115,210,255,.3),inset 0 0 42px rgba(190,140,255,.2)}
+.night-particles{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:0;overflow:hidden;transition:opacity 1.4s ease;background-image:radial-gradient(circle,#c5f8ff 0 1px,transparent 1.8px),radial-gradient(circle,#b9a6ff 0 1px,transparent 2px),radial-gradient(circle,#fff 0 .8px,transparent 1.8px);background-size:137px 151px,191px 173px,113px 197px;background-position:12px 20px,64px 77px,37px 109px;mask-image:linear-gradient(transparent,#000 12%,#000 88%,transparent);animation:particle-drift 18s linear infinite}
+@keyframes particle-drift{from{transform:translate3d(0,18px,0);background-position:12px 20px,64px 77px,37px 109px}to{transform:translate3d(-18px,-32px,0);background-position:149px 171px,255px 250px,150px 306px}}
+.night-stage[data-act="2"] .night-particles,.night-stage[data-act="3"] .night-particles,.night-stage[data-act="4"] .night-particles,.night-stage[data-act="5"] .night-particles{opacity:.48}
+.night-stage[data-act="3"] .night-particles{opacity:.72}
+.night-stage[data-act="5"] .night-particles{opacity:1;filter:drop-shadow(0 0 3px rgba(126,234,255,.5))}
+.night-stage[data-act="4"] .night-particles{background-image:radial-gradient(circle,#ffe7b1 0 1px,transparent 2px),radial-gradient(circle,#b9a6ff 0 1px,transparent 2px),radial-gradient(circle,#fff 0 .8px,transparent 1.8px)}
 .night-stars{position:absolute;inset:0;z-index:-1;pointer-events:none;background-image:radial-gradient(circle at 14% 22%,#c7f6ff 0 1px,transparent 2px),radial-gradient(circle at 81% 19%,#fff 0 1px,transparent 2px),radial-gradient(circle at 76% 75%,#b3a3ff 0 1px,transparent 2px),radial-gradient(circle at 20% 80%,#fff 0 1px,transparent 2px),radial-gradient(circle at 54% 13%,#bceeff 0 1px,transparent 2px),radial-gradient(circle at 91% 48%,#c8c2ff 0 1px,transparent 2px),radial-gradient(circle at 37% 68%,#fff 0 1px,transparent 2px);opacity:.5;animation:star-drift 18s ease-in-out infinite alternate}
 @keyframes star-drift{from{transform:scale(1);opacity:.38}to{transform:scale(1.08);opacity:.78}}
 .night-portal{position:absolute;top:36%;left:50%;width:min(58vw,300px);aspect-ratio:1;border-radius:50%;transform:translate(-50%,-50%) scale(.2);opacity:0;background:radial-gradient(circle,rgba(238,252,255,.95) 0%,rgba(108,221,255,.62) 5%,rgba(95,106,255,.24) 20%,transparent 66%);filter:drop-shadow(0 0 25px rgba(98,206,255,.3));transition:opacity 1.5s ease,transform 2s cubic-bezier(.2,.8,.2,1);animation:core-breathe 5s ease-in-out infinite alternate}
@@ -68,7 +74,7 @@
 .night-status{text-align:center;min-height:1.5em;color:var(--muted);font-size:12px}
 .night-note{max-width:820px;margin:18px auto 0;color:var(--muted);font-size:13px;line-height:1.7}
 @media(max-width:560px){.night-stage{min-height:490px;padding:18px 12px}.night-portal{top:33%;width:75vw}.night-scene-copy{margin-top:clamp(225px,33vh,285px)}.night-controls button,.night-controls a{flex:1 1 42%}}
-@media(prefers-reduced-motion:reduce){.night-stage:before,.night-portal,.night-orbit,.night-horizon,.night-light-column,.night-ring,.night-aurora,.night-progress span{transition:none!important}.night-stage *{animation:none!important}}
+@media(prefers-reduced-motion:reduce){.night-stage:before,.night-portal,.night-orbit,.night-horizon,.night-light-column,.night-ring,.night-aurora,.night-progress span{transition:none!important}.night-stage *{animation:none!important}.night-particles{animation:none!important;opacity:.38}}
 </style>
 </head>
 <body class="night-page">
@@ -83,7 +89,7 @@
 </section>
 <section aria-labelledby="stage-title">
 <div class="night-stage" id="nightStage" data-act="0">
-<div class="night-stars" aria-hidden="true"></div><div class="night-aurora" aria-hidden="true"></div><div class="night-ring" aria-hidden="true"></div><div class="night-ring ring-two" aria-hidden="true"></div><div class="night-portal" aria-hidden="true"><span class="night-orbit"></span><span class="night-orbit two"></span></div><div class="night-light-column" aria-hidden="true"></div><div class="night-horizon" aria-hidden="true"></div>
+<div class="night-stars" aria-hidden="true"></div><div class="night-particles" aria-hidden="true"></div><div class="night-aurora" aria-hidden="true"></div><div class="night-ring" aria-hidden="true"></div><div class="night-ring ring-two" aria-hidden="true"></div><div class="night-portal" aria-hidden="true"><span class="night-orbit"></span><span class="night-orbit two"></span></div><div class="night-light-column" aria-hidden="true"></div><div class="night-horizon" aria-hidden="true"></div>
 <div class="night-scene-copy"><p class="night-act" id="nightAct">BEFORE THE FIRST LIGHT</p><h2 id="stage-title">A WORLD WAITS IN SILENCE</h2><p id="nightNarration" aria-live="polite">A quiet sky. A distant shimmer. Somewhere in the darkness, possibility is waiting.</p></div>
 </div>
 <div class="night-progress" role="progressbar" aria-label="Show progress" aria-valuemin="0" aria-valuemax="5" aria-valuenow="0" id="nightProgress"><span id="nightProgressFill"></span></div>
@@ -105,7 +111,10 @@ const scenes=[
 ];
 const requestedAct=Number(new URLSearchParams(window.location.search).get("act"));
 const startIndex=Number.isInteger(requestedAct)&&requestedAct>=1&&requestedAct<=5?requestedAct:1;
-let timer=null,sceneIndex=0,paused=false,running=false;
+let timer=null,sceneIndex=0,paused=false,running=false,deadline=0,remaining=0;
+const actDuration=8000;
+function clearActTimer(){if(timer!==null){clearTimeout(timer);timer=null;}}
+function scheduleNext(delay){clearActTimer();remaining=delay;deadline=Date.now()+delay;timer=setTimeout(next,delay);}
 const soundButton=document.getElementById("toggleNightAudio");
 const reduced=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 let audioContext=null,audioNodes=[],audioGains=[],audioOn=false;
@@ -129,13 +138,13 @@ soundButton.addEventListener("click",()=>setAudio(!audioOn));
 function render(i){sceneIndex=i;const s=scenes[Math.max(0,Math.min(4,i-1))];stage.dataset.act=String(i);act.textContent=s[0];title.textContent=s[1];narration.textContent=s[2];progress.setAttribute("aria-valuenow",String(i));fill.style.width=(i/5*100)+"%";
   if(audioContext&&audioOn){const moods=[[110,164.81,220],[130.81,196,261.63],[146.83,220,293.66],[98,146.83,196],[174.61,261.63,349.23]][Math.max(0,Math.min(4,i-1))]||[110,164.81,220];audioGains.forEach((item,j)=>{item.osc.frequency.setTargetAtTime(moods[j],audioContext.currentTime,.65);item.gain.gain.setTargetAtTime((i===4?.025:i===5?.15:item.base),audioContext.currentTime,.8);});}
 }
-function stopTimer(){if(timer!==null){clearTimeout(timer);timer=null;}}
+function stopTimer(){clearActTimer();remaining=0;deadline=0;}
 function controls(complete){start.hidden=running||complete;pause.hidden=!running;pause.textContent=paused?"▶ RESUME":"Ⅱ PAUSE";skip.hidden=!running;replay.hidden=!complete;}
 function finish(){stopTimer();running=false;paused=false;render(5);fill.style.width="100%";status.textContent="First Light complete. The dream is yours.";controls(true);}
-function next(){stopTimer();if(!running)return;if(sceneIndex>=5){finish();return;}render(sceneIndex+1);status.textContent="Act "+sceneIndex+" of 5";timer=setTimeout(next,reduced?1000:8000);}
-function begin(){stopTimer();running=true;paused=false;render(startIndex);status.textContent=reduced?"Reduced-motion mode: transitions are softened; each act still has time to breathe.":"Act "+sceneIndex+" begins. Let the world breathe.";controls(false);timer=setTimeout(next,reduced?5000:8000);}
-function togglePause(){if(!running)return;if(paused){paused=false;status.textContent="Act "+sceneIndex+" continues…";controls(false);timer=setTimeout(next,reduced?5000:8000);}else{paused=true;stopTimer();status.textContent="Paused. Resume whenever you're ready.";controls(false);}}
-start.addEventListener("click",begin);replay.addEventListener("click",begin);pause.addEventListener("click",togglePause);skip.addEventListener("click",finish);
+function next(){clearActTimer();if(!running||paused)return;if(sceneIndex>=5){finish();return;}render(sceneIndex+1);status.textContent="Act "+sceneIndex+" of 5";scheduleNext(reduced?6500:actDuration);}
+function begin(firstAct){stopTimer();running=true;paused=false;const initialAct=Number.isInteger(firstAct)&&firstAct>=1&&firstAct<=5?firstAct:startIndex;render(initialAct);status.textContent=reduced?"Reduced-motion mode: transitions are softened; each act still has time to breathe.":"Act "+sceneIndex+" begins. Let the world breathe.";controls(false);scheduleNext(reduced?6500:actDuration);}
+function togglePause(){if(!running)return;if(paused){paused=false;status.textContent="Act "+sceneIndex+" continues…";controls(false);scheduleNext(Math.max(0,remaining||actDuration));}else{remaining=Math.max(0,deadline-Date.now());paused=true;clearActTimer();status.textContent="Paused. Resume whenever you're ready.";controls(false);}}
+start.addEventListener("click",()=>begin(startIndex));replay.addEventListener("click",()=>begin(1));pause.addEventListener("click",togglePause);skip.addEventListener("click",finish);
 render(startIndex);controls(false);
 })();
 </script>
