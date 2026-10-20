@@ -99,6 +99,34 @@
 .night-page .act-guide span{font-size:.7rem;letter-spacing:.12em;color:#9feeff;font-weight:700}
 .night-page .act-guide h3{margin:10px 0 7px;font-size:1.05rem}
 .night-page .act-guide p{margin:0;color:var(--muted);font-size:.94rem}
+
+/* NIGHT SPECTACULAR — accessible, touch-friendly controls */
+.night-page .night-controls button{
+  min-height:44px;
+  touch-action:manipulation;
+}
+.night-page .night-controls button:focus-visible{
+  outline:2px solid #a4edff;
+  outline-offset:4px;
+}
+.night-page #nightStatus{line-height:1.6;overflow-wrap:anywhere}
+.night-page #stage-title{overflow-wrap:anywhere;text-wrap:balance}
+@media(max-width:520px){
+  .night-page .night-hero{padding-top:28px;padding-bottom:18px}
+  .night-page .night-hero h1{font-size:clamp(32px,9.5vw,52px);line-height:1.04}
+  .night-page .night-stage{min-height:420px;padding:22px 15px}
+  .night-page .night-controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .night-page .night-controls button{width:100%;min-width:0;padding:12px 9px;font-size:12px}
+  .night-page #startNightShow{grid-column:1/-1}
+  .night-page #stage-title{font-size:clamp(24px,7vw,36px);line-height:1.12}
+  .night-page #nightNarration{font-size:15px;line-height:1.65}
+}
+@media(max-height:520px) and (orientation:landscape){
+  .night-page .night-hero{padding-top:18px}
+  .night-page .night-stage{min-height:320px}
+  .night-page .night-ring{top:32%;width:min(38vh,210px)}
+}
+
 </style>
 </head>
 <body class="night-page">
