@@ -73,6 +73,7 @@
 @keyframes finale-bloom{from{filter:drop-shadow(0 0 24px rgba(98,206,255,.42));}to{filter:drop-shadow(0 0 66px rgba(243,216,142,.78));}}
 @media(prefers-reduced-motion:reduce){.night-stage:after,.night-stage[data-act="4"]:after,.night-stage[data-act="5"] .night-portal{animation:none!important}}
 
+[hidden]{display:none!important}
 .night-controls{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap;margin:18px 0 8px}
 .night-controls button,.night-controls a{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:12px 17px;border:1px solid rgba(126,234,255,.42);border-radius:999px;background:rgba(9,17,38,.85);color:#effbff;text-decoration:none;font:700 10px/1.4 Arial,Helvetica,sans-serif;letter-spacing:1.3px;cursor:pointer}
 .night-controls .primary{background:linear-gradient(100deg,rgba(25,75,116,.95),rgba(76,44,132,.95));border-color:rgba(161,226,255,.75)}
@@ -196,7 +197,7 @@ function finish(){stopTimer();running=false;paused=false;render(5);fill.style.wi
 function next(){clearActTimer();if(!running||paused)return;if(sceneIndex>=5){finish();return;}render(sceneIndex+1);status.textContent="Act "+sceneIndex+" of 5";scheduleNext(reduced?6500:actDuration);}
 function begin(firstAct){stopTimer();running=true;paused=false;const initialAct=Number.isInteger(firstAct)&&firstAct>=1&&firstAct<=5?firstAct:startIndex;render(initialAct);status.textContent=reduced?"Reduced-motion mode: transitions are softened; each act still has time to breathe.":"Act "+sceneIndex+" begins. Let the world breathe.";controls(false);scheduleNext(reduced?6500:actDuration);}
 function togglePause(){if(!running)return;if(paused){paused=false;status.textContent="Act "+sceneIndex+" continues…";controls(false);scheduleNext(Math.max(0,remaining||actDuration));}else{remaining=Math.max(0,deadline-Date.now());paused=true;clearActTimer();status.textContent="Paused. Resume whenever you're ready.";controls(false);}}
-start.addEventListener("click",()=>begin(startIndex));replay.addEventListener("click",()=>begin(1));pause.addEventListener("click",togglePause);skip.addEventListener("click",finish);
+start.addEventListener("click",()=>{status.textContent="Starting First Light…";begin(startIndex);});replay.addEventListener("click",()=>begin(1));pause.addEventListener("click",togglePause);skip.addEventListener("click",finish);
 render(startIndex);controls(false);
 })();
 </script>
