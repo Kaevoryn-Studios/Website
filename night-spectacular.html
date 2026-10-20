@@ -92,6 +92,12 @@
 .night-page .transcript-list h3{margin:0 0 8px;font-size:1rem}
 .night-page .transcript-list p{margin:0;color:var(--muted)}
 .night-page .transcript-details summary:focus-visible{outline:2px solid var(--cyan);outline-offset:4px}
+
+.night-page .act-guide-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:12px;margin-top:20px;text-align:left}
+.night-page .act-guide{padding:18px;border:1px solid rgba(126,234,255,.17);border-radius:16px;background:linear-gradient(145deg,rgba(12,20,39,.78),rgba(25,17,43,.56))}
+.night-page .act-guide span{font-size:.7rem;letter-spacing:.12em;color:#9feeff;font-weight:700}
+.night-page .act-guide h3{margin:10px 0 7px;font-size:1.05rem}
+.night-page .act-guide p{margin:0;color:var(--muted);font-size:.94rem}
 </style>
 </head>
 <body class="night-page">
@@ -112,6 +118,18 @@
 <div class="night-progress" role="progressbar" aria-label="Show progress" aria-valuemin="0" aria-valuemax="5" aria-valuenow="0" id="nightProgress"><span id="nightProgressFill"></span></div>
 <p class="night-status" id="nightStatus" aria-live="polite">Ready when you are.</p>
 <div class="night-controls"><button id="toggleNightAudio" type="button" aria-pressed="false">♫ SOUND: OFF</button><button class="primary" id="startNightShow" type="button">▶ BEGIN FIRST LIGHT</button><button id="pauseNightShow" type="button" hidden>Ⅱ PAUSE</button><button id="skipNightScene" type="button" hidden>SKIP TO FINALE ↗</button><button id="replayNightShow" type="button" hidden>↻ REPLAY</button><a href="night-spectacular-blueprint.html">VIEW THE PRODUCTION BLUEPRINT ↗</a></div>
+</section>
+<section class="feature-panel" aria-labelledby="experience-guide-title">
+<p class="kicker">HOW TO EXPERIENCE FIRST LIGHT</p>
+<h2 id="experience-guide-title">Your journey through the five acts</h2>
+<p>Every act has its own emotional purpose. The preview is intentionally short so we can shape the visual language before the final music and longer show are assembled.</p>
+<div class="act-guide-grid">
+<article class="act-guide"><span>ACT I · STILLNESS</span><h3>Notice the first spark</h3><p>Deep blue, distant stars, a quiet horizon. The world has not changed yet—but possibility is present.</p></article>
+<article class="act-guide"><span>ACT II · AWAKENING</span><h3>Meet the Core</h3><p>Light gathers, rings rise, and the central presence awakens. This is the first major visual reveal.</p></article>
+<article class="act-guide"><span>ACT III · WONDER</span><h3>Step beyond the screen</h3><p>The atmosphere expands into a living fantasy world. Color, motion, and scale build without losing the central story.</p></article>
+<article class="act-guide"><span>ACT IV · HEART</span><h3>Let the moment breathe</h3><p>The energy softens and warm gold enters the cool palette. The emotional message becomes the center of the experience.</p></article>
+<article class="act-guide"><span>ACT V · FINALE</span><h3>Create the Impossible</h3><p>The Core, rings, horizon, and golden spark return together. The finale should feel earned, joyful, and complete.</p></article>
+</div>
 </section>
 <section class="feature-panel" aria-labelledby="transcript-title">
 <p class="kicker">READ ALONG · ACCESSIBLE SHOW SCRIPT</p>
