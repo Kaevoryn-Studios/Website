@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#050711">
+<meta name="description" content="Explore the first interactive visual concept for Kaevoryn Citadel: five discoveries inside a living constellation of fantasy and light.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Kaevoryn Citadel — The Five Discoveries">
+<meta property="og:description" content="A fantasy world of hidden doors, moving star maps, unwritten worlds, and a lantern that remembers.">
+<title>Kaevoryn Citadel — The Five Discoveries | Kaevoryn Studios</title>
+<link rel="stylesheet" href="site.css">
+<style>
+.citadel-page .citadel-hero{text-align:center;padding:clamp(34px,7vw,76px) 0 30px}
+.citadel-page .citadel-hero h1{margin:0;font-size:clamp(38px,8vw,78px);line-height:1.02;letter-spacing:-.045em;background:linear-gradient(100deg,#fff 4%,#8ceeff 42%,#b8a2ff 76%,#f6d993);color:transparent;background-clip:text;-webkit-background-clip:text}
+.citadel-page .lead{max-width:720px;margin:18px auto;color:var(--muted);font-size:clamp(15px,2vw,18px)}
+.citadel-label{display:inline-block;margin-top:8px;padding:7px 12px;border:1px solid rgba(168,149,255,.4);border-radius:999px;color:#e4dcff;font-size:10px;font-weight:800;letter-spacing:1.5px}
+.citadel-stage{position:relative;isolation:isolate;overflow:hidden;display:grid;place-items:center;min-height:clamp(390px,62vh,570px);padding:26px 20px;border:1px solid rgba(126,234,255,.24);border-radius:26px;background:radial-gradient(ellipse at 50% 57%,rgba(89,64,177,.22),transparent 38%),linear-gradient(160deg,#030611,#0b1025 58%,#120b21);box-shadow:0 24px 80px rgba(0,0,0,.28)}
+.citadel-stars{position:absolute;inset:0;pointer-events:none;opacity:.65;background-image:radial-gradient(circle at 14% 22%,#d5faff 0 1px,transparent 2px),radial-gradient(circle at 78% 17%,#d5c7ff 0 1px,transparent 2px),radial-gradient(circle at 65% 43%,#d5faff 0 1px,transparent 2px),radial-gradient(circle at 28% 65%,#d5c7ff 0 1px,transparent 2px),radial-gradient(circle at 87% 72%,#d5faff 0 1px,transparent 2px),radial-gradient(circle at 42% 12%,#fff 0 1px,transparent 2px)}
+.citadel-aura{position:absolute;inset:-20%;z-index:-1;pointer-events:none;opacity:.65;filter:blur(18px);background:conic-gradient(from 15deg at 50% 48%,transparent 0 12%,rgba(66,210,255,.12) 18%,transparent 29%,rgba(155,112,255,.16) 42%,transparent 58%,rgba(255,211,133,.09) 69%,transparent 85%);transform:scale(.8) rotate(-12deg);transition:transform 1.3s ease,opacity 1s ease}
+.citadel-tower{position:absolute;bottom:8%;left:50%;width:min(62vw,340px);height:55%;transform:translateX(-50%);opacity:.65;pointer-events:none;background:linear-gradient(90deg,rgba(54,87,152,.04),rgba(108,105,212,.3) 47%,rgba(71,218,246,.1));clip-path:polygon(50% 0,59% 15%,59% 25%,72% 32%,72% 44%,84% 51%,84% 100%,16% 100%,16% 51%,28% 44%,28% 32%,41% 25%,41% 15%);filter:drop-shadow(0 0 24px rgba(109,199,255,.25));transition:transform 1.1s ease,opacity 1s ease}
+.citadel-gate{position:absolute;left:50%;top:48%;width:min(28vw,145px);height:min(35vw,180px);transform:translate(-50%,-50%);border:1px solid rgba(135,234,255,.6);border-radius:50% 50% 4px 4px;box-shadow:0 0 28px rgba(95,213,255,.24),inset 0 0 24px rgba(164,125,255,.2);opacity:.15;transition:opacity 1s ease,transform 1s ease}
+.citadel-gate:before{content:"";position:absolute;inset:12px;border:1px solid rgba(201,183,255,.38);border-radius:50% 50% 2px 2px}
+.citadel-copy{position:relative;z-index:2;max-width:620px;text-align:center;padding:20px 10px}
+.citadel-copy .eyebrow{font-size:11px;letter-spacing:2px;font-weight:800;color:#b7efff}
+.citadel-copy h2{font-size:clamp(27px,5vw,45px);line-height:1.1;margin:14px 0;background:linear-gradient(90deg,#fff,#9defff,#d3c0ff);color:transparent;background-clip:text;-webkit-background-clip:text}
+.citadel-copy p{color:#d1d8f2;line-height:1.7}
+.citadel-stage[data-discovery="1"] .citadel-gate{opacity:1;transform:translate(-50%,-50%) scale(1.05)}
+.citadel-stage[data-discovery="2"] .citadel-aura{opacity:.9;transform:scale(1.12) rotate(8deg)}
+.citadel-stage[data-discovery="2"] .citadel-tower{transform:translateX(-50%) scale(1.08);opacity:.85}
+.citadel-stage[data-discovery="3"] .citadel-aura{opacity:1;transform:scale(1.2) rotate(30deg)}
+.citadel-stage[data-discovery="3"] .citadel-gate{opacity:.35;transform:translate(-50%,-50%) scale(.85)}
+.citadel-stage[data-discovery="4"] .citadel-gate{opacity:.75;box-shadow:0 0 50px rgba(255,210,130,.32),inset 0 0 38px rgba(255,213,142,.22);border-color:rgba(255,224,164,.8)}
+.citadel-stage[data-discovery="5"] .citadel-aura{opacity:1;transform:scale(1.25) rotate(52deg);background:conic-gradient(from 15deg at 50% 48%,transparent 0 12%,rgba(66,210,255,.18) 18%,transparent 29%,rgba(155,112,255,.2) 42%,transparent 58%,rgba(255,211,133,.22) 69%,transparent 85%)}
+.citadel-stage[data-discovery="5"] .citadel-tower{opacity:1;filter:drop-shadow(0 0 35px rgba(109,199,255,.4))}
+.discovery-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin:18px 0 0}
+.discovery-button{min-height:94px;text-align:left;padding:13px 12px;border:1px solid rgba(126,234,255,.2);border-radius:15px;background:rgba(10,16,35,.8);color:inherit;cursor:pointer}
+.discovery-button span{display:block;color:#9beaff;font-size:10px;font-weight:800;letter-spacing:1px;margin-bottom:8px}
+.discovery-button strong{display:block;font-size:13px;line-height:1.35}
+.discovery-button[aria-pressed="true"]{border-color:#8ceeff;background:linear-gradient(145deg,rgba(24,102,137,.32),rgba(78,49,133,.26));box-shadow:0 0 24px rgba(83,197,255,.08)}
+.citadel-controls{display:flex;justify-content:center;flex-wrap:wrap;gap:12px;margin:22px 0}
+.citadel-controls button,.citadel-controls a{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:12px 18px;border:1px solid rgba(126,234,255,.42);border-radius:999px;background:rgba(8,194,255,.08);color:#eafaff;font:inherit;font-size:11px;font-weight:800;letter-spacing:.7px;text-decoration:none;cursor:pointer}
+.citadel-status{text-align:center;min-height:1.5em;color:var(--muted);font-size:13px}
+.citadel-note{max-width:850px;margin:28px auto;padding:18px 20px;border:1px solid rgba(168,149,255,.2);border-radius:18px;background:rgba(13,15,34,.65);color:var(--muted);line-height:1.65}
+@media(max-width:760px){.discovery-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.discovery-button:last-child{grid-column:1/-1}.citadel-stage{min-height:420px}}
+@media(prefers-reduced-motion:reduce){.citadel-aura,.citadel-tower,.citadel-gate{transition:none!important}}
+</style>
+</head>
+<body class="citadel-page">
+<a class="skip-link" href="#main-content">Skip to content</a>
+<header class="site-header"><div class="nav-wrap"><a class="brand" href="index.html" aria-label="Kaevoryn Studios home"><span class="brand-mark" aria-hidden="true">K</span><span class="brand-name">KAEVORYN STUDIOS<span class="brand-tag">CREATE THE IMPOSSIBLE</span></span></a><nav class="primary-nav" aria-label="Primary navigation"><a href="index.html">HOME</a><a href="projects.html">PROJECTS</a><a href="explore.html">EXPLORE</a><a href="shows.html" aria-current="page">SHOWS</a><a href="watch.html">WATCH</a><a href="vision.html">VISION</a><a href="invitation.html">GOLDEN INVITATION</a><a href="contact.html">CONNECT</a><a href="evermore.html">EVERMORE</a><a href="creator-realm/">CREATOR’S REALM</a></nav></div></header>
+<main id="main-content" class="container">
+<section class="citadel-hero">
+<p class="kicker">🏰 AN INTERACTIVE WORLD CONCEPT</p>
+<h1>KAEVORYN<br>CITADEL</h1>
+<p class="lead">Five discoveries. One living mystery. Follow the lights through a place that remembers every dreamer—and points beyond its own walls.</p>
+<span class="citadel-label">FIVE DISCOVERIES · YOU CHOOSE THE ORDER · SOUND OFF BY DEFAULT</span>
+</section>
+<section aria-labelledby="citadel-scene-title">
+<div class="citadel-stage" id="citadelStage" data-discovery="1">
+<div class="citadel-stars" aria-hidden="true"></div><div class="citadel-aura" aria-hidden="true"></div><div class="citadel-tower" aria-hidden="true"></div><div class="citadel-gate" aria-hidden="true"></div>
+<div class="citadel-copy" aria-live="polite">
+<p class="eyebrow" id="citadelEyebrow">DISCOVERY 01 · THE ARRIVAL</p>
+<h2 id="citadel-scene-title">The Gate That Remembers</h2>
+<p id="citadelNarration">At dusk, a sealed gate lights up with tiny constellations. It responds to your arrival with a low, welcoming glow. The Citadel has noticed you.</p>
+</div>
+</div>
+<div class="discovery-grid" role="group" aria-label="Choose a Citadel discovery">
+<button class="discovery-button" type="button" data-discovery-button="1" aria-pressed="true"><span>01 · ARRIVAL</span><strong>The Gate That Remembers</strong></button>
+<button class="discovery-button" type="button" data-discovery-button="2" aria-pressed="false"><span>02 · THE HALL</span><strong>Architecture in Motion</strong></button>
+<button class="discovery-button" type="button" data-discovery-button="3" aria-pressed="false"><span>03 · THE LIBRARY</span><strong>Pages of Unwritten Worlds</strong></button>
+<button class="discovery-button" type="button" data-discovery-button="4" aria-pressed="false"><span>04 · THE HEART</span><strong>The Lantern Chamber</strong></button>
+<button class="discovery-button" type="button" data-discovery-button="5" aria-pressed="false"><span>05 · THE REVEAL</span><strong>The Citadel Is a Compass</strong></button>
+</div>
+<div class="citadel-controls">
+<button type="button" id="nextDiscovery">DISCOVER NEXT →</button>
+<button type="button" id="resetCitadel">↺ RETURN TO THE GATE</button>
+<a href="shows.html#kaevoryn-citadel">BACK TO ALL SHOWS</a>
+</div>
+<p class="citadel-status" id="citadelStatus" role="status">The gate is waiting. Choose any discovery to begin.</p>
+</section>
+<section class="citadel-note" aria-label="Prototype status"><strong>Development note:</strong> This is an original browser-based visual prototype, not a finished physical attraction or a fully produced show. The visuals and story beats are in place for this first pass. Original music, deeper effects, and phone/desktop hands-on testing are still pending. No audio plays automatically.</section>
+</main>
+<footer class="site-footer"><div class="footer-brand">KAEVORYN STUDIOS</div><div class="footer-mantra">CREATE THE IMPOSSIBLE</div><nav class="footer-links" aria-label="Footer navigation"><a href="projects.html">Projects</a><a href="explore.html">Explore</a><a href="shows.html">Shows &amp; Series</a><a href="watch.html">KAEVORYN WATCH</a><a href="vision.html">Our Vision</a><a href="contact.html">Connect</a></nav><p>Imagination Made Possible.</p></footer>
+<script>
+(function(){
+const scenes=[
+["01 · THE ARRIVAL","The Gate That Remembers","At dusk, a sealed gate lights up with tiny constellations. It responds to your arrival with a low, welcoming glow. The Citadel has noticed you."],
+["02 · THE HALL","Architecture in Motion","Star maps drift across the ceiling while luminous lines trace impossible towers. The building feels ancient, but its magic is alive."],
+["03 · THE LIBRARY","Pages of Unwritten Worlds","Floating pages open into miniature moving landscapes. Each one offers a possible world—not a fixed path. Which story would you follow?"],
+["04 · THE HEART","The Lantern Chamber","A quiet central chamber holds a suspended lantern. Its light grows when you notice a hidden symbol. This place rewards curiosity, never speed."],
+["05 · THE REVEAL","The Citadel Is a Compass","The towers align into a constellation pointing toward a new horizon. The Citadel was never meant to keep dreams inside. It helps them find their way out."]
+];
+const stage=document.getElementById("citadelStage"),eyebrow=document.getElementById("citadelEyebrow"),title=document.getElementById("citadel-scene-title"),narration=document.getElementById("citadelNarration"),status=document.getElementById("citadelStatus"),buttons=[...document.querySelectorAll("[data-discovery-button]")];
+let current=1;
+function showDiscovery(n){
+current=((n-1+scenes.length)%scenes.length)+1;
+const scene=scenes[current-1];
+stage.dataset.discovery=String(current);
+eyebrow.textContent="DISCOVERY "+String(current).padStart(2,"0")+" · "+scene[0].split(" · ")[1];
+title.textContent=scene[1];narration.textContent=scene[2];
+buttons.forEach((button)=>button.setAttribute("aria-pressed",String(Number(button.dataset.discoveryButton)===current)));
+status.textContent="Discovery "+current+" of 5 selected. Take your time; there is no timer.";
+}
+buttons.forEach((button)=>button.addEventListener("click",()=>showDiscovery(Number(button.dataset.discoveryButton))));
+document.getElementById("nextDiscovery").addEventListener("click",()=>showDiscovery(current===5?1:current+1));
+document.getElementById("resetCitadel").addEventListener("click",()=>{showDiscovery(1);status.textContent="Returned to the gate. The Citadel is waiting."});
+showDiscovery(1);
+})();
+</script>
+<script src="living-world.js"></script>
+</body>
+</html>
