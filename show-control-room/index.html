@@ -27,6 +27,24 @@ main{max-width:1500px;margin:auto;padding:20px clamp(12px,2.5vw,28px) 42px}.page
 @keyframes arcaneWave{0%{transform:translate(-50%,-50%) scale(.12);opacity:0}18%{opacity:.95}100%{transform:translate(-50%,-50%) scale(1.6);opacity:0}}
 @media(prefers-reduced-motion:reduce){.stage.magic-portal:after,.stage.magic-starfall:after,.stage.magic-wave:after{animation:none;opacity:.45}}
 .scene-library{margin:16px 0;padding:14px;border:1px solid var(--line);border-radius:14px;background:rgba(8,13,29,.72)}.scene-library-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}.scene-library-head .section-title{margin-top:0}.scene-save-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;margin:12px 0}.scene-save-row input{min-width:0;width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:9px;background:#080e1c;color:white}.collection-builder{margin:14px 0;padding:12px;border:1px solid rgba(126,234,255,.24);border-radius:12px;background:rgba(18,28,53,.5)}.saved-scene-select{display:flex;align-items:flex-start;gap:8px;margin-bottom:7px;color:var(--cyan);font-size:.8rem}.saved-scene-select input{accent-color:#7eeaff;margin-top:3px}.saved-scene-list{display:grid;gap:9px}.saved-scene{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;padding:11px;border:1px solid var(--line);border-radius:10px;background:rgba(21,29,53,.65)}.saved-scene strong{display:block;overflow-wrap:anywhere}.saved-scene small{display:block;margin-top:4px;color:var(--muted)}.saved-scene-actions{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:6px}.saved-scene-actions .btn{padding:7px 9px;font-size:.78rem}.saved-scene-actions .danger{border-color:#71384e}@media(max-width:560px){.scene-save-row{grid-template-columns:1fr}.saved-scene{grid-template-columns:1fr}.saved-scene-actions{justify-content:flex-start}.scene-library-head{align-items:flex-start}}
+
+/* Layout refresh: clearer navigation, calmer spacing, and a compact cue workspace. */
+.control-nav{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:-5px 0 18px;padding:10px;border:1px solid #293652;border-radius:14px;background:#0b1020}
+.control-nav a{display:inline-flex;align-items:center;gap:7px;padding:8px 12px;border:1px solid #293652;border-radius:10px;background:#121b30;color:#dce8ff;text-decoration:none;font-size:11px;font-weight:750;white-space:nowrap}
+.control-nav a:hover{border-color:#7eeaff99;color:var(--cyan)}
+.grid{gap:18px}.panel{margin-bottom:0}.panel-head{padding:16px 18px;background:#111a2b}.panel-body{padding:18px}
+.page-head{align-items:center}.head-buttons .btn{white-space:nowrap}#stagePanel .stage{min-height:320px}
+#sequencerPanel{margin-top:18px!important}#timelinePanel{margin-top:16px}
+.timeline-list{max-height:230px;overflow:auto;padding-right:4px}
+.cue-list{max-height:470px;overflow:auto;padding:2px 5px 2px 1px;scrollbar-color:#344967 transparent;scrollbar-width:thin}
+.scene-library{margin-top:20px;padding:16px;border:1px solid #34415f;border-radius:15px;background:linear-gradient(145deg,#101a30,#0a1020)}
+.scene-library-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.scene-library .section-title{margin-top:12px}.collection-builder{margin-top:15px;padding:14px;border:1px solid #293652;border-radius:12px;background:#0b1223}
+#settingsPanel .panel-body{padding:18px}#settingsPanel .field{margin:12px 0}#settingsPanel .section-title{margin-top:20px}
+#settingsPanel .button-row .btn{flex:1 1 120px}
+#operatorLog{border:1px solid #293652;border-radius:10px;background:#080e1c;padding:10px}
+@media(max-width:900px){.control-nav{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:thin}.grid{grid-template-columns:minmax(0,1fr)}#stagePanel .stage{min-height:280px}#sequencerPanel{margin-top:16px!important}}
+@media(max-width:480px){.page-head{gap:12px}.head-buttons{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));width:100%}.head-buttons #stopAllBtn{grid-column:1/-1}.panel-head{padding:13px 14px}.panel-body{padding:13px}.control-nav{margin-bottom:14px}.scene-library{padding:12px}.scene-library-head{flex-direction:column}.cue-list{max-height:400px}}
 </style>
 </head>
 <body>
@@ -53,9 +71,15 @@ main{max-width:1500px;margin:auto;padding:20px clamp(12px,2.5vw,28px) 42px}.page
 </section>
 <main id="console" hidden>
   <div class="page-head"><div><p class="eyebrow">CREATOR COMMAND · LIVE SIMULATION</p><h1>Show Control Room</h1><p>Design the moment. Shape the light. Trigger the sound. Build your show cue by cue.</p></div><div class="head-buttons"><button class="btn" id="saveShowBtn">Save show</button><button class="btn" id="exportBtn">Export show</button><button class="btn danger" id="stopAllBtn">■ STOP ALL</button></div></div>
+  <nav class="control-nav" aria-label="Show control sections">
+    <a href="#stagePanel">✧ Stage &amp; Effects</a>
+    <a href="#sequencerPanel">⏱ Timeline &amp; Cues</a>
+    <a href="#sceneLibrary">▣ Scene Library</a>
+    <a href="#settingsPanel">⚙ Show Settings</a>
+  </nav>
   <div class="grid">
     <div>
-      <section class="panel">
+      <section class="panel" id="stagePanel">
         <div class="panel-head"><h2>✧ LIVE STAGE PREVIEW</h2><span class="pill" id="stageStatus">STANDBY</span></div>
         <div class="panel-body">
           <div class="stage" id="stage" aria-label="Visual stage simulation">
@@ -79,7 +103,7 @@ main{max-width:1500px;margin:auto;padding:20px clamp(12px,2.5vw,28px) 42px}.page
           <p class="muted small">Audio is synthesized in your browser after you tap a sound button. No sound files or paid services are needed.</p>
         </div>
       </section>
-      <section class="panel" style="margin-top:15px">
+      <section class="panel" id="sequencerPanel" style="margin-top:15px">
         <div class="panel-head"><h2>⏱ SHOW SEQUENCER</h2><span class="pill" id="cueCount">0 CUES</span></div>
         <div class="panel-body">
           <p class="muted small">Add cues and run them in order. Each cue can trigger a light state, a visual effect, and/or a synthesized sound.</p>
@@ -89,7 +113,7 @@ main{max-width:1500px;margin:auto;padding:20px clamp(12px,2.5vw,28px) 42px}.page
             <div class="timeline-list" id="timelineList"></div>
           </div>
           <div class="cue-list" id="cueList"></div>
-          <div class="scene-library">
+          <div class="scene-library" id="sceneLibrary">
             <div class="scene-library-head"><div><div class="section-title">Saved Scene Library</div><p class="muted small">Save any cue sequence and reuse it in another show. Scenes stay in this browser on this device.</p></div><span class="pill" id="savedSceneCount">0 SCENES</span></div>
             <div class="scene-save-row"><input id="savedSceneName" maxlength="50" placeholder="Scene name (e.g. Golden Portal Opening)" aria-label="Name for saved scene"><button class="btn primary" id="saveSceneBtn" type="button">✦ Save current cues</button></div>
             <div class="collection-builder">
@@ -116,7 +140,7 @@ main{max-width:1500px;margin:auto;padding:20px clamp(12px,2.5vw,28px) 42px}.page
       </section>
     </div>
     <aside>
-      <section class="panel">
+      <section class="panel" id="settingsPanel">
         <div class="panel-head"><h2>SHOW SETTINGS</h2><span class="pill">LOCAL DRAFT</span></div>
         <div class="panel-body">
           <div class="field"><label for="showName">Production name</label><input id="showName" type="text" maxlength="80" value="Kaevoryn Night Spectacular"></div>
