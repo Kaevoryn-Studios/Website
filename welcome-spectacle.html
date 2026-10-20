@@ -30,6 +30,8 @@
 .welcome-stage[data-scene="3"] .welcome-orbit,.welcome-stage[data-scene="4"] .welcome-orbit{opacity:.8;transform:translate(-50%,-50%) rotateX(65deg) scale(1)}
 .welcome-stage[data-scene="3"] .welcome-orbit.two,.welcome-stage[data-scene="4"] .welcome-orbit.two{transform:translate(-50%,-50%) rotateY(62deg) rotateZ(20deg) scale(1)}
 .welcome-stage[data-scene="4"] .welcome-core{background:radial-gradient(circle,rgba(255,255,255,.98) 0 3%,rgba(145,244,255,.8) 7%,rgba(116,135,255,.3) 25%,rgba(255,207,132,.18) 44%,transparent 70%);box-shadow:0 0 80px rgba(105,218,255,.32)}
+.welcome-progress{height:4px;margin:18px 0 8px;overflow:hidden;border-radius:99px;background:rgba(185,218,255,.12)}
+.welcome-progress span{display:block;width:25%;height:100%;background:linear-gradient(90deg,#69e4ff,#9a83ff,#f3d88e);transition:width .45s ease}
 .welcome-controls{display:flex;justify-content:center;flex-wrap:wrap;gap:12px;margin:22px 0}
 .welcome-controls button,.welcome-controls a{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:12px 18px;border:1px solid rgba(126,234,255,.42);border-radius:999px;background:rgba(8,194,255,.08);color:#eafaff;font:inherit;font-size:11px;font-weight:800;letter-spacing:.7px;text-decoration:none;cursor:pointer;touch-action:manipulation}
 .welcome-controls .primary{background:linear-gradient(110deg,rgba(31,155,202,.3),rgba(130,88,205,.3));border-color:rgba(126,234,255,.65)}
@@ -42,7 +44,7 @@
 .welcome-note{max-width:850px;margin:28px auto;padding:18px 20px;border:1px solid rgba(168,149,255,.2);border-radius:18px;background:rgba(13,15,34,.65);color:var(--muted);line-height:1.65}
 @media(max-width:700px){.welcome-sequence{grid-template-columns:repeat(2,minmax(0,1fr))}.welcome-copy{padding-top:130px}.welcome-stage{min-height:450px}}
 @media(max-width:380px){.welcome-sequence{grid-template-columns:1fr}}
-@media(prefers-reduced-motion:reduce){.welcome-stage:before,.welcome-core,.welcome-orbit{transition:none!important}}
+@media(prefers-reduced-motion:reduce){.welcome-stage:before,.welcome-core,.welcome-orbit,.welcome-progress span{transition:none!important}}
 </style>
 </head>
 <body class="welcome-page">
@@ -64,6 +66,7 @@
 <p id="welcomeNarration">A deep-blue world waits in stillness. No sound starts on its own. There is no countdown, no rush, and nothing you need to do yet.</p>
 </div>
 </div>
+<div class="welcome-progress" id="welcomeProgress" role="progressbar" aria-label="Welcome sequence progress" aria-valuemin="1" aria-valuemax="4" aria-valuenow="1"><span id="welcomeProgressFill"></span></div>
 <div class="welcome-controls">
 <button type="button" class="primary" id="beginWelcome">BEGIN THE WELCOME →</button>
 <button type="button" id="nextWelcome" hidden>CONTINUE →</button>
@@ -90,10 +93,10 @@ const scenes=[
 ["03 · AWAKENING","The Core is awakening.","Cyan rings emerge from the dark as violet energy gathers around a growing point of light. A doorway begins to take shape."],
 ["04 · INVITATION","Welcome, Golden Dreamer.","The light warms to gold. The door is open, but the choice is yours. Enter the world, explore at your own pace, or skip ahead."]
 ];
-const stage=document.getElementById("welcomeStage"),eyebrow=document.getElementById("welcomeEyebrow"),title=document.getElementById("welcome-scene-title"),narration=document.getElementById("welcomeNarration"),status=document.getElementById("welcomeStatus"),begin=document.getElementById("beginWelcome"),next=document.getElementById("nextWelcome"),skip=document.getElementById("skipWelcome"),replay=document.getElementById("replayWelcome");
+const progress=document.getElementById("welcomeProgress"),progressFill=document.getElementById("welcomeProgressFill"),stage=document.getElementById("welcomeStage"),eyebrow=document.getElementById("welcomeEyebrow"),title=document.getElementById("welcome-scene-title"),narration=document.getElementById("welcomeNarration"),status=document.getElementById("welcomeStatus"),begin=document.getElementById("beginWelcome"),next=document.getElementById("nextWelcome"),skip=document.getElementById("skipWelcome"),replay=document.getElementById("replayWelcome");
 let current=0,started=false,complete=false;
 const reduced=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-function render(n){current=Math.max(1,Math.min(4,n));const s=scenes[current-1];stage.dataset.scene=String(current);eyebrow.textContent=s[0];title.textContent=s[1];narration.textContent=s[2];}
+function render(n){current=Math.max(1,Math.min(4,n));const s=scenes[current-1];stage.dataset.scene=String(current);progress.setAttribute("aria-valuenow",String(current));progressFill.style.width=(current/scenes.length*100)+"%";eyebrow.textContent=s[0];title.textContent=s[1];narration.textContent=s[2];}
 function controls(){begin.hidden=started;next.hidden=!started||complete;skip.hidden=complete;replay.hidden=!complete;}
 function start(){started=true;complete=false;render(1);status.textContent=reduced?"Reduced-motion preference detected. The welcome stays gentle and under your control.":"The welcome has begun. Continue when you're ready.";controls();}
 function continueScene(){if(!started)start();if(current<4){render(current+1);status.textContent="Moment "+current+" of 4. Continue or skip whenever you wish.";}else{complete=true;status.textContent="Welcome, Dreamer. Your journey is yours to choose.";controls();}}
