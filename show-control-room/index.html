@@ -45,6 +45,24 @@ main{max-width:1500px;margin:auto;padding:20px clamp(12px,2.5vw,28px) 42px}.page
 #operatorLog{border:1px solid #293652;border-radius:10px;background:#080e1c;padding:10px}
 @media(max-width:900px){.control-nav{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:thin}.grid{grid-template-columns:minmax(0,1fr)}#stagePanel .stage{min-height:280px}#sequencerPanel{margin-top:16px!important}}
 @media(max-width:480px){.page-head{gap:12px}.head-buttons{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));width:100%}.head-buttons #stopAllBtn{grid-column:1/-1}.panel-head{padding:13px 14px}.panel-body{padding:13px}.control-nav{margin-bottom:14px}.scene-library{padding:12px}.scene-library-head{flex-direction:column}.cue-list{max-height:400px}}
+
+/* Music & sound library */
+.audio-library{margin:15px 0;border:1px solid #293652;border-radius:14px;background:linear-gradient(145deg,#11182bea,#0b1020f2);overflow:hidden}
+.audio-library-head{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px 15px;border-bottom:1px solid #29365288}
+.audio-library-head h2{font-size:13px;margin:0;letter-spacing:.5px}
+.audio-library-body{padding:14px}
+.audio-upload{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.audio-upload input[type=file]{min-width:0;max-width:100%;font-size:11px;color:var(--muted)}
+.audio-track-list{display:grid;gap:8px;margin-top:12px}
+.audio-track{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;padding:10px;border:1px solid #293652;border-radius:10px;background:#0a1020}
+.audio-track strong{display:block;font-size:11px;overflow-wrap:anywhere}
+.audio-track small{display:block;color:var(--muted);font-size:10px;margin-top:3px}
+.audio-track-actions{display:flex;flex-wrap:wrap;gap:5px}
+.audio-track-actions .btn{padding:7px 9px}
+.audio-volume{display:flex;align-items:center;gap:10px;margin-top:12px;font-size:11px;color:var(--muted)}
+.audio-volume input{width:100%;accent-color:var(--cyan)}
+@media(max-width:480px){.audio-track{grid-template-columns:1fr}.audio-track-actions .btn{flex:1}.audio-upload{align-items:flex-start;flex-direction:column}}
+
 </style>
 </head>
 <body>
@@ -101,6 +119,17 @@ main{max-width:1500px;margin:auto;padding:20px clamp(12px,2.5vw,28px) 42px}.page
           <div class="button-row"><button class="btn primary" id="playSoundBtn">▶ Play sound cue</button><button class="btn" id="audioUnlockBtn">Enable audio</button></div>
           <div class="meter"><span id="audioMeter"></span></div>
           <p class="muted small">Audio is synthesized in your browser after you tap a sound button. No sound files or paid services are needed.</p>
+        </div>
+      </section>
+
+      <section class="audio-library" id="musicLibraryPanel">
+        <div class="audio-library-head"><h2>♫ MUSIC &amp; SOUND LIBRARY</h2><span class="pill" id="audioLibraryCount">0 TRACKS</span></div>
+        <div class="audio-library-body">
+          <p class="muted small">Upload your own music and sound effects, then preview them here. This is the first step toward connecting real tracks to show cues.</p>
+          <div class="audio-upload"><input id="audioFilesInput" type="file" accept="audio/*,.mp3,.wav,.ogg,.m4a,.aac,.flac" multiple aria-label="Choose music and sound effect files"><button class="btn primary" id="addAudioFilesBtn" type="button">＋ Add audio files</button></div>
+          <div class="audio-volume"><label for="audioLibraryVolume">Playback volume</label><input id="audioLibraryVolume" type="range" min="0" max="100" value="75"><span id="audioLibraryVolumeValue">75%</span></div>
+          <div class="audio-track-list" id="audioTrackList"><div class="empty">No audio files added yet. Choose music or sound effects to build your library.</div></div>
+          <p class="muted small" id="audioLibraryStatus" role="status" aria-live="polite">Audio files are stored in this browser on this device. Use files you own or have permission to use.</p>
         </div>
       </section>
       <section class="panel" id="sequencerPanel" style="margin-top:15px">
@@ -461,6 +490,85 @@ applyLights();initAuth();
       button.disabled = false;
     }
   }, true);
+})();
+</script>
+
+
+<script>
+/* Local audio library: browser-only playback with IndexedDB storage. */
+(function(){
+  'use strict';
+  var db=null, tracks=[], currentAudio=null, currentId=null, objectUrls=new Map();
+  var $=function(id){return document.getElementById(id);};
+  var request;
+  try { request=indexedDB.open('kaevoryn-show-audio-library-v1',1); } catch(e) { setStatus('Local audio storage is unavailable in this browser. You can still preview files added this session.'); }
+  function setStatus(msg){var el=$('audioLibraryStatus');if(el)el.textContent=msg;}
+  function openDB(){
+    if(!request)return Promise.reject(new Error('Local storage unavailable'));
+    return new Promise(function(resolve,reject){
+      request.onupgradeneeded=function(){var d=request.result;if(!d.objectStoreNames.contains('tracks'))d.createObjectStore('tracks',{keyPath:'id'});};
+      request.onsuccess=function(){db=request.result;resolve(db);};
+      request.onerror=function(){reject(request.error||new Error('Could not open local audio storage'));};
+    });
+  }
+  function transaction(mode,fn){
+    return new Promise(function(resolve,reject){
+      if(!db){reject(new Error('Storage not ready'));return;}
+      var tx=db.transaction('tracks',mode),store=tx.objectStore('tracks'),result;
+      try{result=fn(store);}catch(e){reject(e);return;}
+      tx.oncomplete=function(){resolve(result&&result.result!==undefined?result.result:result);};
+      tx.onerror=function(){reject(tx.error||new Error('Storage operation failed'));};
+      tx.onabort=function(){reject(tx.error||new Error('Storage operation aborted'));};
+    });
+  }
+  function getAll(){return new Promise(function(resolve,reject){var tx=db.transaction('tracks','readonly'),q=tx.objectStore('tracks').getAll();q.onsuccess=function(){resolve(q.result||[]);};q.onerror=function(){reject(q.error);};});}
+  function formatSize(n){if(n<1024)return n+' B';if(n<1048576)return (n/1024).toFixed(1)+' KB';return (n/1048576).toFixed(1)+' MB';}
+  function urlFor(track){if(!objectUrls.has(track.id))objectUrls.set(track.id,URL.createObjectURL(track.blob));return objectUrls.get(track.id);}
+  function stopCurrent(){if(currentAudio){currentAudio.pause();currentAudio.currentTime=0;currentAudio=null;currentId=null;}render();}
+  function render(){
+    var list=$('audioTrackList');if(!list)return;
+    $('audioLibraryCount').textContent=tracks.length+' TRACK'+(tracks.length===1?'':'S');
+    list.innerHTML='';
+    if(!tracks.length){list.innerHTML='<div class="empty">No audio files added yet. Choose music or sound effects to build your library.</div>';return;}
+    tracks.forEach(function(track){
+      var row=document.createElement('div');row.className='audio-track';
+      var info=document.createElement('div'),name=document.createElement('strong'),detail=document.createElement('small');
+      name.textContent=track.name;detail.textContent=(track.type||'Audio file')+' · '+formatSize(track.size||0)+(currentId===track.id?' · PLAYING':'');
+      info.append(name,detail);
+      var actions=document.createElement('div');actions.className='audio-track-actions';
+      var play=document.createElement('button');play.type='button';play.className='btn primary';play.textContent=currentId===track.id?'Ⅱ Pause':'▶ Preview';
+      play.onclick=function(){
+        if(currentId===track.id&&currentAudio&&!currentAudio.paused){currentAudio.pause();play.textContent='▶ Resume';detail.textContent=(track.type||'Audio file')+' · '+formatSize(track.size||0)+' · PAUSED';return;}
+        if(currentAudio){currentAudio.pause();currentAudio.currentTime=0;}
+        currentId=track.id;currentAudio=new Audio(urlFor(track));currentAudio.volume=Number($('audioLibraryVolume').value)/100;
+        currentAudio.onended=function(){currentAudio=null;currentId=null;render();};
+        currentAudio.onerror=function(){setStatus('This audio file could not be played by the browser. Try MP3, WAV, or OGG.');currentAudio=null;currentId=null;render();};
+        currentAudio.play().then(function(){setStatus('Previewing “'+track.name+'”.');render();}).catch(function(){setStatus('Playback was blocked or the file is unsupported. Tap Preview again or try another audio format.');currentAudio=null;currentId=null;render();});
+      };
+      var del=document.createElement('button');del.type='button';del.className='btn danger';del.textContent='Remove';
+      del.onclick=async function(){if(!confirm('Remove “'+track.name+'” from this device’s audio library?'))return;if(currentId===track.id)stopCurrent();try{await transaction('readwrite',function(store){return store.delete(track.id);});var u=objectUrls.get(track.id);if(u)URL.revokeObjectURL(u);objectUrls.delete(track.id);tracks=tracks.filter(function(t){return t.id!==track.id;});render();setStatus('Audio file removed from this device.');}catch(e){setStatus('Could not remove this file from local storage.');}};
+      actions.append(play,del);row.append(info,actions);list.append(row);
+    });
+  }
+  async function addFiles(files){
+    if(!files||!files.length)return;
+    var accepted=Array.from(files).filter(function(f){return f.type.indexOf('audio/')===0||/\.(mp3|wav|ogg|m4a|aac|flac)$/i.test(f.name);});
+    if(!accepted.length){setStatus('Choose audio files such as MP3, WAV, OGG, M4A, or AAC.');return;}
+    var added=0;
+    for(var i=0;i<accepted.length;i++){
+      var f=accepted[i],id='audio-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,9);
+      var item={id:id,name:f.name,type:f.type||'Audio file',size:f.size,blob:f,addedAt:new Date().toISOString()};
+      tracks.unshift(item);
+      try{if(db)await transaction('readwrite',function(store){return store.put(item);});added++;}
+      catch(e){setStatus('Added files to this session, but browser storage failed. Keep the original audio files safe.');}
+    }
+    render();if(added) setStatus('Added '+added+' audio file'+(added===1?'':'s')+'. Files are saved in this browser on this device; this is not cloud storage.');
+  }
+  $('addAudioFilesBtn').addEventListener('click',function(){$('audioFilesInput').click();});
+  $('audioFilesInput').addEventListener('change',function(e){addFiles(e.target.files);e.target.value='';});
+  $('audioLibraryVolume').addEventListener('input',function(){var v=Number(this.value);$('audioLibraryVolumeValue').textContent=v+'%';if(currentAudio)currentAudio.volume=v/100;});
+  window.addEventListener('beforeunload',function(){if(currentAudio)currentAudio.pause();objectUrls.forEach(function(u){URL.revokeObjectURL(u);});});
+  openDB().then(getAll).then(function(items){tracks=items.sort(function(a,b){return String(b.addedAt||'').localeCompare(String(a.addedAt||''));});render();setStatus('Audio library ready. Files are stored locally in this browser on this device, not in cloud storage.');}).catch(function(){setStatus('Could not open local audio storage. You can still try adding files for this session.');});
 })();
 </script>
 
