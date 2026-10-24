@@ -30,10 +30,10 @@ a{color:inherit}.topbar{display:flex;justify-content:space-between;gap:18px;flex
 <div class="preview" id="paradePreview">
 <div class="light-beam one" aria-hidden="true"></div><div class="light-beam two" aria-hidden="true"></div><div class="parade-character" id="paradeCharacter" aria-hidden="true">🐉</div><div class="float-procession" id="floatProcession" aria-hidden="true"><span class="float-unit">🐉</span><span class="float-unit">🦋</span><span class="float-unit">🏰</span></div><div class="preview-copy"><div class="symbol" id="previewSymbol" aria-hidden="true">✧</div><p class="eyebrow" id="previewEyebrow">SCENE 01 · THE OPENING</p><h2 id="previewTitle">THE DREAM PARADE AWAKENS</h2><p id="previewText" aria-live="polite">A shimmer of cyan and violet light reveals the first magical float. The opening music cue is planned, and the world comes alive.</p></div>
 </div>
-<div class="parade-controls" aria-label="Parade playback"><button type="button" id="playParade">▶ Play Parade Preview</button><button type="button" id="stopParade" disabled>■ Stop</button><button type="button" id="soundToggle" aria-pressed="false">♫ Sound: Off</button><button type="button" id="lightsToggle" aria-pressed="true">Stage Lights: On</button></div><div class="preview-controls" aria-label="Preview parade scenes">
+<div class="parade-controls" aria-label="Parade playback"><button type="button" id="playParade">▶ Play Parade Preview</button><button type="button" id="stopParade" disabled>■ Stop</button><button type="button" id="soundToggle" aria-pressed="false">♫ Sound: Off</button><button type="button" id="lightsToggle" aria-pressed="true">Stage Lights: On</button><button type="button" id="fireworksToggle" aria-pressed="true">Fireworks: On</button></div><div class="preview-controls" aria-label="Preview parade scenes">
 <button type="button" data-scene="opening" aria-pressed="true">Opening</button><button type="button" data-scene="portal" aria-pressed="false">Portal</button><button type="button" data-scene="dream" aria-pressed="false">Dream Sequence</button><button type="button" data-scene="finale" aria-pressed="false">Grand Finale</button>
 </div>
-<p class="hint">Interactive visual concept preview with simulated fireworks and optional synthesized scene chimes. Full music playback and uploaded-track synchronization are not connected yet.</p>
+<p class="hint">Interactive visual concept preview with toggleable simulated fireworks and optional synthesized scene chimes. Full music playback and uploaded-track synchronization are not connected yet.</p>
 </section>
 <section class="section" aria-labelledby="paradeTitle">
 <p class="kicker">01 / THE SPECTACLE</p><h2 id="paradeTitle">The Kaevoryn Dream Parade</h2>
@@ -82,6 +82,7 @@ a{color:inherit}.topbar{display:flex;justify-content:space-between;gap:18px;flex
   const stopButton=document.getElementById("stopParade");
   const soundToggle=document.getElementById("soundToggle");
   const lightsToggle=document.getElementById("lightsToggle");
+  const fireworksToggle=document.getElementById("fireworksToggle");
   const reducedMotion=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const sceneOrder=["opening","portal","dream","finale"];
   const scenes={
@@ -90,7 +91,7 @@ a{color:inherit}.topbar{display:flex;justify-content:space-between;gap:18px;flex
     dream:{eyebrow:"SCENE 03 · THE DREAM",title:"LET EACH WORLD BREATHE",text:"Floating lights, enchanted colors, and curious characters transform the stage into a living dream.",symbol:"✦",character:"🦄",floats:["🦄","🌸","🌙"]},
     finale:{eyebrow:"SCENE 04 · THE GRAND FINALE",title:"CREATE THE IMPOSSIBLE",text:"Golden light joins the cyan and violet sky as the Kaevoryn Core awakens and the celebration reaches its peak.",symbol:"✺",character:"🐲",floats:["🐲","✨","👑"]}
   };
-  let paradeTimer=null,fireworkTimer=null,sceneIndex=0,activeScene="opening",audioContext=null,soundEnabled=false,lightsEnabled=true;
+  let paradeTimer=null,fireworkTimer=null,sceneIndex=0,activeScene="opening",audioContext=null,soundEnabled=false,lightsEnabled=true,fireworksEnabled=true;
   function playChime(key){
     if(!soundEnabled)return;
     try{
@@ -121,6 +122,13 @@ a{color:inherit}.topbar{display:flex;justify-content:space-between;gap:18px;flex
     lightsEnabled=!lightsEnabled;preview.classList.toggle("lights-off",!lightsEnabled);
     lightsToggle.setAttribute("aria-pressed",String(lightsEnabled));lightsToggle.textContent=lightsEnabled?"Stage Lights: On":"Stage Lights: Off";
   });
+  fireworksToggle.addEventListener("click",function(){
+    fireworksEnabled=!fireworksEnabled;
+    fireworksToggle.setAttribute("aria-pressed",String(fireworksEnabled));
+    fireworksToggle.textContent=fireworksEnabled?"Fireworks: On":"Fireworks: Off";
+    if(fireworksEnabled&&paradeTimer!==null&&!reducedMotion){burst();fireworkTimer=window.setInterval(burst,650);}
+    else if(fireworkTimer!==null){window.clearInterval(fireworkTimer);fireworkTimer=null;preview.querySelectorAll(".firework").forEach(function(el){el.remove();});}
+  });
   function showScene(key){
     const scene=scenes[key];if(!scene)return;activeScene=key;
     preview.className="preview"+(key==="opening"?"":" "+key)+(lightsEnabled?"":" lights-off");
@@ -145,7 +153,7 @@ a{color:inherit}.topbar{display:flex;justify-content:space-between;gap:18px;flex
   buttons.forEach(function(button){button.addEventListener("click",function(){stopParade();showScene(button.getAttribute("data-scene"));});});
   playButton.addEventListener("click",function(){
     stopParade();sceneIndex=0;showScene(sceneOrder[sceneIndex]);playButton.disabled=true;playButton.textContent="✧ Parade Playing";stopButton.disabled=false;
-    if(!reducedMotion){burst();fireworkTimer=window.setInterval(burst,650);}
+    if(fireworksEnabled&&!reducedMotion){burst();fireworkTimer=window.setInterval(burst,650);}
     paradeTimer=window.setInterval(function(){
       sceneIndex+=1;
       if(sceneIndex>=sceneOrder.length){stopParade();showScene("finale");text.textContent="The Dream Parade has reached its grand finale. The Kaevoryn Core shines above the celebration.";return;}
