@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#050711">
+<meta name="description" content="Play a small Portal Quest prototype from Kaevoryn Studios. Explore strange chambers, collect dream shards, and awaken the Core.">
+<title>Portal Quest — Kaevoryn Studios</title>
+<style>
+:root{color-scheme:dark;--cyan:#7eeaff;--violet:#b49aff;--gold:#ffd98b;--muted:#b7c3d6}*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 20% 10%,#0c3b5388,transparent 35%),radial-gradient(ellipse at 80% 60%,#45236c66,transparent 40%),#050711;color:#f7f8ff;font:16px/1.65 Arial,Helvetica,sans-serif}a{color:var(--cyan)}.top{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;padding:18px clamp(18px,5vw,60px);border-bottom:1px solid #7eeaff28}.top a{text-decoration:none;font-size:11px;letter-spacing:.12em;text-transform:uppercase}.wrap{width:min(900px,calc(100% - 32px));margin:auto}.hero{padding:45px 0 24px}.eyebrow{color:var(--cyan);font-size:11px;letter-spacing:.24em;text-transform:uppercase}.hero h1{margin:10px 0;font-size:clamp(38px,7vw,66px);line-height:1.04;letter-spacing:-.04em;background:linear-gradient(100deg,#fff,var(--cyan),var(--violet));background-clip:text;-webkit-background-clip:text;color:transparent}.hero p{max-width:700px;color:var(--muted)}.game{position:relative;overflow:hidden;padding:clamp(22px,5vw,42px);border:1px solid #7eeaff44;border-radius:22px;background:linear-gradient(145deg,#091626ee,#15102aee);box-shadow:0 15px 65px #0005}.game:before{content:"";position:absolute;right:-60px;top:-75px;width:220px;height:220px;border:1px solid #7eeaff45;border-radius:50%;box-shadow:0 0 0 22px #7eeaff08,0 0 0 46px #b49aff08;pointer-events:none}.room-label{color:var(--violet);font-size:11px;letter-spacing:.17em;text-transform:uppercase}.room-symbol{font-size:58px;line-height:1.2;margin:18px 0;text-shadow:0 0 26px #7eeaff77}.game h2{font-size:clamp(24px,4vw,36px);line-height:1.15;margin:0 0 12px}.description{max-width:650px;color:#cbd5e7}.shards{display:flex;gap:9px;flex-wrap:wrap;margin:22px 0}.shard{padding:7px 11px;border:1px solid #35405b;border-radius:999px;color:#91a0ba;font-size:12px}.shard.found{color:var(--gold);border-color:#ffd98b77;background:#ffd98b12}.choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:24px}.choice,.reset{padding:14px 16px;border:1px solid #7eeaff66;border-radius:12px;background:#081421;color:#e8faff;text-align:left;cursor:pointer;font-weight:700}.choice:hover,.choice:focus-visible,.reset:hover{border-color:#fff;box-shadow:0 0 20px #7eeaff1b;outline:none}.choice small{display:block;margin-top:4px;color:#9eacc2;font-weight:400}.choice:disabled{opacity:.45;cursor:not-allowed}.feedback{min-height:48px;margin:18px 0 0;padding:12px 14px;border-left:2px solid var(--cyan);background:#7eeaff09;color:#dbeaff}.progress{height:6px;margin-top:20px;background:#ffffff10;border-radius:999px;overflow:hidden}.progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--cyan),var(--violet),var(--gold));transition:width .3s}.footer-note{padding:26px 0 44px;color:#91a0b8;font-size:12px}.reset{margin-top:16px;text-align:center;background:linear-gradient(120deg,#10354a,#291c4a)}@media(max-width:520px){.choices{grid-template-columns:1fr}.room-symbol{font-size:48px}}@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<nav class="top" aria-label="Game navigation"><a href="../index.html">← Kaevoryn Studios</a><a href="dream-parade-interactive-worlds.html">Dream Parade &amp; Interactive Worlds</a></nav>
+<main class="wrap">
+<header class="hero"><p class="eyebrow">INTERACTIVE WORLDS · FIRST PLAYABLE CONCEPT</p><h1>PORTAL QUEST</h1><p>Three dream shards are hidden across the shifting chambers. Explore each portal, find the shards, and awaken the Core. Your choices guide the journey.</p></header>
+<section class="game" aria-labelledby="roomTitle">
+<p class="room-label" id="roomLabel">CHAMBER 01 · THE ARRIVAL</p><div class="room-symbol" id="roomSymbol" aria-hidden="true">🌀</div><h2 id="roomTitle">The Portal Atrium</h2><p class="description" id="roomDescription">A ring of blue light hums in the dark. Two paths appear: one glimmers with starlight, the other whispers with violet energy.</p>
+<div class="shards" aria-label="Dream shard collection"><span class="shard" id="shard0">◇ Shard One</span><span class="shard" id="shard1">◇ Shard Two</span><span class="shard" id="shard2">◇ Shard Three</span></div>
+<div class="choices" id="choices"><button class="choice" type="button" data-choice="starlight">Follow the starlight<small>A quiet path between floating crystals.</small></button><button class="choice" type="button" data-choice="violet">Enter the violet portal<small>A strange echo answers from within.</small></button></div>
+<p class="feedback" id="feedback" role="status" aria-live="polite">Choose a path to begin your quest.</p><div class="progress" aria-label="Quest progress"><span id="progressFill"></span></div><button class="reset" id="resetQuest" type="button">↻ Restart Quest</button>
+</section>
+<p class="footer-note">This is an early, self-contained browser prototype. Progress is temporary and resets when you restart or reload. More worlds, characters, sound, and saved achievements can be explored in later development.</p>
+</main>
+<script>
+(function(){
+  const roomLabel=document.getElementById("roomLabel"),symbol=document.getElementById("roomSymbol"),title=document.getElementById("roomTitle"),description=document.getElementById("roomDescription"),feedback=document.getElementById("feedback"),choices=document.getElementById("choices"),fill=document.getElementById("progressFill");
+  const shardEls=[0,1,2].map(function(i){return document.getElementById("shard"+i);});
+  const rooms={
+    atrium:{label:"CHAMBER 01 · THE ARRIVAL",symbol:"🌀",title:"The Portal Atrium",description:"A ring of blue light hums in the dark. Two paths appear: one glimmers with starlight, the other whispers with violet energy.",choices:[["starlight","Follow the starlight","A quiet path between floating crystals."],["violet","Enter the violet portal","A strange echo answers from within."]]},
+    crystal:{label:"CHAMBER 02 · THE CRYSTAL GARDEN",symbol:"💎",title:"The Crystal Garden",description:"Floating crystals sing softly as you pass. A bright shard is caught inside a crystal bloom, while a second portal waits beyond the arch.",choices:[["collect","Reach for the glowing shard","A careful touch may free its light."],["arch","Step through the distant arch","The next chamber is calling."]]},
+    echo:{label:"CHAMBER 02 · THE ECHO VAULT",symbol:"🔮",title:"The Echo Vault",description:"Your footsteps return as tiny sparks. A dream shard rests on a pedestal; the second doorway pulses like a heartbeat of light.",choices:[["collect","Take the pedestal shard","The vault's light responds to your touch."],["door","Open the second doorway","A new mystery waits beyond it."]]},
+    garden:{label:"CHAMBER 03 · THE STARFALL BRIDGE",symbol:"🌠",title:"The Starfall Bridge",description:"A bridge hangs between the stars. One final shard glows near the far side, and the Core's distant light beckons.",choices:[["collect","Gather the final shard","The bridge brightens beneath your feet."],["core","Approach the distant Core","A sealed gateway asks for three shards."]]},
+    vault:{label:"CHAMBER 03 · THE MIRROR CROSSING",symbol:"🪞",title:"The Mirror Crossing",description:"Reflections show places you have not visited. A shard shines in a mirrored alcove; the Core waits beyond the last portal.",choices:[["collect","Claim the mirrored shard","The reflection releases a spark of light."],["core","Walk toward the Core","A sealed gateway asks for three shards."]]},
+    finale:{label:"FINAL CHAMBER · CORE AWAKENED",symbol:"✺",title:"The Dream Core",description:"All three dream shards orbit the Core. Cyan, violet, and golden light flow together. The portal network opens, and your first quest is complete.",choices:[["restart","Begin the journey again","Explore another path through the chambers."]]}
+  };
+  let room="atrium",found=new Set(),visited=new Set(),lastPath="starlight",complete=false;
+  function render(){
+    const data=rooms[room];roomLabel.textContent=data.label;symbol.textContent=data.symbol;title.textContent=data.title;description.textContent=data.description;
+    shardEls.forEach(function(el,i){const yes=found.has(i);el.classList.toggle("found",yes);el.textContent=(yes?"✦":"◇")+" Shard "+["One","Two","Three"][i];});
+    fill.style.width=(found.size/3*100)+"%";
+    choices.innerHTML="";
+    data.choices.forEach(function(item){
+      const button=document.createElement("button");button.type="button";button.className="choice";button.dataset.choice=item[0];button.textContent=item[1];
+      const small=document.createElement("small");small.textContent=item[2];button.appendChild(small);choices.appendChild(button);
+    });
+    choices.querySelectorAll("button").forEach(function(button){button.addEventListener("click",function(){choose(button.dataset.choice);});});
+  }
+  function findShard(index,message){if(!found.has(index)){found.add(index);feedback.textContent=message;}else{feedback.textContent="This chamber is quiet now; you already collected its dream shard.";}if(found.size===3){room="finale";complete=true;feedback.textContent="All three shards collected! The Dream Core awakens. Quest complete!";}render();}
+  function choose(choice){
+    if(choice==="restart"){reset();return;}
+    if(room==="atrium"){if(choice==="starlight"){lastPath="starlight";room="crystal";feedback.textContent="You follow the stars into a crystal garden. Something sparkles ahead.";}else{lastPath="violet";room="echo";feedback.textContent="The violet portal folds around you and reveals the Echo Vault.";}visited.add("atrium");render();return;}
+    if(room==="crystal"||room==="echo"){
+      if(choice==="collect"){findShard(0,room==="crystal"?"You freed the first dream shard from its crystal bloom!":"You lifted the first dream shard from the echoing pedestal.");return;}
+      room=room==="crystal"?"garden":"vault";feedback.textContent="The doorway carries you deeper into the unknown.";render();return;
+    }
+    if(room==="garden"||room==="vault"){
+      if(choice==="collect"){findShard(found.has(0)?2:1,"A dream shard joins your collection!");return;}
+      if(found.size<3){feedback.textContent="The Core remains sealed. Explore this chamber and collect its dream shard first.";return;}
+      room="finale";complete=true;feedback.textContent="The Dream Core awakens. Quest complete!";render();
+    }
+  }
+  function reset(){room="atrium";found=new Set();visited=new Set();lastPath="starlight";complete=false;feedback.textContent="Your quest has restarted. Choose a path to begin.";render();}
+  document.getElementById("resetQuest").addEventListener("click",reset);
+  render();
+})();
+</script>
+</body>
+</html>
