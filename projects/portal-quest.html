@@ -27,7 +27,7 @@
   const roomLabel=document.getElementById("roomLabel"),symbol=document.getElementById("roomSymbol"),title=document.getElementById("roomTitle"),description=document.getElementById("roomDescription"),feedback=document.getElementById("feedback"),choices=document.getElementById("choices"),fill=document.getElementById("progressFill");
   const shardEls=[0,1,2].map(function(i){return document.getElementById("shard"+i);});
   const rooms={
-    atrium:{label:"CHAMBER 01 · THE ARRIVAL",symbol:"🌀",title:"The Portal Atrium",description:"A ring of blue light hums in the dark. Two paths appear: one glimmers with starlight, the other whispers with violet energy.",choices:[["starlight","Follow the starlight","A quiet path between floating crystals."],["violet","Enter the violet portal","A strange echo answers from within."]]},
+    atrium:{label:"CHAMBER 01 · THE ARRIVAL",symbol:"🌀",title:"The Portal Atrium",description:"A ring of blue light hums in the dark. Two paths appear: one glimmers with starlight, the other whispers with violet energy.",choices:[["search","Search the portal rim","A small glimmer is caught in the ring of light."],["starlight","Follow the starlight","A quiet path between floating crystals."],["violet","Enter the violet portal","A strange echo answers from within."]]},
     crystal:{label:"CHAMBER 02 · THE CRYSTAL GARDEN",symbol:"💎",title:"The Crystal Garden",description:"Floating crystals sing softly as you pass. A bright shard is caught inside a crystal bloom, while a second portal waits beyond the arch.",choices:[["collect","Reach for the glowing shard","A careful touch may free its light."],["arch","Step through the distant arch","The next chamber is calling."]]},
     echo:{label:"CHAMBER 02 · THE ECHO VAULT",symbol:"🔮",title:"The Echo Vault",description:"Your footsteps return as tiny sparks. A dream shard rests on a pedestal; the second doorway pulses like a heartbeat of light.",choices:[["collect","Take the pedestal shard","The vault's light responds to your touch."],["door","Open the second doorway","A new mystery waits beyond it."]]},
     garden:{label:"CHAMBER 03 · THE STARFALL BRIDGE",symbol:"🌠",title:"The Starfall Bridge",description:"A bridge hangs between the stars. One final shard glows near the far side, and the Core's distant light beckons.",choices:[["collect","Gather the final shard","The bridge brightens beneath your feet."],["core","Approach the distant Core","A sealed gateway asks for three shards."]]},
@@ -49,13 +49,13 @@
   function findShard(index,message){if(!found.has(index)){found.add(index);feedback.textContent=message;}else{feedback.textContent="This chamber is quiet now; you already collected its dream shard.";}if(found.size===3){room="finale";complete=true;feedback.textContent="All three shards collected! The Dream Core awakens. Quest complete!";}render();}
   function choose(choice){
     if(choice==="restart"){reset();return;}
-    if(room==="atrium"){if(choice==="starlight"){lastPath="starlight";room="crystal";feedback.textContent="You follow the stars into a crystal garden. Something sparkles ahead.";}else{lastPath="violet";room="echo";feedback.textContent="The violet portal folds around you and reveals the Echo Vault.";}visited.add("atrium");render();return;}
+    if(room==="atrium"){if(choice==="search"){findShard(0,"You discovered the first dream shard hidden in the portal rim!");return;}if(!found.has(0)){found.add(0);}if(choice==="starlight"){lastPath="starlight";room="crystal";feedback.textContent="The portal releases a dream shard as you pass. You follow the stars into a crystal garden.";}else{lastPath="violet";room="echo";feedback.textContent="The portal releases a dream shard as you pass. The violet gateway reveals the Echo Vault.";}visited.add("atrium");render();return;}
     if(room==="crystal"||room==="echo"){
-      if(choice==="collect"){findShard(0,room==="crystal"?"You freed the first dream shard from its crystal bloom!":"You lifted the first dream shard from the echoing pedestal.");return;}
+      if(choice==="collect"){findShard(1,room==="crystal"?"You freed the second dream shard from its crystal bloom!":"You lifted the second dream shard from the echoing pedestal.");return;}
       room=room==="crystal"?"garden":"vault";feedback.textContent="The doorway carries you deeper into the unknown.";render();return;
     }
     if(room==="garden"||room==="vault"){
-      if(choice==="collect"){findShard(found.has(0)?2:1,"A dream shard joins your collection!");return;}
+      if(choice==="collect"){findShard(2,"You gathered the third dream shard! The Dream Core responds to its light.");return;}
       if(found.size<3){feedback.textContent="The Core remains sealed. Explore this chamber and collect its dream shard first.";return;}
       room="finale";complete=true;feedback.textContent="The Dream Core awakens. Quest complete!";render();
     }
