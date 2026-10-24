@@ -35,8 +35,27 @@
     finale:{label:"FINAL CHAMBER · CORE AWAKENED",symbol:"✺",title:"The Dream Core",description:"All three dream shards orbit the Core. Cyan, violet, and golden light flow together. The portal network opens, and your first quest is complete.",choices:[["restart","Begin the journey again","Explore another path through the chambers."]]}
   };
   let room="atrium",found=new Set(),visited=new Set(),lastPath="starlight",complete=false;
-  let soundEnabled=false;
-  document.getElementById("soundToggle").addEventListener("click",function(){soundEnabled=!soundEnabled;this.textContent=soundEnabled?"♫ Sound: On":"♫ Sound: Off";this.setAttribute("aria-pressed",String(soundEnabled));if(soundEnabled){try{const C=window.AudioContext||window.webkitAudioContext;if(C){const a=new C(),o=a.createOscillator(),g=a.createGain();o.frequency.value=660;g.gain.value=.06;o.connect(g);g.connect(a.destination);o.start();o.stop(a.currentTime+.16);}}catch(e){}}});
+  let soundEnabled=false,audioContext=null;
+  function playGameSound(kind){
+    if(!soundEnabled)return;
+    try{
+      const C=window.AudioContext||window.webkitAudioContext;if(!C)return;
+      if(!audioContext)audioContext=new C();
+      if(audioContext.state==="suspended")audioContext.resume();
+      const notes=kind==="collect"?[660,880,1046.5]:kind==="restart"?[440,330]:kind==="core"?[523.25,659.25,783.99,1046.5]:kind==="portal"?[392,587.33]:[660];
+      const now=audioContext.currentTime;
+      notes.forEach(function(freq,index){
+        const at=now+index*.09,o=audioContext.createOscillator(),g=audioContext.createGain();
+        o.type=kind==="portal"?"triangle":"sine";o.frequency.setValueAtTime(freq,at);
+        g.gain.setValueAtTime(.0001,at);g.gain.exponentialRampToValueAtTime(.07,at+.02);g.gain.exponentialRampToValueAtTime(.0001,at+.23);
+        o.connect(g);g.connect(audioContext.destination);o.start(at);o.stop(at+.25);
+      });
+    }catch(e){}
+  }
+  document.getElementById("soundToggle").addEventListener("click",function(){
+    soundEnabled=!soundEnabled;this.textContent=soundEnabled?"♫ Sound: On":"♫ Sound: Off";this.setAttribute("aria-pressed",String(soundEnabled));
+    if(soundEnabled)playGameSound("start");
+  });
   function render(){
     const data=rooms[room];roomLabel.textContent=data.label;symbol.textContent=data.symbol;title.textContent=data.title;description.textContent=data.description;
     shardEls.forEach(function(el,i){const yes=found.has(i);el.classList.toggle("found",yes);el.textContent=(yes?"✦":"◇")+" Shard "+["One","Two","Three"][i];});
@@ -48,9 +67,10 @@
     });
     choices.querySelectorAll("button").forEach(function(button){button.addEventListener("click",function(){choose(button.dataset.choice);});});
   }
-  function findShard(index,message){if(!found.has(index)){found.add(index);feedback.textContent=message;}else{feedback.textContent="This chamber is quiet now; you already collected its dream shard.";}if(found.size===3){room="finale";complete=true;feedback.textContent="All three shards collected! The Dream Core awakens. Quest complete!";}render();}
+  function findShard(index,message){if(!found.has(index)){found.add(index);feedback.textContent=message;playGameSound("collect");}else{feedback.textContent="This chamber is quiet now; you already collected its dream shard.";}if(found.size===3){room="finale";complete=true;feedback.textContent="All three shards collected! The Dream Core awakens. Quest complete!";playGameSound("core");}render();}
   function choose(choice){
-    if(choice==="restart"){reset();return;}
+    if(choice==="restart"){playGameSound("restart");reset();return;}
+    if(choice==="starlight"||choice==="violet"||choice==="arch"||choice==="door")playGameSound("portal");
     if(room==="atrium"){if(choice==="search"){findShard(0,"You discovered the first dream shard hidden in the portal rim!");return;}if(!found.has(0)){found.add(0);}if(choice==="starlight"){lastPath="starlight";room="crystal";feedback.textContent="The portal releases a dream shard as you pass. You follow the stars into a crystal garden.";}else{lastPath="violet";room="echo";feedback.textContent="The portal releases a dream shard as you pass. The violet gateway reveals the Echo Vault.";}visited.add("atrium");render();return;}
     if(room==="crystal"||room==="echo"){
       if(choice==="collect"){findShard(1,room==="crystal"?"You freed the second dream shard from its crystal bloom!":"You lifted the second dream shard from the echoing pedestal.");return;}
