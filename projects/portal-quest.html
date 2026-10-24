@@ -52,7 +52,7 @@
     if(room==="atrium"){if(choice==="search"){findShard(0,"You discovered the first dream shard hidden in the portal rim!");return;}if(!found.has(0)){found.add(0);}if(choice==="starlight"){lastPath="starlight";room="crystal";feedback.textContent="The portal releases a dream shard as you pass. You follow the stars into a crystal garden.";}else{lastPath="violet";room="echo";feedback.textContent="The portal releases a dream shard as you pass. The violet gateway reveals the Echo Vault.";}visited.add("atrium");render();return;}
     if(room==="crystal"||room==="echo"){
       if(choice==="collect"){findShard(1,room==="crystal"?"You freed the second dream shard from its crystal bloom!":"You lifted the second dream shard from the echoing pedestal.");return;}
-      room=room==="crystal"?"garden":"vault";feedback.textContent="The doorway carries you deeper into the unknown.";render();return;
+      if(!found.has(1)){found.add(1);feedback.textContent="As you cross the threshold, a second dream shard follows you through the portal.";}room=room==="crystal"?"garden":"vault";if(found.has(1)&&feedback.textContent==="The doorway carries you deeper into the unknown.")feedback.textContent="The doorway carries you deeper into the unknown.";render();return;
     }
     if(room==="garden"||room==="vault"){
       if(choice==="collect"){findShard(2,"You gathered the third dream shard! The Dream Core responds to its light.");return;}
