@@ -28,12 +28,12 @@ a{color:inherit}.topbar{display:flex;justify-content:space-between;gap:18px;flex
 </header>
 <section aria-labelledby="previewTitle">
 <div class="preview" id="paradePreview">
-<div class="preview-copy"><div class="symbol" id="previewSymbol" aria-hidden="true">✧</div><p class="eyebrow" id="previewEyebrow">SCENE 01 · THE OPENING</p><h2 id="previewTitle">THE DREAM PARADE AWAKENS</h2><p id="previewText" aria-live="polite">A shimmer of cyan and violet light reveals the first magical float. The music begins, and the world comes alive.</p></div>
+<div class="preview-copy"><div class="symbol" id="previewSymbol" aria-hidden="true">✧</div><p class="eyebrow" id="previewEyebrow">SCENE 01 · THE OPENING</p><h2 id="previewTitle">THE DREAM PARADE AWAKENS</h2><p id="previewText" aria-live="polite">A shimmer of cyan and violet light reveals the first magical float. The opening music cue is planned, and the world comes alive.</p></div>
 </div>
 <div class="parade-controls" aria-label="Parade playback"><button type="button" id="playParade">▶ Play Parade Preview</button><button type="button" id="stopParade" disabled>■ Stop</button></div><div class="preview-controls" aria-label="Preview parade scenes">
 <button type="button" data-scene="opening" aria-pressed="true">Opening</button><button type="button" data-scene="portal" aria-pressed="false">Portal</button><button type="button" data-scene="dream" aria-pressed="false">Dream Sequence</button><button type="button" data-scene="finale" aria-pressed="false">Grand Finale</button>
 </div>
-<p class="hint">Interactive visual concept preview — not the full parade experience.</p>
+<p class="hint">Interactive visual concept preview with simulated fireworks. Music playback is not connected yet.</p>
 </section>
 <section class="section" aria-labelledby="paradeTitle">
 <p class="kicker">01 / THE SPECTACLE</p><h2 id="paradeTitle">The Kaevoryn Dream Parade</h2>
@@ -81,7 +81,7 @@ a{color:inherit}.topbar{display:flex;justify-content:space-between;gap:18px;flex
   const reducedMotion=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const sceneOrder=["opening","portal","dream","finale"];
   const scenes={
-    opening:{eyebrow:"SCENE 01 · THE OPENING",title:"THE DREAM PARADE AWAKENS",text:"A shimmer of cyan and violet light reveals the first magical float. The music begins, and the world comes alive.",symbol:"✧"},
+    opening:{eyebrow:"SCENE 01 · THE OPENING",title:"THE DREAM PARADE AWAKENS",text:"A shimmer of cyan and violet light reveals the first magical float. The opening music cue is planned, and the world comes alive.",symbol:"✧"},
     portal:{eyebrow:"SCENE 02 · THE PORTAL",title:"A GATEWAY OPENS",text:"A luminous portal rises at the heart of the parade, inviting visitors toward a world beyond the ordinary.",symbol:"◉"},
     dream:{eyebrow:"SCENE 03 · THE DREAM",title:"LET EACH WORLD BREATHE",text:"Floating lights, enchanted colors, and curious characters transform the stage into a living dream.",symbol:"✦"},
     finale:{eyebrow:"SCENE 04 · THE GRAND FINALE",title:"CREATE THE IMPOSSIBLE",text:"Golden light joins the cyan and violet sky as the Kaevoryn Core awakens and the celebration reaches its peak.",symbol:"✺"}
