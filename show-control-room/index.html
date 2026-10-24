@@ -84,6 +84,12 @@ main{max-width:1500px;margin:auto;padding:20px clamp(12px,2.5vw,28px) 42px}.page
 @media(max-width:480px){.audio-track{grid-template-columns:1fr}.audio-track-actions .btn{flex:1}.audio-upload{align-items:flex-start;flex-direction:column}}
 
 .cue-audio-pick{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:8px;color:var(--muted);font-size:10px}.cue-audio-select{max-width:100%;min-width:140px;background:#0a1020;color:var(--text);border:1px solid #34425e;border-radius:8px;padding:7px;font:inherit}.cue-audio-select option{background:#0a1020;color:#fff}
+
+/* Real uploaded-audio-reactive stage glow (local browser analysis, no audio upload). */
+.stage.fx-audio-reactive .stage-fx{opacity:1}
+.stage.fx-audio-reactive .stage-fx:before{content:"";position:absolute;inset:-12%;background:radial-gradient(ellipse at 50% 56%,#7eeaff 0, #7eeaff55 12%,#b49aff33 32%,transparent 68%);opacity:calc(.12 + var(--audio-energy,0)*.88);transform:scale(calc(.88 + var(--audio-energy,0)*.28));filter:blur(calc(3px + var(--audio-energy,0)*9px));transition:opacity .08s linear,transform .08s linear;}
+.stage.fx-audio-reactive .stage-fx:after{content:"";position:absolute;left:10%;right:10%;bottom:8%;height:2px;background:linear-gradient(90deg,transparent,#7eeaff,#d8c9ff,#7eeaff,transparent);opacity:calc(.15 + var(--audio-bass,0)*.85);box-shadow:0 0 calc(4px + var(--audio-bass,0)*22px) #7eeaff;transform:scaleX(calc(.65 + var(--audio-bass,0)*.35));transform-origin:center;}
+@media(prefers-reduced-motion:reduce){.stage.fx-audio-reactive .stage-fx:before,.stage.fx-audio-reactive .stage-fx:after{transition:none}}
 </style>
 </head>
 <body>
@@ -579,8 +585,11 @@ renderSceneMixOptions();applyLights();initAuth();
   function formatSize(n){if(n<1024)return n+' B';if(n<1048576)return (n/1024).toFixed(1)+' KB';return (n/1048576).toFixed(1)+' MB';}
   function urlFor(track){if(!objectUrls.has(track.id))objectUrls.set(track.id,URL.createObjectURL(track.blob));return objectUrls.get(track.id);}
   function stopCurrent(){if(currentAudio){currentAudio.pause();currentAudio.currentTime=0;currentAudio=null;currentId=null;}render();}
-  window.kaevorynPlayTrack=function(id){var track=tracks.find(function(t){return t.id===id;});if(!track){setStatus('That uploaded track is not available in this browser.');return;}if(currentAudio){currentAudio.pause();currentAudio.currentTime=0;}currentId=track.id;currentAudio=new Audio(urlFor(track));currentAudio.volume=Number($('audioLibraryVolume').value)/100;currentAudio.onended=function(){currentAudio=null;currentId=null;render();};currentAudio.onerror=function(){setStatus('The assigned audio track could not be played.');currentAudio=null;currentId=null;render();};currentAudio.play().then(function(){setStatus('Playing show track: '+track.name);render();}).catch(function(){setStatus('Tap Enable audio, then try running the show again.');currentAudio=null;currentId=null;render();});};
-  window.kaevorynStopTrack=function(){if(currentAudio){currentAudio.pause();currentAudio.currentTime=0;currentAudio=null;currentId=null;render();}};
+  var reactiveContext=null,reactiveAnalyser=null,reactiveFrame=0,reactiveSource=null;
+  window.kaevorynAudioReactiveStop=function(){if(reactiveFrame)cancelAnimationFrame(reactiveFrame);reactiveFrame=0;var stage=document.getElementById('stage');if(stage){stage.classList.remove('fx-audio-reactive');stage.style.setProperty('--audio-energy','0');stage.style.setProperty('--audio-bass','0');}};
+  window.kaevorynAudioReactiveStart=function(audio){window.kaevorynAudioReactiveStop();try{var AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;if(!reactiveContext)reactiveContext=new AC();if(reactiveContext.state==='suspended')reactiveContext.resume().catch(function(){});reactiveAnalyser=reactiveContext.createAnalyser();reactiveAnalyser.fftSize=256;reactiveAnalyser.smoothingTimeConstant=.72;reactiveSource=reactiveContext.createMediaElementSource(audio);reactiveSource.connect(reactiveAnalyser);reactiveAnalyser.connect(reactiveContext.destination);var bins=new Uint8Array(reactiveAnalyser.frequencyBinCount),stage=document.getElementById('stage');if(!stage)return;stage.classList.add('fx-audio-reactive');function tick(){if(!reactiveAnalyser||audio!==currentAudio||audio.paused||audio.ended){window.kaevorynAudioReactiveStop();return;}reactiveAnalyser.getByteFrequencyData(bins);var total=0,bass=0,count=Math.max(1,Math.floor(bins.length*.58)),bassCount=Math.max(1,Math.floor(bins.length*.13));for(var i=0;i<count;i++)total+=bins[i];for(var j=0;j<bassCount;j++)bass+=bins[j];stage.style.setProperty('--audio-energy',String(Math.min(1,(total/count)/150)));stage.style.setProperty('--audio-bass',String(Math.min(1,(bass/bassCount)/180)));reactiveFrame=requestAnimationFrame(tick);}reactiveFrame=requestAnimationFrame(tick);}catch(e){window.kaevorynAudioReactiveStop();setStatus('Audio-reactive visuals are unavailable in this browser; music playback can still continue.');}};
+  window.kaevorynPlayTrack=function(id){var track=tracks.find(function(t){return t.id===id;});if(!track){setStatus('That uploaded track is not available in this browser.');return;}if(currentAudio){window.kaevorynAudioReactiveStop();currentAudio.pause();currentAudio.currentTime=0;}currentId=track.id;currentAudio=new Audio(urlFor(track));currentAudio.volume=Number($('audioLibraryVolume').value)/100;window.kaevorynAudioReactiveStart(currentAudio);currentAudio.onended=function(){window.kaevorynAudioReactiveStop();currentAudio=null;currentId=null;render();};currentAudio.onerror=function(){window.kaevorynAudioReactiveStop();setStatus('The assigned audio track could not be played.');currentAudio=null;currentId=null;render();};currentAudio.play().then(function(){setStatus('Playing show track: '+track.name);render();}).catch(function(){setStatus('Tap Enable audio, then try running the show again.');currentAudio=null;currentId=null;render();});};
+  window.kaevorynStopTrack=function(){window.kaevorynAudioReactiveStop();if(currentAudio){currentAudio.pause();currentAudio.currentTime=0;currentAudio=null;currentId=null;render();}};
   function render(){
     window.kaevorynAudioTracks=tracks.map(function(t){return {id:t.id,name:t.name};});
     window.dispatchEvent(new Event('kaevoryn-audio-tracks-updated'));
@@ -596,11 +605,11 @@ renderSceneMixOptions();applyLights();initAuth();
       var actions=document.createElement('div');actions.className='audio-track-actions';
       var play=document.createElement('button');play.type='button';play.className='btn primary';play.textContent=currentId===track.id?'Ⅱ Pause':'▶ Preview';
       play.onclick=function(){
-        if(currentId===track.id&&currentAudio&&!currentAudio.paused){currentAudio.pause();play.textContent='▶ Resume';detail.textContent=(track.type||'Audio file')+' · '+formatSize(track.size||0)+' · PAUSED';return;}
-        if(currentAudio){currentAudio.pause();currentAudio.currentTime=0;}
-        currentId=track.id;currentAudio=new Audio(urlFor(track));currentAudio.volume=Number($('audioLibraryVolume').value)/100;
-        currentAudio.onended=function(){currentAudio=null;currentId=null;render();};
-        currentAudio.onerror=function(){setStatus('This audio file could not be played by the browser. Try MP3, WAV, or OGG.');currentAudio=null;currentId=null;render();};
+        if(currentId===track.id&&currentAudio&&!currentAudio.paused){window.kaevorynAudioReactiveStop();currentAudio.pause();play.textContent='▶ Resume';detail.textContent=(track.type||'Audio file')+' · '+formatSize(track.size||0)+' · PAUSED';return;}
+        if(currentAudio){window.kaevorynAudioReactiveStop();currentAudio.pause();currentAudio.currentTime=0;}
+        currentId=track.id;currentAudio=new Audio(urlFor(track));currentAudio.volume=Number($('audioLibraryVolume').value)/100;window.kaevorynAudioReactiveStart(currentAudio);
+        currentAudio.onended=function(){window.kaevorynAudioReactiveStop();currentAudio=null;currentId=null;render();};
+        currentAudio.onerror=function(){window.kaevorynAudioReactiveStop();setStatus('This audio file could not be played by the browser. Try MP3, WAV, or OGG.');currentAudio=null;currentId=null;render();};
         currentAudio.play().then(function(){setStatus('Previewing “'+track.name+'”.');render();}).catch(function(){setStatus('Playback was blocked or the file is unsupported. Tap Preview again or try another audio format.');currentAudio=null;currentId=null;render();});
       };
       var del=document.createElement('button');del.type='button';del.className='btn danger';del.textContent='Remove';
