@@ -90,6 +90,12 @@ main{max-width:1500px;margin:auto;padding:20px clamp(12px,2.5vw,28px) 42px}.page
 .stage.fx-audio-reactive .stage-fx:before{content:"";position:absolute;inset:-12%;background:radial-gradient(ellipse at 50% 56%,#7eeaff 0, #7eeaff55 12%,#b49aff33 32%,transparent 68%);opacity:calc(.12 + var(--audio-energy,0)*.88);transform:scale(calc(.88 + var(--audio-energy,0)*.28));filter:blur(calc(3px + var(--audio-energy,0)*9px));transition:opacity .08s linear,transform .08s linear;}
 .stage.fx-audio-reactive .stage-fx:after{content:"";position:absolute;left:10%;right:10%;bottom:8%;height:2px;background:linear-gradient(90deg,transparent,#7eeaff,#d8c9ff,#7eeaff,transparent);opacity:calc(.15 + var(--audio-bass,0)*.85);box-shadow:0 0 calc(4px + var(--audio-bass,0)*22px) #7eeaff;transform:scaleX(calc(.65 + var(--audio-bass,0)*.35));transform-origin:center;}
 @media(prefers-reduced-motion:reduce){.stage.fx-audio-reactive .stage-fx:before,.stage.fx-audio-reactive .stage-fx:after{transition:none}}
+/* Let uploaded music animate the actual stage lighting, not only the overlay. */
+.stage.fx-audio-reactive .stage-core{box-shadow:0 0 calc(28px + var(--audio-energy,0)*48px) color-mix(in srgb,var(--accent) 58%,transparent),inset 0 0 calc(12px + var(--audio-bass,0)*22px) #9c8dff55;filter:brightness(calc(1 + var(--audio-energy,0)*.55));}
+.stage.fx-audio-reactive .beam{filter:drop-shadow(0 0 calc(5px + var(--audio-energy,0)*18px) var(--accent)) brightness(calc(1 + var(--audio-bass,0)*.8));}
+.stage.fx-audio-reactive .stage-glow{filter:blur(calc(5px + var(--audio-energy,0)*10px)) saturate(calc(1 + var(--audio-bass,0)*1.2));}
+@media(prefers-reduced-motion:reduce){.stage.fx-audio-reactive .stage-core,.stage.fx-audio-reactive .beam,.stage.fx-audio-reactive .stage-glow{filter:none;transition:none;box-shadow:0 0 40px color-mix(in srgb,var(--accent) 25%,transparent),inset 0 0 25px #9c8dff20}}
+
 </style>
 </head>
 <body>
