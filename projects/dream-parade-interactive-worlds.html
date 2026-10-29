@@ -144,9 +144,13 @@ a{color:inherit}.topbar{display:flex;justify-content:space-between;gap:18px;flex
   function burst(){
     if(reducedMotion)return;
     const spark=document.createElement("span");spark.className="firework";
-    spark.style.setProperty("--x",(12+Math.random()*76)+"%");
-    spark.style.setProperty("--y",(12+Math.random()*66)+"%");
-    spark.style.setProperty("--spark",["#7eeaff","#b49aff","#ffd98b","#ffffff"][Math.floor(Math.random()*4)]);
+    const palettes={opening:["#7eeaff","#b49aff","#ffffff"],portal:["#7eeaff","#6e8dff","#b49aff"],dream:["#b49aff","#ffffff","#ffb8e8"],finale:["#ffd98b","#ffffff","#b49aff"]};
+    const x=activeScene==="portal"?35+Math.random()*30:12+Math.random()*76;
+    const y=activeScene==="dream"?8+Math.random()*42:12+Math.random()*66;
+    spark.style.setProperty("--x",x+"%");
+    spark.style.setProperty("--y",y+"%");
+    const palette=palettes[activeScene]||palettes.opening;
+    spark.style.setProperty("--spark",palette[Math.floor(Math.random()*palette.length)]);
     preview.appendChild(spark);spark.addEventListener("animationend",function(){spark.remove();},{once:true});
   }
   function stopParade(){
