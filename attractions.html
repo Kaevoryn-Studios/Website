@@ -51,6 +51,7 @@
 <script>
 (function(){
 const search=document.getElementById("search"),filter=document.getElementById("park-filter"),sections=[...document.querySelectorAll(".park-section")],empty=document.getElementById("empty");
+const requestedPark=new URLSearchParams(window.location.search).get("park");if(["realm","beyond","frontier","nightmare"].includes(requestedPark))filter.value=requestedPark;
 function update(){const q=search.value.trim().toLowerCase(),park=filter.value;let visible=0;sections.forEach(section=>{let sectionCount=0;section.querySelectorAll(".card").forEach(card=>{const match=(!q||(card.textContent+" "+card.dataset.search).toLowerCase().includes(q));card.hidden=!match;if(match)sectionCount++;});const show=(park==="all"||section.dataset.park===park)&&sectionCount>0;section.hidden=!show;if(show)visible+=sectionCount;});empty.style.display=visible?"none":"block";}
 search.addEventListener("input",update);filter.addEventListener("change",update);update();
 })();
