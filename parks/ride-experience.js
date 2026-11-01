@@ -1,9 +1,9 @@
 (()=>{'use strict';
-const $=id=>document.getElementById(id),q=new URLSearchParams(location.search),park=q.get('park')||'kingdoms';
+const $=id=>document.getElementById(id),q=new URLSearchParams(location.search),park=q.get('park')||'kingdoms',ride=q.get('ride')||'dragon-s-wrath';
 const config={kingdoms:{name:'KAEVORYN KINGDOMS',title:'DRAGON’S WRATH',intro:'Climb aboard and fly into the heart of a storm above the enchanted kingdom.',color:'#7eeaff',acts:[['THE GATES OPEN','The dragon launches from the Citadel. Hold on — your flight is beginning.'],['ABOVE THE KINGDOM','Soar past towering castles as the clouds race beneath your wings.'],['INTO THE STORM','Lightning splits the sky. The dragon banks through the swirling clouds.'],['THE FIRE FLIGHT','A wall of storm clouds blocks the way. The dragon unleashes a blazing path.'],['THE CITADEL REVEALED','The storm clears. The enchanted kingdom glows beneath you.']]},
 beyond:{name:'KAEVORYN BEYOND',title:'PORTAL BREAKER',intro:'Fly through unstable gateways and discover a universe that changes around you.',color:'#c1a8ff',acts:[['PORTAL IGNITION','A gateway opens and pulls you into the unknown.'],['WORLDS IN FLIGHT','Strange worlds drift past as you race between dimensions.'],['THE FRACTURE','Reality bends. Hold steady as the portal storm surrounds you.'],['ENERGY SURGE','A burst of light tears open the final gateway.'],['A NEW HORIZON','You emerge above a world no one has seen before.']]},
 afterdark:{name:'KAEVORYN AFTERDARK',title:'THE NIGHT FLIGHT',intro:'Take a suspenseful flight over a mysterious world after the lights go out.',color:'#ff7caa',acts:[['NIGHTFALL','A shadow crosses the moon. Something rises into the night.'],['OVER THE FORGOTTEN','Fly above silent towers and forests lost to time.'],['THE SHADOW STORM','Dark clouds close in. A strange light follows your flight.'],['THE ESCAPE','A burst of fire lights the way through the darkness.'],['DAWN RETURNS','The horizon brightens. You have escaped the unknown.']]}};
-const p=config[park]||config.kingdoms;document.documentElement.style.setProperty('--accent',p.color);
+const p=config[park]||config.kingdoms;const isPhoenix=park==='kingdoms'&&ride==='flight-of-the-phoenix';if(isPhoenix){p.title='FLIGHT OF THE PHOENIX';p.intro='Rise on wings of living fire, soar above the enchanted kingdom, and witness the Phoenix reborn in a sky of gold.';p.acts=[['THE EMBERS AWAKEN','A golden glow stirs inside the ancient Phoenix sanctuary.'],['WINGS OF FIRE','The Phoenix spreads its radiant wings and lifts above the kingdom.'],['THE ASHEN GALE','A storm of ash and ember swirls around your flight.'],['REBIRTH IN FLAME','The Phoenix dives through a ring of fire and rises renewed.'],['SUNRISE OVER THE REALM','Golden feathers drift as the kingdom welcomes the dawn.']]}document.documentElement.style.setProperty('--accent',p.color);
 $('ridePark').textContent=p.name+' · VIRTUAL ATTRACTION';$('rideName').textContent=p.title;$('rideIntro').textContent=p.intro;$('parkBack').href=park==='kingdoms'?'kingdoms.html':park+'.html';$('backToPark').href=$('parkBack').href;$('backToPark').textContent='Return to '+p.name.replace('KAEVORYN ','')+' ↗';document.title=p.title+' — Kaevoryn Studios';
 const canvas=$('rideCanvas'),ctx=canvas.getContext('2d');let w=0,h=0,dpr=1,active=false,finished=false,act=0,elapsed=0,last=0,raf=0,muted=true,reduce=matchMedia('(prefers-reduced-motion: reduce)').matches,audioCtx=null,audioMaster=null;
 const duration=9500;
@@ -109,6 +109,29 @@ if(act===3&&active){
 }
 ctx.restore();
 }
+function phoenix(t){
+ const scale=Math.min(w/760,h/440),cx=w*.53,cy=h*.51,beat=Math.sin(t*.0065),glow=ctx.createRadialGradient(cx,cy,5,cx,cy,175);
+ glow.addColorStop(0,'#ffb52b55');glow.addColorStop(1,'#ff7a1600');ctx.fillStyle=glow;ctx.fillRect(0,0,w,h);
+ ctx.save();ctx.translate(cx,cy+Math.sin(t*.0028)*8);ctx.rotate(Math.sin(t*.0013)*.055);ctx.scale(scale,scale);
+ // Long streaming tail feathers
+ for(let i=0;i<7;i++){const yy=(i-3)*7,tail=100+i*13;const g=ctx.createLinearGradient(-40,20,-tail,95+yy);g.addColorStop(0,'#fff4a0');g.addColorStop(.35,'#ff9d21');g.addColorStop(1,'#bd2d18');ctx.strokeStyle=g;ctx.lineWidth=9-i*.65;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(-36,22);ctx.quadraticCurveTo(-88,55+yy,-tail,88+yy+Math.sin(t*.004+i)*8);ctx.stroke();ctx.beginPath();ctx.arc(-tail,88+yy+Math.sin(t*.004+i)*8,3,0,Math.PI*2);ctx.fillStyle='#fff0a0';ctx.fill()}
+ // Far wing and near wing are broad feathered fans, hinged at the shoulders
+ function wing(side,amount,near){ctx.save();ctx.scale(side,1);ctx.rotate(beat*amount);const base=near?'#ff6b1b':'#c9421c';ctx.fillStyle=base;ctx.strokeStyle=near?'#ffd66b':'#ff9b35';ctx.lineWidth=2.5;ctx.beginPath();ctx.moveTo(0,0);ctx.quadraticCurveTo(35,-65,155,-175);ctx.quadraticCurveTo(135,-65,93,-24);ctx.quadraticCurveTo(70,5,0,0);ctx.closePath();ctx.fill();ctx.stroke();for(let i=0;i<8;i++){const x=20+i*16,y=-22-i*17;const endX=48+i*16,endY=-60-i*15;const g=ctx.createLinearGradient(x,y,endX,endY);g.addColorStop(0,'#fff2a0');g.addColorStop(.4,i%2?'#ffb52b':'#ff6b1b');g.addColorStop(1,'#b82d22');ctx.strokeStyle=g;ctx.lineWidth=9;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(x,y);ctx.quadraticCurveTo(endX-15,endY+13,endX,endY);ctx.stroke();ctx.strokeStyle='#ffe69a';ctx.lineWidth=1.4;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(endX,endY);ctx.stroke()}ctx.restore()}
+ wing(-1,.24,false);wing(1,-.29,true);
+ // Feathered body, chest and glowing heart
+ const body=ctx.createLinearGradient(-25,-15,35,55);body.addColorStop(0,'#fff1a1');body.addColorStop(.25,'#ffb32b');body.addColorStop(.65,'#f05a20');body.addColorStop(1,'#9e241c');ctx.fillStyle=body;ctx.beginPath();ctx.ellipse(0,12,49,65,-.16,0,Math.PI*2);ctx.fill();
+ ctx.save();ctx.globalCompositeOperation='lighter';const heart=ctx.createRadialGradient(5,8,1,5,8,40);heart.addColorStop(0,'#fffbd1');heart.addColorStop(.3,'#ffd45b');heart.addColorStop(1,'#ff5a1600');ctx.fillStyle=heart;ctx.beginPath();ctx.arc(5,8,40,0,Math.PI*2);ctx.fill();ctx.restore();
+ // Neck, crest, sharp beak and bright eye
+ ctx.strokeStyle='#ff9d25';ctx.lineWidth=23;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(20,-28);ctx.quadraticCurveTo(42,-58,57,-76);ctx.stroke();
+ ctx.fillStyle='#ffb82e';ctx.beginPath();ctx.moveTo(35,-72);ctx.quadraticCurveTo(49,-103,76,-103);ctx.quadraticCurveTo(91,-96,88,-79);ctx.lineTo(111,-69);ctx.lineTo(85,-62);ctx.quadraticCurveTo(62,-51,44,-61);ctx.closePath();ctx.fill();
+ for(let i=0;i<5;i++){ctx.strokeStyle=i%2?'#ff6b1b':'#ffe27b';ctx.lineWidth=6;ctx.beginPath();ctx.moveTo(48+i*7,-89+i*3);ctx.quadraticCurveTo(33+i*5,-111-i*3,27+i*8,-119-i*2);ctx.stroke()}
+ ctx.fillStyle='#fffbd2';ctx.beginPath();ctx.arc(76,-82,5,0,Math.PI*2);ctx.fill();ctx.fillStyle='#6e1c16';ctx.beginPath();ctx.arc(78,-82,2,0,Math.PI*2);ctx.fill();
+ // Sparks peel away from the wings and tail
+ for(let i=0;i<28;i++){const x=Math.sin(i*12.989+t*.001+i)*210,y=Math.cos(i*7.31+t*.0015)*125;const r=1.5+(i%3);ctx.globalAlpha=.35+((Math.sin(t*.008+i)+1)*.25);ctx.fillStyle=i%3?'#ffb52b':'#fff5b0';ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill()}ctx.globalAlpha=1;
+ // During the rebirth act, a spiral of flame surrounds the Phoenix
+ if(act===3&&active){ctx.globalCompositeOperation='lighter';for(let i=0;i<3;i++){ctx.strokeStyle=i===1?'#fff1a0':'#ff7925';ctx.lineWidth=5-i;ctx.beginPath();ctx.ellipse(0,10,92+i*17,65+i*13,t*.0015+i*.7,Math.PI*.1,Math.PI*1.65);ctx.stroke()}ctx.globalCompositeOperation='source-over'}
+ ctx.restore();
+}
 function draw(t){if(!w||!h)return;const storm=act===2,night=park==='afterdark',space=park==='beyond';const sky=ctx.createLinearGradient(0,0,0,h);sky.addColorStop(0,night?'#09091d':space?'#090d31':'#0b2948');sky.addColorStop(.6,night?'#40203d':space?'#29275e':'#24718a');sky.addColorStop(1,'#b0d9d4');ctx.fillStyle=sky;ctx.fillRect(0,0,w,h);
 if(!night&&!space){const sun=ctx.createRadialGradient(w*.75,h*.23,2,w*.75,h*.23,110);sun.addColorStop(0,'#fff8cf');sun.addColorStop(1,'#fff8cf00');ctx.fillStyle=sun;ctx.fillRect(0,0,w,h)}
 // Layered cumulus clouds: bright upper lobes, soft shaded undersides and depth
@@ -142,7 +165,7 @@ if(storm){
 if(!space){ // kingdom castle towers scrolling by
 for(let i=0;i<5;i++){const x=((i*245-t*.045)%(w+220)+w+220)%(w+220)-100,base=h*.78,ht=65+(i%3)*32;ctx.fillStyle=night?'#171327':'#263c58';ctx.fillRect(x,base-ht,48,ht);path([[x-8,base-ht],[x+24,base-ht-36],[x+56,base-ht]],night?'#261832':'#45617c');ctx.fillStyle='#f5d99a';ctx.fillRect(x+19,base-ht+22,9,17)}}
 else{for(let i=0;i<5;i++){const x=((i*210-t*.04)%(w+200)+w+200)%(w+200)-90,y=h*(.25+(i%3)*.15);ctx.strokeStyle='#c2b5ff';ctx.lineWidth=5;ctx.beginPath();ctx.ellipse(x,y,28,58,0,0,Math.PI*2);ctx.stroke()}}
-dragon(t);
+if(isPhoenix)phoenix(t);else dragon(t);
 // ride streaks create forward speed
 for(let i=0;i<18;i++){const x=((i*91-t*.24)%(w+30)+w+30)%(w+30),y=(i*57)%(h*.7);ctx.strokeStyle='#d8faff55';ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x-24,y+3);ctx.stroke()}
 
