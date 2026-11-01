@@ -137,6 +137,50 @@ animation:hm-layered-snow 11s linear infinite;
 @keyframes hm-santa-bob{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-4px) rotate(-1deg)}}
 @media(prefers-reduced-motion:reduce){.hm-art.hm-art-enter{animation:none!important}.hm-scene .hm-snow,.hm-scene .hm-particles{animation:none!important}}
 
+
+/* Holiday-specific worlds: each selection changes the full scene palette and atmosphere. */
+.hm-stage.holiday-halloween .hm-scene{background:radial-gradient(ellipse at 50% 72%,#6b2368aa,transparent 55%),linear-gradient(#160d2c,#35133d 58%,#100919)}
+.hm-stage.holiday-halloween .hm-scene .moon{background:#f4d9b2;box-shadow:0 0 42px #ff8c3dbb}
+.hm-stage.holiday-halloween .hm-scene .horizon{background:linear-gradient(145deg,#3a214b,#100919)}
+.hm-stage.holiday-halloween .hm-scene .scene-symbol{filter:drop-shadow(0 0 20px #ff7b32bb)}
+.hm-stage.holiday-halloween .hm-snow,.hm-stage.holiday-halloween .hm-particles{background-image:radial-gradient(circle,#ff9b45 0 2px,transparent 3px),radial-gradient(circle,#c78cff 0 1.5px,transparent 2.5px),radial-gradient(circle,#fff1cc 0 1px,transparent 2px);background-size:47px 59px,83px 97px,131px 113px;filter:drop-shadow(0 0 4px #ff8a38)}
+.hm-stage.holiday-thanksgiving .hm-scene{background:radial-gradient(ellipse at 50% 72%,#a85b1aaa,transparent 58%),linear-gradient(#311b20,#754024 58%,#21131b)}
+.hm-stage.holiday-thanksgiving .hm-scene .moon{background:#ffd99a;box-shadow:0 0 40px #ffb34caa}
+.hm-stage.holiday-thanksgiving .hm-scene .horizon{background:linear-gradient(145deg,#75452c,#21131b)}
+.hm-stage.holiday-thanksgiving .hm-scene .scene-symbol{filter:drop-shadow(0 0 18px #ffbb55bb)}
+.hm-stage.holiday-thanksgiving .hm-snow,.hm-stage.holiday-thanksgiving .hm-particles{background-image:radial-gradient(ellipse,#e7a451 0 2px,transparent 3px),radial-gradient(ellipse,#c96b3a 0 2px,transparent 3px),radial-gradient(circle,#ffe0a0 0 1px,transparent 2px);background-size:67px 49px,103px 87px,139px 111px}
+.hm-stage.holiday-christmas .hm-scene{background:radial-gradient(ellipse at 50% 70%,#275078aa,transparent 58%),linear-gradient(#101a3a,#14233b 58%,#080d19)}
+.hm-stage.holiday-newyear .hm-scene{background:radial-gradient(ellipse at 50% 35%,#243d80aa,transparent 55%),linear-gradient(#050b24,#171b48 60%,#080816)}
+.hm-stage.holiday-newyear .hm-scene .moon{background:#e6d8ff;box-shadow:0 0 46px #a99affbb}
+.hm-stage.holiday-newyear .hm-scene .horizon{background:linear-gradient(145deg,#25295e,#080816)}
+.hm-stage.holiday-newyear .hm-scene .scene-symbol{filter:drop-shadow(0 0 22px #ffe49c)}
+.hm-stage.holiday-newyear .hm-snow,.hm-stage.holiday-newyear .hm-particles{background-image:radial-gradient(circle,#fff4c6 0 2px,transparent 3px),radial-gradient(circle,#8beaff 0 1.5px,transparent 2.5px),radial-gradient(circle,#e4b7ff 0 2px,transparent 3px);background-size:41px 53px,73px 89px,109px 121px}
+.hm-stage.holiday-valentine .hm-scene{background:radial-gradient(ellipse at 50% 70%,#9f315f99,transparent 58%),linear-gradient(#321126,#72264d 58%,#190b1c)}
+.hm-stage.holiday-valentine .hm-scene .moon{background:#ffd8e8;box-shadow:0 0 42px #ff8bbbbb}
+.hm-stage.holiday-valentine .hm-scene .horizon{background:linear-gradient(145deg,#702b51,#190b1c)}
+.hm-stage.holiday-valentine .hm-scene .scene-symbol{filter:drop-shadow(0 0 20px #ff83b5bb)}
+.hm-stage.holiday-valentine .hm-snow,.hm-stage.holiday-valentine .hm-particles{background-image:radial-gradient(circle,#ff9fc8 0 2px,transparent 3px),radial-gradient(circle,#fff0f6 0 1.5px,transparent 2.5px),radial-gradient(circle,#e879ad 0 2px,transparent 3px);background-size:53px 67px,89px 103px,127px 131px}
+.hm-stage.holiday-easter .hm-scene{background:radial-gradient(ellipse at 50% 72%,#478b72aa,transparent 58%),linear-gradient(#163b47,#5b8b78 58%,#102b2c)}
+.hm-stage.holiday-easter .hm-scene .moon{background:#fff0bf;box-shadow:0 0 40px #fff0bbaa}
+.hm-stage.holiday-easter .hm-scene .horizon{background:linear-gradient(145deg,#548a65,#102b2c)}
+.hm-stage.holiday-easter .hm-scene .scene-symbol{filter:drop-shadow(0 0 18px #fff0b9bb)}
+.hm-stage.holiday-easter .hm-snow,.hm-stage.holiday-easter .hm-particles{background-image:radial-gradient(circle,#ffc9e5 0 2px,transparent 3px),radial-gradient(circle,#fff0a8 0 1.5px,transparent 2.5px),radial-gradient(circle,#b5efff 0 2px,transparent 3px);background-size:59px 71px,97px 107px,127px 139px}
+.hm-stage.holiday-july4 .hm-scene{background:radial-gradient(ellipse at 50% 38%,#234a8caa,transparent 56%),linear-gradient(#07142f,#142b58 60%,#080d19)}
+.hm-stage.holiday-july4 .hm-scene .moon{background:#f4f6ff;box-shadow:0 0 40px #dbe7ffbb}
+.hm-stage.holiday-july4 .hm-scene .horizon{background:linear-gradient(145deg,#243c64,#080d19)}
+.hm-stage.holiday-july4 .hm-scene .scene-symbol{filter:drop-shadow(0 0 22px #ffdf9c)}
+.hm-stage.holiday-july4 .hm-snow,.hm-stage.holiday-july4 .hm-particles{background-image:radial-gradient(circle,#ff596f 0 2px,transparent 3px),radial-gradient(circle,#fff 0 1.5px,transparent 2.5px),radial-gradient(circle,#62b5ff 0 2px,transparent 3px);background-size:61px 73px,89px 101px,127px 139px}
+.hm-stage.holiday-birthday .hm-scene{background:radial-gradient(ellipse at 50% 70%,#7d3d91aa,transparent 58%),linear-gradient(#20133f,#48265e 58%,#100b20)}
+.hm-stage.holiday-birthday .hm-scene .moon{background:#ffe7a4;box-shadow:0 0 42px #ffd16abb}
+.hm-stage.holiday-birthday .hm-scene .horizon{background:linear-gradient(145deg,#503060,#100b20)}
+.hm-stage.holiday-birthday .hm-scene .scene-symbol{filter:drop-shadow(0 0 20px #ffd16abb)}
+.hm-stage.holiday-birthday .hm-snow,.hm-stage.holiday-birthday .hm-particles{background-image:radial-gradient(circle,#ff8acb 0 2px,transparent 3px),radial-gradient(circle,#ffe27c 0 1.5px,transparent 2.5px),radial-gradient(circle,#8beaff 0 2px,transparent 3px);background-size:43px 59px,79px 97px,113px 127px}
+/* Keep Christmas character art exclusive to Christmas; other holidays use their own themed symbols and worlds. */
+.hm-stage:not(.holiday-christmas) .hm-art{display:none}
+.hm-stage:not(.holiday-christmas) .hm-scene .scene-symbol{font-size:clamp(64px,11vw,132px);animation:hm-holiday-symbol 3.2s ease-in-out infinite}
+@keyframes hm-holiday-symbol{0%,100%{transform:translateY(0) scale(1) rotate(-2deg)}50%{transform:translateY(-9px) scale(1.08) rotate(2deg)}}
+@media(prefers-reduced-motion:reduce){.hm-stage:not(.holiday-christmas) .hm-scene .scene-symbol{animation:none!important}}
+
 /* Five-screen synchronized holiday finale. */
 .hm-finale-burst{position:absolute;inset:-12%;z-index:0;pointer-events:none;opacity:0;transform:scale(.55);background:radial-gradient(ellipse at 50% 48%,#fff8d9a8 0, #ffe7a455 13%,#8beaff22 34%,transparent 66%);mix-blend-mode:screen}
 .finale-mode .hm-scene .hm-finale-burst{animation:hm-finale-bloom 3.8s ease-out both}
@@ -243,6 +287,8 @@ stage.classList.toggle("calibration-mode",calibrationOn);
 stage.classList.toggle("identification-mode",identifyOn);
 stage.classList.toggle("show-running",running);
 stage.classList.toggle("finale-mode",index===current().length-1&&!identifyOn);
+stage.classList.remove("holiday-halloween","holiday-thanksgiving","holiday-christmas","holiday-newyear","holiday-valentine","holiday-easter","holiday-july4","holiday-birthday");
+stage.classList.add("holiday-"+holiday.value);
 applyProjectorSettings();
 stage.querySelectorAll(".hm-snow,.hm-particles").forEach(function(el){el.style.display=effects.value==="off"?"none":"block";el.style.opacity=effects.value==="off"?"0":(effects.value==="glow"?"0.18":"");});
 stage.querySelectorAll(".hm-beam").forEach(function(el){el.style.opacity=effects.value==="beam"?"0.65":"0";});
