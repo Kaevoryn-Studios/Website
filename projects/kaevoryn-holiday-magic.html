@@ -23,6 +23,20 @@
 .hm-controls{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:14px}.hm-control{padding:12px;border:1px solid #35415d;border-radius:12px;background:#0a1122}.hm-control label{display:block;font-size:10px;letter-spacing:1px;color:#c5d5eb;margin-bottom:7px}.hm-control select,.hm-control input{width:100%;accent-color:var(--hm-cyan)}.hm-control select{background:#101a30;color:#fff;border:1px solid #3b4c6b;border-radius:8px;padding:9px}.hm-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.hm-btn{border:1px solid #60718f;border-radius:10px;background:#15213a;color:#f4f8ff;padding:10px 14px;font-weight:700;font-size:12px}.hm-btn.primary{background:linear-gradient(100deg,#9cefff,#c4b0ff);border:0;color:#101426}.hm-btn:focus-visible,.hm-control select:focus-visible,.hm-control input:focus-visible{outline:2px solid white;outline-offset:3px}.hm-note{font-size:11px;color:#aebed4;margin:12px 0 0}.hm-sections{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;padding:30px 0 65px}.hm-info{border:1px solid #8ceeff30;border-radius:16px;padding:18px;background:#10182ccc}.hm-info h3{margin:0 0 7px;font-size:14px}.hm-info p{margin:0;color:#b5c3d8;font-size:13px}.hm-warning{border-left:3px solid var(--hm-gold);padding:12px 15px;background:#f5d38a0d;color:#d6ddec;font-size:12px;margin:0 0 55px}
 @media(max-width:720px){.hm-projectors{grid-template-columns:repeat(2,minmax(0,1fr))}.hm-output:nth-child(n){grid-column:span 1}.hm-output:first-child{grid-column:span 2}.hm-output .hm-window{min-height:165px}.hm-controls{grid-template-columns:repeat(2,minmax(0,1fr))}.hm-sections{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){.hm-scene-symbol,.hm-snow,.hm-particles,.hm-beam{animation:none!important}}
+
+body.projector-mode{margin:0!important;background:#050914!important;overflow:hidden}
+body.projector-mode .site-header,body.projector-mode .hm-hero,body.projector-mode .hm-stage-head,body.projector-mode .hm-controls,body.projector-mode .hm-actions,body.projector-mode .hm-note,body.projector-mode .hm-sections,body.projector-mode .hm-warning,body.projector-mode .site-footer,body.projector-mode .skip-link{display:none!important}
+body.projector-mode main{margin:0!important;padding:0!important;max-width:none!important}
+body.projector-mode .hm-stage-wrap{position:fixed;inset:0;border:0;border-radius:0;padding:0;background:#050914;box-shadow:none}
+body.projector-mode .hm-stage{width:100%;height:100%;filter:none!important}
+body.projector-mode .hm-projectors{display:block;width:100%;height:100%}
+body.projector-mode .hm-output{display:none!important;position:absolute;inset:0;width:100%;height:100%}
+body.projector-mode .hm-output.is-active{display:block!important}
+body.projector-mode .hm-output-label{position:absolute;z-index:10;top:12px;left:14px;margin:0;padding:6px 9px;border-radius:7px;background:#07101dcc;color:#eaf8ff;font-size:11px}
+body.projector-mode .hm-output-label span{margin-left:8px}
+body.projector-mode .hm-output .hm-window{position:absolute;inset:0;min-height:0;width:100%;height:100%;border:0;border-radius:0;box-shadow:none}
+body.projector-mode .hm-output .hm-scene .scene-symbol{font-size:clamp(72px,16vw,220px)}
+body.projector-mode .hm-output .hm-scene .scene-name{font-size:clamp(14px,2vw,28px);bottom:7%}
 </style>
 </head>
 <body>
@@ -49,7 +63,7 @@
 <div class="hm-control"><label for="hm-brightness">LIGHT INTENSITY <output id="hm-brightness-value">65%</output></label><input id="hm-brightness" type="range" min="0" max="100" value="65"></div>
 <div class="hm-control"><label for="hm-effects">MAGICAL EFFECT</label><select id="hm-effects"><option value="sparkle">Starlight & sparkles</option><option value="snow">Falling snow</option><option value="beam">Magic beams</option><option value="glow">Enchanted glow</option><option value="off">Effects off</option></select></div>
 </div>
-<div class="hm-actions"><button class="hm-btn primary" id="hm-start" type="button">▶ START THE SHOW</button><button class="hm-btn" id="hm-next" type="button">NEXT SCENE ↗</button><button class="hm-btn" id="hm-sound" type="button" aria-pressed="false">♫ SOUND: OFF</button><button class="hm-btn" id="hm-lights" type="button" aria-pressed="true">✧ LIGHTS: ON</button><button class="hm-btn" id="hm-stop" type="button">■ STOP</button></div>
+<div class="hm-actions"><button class="hm-btn primary" id="hm-start" type="button">▶ START THE SHOW</button><button class="hm-btn" id="hm-next" type="button">NEXT SCENE ↗</button><button class="hm-btn" id="hm-launch" type="button">▣ OPEN 5 PROJECTOR WINDOWS</button><button class="hm-btn" id="hm-sound" type="button" aria-pressed="false">♫ SOUND: OFF</button><button class="hm-btn" id="hm-lights" type="button" aria-pressed="true">✧ LIGHTS: ON</button><button class="hm-btn" id="hm-stop" type="button">■ STOP</button></div>
 <p class="hm-note" id="hm-caption">Preview mode: all five projector previews are synchronized. Choose a holiday and start the show.</p>
 </section>
 <section class="hm-sections" aria-label="Experience features">
@@ -75,6 +89,9 @@ birthday:[["🎈","The celebration begins"],["🎂","Make a wish"],["🎉","Let 
 };
 var holiday=document.getElementById("hm-holiday"),mode=document.getElementById("hm-mode"),stage=document.getElementById("hm-stage"),status=document.getElementById("hm-status"),caption=document.getElementById("hm-caption"),brightness=document.getElementById("hm-brightness"),effects=document.getElementById("hm-effects"),soundBtn=document.getElementById("hm-sound"),lightsBtn=document.getElementById("hm-lights"),startBtn=document.getElementById("hm-start");
 var index=0,running=false,timer=null,audio=null,oscillators=[],soundOn=false,lightsOn=true;
+var projectorId=Number(new URLSearchParams(window.location.search).get("projector"))||0;
+var syncChannel=("BroadcastChannel" in window)?new BroadcastChannel("kaevoryn-holiday-magic-sync"):null;
+if(projectorId>=1&&projectorId<=5){document.body.classList.add("projector-mode");document.querySelectorAll(".hm-output")[projectorId-1].classList.add("is-active");document.title="Projector "+projectorId+" · Kaevoryn Holiday Magic";}
 function current(){return scenes[holiday.value]||scenes.christmas}
 function render(){
 var sequence=current(),roles=["MAIN SCENE","WINDOW A","WINDOW B","WINDOW C","SPECIAL EFFECTS"];
@@ -88,6 +105,7 @@ stage.classList.toggle("show-running",running);
 stage.querySelectorAll(".hm-snow,.hm-particles").forEach(function(el){el.style.display=effects.value==="off"?"none":"block";el.style.opacity=effects.value==="off"?"0":(effects.value==="glow"?"0.18":"");});
 stage.querySelectorAll(".hm-beam").forEach(function(el){el.style.opacity=effects.value==="beam"?"0.65":"0";});
 if(effects.value==="snow"){stage.querySelectorAll(".hm-snow").forEach(function(el){el.style.opacity=".9";});}
+if(syncChannel&&!projectorId){syncChannel.postMessage({type:"state",holiday:holiday.value,index:index,running:running,brightness:brightness.value,effects:effects.value,lightsOn:lightsOn});}
 }
 function next(){index=(index+1)%current().length;render();}
 function stop(){running=false;if(timer){clearInterval(timer);timer=null;}stage.classList.remove("show-running");startBtn.textContent="▶ START THE SHOW";status.textContent="Standby · Show stopped";render();}
@@ -100,6 +118,22 @@ if(audio.state==="suspended")audio.resume();return true;
 holiday.addEventListener("change",function(){index=0;stop();render();});
 mode.addEventListener("change",function(){if(running){stop();start();}});
 document.getElementById("hm-next").addEventListener("click",next);
+document.getElementById("hm-launch").addEventListener("click",function(){
+var opened=0;
+for(var n=1;n<=5;n++){var w=window.open(window.location.pathname+"?projector="+n,"kaevoryn-projector-"+n);if(w)opened++;}
+caption.textContent=opened===5?"Five projector windows opened. Move each window to its projector display, then use fullscreen (F11).":"Your browser opened "+opened+" of 5 windows. Allow pop-ups for this site and try again.";
+if(syncChannel)syncChannel.postMessage({type:"request-state"});
+});
+if(syncChannel){
+syncChannel.onmessage=function(event){
+var msg=event.data||{};
+if(msg.type==="request-state"&&!projectorId){syncChannel.postMessage({type:"state",holiday:holiday.value,index:index,running:running,brightness:brightness.value,effects:effects.value,lightsOn:lightsOn});}
+if(msg.type==="state"&&projectorId){
+holiday.value=msg.holiday;index=msg.index;running=msg.running;brightness.value=msg.brightness;effects.value=msg.effects;lightsOn=msg.lightsOn;render();
+}
+};
+if(projectorId)syncChannel.postMessage({type:"request-state"});
+}
 startBtn.addEventListener("click",function(){if(running&&mode.value==="automatic"){stop();return;}start();});
 document.getElementById("hm-stop").addEventListener("click",stop);
 soundBtn.addEventListener("click",function(){soundOn=!soundOn;if(soundOn){if(initAudio()){soundBtn.textContent="♫ SOUND: ON";soundBtn.setAttribute("aria-pressed","true");}else{soundOn=false;}}else{if(audio&&audio._master)audio._master.gain.setTargetAtTime(0,audio.currentTime,.08);soundBtn.textContent="♫ SOUND: OFF";soundBtn.setAttribute("aria-pressed","false");}if(soundOn&&audio&&audio._master)audio._master.gain.setTargetAtTime(.035,audio.currentTime,.12);});
