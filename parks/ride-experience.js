@@ -23,7 +23,19 @@ function tone(freq,duration,type='sine',volume=.12,slide=0){if(muted||!audioCtx|
 function whoosh(){noiseEffect(.9,.035,260,620,1800,.18,.95,-260)}
 function roar(){tone(74,1.15,'sine',.075,-30);tone(108,.9,'sine',.035,-42);noiseEffect(.55,.018,180,330,850,.08,.62,-80)}
 function fireSound(){noiseEffect(1.35,.075,420,1050,2600,.08,1.4,520);noiseEffect(.7,.025,800,1650,3200,.02,.72,-380)}
-function lightningSound(){noiseEffect(.22,.12,520,1450,4200,.004,.24,-650);noiseEffect(1.25,.075,85,260,720,.015,1.3,-120)}
+function lightningSound(){
+ if(muted||!audioCtx||audioCtx.state!=='running')return;
+ const now=audioCtx.currentTime;
+ // Bright, very short crack with a fast pitch fall.
+ const crack=audioCtx.createOscillator(),crackGain=audioCtx.createGain(),crackFilter=audioCtx.createBiquadFilter();
+ crack.type='triangle';crack.frequency.setValueAtTime(2100,now);crack.frequency.exponentialRampToValueAtTime(180,now+.16);
+ crackFilter.type='lowpass';crackFilter.frequency.setValueAtTime(5200,now);crackFilter.frequency.exponentialRampToValueAtTime(520,now+.2);
+ crackGain.gain.setValueAtTime(.0001,now);crackGain.gain.linearRampToValueAtTime(.19,now+.008);crackGain.gain.exponentialRampToValueAtTime(.0001,now+.2);
+ crack.connect(crackFilter).connect(crackGain).connect(audioMaster);crack.start(now);crack.stop(now+.22);
+ // Deep, layered rolling rumble that fades naturally after the strike.
+ noiseEffect(2.7,.12,38,105,430,.025,2.8,-55);
+ noiseEffect(1.9,.045,75,185,650,.08,2.0,-95);
+}
 function windSound(){noiseEffect(1.5,.052,300,780,2200,.45,1.55,-420)}
 
 function dragon(t){
