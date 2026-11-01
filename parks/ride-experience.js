@@ -15,29 +15,57 @@ function whoosh(){tone(180,.7,'sawtooth',.055,-120);tone(420,.45,'triangle',.035
 function roar(){tone(92,1.25,'sawtooth',.12,-45);tone(138,.9,'triangle',.07,-55);tone(48,1.1,'sine',.12,-15)}
 function fireSound(){tone(220,.75,'sawtooth',.08,580);tone(740,.55,'triangle',.045,-380);tone(95,.8,'square',.035,-45)}
 
-function dragon(t){const scale=Math.min(w/760,h/440),cx=w*.53,cy=h*.52,flap=Math.sin(t*.008)*.55,bank=Math.sin(t*.0015)*.10;
-ctx.save();ctx.translate(cx,cy+Math.sin(t*.003)*8);ctx.rotate(bank);ctx.scale(scale,scale);
-// tail, clearly attached to body
-ctx.strokeStyle='#174b50';ctx.lineWidth=19;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(-75,15);ctx.quadraticCurveTo(-145,35,-205,2+Math.sin(t*.004)*15);ctx.stroke();path([[-205,2],[-229,-8],[-215,13]],'#72c9a7');
-// rear wing on far side, flapping
-ctx.save();ctx.translate(-25,-17);ctx.rotate(-.2-flap*.55);path([[0,0],[-45,-115],[-125,-155],[-99,-77],[-166,-105],[-119,-34],[-65,18]],'#276d70','#8ad6c2',3);ctx.restore();
-// body
-ellipse(-5,12,91,39, -.06,'#237a78');ellipse(25,25,52,24,-.1,'#399889');
-// belly plates
-for(let i=0;i<4;i++){ctx.strokeStyle='#a4dfb9';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(-35+i*23,35);ctx.quadraticCurveTo(-10+i*22,47,8+i*22,35);ctx.stroke()}
-// legs
-ctx.strokeStyle='#1a5559';ctx.lineWidth=17;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(-48,29);ctx.lineTo(-60,66);ctx.lineTo(-42,73);ctx.moveTo(47,29);ctx.lineTo(60,62);ctx.lineTo(78,66);ctx.stroke();
-// near wing, articulated fan silhouette
-ctx.save();ctx.translate(-2,-12);ctx.rotate(-.1+flap);path([[0,0],[-22,-118],[-10,-178],[20,-137],[52,-204],[62,-125],[111,-169],[96,-92],[139,-105],[82,-35],[34,13]],'#328f83','#a2e7ce',4);
-ctx.strokeStyle='#a2e7ce';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(-10,-178);ctx.moveTo(0,0);ctx.lineTo(52,-204);ctx.moveTo(0,0);ctx.lineTo(111,-169);ctx.moveTo(0,0);ctx.lineTo(139,-105);ctx.stroke();ctx.restore();
-// neck and head
-ctx.strokeStyle='#2b8880';ctx.lineWidth=30;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(52,2);ctx.quadraticCurveTo(91,-24,110,-56);ctx.stroke();ellipse(120,-62,36,24,-.18,'#4ab49a');path([[133,-70],[174,-62],[149,-49]],'#4ab49a');path([[110,-80],[100,-103],[124,-86]],'#b4e9bd');path([[134,-79],[139,-102],[150,-76]],'#b4e9bd');ellipse(132,-67,4,4,0,'#06131c');ellipse(133,-67,1.5,2,0,'#ffffff');
-// A living flame trails from the dragon's tail tip
-ctx.save();ctx.translate(-224,3+Math.sin(t*.004)*15);ctx.globalCompositeOperation='lighter';
-for(let i=0;i<5;i++){const flick=Math.sin(t*.018+i*2)*7,len=34+i*8,grad=ctx.createLinearGradient(0,0,-len,0);grad.addColorStop(0,'#fffbd0');grad.addColorStop(.28,'#ffd65c');grad.addColorStop(.68,'#ff762d');grad.addColorStop(1,'#f02d18');ctx.fillStyle=grad;ctx.beginPath();ctx.moveTo(0,(i-2)*3);ctx.quadraticCurveTo(-len*.45,-14+flick,-len,flick);ctx.quadraticCurveTo(-len*.6,15+flick,0,(i-2)*3);ctx.fill()}
-ctx.shadowColor='#ff8b32';ctx.shadowBlur=18;ellipse(-5,0,7,6,0,'#fff0a0');ctx.restore();ctx.globalCompositeOperation='source-over';
-// Fine scale highlights catch the light across the dragon's shoulders
-for(let row=0;row<3;row++)for(let col=0;col<7;col++)ellipse(-55+col*17,-8+row*12+(col%2)*4,4,2,.25,'#8bd4b2');
+function dragon(t){
+const scale=Math.min(w/760,h/440),cx=w*.53,cy=h*.52,flap=Math.sin(t*.008)*.48,breath=Math.sin(t*.004)*2,bank=Math.sin(t*.0015)*.10;
+ctx.save();ctx.translate(cx,cy+Math.sin(t*.003)*7);ctx.rotate(bank);ctx.scale(scale,scale);
+// Long, armored tail with jagged dorsal spines
+const tail=ctx.createLinearGradient(-230,0,-45,0);tail.addColorStop(0,'#17262b');tail.addColorStop(.55,'#263d3d');tail.addColorStop(1,'#55705b');
+ctx.strokeStyle=tail;ctx.lineWidth=20;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(-62,15);ctx.bezierCurveTo(-120,39,-174,29,-220,5+Math.sin(t*.004)*12);ctx.stroke();
+for(let i=0;i<7;i++){const x=-83-i*19;path([[x,5],[x-10,-12],[x+5,-5]],'#9b5d38','#392d2b',1)}
+path([[-220,5],[-247,-9],[-238,8],[-252,20],[-220,15]],'#263c3a','#111e22',2);
+// Far wing: broad leathery membrane, scalloped trailing edge and visible finger bones
+ctx.save();ctx.translate(-20,-17);ctx.rotate(-.18-flap*.48);
+path([[0,0],[-37,-115],[-17,-202],[12,-166],[54,-222],[65,-150],[112,-196],[121,-126],[165,-147],[121,-74],[73,-25]],'#202d35','#718078',3);
+ctx.strokeStyle='#9caa9a';ctx.lineWidth=5;ctx.beginPath();[[0,0],[-17,-202],[54,-222],[112,-196],[165,-147]].forEach(pt=>{ctx.moveTo(0,0);ctx.lineTo(pt[0],pt[1])});ctx.stroke();
+for(let i=0;i<4;i++){ctx.strokeStyle='#52645f';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(0,0);ctx.quadraticCurveTo(-30+i*45,-70-i*8,[-17,54,112,165][i],[-202,-222,-196,-147][i]);ctx.stroke()}ctx.restore();
+// Heavy torso with layered armor and shadowed underside
+const body=ctx.createLinearGradient(-15,-30,22,57);body.addColorStop(0,'#71806a');body.addColorStop(.38,'#354b43');body.addColorStop(1,'#101c23');
+ellipse(-3,12,94,43,-.06,body);ellipse(28,27,56,25,-.1,'#263b38');
+const belly=ctx.createLinearGradient(0,20,0,58);belly.addColorStop(0,'#b09a72');belly.addColorStop(1,'#554c43');ellipse(18,39,48,15,-.04,belly);
+for(let i=0;i<6;i++){ctx.strokeStyle='#d0b58a88';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-23+i*15,32);ctx.quadraticCurveTo(-8+i*15,47,5+i*15,34);ctx.stroke()}
+// Muscular hind and forelimbs, bent joints and hooked claws
+function leg(x,y,forward){ctx.strokeStyle='#293d38';ctx.lineWidth=21;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(x,y);ctx.quadraticCurveTo(x+(forward?8:-9),y+19,x+(forward?17:-19),y+38);ctx.lineTo(x+(forward?32:-29),y+49);ctx.stroke();ellipse(x+(forward?17:-19),y+37,12,13,0,'#52634e');for(let c=0;c<3;c++){const xx=x+(forward?32:-29)+c*6-6;path([[xx, y+47],[xx+4,y+57],[xx-2,y+53]],'#d8c5a0','#40372f',1)}}
+leg(-48,26,false);leg(47,24,true);
+// Near wing: huge, ragged, ribbed and leathery
+ctx.save();ctx.translate(-4,-15);ctx.rotate(-.08+flap);
+const membrane=ctx.createLinearGradient(-20,-200,110,10);membrane.addColorStop(0,'#56615a');membrane.addColorStop(.45,'#29363a');membrane.addColorStop(1,'#121d26');
+path([[0,0],[-31,-121],[-19,-207],[9,-172],[47,-232],[62,-157],[111,-205],[119,-130],[168,-157],[132,-80],[82,-31],[37,15]],membrane,'#9a9b83',4);
+ctx.strokeStyle='#b0a88e';ctx.lineWidth=5;ctx.lineCap='round';ctx.beginPath();const tips=[[-19,-207],[47,-232],[111,-205],[168,-157]];tips.forEach(pt=>{ctx.moveTo(0,0);ctx.lineTo(pt[0],pt[1])});ctx.stroke();
+ctx.strokeStyle='#65736a';ctx.lineWidth=2;for(let i=0;i<4;i++){ctx.beginPath();ctx.moveTo(0,0);ctx.quadraticCurveTo(20+i*25,-75-i*9,tips[i][0],tips[i][1]);ctx.stroke()}
+ctx.restore();
+// Neck rises forward from shoulders; armored throat
+const neck=ctx.createLinearGradient(45,-65,110,8);neck.addColorStop(0,'#71806a');neck.addColorStop(.45,'#354a40');neck.addColorStop(1,'#17272a');
+ctx.strokeStyle=neck;ctx.lineWidth=36;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(48,0);ctx.bezierCurveTo(77,-19,78,-54,112,-68);ctx.stroke();
+for(let i=0;i<5;i++){path([[61+i*10,-17-i*7],[69+i*10,-33-i*7],[78+i*10,-18-i*7]],'#a28a67','#28342e',1)}
+// Massive angular skull and long crocodilian muzzle
+const skull=ctx.createLinearGradient(94,-100,170,-39);skull.addColorStop(0,'#879076');skull.addColorStop(.35,'#52644e');skull.addColorStop(1,'#1b2a2b');
+ellipse(125,-73,42,30,-.12,skull);
+path([[137,-82],[191,-67],[183,-51],[148,-48],[126,-58]],'#485a48','#172326',2);
+path([[143,-57],[190,-55],[180,-45],[148,-45]],'#151c20','#0c1318',1);
+for(let i=0;i<5;i++){path([[151+i*7,-56],[155+i*7,-43],[159+i*7,-55]],'#e2d4b2','#534b40',1)}
+// brow ridge, glowing predatory eye, slit pupil
+path([[105,-82],[117,-96],[146,-91],[153,-80],[132,-83]],'#26382f','#111d20',2);
+ellipse(132,-77,8,5,-.12,'#e64b22');ellipse(134,-77,2,5,-.1,'#100e0d');ellipse(132,-79,2,1,0,'#fff2bd');
+for(let i=0;i<3;i++){ellipse(171+i*6,-67,2,1,0,'#101819')}
+// Crown horns and cheek spikes
+path([[111,-91],[91,-126],[120,-103]],'#c1b18b','#41453b',2);path([[133,-94],[145,-132],[149,-94]],'#c1b18b','#41453b',2);path([[102,-67],[75,-82],[91,-57]],'#899078','#26342e',2);
+for(let i=0;i<5;i++){const x=66-i*15;path([[x, -8-i*3],[x-12,-25-i*4],[x+3,-17-i*3]],'#a58d68','#29342e',1)}
+// Scattered armor plates and scale highlights
+for(let row=0;row<4;row++)for(let col=0;col<9;col++){const x=-55+col*17,y=-15+row*11+(col%2)*4;path([[x-4,y],[x,y-4],[x+5,y],[x+2,y+4]],row%2?'#829078':'#a4a084','#263a35',.7)}
+// Ember-lit flame tail; layered tongues stream behind the creature
+ctx.save();ctx.translate(-238,7+Math.sin(t*.004)*12);ctx.globalCompositeOperation='lighter';
+for(let i=0;i<7;i++){const flick=Math.sin(t*.018+i*1.7)*10,len=42+i*9,grad=ctx.createLinearGradient(0,0,-len,0);grad.addColorStop(0,'#fff8c5');grad.addColorStop(.25,'#ffc34d');grad.addColorStop(.62,'#f65b20');grad.addColorStop(1,'#9f1712');ctx.fillStyle=grad;ctx.beginPath();ctx.moveTo(0,(i-3)*3);ctx.bezierCurveTo(-len*.3,-20+flick,-len*.7,-9+flick,-len,flick);ctx.bezierCurveTo(-len*.7,19+flick,-len*.3,15+flick,0,(i-3)*3);ctx.fill()}
+ctx.shadowColor='#ff6b24';ctx.shadowBlur=24;ellipse(-5,0,8,6,0,'#fff2a0');ctx.restore();
 ctx.restore();
 }
 function draw(t){if(!w||!h)return;const storm=act>=2,night=park==='afterdark',space=park==='beyond';const sky=ctx.createLinearGradient(0,0,0,h);sky.addColorStop(0,night?'#09091d':space?'#090d31':'#0b2948');sky.addColorStop(.6,night?'#40203d':space?'#29275e':'#24718a');sky.addColorStop(1,'#b0d9d4');ctx.fillStyle=sky;ctx.fillRect(0,0,w,h);
