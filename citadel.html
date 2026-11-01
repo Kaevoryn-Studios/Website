@@ -142,6 +142,7 @@ status.textContent="Discovery "+current+" of 5 selected. Take your time; there i
 buttons.forEach((button)=>button.addEventListener("click",()=>showDiscovery(Number(button.dataset.discoveryButton))));
 document.getElementById("nextDiscovery").addEventListener("click",()=>showDiscovery(current===5?1:current+1));
 document.getElementById("resetCitadel").addEventListener("click",()=>{showDiscovery(1);status.textContent="Returned to the gate. The Citadel is waiting."});
+window.kaevorynCitadelRemoteDiscovery=showDiscovery;
 showDiscovery(1);
 })();
 </script>
