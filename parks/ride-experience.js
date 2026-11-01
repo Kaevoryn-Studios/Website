@@ -10,12 +10,21 @@ const duration=9500;
 function resize(){const r=canvas.getBoundingClientRect();dpr=Math.min(devicePixelRatio||1,2);w=r.width;h=r.height;canvas.width=Math.max(1,Math.round(w*dpr));canvas.height=Math.max(1,Math.round(h*dpr));ctx.setTransform(dpr,0,0,dpr,0,0);draw(0)}
 function path(points,fill,stroke=null,lw=1){ctx.beginPath();points.forEach((pt,i)=>i?ctx.lineTo(pt[0],pt[1]):ctx.moveTo(pt[0],pt[1]));ctx.closePath();ctx.fillStyle=fill;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lw;ctx.stroke()}}
 function ellipse(x,y,rx,ry,rot,fill){ctx.beginPath();ctx.ellipse(x,y,rx,ry,rot,0,Math.PI*2);ctx.fillStyle=fill;ctx.fill()}function audioReady(){if(!audioCtx){audioCtx=new(window.AudioContext||window.webkitAudioContext)();audioMaster=audioCtx.createGain();audioMaster.gain.value=muted?0:.14;audioMaster.connect(audioCtx.destination)}if(audioCtx.state==='suspended')audioCtx.resume()}
-let noiseBuffer=null;function tone(freq,duration,type='sine',volume=.12,slide=0){if(muted)return;audioReady();if(!noiseBuffer){const size=Math.ceil(audioCtx.sampleRate*2);noiseBuffer=audioCtx.createBuffer(1,size,audioCtx.sampleRate);const data=noiseBuffer.getChannelData(0);let smooth=0,peak=0;const raw=new Float32Array(size);for(let i=0;i<size;i++){smooth=smooth*.965+(Math.random()*2-1)*.035;raw[i]=smooth;peak=Math.max(peak,Math.abs(smooth))}const norm=peak?0.62/peak:1;for(let i=0;i<size;i++)data[i]=raw[i]*norm}const src=audioCtx.createBufferSource(),high=audioCtx.createBiquadFilter(),band=audioCtx.createBiquadFilter(),low=audioCtx.createBiquadFilter(),g=audioCtx.createGain(),now=audioCtx.currentTime;src.buffer=noiseBuffer;high.type='highpass';high.frequency.value=155;high.Q.value=.45;band.type='bandpass';band.frequency.setValueAtTime(Math.max(180,Math.min(900,freq*2)),now);band.Q.value=.42;if(slide)band.frequency.linearRampToValueAtTime(Math.max(180,Math.min(900,(freq+slide)*2)),now+duration);low.type='lowpass';low.frequency.value=1250;low.Q.value=.2;g.gain.setValueAtTime(.0001,now);g.gain.linearRampToValueAtTime(volume*.82,now+.12);g.gain.setValueAtTime(volume*.82,now+Math.max(.13,duration*.55));g.gain.exponentialRampToValueAtTime(.0001,now+duration);src.connect(high).connect(band).connect(low).connect(g).connect(audioMaster);src.start(now);src.stop(now+duration+.02)}
-function whoosh(){tone(150,.85,'sine',.035,-90);tone(290,.6,'sine',.022,-170)}
-function roar(){tone(72,1.1,'sine',.085,-28);tone(112,.85,'sine',.025,-38);tone(48,1.15,'sine',.07,-12)}
-function fireSound(){tone(135,.8,'sine',.07,360);tone(390,.55,'sine',.035,-210);tone(68,.95,'sine',.025,-28)}
-function lightningSound(){tone(58,1.25,'sine',.095,-22);tone(92,.55,'sine',.02,-48);tone(43,1.5,'sine',.075,-12)}
-function windSound(){tone(105,1.2,'sine',.025,-65);tone(185,.9,'sine',.016,-115)}
+let noiseBuffer=null;
+function noiseEffect(duration,volume,highpass,bandpass,lowpass,attack,decay,slide=0){
+ if(muted)return;audioReady();
+ if(!noiseBuffer){const size=Math.ceil(audioCtx.sampleRate*2);noiseBuffer=audioCtx.createBuffer(1,size,audioCtx.sampleRate);const data=noiseBuffer.getChannelData(0);for(let i=0;i<size;i++)data[i]=(Math.random()*2-1)*.55}
+ const now=audioCtx.currentTime,src=audioCtx.createBufferSource(),hp=audioCtx.createBiquadFilter(),bp=audioCtx.createBiquadFilter(),lp=audioCtx.createBiquadFilter(),gain=audioCtx.createGain();
+ src.buffer=noiseBuffer;hp.type='highpass';hp.frequency.value=highpass;hp.Q.value=.5;bp.type='bandpass';bp.frequency.setValueAtTime(bandpass,now);bp.Q.value=.7;if(slide)bp.frequency.linearRampToValueAtTime(Math.max(220,bandpass+slide),now+duration);lp.type='lowpass';lp.frequency.value=lowpass;lp.Q.value=.25;
+ gain.gain.setValueAtTime(.0001,now);gain.gain.linearRampToValueAtTime(volume,now+attack);gain.gain.setValueAtTime(volume,now+Math.max(attack+.02,duration*.35));gain.gain.exponentialRampToValueAtTime(.0001,now+decay);
+ src.connect(hp).connect(bp).connect(lp).connect(gain).connect(audioMaster);src.start(now);src.stop(now+decay+.02)
+}
+function tone(freq,duration,type='sine',volume=.12,slide=0){if(muted)return;audioReady();const o=audioCtx.createOscillator(),g=audioCtx.createGain(),now=audioCtx.currentTime;o.type='sine';o.frequency.setValueAtTime(freq,now);if(slide)o.frequency.exponentialRampToValueAtTime(Math.max(30,freq+slide),now+duration);g.gain.setValueAtTime(.0001,now);g.gain.linearRampToValueAtTime(volume,now+.06);g.gain.exponentialRampToValueAtTime(.0001,now+duration);o.connect(g).connect(audioMaster);o.start(now);o.stop(now+duration+.03)}
+function whoosh(){noiseEffect(.9,.035,260,620,1800,.18,.95,-260)}
+function roar(){tone(74,1.15,'sine',.075,-30);tone(108,.9,'sine',.035,-42);noiseEffect(.55,.018,180,330,850,.08,.62,-80)}
+function fireSound(){noiseEffect(1.35,.075,420,1050,2600,.08,1.4,520);noiseEffect(.7,.025,800,1650,3200,.02,.72,-380)}
+function lightningSound(){noiseEffect(.22,.12,520,1450,4200,.004,.24,-650);noiseEffect(1.25,.075,85,260,720,.015,1.3,-120)}
+function windSound(){noiseEffect(1.5,.052,300,780,2200,.45,1.55,-420)}
 
 function dragon(t){
 const scale=Math.min(w/760,h/440),cx=w*.53,cy=h*.52,flap=Math.sin(t*.009),breath=Math.sin(t*.004)*2,bank=Math.sin(t*.0015)*.10;
