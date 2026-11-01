@@ -30,6 +30,7 @@ a{color:inherit}.topbar{display:flex;justify-content:space-between;gap:18px;flex
 <div class="preview" id="paradePreview">
 <div class="light-beam one" aria-hidden="true"></div><div class="light-beam two" aria-hidden="true"></div><div class="parade-character" id="paradeCharacter" aria-hidden="true">🐉</div><div class="float-procession" id="floatProcession" aria-hidden="true"><span class="float-unit">🐉</span><span class="float-unit">🦋</span><span class="float-unit">🏰</span></div><div class="preview-copy"><div class="symbol" id="previewSymbol" aria-hidden="true">✧</div><p class="eyebrow" id="previewEyebrow">SCENE 01 · THE OPENING</p><h2 id="previewTitle">THE DREAM PARADE AWAKENS</h2><p id="previewText" aria-live="polite">A shimmer of cyan and violet light reveals the first magical float. The opening music cue is planned, and the world comes alive.</p></div>
 </div>
+<p id="controlLinkStatus" class="hint" role="status">Show Control Room link: waiting for your control room in another tab on this device.</p>
 <div class="parade-controls" aria-label="Parade playback"><button type="button" id="playParade">▶ Play Parade Preview</button><button type="button" id="stopParade" disabled>■ Stop</button><button type="button" id="soundToggle" aria-pressed="false">♫ Sound: Off</button><button type="button" id="lightsToggle" aria-pressed="true">Stage Lights: On</button><button type="button" id="fireworksToggle" aria-pressed="true">Fireworks: On</button></div><p class="timeline-caption" id="timelineCaption" aria-live="polite">Scene 1 of 4 · Opening</p><div class="scene-timeline" id="sceneTimeline" aria-label="Parade scene progress"><div class="scene-step" data-step="0" aria-current="step"><span></span></div><div class="scene-step" data-step="1"><span></span></div><div class="scene-step" data-step="2"><span></span></div><div class="scene-step" data-step="3"><span></span></div></div><div class="preview-controls" aria-label="Preview parade scenes">
 <button type="button" data-scene="opening" aria-pressed="true">Opening</button><button type="button" data-scene="portal" aria-pressed="false">Portal</button><button type="button" data-scene="dream" aria-pressed="false">Dream Sequence</button><button type="button" data-scene="finale" aria-pressed="false">Grand Finale</button>
 </div>
@@ -216,6 +217,35 @@ a{color:inherit}.topbar{display:flex;justify-content:space-between;gap:18px;flex
     paradeTimer=window.setInterval(function(){sceneIndex++;if(sceneIndex>=sceneOrder.length){finishParade();return;}showScene(sceneOrder[sceneIndex]);},3500);
   });
   stopButton.addEventListener("click",stopParade);
+  // Same-browser cross-tab connection to the private Show Control Room.
+  let controlLastSeen=0,controlChannel=null;
+  const controlStatus=document.getElementById("controlLinkStatus");
+  try{
+    if("BroadcastChannel" in window){
+      controlChannel=new BroadcastChannel("kaevoryn-show-bridge-v1");
+      controlChannel.onmessage=function(event){
+        const m=event.data||{};
+        if(m.type==="control-heartbeat"){controlLastSeen=Date.now();if(controlStatus)controlStatus.textContent="✦ SHOW CONTROL CONNECTED · Live cues can now direct this parade.";}
+        if(m.type==="show-start"){controlLastSeen=Date.now();stopParade();playButton.disabled=true;playButton.textContent="✧ Controlled by Show Room";stopButton.disabled=false;}
+        if(m.type==="show-stop"){stopParade();if(controlStatus)controlStatus.textContent="Show Control Room stopped the sequence. Link ready.";}
+        if(m.type==="stage-state"&&m.state){const s=m.state;if(/^#[0-9a-f]{6}$/i.test(s.color||""))preview.style.setProperty("--world-a",s.color);const level=Math.max(0,Math.min(100,Number(s.brightness)||0))/100;preview.style.filter="brightness("+(0.55+level*.65)+")";preview.classList.toggle("lights-off",level===0);}
+        if(m.type==="cue"&&m.cue){
+          controlLastSeen=Date.now();const cue=m.cue,name=String(cue.name||"").toLowerCase(),action=cue.action;let scene=null;
+          if(name==="the night awakens"||name==="a signal in the darkness"||name==="the stage illuminates"||name==="the room awakens")scene="opening";
+          else if(name==="portal energy gathers"||name==="the portal opens"||name==="the portal answers"||name==="the enchanted waters awaken"||action==="portal")scene="portal";
+          else if(name==="drift into the stars"||name==="a thousand stars"||name==="the dream takes shape"||name==="water dances with the dream"||action==="starfall"||action==="wave"||action==="water")scene="dream";
+          else if(name==="finale countdown"||name==="the stars unite"||name==="fireworks over the dream"||name==="create the impossible"||action==="fireworks"||action==="finale")scene="finale";
+          else if(action==="fade"||action==="lights"||action==="burst")scene="opening";
+          if(scene){stopParade();showScene(scene);playButton.disabled=true;playButton.textContent="✧ Controlled by Show Room";stopButton.disabled=false;}
+          if(action==="fireworks"||action==="finale"||action==="burst"){if(fireworksEnabled&&!reducedMotion){burst();if(fireworkTimer===null)fireworkTimer=window.setInterval(burst,650);}}
+          if(action==="finale")preview.classList.add("final-show");
+          if(controlStatus)controlStatus.textContent="✦ LIVE CUE · "+(cue.name||"Show cue")+" · "+(scene||"stage effect").toUpperCase();
+        }
+      };
+      controlChannel.postMessage({type:"parade-ready"});
+      window.setInterval(function(){if(Date.now()-controlLastSeen>6500&&controlStatus)controlStatus.textContent="Show Control Room link: waiting for your control room in another tab on this device.";},2500);
+    }else if(controlStatus)controlStatus.textContent="Live linking needs a modern browser with BroadcastChannel support.";
+  }catch(error){if(controlStatus)controlStatus.textContent="Live link unavailable in this browser; standalone preview still works.";}
 })();
 </script>
 </body>
