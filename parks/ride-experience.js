@@ -13,7 +13,7 @@ function ellipse(x,y,rx,ry,rot,fill){ctx.beginPath();ctx.ellipse(x,y,rx,ry,rot,0
 let noiseBuffer=null;
 function noiseEffect(duration,volume,highpass,bandpass,lowpass,attack,decay,slide=0){
  if(muted)return;audioReady();
- if(!noiseBuffer){const size=Math.ceil(audioCtx.sampleRate*2);noiseBuffer=audioCtx.createBuffer(1,size,audioCtx.sampleRate);const data=noiseBuffer.getChannelData(0);for(let i=0;i<size;i++)data[i]=(Math.random()*2-1)*.55}
+ if(!noiseBuffer){const size=Math.ceil(audioCtx.sampleRate*3.2);noiseBuffer=audioCtx.createBuffer(1,size,audioCtx.sampleRate);const data=noiseBuffer.getChannelData(0);for(let i=0;i<size;i++)data[i]=(Math.random()*2-1)*.55}
  const now=audioCtx.currentTime,src=audioCtx.createBufferSource(),hp=audioCtx.createBiquadFilter(),bp=audioCtx.createBiquadFilter(),lp=audioCtx.createBiquadFilter(),gain=audioCtx.createGain();
  src.buffer=noiseBuffer;hp.type='highpass';hp.frequency.value=highpass;hp.Q.value=.5;bp.type='bandpass';bp.frequency.setValueAtTime(bandpass,now);bp.Q.value=.7;if(slide)bp.frequency.linearRampToValueAtTime(Math.max(220,bandpass+slide),now+duration);lp.type='lowpass';lp.frequency.value=lowpass;lp.Q.value=.25;
  gain.gain.setValueAtTime(.0001,now);gain.gain.linearRampToValueAtTime(volume,now+attack);gain.gain.setValueAtTime(volume,now+Math.max(attack+.02,duration*.35));gain.gain.exponentialRampToValueAtTime(.0001,now+decay);
@@ -30,11 +30,11 @@ function lightningSound(){
  const crack=audioCtx.createOscillator(),crackGain=audioCtx.createGain(),crackFilter=audioCtx.createBiquadFilter();
  crack.type='triangle';crack.frequency.setValueAtTime(2100,now);crack.frequency.exponentialRampToValueAtTime(180,now+.16);
  crackFilter.type='lowpass';crackFilter.frequency.setValueAtTime(5200,now);crackFilter.frequency.exponentialRampToValueAtTime(520,now+.2);
- crackGain.gain.setValueAtTime(.0001,now);crackGain.gain.linearRampToValueAtTime(.19,now+.008);crackGain.gain.exponentialRampToValueAtTime(.0001,now+.2);
+ crackGain.gain.setValueAtTime(.0001,now);crackGain.gain.linearRampToValueAtTime(.42,now+.008);crackGain.gain.exponentialRampToValueAtTime(.0001,now+.2);
  crack.connect(crackFilter).connect(crackGain).connect(audioMaster);crack.start(now);crack.stop(now+.22);
  // Deep, layered rolling rumble that fades naturally after the strike.
- noiseEffect(2.7,.12,38,105,430,.025,2.8,-55);
- noiseEffect(1.9,.045,75,185,650,.08,2.0,-95);
+ noiseEffect(2.7,.52,38,105,430,.025,2.8,-55);
+ noiseEffect(1.9,.22,75,185,650,.08,2.0,-95);
 }
 function windSound(){noiseEffect(1.5,.052,300,780,2200,.45,1.55,-420)}
 
