@@ -5,11 +5,16 @@ beyond:{name:'KAEVORYN BEYOND',title:'PORTAL BREAKER',intro:'Fly through unstabl
 afterdark:{name:'KAEVORYN AFTERDARK',title:'THE NIGHT FLIGHT',intro:'Take a suspenseful flight over a mysterious world after the lights go out.',color:'#ff7caa',acts:[['NIGHTFALL','A shadow crosses the moon. Something rises into the night.'],['OVER THE FORGOTTEN','Fly above silent towers and forests lost to time.'],['THE SHADOW STORM','Dark clouds close in. A strange light follows your flight.'],['THE ESCAPE','A burst of fire lights the way through the darkness.'],['DAWN RETURNS','The horizon brightens. You have escaped the unknown.']]}};
 const p=config[park]||config.kingdoms;document.documentElement.style.setProperty('--accent',p.color);
 $('ridePark').textContent=p.name+' · VIRTUAL ATTRACTION';$('rideName').textContent=p.title;$('rideIntro').textContent=p.intro;$('parkBack').href=park==='kingdoms'?'kingdoms.html':park+'.html';$('backToPark').href=$('parkBack').href;$('backToPark').textContent='Return to '+p.name.replace('KAEVORYN ','')+' ↗';document.title=p.title+' — Kaevoryn Studios';
-const canvas=$('rideCanvas'),ctx=canvas.getContext('2d');let w=0,h=0,dpr=1,active=false,finished=false,act=0,elapsed=0,last=0,raf=0,muted=true,reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const canvas=$('rideCanvas'),ctx=canvas.getContext('2d');let w=0,h=0,dpr=1,active=false,finished=false,act=0,elapsed=0,last=0,raf=0,muted=true,reduce=matchMedia('(prefers-reduced-motion: reduce)').matches,audioCtx=null,audioMaster=null;
 const duration=9500;
 function resize(){const r=canvas.getBoundingClientRect();dpr=Math.min(devicePixelRatio||1,2);w=r.width;h=r.height;canvas.width=Math.max(1,Math.round(w*dpr));canvas.height=Math.max(1,Math.round(h*dpr));ctx.setTransform(dpr,0,0,dpr,0,0);draw(0)}
 function path(points,fill,stroke=null,lw=1){ctx.beginPath();points.forEach((pt,i)=>i?ctx.lineTo(pt[0],pt[1]):ctx.moveTo(pt[0],pt[1]));ctx.closePath();ctx.fillStyle=fill;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lw;ctx.stroke()}}
-function ellipse(x,y,rx,ry,rot,fill){ctx.beginPath();ctx.ellipse(x,y,rx,ry,rot,0,Math.PI*2);ctx.fillStyle=fill;ctx.fill()}
+function ellipse(x,y,rx,ry,rot,fill){ctx.beginPath();ctx.ellipse(x,y,rx,ry,rot,0,Math.PI*2);ctx.fillStyle=fill;ctx.fill()}function audioReady(){if(!audioCtx){audioCtx=new(window.AudioContext||window.webkitAudioContext)();audioMaster=audioCtx.createGain();audioMaster.gain.value=muted?0:.32;audioMaster.connect(audioCtx.destination)}if(audioCtx.state==='suspended')audioCtx.resume()}
+function tone(freq,duration,type='sine',volume=.12,slide=0){if(muted)return;audioReady();const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type=type;o.frequency.setValueAtTime(freq,audioCtx.currentTime);if(slide)o.frequency.exponentialRampToValueAtTime(Math.max(30,freq+slide),audioCtx.currentTime+duration);g.gain.setValueAtTime(.001,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(volume,audioCtx.currentTime+.04);g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+duration);o.connect(g).connect(audioMaster);o.start();o.stop(audioCtx.currentTime+duration+.03)}
+function whoosh(){tone(180,.7,'sawtooth',.055,-120);tone(420,.45,'triangle',.035,-260)}
+function roar(){tone(92,1.25,'sawtooth',.12,-45);tone(138,.9,'triangle',.07,-55);tone(48,1.1,'sine',.12,-15)}
+function fireSound(){tone(220,.75,'sawtooth',.08,580);tone(740,.55,'triangle',.045,-380);tone(95,.8,'square',.035,-45)}
+
 function dragon(t){const scale=Math.min(w/760,h/440),cx=w*.53,cy=h*.52,flap=Math.sin(t*.008)*.55,bank=Math.sin(t*.0015)*.10;
 ctx.save();ctx.translate(cx,cy+Math.sin(t*.003)*8);ctx.rotate(bank);ctx.scale(scale,scale);
 // tail, clearly attached to body
@@ -27,6 +32,12 @@ ctx.save();ctx.translate(-2,-12);ctx.rotate(-.1+flap);path([[0,0],[-22,-118],[-1
 ctx.strokeStyle='#a2e7ce';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(-10,-178);ctx.moveTo(0,0);ctx.lineTo(52,-204);ctx.moveTo(0,0);ctx.lineTo(111,-169);ctx.moveTo(0,0);ctx.lineTo(139,-105);ctx.stroke();ctx.restore();
 // neck and head
 ctx.strokeStyle='#2b8880';ctx.lineWidth=30;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(52,2);ctx.quadraticCurveTo(91,-24,110,-56);ctx.stroke();ellipse(120,-62,36,24,-.18,'#4ab49a');path([[133,-70],[174,-62],[149,-49]],'#4ab49a');path([[110,-80],[100,-103],[124,-86]],'#b4e9bd');path([[134,-79],[139,-102],[150,-76]],'#b4e9bd');ellipse(132,-67,4,4,0,'#06131c');ellipse(133,-67,1.5,2,0,'#ffffff');
+// A living flame trails from the dragon's tail tip
+ctx.save();ctx.translate(-224,3+Math.sin(t*.004)*15);ctx.globalCompositeOperation='lighter';
+for(let i=0;i<5;i++){const flick=Math.sin(t*.018+i*2)*7,len=34+i*8,grad=ctx.createLinearGradient(0,0,-len,0);grad.addColorStop(0,'#fffbd0');grad.addColorStop(.28,'#ffd65c');grad.addColorStop(.68,'#ff762d');grad.addColorStop(1,'#f02d18');ctx.fillStyle=grad;ctx.beginPath();ctx.moveTo(0,(i-2)*3);ctx.quadraticCurveTo(-len*.45,-14+flick,-len,flick);ctx.quadraticCurveTo(-len*.6,15+flick,0,(i-2)*3);ctx.fill()}
+ctx.shadowColor='#ff8b32';ctx.shadowBlur=18;ellipse(-5,0,7,6,0,'#fff0a0');ctx.restore();ctx.globalCompositeOperation='source-over';
+// Fine scale highlights catch the light across the dragon's shoulders
+for(let row=0;row<3;row++)for(let col=0;col<7;col++)ellipse(-55+col*17,-8+row*12+(col%2)*4,4,2,.25,'#8bd4b2');
 ctx.restore();
 }
 function draw(t){if(!w||!h)return;const storm=act>=2,night=park==='afterdark',space=park==='beyond';const sky=ctx.createLinearGradient(0,0,0,h);sky.addColorStop(0,night?'#09091d':space?'#090d31':'#0b2948');sky.addColorStop(.6,night?'#40203d':space?'#29275e':'#24718a');sky.addColorStop(1,'#b0d9d4');ctx.fillStyle=sky;ctx.fillRect(0,0,w,h);
@@ -45,11 +56,11 @@ if(act===3&&active){const fx=w*.53+Math.min(w/760,h/440)*170,fy=h*.52-Math.min(w
 if(finished){ctx.fillStyle='#f8e7b0';ctx.font='700 18px system-ui';ctx.textAlign='center';ctx.fillText('FLIGHT COMPLETE',w/2,h*.17)}
 }
 function showAct(){const a=p.acts[act];$('sceneCount').textContent='JOURNEY · '+String(act+1).padStart(2,'0')+' / 05';$('rideStatus').textContent=finished?'ARRIVAL COMPLETE':active?'IN FLIGHT':'AT THE STATION';$('sceneEyebrow').textContent=a[0];$('sceneTitle').textContent=a[0].replaceAll(' ',' ').toLowerCase().replace(/\b\w/g,x=>x.toUpperCase());$('sceneText').textContent=a[1];$('progressText').textContent=Math.round((act+(finished?1:0))/5*100)+'% complete';$('progressBar').style.width=(act+(finished?1:0))/5*100+'%';$('nextScene').textContent=finished?'Fly again':active?'Pause flight':'Start the ride';$('rideNote').textContent=finished?'Your flight is complete. Choose Fly again to ride once more.':active?'The dragon is flying. The five scenes advance automatically.':'Press Start the ride once. The flight and scenes will run automatically.'}
-function frame(now){if(!active)return;const dt=Math.min(50,now-last||16);last=now;elapsed+=dt;if(!reduce)draw(now);if(elapsed>=duration){elapsed=0;if(act<4){act++;showAct()}else{active=false;finished=true;showAct();draw(now);return}}raf=requestAnimationFrame(frame)}
-function start(){if(finished){act=0;finished=false;elapsed=0}active=true;last=performance.now();showAct();cancelAnimationFrame(raf);raf=requestAnimationFrame(frame)}
+function frame(now){if(!active)return;const dt=Math.min(50,now-last||16);last=now;elapsed+=dt;if(!reduce)draw(now);if(elapsed>=duration){elapsed=0;if(act<4){act++;showAct();if(act===2)roar();if(act===3)fireSound();else whoosh()}else{active=false;finished=true;showAct();draw(now);return}}raf=requestAnimationFrame(frame)}
+function start(){if(finished){act=0;finished=false;elapsed=0}audioReady();active=true;last=performance.now();showAct();roar();cancelAnimationFrame(raf);raf=requestAnimationFrame(frame)}
 $('nextScene').onclick=()=>{if(active){active=false;cancelAnimationFrame(raf);$('nextScene').textContent='Resume flight';$('rideStatus').textContent='FLIGHT PAUSED';$('rideNote').textContent='Your flight is paused. Resume when you are ready.'}else start()};
 $('restartRide').onclick=()=>{active=false;finished=false;act=0;elapsed=0;cancelAnimationFrame(raf);showAct();draw(0)};
-$('soundToggle').onclick=()=>{$('soundToggle').textContent='Sound: '+(muted?'Off':'Off');$('soundToggle').setAttribute('aria-pressed','false');$('rideNote').textContent='Sound is currently off. The animated flight works without audio.'};
+$('soundToggle').onclick=()=>{muted=!muted;audioReady();audioMaster.gain.setTargetAtTime(muted?0:.32,audioCtx.currentTime,.08);$('soundToggle').textContent='Sound: '+(muted?'Off':'On');$('soundToggle').setAttribute('aria-pressed',String(!muted));$('rideNote').textContent=muted?'Sound effects are off.':'Dragon roars, wing-flight whooshes and fire effects are on.';if(!muted)whoosh()};
 $('motionToggle').onclick=()=>{reduce=!reduce;$('motionToggle').textContent='Motion: '+(reduce?'Reduced':'On');$('motionToggle').setAttribute('aria-pressed',String(reduce));if(reduce)draw(0)};
 $('choiceArea').hidden=true;$('motionToggle').textContent='Motion: '+(reduce?'Reduced':'On');$('motionToggle').setAttribute('aria-pressed',String(reduce));$('soundToggle').textContent='Sound: Off';window.addEventListener('resize',resize);document.addEventListener('visibilitychange',()=>{if(document.hidden&&active){active=false;cancelAnimationFrame(raf);showAct()}});resize();showAct();draw(0);
 })();
