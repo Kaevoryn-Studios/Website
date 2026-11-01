@@ -16,7 +16,7 @@ function roar(){tone(92,1.25,'sawtooth',.12,-45);tone(138,.9,'triangle',.07,-55)
 function fireSound(){tone(220,.75,'sawtooth',.08,580);tone(740,.55,'triangle',.045,-380);tone(95,.8,'square',.035,-45)}
 
 function dragon(t){
-const scale=Math.min(w/760,h/440),cx=w*.53,cy=h*.52,flap=Math.sin(t*.008)*.48,breath=Math.sin(t*.004)*2,bank=Math.sin(t*.0015)*.10;
+const scale=Math.min(w/760,h/440),cx=w*.53,cy=h*.52,flap=Math.sin(t*.009)*.68,breath=Math.sin(t*.004)*2,bank=Math.sin(t*.0015)*.10;
 ctx.save();ctx.translate(cx,cy+Math.sin(t*.003)*7);ctx.rotate(bank);ctx.scale(scale,scale);
 // Long, armored tail with jagged dorsal spines
 const tail=ctx.createLinearGradient(-230,0,-45,0);tail.addColorStop(0,'#071b17');tail.addColorStop(.55,'#123a2b');tail.addColorStop(1,'#24613e');
@@ -24,7 +24,7 @@ ctx.strokeStyle=tail;ctx.lineWidth=20;ctx.lineCap='round';ctx.beginPath();ctx.mo
 for(let i=0;i<7;i++){const x=-83-i*19;path([[x,5],[x-10,-12],[x+5,-5]],'#27312b','#111b18',1)}
 path([[-220,5],[-247,-9],[-238,8],[-252,20],[-220,15]],'#123b2a','#111e22',2);
 // Far wing: broad leathery membrane, scalloped trailing edge and visible finger bones
-ctx.save();ctx.translate(-20,-17);ctx.scale(1,0.72+(Math.sin(t*.008+Math.PI)+1)*.22);ctx.rotate(-.08);
+ctx.save();ctx.translate(-20,-17);ctx.transform(1,-flap*.72,0,1,0,0);ctx.rotate(-.025);
 path([[0,0],[-37,-115],[-17,-202],[12,-166],[54,-222],[65,-150],[112,-196],[121,-126],[165,-147],[121,-74],[73,-25]],'#101f20','#466b50',3);
 ctx.strokeStyle='#648b69';ctx.lineWidth=5;ctx.beginPath();[[0,0],[-17,-202],[54,-222],[112,-196],[165,-147]].forEach(pt=>{ctx.moveTo(0,0);ctx.lineTo(pt[0],pt[1])});ctx.stroke();
 for(let i=0;i<4;i++){ctx.strokeStyle='#294d39';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(0,0);ctx.quadraticCurveTo(-30+i*45,-70-i*8,[-17,54,112,165][i],[-202,-222,-196,-147][i]);ctx.stroke()}ctx.restore();
@@ -37,7 +37,7 @@ for(let i=0;i<6;i++){ctx.strokeStyle='#a4bd8b88';ctx.lineWidth=2;ctx.beginPath()
 function leg(x,y,forward){ctx.strokeStyle='#123b2a';ctx.lineWidth=21;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(x,y);ctx.quadraticCurveTo(x+(forward?8:-9),y+19,x+(forward?17:-19),y+38);ctx.lineTo(x+(forward?32:-29),y+49);ctx.stroke();ellipse(x+(forward?17:-19),y+37,12,13,0,'#28613d');for(let c=0;c<3;c++){const xx=x+(forward?32:-29)+c*6-6;path([[xx, y+47],[xx+4,y+57],[xx-2,y+53]],'#d8c5a0','#40372f',1)}}
 leg(-48,26,false);leg(47,24,true);
 // Near wing: huge, ragged, ribbed and leathery
-ctx.save();ctx.translate(-4,-15);ctx.scale(1,0.72+(Math.sin(t*.008)+1)*.22);ctx.rotate(-.03);
+ctx.save();ctx.translate(-4,-15);ctx.transform(1,flap,0,1,0,0);ctx.rotate(-.015);
 const membrane=ctx.createLinearGradient(-20,-200,110,10);membrane.addColorStop(0,'#28553a');membrane.addColorStop(.45,'#153c2b');membrane.addColorStop(1,'#091e19');
 path([[0,0],[-31,-121],[-19,-207],[9,-172],[47,-232],[62,-157],[111,-205],[119,-130],[168,-157],[132,-80],[82,-31],[37,15]],membrane,'#527b50',4);
 ctx.strokeStyle='#8ba77a';ctx.lineWidth=5;ctx.lineCap='round';ctx.beginPath();const tips=[[-19,-207],[47,-232],[111,-205],[168,-157]];tips.forEach(pt=>{ctx.moveTo(0,0);ctx.lineTo(pt[0],pt[1])});ctx.stroke();
@@ -70,10 +70,23 @@ ctx.restore();
 }
 function draw(t){if(!w||!h)return;const storm=act===2,night=park==='afterdark',space=park==='beyond';const sky=ctx.createLinearGradient(0,0,0,h);sky.addColorStop(0,night?'#09091d':space?'#090d31':'#0b2948');sky.addColorStop(.6,night?'#40203d':space?'#29275e':'#24718a');sky.addColorStop(1,'#b0d9d4');ctx.fillStyle=sky;ctx.fillRect(0,0,w,h);
 if(!night&&!space){const sun=ctx.createRadialGradient(w*.75,h*.23,2,w*.75,h*.23,110);sun.addColorStop(0,'#fff8cf');sun.addColorStop(1,'#fff8cf00');ctx.fillStyle=sun;ctx.fillRect(0,0,w,h)}
-// distant clouds and layered moving scenery
-for(let layer=0;layer<3;layer++){const y=h*(.27+layer*.16);for(let i=0;i<6;i++){const speed=(layer+1)*.012,x=((i*225-t*speed)%(w+300)+w+300)%(w+300)-120,cy=y+Math.sin(i*2.4)*10,rx=62+layer*17,ry=19+layer*7;const cloud=ctx.createLinearGradient(0,cy-ry,0,cy+ry);cloud.addColorStop(0,layer===0?'#f5ffff55':layer===1?'#e2f3f477':'#f4ffffaa');cloud.addColorStop(1,layer===0?'#a9cbd044':layer===1?'#91b8c077':'#c3e2e2aa');ctx.fillStyle=cloud;ellipse(x,cy,rx,ry,0,cloud);ellipse(x-rx*.48,cy-ry*.35,rx*.48,ry*.8,0,cloud);ellipse(x+rx*.42,cy-ry*.25,rx*.53,ry*.88,0,cloud);ellipse(x+rx*.05,cy-ry*.55,rx*.42,ry*.72,0,cloud)}}
-if(storm){for(let i=0;i<7;i++){const x=((i*185-t*.055)%(w+240)+w+240)%(w+240)-90,y=h*(.12+(i%3)*.07),r=55+(i%2)*22;const shade=ctx.createRadialGradient(x-r*.2,y-r*.25,4,x,y,r*1.5);shade.addColorStop(0,'#66758b');shade.addColorStop(.55,'#303d55');shade.addColorStop(1,'#17243ddd');ctx.fillStyle=shade;ellipse(x,y,r*1.35,r*.58,0,shade);ellipse(x-r*.55,y+8,r*.8,r*.48,0,shade);ellipse(x+r*.52,y+5,r*.88,r*.5,0,shade)}if(Math.sin(t*.007)>0.82){ctx.strokeStyle='#d9f5ff';ctx.lineWidth=4;ctx.shadowColor='#a8dfff';ctx.shadowBlur=18;ctx.beginPath();ctx.moveTo(w*.18,h*.02);ctx.lineTo(w*.23,h*.17);ctx.lineTo(w*.19,h*.25);ctx.stroke();ctx.shadowBlur=0}}
-if(!space){ // kingdom castle towers scrolling by
+// Layered cumulus clouds: bright upper lobes, soft shaded undersides and depth
+function cloudBank(x,y,k,base,highlight){
+ const puff=(dx,dy,rx,ry,alpha)=>{ctx.globalAlpha=alpha;const g=ctx.createLinearGradient(0,y+dy-ry,0,y+dy+ry);g.addColorStop(0,highlight);g.addColorStop(.52,base);g.addColorStop(1,'#42586a');ellipse(x+dx,y+dy,rx,ry,0,g)};
+ puff(0,8,78*k,25*k,.94);puff(-48*k,-7,39*k,31*k,.98);puff(-12*k,-23,48*k,39*k,1);puff(35*k,-12,48*k,34*k,.98);puff(68*k,2,35*k,25*k,.9);ctx.globalAlpha=1;
+}
+for(let layer=0;layer<3;layer++){const y=h*(.29+layer*.17);for(let i=0;i<5;i++){const speed=(layer+1)*.009,x=((i*255-t*speed)%(w+340)+w+340)%(w+340)-140;cloudBank(x,y,layer===0?.72:layer===1?.9:1.12,layer===2?'#b6cbd2':'#d4e6e8',layer===2?'#f4fbf8':'#ffffff')}}
+if(storm){
+ // Towering cumulonimbus masses with a dark rain shelf and illuminated tops
+ for(let i=0;i<4;i++){const x=((i*260-t*.035)%(w+420)+w+420)%(w+420)-180,base=h*.39+(i%2)*h*.045,k=.82+(i%3)*.18;
+ const g=ctx.createLinearGradient(0,base-150*k,0,base+35*k);g.addColorStop(0,'#8795a8');g.addColorStop(.22,'#536176');g.addColorStop(.58,'#303b52');g.addColorStop(1,'#151e32');
+ ctx.fillStyle=g;ellipse(x,base,115*k,48*k,0,g);ellipse(x-65*k,base-35*k,62*k,64*k,0,g);ellipse(x-12*k,base-82*k,70*k,86*k,0,g);ellipse(x+52*k,base-57*k,75*k,75*k,0,g);ellipse(x+102*k,base-12*k,55*k,42*k,0,g);
+ ctx.fillStyle='#111a2b99';ellipse(x+5*k,base+24*k,130*k,22*k,0,'#111a2b99');
+ // soft silver rim light on the cloud crown
+ ctx.strokeStyle='#c5d5e588';ctx.lineWidth=3;ctx.beginPath();ctx.ellipse(x-12*k,base-74*k,54*k,22*k,-.15,Math.PI*1.08,Math.PI*1.9);ctx.stroke();
+ }
+ if(Math.sin(t*.007)>0.72){ctx.save();ctx.strokeStyle='#e6f7ff';ctx.lineWidth=4;ctx.shadowColor='#a8dfff';ctx.shadowBlur=22;ctx.beginPath();ctx.moveTo(w*.22,h*.02);ctx.lineTo(w*.27,h*.14);ctx.lineTo(w*.23,h*.2);ctx.lineTo(w*.3,h*.29);ctx.stroke();ctx.restore()}
+}if(!space){ // kingdom castle towers scrolling by
 for(let i=0;i<5;i++){const x=((i*245-t*.045)%(w+220)+w+220)%(w+220)-100,base=h*.78,ht=65+(i%3)*32;ctx.fillStyle=night?'#171327':'#263c58';ctx.fillRect(x,base-ht,48,ht);path([[x-8,base-ht],[x+24,base-ht-36],[x+56,base-ht]],night?'#261832':'#45617c');ctx.fillStyle='#f5d99a';ctx.fillRect(x+19,base-ht+22,9,17)}}
 else{for(let i=0;i<5;i++){const x=((i*210-t*.04)%(w+200)+w+200)%(w+200)-90,y=h*(.25+(i%3)*.15);ctx.strokeStyle='#c2b5ff';ctx.lineWidth=5;ctx.beginPath();ctx.ellipse(x,y,28,58,0,0,Math.PI*2);ctx.stroke()}}
 dragon(t);
