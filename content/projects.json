@@ -21,5 +21,11 @@
     "category": "FUTURE PROJECT",
     "title": "Coming Soon",
     "description": "The next impossible idea is already beginning to take shape."
+  },
+  {
+    "category": "IMMERSIVE PROJECTION / SEASONAL SPECTACLES",
+    "title": "Kaevoryn Holiday Magic",
+    "description": "Transform windows into living holiday worlds with synchronized music, lighting, visual effects, and magical scenes throughout the year.",
+    "slug": "kaevoryn-holiday-magic"
   }
 ]
