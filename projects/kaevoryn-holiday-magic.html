@@ -112,6 +112,30 @@ body.projector-mode .hm-output .hm-scene .hm-art{inset:0 8% 0;width:84%;height:1
 .hm-scene .hm-art svg[aria-label*="village"],
 .hm-scene .hm-art svg[aria-label*="Christmas tree"],
 .hm-scene .hm-art svg[aria-label*="snowman"]{transform:translateY(1%)}
+
+/* Cinematic scene entrances and layered snowfall. */
+.hm-art{opacity:1;will-change:opacity,transform}
+.hm-art.hm-art-enter{animation:hm-art-arrive .82s cubic-bezier(.2,.75,.25,1) both}
+@keyframes hm-art-arrive{0%{opacity:0;transform:translateY(15px) scale(.975);filter:blur(3px)}65%{opacity:1;filter:blur(0)}100%{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}}
+.hm-scene .hm-snow,.hm-scene .hm-particles{background-image:
+radial-gradient(circle,#fff 0 1.2px,transparent 1.9px),
+radial-gradient(circle,#dff6ff 0 2px,transparent 2.8px),
+radial-gradient(circle,#fff 0 1px,transparent 1.7px),
+radial-gradient(circle,#bdeaff 0 1.5px,transparent 2.2px);
+background-size:43px 57px,91px 113px,137px 151px,67px 89px;
+background-position:0 0,22px 17px,61px 39px,11px 47px;
+animation:hm-layered-snow 11s linear infinite;
+}
+.hm-scene .hm-snow{opacity:.72;filter:drop-shadow(0 0 3px #d8f5ff88)}
+.hm-scene .hm-particles{opacity:.42;animation-duration:17s;animation-direction:reverse}
+@keyframes hm-layered-snow{to{background-position:0 520px,22px 697px,61px 391px,11px 589px}}
+.hm-art svg[aria-label*="village"] .figure{animation:hm-villager-sway 3.4s ease-in-out infinite}
+.hm-art svg[aria-label*="village"] .figure:nth-of-type(2){animation-delay:-1.7s}
+@keyframes hm-villager-sway{0%,100%{transform:translateY(0) rotate(-.5deg)}50%{transform:translateY(-4px) rotate(.8deg)}}
+.hm-art svg[aria-label*="snowman"] .figure{transform-origin:50% 85%}
+.hm-art svg[aria-label*="Santa"] .figure:first-of-type{animation:hm-santa-bob 2.8s ease-in-out infinite}
+@keyframes hm-santa-bob{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-4px) rotate(-1deg)}}
+@media(prefers-reduced-motion:reduce){.hm-art.hm-art-enter{animation:none!important}.hm-scene .hm-snow,.hm-scene .hm-particles{animation:none!important}}
 </style>
 </head>
 <body>
@@ -194,7 +218,7 @@ projectorSettings.forEach(function(cfg,p){var output=outputs[p];if(!output)retur
 }
 function render(){
 var sequence=current(),roles=["MAIN SCENE","WINDOW A","WINDOW B","WINDOW C","SPECIAL EFFECTS"];
-for(var p=0;p<5;p++){var item=sequence[(index+Number(projectorSettings[p].role))%sequence.length];document.getElementById("hm-symbol-"+p).textContent=identifyOn?String(p+1):"";var art=stage.querySelectorAll(".hm-art")[p];if(art)art.innerHTML=identifyOn?"":characterArt(Number(projectorSettings[p].role));document.getElementById("hm-name-"+p).textContent=identifyOn?"CONNECT PROJECTOR "+(p+1):item[1];}
+for(var p=0;p<5;p++){var item=sequence[(index+Number(projectorSettings[p].role))%sequence.length];document.getElementById("hm-symbol-"+p).textContent=identifyOn?String(p+1):"";var art=stage.querySelectorAll(".hm-art")[p];if(art){art.classList.remove("hm-art-enter");art.innerHTML=identifyOn?"":characterArt(Number(projectorSettings[p].role));void art.offsetWidth;art.classList.add("hm-art-enter");}document.getElementById("hm-name-"+p).textContent=identifyOn?"CONNECT PROJECTOR "+(p+1):item[1];}
 status.textContent=(running?"SHOW RUNNING":"PREVIEW READY")+" · "+holiday.options[holiday.selectedIndex].text+" · SCENE "+(index+1)+" / "+current().length;
 caption.textContent="Five projector previews are advancing together on one show clock. Each output displays its own scene position.";
 stage.style.setProperty("--hm-light", "rgba(126,234,255,"+(Number(brightness.value)/100)+")");
