@@ -85,16 +85,28 @@ function cloudBank(x,y,k,base,highlight){
 }
 for(let layer=0;layer<3;layer++){const y=h*(.29+layer*.17);for(let i=0;i<5;i++){const speed=(layer+1)*.009,x=((i*255-t*speed)%(w+340)+w+340)%(w+340)-140;cloudBank(x,y,layer===0?.72:layer===1?.9:1.12,layer===2?'#b6cbd2':'#d4e6e8',layer===2?'#f4fbf8':'#ffffff')}}
 if(storm){
- // Towering cumulonimbus masses with a dark rain shelf and illuminated tops
- for(let i=0;i<4;i++){const x=((i*260-t*.035)%(w+420)+w+420)%(w+420)-180,base=h*.39+(i%2)*h*.045,k=.82+(i%3)*.18;
- const g=ctx.createLinearGradient(0,base-150*k,0,base+35*k);g.addColorStop(0,'#8795a8');g.addColorStop(.22,'#536176');g.addColorStop(.58,'#303b52');g.addColorStop(1,'#151e32');
- ctx.fillStyle=g;ellipse(x,base,115*k,48*k,0,g);ellipse(x-65*k,base-35*k,62*k,64*k,0,g);ellipse(x-12*k,base-82*k,70*k,86*k,0,g);ellipse(x+52*k,base-57*k,75*k,75*k,0,g);ellipse(x+102*k,base-12*k,55*k,42*k,0,g);
- ctx.fillStyle='#111a2b99';ellipse(x+5*k,base+24*k,130*k,22*k,0,'#111a2b99');
- // soft silver rim light on the cloud crown
- ctx.strokeStyle='#c5d5e588';ctx.lineWidth=3;ctx.beginPath();ctx.ellipse(x-12*k,base-74*k,54*k,22*k,-.15,Math.PI*1.08,Math.PI*1.9);ctx.stroke();
+ for(let i=0;i<5;i++){
+  const x=((i*235-t*.026)%(w+430)+w+430)%(w+430)-190,base=h*(.37+(i%3)*.045),k=.9+(i%3)*.19;
+  const g=ctx.createLinearGradient(0,base-190*k,0,base+48*k);
+  g.addColorStop(0,'#8290a4');g.addColorStop(.18,'#58677e');g.addColorStop(.48,'#354258');g.addColorStop(.78,'#202b40');g.addColorStop(1,'#111a2c');
+  ctx.fillStyle=g;ellipse(x,base,142*k,61*k,0,g);ellipse(x-86*k,base-45*k,73*k,78*k,0,g);ellipse(x-24*k,base-105*k,81*k,104*k,0,g);ellipse(x+55*k,base-82*k,91*k,91*k,0,g);ellipse(x+120*k,base-27*k,67*k,58*k,0,g);
+  ctx.fillStyle='#0b1426aa';ellipse(x+8*k,base+36*k,150*k,26*k,0,'#0b1426aa');
  }
- if(Math.sin(t*.007)>0.72){ctx.save();ctx.strokeStyle='#e6f7ff';ctx.lineWidth=4;ctx.shadowColor='#a8dfff';ctx.shadowBlur=22;ctx.beginPath();ctx.moveTo(w*.22,h*.02);ctx.lineTo(w*.27,h*.14);ctx.lineTo(w*.23,h*.2);ctx.lineTo(w*.3,h*.29);ctx.stroke();ctx.restore()}
-}if(!space){ // kingdom castle towers scrolling by
+ const pulse=(Math.sin(t*.0021)+1)*.5;
+ if(pulse>.79){
+  const flash=(pulse-.79)/.21;ctx.save();ctx.fillStyle='rgba(190,220,255,'+(flash*.13)+')';ctx.fillRect(0,0,w,h);
+  const drawBolt=(x,y,seed,branch)=>{
+   const pts=[[x,y]];let px=x,py=y;
+   for(let j=1;j<=7;j++){px+=Math.sin(seed+j*2.17)*w*.018;py+=h*(.035+((j*13+seed*7)%9)*.004);pts.push([px,py])}
+   ctx.beginPath();ctx.moveTo(pts[0][0],pts[0][1]);
+   for(let j=1;j<pts.length;j++){const p0=pts[j-1],p1=pts[j],mx=(p0[0]+p1[0])*.5+Math.sin(seed+j)*w*.006,my=(p0[1]+p1[1])*.5;ctx.quadraticCurveTo(mx,my,p1[0],p1[1])}ctx.stroke();
+   if(branch){for(const j of [2,4,5]){const p=pts[j],dir=j%2?1:-1,ex=p[0]+dir*w*(.025+j*.003),ey=p[1]+h*(.045+j*.006);ctx.beginPath();ctx.moveTo(p[0],p[1]);ctx.quadraticCurveTo(p[0]+dir*w*.012,p[1]+h*.018,ex,ey);ctx.stroke()}}
+  };
+  ctx.lineCap='round';ctx.lineJoin='round';ctx.strokeStyle='#b9dfff';ctx.shadowColor='#8bcaff';ctx.shadowBlur=26;ctx.lineWidth=7;drawBolt(w*.22,-h*.02,3,true);drawBolt(w*.76,h*.01,8,false);
+  ctx.strokeStyle='#f5fbff';ctx.shadowBlur=10;ctx.lineWidth=2.2;drawBolt(w*.22,-h*.02,3,true);drawBolt(w*.76,h*.01,8,false);ctx.restore();
+ }
+}
+if(!space){ // kingdom castle towers scrolling by
 for(let i=0;i<5;i++){const x=((i*245-t*.045)%(w+220)+w+220)%(w+220)-100,base=h*.78,ht=65+(i%3)*32;ctx.fillStyle=night?'#171327':'#263c58';ctx.fillRect(x,base-ht,48,ht);path([[x-8,base-ht],[x+24,base-ht-36],[x+56,base-ht]],night?'#261832':'#45617c');ctx.fillStyle='#f5d99a';ctx.fillRect(x+19,base-ht+22,9,17)}}
 else{for(let i=0;i<5;i++){const x=((i*210-t*.04)%(w+200)+w+200)%(w+200)-90,y=h*(.25+(i%3)*.15);ctx.strokeStyle='#c2b5ff';ctx.lineWidth=5;ctx.beginPath();ctx.ellipse(x,y,28,58,0,0,Math.PI*2);ctx.stroke()}}
 dragon(t);
