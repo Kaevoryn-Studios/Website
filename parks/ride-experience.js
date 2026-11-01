@@ -11,11 +11,11 @@ function resize(){const r=canvas.getBoundingClientRect();dpr=Math.min(devicePixe
 function path(points,fill,stroke=null,lw=1){ctx.beginPath();points.forEach((pt,i)=>i?ctx.lineTo(pt[0],pt[1]):ctx.moveTo(pt[0],pt[1]));ctx.closePath();ctx.fillStyle=fill;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lw;ctx.stroke()}}
 function ellipse(x,y,rx,ry,rot,fill){ctx.beginPath();ctx.ellipse(x,y,rx,ry,rot,0,Math.PI*2);ctx.fillStyle=fill;ctx.fill()}function audioReady(){if(!audioCtx){audioCtx=new(window.AudioContext||window.webkitAudioContext)();audioMaster=audioCtx.createGain();audioMaster.gain.value=muted?0:.32;audioMaster.connect(audioCtx.destination)}if(audioCtx.state==='suspended')audioCtx.resume()}
 function tone(freq,duration,type='sine',volume=.12,slide=0){if(muted)return;audioReady();const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type=type;o.frequency.setValueAtTime(freq,audioCtx.currentTime);if(slide)o.frequency.exponentialRampToValueAtTime(Math.max(30,freq+slide),audioCtx.currentTime+duration);g.gain.setValueAtTime(.001,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(volume,audioCtx.currentTime+.04);g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+duration);o.connect(g).connect(audioMaster);o.start();o.stop(audioCtx.currentTime+duration+.03)}
-function whoosh(){tone(180,.7,'sawtooth',.055,-120);tone(420,.45,'triangle',.035,-260)}
-function roar(){tone(92,1.25,'sawtooth',.12,-45);tone(138,.9,'triangle',.07,-55);tone(48,1.1,'sine',.12,-15)}
-function fireSound(){tone(220,.75,'sawtooth',.08,580);tone(740,.55,'triangle',.045,-380);tone(95,.8,'square',.035,-45);tone(58,1.05,'sine',.09,-25)}
-function lightningSound(){tone(68,1.05,'sawtooth',.13,-38);tone(310,.16,'square',.07,-250);tone(52,1.4,'sine',.1,-18)}
-function windSound(){tone(145,1.1,'sawtooth',.035,-105);tone(230,.8,'triangle',.025,-170)}
+function whoosh(){tone(150,.85,'sine',.035,-90);tone(290,.6,'sine',.022,-170)}
+function roar(){tone(72,1.1,'sine',.085,-28);tone(112,.85,'triangle',.045,-38);tone(48,1.15,'sine',.07,-12)}
+function fireSound(){tone(135,.8,'sine',.07,360);tone(390,.55,'sine',.035,-210);tone(68,.95,'triangle',.045,-28)}
+function lightningSound(){tone(58,1.25,'sine',.095,-22);tone(92,.55,'triangle',.035,-48);tone(43,1.5,'sine',.075,-12)}
+function windSound(){tone(105,1.2,'sine',.025,-65);tone(185,.9,'sine',.016,-115)}
 
 function dragon(t){
 const scale=Math.min(w/760,h/440),cx=w*.53,cy=h*.52,flap=Math.sin(t*.009),breath=Math.sin(t*.004)*2,bank=Math.sin(t*.0015)*.10;
