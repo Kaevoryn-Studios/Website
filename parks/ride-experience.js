@@ -16,7 +16,7 @@ function roar(){tone(92,1.25,'sawtooth',.12,-45);tone(138,.9,'triangle',.07,-55)
 function fireSound(){tone(220,.75,'sawtooth',.08,580);tone(740,.55,'triangle',.045,-380);tone(95,.8,'square',.035,-45)}
 
 function dragon(t){
-const scale=Math.min(w/760,h/440),cx=w*.53,cy=h*.52,flap=Math.sin(t*.009)*.68,breath=Math.sin(t*.004)*2,bank=Math.sin(t*.0015)*.10;
+const scale=Math.min(w/760,h/440),cx=w*.53,cy=h*.52,flap=(Math.sin(t*.0065)+1)*.5,breath=Math.sin(t*.004)*2,bank=Math.sin(t*.0015)*.10;
 ctx.save();ctx.translate(cx,cy+Math.sin(t*.003)*7);ctx.rotate(bank);ctx.scale(scale,scale);
 // Long, armored tail with jagged dorsal spines
 const tail=ctx.createLinearGradient(-230,0,-45,0);tail.addColorStop(0,'#071b17');tail.addColorStop(.55,'#123a2b');tail.addColorStop(1,'#24613e');
@@ -24,7 +24,7 @@ ctx.strokeStyle=tail;ctx.lineWidth=20;ctx.lineCap='round';ctx.beginPath();ctx.mo
 for(let i=0;i<7;i++){const x=-83-i*19;path([[x,5],[x-10,-12],[x+5,-5]],'#27312b','#111b18',1)}
 path([[-220,5],[-247,-9],[-238,8],[-252,20],[-220,15]],'#123b2a','#111e22',2);
 // Far wing: broad leathery membrane, scalloped trailing edge and visible finger bones
-ctx.save();ctx.translate(-20,-17);ctx.transform(1,-flap*.72,0,1,0,0);ctx.rotate(-.025);
+ctx.save();ctx.translate(-20,-17);ctx.transform(1,0,0,.28+flap*1.45,0,0);ctx.rotate(-.025);
 path([[0,0],[-37,-115],[-17,-202],[12,-166],[54,-222],[65,-150],[112,-196],[121,-126],[165,-147],[121,-74],[73,-25]],'#101f20','#466b50',3);
 ctx.strokeStyle='#648b69';ctx.lineWidth=5;ctx.beginPath();[[0,0],[-17,-202],[54,-222],[112,-196],[165,-147]].forEach(pt=>{ctx.moveTo(0,0);ctx.lineTo(pt[0],pt[1])});ctx.stroke();
 for(let i=0;i<4;i++){ctx.strokeStyle='#294d39';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(0,0);ctx.quadraticCurveTo(-30+i*45,-70-i*8,[-17,54,112,165][i],[-202,-222,-196,-147][i]);ctx.stroke()}ctx.restore();
@@ -37,7 +37,7 @@ for(let i=0;i<6;i++){ctx.strokeStyle='#a4bd8b88';ctx.lineWidth=2;ctx.beginPath()
 function leg(x,y,forward){ctx.strokeStyle='#123b2a';ctx.lineWidth=21;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(x,y);ctx.quadraticCurveTo(x+(forward?8:-9),y+19,x+(forward?17:-19),y+38);ctx.lineTo(x+(forward?32:-29),y+49);ctx.stroke();ellipse(x+(forward?17:-19),y+37,12,13,0,'#28613d');for(let c=0;c<3;c++){const xx=x+(forward?32:-29)+c*6-6;path([[xx, y+47],[xx+4,y+57],[xx-2,y+53]],'#d8c5a0','#40372f',1)}}
 leg(-48,26,false);leg(47,24,true);
 // Near wing: huge, ragged, ribbed and leathery
-ctx.save();ctx.translate(-4,-15);ctx.transform(1,flap,0,1,0,0);ctx.rotate(-.015);
+ctx.save();ctx.translate(-4,-15);ctx.transform(1,0,0,.28+flap*1.45,0,0);ctx.rotate(-.015);
 const membrane=ctx.createLinearGradient(-20,-200,110,10);membrane.addColorStop(0,'#28553a');membrane.addColorStop(.45,'#153c2b');membrane.addColorStop(1,'#091e19');
 path([[0,0],[-31,-121],[-19,-207],[9,-172],[47,-232],[62,-157],[111,-205],[119,-130],[168,-157],[132,-80],[82,-31],[37,15]],membrane,'#527b50',4);
 ctx.strokeStyle='#8ba77a';ctx.lineWidth=5;ctx.lineCap='round';ctx.beginPath();const tips=[[-19,-207],[47,-232],[111,-205],[168,-157]];tips.forEach(pt=>{ctx.moveTo(0,0);ctx.lineTo(pt[0],pt[1])});ctx.stroke();
