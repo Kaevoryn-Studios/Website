@@ -37,7 +37,7 @@ body.projector-mode .hm-output-label span{margin-left:8px}
 body.projector-mode .hm-output .hm-window{position:absolute;inset:0;min-height:0;width:100%;height:100%;border:0;border-radius:0;box-shadow:none}
 body.projector-mode .hm-output .hm-scene .scene-symbol{font-size:clamp(72px,16vw,220px)}
 body.projector-mode .hm-output .hm-scene .scene-name{font-size:clamp(14px,2vw,28px);bottom:7%}
-</style>
+.hm-reality{margin:0 0 22px;border:1px solid #8ceeff38;border-radius:18px;padding:clamp(16px,3vw,24px);background:linear-gradient(135deg,#101b32,#0a1020)}.hm-reality h2{margin:0 0 8px;font-size:clamp(19px,3vw,25px)}.hm-reality-intro{margin:0 0 16px;color:#b8c8dc;font-size:13px;max-width:760px}.hm-plan{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.hm-plan article{border:1px solid #ffffff18;border-radius:12px;padding:14px;background:#080f20}.hm-plan b{display:block;color:#eafaff;font-size:12px;margin-bottom:6px}.hm-plan p{margin:0;color:#aebed4;font-size:12px;line-height:1.55}.hm-ports{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}.hm-port{border:1px solid #8ceeff55;border-radius:99px;padding:6px 10px;color:#dffaff;font-size:11px}.hm-reality-foot{margin:12px 0 0;color:#f0d99d;font-size:11px;line-height:1.5}@media(max-width:720px){.hm-plan{grid-template-columns:1fr}}\n</style>
 </head>
 <body>
 <a class="skip-link" href="#main-content">Skip to content</a>
@@ -67,11 +67,23 @@ body.projector-mode .hm-output .hm-scene .scene-name{font-size:clamp(14px,2vw,28
 <p class="hm-note" id="hm-caption">Preview mode: all five projector previews are synchronized. Choose a holiday and start the show.</p>
 </section>
 <section class="hm-sections" aria-label="Experience features">
-<article class="hm-info"><h3>✧ Two-sided window magic</h3><p>Design a coordinated view for the room and a brighter outward-facing presentation for people outside.</p></article>
+<article class="hm-info"><h3>✧ Five coordinated scenes</h3><p>Each planned output has its own scene role, while the show controller keeps scene timing together.</p></article>
 <article class="hm-info"><h3>♫ Music & atmosphere</h3><p>Plan original holiday soundtracks, ambient audio, cues, and effects timed to each scene.</p></article>
-<article class="hm-info"><h3>⚡ Lights & special effects</h3><p>Coordinate lighting looks, simulated snowfall, magical beams, portals, and dramatic scene transitions.</p></article>
+<article class="hm-info"><h3>⚡ Real-world effects</h3><p>Lighting, fog, and outdoor effects will need compatible controllers and safety-tested hardware; browser animations alone cannot operate them.</p></article>
 </section>
-<p class="hm-warning"><strong>Five-projector prototype:</strong> This is a five-screen software preview, not five live HDMI outputs. The browser currently does not send each preview to a separate physical projector. Actual playback will depend on your computer having enough independent video outputs (or a suitable display system), plus display arrangement and projection-mapping setup. We will check your computer connections before recommending any adapters or purchases. This page does not yet control smart lights, fog, or outdoor equipment.</p>
+<section class="hm-reality" aria-labelledby="hm-reality-title">
+<p class="hm-kicker">FROM BROWSER PREVIEW TO REAL INSTALLATION</p>
+<h2 id="hm-reality-title">THE FIVE-PROJECTOR CONNECTION PLAN</h2>
+<p class="hm-reality-intro">The goal is five separately addressable projector feeds from one Windows desktop. The browser prototype is the show-control concept; the computer's graphics hardware and a projection-mapping/output system provide the physical picture feeds.</p>
+<div class="hm-ports"><span class="hm-port">HDMI</span><span class="hm-port">DisplayPort</span><span class="hm-port">VGA</span></div>
+<div class="hm-plan">
+<article><b>01 · Computer outputs</b><p>Choose a Windows desktop with a graphics setup verified to drive five independent displays at the projectors' actual resolutions and refresh rates. A common four-output gaming GPU may not be enough by itself.</p></article>
+<article><b>02 · Correct signal conversion</b><p>Use HDMI or DisplayPort for digital feeds where possible. Use a proper active HDMI-to-VGA or DisplayPort-to-VGA converter only for a projector that needs VGA. VGA carries video, not audio.</p></article>
+<article><b>03 · Extend, map & test</b><p>Set Windows to Extend, identify each display, assign Projectors 1–5, then align and mask each image to its window or projection surface. Test one projector at a time before running the full show.</p></article>
+</div>
+<p class="hm-reality-foot">Important: a basic HDMI splitter duplicates one picture; it does not create five independent scenes. We will not choose a graphics card, dock, adapter, or splitter until the exact projector inputs and computer output hardware are confirmed.</p>
+</section>
+<p class="hm-warning"><strong>What works today:</strong> the page provides five browser preview panels, five launchable output windows, and same-browser-window synchronization for show state. <strong>What is not connected yet:</strong> five physical projector signals, per-projector calibration/warping, smart lights, fog, and outdoor equipment. Those require suitable Windows display hardware and compatible external controllers.</p>
 </main>
 <footer class="site-footer"><div class="footer-brand">KAEVORYN STUDIOS</div><div class="footer-mantra">CREATE THE IMPOSSIBLE</div><p>Kaevoryn Holiday Magic · A year of wonder.</p><a href="../projects.html">Return to Projects</a></footer>
 <script>
