@@ -104,6 +104,7 @@ function start(){started=true;complete=false;render(1);status.textContent=reduce
 function continueScene(){if(!started)start();if(current<4){render(current+1);status.textContent="Moment "+current+" of 4. Continue or skip whenever you wish.";}else{complete=true;status.textContent="Welcome, Dreamer. Your journey is yours to choose.";controls();}}
 function skipIntro(){complete=true;started=true;render(4);status.textContent="Welcome skipped ahead. You are free to explore the site.";controls();}
 begin.addEventListener("click",start);next.addEventListener("click",continueScene);skip.addEventListener("click",skipIntro);replay.addEventListener("click",()=>{started=false;complete=false;render(1);status.textContent="Ready when you are. Begin or skip at any time.";controls();});
+window.kaevorynWelcomeRemoteScene=function(n){n=Math.max(1,Math.min(4,Number(n)||1));started=true;complete=n===4;render(n);status.textContent='Show Control Room cue · welcome beat '+n+' of 4.';controls();};
 render(1);controls();
 })();
 </script>
