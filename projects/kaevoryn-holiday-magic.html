@@ -136,6 +136,21 @@ animation:hm-layered-snow 11s linear infinite;
 .hm-art svg[aria-label*="Santa"] .figure:first-of-type{animation:hm-santa-bob 2.8s ease-in-out infinite}
 @keyframes hm-santa-bob{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-4px) rotate(-1deg)}}
 @media(prefers-reduced-motion:reduce){.hm-art.hm-art-enter{animation:none!important}.hm-scene .hm-snow,.hm-scene .hm-particles{animation:none!important}}
+
+/* Five-screen synchronized holiday finale. */
+.hm-finale-burst{position:absolute;inset:-12%;z-index:0;pointer-events:none;opacity:0;transform:scale(.55);background:radial-gradient(ellipse at 50% 48%,#fff8d9a8 0, #ffe7a455 13%,#8beaff22 34%,transparent 66%);mix-blend-mode:screen}
+.finale-mode .hm-scene .hm-finale-burst{animation:hm-finale-bloom 3.8s ease-out both}
+.finale-mode .hm-scene:nth-child(2) .hm-finale-burst{animation-delay:.12s}
+.finale-mode .hm-scene:nth-child(3) .hm-finale-burst{animation-delay:.24s}
+.finale-mode .hm-scene:nth-child(4) .hm-finale-burst{animation-delay:.36s}
+.finale-mode .hm-scene:nth-child(5) .hm-finale-burst{animation-delay:.48s}
+.finale-mode .hm-scene .scene-symbol{animation:hm-finale-symbol 1.15s ease-in-out 2}
+.finale-mode .hm-scene .hm-beam{opacity:.78!important;animation:hm-finale-beam 1.25s ease-in-out 3}
+.finale-mode .hm-scene .hm-art{filter:drop-shadow(0 0 13px #ffe7a9aa)}
+@keyframes hm-finale-bloom{0%{opacity:0;transform:scale(.55)}18%{opacity:1;transform:scale(1.05)}48%{opacity:.48;transform:scale(1.18)}72%{opacity:.88;transform:scale(1.28)}100%{opacity:.12;transform:scale(1.42)}}
+@keyframes hm-finale-symbol{0%,100%{filter:drop-shadow(0 0 18px #9feaff99);transform:scale(1)}50%{filter:drop-shadow(0 0 34px #fff0b9);transform:scale(1.16)}}
+@keyframes hm-finale-beam{0%,100%{filter:brightness(1);opacity:.3}50%{filter:brightness(2.1);opacity:.9}}
+@media(prefers-reduced-motion:reduce){.finale-mode .hm-scene .hm-finale-burst,.finale-mode .hm-scene .scene-symbol,.finale-mode .hm-scene .hm-beam{animation:none!important}.finale-mode .hm-scene .hm-finale-burst{opacity:.25;transform:none}}
 </style>
 </head>
 <body>
@@ -150,11 +165,11 @@ animation:hm-layered-snow 11s linear infinite;
 <div class="hm-stage-head"><div><p class="hm-kicker">THE FIRST PROTOTYPE</p><h2 id="hm-stage-title">THE LIVING WINDOW STAGE</h2></div><div class="hm-status" id="hm-status" aria-live="polite">Standby · Choose a holiday to begin</div></div>
 <div class="hm-stage" id="hm-stage">
 <div class="hm-projectors" aria-label="Five synchronized projector previews">
-<div class="hm-output"><div class="hm-output-label">PROJECTOR 1 <span>MAIN SCENE</span></div><div class="hm-window inside"><div class="hm-scene"><span class="moon"></span><span class="horizon"></span><span class="hm-snow"></span><span class="hm-beam"></span><span class="scene-symbol" id="hm-symbol-0">✨</span><span class="hm-art" aria-hidden="true"></span><span class="scene-name" id="hm-name-0">Main scene</span></div></div></div>
-<div class="hm-output"><div class="hm-output-label">PROJECTOR 2 <span>WINDOW A</span></div><div class="hm-window outside"><div class="hm-scene"><span class="moon"></span><span class="horizon"></span><span class="hm-particles"></span><span class="hm-beam"></span><span class="scene-symbol" id="hm-symbol-1">✨</span><span class="hm-art" aria-hidden="true"></span><span class="scene-name" id="hm-name-1">Window A</span></div></div></div>
-<div class="hm-output"><div class="hm-output-label">PROJECTOR 3 <span>WINDOW B</span></div><div class="hm-window outside"><div class="hm-scene"><span class="moon"></span><span class="horizon"></span><span class="hm-particles"></span><span class="hm-beam"></span><span class="scene-symbol" id="hm-symbol-2">✨</span><span class="hm-art" aria-hidden="true"></span><span class="scene-name" id="hm-name-2">Window B</span></div></div></div>
-<div class="hm-output"><div class="hm-output-label">PROJECTOR 4 <span>WINDOW C</span></div><div class="hm-window outside"><div class="hm-scene"><span class="moon"></span><span class="horizon"></span><span class="hm-particles"></span><span class="hm-beam"></span><span class="scene-symbol" id="hm-symbol-3">✨</span><span class="hm-art" aria-hidden="true"></span><span class="scene-name" id="hm-name-3">Window C</span></div></div></div>
-<div class="hm-output"><div class="hm-output-label">PROJECTOR 5 <span>SPECIAL EFFECTS</span></div><div class="hm-window inside"><div class="hm-scene"><span class="moon"></span><span class="horizon"></span><span class="hm-snow"></span><span class="hm-beam"></span><span class="scene-symbol" id="hm-symbol-4">✨</span><span class="hm-art" aria-hidden="true"></span><span class="scene-name" id="hm-name-4">Finale & effects</span></div></div></div>
+<div class="hm-output"><div class="hm-output-label">PROJECTOR 1 <span>MAIN SCENE</span></div><div class="hm-window inside"><div class="hm-scene"><span class="moon"></span><span class="horizon"></span><span class="hm-finale-burst" aria-hidden="true"></span><span class="hm-snow"></span><span class="hm-beam"></span><span class="scene-symbol" id="hm-symbol-0">✨</span><span class="hm-art" aria-hidden="true"></span><span class="scene-name" id="hm-name-0">Main scene</span></div></div></div>
+<div class="hm-output"><div class="hm-output-label">PROJECTOR 2 <span>WINDOW A</span></div><div class="hm-window outside"><div class="hm-scene"><span class="moon"></span><span class="horizon"></span><span class="hm-finale-burst" aria-hidden="true"></span><span class="hm-particles"></span><span class="hm-beam"></span><span class="scene-symbol" id="hm-symbol-1">✨</span><span class="hm-art" aria-hidden="true"></span><span class="scene-name" id="hm-name-1">Window A</span></div></div></div>
+<div class="hm-output"><div class="hm-output-label">PROJECTOR 3 <span>WINDOW B</span></div><div class="hm-window outside"><div class="hm-scene"><span class="moon"></span><span class="horizon"></span><span class="hm-finale-burst" aria-hidden="true"></span><span class="hm-particles"></span><span class="hm-beam"></span><span class="scene-symbol" id="hm-symbol-2">✨</span><span class="hm-art" aria-hidden="true"></span><span class="scene-name" id="hm-name-2">Window B</span></div></div></div>
+<div class="hm-output"><div class="hm-output-label">PROJECTOR 4 <span>WINDOW C</span></div><div class="hm-window outside"><div class="hm-scene"><span class="moon"></span><span class="horizon"></span><span class="hm-finale-burst" aria-hidden="true"></span><span class="hm-particles"></span><span class="hm-beam"></span><span class="scene-symbol" id="hm-symbol-3">✨</span><span class="hm-art" aria-hidden="true"></span><span class="scene-name" id="hm-name-3">Window C</span></div></div></div>
+<div class="hm-output"><div class="hm-output-label">PROJECTOR 5 <span>SPECIAL EFFECTS</span></div><div class="hm-window inside"><div class="hm-scene"><span class="moon"></span><span class="horizon"></span><span class="hm-finale-burst" aria-hidden="true"></span><span class="hm-snow"></span><span class="hm-beam"></span><span class="scene-symbol" id="hm-symbol-4">✨</span><span class="hm-art" aria-hidden="true"></span><span class="scene-name" id="hm-name-4">Finale & effects</span></div></div></div>
 </div>
 <div class="hm-controls">
 <div class="hm-control"><label for="hm-holiday">HOLIDAY WORLD</label><select id="hm-holiday"><option value="halloween">Halloween</option><option value="thanksgiving">Thanksgiving</option><option value="christmas" selected>Christmas</option><option value="newyear">New Year's Eve</option><option value="valentine">Valentine's Day</option><option value="easter">Easter / Spring</option><option value="july4">Independence Day</option><option value="birthday">Birthday Celebration</option></select></div>
@@ -227,6 +242,7 @@ stage.classList.toggle("lights-on",lightsOn);
 stage.classList.toggle("calibration-mode",calibrationOn);
 stage.classList.toggle("identification-mode",identifyOn);
 stage.classList.toggle("show-running",running);
+stage.classList.toggle("finale-mode",index===current().length-1&&!identifyOn);
 applyProjectorSettings();
 stage.querySelectorAll(".hm-snow,.hm-particles").forEach(function(el){el.style.display=effects.value==="off"?"none":"block";el.style.opacity=effects.value==="off"?"0":(effects.value==="glow"?"0.18":"");});
 stage.querySelectorAll(".hm-beam").forEach(function(el){el.style.opacity=effects.value==="beam"?"0.65":"0";});
