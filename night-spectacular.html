@@ -146,6 +146,7 @@
 </div>
 <div class="night-progress" role="progressbar" aria-label="Show progress" aria-valuemin="0" aria-valuemax="5" aria-valuenow="0" id="nightProgress"><span id="nightProgressFill"></span></div>
 <p class="night-status" id="nightStatus" aria-live="polite">Ready when you are.</p>
+<p class="night-status" id="showBridgeStatus" aria-live="polite">Show Control Room: waiting for connection in this browser.</p>
 <div class="night-controls"><button id="toggleNightAudio" type="button" aria-pressed="false">♫ SOUND: OFF</button><button class="primary" id="startNightShow" type="button">▶ BEGIN FIRST LIGHT</button><button id="pauseNightShow" type="button" hidden>Ⅱ PAUSE</button><button id="skipNightScene" type="button" hidden>SKIP TO FINALE ↗</button><button id="replayNightShow" type="button" hidden>↻ REPLAY</button><a href="night-spectacular-blueprint.html">VIEW THE PRODUCTION BLUEPRINT ↗</a></div>
 </section>
 <section class="feature-panel" aria-labelledby="experience-guide-title">
@@ -227,6 +228,14 @@ function begin(firstAct){stopTimer();running=true;paused=false;const initialAct=
 function togglePause(){if(!running)return;if(paused){paused=false;status.textContent="Act "+sceneIndex+" continues…";controls(false);scheduleNext(Math.max(0,remaining||actDuration));}else{remaining=Math.max(0,deadline-Date.now());paused=true;clearActTimer();status.textContent="Paused. Resume whenever you're ready.";controls(false);}}
 start.addEventListener("click",()=>{status.textContent="Starting First Light…";begin(startIndex);});replay.addEventListener("click",()=>begin(1));pause.addEventListener("click",togglePause);skip.addEventListener("click",finish);
 render(startIndex);controls(false);
+})();
+</script>
+<script>
+/* Same-browser Show Control Room bridge. Keep both pages open in this browser. */
+(function(){var status=document.getElementById('showBridgeStatus'),stage=document.getElementById('nightStage'),channel;try{if(!('BroadcastChannel'in window))throw new Error('unsupported');channel=new BroadcastChannel('kaevoryn-show-bridge-v1');}catch(e){if(status)status.textContent='Show Control Room connection is not supported in this browser.';return;}
+window.kaevorynShowControlAct=function(n){n=Math.max(1,Math.min(5,Number(n)||1));if(!running){running=true;paused=false;controls(false);}stopTimer();render(n);status.textContent='Show Control Room connected · Night Spectacular act '+n+' of 5.';if(n<5)scheduleNext(reduced?6500:actDuration);else{running=false;controls(true);}};
+channel.onmessage=function(event){var m=event.data||{};if(m.type==='control-heartbeat'){status.textContent='Show Control Room connected in this browser.';channel.postMessage({type:'parade-ready',source:'night-spectacular'});}if(m.type==='show-start')status.textContent='Show Control Room is running a sequence.';if(m.type==='show-stop'){stopTimer();running=false;paused=false;controls(false);status.textContent='Show Control Room sequence stopped.';}if(m.type==='stage-state'&&m.state){stage.style.setProperty('--control-color',m.state.color||'#7eeaff');stage.style.setProperty('--control-brightness',String(Math.max(0,Math.min(100,Number(m.state.brightness)||0))/100));}if(m.type==='cue'&&m.cue){var name=(m.cue.name||'').toLowerCase(),action=m.cue.action||'';var n=/opening|awakening|stillness|night awakens/.test(name)?1:/build|portal|invitation/.test(name)||action==='portal'?2:/wonder|dream|starfall|world/.test(name)||action==='starfall'||action==='wave'?3:/heart|emotion|lantern/.test(name)?4:/finale|firework|create the impossible/.test(name)||action==='finale'||action==='fireworks'?5:0;if(n)window.kaevorynShowControlAct(n);}};
+channel.postMessage({type:'parade-ready',source:'night-spectacular'});
 })();
 </script>
 <script src="living-world.js"></script>
