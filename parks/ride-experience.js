@@ -25,10 +25,15 @@ function roar(){tone(74,1.15,'sine',.075,-30);tone(108,.9,'sine',.035,-42);noise
 function fireSound(){noiseEffect(1.35,.075,420,1050,2600,.08,1.4,520);noiseEffect(.7,.025,800,1650,3200,.02,.72,-380)}
 function lightningSound(){
  if(muted||!audioCtx||audioCtx.state!=='running')return;
- // Low, rolling thunder only: no pitched crack or squeal.
- noiseEffect(3.1,.34,28,72,260,.035,3.15,-28);
- noiseEffect(2.35,.20,42,118,390,.16,2.45,-52);
- noiseEffect(1.45,.10,65,185,520,.34,1.55,-78);
+ const now=audioCtx.currentTime;
+ // A brief, low-mid thunder snap followed by a rolling rumble.
+ const snap=audioCtx.createOscillator(),snapGain=audioCtx.createGain(),snapFilter=audioCtx.createBiquadFilter();
+ snap.type='triangle';snap.frequency.setValueAtTime(360,now);snap.frequency.exponentialRampToValueAtTime(95,now+.13);
+ snapFilter.type='lowpass';snapFilter.frequency.setValueAtTime(950,now);snapFilter.frequency.exponentialRampToValueAtTime(260,now+.18);
+ snapGain.gain.setValueAtTime(.0001,now);snapGain.gain.linearRampToValueAtTime(.24,now+.012);snapGain.gain.exponentialRampToValueAtTime(.0001,now+.22);
+ snap.connect(snapFilter).connect(snapGain).connect(audioMaster);snap.start(now);snap.stop(now+.24);
+ noiseEffect(2.8,.30,28,82,300,.035,2.9,-25);
+ noiseEffect(2.1,.18,45,145,440,.12,2.2,-48);
 }
 function windSound(){noiseEffect(1.5,.052,300,780,2200,.45,1.55,-420)}
 
