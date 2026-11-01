@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#080b18">
+<meta name="description" content="Kaevoryn Holiday Magic — a year-round window projection and synchronized spectacle concept.">
+<title>Kaevoryn Holiday Magic — Kaevoryn Studios</title>
+<link rel="stylesheet" href="../site.css">
+<style>
+:root{--hm-cyan:#8ceeff;--hm-violet:#b9a1ff;--hm-gold:#f5d38a}
+.hm-hero{text-align:center;padding:58px 0 28px}.hm-hero h1{font-size:clamp(38px,7vw,76px);line-height:1.02;letter-spacing:-.05em;margin:8px 0;background:linear-gradient(100deg,#fff,var(--hm-cyan),var(--hm-violet));color:transparent;background-clip:text}.hm-hero p{max-width:720px;margin:12px auto;color:#b7c6dc}.hm-kicker{color:var(--hm-cyan);font-size:10px;letter-spacing:3px;text-transform:uppercase}
+.hm-stage-wrap{border:1px solid #8ceeff44;border-radius:22px;background:linear-gradient(145deg,#101a32dd,#0b1022f2);padding:clamp(12px,3vw,24px);box-shadow:0 24px 80px #0006}.hm-stage-head{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:14px}.hm-stage-head h2{font-size:14px;letter-spacing:2px;margin:0}.hm-status{font-size:11px;color:#b9c8de}.hm-windows{display:grid;grid-template-columns:1fr 1fr;gap:12px}.hm-window{position:relative;min-height:270px;overflow:hidden;border:8px solid #28354e;border-radius:12px;background:#07101e;box-shadow:inset 0 0 35px #0009,0 0 0 1px #a8dfff33;isolation:isolate}.hm-window:before{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;background:linear-gradient(90deg,#b8d9ff18 1px,transparent 1px),linear-gradient(#b8d9ff18 1px,transparent 1px);background-size:50% 100%,100% 50%}.hm-window:after{content:"";position:absolute;z-index:3;inset:0;pointer-events:none;background:linear-gradient(115deg,#fff2,transparent 26%,transparent 72%,#fff1)}
+.hm-scene{position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:18px;background:radial-gradient(ellipse at 50% 70%,#275078aa,transparent 58%),linear-gradient(#101a3a,#14233b 58%,#080d19);transition:filter .5s,background .5s}.hm-scene .moon{position:absolute;width:76px;height:76px;border-radius:50%;right:14%;top:13%;background:#e9f3ff;box-shadow:0 0 35px #d6ecffb0}.hm-scene .horizon{position:absolute;left:-5%;right:-5%;bottom:-2px;height:38%;background:linear-gradient(145deg,#101d34,#070d1b);clip-path:polygon(0 55%,15% 15%,28% 60%,44% 5%,59% 57%,75% 12%,100% 62%,100% 100%,0 100%)}.hm-scene .scene-symbol{position:relative;z-index:1;font-size:clamp(42px,7vw,76px);filter:drop-shadow(0 0 18px #9feaff99);animation:hm-float 4s ease-in-out infinite}.hm-scene .scene-name{position:absolute;z-index:1;left:8px;right:8px;bottom:14px;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#effaff;text-shadow:0 2px 8px #000}.hm-window.outside .hm-scene{filter:saturate(1.18) brightness(1.12)}.hm-window.inside .hm-scene{filter:saturate(.9) brightness(.88)}
+.hm-snow,.hm-particles{position:absolute;inset:0;z-index:1;pointer-events:none;background-image:radial-gradient(circle,#fff 1px,transparent 1.8px),radial-gradient(circle,#c9eaff 1px,transparent 2px);background-size:37px 49px,71px 83px;background-position:0 0,20px 15px;opacity:.45;animation:hm-fall 8s linear infinite}
+.hm-beam{position:absolute;z-index:1;top:-20%;left:50%;height:140%;width:3px;background:linear-gradient(transparent,#b4f5ff,#fff,transparent);filter:blur(2px);opacity:0;transform:rotate(25deg);animation:hm-beam 5s ease-in-out infinite}
+.hm-stage.lights-on .hm-window{box-shadow:inset 0 0 35px #0008,0 0 24px var(--hm-light,#8ceeff66),0 0 0 1px #a8dfff55}
+.hm-stage.lights-on .hm-beam{opacity:.4}
+.hm-stage.show-running .hm-scene-symbol{animation-duration:1.8s}
+.hm-stage.show-running .hm-particles{opacity:.8}
+@keyframes hm-float{50%{transform:translateY(-10px) scale(1.04)}}@keyframes hm-fall{to{background-position:0 420px,20px 500px}}@keyframes hm-beam{50%{transform:rotate(-25deg);opacity:.65}}
+.hm-controls{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:14px}.hm-control{padding:12px;border:1px solid #35415d;border-radius:12px;background:#0a1122}.hm-control label{display:block;font-size:10px;letter-spacing:1px;color:#c5d5eb;margin-bottom:7px}.hm-control select,.hm-control input{width:100%;accent-color:var(--hm-cyan)}.hm-control select{background:#101a30;color:#fff;border:1px solid #3b4c6b;border-radius:8px;padding:9px}.hm-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.hm-btn{border:1px solid #60718f;border-radius:10px;background:#15213a;color:#f4f8ff;padding:10px 14px;font-weight:700;font-size:12px}.hm-btn.primary{background:linear-gradient(100deg,#9cefff,#c4b0ff);border:0;color:#101426}.hm-btn:focus-visible,.hm-control select:focus-visible,.hm-control input:focus-visible{outline:2px solid white;outline-offset:3px}.hm-note{font-size:11px;color:#aebed4;margin:12px 0 0}.hm-sections{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;padding:30px 0 65px}.hm-info{border:1px solid #8ceeff30;border-radius:16px;padding:18px;background:#10182ccc}.hm-info h3{margin:0 0 7px;font-size:14px}.hm-info p{margin:0;color:#b5c3d8;font-size:13px}.hm-warning{border-left:3px solid var(--hm-gold);padding:12px 15px;background:#f5d38a0d;color:#d6ddec;font-size:12px;margin:0 0 55px}
+@media(max-width:720px){.hm-windows{grid-template-columns:1fr}.hm-window{min-height:230px}.hm-controls{grid-template-columns:repeat(2,minmax(0,1fr))}.hm-sections{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){.hm-scene-symbol,.hm-snow,.hm-particles,.hm-beam{animation:none!important}}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main-content">Skip to content</a>
+<header class="site-header"><div class="nav-wrap">
+<a class="brand" href="../index.html" aria-label="Kaevoryn Studios home"><span class="brand-mark">K</span><span class="brand-name">KAEVORYN STUDIOS<span class="brand-tag">CREATE THE IMPOSSIBLE</span></span></a>
+<nav class="primary-nav" aria-label="Primary navigation"><a href="../index.html">HOME</a><a href="../projects.html" aria-current="page">PROJECTS</a><a href="../explore.html">EXPLORE</a><a href="../shows.html">SHOWS</a><a href="../vision.html">VISION</a><a href="../contact.html">CONNECT</a></nav>
+</div></header>
+<main id="main-content">
+<section class="hm-hero"><p class="hm-kicker">A YEAR OF WONDER · A LIVING WINDOW EXPERIENCE</p><h1>KAEVORYN HOLIDAY MAGIC</h1><p>Turn ordinary windows into extraordinary worlds. Seasonal stories, synchronized sound, coordinated lighting, and a little impossible magic — all year long.</p></section>
+<section class="hm-stage-wrap" aria-labelledby="hm-stage-title">
+<div class="hm-stage-head"><div><p class="hm-kicker">THE FIRST PROTOTYPE</p><h2 id="hm-stage-title">THE LIVING WINDOW STAGE</h2></div><div class="hm-status" id="hm-status" aria-live="polite">Standby · Choose a holiday to begin</div></div>
+<div class="hm-stage" id="hm-stage">
+<div class="hm-windows">
+<div class="hm-window inside"><div class="hm-scene" id="hm-scene-inside"><span class="moon"></span><span class="horizon"></span><span class="hm-snow"></span><span class="hm-beam"></span><span class="scene-symbol" id="hm-symbol-inside">✨</span><span class="scene-name" id="hm-name-inside">A little magic is waiting</span></div></div>
+<div class="hm-window outside"><div class="hm-scene" id="hm-scene-outside"><span class="moon"></span><span class="horizon"></span><span class="hm-particles"></span><span class="hm-beam"></span><span class="scene-symbol" id="hm-symbol-outside">✨</span><span class="scene-name" id="hm-name-outside">A world beyond the glass</span></div></div>
+</div>
+<div class="hm-controls">
+<div class="hm-control"><label for="hm-holiday">HOLIDAY WORLD</label><select id="hm-holiday"><option value="halloween">Halloween</option><option value="thanksgiving">Thanksgiving</option><option value="christmas" selected>Christmas</option><option value="newyear">New Year's Eve</option><option value="valentine">Valentine's Day</option><option value="easter">Easter / Spring</option><option value="july4">Independence Day</option><option value="birthday">Birthday Celebration</option></select></div>
+<div class="hm-control"><label for="hm-mode">SHOW CONTROL</label><select id="hm-mode"><option value="manual">Manual control</option><option value="automatic">Automatic show</option></select></div>
+<div class="hm-control"><label for="hm-brightness">LIGHT INTENSITY <output id="hm-brightness-value">65%</output></label><input id="hm-brightness" type="range" min="0" max="100" value="65"></div>
+<div class="hm-control"><label for="hm-effects">MAGICAL EFFECT</label><select id="hm-effects"><option value="sparkle">Starlight & sparkles</option><option value="snow">Falling snow</option><option value="beam">Magic beams</option><option value="glow">Enchanted glow</option><option value="off">Effects off</option></select></div>
+</div>
+<div class="hm-actions"><button class="hm-btn primary" id="hm-start" type="button">▶ START THE SHOW</button><button class="hm-btn" id="hm-next" type="button">NEXT SCENE ↗</button><button class="hm-btn" id="hm-sound" type="button" aria-pressed="false">♫ SOUND: OFF</button><button class="hm-btn" id="hm-lights" type="button" aria-pressed="true">✧ LIGHTS: ON</button><button class="hm-btn" id="hm-stop" type="button">■ STOP</button></div>
+<p class="hm-note" id="hm-caption">Preview mode: both window views are synchronized. Choose a holiday and start the show.</p>
+</section>
+<section class="hm-sections" aria-label="Experience features">
+<article class="hm-info"><h3>✧ Two-sided window magic</h3><p>Design a coordinated view for the room and a brighter outward-facing presentation for people outside.</p></article>
+<article class="hm-info"><h3>♫ Music & atmosphere</h3><p>Plan original holiday soundtracks, ambient audio, cues, and effects timed to each scene.</p></article>
+<article class="hm-info"><h3>⚡ Lights & special effects</h3><p>Coordinate lighting looks, simulated snowfall, magical beams, portals, and dramatic scene transitions.</p></article>
+</section>
+<p class="hm-warning"><strong>Prototype transparency:</strong> This page is an interactive visual and audio preview running in your browser. It does not yet control a physical projector, smart lights, fog machine, or outdoor equipment. Real-world hardware connections, weatherproofing, electrical safety, projection placement, and synchronized multi-device control are later development stages.</p>
+</main>
+<footer class="site-footer"><div class="footer-brand">KAEVORYN STUDIOS</div><div class="footer-mantra">CREATE THE IMPOSSIBLE</div><p>Kaevoryn Holiday Magic · A year of wonder.</p><a href="../projects.html">Return to Projects</a></footer>
+<script>
+(function(){
+"use strict";
+var scenes={
+halloween:[["🎃","The lanterns awaken"],["👻","A whisper beyond the glass"],["🦇","Shadows take flight"],["🏚️","The haunted house appears"],["✨","The magic fades into night"]],
+thanksgiving:[["🍂","Autumn leaves begin to fall"],["🌽","A harvest of golden light"],["🦃","A little Thanksgiving wonder"],["🕯️","Warmth gathers at home"],["❤️","A moment to be grateful"]],
+christmas:[["❄️","The first snow begins"],["🏘️","A village glows beneath the stars"],["🎅","A visitor crosses the sky"],["🦌","Reindeer fly through the night"],["🎄","The tree awakens with light"]],
+newyear:[["🌌","The night sky opens"],["🕰️","The final moments approach"],["🎆","A thousand lights rise"],["🥂","A new beginning"],["✨","Welcome to a new year"]],
+valentine:[["💗","A little light of love"],["🌹","Roses bloom in the window"],["🦋","Hearts drift through the air"],["💞","A world filled with warmth"],["✨","Love lights the night"]],
+easter:[["🌷","Spring awakens"],["🐇","A visitor in the garden"],["🥚","Color blooms everywhere"],["🦋","Butterflies take flight"],["🌈","A bright new beginning"]],
+july4:[["🌟","The evening sky glows"],["🗽","A celebration begins"],["🎆","Fireworks fill the sky"],["✨","A brilliant summer night"],["🇺🇸","A night to remember"]],
+birthday:[["🎈","The celebration begins"],["🎂","Make a wish"],["🎉","Let the magic shine"],["🎁","A surprise is waiting"],["✨","A spectacular birthday finale"]]
+};
+var holiday=document.getElementById("hm-holiday"),mode=document.getElementById("hm-mode"),stage=document.getElementById("hm-stage"),status=document.getElementById("hm-status"),caption=document.getElementById("hm-caption"),brightness=document.getElementById("hm-brightness"),effects=document.getElementById("hm-effects"),soundBtn=document.getElementById("hm-sound"),lightsBtn=document.getElementById("hm-lights"),startBtn=document.getElementById("hm-start");
+var index=0,running=false,timer=null,audio=null,oscillators=[],soundOn=false,lightsOn=true;
+function current(){return scenes[holiday.value]||scenes.christmas}
+function render(){
+var item=current()[index%current().length],symbol=item[0],name=item[1];
+["inside","outside"].forEach(function(side){document.getElementById("hm-symbol-"+side).textContent=symbol;document.getElementById("hm-name-"+side).textContent=name;});
+status.textContent=(running?"SHOW RUNNING":"PREVIEW READY")+" · "+holiday.options[holiday.selectedIndex].text+" · SCENE "+(index+1)+" / "+current().length;
+caption.textContent=name+" — synchronized inside and outside preview.";
+stage.style.setProperty("--hm-light", "rgba(126,234,255,"+(Number(brightness.value)/100)+")");
+stage.style.filter="brightness("+(0.55+Number(brightness.value)/220)+")";
+stage.classList.toggle("lights-on",lightsOn);
+stage.classList.toggle("show-running",running);
+stage.querySelectorAll(".hm-snow,.hm-particles").forEach(function(el){el.style.display=effects.value==="off"?"none":"block";el.style.opacity=effects.value==="off"?"0":(effects.value==="glow"?"0.18":"");});
+stage.querySelectorAll(".hm-beam").forEach(function(el){el.style.opacity=effects.value==="beam"?"0.65":"0";});
+if(effects.value==="snow"){stage.querySelectorAll(".hm-snow").forEach(function(el){el.style.opacity=".9";});}
+}
+function next(){index=(index+1)%current().length;render();}
+function stop(){running=false;if(timer){clearInterval(timer);timer=null;}stage.classList.remove("show-running");startBtn.textContent="▶ START THE SHOW";status.textContent="Standby · Show stopped";render();}
+function start(){if(running){stop();return;}running=true;startBtn.textContent="Ⅱ PAUSE / STOP";render();if(mode.value==="automatic"){timer=setInterval(function(){next();},4200);}else{status.textContent="MANUAL SHOW · Use NEXT SCENE to advance";}}
+function initAudio(){
+var AC=window.AudioContext||window.webkitAudioContext;if(!AC){caption.textContent="Audio is not supported in this browser.";return false;}
+if(!audio){audio=new AC();var master=audio.createGain();master.gain.value=.035;master.connect(audio.destination);var notes=[261.63,329.63,392,523.25];notes.forEach(function(freq,i){var o=audio.createOscillator(),g=audio.createGain();o.type="sine";o.frequency.value=freq;g.gain.value=.13/(i+1);o.connect(g);g.connect(master);o.start();oscillators.push(o);});audio._master=master;}
+if(audio.state==="suspended")audio.resume();return true;
+}
+holiday.addEventListener("change",function(){index=0;stop();render();});
+mode.addEventListener("change",function(){if(running){stop();start();}});
+document.getElementById("hm-next").addEventListener("click",next);
+startBtn.addEventListener("click",function(){if(running&&mode.value==="automatic"){stop();return;}start();});
+document.getElementById("hm-stop").addEventListener("click",stop);
+soundBtn.addEventListener("click",function(){soundOn=!soundOn;if(soundOn){if(initAudio()){soundBtn.textContent="♫ SOUND: ON";soundBtn.setAttribute("aria-pressed","true");}else{soundOn=false;}}else{if(audio&&audio._master)audio._master.gain.setTargetAtTime(0,audio.currentTime,.08);soundBtn.textContent="♫ SOUND: OFF";soundBtn.setAttribute("aria-pressed","false");}if(soundOn&&audio&&audio._master)audio._master.gain.setTargetAtTime(.035,audio.currentTime,.12);});
+lightsBtn.addEventListener("click",function(){lightsOn=!lightsOn;lightsBtn.textContent=lightsOn?"✧ LIGHTS: ON":"✧ LIGHTS: OFF";lightsBtn.setAttribute("aria-pressed",String(lightsOn));render();});
+brightness.addEventListener("input",function(){document.getElementById("hm-brightness-value").textContent=brightness.value+"%";render();});
+effects.addEventListener("change",render);
+render();
+})();
+</script>
+</body>
+</html>
