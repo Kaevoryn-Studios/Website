@@ -113,6 +113,7 @@
 <a href="shows.html#kaevoryn-citadel">BACK TO ALL SHOWS</a>
 </div>
 <p class="citadel-status" id="citadelStatus" role="status">The gate is waiting. Choose any discovery to begin.</p>
+<p class="citadel-status" id="showBridgeStatus" role="status">Show Control Room: waiting for connection in this browser.</p>
 </section>
 <section class="citadel-note" aria-label="Prototype status"><strong>Development note:</strong> This is an original browser-based visual prototype, not a finished physical attraction or a fully produced show. The visuals and story beats are in place for this first pass. Original music, deeper effects, and phone/desktop hands-on testing are still pending. No audio plays automatically.</section>
 </main>
@@ -142,6 +143,14 @@ buttons.forEach((button)=>button.addEventListener("click",()=>showDiscovery(Numb
 document.getElementById("nextDiscovery").addEventListener("click",()=>showDiscovery(current===5?1:current+1));
 document.getElementById("resetCitadel").addEventListener("click",()=>{showDiscovery(1);status.textContent="Returned to the gate. The Citadel is waiting."});
 showDiscovery(1);
+})();
+</script>
+<script>
+/* Same-browser Show Control Room bridge. Keep both pages open in this browser. */
+(function(){var status=document.getElementById('showBridgeStatus'),stage=document.getElementById('citadelStage'),buttons=[...document.querySelectorAll('[data-discovery-button]')],channel;try{if(!('BroadcastChannel'in window))throw new Error('unsupported');channel=new BroadcastChannel('kaevoryn-show-bridge-v1');}catch(e){if(status)status.textContent='Show Control Room connection is not supported in this browser.';return;}
+function setDiscovery(n){n=Math.max(1,Math.min(5,Number(n)||1));var b=buttons.find(function(x){return Number(x.dataset.discoveryButton)===n;});if(b)b.click();status.textContent='Show Control Room connected · Citadel discovery '+n+' of 5.';}
+channel.onmessage=function(event){var m=event.data||{};if(m.type==='control-heartbeat'){status.textContent='Show Control Room connected in this browser.';channel.postMessage({type:'parade-ready',source:'citadel'});}if(m.type==='show-start')status.textContent='Show Control Room is running a sequence.';if(m.type==='show-stop')status.textContent='Show Control Room sequence stopped.';if(m.type==='stage-state'&&m.state){stage.style.setProperty('--control-color',m.state.color||'#7eeaff');stage.style.setProperty('--control-brightness',String(Math.max(0,Math.min(100,Number(m.state.brightness)||0))/100));}if(m.type==='cue'&&m.cue){var name=(m.cue.name||'').toLowerCase(),action=m.cue.action||'';if(/arrival|opening|gate|welcome/.test(name))setDiscovery(1);else if(/hall|architecture|lights|beam/.test(name))setDiscovery(2);else if(/library|world|starfall|dream/.test(name)||action==='starfall')setDiscovery(3);else if(/heart|lantern|wave/.test(name)||action==='wave')setDiscovery(4);else if(/reveal|citadel|finale|firework/.test(name)||action==='finale'||action==='fireworks')setDiscovery(5);}};
+channel.postMessage({type:'parade-ready',source:'citadel'});
 })();
 </script>
 <script src="living-world.js"></script>
