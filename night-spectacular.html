@@ -227,6 +227,7 @@ function next(){clearActTimer();if(!running||paused)return;if(sceneIndex>=5){fin
 function begin(firstAct){stopTimer();running=true;paused=false;const initialAct=Number.isInteger(firstAct)&&firstAct>=1&&firstAct<=5?firstAct:startIndex;render(initialAct);status.textContent=reduced?"Reduced-motion mode: transitions are softened; each act still has time to breathe.":"Act "+sceneIndex+" begins. Let the world breathe.";controls(false);scheduleNext(reduced?6500:actDuration);}
 function togglePause(){if(!running)return;if(paused){paused=false;status.textContent="Act "+sceneIndex+" continues…";controls(false);scheduleNext(Math.max(0,remaining||actDuration));}else{remaining=Math.max(0,deadline-Date.now());paused=true;clearActTimer();status.textContent="Paused. Resume whenever you're ready.";controls(false);}}
 start.addEventListener("click",()=>{status.textContent="Starting First Light…";begin(startIndex);});replay.addEventListener("click",()=>begin(1));pause.addEventListener("click",togglePause);skip.addEventListener("click",finish);
+window.kaevorynNightRemoteAct=function(n){n=Math.max(1,Math.min(5,Number(n)||1));if(!running){running=true;paused=false;controls(false);}stopTimer();render(n);status.textContent='Show Control Room cue · act '+n+' of 5.';if(n<5)scheduleNext(reduced?6500:actDuration);else{running=false;controls(true);}};
 render(startIndex);controls(false);
 })();
 </script>
