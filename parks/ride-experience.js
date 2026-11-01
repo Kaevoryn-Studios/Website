@@ -13,7 +13,9 @@ function ellipse(x,y,rx,ry,rot,fill){ctx.beginPath();ctx.ellipse(x,y,rx,ry,rot,0
 function tone(freq,duration,type='sine',volume=.12,slide=0){if(muted)return;audioReady();const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type=type;o.frequency.setValueAtTime(freq,audioCtx.currentTime);if(slide)o.frequency.exponentialRampToValueAtTime(Math.max(30,freq+slide),audioCtx.currentTime+duration);g.gain.setValueAtTime(.001,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(volume,audioCtx.currentTime+.04);g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+duration);o.connect(g).connect(audioMaster);o.start();o.stop(audioCtx.currentTime+duration+.03)}
 function whoosh(){tone(180,.7,'sawtooth',.055,-120);tone(420,.45,'triangle',.035,-260)}
 function roar(){tone(92,1.25,'sawtooth',.12,-45);tone(138,.9,'triangle',.07,-55);tone(48,1.1,'sine',.12,-15)}
-function fireSound(){tone(220,.75,'sawtooth',.08,580);tone(740,.55,'triangle',.045,-380);tone(95,.8,'square',.035,-45)}
+function fireSound(){tone(220,.75,'sawtooth',.08,580);tone(740,.55,'triangle',.045,-380);tone(95,.8,'square',.035,-45);tone(58,1.05,'sine',.09,-25)}
+function lightningSound(){tone(68,1.05,'sawtooth',.13,-38);tone(310,.16,'square',.07,-250);tone(52,1.4,'sine',.1,-18)}
+function windSound(){tone(145,1.1,'sawtooth',.035,-105);tone(230,.8,'triangle',.025,-170)}
 
 function dragon(t){
 const scale=Math.min(w/760,h/440),cx=w*.53,cy=h*.52,flap=Math.sin(t*.009),breath=Math.sin(t*.004)*2,bank=Math.sin(t*.0015)*.10;
@@ -74,6 +76,17 @@ for(let row=0;row<4;row++)for(let col=0;col<9;col++){const x=-55+col*17,y=-15+ro
 ctx.save();ctx.translate(-238,7+Math.sin(t*.004)*12);ctx.globalCompositeOperation='lighter';
 for(let i=0;i<7;i++){const flick=Math.sin(t*.018+i*1.7)*10,len=42+i*9,grad=ctx.createLinearGradient(0,0,-len,0);grad.addColorStop(0,'#fff8c5');grad.addColorStop(.25,'#ffc34d');grad.addColorStop(.62,'#f65b20');grad.addColorStop(1,'#9f1712');ctx.fillStyle=grad;ctx.beginPath();ctx.moveTo(0,(i-3)*3);ctx.bezierCurveTo(-len*.3,-20+flick,-len*.7,-9+flick,-len,flick);ctx.bezierCurveTo(-len*.7,19+flick,-len*.3,15+flick,0,(i-3)*3);ctx.fill()}
 ctx.shadowColor='#ff6b24';ctx.shadowBlur=24;ellipse(-5,0,8,6,0,'#fff2a0');ctx.restore();
+// Fire breath originates at the dragon's jaws, following his head and flight motion
+if(act===3&&active){
+ const pulse=Math.sin(t*.035),length=155+Math.sin(t*.021)*28;
+ ctx.save();ctx.translate(185,-53);ctx.globalCompositeOperation='lighter';
+ const glow=ctx.createRadialGradient(5,0,2,35,0,75);glow.addColorStop(0,'#fff7c4');glow.addColorStop(.3,'#ffb52e');glow.addColorStop(1,'#ff4a16');ctx.fillStyle=glow;ctx.beginPath();ctx.ellipse(34,0,65,23,0,0,Math.PI*2);ctx.fill();
+ for(let i=0;i<8;i++){const sway=Math.sin(t*.04+i*1.8)*13,spread=(i-3.5)*5;
+  const g=ctx.createLinearGradient(0,0,length,0);g.addColorStop(0,'#fffbd0');g.addColorStop(.22,'#ffd34f');g.addColorStop(.58,'#ff7622');g.addColorStop(1,'#c51e13');
+  ctx.fillStyle=g;ctx.beginPath();ctx.moveTo(0,spread);ctx.bezierCurveTo(38,spread-20+sway, length*.68,spread-27+sway,length,spread+sway);ctx.bezierCurveTo(length*.66,spread+23+sway,42,spread+19+sway,0,spread);ctx.fill();
+ }
+ ctx.shadowColor='#ff6b20';ctx.shadowBlur=28;ctx.fillStyle='#fff4b0';ctx.beginPath();ctx.ellipse(5,0,13,8,0,0,Math.PI*2);ctx.fill();ctx.restore();
+}
 ctx.restore();
 }
 function draw(t){if(!w||!h)return;const storm=act===2,night=park==='afterdark',space=park==='beyond';const sky=ctx.createLinearGradient(0,0,0,h);sky.addColorStop(0,night?'#09091d':space?'#090d31':'#0b2948');sky.addColorStop(.6,night?'#40203d':space?'#29275e':'#24718a');sky.addColorStop(1,'#b0d9d4');ctx.fillStyle=sky;ctx.fillRect(0,0,w,h);
@@ -112,12 +125,11 @@ else{for(let i=0;i<5;i++){const x=((i*210-t*.04)%(w+200)+w+200)%(w+200)-90,y=h*(
 dragon(t);
 // ride streaks create forward speed
 for(let i=0;i<18;i++){const x=((i*91-t*.24)%(w+30)+w+30)%(w+30),y=(i*57)%(h*.7);ctx.strokeStyle='#d8faff55';ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x-24,y+3);ctx.stroke()}
-// forward flame from dragon's mouth in act 4: flame extends to right, flickers outward
-if(act===3&&active){const fx=w*.53+Math.min(w/760,h/440)*170,fy=h*.52-Math.min(w/760,h/440)*62;ctx.save();ctx.translate(fx,fy);ctx.rotate(-.08);for(let i=0;i<4;i++){ctx.fillStyle=['#ffef9b','#ffb33e','#ff6b32','#fff5c4'][i];ctx.beginPath();ctx.moveTo(0,(i-1.5)*7);ctx.quadraticCurveTo(55+i*18,-30+i*9,125+i*19,Math.sin(t*.03+i)*11);ctx.quadraticCurveTo(75+i*10,28-i*8,0,(i-1.5)*7);ctx.fill()}ctx.restore()}
+
 if(finished){ctx.fillStyle='#f8e7b0';ctx.font='700 18px system-ui';ctx.textAlign='center';ctx.fillText('FLIGHT COMPLETE',w/2,h*.17)}
 }
 function showAct(){const a=p.acts[act];$('sceneCount').textContent='JOURNEY · '+String(act+1).padStart(2,'0')+' / 05';$('rideStatus').textContent=finished?'ARRIVAL COMPLETE':active?'IN FLIGHT':'AT THE STATION';$('sceneEyebrow').textContent=a[0];$('sceneTitle').textContent=a[0].replaceAll(' ',' ').toLowerCase().replace(/\b\w/g,x=>x.toUpperCase());$('sceneText').textContent=a[1];$('progressText').textContent=Math.round((act+(finished?1:0))/5*100)+'% complete';$('progressBar').style.width=(act+(finished?1:0))/5*100+'%';$('nextScene').textContent=finished?'Fly again':active?'Pause flight':'Start the ride';$('rideNote').textContent=finished?'Your flight is complete. Choose Fly again to ride once more.':active?'The dragon is flying. The five scenes advance automatically.':'Press Start the ride once. The flight and scenes will run automatically.'}
-function frame(now){if(!active)return;const dt=Math.min(50,now-last||16);last=now;elapsed+=dt;if(!reduce)draw(now);if(elapsed>=duration){elapsed=0;if(act<4){act++;showAct();if(act===2)roar();if(act===3)fireSound();else whoosh()}else{active=false;finished=true;showAct();draw(now);return}}raf=requestAnimationFrame(frame)}
+function frame(now){if(!active)return;const dt=Math.min(50,now-last||16),previous=elapsed;last=now;elapsed+=dt;if(!reduce)draw(now);if(act===2){if(previous<2400&&elapsed>=2400)lightningSound();if(previous<6800&&elapsed>=6800)lightningSound()}if(Math.floor(previous/3200)!==Math.floor(elapsed/3200))windSound();if(elapsed>=duration){elapsed=0;if(act<4){act++;showAct();if(act===2){roar();lightningSound()}if(act===3){fireSound();whoosh()}else whoosh()}else{active=false;finished=true;showAct();draw(now);return}}raf=requestAnimationFrame(frame)}
 function start(){if(finished){act=0;finished=false;elapsed=0}audioReady();active=true;last=performance.now();showAct();roar();cancelAnimationFrame(raf);raf=requestAnimationFrame(frame)}
 $('nextScene').onclick=()=>{if(active){active=false;cancelAnimationFrame(raf);$('nextScene').textContent='Resume flight';$('rideStatus').textContent='FLIGHT PAUSED';$('rideNote').textContent='Your flight is paused. Resume when you are ready.'}else start()};
 $('restartRide').onclick=()=>{active=false;finished=false;act=0;elapsed=0;cancelAnimationFrame(raf);showAct();draw(0)};
