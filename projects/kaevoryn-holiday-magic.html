@@ -145,7 +145,7 @@ animation:hm-layered-snow 11s linear infinite;
 .finale-mode .hm-scene:nth-child(4) .hm-finale-burst{animation-delay:.36s}
 .finale-mode .hm-scene:nth-child(5) .hm-finale-burst{animation-delay:.48s}
 .finale-mode .hm-scene .scene-symbol{animation:hm-finale-symbol 1.15s ease-in-out 2}
-.finale-mode .hm-scene .hm-beam{opacity:.78!important;animation:hm-finale-beam 1.25s ease-in-out 3}
+.finale-mode.lights-on .hm-scene .hm-beam{opacity:.78!important;animation:hm-finale-beam 1.25s ease-in-out 3}
 .finale-mode .hm-scene .hm-art{filter:drop-shadow(0 0 13px #ffe7a9aa)}
 @keyframes hm-finale-bloom{0%{opacity:0;transform:scale(.55)}18%{opacity:1;transform:scale(1.05)}48%{opacity:.48;transform:scale(1.18)}72%{opacity:.88;transform:scale(1.28)}100%{opacity:.12;transform:scale(1.42)}}
 @keyframes hm-finale-symbol{0%,100%{filter:drop-shadow(0 0 18px #9feaff99);transform:scale(1)}50%{filter:drop-shadow(0 0 34px #fff0b9);transform:scale(1.16)}}
@@ -270,7 +270,7 @@ if(syncChannel)syncChannel.postMessage({type:"request-state"});
 if(syncChannel){
 syncChannel.onmessage=function(event){
 var msg=event.data||{};
-if(msg.type==="request-state"&&!projectorId){syncChannel.postMessage({type:"state",holiday:holiday.value,index:index,running:running,brightness:brightness.value,effects:effects.value,lightsOn:lightsOn,calibrationOn:calibrationOn,identifyOn:identifyOn});}
+if(msg.type==="request-state"&&!projectorId){syncChannel.postMessage({type:"state",holiday:holiday.value,index:index,running:running,brightness:brightness.value,effects:effects.value,lightsOn:lightsOn,calibrationOn:calibrationOn,identifyOn:identifyOn,projectorSettings:projectorSettings});}
 if(msg.type==="state"&&projectorId){
 holiday.value=msg.holiday;index=msg.index;running=msg.running;brightness.value=msg.brightness;effects.value=msg.effects;lightsOn=msg.lightsOn;calibrationOn=!!msg.calibrationOn;identifyOn=!!msg.identifyOn;if(Array.isArray(msg.projectorSettings)&&msg.projectorSettings.length===5){projectorSettings=msg.projectorSettings;}document.getElementById("hm-identify").textContent=identifyOn?"# IDENTIFY PROJECTORS: ON":"# IDENTIFY PROJECTORS: OFF";document.getElementById("hm-identify").setAttribute("aria-pressed",String(identifyOn));document.getElementById("hm-calibrate").textContent=calibrationOn?"▦ CALIBRATION: ON":"▦ CALIBRATION: OFF";document.getElementById("hm-calibrate").setAttribute("aria-pressed",String(calibrationOn));render();
 }
