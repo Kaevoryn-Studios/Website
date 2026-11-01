@@ -249,9 +249,10 @@ stage.querySelectorAll(".hm-beam").forEach(function(el){el.style.opacity=effects
 if(effects.value==="snow"){stage.querySelectorAll(".hm-snow").forEach(function(el){el.style.opacity=".9";});}
 if(syncChannel&&!projectorId){syncChannel.postMessage({type:"state",holiday:holiday.value,index:index,running:running,brightness:brightness.value,effects:effects.value,lightsOn:lightsOn,calibrationOn:calibrationOn,identifyOn:identifyOn,projectorSettings:projectorSettings});}
 }
-function next(){index=(index+1)%current().length;render();}
-function stop(){running=false;if(timer){clearInterval(timer);timer=null;}stage.classList.remove("show-running");startBtn.textContent="▶ START THE SHOW";status.textContent="Standby · Show stopped";render();}
-function start(){if(running){stop();return;}running=true;startBtn.textContent="Ⅱ PAUSE / STOP";render();if(mode.value==="automatic"){timer=setInterval(function(){next();},4200);}else{status.textContent="MANUAL SHOW · Use NEXT SCENE to advance";}}
+function scheduleNext(){if(timer){clearTimeout(timer);timer=null;}if(running&&mode.value==="automatic"){var finale=index===current().length-1;timer=setTimeout(function(){if(!running)return;index=(index+1)%current().length;render();scheduleNext();},finale?7200:4200);}}
+function next(){index=(index+1)%current().length;render();if(running&&mode.value==="automatic")scheduleNext();}
+function stop(){running=false;if(timer){clearTimeout(timer);timer=null;}stage.classList.remove("show-running");startBtn.textContent="▶ START THE SHOW";status.textContent="Standby · Show stopped";render();}
+function start(){if(running){stop();return;}running=true;startBtn.textContent="Ⅱ PAUSE / STOP";render();if(mode.value==="automatic"){scheduleNext();}else{status.textContent="MANUAL SHOW · Use NEXT SCENE to advance";}}
 function initAudio(){
 var AC=window.AudioContext||window.webkitAudioContext;if(!AC){caption.textContent="Audio is not supported in this browser.";return false;}
 if(!audio){audio=new AC();var master=audio.createGain();master.gain.value=.035;master.connect(audio.destination);var notes=[261.63,329.63,392,523.25];notes.forEach(function(freq,i){var o=audio.createOscillator(),g=audio.createGain();o.type="sine";o.frequency.value=freq;g.gain.value=.13/(i+1);o.connect(g);g.connect(master);o.start();oscillators.push(o);});audio._master=master;}
