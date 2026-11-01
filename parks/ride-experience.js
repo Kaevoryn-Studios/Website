@@ -27,11 +27,11 @@ path([[-220,5],[-247,-9],[-238,8],[-252,20],[-220,15]],'#123b2a','#111e22',2);
 const wingBeat=flap;
 const lift=(pts,amount)=>pts.map(([x,y])=>[x,y-wingBeat*amount*(Math.abs(y)/230)]);
 ctx.save();ctx.translate(-20,-17);
-const farOutline=lift([[0,0],[-37,-115],[-17,-202],[12,-166],[54,-222],[65,-150],[112,-196],[121,-126],[165,-147],[121,-74],[73,-25]],58);
+const farOutline=lift([[0,0],[-37,-115],[-17,-202],[12,-166],[54,-222],[65,-150],[112,-196],[121,-126],[165,-147],[121,-74],[73,-25]],155);
 path(farOutline,'#101f20','#466b50',3);
 ctx.strokeStyle='#648b69';ctx.lineWidth=5;ctx.beginPath();
-lift([[0,0],[-17,-202],[54,-222],[112,-196],[165,-147]],58).slice(1).forEach(pt=>{ctx.moveTo(0,0);ctx.lineTo(pt[0],pt[1])});ctx.stroke();
-for(let i=0;i<4;i++){const tip=lift([[-17,-202],[54,-222],[112,-196],[165,-147]][i]?[[-17,-202],[54,-222],[112,-196],[165,-147]][i]:[],58)[0];ctx.strokeStyle='#294d39';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(0,0);ctx.quadraticCurveTo(-30+i*45,-70-i*8,tip[0],tip[1]);ctx.stroke()}ctx.restore();
+lift([[0,0],[-17,-202],[54,-222],[112,-196],[165,-147]],155).slice(1).forEach(pt=>{ctx.moveTo(0,0);ctx.lineTo(pt[0],pt[1])});ctx.stroke();
+for(let i=0;i<4;i++){const tip=lift([[[-17,-202],[54,-222],[112,-196],[165,-147]][i]],155)[0];ctx.strokeStyle='#294d39';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(0,0);ctx.quadraticCurveTo(-30+i*45,-70-i*8,tip[0],tip[1]);ctx.stroke()}ctx.restore();
 // Heavy torso with layered armor and shadowed underside
 const body=ctx.createLinearGradient(-15,-30,22,57);body.addColorStop(0,'#3e7548');body.addColorStop(.38,'#174b32');body.addColorStop(1,'#071b17');
 ellipse(-3,12,94,43,-.06,body);ellipse(28,27,56,25,-.1,'#0f3427');
@@ -44,11 +44,13 @@ leg(-48,26,false);leg(47,24,true);
 ctx.save();ctx.translate(-4,-15);
 const membrane=ctx.createLinearGradient(-20,-200,110,10);membrane.addColorStop(0,'#28553a');membrane.addColorStop(.45,'#153c2b');membrane.addColorStop(1,'#091e19');
 const nearBase=[[0,0],[-31,-121],[-19,-207],[9,-172],[47,-232],[62,-157],[111,-205],[119,-130],[168,-157],[132,-80],[82,-31],[37,15]];
-path(lift(nearBase,94),membrane,'#527b50',4);
-const tips=lift([[-19,-207],[47,-232],[111,-205],[168,-157]],94);
+path(lift(nearBase,190),membrane,'#527b50',4);
+const tips=lift([[-19,-207],[47,-232],[111,-205],[168,-157]],190);
 ctx.strokeStyle='#8ba77a';ctx.lineWidth=5;ctx.lineCap='round';ctx.beginPath();tips.forEach(pt=>{ctx.moveTo(0,0);ctx.lineTo(pt[0],pt[1])});ctx.stroke();
 ctx.strokeStyle='#31563b';ctx.lineWidth=2;for(let i=0;i<4;i++){ctx.beginPath();ctx.moveTo(0,0);ctx.quadraticCurveTo(20+i*25,-75-i*9,tips[i][0],tips[i][1]);ctx.stroke()}
 ctx.restore();
+// Strong shoulder joints anchor the wing strokes to the back
+ellipse(-7,-14,15,13,-.2,'#376d43');ellipse(-21,-16,10,9,-.2,'#214d34');
 // Neck rises forward from shoulders; armored throat
 const neck=ctx.createLinearGradient(45,-65,110,8);neck.addColorStop(0,'#3e7548');neck.addColorStop(.45,'#354a40');neck.addColorStop(1,'#17272a');
 ctx.strokeStyle=neck;ctx.lineWidth=36;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(48,0);ctx.bezierCurveTo(77,-19,78,-54,112,-68);ctx.stroke();
