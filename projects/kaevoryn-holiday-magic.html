@@ -19,8 +19,9 @@
 .hm-stage.show-running .hm-scene-symbol{animation-duration:1.8s}
 .hm-stage.show-running .hm-particles{opacity:.8}
 @keyframes hm-float{50%{transform:translateY(-10px) scale(1.04)}}@keyframes hm-fall{to{background-position:0 420px,20px 500px}}@keyframes hm-beam{50%{transform:rotate(-25deg);opacity:.65}}
+.hm-projectors{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px}.hm-output{min-width:0}.hm-output:nth-child(1),.hm-output:nth-child(2){grid-column:span 3}.hm-output:nth-child(3),.hm-output:nth-child(4),.hm-output:nth-child(5){grid-column:span 2}.hm-output-label{display:flex;justify-content:space-between;gap:6px;align-items:center;margin:0 2px 7px;color:#eaf8ff;font-size:10px;font-weight:800;letter-spacing:1px}.hm-output-label span{color:var(--hm-cyan);font-size:8px;letter-spacing:1px}.hm-output .hm-window{min-height:190px;border-width:5px}.hm-output .scene-symbol{font-size:clamp(32px,5vw,58px)}
 .hm-controls{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:14px}.hm-control{padding:12px;border:1px solid #35415d;border-radius:12px;background:#0a1122}.hm-control label{display:block;font-size:10px;letter-spacing:1px;color:#c5d5eb;margin-bottom:7px}.hm-control select,.hm-control input{width:100%;accent-color:var(--hm-cyan)}.hm-control select{background:#101a30;color:#fff;border:1px solid #3b4c6b;border-radius:8px;padding:9px}.hm-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.hm-btn{border:1px solid #60718f;border-radius:10px;background:#15213a;color:#f4f8ff;padding:10px 14px;font-weight:700;font-size:12px}.hm-btn.primary{background:linear-gradient(100deg,#9cefff,#c4b0ff);border:0;color:#101426}.hm-btn:focus-visible,.hm-control select:focus-visible,.hm-control input:focus-visible{outline:2px solid white;outline-offset:3px}.hm-note{font-size:11px;color:#aebed4;margin:12px 0 0}.hm-sections{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;padding:30px 0 65px}.hm-info{border:1px solid #8ceeff30;border-radius:16px;padding:18px;background:#10182ccc}.hm-info h3{margin:0 0 7px;font-size:14px}.hm-info p{margin:0;color:#b5c3d8;font-size:13px}.hm-warning{border-left:3px solid var(--hm-gold);padding:12px 15px;background:#f5d38a0d;color:#d6ddec;font-size:12px;margin:0 0 55px}
-@media(max-width:720px){.hm-windows{grid-template-columns:1fr}.hm-window{min-height:230px}.hm-controls{grid-template-columns:repeat(2,minmax(0,1fr))}.hm-sections{grid-template-columns:1fr}}
+@media(max-width:720px){.hm-projectors{grid-template-columns:repeat(2,minmax(0,1fr))}.hm-output:nth-child(n){grid-column:span 1}.hm-output:first-child{grid-column:span 2}.hm-output .hm-window{min-height:165px}.hm-controls{grid-template-columns:repeat(2,minmax(0,1fr))}.hm-sections{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){.hm-scene-symbol,.hm-snow,.hm-particles,.hm-beam{animation:none!important}}
 </style>
 </head>
@@ -35,9 +36,12 @@
 <section class="hm-stage-wrap" aria-labelledby="hm-stage-title">
 <div class="hm-stage-head"><div><p class="hm-kicker">THE FIRST PROTOTYPE</p><h2 id="hm-stage-title">THE LIVING WINDOW STAGE</h2></div><div class="hm-status" id="hm-status" aria-live="polite">Standby · Choose a holiday to begin</div></div>
 <div class="hm-stage" id="hm-stage">
-<div class="hm-windows">
-<div class="hm-window inside"><div class="hm-scene" id="hm-scene-inside"><span class="moon"></span><span class="horizon"></span><span class="hm-snow"></span><span class="hm-beam"></span><span class="scene-symbol" id="hm-symbol-inside">✨</span><span class="scene-name" id="hm-name-inside">A little magic is waiting</span></div></div>
-<div class="hm-window outside"><div class="hm-scene" id="hm-scene-outside"><span class="moon"></span><span class="horizon"></span><span class="hm-particles"></span><span class="hm-beam"></span><span class="scene-symbol" id="hm-symbol-outside">✨</span><span class="scene-name" id="hm-name-outside">A world beyond the glass</span></div></div>
+<div class="hm-projectors" aria-label="Five synchronized projector previews">
+<div class="hm-output"><div class="hm-output-label">PROJECTOR 1 <span>MAIN SCENE</span></div><div class="hm-window inside"><div class="hm-scene"><span class="moon"></span><span class="horizon"></span><span class="hm-snow"></span><span class="hm-beam"></span><span class="scene-symbol" id="hm-symbol-0">✨</span><span class="scene-name" id="hm-name-0">Main scene</span></div></div></div>
+<div class="hm-output"><div class="hm-output-label">PROJECTOR 2 <span>WINDOW A</span></div><div class="hm-window outside"><div class="hm-scene"><span class="moon"></span><span class="horizon"></span><span class="hm-particles"></span><span class="hm-beam"></span><span class="scene-symbol" id="hm-symbol-1">✨</span><span class="scene-name" id="hm-name-1">Window A</span></div></div></div>
+<div class="hm-output"><div class="hm-output-label">PROJECTOR 3 <span>WINDOW B</span></div><div class="hm-window outside"><div class="hm-scene"><span class="moon"></span><span class="horizon"></span><span class="hm-particles"></span><span class="hm-beam"></span><span class="scene-symbol" id="hm-symbol-2">✨</span><span class="scene-name" id="hm-name-2">Window B</span></div></div></div>
+<div class="hm-output"><div class="hm-output-label">PROJECTOR 4 <span>WINDOW C</span></div><div class="hm-window outside"><div class="hm-scene"><span class="moon"></span><span class="horizon"></span><span class="hm-particles"></span><span class="hm-beam"></span><span class="scene-symbol" id="hm-symbol-3">✨</span><span class="scene-name" id="hm-name-3">Window C</span></div></div></div>
+<div class="hm-output"><div class="hm-output-label">PROJECTOR 5 <span>SPECIAL EFFECTS</span></div><div class="hm-window inside"><div class="hm-scene"><span class="moon"></span><span class="horizon"></span><span class="hm-snow"></span><span class="hm-beam"></span><span class="scene-symbol" id="hm-symbol-4">✨</span><span class="scene-name" id="hm-name-4">Finale & effects</span></div></div></div>
 </div>
 <div class="hm-controls">
 <div class="hm-control"><label for="hm-holiday">HOLIDAY WORLD</label><select id="hm-holiday"><option value="halloween">Halloween</option><option value="thanksgiving">Thanksgiving</option><option value="christmas" selected>Christmas</option><option value="newyear">New Year's Eve</option><option value="valentine">Valentine's Day</option><option value="easter">Easter / Spring</option><option value="july4">Independence Day</option><option value="birthday">Birthday Celebration</option></select></div>
@@ -46,14 +50,14 @@
 <div class="hm-control"><label for="hm-effects">MAGICAL EFFECT</label><select id="hm-effects"><option value="sparkle">Starlight & sparkles</option><option value="snow">Falling snow</option><option value="beam">Magic beams</option><option value="glow">Enchanted glow</option><option value="off">Effects off</option></select></div>
 </div>
 <div class="hm-actions"><button class="hm-btn primary" id="hm-start" type="button">▶ START THE SHOW</button><button class="hm-btn" id="hm-next" type="button">NEXT SCENE ↗</button><button class="hm-btn" id="hm-sound" type="button" aria-pressed="false">♫ SOUND: OFF</button><button class="hm-btn" id="hm-lights" type="button" aria-pressed="true">✧ LIGHTS: ON</button><button class="hm-btn" id="hm-stop" type="button">■ STOP</button></div>
-<p class="hm-note" id="hm-caption">Preview mode: both window views are synchronized. Choose a holiday and start the show.</p>
+<p class="hm-note" id="hm-caption">Preview mode: all five projector previews are synchronized. Choose a holiday and start the show.</p>
 </section>
 <section class="hm-sections" aria-label="Experience features">
 <article class="hm-info"><h3>✧ Two-sided window magic</h3><p>Design a coordinated view for the room and a brighter outward-facing presentation for people outside.</p></article>
 <article class="hm-info"><h3>♫ Music & atmosphere</h3><p>Plan original holiday soundtracks, ambient audio, cues, and effects timed to each scene.</p></article>
 <article class="hm-info"><h3>⚡ Lights & special effects</h3><p>Coordinate lighting looks, simulated snowfall, magical beams, portals, and dramatic scene transitions.</p></article>
 </section>
-<p class="hm-warning"><strong>Prototype transparency:</strong> This page is an interactive visual and audio preview running in your browser. It does not yet control a physical projector, smart lights, fog machine, or outdoor equipment. Real-world hardware connections, weatherproofing, electrical safety, projection placement, and synchronized multi-device control are later development stages.</p>
+<p class="hm-warning"><strong>Five-projector prototype:</strong> This is a five-screen software preview, not five live HDMI outputs. The browser currently does not send each preview to a separate physical projector. Actual playback will depend on your computer having enough independent video outputs (or a suitable display system), plus display arrangement and projection-mapping setup. We will check your computer connections before recommending any adapters or purchases. This page does not yet control smart lights, fog, or outdoor equipment.</p>
 </main>
 <footer class="site-footer"><div class="footer-brand">KAEVORYN STUDIOS</div><div class="footer-mantra">CREATE THE IMPOSSIBLE</div><p>Kaevoryn Holiday Magic · A year of wonder.</p><a href="../projects.html">Return to Projects</a></footer>
 <script>
@@ -73,10 +77,10 @@ var holiday=document.getElementById("hm-holiday"),mode=document.getElementById("
 var index=0,running=false,timer=null,audio=null,oscillators=[],soundOn=false,lightsOn=true;
 function current(){return scenes[holiday.value]||scenes.christmas}
 function render(){
-var item=current()[index%current().length],symbol=item[0],name=item[1];
-["inside","outside"].forEach(function(side){document.getElementById("hm-symbol-"+side).textContent=symbol;document.getElementById("hm-name-"+side).textContent=name;});
+var sequence=current(),roles=["MAIN SCENE","WINDOW A","WINDOW B","WINDOW C","SPECIAL EFFECTS"];
+for(var p=0;p<5;p++){var item=sequence[(index+p)%sequence.length];document.getElementById("hm-symbol-"+p).textContent=item[0];document.getElementById("hm-name-"+p).textContent=item[1];}
 status.textContent=(running?"SHOW RUNNING":"PREVIEW READY")+" · "+holiday.options[holiday.selectedIndex].text+" · SCENE "+(index+1)+" / "+current().length;
-caption.textContent=name+" — synchronized inside and outside preview.";
+caption.textContent="Five projector previews are advancing together on one show clock. Each output displays its own scene position.";
 stage.style.setProperty("--hm-light", "rgba(126,234,255,"+(Number(brightness.value)/100)+")");
 stage.style.filter="brightness("+(0.55+Number(brightness.value)/220)+")";
 stage.classList.toggle("lights-on",lightsOn);
