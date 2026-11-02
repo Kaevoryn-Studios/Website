@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#080611">
+<meta name="description" content="Approach the Forbidden Castle, a new dark-fantasy virtual attraction from Kaevoryn Kingdoms.">
+<title>FORBIDDEN CASTLE — Kaevoryn Studios</title>
+<style>
+:root{color-scheme:dark;--violet:#b49aff;--cyan:#8cecff;--gold:#f4d49a;--ink:#080611}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 50% 0%,#39234f 0%,#151023 38%,#080611 78%);color:#f5f0ff;font:16px/1.6 system-ui,Arial,sans-serif;overflow-x:hidden}
+a{color:var(--cyan)}.top{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;padding:17px clamp(18px,5vw,64px);border-bottom:1px solid #c6aaff33;background:#080611d9}.brand{font-size:12px;letter-spacing:.18em;font-weight:900;color:white;text-decoration:none}.brand small{display:block;color:var(--violet);font-size:9px}.nav a{margin-left:16px;text-decoration:none;color:#e6dcff;font-size:11px}
+.wrap{width:min(1120px,calc(100% - 32px));margin:auto}.intro{text-align:center;padding:46px 0 20px}.eyebrow{color:var(--violet);font-size:10px;font-weight:900;letter-spacing:.28em}.intro h1{margin:8px 0;font-size:clamp(40px,8vw,82px);line-height:.96;letter-spacing:-.05em;background:linear-gradient(100deg,#fff,#c8b2ff 48%,#8cecff);color:transparent;background-clip:text}.intro p{max-width:720px;margin:15px auto;color:#c9c1d9;font-size:clamp(15px,2vw,19px)}
+.scene{position:relative;overflow:hidden;min-height:clamp(430px,68vw,700px);border:1px solid #b49aff66;border-radius:24px;background:linear-gradient(#090b20 0%,#17142c 54%,#090811 100%);box-shadow:0 28px 100px #0009;isolation:isolate}
+.skyglow{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 48%,#8c65c533,transparent 48%),radial-gradient(ellipse at 50% 100%,#6d4a9b44,transparent 50%);pointer-events:none}
+.moon{position:absolute;top:8%;right:16%;width:clamp(54px,9vw,100px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 35% 32%,#fff 0,#e2d8ff 42%,#8d7eb4 100%);box-shadow:0 0 45px #c4adff88,0 0 110px #9a78df55}
+.stars{position:absolute;inset:0;background-image:radial-gradient(2px 2px at 13% 20%,#fff 60%,transparent),radial-gradient(1px 1px at 25% 11%,#d7c9ff 60%,transparent),radial-gradient(2px 2px at 72% 18%,#fff 60%,transparent),radial-gradient(1px 1px at 86% 31%,#c6b5ff 60%,transparent),radial-gradient(1px 1px at 43% 9%,#fff 60%,transparent),radial-gradient(2px 2px at 58% 27%,#fff 60%,transparent);opacity:.8}
+.castle{position:absolute;inset:auto 0 7%;width:100%;height:78%;filter:drop-shadow(0 18px 28px #000b)}
+.castle svg{width:100%;height:100%;overflow:visible}
+.window{fill:#b99aff;filter:drop-shadow(0 0 9px #b99aff);animation:windowPulse 3.4s ease-in-out infinite alternate}.window:nth-of-type(odd){animation-delay:1.3s}
+@keyframes windowPulse{from{opacity:.35}to{opacity:1}}
+.fog{position:absolute;bottom:0;left:-15%;width:130%;height:27%;background:radial-gradient(ellipse at 20% 70%,#a18bc533,transparent 50%),radial-gradient(ellipse at 75% 50%,#8cecff22,transparent 48%);filter:blur(18px);animation:fogDrift 13s ease-in-out infinite alternate;pointer-events:none}
+@keyframes fogDrift{to{transform:translateX(6%)}}
+.scene-label{position:absolute;left:20px;top:18px;padding:7px 11px;border:1px solid #b49aff66;border-radius:99px;background:#090611bb;color:#e8dcff;font-size:9px;letter-spacing:.16em}
+.scene-caption{position:absolute;bottom:20px;left:20px;right:20px;text-align:center;text-shadow:0 3px 15px #000}
+.scene-caption strong{display:block;color:#fff;font-size:clamp(18px,3vw,27px);letter-spacing:.08em}
+.scene-caption span{color:#d2c7e8;font-size:12px}
+.panel{margin:20px 0 45px;padding:clamp(20px,4vw,34px);border:1px solid #b49aff44;border-radius:20px;background:linear-gradient(130deg,#211832,#0c0a16 75%)}
+.panel h2{margin:0 0 7px;font-size:clamp(24px,4vw,34px)}.panel p{margin:0;color:#c9c1d9}
+.actions{display:flex;justify-content:center;gap:11px;flex-wrap:wrap;margin-top:20px}
+button,.btn{display:inline-flex;justify-content:center;align-items:center;min-height:46px;padding:11px 17px;border:1px solid var(--violet);border-radius:12px;background:#b49aff1c;color:#fff;text-decoration:none;font-weight:800;font-size:11px;letter-spacing:.08em;cursor:pointer}
+button:hover,.btn:hover,button:focus-visible,.btn:focus-visible{outline:2px solid var(--cyan);outline-offset:3px;background:#b49aff38}
+#gateMessage{min-height:26px;margin-top:15px;color:var(--gold);text-align:center;font-weight:700}
+footer{text-align:center;padding:20px 0 36px;color:#8f86a6;font-size:10px;letter-spacing:.15em}
+@media(max-width:600px){.scene{min-height:470px}.castle{height:65%;bottom:13%}.scene-caption{bottom:14px}.nav a{margin-left:8px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;scroll-behavior:auto!important}}
+</style></head>
+<body>
+<header class="top"><a class="brand" href="index.html">KAEVORYN STUDIOS<small>CREATE THE IMPOSSIBLE</small></a><nav class="nav"><a href="kingdoms.html">Kingdoms</a><a href="attractions.html">Attractions</a></nav></header>
+<main class="wrap">
+<section class="intro"><p class="eyebrow">KAEVORYN KINGDOMS · A NEW DARK-FANTASY ADVENTURE</p><h1>FORBIDDEN CASTLE</h1><p>Beyond the last lantern stands a castle no map remembers. Its windows are awake. Its gates have been waiting. And something ancient is stirring within.</p></section>
+<section class="scene" aria-label="Illustrated view of the Forbidden Castle at night">
+<div class="skyglow"></div><div class="stars"></div><div class="moon"></div><div class="scene-label">THE OUTER COURTYARD · AFTER DUSK</div>
+<div class="castle">
+<svg viewBox="0 0 1000 570" role="img" aria-label="A towering gothic castle with pointed towers, glowing windows, and a grand arched entrance">
+<defs>
+<linearGradient id="stone" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#71658d"/><stop offset=".42" stop-color="#393149"/><stop offset="1" stop-color="#171522"/></linearGradient>
+<linearGradient id="roof" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#81729f"/><stop offset="1" stop-color="#211b31"/></linearGradient>
+<linearGradient id="door" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#100d19"/><stop offset=".5" stop-color="#5b3d79"/><stop offset="1" stop-color="#100d19"/></linearGradient>
+<filter id="glow"><feGaussianBlur stdDeviation="8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+<!-- distant battlements -->
+<path d="M90 390V270h45v-35h42v35h35v-70h42v70h35v120M720 390V270h40v-42h45v42h35v-70h48v70h35v120" fill="#282337" stroke="#625678" stroke-width="5"/>
+<!-- main keep -->
+<path d="M245 500V245h510v255Z" fill="url(#stone)" stroke="#9a8caf" stroke-width="5"/>
+<path d="M215 255h570l-32-28H247Z" fill="#4b405e" stroke="#a394b9" stroke-width="4"/>
+<!-- central high tower -->
+<path d="M385 275V110h230v390H385Z" fill="url(#stone)" stroke="#b0a1c7" stroke-width="5"/>
+<path d="M365 120 500 5l135 115Z" fill="url(#roof)" stroke="#c1b0d8" stroke-width="5"/>
+<path d="M500 5V-20" stroke="#d5c6e8" stroke-width="5"/><path d="M500 -20l25 18-25 15Z" fill="#b49aff"/>
+<!-- side towers -->
+<path d="M145 500V225h125v275Z" fill="url(#stone)" stroke="#a89ab9" stroke-width="5"/>
+<path d="M130 235 207 95l78 140Z" fill="url(#roof)" stroke="#b8a8cd" stroke-width="5"/>
+<path d="M730 500V225h125v275Z" fill="url(#stone)" stroke="#a89ab9" stroke-width="5"/>
+<path d="M715 235 792 95l78 140Z" fill="url(#roof)" stroke="#b8a8cd" stroke-width="5"/>
+<!-- smaller corner turrets -->
+<path d="M285 500V300h75v200M640 500V300h75v200" fill="#302a3d" stroke="#9182a8" stroke-width="4"/>
+<path d="M275 310 322 220l48 90ZM630 310 677 220l48 90Z" fill="url(#roof)" stroke="#a99abb" stroke-width="4"/>
+<!-- tower windows -->
+<g class="window"><path d="M470 160q30-45 60 0v65h-60Z"/><path d="M185 260q22-34 44 0v58h-44Z"/><path d="M770 260q22-34 44 0v58h-44Z"/><path d="M310 340q18-28 36 0v48h-36Z"/><path d="M655 340q18-28 36 0v48h-36Z"/><path d="M465 300q35-48 70 0v76h-70Z"/><path d="M465 405q35-48 70 0v65h-70Z"/></g>
+<!-- stone ribs and battlements -->
+<g stroke="#b1a2c3" stroke-width="4" opacity=".55" fill="none"><path d="M245 280h510M245 490h510M385 250h230M145 350h125M730 350h125"/><path d="M300 255v245M700 255v245M410 275v225M590 275v225"/></g>
+<!-- grand entrance arch -->
+<path d="M410 500V415q0-105 90-105t90 105v85Z" fill="#17121f" stroke="#c4b4d9" stroke-width="10"/>
+<path d="M430 500V417q0-80 70-80t70 80v83Z" fill="url(#door)" stroke="#6f5b8b" stroke-width="4"/>
+<path d="M500 340v160M445 420h110" stroke="#b49aff" stroke-width="3" opacity=".5"/>
+<path d="M410 500V415q0-105 90-105t90 105" fill="none" stroke="#d5c5eb" stroke-width="3" filter="url(#glow)"/>
+<!-- gate bars -->
+<g stroke="#b7a6c8" stroke-width="5"><path d="M450 390v110M475 365v135M500 360v140M525 365v135M550 390v110"/><path d="M435 445h130M430 480h140"/></g>
+<!-- foreground stairs -->
+<path d="M390 500h220l50 25H340ZM355 525h290l45 22H310ZM325 547h350l35 20H290Z" fill="#383044" stroke="#8c7b9e" stroke-width="3"/>
+<!-- braziers -->
+<g filter="url(#glow)"><path d="M105 500h45l-8 42h-29Z M850 500h45l-8 42h-29Z" fill="#5d4a65"/><path d="M127 495q-28-35 0-60 28 25 0 60M872 495q-28-35 0-60 28 25 0 60" fill="#ffb65e"/></g>
+<!-- ground -->
+<path d="M0 565Q250 535 500 565T1000 565V570H0Z" fill="#080811"/>
+</svg></div>
+<div class="fog"></div><div class="scene-caption"><strong>THE GATES HAVE NOT OPENED IN CENTURIES</strong><span>Look closely. Something is watching from the highest tower.</span></div>
+</section>
+<section class="panel"><p class="eyebrow">THE FIRST APPROACH</p><h2>Will you enter?</h2><p>The outer gate is sealed. A violet light flickers behind the ironwork, and a low sound rolls through the stone beneath your feet.</p><div class="actions"><button id="approach" type="button">Approach the gates</button><a class="btn" href="kingdoms.html">Return to Kingdoms</a></div><p id="gateMessage" aria-live="polite">The castle is silent… for now.</p></section>
+</main><footer>KAEVORYN STUDIOS · CREATE THE IMPOSSIBLE</footer>
+<script>
+(()=>{const b=document.getElementById('approach'),m=document.getElementById('gateMessage');let opened=false;b.addEventListener('click',()=>{opened=!opened;document.querySelector('.scene').classList.toggle('awakened',opened);m.textContent=opened?'A voice whispers from beyond the gate: “We have been expecting you.”':'The whisper fades. The gate falls silent once more.';b.textContent=opened?'Step back from the gate':'Approach the gates';});})();
+</script>
+</body></html>
