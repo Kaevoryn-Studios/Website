@@ -27,10 +27,11 @@ poly([[-104,-103],[-70,-145],[69,-145],[111,-99]],'#102d3c','#7ceaff');
 poly([[-88,-111],[-63,-137],[-4,-137],[-4,-111]],'#69c5d4aa','#b5f5ff');poly([[5,-137],[64,-137],[94,-111],[5,-111]],'#6ac9d8aa','#b5f5ff');
 // gullwing doors raised in loading scene
 if(scene===0){for(let side of [-1,1]){ctx.save();ctx.translate(side*52,-137);ctx.rotate(side*-.47);poly([[0,0],[side*6,-105],[side*78,-126],[side*87,-15]],'#264e5d','#8deeff');poly([[side*15,-13],[side*18,-89],[side*68,-103],[side*75,-19]],'#79d9e5aa','#d2fbff');ctx.restore()}}
-poly([[-152,-54],[-174,-42],[-166,-23],[-139,-27]],'#e4f8d2','#8deeff');poly([[143,-55],[169,-42],[161,-22],[137,-27]],'#e4f8d2','#8deeff');
-// grille
-rounded(-32,-48,64,22,6,'#081722','#67dff2');for(let i=0;i<5;i++)rounded(-24+i*12,-43,4,12,1,'#8deeff');
-rounded(-22,-89,44,18,5,'#0b1824','#7ceaff');ctx.fillStyle='#7eeaff';ctx.font='bold 9px system-ui';ctx.textAlign='center';ctx.fillText('KAEVORYN',0,-77);
+// Rear-facing details: the Explorer is viewed from behind as it heads into the kingdom.
+poly([[-152,-54],[-174,-42],[-166,-23],[-139,-27]],'#a92f3d','#ff8c87');poly([[143,-55],[169,-42],[161,-22],[137,-27]],'#a92f3d','#ff8c87');
+rounded(-48,-53,96,29,6,'#102936','#7ceaff');rounded(-25,-45,50,12,3,'#071722','#4f8492');
+ctx.fillStyle='#d8e9e8';ctx.font='bold 8px system-ui';ctx.textAlign='center';ctx.fillText('KAEVORYN',0,-36);
+rounded(-22,-89,44,18,5,'#0b1824','#7ceaff');ctx.fillStyle='#7eeaff';ctx.font='bold 9px system-ui';ctx.fillText('EXPLORER',0,-77);
 ctx.restore()}
 function draw(t){if(!w||!h)return;const sky=ctx.createLinearGradient(0,0,0,h);const colors=scene===3?['#070d1b','#233849','#59616a']:scene===4?['#090d1a','#4c332b','#a45e36']:['#071624','#245260','#9bb8a8'];sky.addColorStop(0,colors[0]);sky.addColorStop(.62,colors[1]);sky.addColorStop(1,colors[2]);ctx.fillStyle=sky;ctx.fillRect(0,0,w,h);
 const glow=ctx.createRadialGradient(w*.5,h*.36,4,w*.5,h*.36,h*.58);glow.addColorStop(0,scene===5?'#ffd98a66':'#80eaff33');glow.addColorStop(1,'#00101a00');ctx.fillStyle=glow;ctx.fillRect(0,0,w,h);
