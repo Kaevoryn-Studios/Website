@@ -16,23 +16,38 @@ function ellipse(x,y,rx,ry,fill){ctx.beginPath();ctx.ellipse(x,y,rx,ry,0,0,Math.
 function rounded(x,y,ww,hh,r,fill,stroke){ctx.beginPath();ctx.roundRect(x,y,ww,hh,r);ctx.fillStyle=fill;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=2;ctx.stroke()}}
 function drawGateway(t){const cx=w*.5,base=h*.76,scale=Math.min(w/760,h/430);ctx.save();ctx.translate(cx,base);ctx.scale(scale,scale);for(let side of [-1,1]){poly([[side*210,0],[side*205,-205],[side*155,-245],[side*105,-205],[side*105,0]],'#263d4c','#8b9e9c');for(let i=0;i<4;i++)rounded(side*165-12,-190+i*45,24,5,2,'#e5bd70')}poly([[-225,-205],[-185,-260],[0,-290],[185,-260],[225,-205]],'#304b58','#d5b47b');poly([[-210,-205],[0,-275],[210,-205]],'#172b39','#c8b17d');rounded(-96,-125,192,126,5,'#081b29','#78b8c2');ctx.restore()}
 function drawRuins(t){const base=h*.77,forward=reduce?0:(t*.045)%90;for(let i=0;i<7;i++){const x=((i*170+35)%(w+100))-50,ht=h*(.19+(i%3)*.075),y=base-ht+forward;ctx.fillStyle=i%2?'#1b3942':'#24444a';ctx.fillRect(x,y,75,ht);poly([[x-10,y],[x+37,y-40],[x+85,y]],'#355b5c','#71918a');for(let j=0;j<3;j++)rounded(x+15,y+25+j*36,10,20,4,'#f0c979')}for(let i=0;i<5;i++){const x=w*(i/4),y=h*(.28+(i%2)*.08)+forward*.45;ctx.strokeStyle='#7beaff44';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x-18,y+55);ctx.lineTo(x+9,y+88);ctx.stroke()}}
-function drawCar(t){const scale=Math.min(w/760,h/430)*.66,x=w*.5,y=h*.70+(reduce?0:Math.sin(t*.009)*2);ctx.save();ctx.translate(x,y);ctx.rotate(-Math.PI/2);ctx.scale(scale,scale);ctx.shadowColor='#00cfff66';ctx.shadowBlur=28;ellipse(0,8,190,24,'#020711aa');ctx.shadowBlur=0;
-// wheels
-for(const wx of [-112,112]){ellipse(wx,0,38,38,'#080d14');ellipse(wx,0,23,23,'#647783');ellipse(wx,0,11,11,'#172b37');for(let a=0;a<8;a++){ctx.save();ctx.translate(wx,0);ctx.rotate(a*Math.PI/4);rounded(-2,-21,4,10,1,'#b3c7cd');ctx.restore()}}
-// lower chassis and rugged body
-poly([[-168,-45],[-142,-79],[-92,-94],[96,-94],[148,-68],[176,-35],[164,-7],[-165,-7]],'#142b36','#8ab3bb');
-const body=ctx.createLinearGradient(-130,-100,130,0);body.addColorStop(0,'#9db4b5');body.addColorStop(.3,'#375967');body.addColorStop(.72,'#173747');body.addColorStop(1,'#0c202d');
-poly([[-156,-53],[-125,-100],[-74,-126],[72,-126],[124,-93],[157,-48],[144,-23],[-150,-23]],body,'#9cecff');
-poly([[-104,-103],[-70,-145],[69,-145],[111,-99]],'#102d3c','#7ceaff');
-poly([[-88,-111],[-63,-137],[-4,-137],[-4,-111]],'#69c5d4aa','#b5f5ff');poly([[5,-137],[64,-137],[94,-111],[5,-111]],'#6ac9d8aa','#b5f5ff');
-// gullwing doors raised in loading scene
-if(scene===0){for(let side of [-1,1]){ctx.save();ctx.translate(side*52,-137);ctx.rotate(side*-.47);poly([[0,0],[side*6,-105],[side*78,-126],[side*87,-15]],'#264e5d','#8deeff');poly([[side*15,-13],[side*18,-89],[side*68,-103],[side*75,-19]],'#79d9e5aa','#d2fbff');ctx.restore()}}
-// Rear-facing details: the Explorer is viewed from behind as it heads into the kingdom.
-poly([[-152,-54],[-174,-42],[-166,-23],[-139,-27]],'#a92f3d','#ff8c87');poly([[143,-55],[169,-42],[161,-22],[137,-27]],'#a92f3d','#ff8c87');
-rounded(-48,-53,96,29,6,'#102936','#7ceaff');rounded(-25,-45,50,12,3,'#071722','#4f8492');
-ctx.fillStyle='#d8e9e8';ctx.font='bold 8px system-ui';ctx.textAlign='center';ctx.fillText('KAEVORYN',0,-36);
-rounded(-22,-89,44,18,5,'#0b1824','#7ceaff');ctx.fillStyle='#7eeaff';ctx.font='bold 9px system-ui';ctx.fillText('EXPLORER',0,-77);
-ctx.restore()}
+function drawCar(t){
+const scale=Math.min(w/760,h/430)*.9,x=w*.5,y=h*.80+(reduce?0:Math.sin(t*.009)*2);
+ctx.save();ctx.translate(x,y);ctx.scale(scale,scale);
+ctx.shadowColor='#00cfff66';ctx.shadowBlur=28;ellipse(0,12,145,20,'#020711aa');ctx.shadowBlur=0;
+// Rear wheels, visible outside the body
+for(const wx of [-116,116]){rounded(wx-22,-42,44,82,13,'#080d14','#526b76');ellipse(wx,0,18,27,'#647783');ellipse(wx,0,8,15,'#172b37')}
+// Rugged rear body: wide bumper nearest the viewer, roof narrowing toward the horizon
+poly([[-112,-151],[112,-151],[137,-92],[158,-12],[145,16],[-145,16],[-158,-12],[-137,-92]],'#173747','#9cecff');
+const body=ctx.createLinearGradient(-150,-120,150,15);body.addColorStop(0,'#426b78');body.addColorStop(.55,'#203f4d');body.addColorStop(1,'#0c202d');
+poly([[-112,-151],[112,-151],[137,-92],[145,-18],[-145,-18],[-137,-92]],body,'#9cecff');
+// Rear window and roof
+poly([[-78,-143],[78,-143],[105,-91],[-105,-91]],'#071c2a','#8deeff');
+poly([[-63,-135],[63,-135],[83,-99],[-83,-99]],'#65c4d4aa','#b5f5ff');
+// Rear hatch panel
+poly([[-121,-83],[121,-83],[133,-26],[-133,-26]],'#193744','#6e9eaa');
+rounded(-55,-72,110,36,7,'#102936','#7ceaff');
+rounded(-42,-63,84,18,4,'#071722','#4f8492');
+ctx.fillStyle='#d8e9e8';ctx.font='bold 9px system-ui';ctx.textAlign='center';ctx.fillText('KAEVORYN',0,-50);
+// Red rear lamps and center brake strip
+rounded(-137,-78,22,48,7,'#a92f3d','#ff8c87');rounded(115,-78,22,48,7,'#a92f3d','#ff8c87');
+rounded(-54,0,108,12,4,'#9db4b5','#d7faff');
+rounded(-28,-20,56,12,3,'#0b1824','#7ceaff');
+ctx.fillStyle='#7eeaff';ctx.font='bold 8px system-ui';ctx.fillText('EXPLORER',0,-11);
+// Gullwing doors open at the station, seen from behind
+if(scene===0){
+poly([[-112,-139],[-183,-198],[-222,-182],[-160,-93]],'#264e5d','#8deeff');
+poly([[-125,-135],[-181,-184],[-199,-175],[-154,-112]],'#79d9e5aa','#d2fbff');
+poly([[112,-139],[183,-198],[222,-182],[160,-93]],'#264e5d','#8deeff');
+poly([[125,-135],[181,-184],[199,-175],[154,-112]],'#79d9e5aa','#d2fbff');
+}
+ctx.restore();
+}
 function draw(t){if(!w||!h)return;const sky=ctx.createLinearGradient(0,0,0,h);const colors=scene===3?['#070d1b','#233849','#59616a']:scene===4?['#090d1a','#4c332b','#a45e36']:['#071624','#245260','#9bb8a8'];sky.addColorStop(0,colors[0]);sky.addColorStop(.62,colors[1]);sky.addColorStop(1,colors[2]);ctx.fillStyle=sky;ctx.fillRect(0,0,w,h);
 const glow=ctx.createRadialGradient(w*.5,h*.36,4,w*.5,h*.36,h*.58);glow.addColorStop(0,scene===5?'#ffd98a66':'#80eaff33');glow.addColorStop(1,'#00101a00');ctx.fillStyle=glow;ctx.fillRect(0,0,w,h);
 drawRuins(t);if(scene===0)drawGateway(t);if(scene===3){ctx.fillStyle='#111923';ctx.beginPath();ctx.ellipse(w*.78,h*.57,w*.12,h*.2,0,0,Math.PI*2);ctx.fill();ellipse(w*.75,h*.51,7,7,'#a8f5ff');ellipse(w*.81,h*.51,7,7,'#a8f5ff')}
