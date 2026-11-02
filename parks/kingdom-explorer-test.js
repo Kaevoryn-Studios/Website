@@ -135,7 +135,7 @@ function drawWorld(){const cx=w/2,hor=h*.37,scene=chapters[chapter].scene,route=
  // expedition route label
  if(route){const labels={ridge:'ROUTE · HIGH RIDGE',forest:'ROUTE · DEEP FOREST'};ctx.fillStyle='#061522bb';ctx.fillRect(12,h-38,Math.min(w-24,205),25);ctx.fillStyle='#a8f5ff';ctx.font='bold 10px system-ui';ctx.textAlign='left';ctx.fillText(labels[route]||'EXPEDITION · '+route.toUpperCase(),22,h-21)}
 }
-function drawVehicle(){const cx=w/2,base=h*.92+Math.sin(offset*Math.PI*2)*5.5,s=Math.min(w/760,h/430)*.95;ctx.save();ctx.translate(cx,base);ctx.scale(s,s);oval(0,5,150,19,'#02070bcc');
+function drawVehicle(){const cx=w/2,base=h*.92,s=Math.min(w/760,h/430)*.95;ctx.save();ctx.translate(cx,base);ctx.scale(s,s);oval(0,5,150,19,'#02070bcc');
  // rugged tires and alloy hubs
  for(const x of [-119,119]){rr(x-25,-59,50,94,13,'#05090f','#506a78');for(let i=0;i<5;i++){ctx.fillStyle='#738d98';ctx.fillRect(x-23+i*10,-72,4,84)}oval(x,-13,14,16,'#172b3a');oval(x,-13,8,9,'#7eeaff');}
  // midnight-blue metallic body with cyan-to-violet paint
