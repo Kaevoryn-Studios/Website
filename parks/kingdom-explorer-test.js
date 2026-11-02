@@ -494,7 +494,7 @@ function drawCabin(){
 }
 function drawStartup(){
  if(startup<=0)return;
- const progress=1-startup/1.8,fade=Math.min(1,(1-progress)*5,progress*7);
+ const progress=1-startup/3.2,fade=Math.min(1,(1-progress)*5,progress*7);
  const cx=w/2,cy=h*.56,radius=Math.max(w,h)*(.08+progress*.48);
  ctx.save();
  // A soft ignition bloom spreads across the windshield and cabin.
@@ -524,7 +524,7 @@ function drawStartup(){
 }
 function draw(){ctx.clearRect(0,0,w,h);drawWorld();drawEffects();if(viewMode==='cabin')drawCabin();else drawVehicle();drawStartup()}
 function frame(now){const dt=Math.min(50,now-last||16);last=now;if(running){offset+=dt*(reduce?.00022:.00055);startup=Math.max(0,startup-dt/1000)}if(transition>0)transition=Math.max(0,transition-dt/1100);draw();requestAnimationFrame(frame)}
-const board=document.getElementById('boardRide');if(board)board.addEventListener('click',()=>{const boarding=viewMode!=='cabin';viewMode=boarding?'cabin':'outside';if(boarding)startup=reduce?.35:1.8;board.textContent=viewMode==='cabin'?'Return to outside view':'Board the Explorer';});
+const board=document.getElementById('boardRide');if(board)board.addEventListener('click',()=>{const boarding=viewMode!=='cabin';viewMode=boarding?'cabin':'outside';if(boarding)startup=reduce?1.4:3.2;board.textContent=viewMode==='cabin'?'Return to outside view':'Board the Explorer';});
 pause.addEventListener('click',()=>{running=!running;pause.textContent=running?'Pause journey':'Resume journey';speed.textContent=running?'EXPLORING':'PAUSED'});
 restart.addEventListener('click',()=>{chapter=0;history=[];choiceTrail=[];offset=0;running=true;pause.textContent='Pause journey';update()});
 new ResizeObserver(resize).observe(canvas);update();resize();requestAnimationFrame(frame);
