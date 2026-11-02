@@ -39,6 +39,31 @@ function drawWorld(){const cx=w/2,hor=h*.37,scene=chapters[chapter].scene,route=
  if(scene===3||scene===5){for(let i=0;i<8;i++){const x=w*(i/8),s=.5+(i%3)*.25;tree(x,hor+25,s,true)}}
  // waterfalls spilling into the ravine
  if(scene===2){for(const side of [-1,1]){const x=cx+side*w*.34;const water=ctx.createLinearGradient(x,hor-35,x+side*8,h*.78);water.addColorStop(0,'#b6f5ff');water.addColorStop(.45,'#39bce0');water.addColorStop(1,'#155c85');ctx.fillStyle=water;ctx.beginPath();ctx.moveTo(x-side*13,hor-28);ctx.lineTo(x+side*13,hor-28);ctx.lineTo(x+side*34,h*.76);ctx.lineTo(x-side*22,h*.76);ctx.closePath();ctx.fill();for(let k=0;k<5;k++){const yy=hor+((k*31+offset*240)%(h*.38));ctx.fillStyle='#c7f7ff99';ctx.fillRect(x-5+(k%2)*8,yy,2,12)}}}
+ // Moving atmosphere: drifting ravine mist, waterfall spray and windblown leaves
+ if(scene===2){
+  for(let i=0;i<9;i++){
+   const x=((i*113+offset*34)%(w+100))-50,y=hor+55+(i%4)*h*.095;
+   ctx.globalAlpha=.09+(i%3)*.035;oval(x,y,24+(i%4)*12,5+(i%3)*3,'#c9f3f4');
+  }
+  ctx.globalAlpha=.45;
+  for(let side of [-1,1]){const x=cx+side*w*.34;for(let i=0;i<8;i++){const y=hor+((i*23+offset*180)%(h*.38));oval(x+Math.sin(i+offset*2)*8,y,1.5+i%3,2.5+i%2,'#c8f7ff')}}
+ }
+ if(scene===0||scene===1){
+  for(let i=0;i<18;i++){
+   const z=((i/18+offset*.32)%1),x=(i*79+Math.sin(offset*2+i)*18)%w,y=hor+25+z*h*.28;
+   ctx.save();ctx.translate(x,y);ctx.rotate(Math.sin(offset*3+i)*.55);
+   ctx.globalAlpha=.35+z*.5;ctx.fillStyle=i%3===0?'#b5f1a1':i%3===1?'#6fe0c0':'#d6c78e';
+   ctx.beginPath();ctx.ellipse(0,0,2+z*3,1+z*1.5,0,0,Math.PI*2);ctx.fill();ctx.restore();
+  }
+ }
+ if(scene===5){
+  ctx.save();ctx.globalAlpha=.17;
+  for(let band=0;band<3;band++){
+   ctx.strokeStyle=band%2?'#c69aff':'#7eeaff';ctx.lineWidth=8+band*4;
+   ctx.beginPath();for(let x=0;x<=w;x+=w/18){const y=hor*.42+band*15+Math.sin(x/w*Math.PI*2+offset*.8+band)*13;if(x===0)ctx.moveTo(x,y);else ctx.lineTo(x,y)}ctx.stroke();
+  }ctx.restore();
+ }
+ ctx.globalAlpha=1;
  // glowing wildlife: fireflies and distant eyes in the forest
  if(scene===1||scene===0){for(let i=0;i<16;i++){const x=(i*67+Math.sin(offset*7+i)*12)%w,y=hor+25+(i*29)%(h*.36);oval(x,y,2.2,2.2,i%3===0?'#ffe58c':'#8effd5');}if(scene===1){for(const x of [w*.22,w*.76]){oval(x,hor+40,3,2,'#f6e6a8');oval(x+9,hor+40,3,2,'#f6e6a8')}}}
  // monumental kingdom skyline and dramatic finale aurora
