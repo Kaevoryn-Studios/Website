@@ -161,18 +161,27 @@ function drawWorld(){const cx=w/2,hor=h*.37,scene=chapters[chapter].scene,route=
    const seed=worldRand(n,side+7),x=edgeAt(depth,side)+side*(24+seed*48+depth*22);
    ctx.save();ctx.globalAlpha=.42+depth*.58;
    if(seed<.58){
-    // Readable evergreen silhouette: tapered trunk and three overlapping branch tiers.
-    const treeH=(54+seed*34)*scale, trunkW=3.8*scale;
+    // Strong, unmistakable pine silhouette with broad, overlapping triangular boughs.
+    const treeH=(68+seed*38)*scale, trunkW=4.5*scale;
     const foliage=scene===5?'#477d79':scene===4?'#354e58':seed<.28?'#285c50':'#244b3d';
-    ctx.fillStyle=seed<.28?'#493b2d':'#594531';
-    ctx.beginPath();ctx.moveTo(x-trunkW*.45,y);ctx.lineTo(x-trunkW*.2,y-treeH*.72);ctx.lineTo(x+trunkW*.2,y-treeH*.72);ctx.lineTo(x+trunkW*.45,y);ctx.closePath();ctx.fill();
+    ctx.fillStyle='#59432f';
+    ctx.fillRect(x-trunkW/2,y-treeH*.28,trunkW,treeH*.28);
     ctx.fillStyle=foliage;
-    for(let tier=0;tier<3;tier++){
-     const top=y-treeH*(.34+tier*.22),half=treeH*(.25-tier*.045),bottom=y-treeH*(.12+tier*.22);
-     ctx.beginPath();ctx.moveTo(x,top-treeH*.2);ctx.lineTo(x-half, bottom);ctx.lineTo(x+half,bottom);ctx.closePath();ctx.fill();
+    const tiers=[
+     {tip:.98,base:.57,half:.19},
+     {tip:.76,base:.34,half:.29},
+     {tip:.53,base:.10,half:.39}
+    ];
+    for(const t of tiers){
+     ctx.beginPath();
+     ctx.moveTo(x,y-treeH*t.tip);
+     ctx.lineTo(x-treeH*t.half,y-treeH*t.base);
+     ctx.lineTo(x+treeH*t.half,y-treeH*t.base);
+     ctx.closePath();ctx.fill();
     }
-    ctx.fillStyle=scene===5?'#9beaff':'#56866a';
-    ctx.beginPath();ctx.moveTo(x,y-treeH*.94);ctx.lineTo(x-treeH*.035,y-treeH*.72);ctx.lineTo(x+treeH*.035,y-treeH*.72);ctx.closePath();ctx.fill();
+    // Dark side bough gives the tree depth rather than a glowing round crown.
+    ctx.fillStyle='#142d27';
+    ctx.beginPath();ctx.moveTo(x,y-treeH*.78);ctx.lineTo(x-treeH*.25,y-treeH*.38);ctx.lineTo(x-treeH*.03,y-treeH*.43);ctx.closePath();ctx.fill();
    }else{
     const stoneW=(9+seed*8)*scale,stoneH=(22+seed*24)*scale;
     ctx.fillStyle=scene===2?'#53636a':scene>=3?'#59666a':'#40564b';
