@@ -560,7 +560,76 @@ document.body.append(dashboard);
 /* Full-screen illustrated expedition map */
 const kingdomMap=document.createElement('section');
 kingdomMap.id='kingdomMapOverlay';kingdomMap.setAttribute('role','dialog');kingdomMap.setAttribute('aria-modal','true');kingdomMap.setAttribute('aria-label','Kingdom expedition map');
-kingdomMap.innerHTML=`<div class="kingdom-map-shell"><header class="kingdom-map-header"><div><p>KAEVORYN STUDIOS · EXPLORER NAVIGATION</p><h2>THE LOST KINGDOM</h2><span id="kingdomMapStatus">EXPEDITION ROUTE · SECTOR 01</span></div><button type="button" id="kingdomMapClose" aria-label="Close map">×</button></header><div class="kingdom-map-viewport"><svg id="kingdomMapSvg" viewBox="0 0 1100 690" role="img" aria-label="Illustrated map showing mountain ranges, forests, river, ancient bridge, forgotten city and heart temple"><defs><linearGradient id="mapLand" x2="0" y2="1"><stop stop-color="#294e4b"/><stop offset=".55" stop-color="#183b3b"/><stop offset="1" stop-color="#102c36"/></linearGradient><linearGradient id="mapRiver" x2="1" y2="1"><stop stop-color="#62dff4"/><stop offset="1" stop-color="#286ca0"/></linearGradient><radialGradient id="mapGlow"><stop stop-color="#a8f5ff" stop-opacity=".65"/><stop offset="1" stop-color="#65dfff" stop-opacity="0"/></radialGradient><filter id="mapShadow"><feGaussianBlur stdDeviation="7"/></filter></defs><rect width="1100" height="690" fill="url(#mapLand)"/><path d="M0 120 Q170 35 330 120 T660 95 T1100 110 M0 520 Q200 430 380 530 T760 510 T1100 530" fill="none" stroke="#9ac7a0" stroke-opacity=".12" stroke-width="3"/><g fill="none" stroke="#9cc6a0" stroke-opacity=".17" stroke-width="2"><path d="M-30 180 Q160 90 330 180 T680 155 T1130 175"/><path d="M-20 205 Q160 115 330 205 T680 180 T1120 200"/><path d="M-20 550 Q180 460 360 550 T720 530 T1120 550"/><path d="M-20 575 Q180 485 360 575 T720 555 T1120 575"/></g><g fill="#536d70" stroke="#a5c8ba" stroke-width="3"><path d="M30 180 135 40 240 175 185 160 135 100 90 180Z"/><path d="M180 205 300 35 425 205 350 174 300 105 250 188Z"/><path d="M760 145 860 25 965 150 910 130 860 82 815 150Z"/><path d="M865 190 975 55 1080 190 1015 165 975 115 925 184Z"/></g><g fill="#d4e8d8" opacity=".8"><path d="M135 40 158 92 135 80 112 94Z"/><path d="M300 35 325 88 300 75 276 92Z"/><path d="M860 25 882 78 860 66 837 81Z"/><path d="M975 55 998 105 975 92 952 108Z"/></g><g fill="#123c35" stroke="#5c9b7e" stroke-width="2"><path d="M45 330 90 245 135 330Z"/><path d="M100 375 155 270 210 375Z"/><path d="M205 340 260 230 315 340Z"/><path d="M45 465 100 355 155 465Z"/><path d="M250 470 305 360 360 470Z"/><path d="M690 380 745 270 800 380Z"/><path d="M755 430 810 320 865 430Z"/><path d="M890 380 945 270 1000 380Z"/><path d="M940 475 995 365 1050 475Z"/></g><g fill="#70c7b0" opacity=".65"><circle cx="90" cy="315" r="7"/><circle cx="155" cy="345" r="6"/><circle cx="265" cy="305" r="7"/><circle cx="305" cy="430" r="6"/><circle cx="745" cy="350" r="7"/><circle cx="820" cy="390" r="6"/><circle cx="950" cy="340" r="7"/></g><path d="M440 0 Q390 130 510 230 T490 430 T650 690" fill="none" stroke="#0a2434" stroke-width="44" opacity=".75"/><path d="M440 0 Q390 130 510 230 T490 430 T650 690" fill="none" stroke="url(#mapRiver)" stroke-width="25"/><path d="M440 0 Q390 130 510 230 T490 430 T650 690" fill="none" stroke="#c3f8ff" stroke-opacity=".45" stroke-width="3" stroke-dasharray="12 20"/><g stroke="#d9c89b" stroke-width="8" stroke-linecap="round"><path d="M465 360 515 360"/><path d="M458 374 508 374"/></g><path d="M145 470 Q240 390 350 330 T520 360 Q650 405 730 285 T920 235 Q960 180 1010 155" fill="none" stroke="#f3d28a" stroke-width="5" stroke-dasharray="12 12" opacity=".9"/><path id="kingdomMapTrail" d="" fill="none" stroke="#8ff1ff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" filter="url(#mapShadow)"/><path id="kingdomMapTrailCore" d="" fill="none" stroke="#c4faff" stroke-width="3" stroke-linecap="round" stroke-dasharray="5 10"/><g font-family="system-ui" text-anchor="middle"><g fill="#e7f5e8" font-size="17" font-weight="700"><text x="150" y="30">FROSTCROWN RANGE</text><text x="910" y="24">THE NORTHERN PEAKS</text><text x="160" y="520">WHISPERING FOREST</text><text x="850" y="500">EMERALD WILDS</text></g><g fill="#f3d99b" font-size="15" font-weight="800"><text x="145" y="575">01 · HIGH RIDGE</text><text x="510" y="325">02 · SUNKEN BRIDGE</text><text x="755" y="250">03 · FORGOTTEN CITY</text><text x="1000" y="125">04 · HEART TEMPLE</text></g><g fill="#a9e9f0" font-size="12"><text x="490" y="410">AZURE RIVER</text><text x="160" y="598">EXPEDITION START</text></g></g><g id="kingdomMapLocations"><g transform="translate(145 470)"><circle r="23" fill="#80eaff" opacity=".16"/><circle r="10" fill="#d9fbff" stroke="#55d9ef" stroke-width="4"/></g><g transform="translate(510 360)"><circle r="18" fill="#80eaff" opacity=".14"/><path d="M-10 0H10M-7 -7V7M7 -7V7" stroke="#f4dba0" stroke-width="3"/></g><g transform="translate(755 285)"><path d="M0 -22 20 0 0 22 -20 0Z" fill="#6f9a88" stroke="#d8efc9" stroke-width="3"/><circle r="6" fill="#f4dba0"/></g><g transform="translate(1000 155)"><path d="M0 -27 23 0 0 27 -23 0Z" fill="#4b6175" stroke="#b8eaff" stroke-width="3"/><path d="M0 -13V13M-12 0H12" stroke="#d5faff" stroke-width="3"/></g></g><g id="kingdomMapPlayer" transform="translate(145 470)"><circle r="34" fill="url(#mapGlow)"/><circle r="12" fill="#f7fdff" stroke="#5ee7ff" stroke-width="5"/><path d="M0 -47 8 -33 -8 -33Z" fill="#fff"/></g></svg><div class="kingdom-map-compass">N<br><span>✦</span></div><div class="kingdom-map-scale">KAEVORYN EXPEDITION CHART · NOT TO SCALE</div></div><footer class="kingdom-map-footer"><div><span class="map-key current"></span> YOU ARE HERE <span class="map-key route"></span> EXPEDITION ROUTE <span class="map-key undiscovered"></span> UNDISCOVERED</div><strong id="kingdomMapDestination">CURRENT DESTINATION · THE CALL OF THE UNKNOWN</strong></footer></div>`;
+kingdomMap.innerHTML=`<div class="kingdom-map-shell"><header class="kingdom-map-header"><div><p>KAEVORYN STUDIOS · EXPLORER NAVIGATION</p><h2>THE LOST KINGDOM</h2><span id="kingdomMapStatus">EXPEDITION ROUTE · SECTOR 01</span></div><button type="button" id="kingdomMapClose" aria-label="Close map">×</button></header><div class="kingdom-map-viewport"><svg id="kingdomMapSvg" viewBox="0 0 1100 690" role="img" aria-label="Detailed illustrated topographic map of the Lost Kingdom with mountain relief, forests, river valleys, roads, ruins and expedition markers">
+<defs>
+ <linearGradient id="mapLand" x2="0" y2="1"><stop stop-color="#667b64"/><stop offset=".42" stop-color="#435f4e"/><stop offset="1" stop-color="#263f3d"/></linearGradient>
+ <linearGradient id="mapRiver" x2="0.8" y2="1"><stop stop-color="#9be9e7"/><stop offset=".5" stop-color="#398fa5"/><stop offset="1" stop-color="#174d70"/></linearGradient>
+ <linearGradient id="mountainFace" x2="1" y2="1"><stop stop-color="#d0d0b7"/><stop offset=".25" stop-color="#84918a"/><stop offset=".58" stop-color="#596c69"/><stop offset="1" stop-color="#354d4c"/></linearGradient>
+ <radialGradient id="mapGlow"><stop stop-color="#b7f6ff" stop-opacity=".8"/><stop offset="1" stop-color="#65dfff" stop-opacity="0"/></radialGradient>
+ <filter id="mapShadow"><feGaussianBlur stdDeviation="6"/></filter>
+ <filter id="terrainNoise"><feTurbulence type="fractalNoise" baseFrequency=".018" numOctaves="3" seed="8"/><feColorMatrix values="0.35 0 0 0 .1 0 .4 0 0 .13 0 0 .35 0 .12 0 0 0 .18 0"/></filter>
+ <pattern id="forestTexture" width="34" height="30" patternUnits="userSpaceOnUse"><path d="M8 23 15 5 22 23Z" fill="#183d32" stroke="#86a47a" stroke-opacity=".38"/><path d="M15 23V28" stroke="#b2a17a" stroke-opacity=".4"/></pattern>
+ <pattern id="rockTexture" width="42" height="34" patternUnits="userSpaceOnUse"><path d="M2 28 12 17 19 21 28 7 40 19" fill="none" stroke="#d4d1b8" stroke-opacity=".22" stroke-width="2"/></pattern>
+</defs>
+<rect width="1100" height="690" fill="url(#mapLand)"/>
+<rect width="1100" height="690" filter="url(#terrainNoise)" opacity=".28"/>
+<!-- broad terrain shelves and valley shadows -->
+<g fill="none" stroke-linecap="round">
+ <path d="M-50 270Q130 160 290 245T600 225T900 190T1160 240" stroke="#b4c79a" stroke-opacity=".18" stroke-width="34"/>
+ <path d="M-40 470Q150 370 310 450T650 420T930 390T1160 440" stroke="#142f2d" stroke-opacity=".28" stroke-width="58"/>
+ <path d="M-30 600Q160 520 340 580T700 555T1120 575" stroke="#b4c79a" stroke-opacity=".13" stroke-width="26"/>
+</g>
+<!-- topographic contour lines -->
+<g fill="none" stroke="#d5d6a7" stroke-opacity=".28" stroke-width="1.5">
+ <path d="M-20 125Q100 52 225 104T460 100T700 78T930 100T1130 80"/>
+ <path d="M-20 145Q100 72 225 124T460 120T700 98T930 120T1130 100"/>
+ <path d="M-20 165Q100 92 225 144T460 140T700 118T930 140T1130 120"/>
+ <path d="M-20 510Q130 430 260 485T510 490T760 455T1030 470T1130 450"/>
+ <path d="M-20 530Q130 450 260 505T510 510T760 475T1030 490T1130 470"/>
+ <path d="M-20 550Q130 470 260 525T510 530T760 495T1030 510T1130 490"/>
+ <path d="M120 250Q220 190 330 245T540 240M100 270Q220 210 340 265T550 260"/>
+ <path d="M690 300Q810 220 940 270T1120 260M680 320Q810 240 950 290T1130 280"/>
+</g>
+<!-- northern mountain ranges with shaded faces -->
+<g stroke="#c2c8b7" stroke-width="2" stroke-linejoin="round">
+ <path d="M5 205 105 55 158 112 218 28 330 205 260 181 218 111 165 176 105 121 55 210Z" fill="url(#mountainFace)"/>
+ <path d="M210 220 335 38 390 105 455 18 570 215 488 180 455 100 397 173 335 110 280 222Z" fill="url(#mountainFace)"/>
+ <path d="M690 190 790 58 845 110 920 22 1035 180 970 158 920 95 850 171 790 119 745 195Z" fill="url(#mountainFace)"/>
+ <path d="M840 225 965 65 1018 126 1080 58 1150 220 1070 185 1018 135 965 160 910 228Z" fill="url(#mountainFace)"/>
+</g>
+<g fill="#e2e4d3" opacity=".88"><path d="M105 55 130 112 105 98 82 125Z"/><path d="M218 28 247 91 218 75 190 99Z"/><path d="M335 38 359 91 335 77 311 103Z"/><path d="M455 18 483 83 455 65 428 91Z"/><path d="M790 58 814 111 790 97 766 123Z"/><path d="M920 22 950 84 920 68 892 96Z"/><path d="M965 65 990 117 965 104 940 129Z"/></g>
+<g fill="url(#rockTexture)" opacity=".8"><path d="M5 205 105 55 158 112 218 28 330 205Z"/><path d="M210 220 335 38 390 105 455 18 570 215Z"/><path d="M690 190 790 58 845 110 920 22 1035 180Z"/></g>
+<!-- forests, clearings and woodland texture -->
+<path d="M20 285Q130 225 280 285L360 420Q250 500 80 455Z" fill="#1d4938" opacity=".88"/>
+<path d="M20 285Q130 225 280 285L360 420Q250 500 80 455Z" fill="url(#forestTexture)" opacity=".95"/>
+<path d="M710 350Q820 275 1040 340L1080 485Q920 540 760 470Z" fill="#1c4938" opacity=".9"/>
+<path d="M710 350Q820 275 1040 340L1080 485Q920 540 760 470Z" fill="url(#forestTexture)"/>
+<g fill="#78966b" opacity=".75"><circle cx="80" cy="320" r="15"/><circle cx="140" cy="370" r="19"/><circle cx="230" cy="310" r="17"/><circle cx="290" cy="405" r="14"/><circle cx="770" cy="390" r="17"/><circle cx="850" cy="435" r="20"/><circle cx="955" cy="370" r="18"/><circle cx="1020" cy="450" r="15"/></g>
+<!-- winding river, banks and tributaries -->
+<path d="M445 -20Q385 95 445 165T510 280Q550 370 485 445T545 710" fill="none" stroke="#182f36" stroke-width="54" opacity=".65"/>
+<path d="M445 -20Q385 95 445 165T510 280Q550 370 485 445T545 710" fill="none" stroke="#b4c4a0" stroke-width="34" opacity=".8"/>
+<path d="M445 -20Q385 95 445 165T510 280Q550 370 485 445T545 710" fill="none" stroke="url(#mapRiver)" stroke-width="25"/>
+<path d="M445 -20Q385 95 445 165T510 280Q550 370 485 445T545 710" fill="none" stroke="#d8ffff" stroke-opacity=".45" stroke-width="2.5" stroke-dasharray="18 16"/>
+<path d="M490 250Q610 225 690 270T850 260" fill="none" stroke="#80c9c9" stroke-width="9" opacity=".75"/>
+<!-- trails and ancient stone road -->
+<path d="M145 470Q220 410 315 360T510 360Q620 385 755 285T920 220L1000 155" fill="none" stroke="#302d27" stroke-width="13" opacity=".8"/>
+<path d="M145 470Q220 410 315 360T510 360Q620 385 755 285T920 220L1000 155" fill="none" stroke="#c4b18a" stroke-width="7" stroke-dasharray="3 8" stroke-linecap="round"/>
+<path d="M458 350 518 350M454 365 514 365M450 380 510 380" stroke="#d7c7a2" stroke-width="7" stroke-linecap="round"/>
+<!-- ancient ruins and settlements -->
+<g fill="#a99d7c" stroke="#e0d4b0" stroke-width="2"><path d="M720 278 735 258 750 278V297H720Z"/><path d="M754 280 769 248 784 280V299H754Z"/><path d="M790 278 805 263 820 278V298H790Z"/><path d="M985 152 1000 128 1015 152V172H985Z"/></g>
+<g fill="none" stroke="#e2d5ad" stroke-width="3" opacity=".8"><path d="M725 279V264H745V279M759 280V258H779V280M990 153V135H1010V153"/></g>
+<!-- route and expedition markers -->
+<path d="M145 470Q240 390 350 330T520 360Q650 405 730 285T920 235Q960 180 1010 155" fill="none" stroke="#f0d49a" stroke-width="4" stroke-dasharray="10 11" opacity=".75"/>
+<path id="kingdomMapTrail" d="" fill="none" stroke="#8ff1ff" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" filter="url(#mapShadow)"/>
+<path id="kingdomMapTrailCore" d="" fill="none" stroke="#e0fcff" stroke-width="3" stroke-linecap="round" stroke-dasharray="5 10"/>
+<g font-family="system-ui" text-anchor="middle">
+ <g fill="#f1f0d8" font-size="17" font-weight="800" letter-spacing="1"><text x="165" y="20">FROSTCROWN RANGE</text><text x="910" y="18">NORTHERN PEAKS</text><text x="170" y="535">WHISPERING FOREST</text><text x="875" y="525">EMERALD WILDS</text></g>
+ <g fill="#f6dfad" font-size="14" font-weight="800"><text x="145" y="575">01 · HIGH RIDGE</text><text x="510" y="325">02 · SUNKEN BRIDGE</text><text x="755" y="238">03 · FORGOTTEN CITY</text><text x="1000" y="118">04 · HEART TEMPLE</text></g>
+ <g fill="#d2f5f2" font-size="12" font-weight="700"><text x="490" y="420">AZURE RIVER</text><text x="160" y="598">EXPEDITION START</text></g>
+</g>
+<g id="kingdomMapLocations"><g transform="translate(145 470)"><circle r="24" fill="#80eaff" opacity=".18"/><circle r="10" fill="#e9ffff" stroke="#55d9ef" stroke-width="4"/></g><g transform="translate(510 360)"><circle r="18" fill="#80eaff" opacity=".14"/><path d="M-10 0H10M-7 -7V7M7 -7V7" stroke="#f4dba0" stroke-width="3"/></g><g transform="translate(755 285)"><path d="M0 -22 20 0 0 22 -20 0Z" fill="#6f9a88" stroke="#d8efc9" stroke-width="3"/><circle r="6" fill="#f4dba0"/></g><g transform="translate(1000 155)"><path d="M0 -27 23 0 0 27 -23 0Z" fill="#4b6175" stroke="#b8eaff" stroke-width="3"/><path d="M0 -13V13M-12 0H12" stroke="#d5faff" stroke-width="3"/></g></g>
+<g id="kingdomMapPlayer" transform="translate(145 470)"><circle r="34" fill="url(#mapGlow)"/><circle r="12" fill="#f7fdff" stroke="#5ee7ff" stroke-width="5"/><path d="M0 -47 8 -33 -8 -33Z" fill="#fff"/></g>
+</svg><div class="kingdom-map-compass">N<br><span>✦</span></div><div class="kingdom-map-scale">KAEVORYN EXPEDITION CHART · NOT TO SCALE</div></div><footer class="kingdom-map-footer"><div><span class="map-key current"></span> YOU ARE HERE <span class="map-key route"></span> EXPEDITION ROUTE <span class="map-key undiscovered"></span> UNDISCOVERED</div><strong id="kingdomMapDestination">CURRENT DESTINATION · THE CALL OF THE UNKNOWN</strong></footer></div>`;
 document.body.append(kingdomMap);
 const mapStyle=document.createElement('style');
 mapStyle.textContent=`
