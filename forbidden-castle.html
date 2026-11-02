@@ -38,11 +38,12 @@ footer{text-align:center;padding:20px 0 36px;color:#8f86a6;font-size:10px;letter
 .scene.gate-open .gate-left{transform:translateX(-76px) rotateY(48deg);opacity:.3}
 .scene.gate-open .gate-right{transform:translateX(76px) rotateY(-48deg);opacity:.3}
 .scene.gate-open .scene-caption strong{color:var(--gold)}
-.interior{display:none;margin:22px 0 0;padding:clamp(20px,4vw,34px);border:1px solid #b49aff66;border-radius:20px;background:radial-gradient(ellipse at 50% 15%,#5c427a 0,#21172f 48%,#0b0913 100%);overflow:hidden}
-.interior.revealed{display:block;animation:hallReveal 1.1s ease both}
+.scene.gate-open .castle,.scene.gate-open .moon,.scene.gate-open .stars,.scene.gate-open .scene-label,.scene.gate-open .fog,.scene.gate-open .scene-caption{opacity:0;transition:opacity 1s ease}
+.interior{position:absolute;z-index:6;inset:0;display:none;margin:0;padding:clamp(18px,4vw,34px);border:0;border-radius:0;background:radial-gradient(ellipse at 50% 15%,#5c427a 0,#21172f 48%,#0b0913 100%);overflow:auto;align-items:center;justify-content:center;flex-direction:column}
+.interior.revealed{display:flex;animation:hallReveal 1.1s ease both}
 @keyframes hallReveal{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
 .interior-head{text-align:center}.interior-head h2{margin:5px 0;font-size:clamp(27px,5vw,46px);color:#f2e9ff}.interior-head p{margin:0 auto;max-width:650px;color:#d0c3e4}
-.hall-art{display:block;width:min(100%,850px);height:auto;margin:18px auto 0;filter:drop-shadow(0 18px 25px #0009)}
+.hall-art{display:block;width:min(100%,850px);max-height:58%;height:auto;margin:12px auto 0;object-fit:contain;filter:drop-shadow(0 18px 25px #0009)}
 .hall-note{text-align:center;color:#f4d49a;font-size:12px;letter-spacing:.12em;margin:10px 0 0}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;scroll-behavior:auto!important}}
 </style></head>
@@ -97,7 +98,6 @@ footer{text-align:center;padding:20px 0 36px;color:#8f86a6;font-size:10px;letter
 <path d="M0 565Q250 535 500 565T1000 565V570H0Z" fill="#080811"/>
 </svg></div>
 <div class="fog"></div><div class="scene-caption"><strong>THE GATES HAVE NOT OPENED IN CENTURIES</strong><span>Look closely. Something is watching from the highest tower.</span></div>
-</section>
 <section class="interior" id="entranceHall" aria-live="polite">
 <div class="interior-head"><p class="eyebrow">BEYOND THE THRESHOLD · THE CASTLE AWAKENS</p><h2>THE ENTRANCE HALL</h2><p>The gates part. A vast chamber opens before you, lit by floating candles and a violet glow rising from the ancient crest in the floor.</p></div>
 <svg class="hall-art" viewBox="0 0 900 430" role="img" aria-label="A grand gothic entrance hall with towering arches, floating candles, a glowing magical floor crest and a distant staircase">
@@ -114,10 +114,11 @@ footer{text-align:center;padding:20px 0 36px;color:#8f86a6;font-size:10px;letter
 <g fill="none" stroke="#c9aaff" stroke-width="4" opacity=".9"><circle cx="450" cy="350" r="55"/><circle cx="450" cy="350" r="34"/><path d="M450 285 466 335 515 350 466 365 450 415 434 365 385 350 434 335Z"/></g>
 <g fill="#b49aff"><circle cx="150" cy="100" r="3"/><circle cx="270" cy="155" r="3"/><circle cx="630" cy="155" r="3"/><circle cx="750" cy="100" r="3"/><circle cx="450" cy="80" r="4"/></g>
 </svg><p class="hall-note">THE CASTLE HAS RECOGNIZED YOUR PRESENCE</p>
-</section>
+</section></section>
+
 <section class="panel"><p class="eyebrow">THE FIRST APPROACH</p><h2>Will you enter?</h2><p>The outer gate is sealed. A violet light flickers behind the ironwork, and a low sound rolls through the stone beneath your feet.</p><div class="actions"><button id="approach" type="button">Approach the gates</button><a class="btn" href="kingdoms.html">Return to Kingdoms</a></div><p id="gateMessage" aria-live="polite">The castle is silent… for now.</p></section>
 </main><footer>KAEVORYN STUDIOS · CREATE THE IMPOSSIBLE</footer>
 <script>
-(()=>{const b=document.getElementById('approach'),m=document.getElementById('gateMessage'),scene=document.querySelector('.scene'),hall=document.getElementById('entranceHall');let opened=false;b.addEventListener('click',()=>{opened=!opened;scene.classList.toggle('gate-open',opened);hall.classList.toggle('revealed',opened);m.textContent=opened?'The ancient gates swing open. A voice whispers: “We have been expecting you.”':'The gates slowly close. The entrance hall disappears into shadow.';b.textContent=opened?'Close the gates':'Open the castle gates';if(opened){hall.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'center'});}else{scene.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'center'});}});})();
+(()=>{const b=document.getElementById('approach'),m=document.getElementById('gateMessage'),scene=document.querySelector('.scene'),hall=document.getElementById('entranceHall');let opened=false;b.addEventListener('click',()=>{opened=!opened;scene.classList.toggle('gate-open',opened);hall.classList.toggle('revealed',opened);m.textContent=opened?'The ancient gates swing open. A voice whispers: “We have been expecting you.”':'The gates slowly close. The entrance hall disappears into shadow.';b.textContent=opened?'Close the gates':'Open the castle gates';});})();
 </script>
 </body></html>
