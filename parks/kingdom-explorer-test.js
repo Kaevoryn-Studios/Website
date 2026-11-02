@@ -9,7 +9,7 @@ const chapters=[
 {tag:'THE HEART TEMPLE',title:'The Heart of the Kingdom',text:'Inside the mountain, a crystal heart pulses with the same blue light that called you here. Its power is fading.',prompt:'The heart responds to your presence. What will you offer?',options:[['courage','Offer your courage'],['wonder','Offer your sense of wonder']],scene:4},
 {tag:'THE KINGDOM AWAKENS',title:'The Kingdom Awakens',text:'The crystal heart shines. Rivers of light race through the city, the towers awaken, and the kingdom glows beneath the stars. Your expedition becomes part of its legend.',prompt:'Your journey is complete. What would you like to do?',options:[['again','Ride the adventure again'],['return','Return to Kingdoms']],scene:5}
 ];
-let chapter=0,history=[],choiceTrail=[],w=0,h=0,dpr=1,offset=0,last=0,running=true,transition=0,reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+let chapter=0,history=[],choiceTrail=[],w=0,h=0,dpr=1,offset=0,last=0,running=true,transition=0,viewMode='outside',reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 function update(){const c=chapters[chapter];tag.textContent='CHAPTER '+String(chapter+1).padStart(2,'0')+' · '+c.tag;count.textContent='CHAPTER '+(chapter+1)+' OF 6';title.textContent=c.title;
  const consequences=[
  {ridge:'The high ridge gives you a clear view of the valley. You spot the ancient road before the mist closes in.',forest:'The deep forest answers your signal. Tiny blue lights gather along the trail, guiding the Explorer onward.'},
@@ -350,8 +350,36 @@ function drawEffects(){
  }
  ctx.restore();
 }
-function draw(){ctx.clearRect(0,0,w,h);drawWorld();drawEffects();drawVehicle()}
+function drawCabin(){
+ const seats=[{x:.36,y:.63,s:.78,c:'#263f53'},{x:.64,y:.63,s:.78,c:'#263f53'},{x:.23,y:.77,s:.9,c:'#26384b'},{x:.77,y:.77,s:.9,c:'#26384b'},{x:.105,y:.91,s:1.02,c:'#1b3042'},{x:.895,y:.91,s:1.02,c:'#1b3042'}];
+ // Roof, windshield pillars and sill frame the moving kingdom outside.
+ ctx.fillStyle='#050b13';poly([[0,0],[w,0],[w*.91,h*.12],[w*.09,h*.12]],'#050b13');
+ poly([[0,0],[w*.105,h*.12],[w*.17,h*.62],[w*.105,h*.68]],'#142534','#5a8194');
+ poly([[w,0],[w*.895,h*.12],[w*.83,h*.62],[w*.895,h*.68]],'#142534','#5a8194');
+ ctx.fillStyle='#09131d';ctx.fillRect(w*.1,h*.565,w*.8,h*.075);ctx.strokeStyle='#8beaff66';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(w*.12,h*.59);ctx.lineTo(w*.88,h*.59);ctx.stroke();
+ // Six visible riders in three rows, with individual seats and seat belts.
+ seats.forEach((p,i)=>{const x=w*p.x,y=h*p.y,s=p.s,head=10*s;ctx.save();ctx.translate(x,y);
+  ctx.fillStyle=p.c;ctx.strokeStyle='#7895a8';ctx.lineWidth=1.5;ctx.beginPath();ctx.roundRect(-19*s,-head*.2,38*s,38*s,10*s);ctx.fill();ctx.stroke();
+  ctx.fillStyle=['#547c91','#8a6c9f','#577f76','#9a7957','#496b91','#806a8d'][i];ctx.beginPath();ctx.ellipse(0,head*.75,14*s,15*s,0,Math.PI,Math.PI*2);ctx.lineTo(14*s,31*s);ctx.quadraticCurveTo(0,39*s,-14*s,31*s);ctx.closePath();ctx.fill();
+  ctx.fillStyle=['#c58c69','#d3a17c','#a97658','#c18d6b','#d0a07a','#ad7d60'][i];ctx.beginPath();ctx.arc(0,0,head,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle=['#24202a','#30251f','#1c252c','#342a25','#20232c','#2b2027'][i];ctx.beginPath();ctx.arc(0,-2*s,head,Math.PI,Math.PI*2);ctx.fill();
+  ctx.strokeStyle='#d7e8ee';ctx.lineWidth=2*s;ctx.beginPath();ctx.moveTo(-12*s,15*s);ctx.lineTo(10*s,34*s);ctx.stroke();ctx.restore();
+ });
+ // Dashboard and illuminated expedition console.
+ const dash=ctx.createLinearGradient(0,h*.69,0,h);dash.addColorStop(0,'#172c3b');dash.addColorStop(.25,'#0b1722');dash.addColorStop(1,'#02060b');
+ ctx.fillStyle=dash;ctx.beginPath();ctx.moveTo(0,h*.72);ctx.quadraticCurveTo(w*.5,h*.64,w,h*.72);ctx.lineTo(w,h);ctx.lineTo(0,h);ctx.closePath();ctx.fill();
+ ctx.strokeStyle='#7eeaff88';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(0,h*.73);ctx.quadraticCurveTo(w*.5,h*.65,w,h*.73);ctx.stroke();
+ ctx.strokeStyle='#7c9ba9';ctx.lineWidth=Math.max(5,w*.009);ctx.beginPath();ctx.ellipse(w*.34,h*.76,w*.075,h*.075,0,0,Math.PI*2);ctx.stroke();
+ ctx.strokeStyle='#8beaff';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(w*.34,h*.69);ctx.lineTo(w*.34,h*.82);ctx.moveTo(w*.27,h*.76);ctx.lineTo(w*.41,h*.76);ctx.stroke();
+ ctx.fillStyle='#071522';ctx.strokeStyle='#5ddff4';ctx.beginPath();ctx.roundRect(w*.45,h*.715,w*.2,h*.105,9);ctx.fill();ctx.stroke();
+ ctx.fillStyle='#9df2ff';ctx.font='bold '+Math.max(10,w*.016)+'px system-ui';ctx.textAlign='center';ctx.fillText('K A E V O R Y N',w*.55,h*.755);
+ ctx.fillStyle='#8aaebd';ctx.font=Math.max(8,w*.012)+'px system-ui';ctx.fillText('KINGDOM EXPLORER · 6 SEATS',w*.55,h*.79);
+ ctx.fillStyle='#7eeaff';for(let i=0;i<5;i++){ctx.globalAlpha=.55+.4*Math.sin(offset*4+i);ctx.beginPath();ctx.arc(w*(.72+i*.035),h*.77,3,0,Math.PI*2);ctx.fill()}ctx.globalAlpha=1;
+ ctx.fillStyle='#061522bb';ctx.fillRect(12,h-34,184,22);ctx.fillStyle='#a8f5ff';ctx.font='bold 10px system-ui';ctx.textAlign='left';ctx.fillText('ABOARD · 6 PASSENGERS',22,h-19);
+}
+function draw(){ctx.clearRect(0,0,w,h);drawWorld();drawEffects();if(viewMode==='cabin')drawCabin();else drawVehicle()}
 function frame(now){const dt=Math.min(50,now-last||16);last=now;if(running)offset+=dt*(reduce?.00022:.00055);if(transition>0)transition=Math.max(0,transition-dt/1100);draw();requestAnimationFrame(frame)}
+const board=document.getElementById('boardRide');if(board)board.addEventListener('click',()=>{viewMode=viewMode==='cabin'?'outside':'cabin';board.textContent=viewMode==='cabin'?'Return to outside view':'Board the Explorer';});
 pause.addEventListener('click',()=>{running=!running;pause.textContent=running?'Pause journey':'Resume journey';speed.textContent=running?'EXPLORING':'PAUSED'});
 restart.addEventListener('click',()=>{chapter=0;history=[];choiceTrail=[];offset=0;running=true;pause.textContent='Pause journey';update()});
 new ResizeObserver(resize).observe(canvas);update();resize();requestAnimationFrame(frame);
