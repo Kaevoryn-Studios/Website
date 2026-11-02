@@ -359,11 +359,11 @@ function drawCabin(){
  ctx.strokeStyle='#8beaff';ctx.lineWidth=3;ctx.strokeRect(w*.08,h*.08,w*.84,h*.16);
  ctx.fillStyle='#d9f8ff';ctx.font='bold '+Math.max(12,w*.025)+'px system-ui';ctx.textAlign='center';
  ctx.fillText('PASSENGER CABIN · SIX SEATS',w*.5,h*.055);
- const rows=[.34,.51,.68],cols=[.29,.71];
+ const rows=[.29,.44,.59],cols=[.29,.71];
  const colors=['#17647a','#59447c','#286b5a','#84603d','#315c91','#754b72'];
  let index=0;
  rows.forEach((yy,row)=>cols.forEach((xx,col)=>{
-  const x=w*xx,y=h*yy,seatW=Math.min(w*.25,118),seatH=Math.min(h*.145,78);
+  const x=w*xx,y=h*yy,seatW=Math.min(w*.25,118),seatH=Math.min(h*.125,68);
   ctx.save();ctx.translate(x,y);
   // Large seat shell, headrest, cushion and armrests.
   ctx.shadowColor='#35dff5';ctx.shadowBlur=10;
