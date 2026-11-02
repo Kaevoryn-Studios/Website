@@ -559,36 +559,34 @@ function drawStartup(){
 }
 function drawBoardingPlatform(){
  const cx=w*.5,phase=offset*Math.PI*2,gateOpen=startup>0?Math.min(1,(3.2-startup)/1.4):1;
- // Raised arrival deck and illuminated approach lane.
- poly([[w*.16,h*.67],[w*.84,h*.67],[w*.98,h],[w*.02,h]],'#172c39','#6c9aa8');
- poly([[w*.19,h*.70],[w*.81,h*.70],[w*.92,h],[w*.08,h]],'#213d4b','#456d7b');
- const lane=ctx.createLinearGradient(0,h*.68,0,h);lane.addColorStop(0,'#79eaff22');lane.addColorStop(1,'#7eeaff08');
- poly([[w*.43,h*.69],[w*.57,h*.69],[w*.66,h],[w*.34,h]],lane);
- // Parallel cyan guidance strips converge toward the boarding doors.
+ // Keep the boarding station in the distance, clear of the Explorer's wheels and chassis.
+ // The old full-width deck sat beneath the vehicle and made the car look attached to it.
+ const deckY=h*.49;
+ poly([[w*.31,deckY],[w*.69,deckY],[w*.75,h*.57],[w*.25,h*.57]],'#172c39','#6c9aa8');
+ poly([[w*.35,deckY+4],[w*.65,deckY+4],[w*.69,h*.555],[w*.31,h*.555]],'#213d4b','#456d7b');
+ const lane=ctx.createLinearGradient(0,h*.56,0,h*.68);lane.addColorStop(0,'#79eaff22');lane.addColorStop(1,'#7eeaff08');
+ poly([[w*.46,h*.56],[w*.54,h*.56],[w*.59,h*.68],[w*.41,h*.68]],lane);
  ctx.save();ctx.strokeStyle='#80edff';ctx.shadowColor='#38dfff';ctx.shadowBlur=10;ctx.lineWidth=Math.max(2,w*.003);
- ctx.beginPath();ctx.moveTo(w*.34,h);ctx.lineTo(w*.43,h*.69);ctx.moveTo(w*.66,h);ctx.lineTo(w*.57,h*.69);ctx.stroke();ctx.restore();
- // Side railings, posts and glowing floor lamps.
+ ctx.beginPath();ctx.moveTo(w*.41,h*.68);ctx.lineTo(w*.46,h*.56);ctx.moveTo(w*.59,h*.68);ctx.lineTo(w*.54,h*.56);ctx.stroke();ctx.restore();
+ // Compact side rails and gate arms frame the distant boarding pad.
  for(const side of [-1,1]){
-  const x=w*(side<0?.13:.87),inner=w*(side<0?.22:.78);
-  ctx.strokeStyle='#8aaab3';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(x,h*.61);ctx.lineTo(inner,h*.86);ctx.stroke();
-  for(let i=0;i<4;i++){const t=i/3,px=x+(inner-x)*t,py=h*(.61+.25*t);rr(px-3,py-15,6,19,2,'#536f7c','#b1d2d8');}
-  const lampX=w*(side<0?.19:.81),lampY=h*.75;
-  oval(lampX,lampY,8,8,'#9af4ff');oval(lampX,lampY,17,17,'#69eaff25');
-  // Automatic swing gate arm opens as the boarding sequence starts.
-  ctx.save();ctx.translate(w*(side<0?.235:.765),h*.72);ctx.rotate((side<0?-1:1)*(1-gateOpen)*.9);
-  rr(0,-4,w*.095,8,4,'#d8e4e6','#7eeaff');for(let i=0;i<5;i++)rr(w*.018*i,-3,w*.009,6,1,i%2?'#eafaff':'#d94d62');ctx.restore();
+  const x=w*(side<0?.28:.72),inner=w*(side<0?.36:.64);
+  ctx.strokeStyle='#8aaab3';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(x,h*.43);ctx.lineTo(inner,h*.54);ctx.stroke();
+  for(let i=0;i<3;i++){const t=i/2,px=x+(inner-x)*t,py=h*(.43+.11*t);rr(px-2.5,py-10,5,13,2,'#536f7c','#b1d2d8');}
+  const gateX=w*(side<0?.365:.635),gateY=h*.535;
+  oval(gateX,gateY,5,5,'#9af4ff');oval(gateX,gateY,11,11,'#69eaff25');
+  ctx.save();ctx.translate(gateX,gateY);ctx.rotate((side<0?-1:1)*(1-gateOpen)*.9);
+  rr(0,-3,w*.055,6,3,'#d8e4e6','#7eeaff');for(let i=0;i<4;i++)rr(w*.013*i,-2,w*.006,4,1,i%2?'#eafaff':'#d94d62');ctx.restore();
  }
- // Overhead station canopy and illuminated nameplate.
- const canopy=ctx.createLinearGradient(0,h*.30,0,h*.39);canopy.addColorStop(0,'#0a1927');canopy.addColorStop(1,'#1b3c4b');
- poly([[w*.20,h*.29],[w*.80,h*.29],[w*.88,h*.37],[w*.12,h*.37]],canopy,'#75dff0');
- ctx.strokeStyle='#a8efff';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(w*.20,h*.29);ctx.lineTo(w*.80,h*.29);ctx.stroke();
- for(const x of [w*.22,w*.78]){const post=ctx.createLinearGradient(x,0,x+8,0);post.addColorStop(0,'#263d4b');post.addColorStop(1,'#718d9b');rr(x-7,h*.35,14,h*.47,3,post,'#7eeaff');rr(x-12,h*.34,24,8,3,'#b8f6ff','#e8ffff');}
- rr(w*.35,h*.22,w*.30,h*.065,8,'#071827','#76eaff');
- ctx.fillStyle='#dffaff';ctx.textAlign='center';ctx.font='800 '+Math.max(10,w*.018)+'px system-ui';ctx.fillText('KINGDOM EXPLORER · BOARDING GATE',cx,h*.262);
- // Six small seat indicators confirm the passenger capacity.
- for(let i=0;i<6;i++){const x=cx+(i-2.5)*Math.min(18,w*.023);oval(x,h*.315,3.2,3.2,'#9ff4ff');}
- // Gate status beacon pulses gently; no strobing.
- const beacon=.55+.35*Math.sin(phase*1.2);ctx.globalAlpha=beacon;oval(cx,h*.405,5,5,'#b5f8ff');oval(cx,h*.405,13,13,'#70eaff25');ctx.globalAlpha=1;
+ // The canopy and sign sit above the vehicle, making the station read as a separate place.
+ const canopy=ctx.createLinearGradient(0,h*.25,0,h*.32);canopy.addColorStop(0,'#0a1927');canopy.addColorStop(1,'#1b3c4b');
+ poly([[w*.29,h*.25],[w*.71,h*.25],[w*.76,h*.32],[w*.24,h*.32]],canopy,'#75dff0');
+ ctx.strokeStyle='#a8efff';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(w*.29,h*.25);ctx.lineTo(w*.71,h*.25);ctx.stroke();
+ for(const x of [w*.30,w*.70]){const post=ctx.createLinearGradient(x,0,x+7,0);post.addColorStop(0,'#263d4b');post.addColorStop(1,'#718d9b');rr(x-5,h*.31,10,h*.19,3,post,'#7eeaff');}
+ rr(w*.36,h*.19,w*.28,h*.055,7,'#071827','#76eaff');
+ ctx.fillStyle='#dffaff';ctx.textAlign='center';ctx.font='800 '+Math.max(9,w*.016)+'px system-ui';ctx.fillText('KINGDOM EXPLORER · BOARDING GATE',cx,h*.225);
+ for(let i=0;i<6;i++){const x=cx+(i-2.5)*Math.min(14,w*.018);oval(x,h*.335,2.7,2.7,'#9ff4ff');}
+ const beacon=.55+.35*Math.sin(phase*1.2);ctx.globalAlpha=beacon;oval(cx,h*.385,4,4,'#b5f8ff');oval(cx,h*.385,10,10,'#70eaff25');ctx.globalAlpha=1;
 }
 function draw(){ctx.clearRect(0,0,w,h);drawWorld();drawEffects();if(viewMode!=='cabin')drawBoardingPlatform();if(viewMode==='cabin')drawCabin();else drawVehicle();const cockpitEl=document.getElementById('cockpitConsole');if(cockpitEl)cockpitEl.classList.toggle('active',viewMode==='cabin');drawStartup()}
 function frame(now){const dt=Math.min(50,now-last||16);last=now;if(running){offset+=dt*(reduce?.00022:.00055);startup=Math.max(0,startup-dt/1000)}if(transition>0)transition=Math.max(0,transition-dt/1100);draw();requestAnimationFrame(frame)}
