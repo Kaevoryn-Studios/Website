@@ -91,17 +91,20 @@ function drawWorld(){const cx=w/2,hor=h*.37,scene=chapters[chapter].scene,route=
  ctx.beginPath();ctx.moveTo(0,hor);ctx.lineTo(edgeAt(0,-1),hor);ctx.lineTo(edgeAt(1,-1),h);ctx.lineTo(0,h);ctx.closePath();ctx.fillStyle=scene===1?'#1c493b':'#183b35';ctx.fill();
  ctx.beginPath();ctx.moveTo(edgeAt(0,1),hor);ctx.lineTo(w,hor);ctx.lineTo(w,h);ctx.lineTo(edgeAt(1,1),h);ctx.closePath();ctx.fill();
  ctx.strokeStyle='#e1d2a177';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(edgeAt(0,-1),hor);ctx.lineTo(edgeAt(1,-1),h);ctx.moveTo(edgeAt(0,1),hor);ctx.lineTo(edgeAt(1,1),h);ctx.stroke();
-// Foreground roadside trees are drawn AFTER the road so their forward travel is unmistakable.
+// Foreground roadside trees: full, recognizable conifers rather than glowing oval crowns.
  if(scene===0||scene===1||scene===3||scene===5){
   for(const side of [-1,1]){
    for(let i=0;i<6;i++){
     const z=((i/6+offset*.72+(side===1?.11:0))%1),depth=Math.pow(z,1.45);
-    const y=hor+depth*(h-hor),x=edgeAt(depth,side)+side*(22+depth*42);
-    const s=.24+depth*1.08;
-    ctx.save();ctx.globalAlpha=.5+depth*.5;
-    ctx.fillStyle='#142c2b';ctx.fillRect(x-3*s,y-25*s,6*s,29*s);
-    oval(x,y-34*s,17*s,23*s,scene===0||scene===1?'#285c50':'#315b50');
-    oval(x-5*s,y-39*s,4*s,6*s,scene===5?'#9ceeff88':'#82f5d088');
+    const y=hor+depth*(h-hor),x=edgeAt(depth,side)+side*(30+depth*48);
+    const s=.28+depth*1.35,treeH=76*s;
+    ctx.save();ctx.globalAlpha=.68+depth*.32;
+    ctx.fillStyle='#503b2b';ctx.fillRect(x-2.6*s,y-22*s,5.2*s,22*s);
+    ctx.fillStyle=scene===5?'#315b68':scene===3?'#344b43':'#1d4938';
+    const tiers=[{tip:.98,base:.58,half:.22},{tip:.77,base:.37,half:.32},{tip:.55,base:.12,half:.43}];
+    for(const t of tiers){ctx.beginPath();ctx.moveTo(x,y-treeH*t.tip);ctx.lineTo(x-treeH*t.half,y-treeH*t.base);ctx.lineTo(x+treeH*t.half,y-treeH*t.base);ctx.closePath();ctx.fill();}
+    ctx.strokeStyle='#6c9b86';ctx.lineWidth=Math.max(1,.9*s);
+    ctx.beginPath();ctx.moveTo(x,y-treeH*.98);ctx.lineTo(x-treeH*.22,y-treeH*.58);ctx.stroke();
     ctx.restore();
    }
   }
