@@ -43,7 +43,10 @@ footer{text-align:center;padding:20px 0 36px;color:#8f86a6;font-size:10px;letter
 .interior.revealed{display:flex;animation:hallReveal 1.1s ease both}
 @keyframes hallReveal{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
 .interior-head{text-align:center}.interior-head h2{margin:5px 0;font-size:clamp(27px,5vw,46px);color:#f2e9ff}.interior-head p{margin:0 auto;max-width:650px;color:#d0c3e4}
-.hall-art{display:block;width:min(100%,850px);max-height:58%;height:auto;margin:12px auto 0;object-fit:contain;filter:drop-shadow(0 18px 25px #0009)}\n.floating-candles{animation:candleDrift 4s ease-in-out infinite alternate;transform-origin:center}\n@keyframes candleDrift{to{transform:translateY(-5px)}}\n.interior:after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(112deg,transparent 0 95px,#c7b3d012 96px 97px,transparent 98px 180px);opacity:.35}
+.hall-art{display:block;width:min(100%,850px);max-height:58%;height:auto;margin:12px auto 0;object-fit:contain;filter:drop-shadow(0 18px 25px #0009)}
+.floating-candles{animation:candleDrift 4s ease-in-out infinite alternate;transform-origin:center}
+@keyframes candleDrift{to{transform:translateY(-5px)}}
+.interior:after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(112deg,transparent 0 95px,#c7b3d012 96px 97px,transparent 98px 180px);opacity:.35}
 .hall-note{text-align:center;color:#f4d49a;font-size:12px;letter-spacing:.12em;margin:10px 0 0}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;scroll-behavior:auto!important}}
 </style></head>
@@ -99,7 +102,7 @@ footer{text-align:center;padding:20px 0 36px;color:#8f86a6;font-size:10px;letter
 </svg></div>
 <div class="fog"></div><div class="scene-caption"><strong>THE GATES HAVE NOT OPENED IN CENTURIES</strong><span>Look closely. Something is watching from the highest tower.</span></div>
 <section class="interior" id="entranceHall" aria-live="polite">
-<div class="interior-head"><p class="eyebrow">BEYOND THE THRESHOLD · THE CASTLE AWAKENS</p><h2>THE ENTRANCE HALL</h2><p>The gates part. A vast chamber opens before you, lit by floating candles and a violet glow rising from the ancient crest in the floor.</p></div>
+<div class="interior-head"><p class="eyebrow">BEYOND THE THRESHOLD · THE CASTLE AWAKENS</p><h2>THE ENTRANCE HALL</h2><p>The gates part. A vast chamber opens before you. An old stone staircase rises toward a sealed inner door, lit by floating candles and violet magic.</p></div>
 <svg class="hall-art" viewBox="0 0 900 430" role="img" aria-label="A grand gothic entrance hall with towering arches, floating candles, a glowing magical floor crest and a distant staircase">
 <defs><linearGradient id="hallwall" x2="0" y2="1"><stop stop-color="#74618e"/><stop offset="1" stop-color="#211a30"/></linearGradient><radialGradient id="halllight"><stop stop-color="#c5a5ff" stop-opacity=".9"/><stop offset="1" stop-color="#9b68e8" stop-opacity="0"/></radialGradient></defs>
 <path d="M60 370V110Q60 20 220 20T380 110V370M520 370V110Q520 20 680 20T840 110V370" fill="none" stroke="#b7a5d0" stroke-width="18" opacity=".8"/>
@@ -107,6 +110,17 @@ footer{text-align:center;padding:20px 0 36px;color:#8f86a6;font-size:10px;letter
 <path d="M0 0h900v370L450 230 0 370Z" fill="url(#hallwall)" opacity=".72"/>
 <path d="M310 370V190q0-95 140-95t140 95v180" fill="#120e1c" stroke="#c0afd6" stroke-width="12"/>
 <path d="M350 370V195q0-65 100-65t100 65v175" fill="#332340" stroke="#806a9b" stroke-width="4"/><path d="M380 205l22 17-8 29 20 16-12 31m112-102-17 20 9 22-16 24 12 26M432 150l-8 20 12 12m47 104 8 16-11 20" fill="none" stroke="#b8a8c6" stroke-width="2" opacity=".65"/>
+<!-- clearly visible ancient staircase rising to the sealed inner door -->
+<g class="hall-stairs" stroke-linejoin="round">
+<path d="M300 365h300l-24-20H324Z" fill="#665675" stroke="#c0a9d5" stroke-width="3"/>
+<path d="M324 345h252l-22-20H346Z" fill="#594967" stroke="#b5a0cc" stroke-width="3"/>
+<path d="M346 325h208l-19-20H365Z" fill="#4c3d5d" stroke="#aa94c5" stroke-width="3"/>
+<path d="M365 305h170l-16-18H381Z" fill="#40334f" stroke="#9c87b8" stroke-width="3"/>
+<path d="M381 287h138l-13-17H394Z" fill="#352a45" stroke="#927cae" stroke-width="3"/>
+<path d="M300 365l-35 18m335-18 35 18M324 345l-28 17m280-17 28 17M346 325l-20 14m248-14 20 14" fill="none" stroke="#d0bce5" stroke-width="5"/>
+<path d="M275 383 345 300M625 383 555 300" fill="none" stroke="#88739f" stroke-width="8"/>
+<path d="M275 383 345 300M625 383 555 300" fill="none" stroke="#d3c0e6" stroke-width="2"/>
+</g>
 <path d="M450 370V250" stroke="#d5baff" stroke-width="3" opacity=".6"/>
 <path d="M0 370 450 230 900 370M0 420 450 300 900 420" fill="none" stroke="#76648e" stroke-width="3"/>
 <ellipse cx="450" cy="365" rx="190" ry="48" fill="url(#halllight)"/>
