@@ -524,6 +524,55 @@ function drawStartup(){
 }
 function draw(){ctx.clearRect(0,0,w,h);drawWorld();drawEffects();if(viewMode==='cabin')drawCabin();else drawVehicle();drawStartup()}
 function frame(now){const dt=Math.min(50,now-last||16);last=now;if(running){offset+=dt*(reduce?.00022:.00055);startup=Math.max(0,startup-dt/1000)}if(transition>0)transition=Math.max(0,transition-dt/1100);draw();requestAnimationFrame(frame)}
+
+/* Kaevoryn Explorer dashboard */
+const dashboardStyle=document.createElement('style');
+dashboardStyle.textContent=`
+#kingdomDashboardToggle{border:1px solid #73eaff!important;background:linear-gradient(135deg,#123b55,#241d49)!important;color:#e9fbff!important}
+#kingdomDashboard{position:fixed;inset:0;z-index:50;display:none;place-items:center;padding:20px;background:rgba(2,8,18,.82);backdrop-filter:blur(12px)}
+#kingdomDashboard.open{display:grid}
+#kingdomDashboard .dash-panel{width:min(680px,100%);max-height:90vh;overflow:auto;padding:clamp(20px,4vw,34px);border:1px solid #62dff4;border-radius:22px;background:linear-gradient(145deg,#0b2133f5,#17142ff7);box-shadow:0 0 55px #27c9f455;color:#eafaff}
+#kingdomDashboard .dash-kicker{margin:0 0 8px;color:#8cefff;font:700 11px system-ui;letter-spacing:.2em}
+#kingdomDashboard h2{margin:0 0 8px;font:800 clamp(25px,5vw,38px) system-ui;letter-spacing:.04em}
+#kingdomDashboard .dash-sub{margin:0 0 24px;color:#b5cbd8;line-height:1.55}
+#kingdomDashboard .dash-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+#kingdomDashboard button{min-height:68px;padding:14px;border:1px solid #42677e;border-radius:13px;background:linear-gradient(135deg,#142e43,#211e3d);color:#effcff;text-align:left;font:700 14px system-ui;cursor:pointer}
+#kingdomDashboard button span{display:block;margin-top:5px;color:#a9c5d3;font:400 12px system-ui}
+#kingdomDashboard button:hover,#kingdomDashboard button:focus-visible{border-color:#9af1ff;box-shadow:0 0 18px #54dcf455;outline:none}
+#kingdomDashboard .dash-footer{display:flex;justify-content:space-between;gap:10px;margin-top:18px}
+#kingdomDashboard .dash-footer button{min-height:44px;text-align:center}
+#kingdomDashboard .map-art{height:190px;margin:18px 0;padding:14px;border:1px solid #3c7184;border-radius:14px;background:radial-gradient(ellipse at 50% 50%,#28607988,transparent 55%),linear-gradient(135deg,#102c35,#10182e);display:grid;place-items:center;color:#a9efff;text-align:center;letter-spacing:.12em;font:700 12px system-ui}
+@media(max-width:460px){#kingdomDashboard .dash-grid{grid-template-columns:1fr}#kingdomDashboard .dash-panel{padding:19px}}
+`;
+document.head.append(dashboardStyle);
+const dashboard=document.createElement('section');
+dashboard.id='kingdomDashboard';dashboard.setAttribute('aria-label','Explorer dashboard');dashboard.setAttribute('aria-modal','true');dashboard.setAttribute('role','dialog');
+dashboard.innerHTML=`<div class="dash-panel"><p class="dash-kicker">KAEVORYN STUDIOS · LOST KINGDOM</p><h2>EXPLORER DASHBOARD</h2><p class="dash-sub">Your expedition hub. Choose where to go next.</p><div class="dash-grid">
+<button type="button" data-dash="explore">✦ &nbsp; Continue Exploring<span>Return to the kingdom journey</span></button>
+<button type="button" data-dash="vehicle">▰ &nbsp; Explorer Vehicle<span>Board or exit the six-seat cabin</span></button>
+<button type="button" data-dash="map">⌖ &nbsp; Kingdom Map<span>View your expedition route</span></button>
+<button type="button" data-dash="missions">◇ &nbsp; Missions & Discoveries<span>Review your chapter and choices</span></button>
+<button type="button" data-dash="settings">⚙ &nbsp; Journey Settings<span>Pause or resume the world</span></button>
+<button type="button" data-dash="home">⌂ &nbsp; Kingdoms Home<span>Leave this expedition</span></button>
+</div><div class="dash-footer"><button type="button" data-dash="close">CLOSE DASHBOARD</button><button type="button" data-dash="map">VIEW MAP</button></div><div id="kingdomDashDetail" aria-live="polite"></div></div>`;
+document.body.append(dashboard);
+const dashButton=document.createElement('button');dashButton.type='button';dashButton.id='kingdomDashboardToggle';dashButton.textContent='Explorer Dashboard';dashButton.setAttribute('aria-haspopup','dialog');document.querySelector('.controls')?.prepend(dashButton);
+function showDashboard(){dashboard.classList.add('open');dashboard.querySelector('button')?.focus()}
+function hideDashboard(){dashboard.classList.remove('open');dashButton.focus()}
+dashButton.addEventListener('click',showDashboard);
+dashboard.addEventListener('click',e=>{
+ if(e.target===dashboard){hideDashboard();return}
+ const button=e.target.closest('[data-dash]');if(!button)return;
+ const action=button.dataset.dash,detail=document.getElementById('kingdomDashDetail');
+ if(action==='close'||action==='explore'){hideDashboard();return}
+ if(action==='vehicle'){const boarding=viewMode!=='cabin';viewMode=boarding?'cabin':'outside';if(boarding)startup=reduce?1.4:3.2;const b=document.getElementById('boardRide');if(b)b.textContent=viewMode==='cabin'?'Return to outside view':'Board the Explorer';hideDashboard();return}
+ if(action==='map'){detail.innerHTML='<div class="map-art">✧ &nbsp; HIGH RIDGE &nbsp; · &nbsp; WILD PASS &nbsp; · &nbsp; SUNKEN BRIDGE<br><br>FORGOTTEN CITY &nbsp; · &nbsp; HEART TEMPLE<br><br><small>YOUR ROUTE IS MARKED IN THE EXPEDITION LOG</small></div>';return}
+ if(action==='missions'){hideDashboard();document.querySelector('.story')?.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'});return}
+ if(action==='settings'){running=!running;pause.textContent=running?'Pause journey':'Resume journey';speed.textContent=running?'EXPLORING':'PAUSED';detail.textContent=running?'Journey resumed.':'Journey paused.';return}
+ if(action==='home'){location.href='kingdoms.html'}
+});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&dashboard.classList.contains('open'))hideDashboard()});
+
 const board=document.getElementById('boardRide');if(board)board.addEventListener('click',()=>{const boarding=viewMode!=='cabin';viewMode=boarding?'cabin':'outside';if(boarding)startup=reduce?1.4:3.2;board.textContent=viewMode==='cabin'?'Return to outside view':'Board the Explorer';});
 pause.addEventListener('click',()=>{running=!running;pause.textContent=running?'Pause journey':'Resume journey';speed.textContent=running?'EXPLORING':'PAUSED'});
 restart.addEventListener('click',()=>{chapter=0;history=[];choiceTrail=[];offset=0;running=true;pause.textContent='Pause journey';update()});
