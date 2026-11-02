@@ -147,6 +147,36 @@ function drawWorld(){const cx=w/2,hor=h*.37,scene=chapters[chapter].scene,route=
  }
  if(scene===2){if(choiceTrail[2]==='tunnel'){ctx.strokeStyle='#a7d8e5';ctx.lineWidth=10;ctx.beginPath();ctx.arc(cx,h*.66,w*.15,Math.PI,0);ctx.stroke();ctx.fillStyle='#07131d';ctx.fillRect(cx-w*.145,h*.66,w*.29,h*.2)}else{poly([[cx-w*.22,h*.61],[cx+w*.22,h*.61],[cx+w*.27,h*.68],[cx-w*.27,h*.68]],'#897b61','#c4b28d');for(let i=0;i<5;i++)rr(cx-w*.17+i*w*.085,h*.62,3,22,1,'#c5b48d')}}
  if(scene===5){for(let i=0;i<18;i++){const x=(i*73+offset*200)%w,y=(i*37)%Math.max(1,h*.55);oval(x,y,2,2,'#a8f7ff')}const glow=choiceTrail[4]==='wonder'?'#c69aff':'#7eeaff';oval(cx,h*.28,34,34,glow);oval(cx,h*.28,54,54,glow+'33')}
+ // Continuous, non-repeating expedition scenery: each world segment has its own stable landmarks.
+ // Unlike the decorative loops above, this stream never wraps back to its first segment.
+ const worldTravel=offset*1.65,firstSegment=Math.floor(worldTravel),segmentCount=14;
+ const worldRand=(n,salt)=>{const v=Math.sin(n*127.1+salt*311.7)*43758.5453;return v-Math.floor(v)};
+ for(let n=firstSegment;n<firstSegment+segmentCount;n++){
+  const progress=worldTravel-n;
+  if(progress<-.1||progress>segmentCount)continue;
+  const z=1-progress/segmentCount,depth=Math.pow(Math.max(0,Math.min(1,z)),1.55);
+  if(depth<.015)continue;
+  const scale=.22+depth*1.18,y=hor+depth*(h-hor);
+  for(const side of [-1,1]){
+   const seed=worldRand(n,side+7),x=edgeAt(depth,side)+side*(24+seed*48+depth*22);
+   ctx.save();ctx.globalAlpha=.42+depth*.58;
+   if(seed<.58){
+    const trunk=3.5*scale,treeH=(35+seed*28)*scale;
+    ctx.fillStyle=seed<.28?'#142b29':'#1b3932';
+    ctx.fillRect(x-trunk/2,y-treeH*.55,trunk,treeH*.62);
+    ctx.fillStyle=scene===5?'#477d79':scene===4?'#354e58':seed<.28?'#285c50':'#244b3d';
+    oval(x,y-treeH*.72,(12+seed*8)*scale,(18+seed*9)*scale,ctx.fillStyle);
+    if(seed>.4){ctx.strokeStyle='#8deaff';ctx.lineWidth=Math.max(1,scale);ctx.beginPath();ctx.moveTo(x,y-treeH*.92);ctx.lineTo(x+side*5*scale,y-treeH*.48);ctx.stroke()}
+   }else{
+    const stoneW=(9+seed*8)*scale,stoneH=(22+seed*24)*scale;
+    ctx.fillStyle=scene===2?'#53636a':scene>=3?'#59666a':'#40564b';
+    ctx.strokeStyle=scene===5?'#a8f5ff':'#8eb9a7';ctx.lineWidth=Math.max(1,scale);
+    ctx.beginPath();ctx.moveTo(x-stoneW*.55,y);ctx.lineTo(x-stoneW*.45,y-stoneH*.72);ctx.lineTo(x,y-stoneH);ctx.lineTo(x+stoneW*.5,y-stoneH*.8);ctx.lineTo(x+stoneW*.62,y-stoneH*.12);ctx.closePath();ctx.fill();ctx.stroke();
+    ctx.strokeStyle=scene===5?'#b8f7ff':'#8affd4';ctx.beginPath();ctx.moveTo(x,y-stoneH*.78);ctx.lineTo(x-stoneW*.18,y-stoneH*.48);ctx.lineTo(x+stoneW*.2,y-stoneH*.28);ctx.stroke();
+   }
+   ctx.restore();
+  }
+ }
  // expedition route label
  if(route){const labels={ridge:'ROUTE · HIGH RIDGE',forest:'ROUTE · DEEP FOREST'};ctx.fillStyle='#061522bb';ctx.fillRect(12,h-38,Math.min(w-24,205),25);ctx.fillStyle='#a8f5ff';ctx.font='bold 10px system-ui';ctx.textAlign='left';ctx.fillText(labels[route]||'EXPEDITION · '+route.toUpperCase(),22,h-21)}
 }
