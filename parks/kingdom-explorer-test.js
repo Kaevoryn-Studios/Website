@@ -33,7 +33,7 @@ function drawWorld(){const cx=w/2,hor=h*.37,scene=chapters[chapter].scene,route=
 
  // Cinematic panorama: layered mountain peaks, a distant ruined citadel and drifting valley mist.
  const mountainPalette=scene===5?['#273e5d','#304d68','#41677a']:scene===4?['#263d49','#34545a','#52716b']:['#172f3b','#254653','#3a6268'];
- const ridge=(points,color)=>{ctx.beginPath();ctx.moveTo(0,hor+80);for(const p of points)ctx.lineTo(w*p[0],hor+p[1]);ctx.lineTo(w,hor+80);ctx.closePath();ctx.fillStyle=color;ctx.fill();};
+ const ridge=(points,color)=>{ctx.beginPath();ctx.moveTo(0,h+20);for(const p of points)ctx.lineTo(w*p[0],hor+p[1]);ctx.lineTo(w,h+20);ctx.closePath();ctx.fillStyle=color;ctx.fill();};
  ridge([[0,-35],[.09,-92],[.18,-48],[.29,-132],[.39,-61],[.51,-158],[.62,-72],[.73,-119],[.84,-54],[.94,-105],[1,-42]],mountainPalette[0]);
  ctx.strokeStyle=scene===5?'#b7eaff55':'#b9d6d055';ctx.lineWidth=Math.max(2,w*.004);
  ctx.beginPath();ctx.moveTo(w*.09,hor-92);ctx.lineTo(w*.18,hor-48);ctx.moveTo(w*.29,hor-132);ctx.lineTo(w*.39,hor-61);ctx.moveTo(w*.51,hor-158);ctx.lineTo(w*.62,hor-72);ctx.moveTo(w*.73,hor-119);ctx.lineTo(w*.84,hor-54);ctx.stroke();
