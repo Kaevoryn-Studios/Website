@@ -161,12 +161,18 @@ function drawWorld(){const cx=w/2,hor=h*.37,scene=chapters[chapter].scene,route=
    const seed=worldRand(n,side+7),x=edgeAt(depth,side)+side*(24+seed*48+depth*22);
    ctx.save();ctx.globalAlpha=.42+depth*.58;
    if(seed<.58){
-    const trunk=3.5*scale,treeH=(35+seed*28)*scale;
-    ctx.fillStyle=seed<.28?'#142b29':'#1b3932';
-    ctx.fillRect(x-trunk/2,y-treeH*.55,trunk,treeH*.62);
-    ctx.fillStyle=scene===5?'#477d79':scene===4?'#354e58':seed<.28?'#285c50':'#244b3d';
-    oval(x,y-treeH*.72,(12+seed*8)*scale,(18+seed*9)*scale,ctx.fillStyle);
-    if(seed>.4){ctx.strokeStyle='#8deaff';ctx.lineWidth=Math.max(1,scale);ctx.beginPath();ctx.moveTo(x,y-treeH*.92);ctx.lineTo(x+side*5*scale,y-treeH*.48);ctx.stroke()}
+    // Readable evergreen silhouette: tapered trunk and three overlapping branch tiers.
+    const treeH=(54+seed*34)*scale, trunkW=3.8*scale;
+    const foliage=scene===5?'#477d79':scene===4?'#354e58':seed<.28?'#285c50':'#244b3d';
+    ctx.fillStyle=seed<.28?'#493b2d':'#594531';
+    ctx.beginPath();ctx.moveTo(x-trunkW*.45,y);ctx.lineTo(x-trunkW*.2,y-treeH*.72);ctx.lineTo(x+trunkW*.2,y-treeH*.72);ctx.lineTo(x+trunkW*.45,y);ctx.closePath();ctx.fill();
+    ctx.fillStyle=foliage;
+    for(let tier=0;tier<3;tier++){
+     const top=y-treeH*(.34+tier*.22),half=treeH*(.25-tier*.045),bottom=y-treeH*(.12+tier*.22);
+     ctx.beginPath();ctx.moveTo(x,top-treeH*.2);ctx.lineTo(x-half, bottom);ctx.lineTo(x+half,bottom);ctx.closePath();ctx.fill();
+    }
+    ctx.fillStyle=scene===5?'#9beaff':'#56866a';
+    ctx.beginPath();ctx.moveTo(x,y-treeH*.94);ctx.lineTo(x-treeH*.035,y-treeH*.72);ctx.lineTo(x+treeH*.035,y-treeH*.72);ctx.closePath();ctx.fill();
    }else{
     const stoneW=(9+seed*8)*scale,stoneH=(22+seed*24)*scale;
     ctx.fillStyle=scene===2?'#53636a':scene>=3?'#59666a':'#40564b';
