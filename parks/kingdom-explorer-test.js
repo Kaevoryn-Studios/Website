@@ -37,6 +37,13 @@ function drawWorld(){const cx=w/2,hor=h*.37,scene=chapters[chapter].scene,route=
  if(scene===2){poly([[0,hor+40],[w*.25,hor-30],[w*.42,h*.72],[0,h*.72]],'#263a40');poly([[w,hor+40],[w*.75,hor-30],[w*.58,h*.72],[w,h*.72]],'#263a40');}
  if(scene===1||scene===0){for(let i=0;i<10;i++){const x=w*(i/10),s=.7+(i%4)*.25;tree(x,hor+15+(i%3)*12,s,scene===1||route==='forest')}if(route==='ridge'){poly([[0,hor+35],[w*.18,hor-45],[w*.34,hor+25]],'#53616a','#9fb9c1');poly([[w,hor+30],[w*.82,hor-50],[w*.66,hor+25]],'#53616a','#9fb9c1')}}
  if(scene===3||scene===5){for(let i=0;i<8;i++){const x=w*(i/8),s=.5+(i%3)*.25;tree(x,hor+25,s,true)}}
+ // waterfalls spilling into the ravine
+ if(scene===2){for(const side of [-1,1]){const x=cx+side*w*.34;const water=ctx.createLinearGradient(x,hor-35,x+side*8,h*.78);water.addColorStop(0,'#b6f5ff');water.addColorStop(.45,'#39bce0');water.addColorStop(1,'#155c85');ctx.fillStyle=water;ctx.beginPath();ctx.moveTo(x-side*13,hor-28);ctx.lineTo(x+side*13,hor-28);ctx.lineTo(x+side*34,h*.76);ctx.lineTo(x-side*22,h*.76);ctx.closePath();ctx.fill();for(let k=0;k<5;k++){const yy=hor+((k*31+offset*240)%(h*.38));ctx.fillStyle='#c7f7ff99';ctx.fillRect(x-5+(k%2)*8,yy,2,12)}}}
+ // glowing wildlife: fireflies and distant eyes in the forest
+ if(scene===1||scene===0){for(let i=0;i<16;i++){const x=(i*67+Math.sin(offset*7+i)*12)%w,y=hor+25+(i*29)%(h*.36);oval(x,y,2.2,2.2,i%3===0?'#ffe58c':'#8effd5');}if(scene===1){for(const x of [w*.22,w*.76]){oval(x,hor+40,3,2,'#f6e6a8');oval(x+9,hor+40,3,2,'#f6e6a8')}}}
+ // monumental kingdom skyline and dramatic finale aurora
+ if(scene===5){const crownY=hor-115;poly([[cx-w*.34,hor+28],[cx-w*.28,crownY+35],[cx-w*.19,crownY+55],[cx-w*.12,crownY-15],[cx-w*.04,crownY+42],[cx,crownY-75],[cx+w*.04,crownY+42],[cx+w*.12,crownY-15],[cx+w*.19,crownY+55],[cx+w*.28,crownY+35],[cx+w*.34,hor+28]],'#263d59','#b9eaff');const aura=ctx.createRadialGradient(cx,crownY-35,8,cx,crownY-35,w*.42);aura.addColorStop(0,choiceTrail[4]==='wonder'?'#c79aff66':'#75eaff66');aura.addColorStop(1,'#75eaff00');ctx.fillStyle=aura;ctx.fillRect(0,0,w,h*.72);for(let i=0;i<7;i++){const x=w*(.08+i*.14);rr(x-3,hor-15,6,34,2,'#ffd987');oval(x,hor-18,7,7,'#fff0b4')}}
+
  // path / track with perspective
  const road=scene===2?'#3c4544':scene===3?'#4a4940':'#27343a';
  poly([[cx-w*.08,hor],[cx+w*.08,hor],[w*.99,h],[w*.01,h]],road);
