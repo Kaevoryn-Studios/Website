@@ -371,7 +371,7 @@ function drawCabin(){
  const seams=['#80eaff','#d4b8ff','#9cf2c5','#ffd39a','#a9d9ff','#f0b5df'];
  let index=0;
  rows.forEach((yy,row)=>cols.forEach((xx,col)=>{
-  const x=w*xx,y=h*yy,sw=Math.min(w*.135,74),sh=Math.min(h*.055,26);
+  const x=w*xx,y=h*yy,sw=Math.min(w*.18,118),sh=Math.min(h*.14,76);
   ctx.save();ctx.translate(x,y);
   const seat=colors[index],stitch=seams[index];
   // Ground shadow and lower seat pedestal.
