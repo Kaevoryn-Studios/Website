@@ -199,7 +199,7 @@ function drawWorld(){const cx=w/2,hor=h*.37,scene=chapters[chapter].scene,route=
  if(route){const labels={ridge:'ROUTE · HIGH RIDGE',forest:'ROUTE · DEEP FOREST'};ctx.fillStyle='#061522bb';ctx.fillRect(12,h-38,Math.min(w-24,205),25);ctx.fillStyle='#a8f5ff';ctx.font='bold 10px system-ui';ctx.textAlign='left';ctx.fillText(labels[route]||'EXPEDITION · '+route.toUpperCase(),22,h-21)}
 }
 function drawVehicle(){
- const cx=w/2,s=Math.min(w/760,h/430)*.95,base=h-36*s;
+ const cx=w/2,s=Math.min(w/760,h/430)*.95,base=h-36*s,phase=offset*Math.PI*2,pulse=.5+.5*Math.sin(phase*1.8);
  ctx.save();ctx.translate(cx,base);ctx.scale(s,s);
  oval(0,38,174,15,'#02070dcc');
  // Four rugged wheel faces and reinforced fender arches.
@@ -245,9 +245,14 @@ function drawVehicle(){
  for(let i=0;i<5;i++)rr(-28+i*14,-49,5,14,2,'#5c91a3');
  rr(-145,-39,290,16,5,'#182b38','#91b9c8');
  rr(-103,-31,206,10,4,'#778d98','#d7faff');
- // Cyan and violet lighting, plus protected corner lamps.
+ // Animated adaptive headlights: soft breathing glow without harsh flashing.
+ ctx.save();
+ ctx.globalAlpha=.72+pulse*.28;
+ ctx.shadowColor='#9cefff';ctx.shadowBlur=12+pulse*24;
  rr(-130,-104,25,22,6,'#b8f7ff','#efffff');
+ ctx.shadowColor='#caa7ff';ctx.shadowBlur=12+pulse*24;
  rr(105,-104,25,22,6,'#c7a6ff','#fff0ff');
+ ctx.restore();
  rr(-119,-94,9,30,4,'#ff536e');rr(110,-94,9,30,4,'#ff536e');
  for(const x of [-119,119])oval(x,-12,10,14,'#76eaff');
  // Signature crown and Kaevoryn identity.
@@ -256,10 +261,29 @@ function drawVehicle(){
  rr(-57,-78,114,23,7,'#07182d','#9a75ff');
  ctx.fillStyle='#e8fbff';ctx.font='bold 10px system-ui';ctx.textAlign='center';
  ctx.fillText('K A E V O R Y N',0,-63);
- // Blue energy strips along the side armor.
- ctx.save();ctx.shadowColor='#20dfff';ctx.shadowBlur=12;ctx.strokeStyle='#72f4ff';ctx.lineWidth=3;
+ // Animated energy channels sweep along both armored flanks.
+ ctx.save();
+ const sweep=(phase*34)%46;
+ ctx.shadowColor='#20dfff';ctx.shadowBlur=12+pulse*12;
+ ctx.strokeStyle='#72f4ff';ctx.lineWidth=3;
+ ctx.globalAlpha=.55+pulse*.4;
  ctx.beginPath();ctx.moveTo(-143,-77);ctx.lineTo(-126,-67);ctx.lineTo(-137,-52);
- ctx.moveTo(143,-77);ctx.lineTo(126,-67);ctx.lineTo(137,-52);ctx.stroke();ctx.restore();
+ ctx.moveTo(143,-77);ctx.lineTo(126,-67);ctx.lineTo(137,-52);ctx.stroke();
+ for(const side of [-1,1]){
+  ctx.fillStyle='#b8fbff';ctx.globalAlpha=.35+pulse*.55;
+  rr(side*(119+sweep)-3,-65,6,4,2,'#b8fbff');
+ }
+ // Low-profile engine vents pulse beneath the rear armor.
+ ctx.globalAlpha=.35+pulse*.6;
+ ctx.shadowColor='#26dfff';ctx.shadowBlur=10+pulse*15;
+ for(let i=0;i<5;i++)rr(-26+i*13,-23,7,4,2,'#72eaff');
+ // A few drifting ion sparks give the power system a subtle active feel.
+ ctx.globalAlpha=.2+pulse*.45;
+ for(let i=0;i<4;i++){
+  const drift=(phase*18+i*19)%42;
+  oval(-42+i*28,-4+drift*.18,1.8,2.8,'#a8f7ff');
+ }
+ ctx.restore();
  ctx.restore();
 }
 function drawEffects(){
