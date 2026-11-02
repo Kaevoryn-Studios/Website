@@ -91,7 +91,7 @@ function drawWorld(){const cx=w/2,hor=h*.37,scene=chapters[chapter].scene,route=
  ctx.beginPath();ctx.moveTo(0,hor);ctx.lineTo(edgeAt(0,-1),hor);ctx.lineTo(edgeAt(1,-1),h);ctx.lineTo(0,h);ctx.closePath();ctx.fillStyle=scene===1?'#1c493b':'#183b35';ctx.fill();
  ctx.beginPath();ctx.moveTo(edgeAt(0,1),hor);ctx.lineTo(w,hor);ctx.lineTo(w,h);ctx.lineTo(edgeAt(1,1),h);ctx.closePath();ctx.fill();
  ctx.strokeStyle='#e1d2a177';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(edgeAt(0,-1),hor);ctx.lineTo(edgeAt(1,-1),h);ctx.moveTo(edgeAt(0,1),hor);ctx.lineTo(edgeAt(1,1),h);ctx.stroke();
- for(let i=0;i<11;i++){const z=i/11,depth=Math.pow(z,1.65),y=hor+depth*(h-hor),markX=cx,lw=1+z*3;ctx.fillStyle=scene===5?'#9cecff':'#d8c99a';ctx.fillRect(markX-lw/2,y,lw,Math.max(2,z*17))}
+ for(let i=0;i<11;i++){const z=i/11,depth=Math.pow(z,1.65),y=hor+depth*(h-hor),markX=roadCenter(depth),lw=1+z*3;ctx.fillStyle=scene===5?'#9cecff':'#d8c99a';ctx.fillRect(markX-lw/2,y,lw,Math.max(2,z*17))}
  // Perspective roadside landmarks: old stone posts and boulders stay outside the driving lane
  for(const side of [-1,1]){
   for(let i=0;i<7;i++){
@@ -135,7 +135,7 @@ function drawWorld(){const cx=w/2,hor=h*.37,scene=chapters[chapter].scene,route=
  // expedition route label
  if(route){const labels={ridge:'ROUTE · HIGH RIDGE',forest:'ROUTE · DEEP FOREST'};ctx.fillStyle='#061522bb';ctx.fillRect(12,h-38,Math.min(w-24,205),25);ctx.fillStyle='#a8f5ff';ctx.font='bold 10px system-ui';ctx.textAlign='left';ctx.fillText(labels[route]||'EXPEDITION · '+route.toUpperCase(),22,h-21)}
 }
-function drawVehicle(){const cx=w/2,base=h*.92,s=Math.min(w/760,h/430)*.95;ctx.save();ctx.translate(cx,base);ctx.scale(s,s);oval(0,5,150,19,'#02070bcc');
+function drawVehicle(){const cx=w/2,base=h*.92+Math.sin(offset*Math.PI*2)*2.8,s=Math.min(w/760,h/430)*.95;ctx.save();ctx.translate(cx,base);ctx.scale(s,s);oval(0,5,150,19,'#02070bcc');
  // rugged tires and alloy hubs
  for(const x of [-119,119]){rr(x-25,-59,50,94,13,'#05090f','#506a78');for(let i=0;i<5;i++){ctx.fillStyle='#738d98';ctx.fillRect(x-23+i*10,-72,4,84)}oval(x,-13,14,16,'#172b3a');oval(x,-13,8,9,'#7eeaff');}
  // midnight-blue metallic body with cyan-to-violet paint
@@ -288,8 +288,8 @@ function drawEffects(){
  ctx.restore();
 }
 function draw(){ctx.clearRect(0,0,w,h);drawWorld();drawEffects();drawVehicle()}
-function frame(now){const dt=Math.min(50,now-last||16);last=now;if(running&&!reduce)offset=(offset+dt*.00055)%1;if(transition>0)transition=Math.max(0,transition-dt/1100);draw();requestAnimationFrame(frame)}
+function frame(now){const dt=Math.min(50,now-last||16);last=now;if(running)offset=(offset+dt*(reduce?.00022:.00055))%1;if(transition>0)transition=Math.max(0,transition-dt/1100);draw();requestAnimationFrame(frame)}
 pause.addEventListener('click',()=>{running=!running;pause.textContent=running?'Pause journey':'Resume journey';speed.textContent=running?'EXPLORING':'PAUSED'});
 restart.addEventListener('click',()=>{chapter=0;history=[];choiceTrail=[];offset=0;running=true;pause.textContent='Pause journey';update()});
-new ResizeObserver(resize).observe(canvas);update();resize();if(!reduce)requestAnimationFrame(frame);else draw();
+new ResizeObserver(resize).observe(canvas);update();resize();requestAnimationFrame(frame);
 })();
