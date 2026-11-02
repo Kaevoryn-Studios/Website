@@ -9,7 +9,7 @@ const chapters=[
 {tag:'THE HEART TEMPLE',title:'The Heart of the Kingdom',text:'Inside the mountain, a crystal heart pulses with the same blue light that called you here. Its power is fading.',prompt:'The heart responds to your presence. What will you offer?',options:[['courage','Offer your courage'],['wonder','Offer your sense of wonder']],scene:4},
 {tag:'THE KINGDOM AWAKENS',title:'The Kingdom Awakens',text:'The crystal heart shines. Rivers of light race through the city, the towers awaken, and the kingdom glows beneath the stars. Your expedition becomes part of its legend.',prompt:'Your journey is complete. What would you like to do?',options:[['again','Ride the adventure again'],['return','Return to Kingdoms']],scene:5}
 ];
-let chapter=0,history=[],choiceTrail=[],w=0,h=0,dpr=1,offset=0,last=0,running=true,reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+let chapter=0,history=[],choiceTrail=[],w=0,h=0,dpr=1,offset=0,last=0,running=true,transition=0,reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 function update(){const c=chapters[chapter];tag.textContent='CHAPTER '+String(chapter+1).padStart(2,'0')+' · '+c.tag;count.textContent='CHAPTER '+(chapter+1)+' OF 6';title.textContent=c.title;
  const consequences=[
  {ridge:'The high ridge gives you a clear view of the valley. You spot the ancient road before the mist closes in.',forest:'The deep forest answers your signal. Tiny blue lights gather along the trail, guiding the Explorer onward.'},
@@ -22,7 +22,7 @@ function update(){const c=chapters[chapter];tag.textContent='CHAPTER '+String(ch
  const finale=chapter===5?choiceTrail.map((v,i)=>consequences[i]?.[v]).filter(Boolean).join(' '):'';
  story.textContent=c.text+(detail?' '+detail:'')+(finale?' '+finale:'');
  prompt.textContent=c.prompt;progressFill.style.width=(choiceTrail.length/5*100)+'%';progressLabel.textContent=choiceTrail.length+' OF 5 CHOICES';const routeNames={ridge:'High Ridge',forest:'Deep Forest',stones:'Old Stone Path',grove:'Glowing Grove',bridge:'Ancient Bridge',tunnel:'Hidden Tunnel',sun:'Sun Gate',moon:'Moon Gate',courage:'Courage',wonder:'Wonder'};routeLog.textContent=choiceTrail.length?choiceTrail.map((v,i)=>(i+1)+'. '+routeNames[v]).join('  ·  '):'Your route will be recorded as you make discoveries.';choices.replaceChildren();c.options.forEach(([value,label])=>{const b=document.createElement('button');b.type='button';b.textContent=label;b.addEventListener('click',()=>select(value));choices.append(b)});speed.textContent=chapter===5?'KINGDOM RESTORED':running?'EXPLORING':'PAUSED';}
-function select(v){if(v==='return'){location.href='kingdoms.html';return}if(v==='again'){chapter=0;history=[];choiceTrail=[];offset=0;running=true;pause.textContent='Pause journey';update();return}history.push(chapter);choiceTrail.push(v);if(chapter<5)chapter++;update()}
+function select(v){if(v==='return'){location.href='kingdoms.html';return}if(v==='again'){chapter=0;history=[];choiceTrail=[];offset=0;running=true;pause.textContent='Pause journey';update();return}history.push(chapter);choiceTrail.push(v);if(chapter<5)chapter++;transition=reduce?0:1;update()}
 function resize(){const r=canvas.getBoundingClientRect();w=r.width;h=r.height;dpr=Math.min(devicePixelRatio||1,2);canvas.width=Math.max(1,Math.round(w*dpr));canvas.height=Math.max(1,Math.round(h*dpr));ctx.setTransform(dpr,0,0,dpr,0,0);draw()}
 function poly(points,fill,stroke){ctx.beginPath();points.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.closePath();ctx.fillStyle=fill;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=2;ctx.stroke()}}
 function oval(x,y,rx,ry,color){ctx.beginPath();ctx.ellipse(x,y,rx,ry,0,0,Math.PI*2);ctx.fillStyle=color;ctx.fill()}
@@ -76,6 +76,14 @@ function drawVehicle(){const cx=w/2,base=h*.92,s=Math.min(w/760,h/430)*.95;ctx.s
 function drawEffects(){
  const scene=chapters[chapter].scene,cx=w/2,phase=offset*Math.PI*2;
  ctx.save();
+ // Chapter-entry portal: expanding concentric gates and a brief cinematic flare
+ if(transition>0){
+  const p=1-transition,alpha=Math.sin(p*Math.PI);
+  const radius=Math.max(w,h)*(.08+p*.48),portalColor=scene===3&&choiceTrail[3]==='sun'?'#ffd77a':scene===3&&choiceTrail[3]==='moon'?'#c69aff':scene>=4?'#a98aff':'#78eaff';
+  ctx.save();ctx.translate(w/2,h*.43);ctx.globalAlpha=alpha*.82;ctx.strokeStyle=portalColor;ctx.shadowColor=portalColor;ctx.shadowBlur=28;ctx.lineWidth=4;
+  for(let i=0;i<3;i++){ctx.beginPath();ctx.ellipse(0,0,radius*(.72+i*.15),radius*(.42+i*.09),p*.8+i*.35,0,Math.PI*2);ctx.stroke()}
+  ctx.globalAlpha=alpha*.18;ctx.fillStyle=portalColor;ctx.fillRect(-w/2,-h*.43,w,h);ctx.restore();
+ }
  // Floating motes and drifting magical dust across every chapter
  for(let i=0;i<44;i++){
   const x=(i*97+Math.sin(phase*1.7+i)*18+w)%w;
@@ -118,7 +126,7 @@ function drawEffects(){
  ctx.restore();
 }
 function draw(){ctx.clearRect(0,0,w,h);drawWorld();drawEffects();drawVehicle()}
-function frame(now){const dt=Math.min(50,now-last||16);last=now;if(running&&!reduce)offset=(offset+dt*.0002)%1;draw();requestAnimationFrame(frame)}
+function frame(now){const dt=Math.min(50,now-last||16);last=now;if(running&&!reduce)offset=(offset+dt*.0002)%1;if(transition>0)transition=Math.max(0,transition-dt/1100);draw();requestAnimationFrame(frame)}
 pause.addEventListener('click',()=>{running=!running;pause.textContent=running?'Pause journey':'Resume journey';speed.textContent=running?'EXPLORING':'PAUSED'});
 restart.addEventListener('click',()=>{chapter=0;history=[];choiceTrail=[];offset=0;running=true;pause.textContent='Pause journey';update()});
 new ResizeObserver(resize).observe(canvas);update();resize();if(!reduce)requestAnimationFrame(frame);else draw();
