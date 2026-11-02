@@ -94,6 +94,33 @@ function drawEffects(){
   ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();
  }
  ctx.globalAlpha=1;
+ // A distant guardian dragon sweeps over the Wild Pass
+ if(scene===1){
+  const dx=w*(.5+Math.sin(phase*.42)*.22),dy=h*.22+Math.sin(phase*.8)*9;
+  ctx.save();ctx.translate(dx,dy);ctx.fillStyle='#101a30';ctx.strokeStyle='#8deaff';ctx.lineWidth=1.5;ctx.shadowColor='#58dfff';ctx.shadowBlur=13;
+  ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(-17,-5);ctx.lineTo(-68,-34-Math.sin(phase*1.5)*12);ctx.lineTo(-48,4);ctx.lineTo(-82,17);ctx.lineTo(-29,15);ctx.lineTo(-10,9);ctx.lineTo(0,16);ctx.lineTo(12,9);ctx.lineTo(31,15);ctx.lineTo(82,17);ctx.lineTo(48,4);ctx.lineTo(68,-34-Math.sin(phase*1.5)*12);ctx.lineTo(17,-5);ctx.closePath();ctx.fill();ctx.stroke();
+  ctx.beginPath();ctx.moveTo(0,8);ctx.lineTo(-5,23);ctx.lineTo(5,23);ctx.stroke();ctx.restore();
+  // Tiny ember trail hints at the guardian's passage
+  for(let i=0;i<7;i++){ctx.globalAlpha=.35;oval((dx-i*13+w)%w,dy+12+i*3,2,2,'#ffbd79')}ctx.globalAlpha=1;
+ }
+ // The Forgotten City's monumental gate parts around the chosen emblem
+ if(scene===3){
+  const open=.5+.5*Math.sin(phase*.7),gap=w*.13*open;
+  ctx.save();ctx.shadowColor=choiceTrail[3]==='moon'?'#c69aff':'#ffd77a';ctx.shadowBlur=18;
+  rr(cx-w*.22-gap, h*.31, w*.12, h*.31, 8,'#263c53','#a9eaff');
+  rr(cx+w*.10+gap, h*.31, w*.12, h*.31, 8,'#263c53','#a9eaff');
+  ctx.strokeStyle=choiceTrail[3]==='moon'?'#c69aff':'#ffd77a';ctx.lineWidth=3;
+  ctx.beginPath();ctx.arc(cx,h*.47,w*.11,Math.PI,Math.PI*2);ctx.stroke();
+  ctx.restore();
+ }
+ // The crystal heart releases a visible pulse when it awakens
+ if(scene===4||scene===5){
+  const power=.5+.5*Math.sin(phase*1.3),color=choiceTrail[4]==='wonder'?'#c69aff':'#7eeaff';
+  ctx.save();ctx.translate(cx,h*(scene===4?.48:.3));ctx.globalAlpha=.25+power*.35;ctx.strokeStyle=color;ctx.lineWidth=2+power*3;ctx.shadowColor=color;ctx.shadowBlur=28;
+  for(let i=0;i<4;i++){const radius=24+i*24+power*16;ctx.beginPath();ctx.arc(0,0,radius,0,Math.PI*2);ctx.stroke()}
+  ctx.globalAlpha=.5+power*.4;ctx.fillStyle=color;ctx.beginPath();ctx.moveTo(0,-28);ctx.lineTo(19,-5);ctx.lineTo(12,22);ctx.lineTo(0,31);ctx.lineTo(-12,22);ctx.lineTo(-19,-5);ctx.closePath();ctx.fill();
+  ctx.restore();
+ }
  // Choice-reactive energy trails and elemental effects
  if(scene===0&&choiceTrail[0]==='ridge'){
   ctx.strokeStyle='#a8efff';ctx.lineWidth=2;ctx.shadowColor='#66dcff';ctx.shadowBlur=15;
