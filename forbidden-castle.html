@@ -45,6 +45,15 @@ footer{text-align:center;padding:20px 0 36px;color:#8f86a6;font-size:10px;letter
 .interior-head{text-align:center}.interior-head h2{margin:5px 0;font-size:clamp(27px,5vw,46px);color:#f2e9ff}.interior-head p{margin:0 auto;max-width:650px;color:#d0c3e4}
 .hall-art{display:block;width:min(100%,850px);max-height:58%;height:auto;margin:12px auto 0;object-fit:contain;filter:drop-shadow(0 18px 25px #0009)}
 .floating-candles{animation:candleDrift 4s ease-in-out infinite alternate;transform-origin:center}
+.stair-haunt{animation:hauntFade 5s ease-in-out infinite}
+.stair-mist{animation:mistCreep 7s ease-in-out infinite alternate;filter:blur(3px)}
+.mist-two{animation-delay:-3.5s}
+.haunt-eyes{animation:eyesWatch 6s ease-in-out infinite;transform-origin:450px 223px}
+.ghost-orb{animation:ghostDrift 5s ease-in-out infinite alternate}
+@keyframes hauntFade{0%,100%{opacity:.35}50%{opacity:1}}
+@keyframes mistCreep{from{transform:translateX(-12px);opacity:.1}to{transform:translateX(16px);opacity:.5}}
+@keyframes eyesWatch{0%,35%,45%,100%{opacity:.15}40%,42%{opacity:1}}
+@keyframes ghostDrift{from{transform:translateY(8px);opacity:.25}to{transform:translateY(-12px);opacity:.9}}
 @keyframes candleDrift{to{transform:translateY(-5px)}}
 .interior:after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(112deg,transparent 0 95px,#c7b3d012 96px 97px,transparent 98px 180px);opacity:.35}
 .hall-note{text-align:center;color:#f4d49a;font-size:12px;letter-spacing:.12em;margin:10px 0 0}
@@ -140,6 +149,18 @@ footer{text-align:center;padding:20px 0 36px;color:#8f86a6;font-size:10px;letter
 <path d="M400 249V228Q450 197 500 228V249" fill="#080611" stroke="#806696" stroke-width="3"/>
 <path d="M335 365 385 255M565 365 515 255" fill="none" stroke="#d8c5ed" stroke-width="8"/>
 <path d="M335 365 385 255M565 365 515 255" fill="none" stroke="#8cecff" stroke-width="2"/>
+</g>
+<!-- Ghostly presence clinging to the staircase -->
+<g class="stair-haunt" pointer-events="none">
+  <path class="stair-mist" d="M245 366Q280 330 300 357T355 348T405 365L385 386H250Z" fill="#9fe9f2" opacity=".15"/>
+  <path class="stair-mist mist-two" d="M530 345Q570 316 594 342T650 350L640 373H545Z" fill="#b69aff" opacity=".18"/>
+  <g class="haunt-eyes" fill="#a8f5ff" filter="url(#glow)">
+    <ellipse cx="437" cy="223" rx="5" ry="2.5"/><ellipse cx="463" cy="223" rx="5" ry="2.5"/>
+  </g>
+  <path d="M420 242Q450 252 480 242" fill="none" stroke="#9deaf4" stroke-width="2" opacity=".55"/>
+  <g class="ghost-orb" fill="#d9faff" opacity=".8">
+    <circle cx="295" cy="278" r="3"/><circle cx="604" cy="290" r="2.5"/><circle cx="330" cy="225" r="2"/>
+  </g>
 </g>
 </svg><p class="hall-note">THE CASTLE HAS RECOGNIZED YOUR PRESENCE</p>
 </section></section>
