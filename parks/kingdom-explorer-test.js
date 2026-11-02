@@ -174,6 +174,23 @@ function drawEffects(){
   const dx=w*(.5+Math.sin(phase*.42)*(.22-swoop*.06));
   const dy=h*(.22+swoop*.16)+Math.sin(phase*.8)*9;
   const dragonScale=.72+swoop*.62;
+  // The guardian announces its arrival with a sweeping halo and wind wake
+  ctx.save();
+  const entrancePulse=.5+.5*Math.sin(phase*.72-.7);
+  ctx.globalAlpha=.12+entrancePulse*.12;
+  const wake=ctx.createRadialGradient(dx,dy,8,dx,dy,105+dragonScale*45);
+  wake.addColorStop(0,'#9ceeff88');wake.addColorStop(.55,'#55c9e855');wake.addColorStop(1,'#55c9e800');
+  ctx.fillStyle=wake;ctx.beginPath();ctx.arc(dx,dy,105+dragonScale*45,0,Math.PI*2);ctx.fill();
+  ctx.globalAlpha=.22+entrancePulse*.18;ctx.strokeStyle='#a5edff';ctx.lineWidth=2;
+  for(let i=0;i<5;i++){
+   const spread=28+i*17,reach=38+i*22;
+   ctx.beginPath();ctx.moveTo(dx-spread-reach,dy+12+i*5);ctx.quadraticCurveTo(dx-spread,dy+3+i*5,dx-18,dy+8+i*3);ctx.stroke();
+   ctx.beginPath();ctx.moveTo(dx+spread+reach,dy+12+i*5);ctx.quadraticCurveTo(dx+spread,dy+3+i*5,dx+18,dy+8+i*3);ctx.stroke();
+  }
+  // A moving shadow connects the airborne dragon to the forest floor
+  ctx.globalAlpha=.13+swoop*.12;ctx.fillStyle='#020a12';
+  ctx.beginPath();ctx.ellipse(dx,h*.68,34+dragonScale*34,5+dragonScale*5,0,0,Math.PI*2);ctx.fill();
+  ctx.restore();
   ctx.save();ctx.translate(dx,dy);ctx.scale(dragonScale,dragonScale);ctx.fillStyle='#101a30';ctx.strokeStyle='#8deaff';ctx.lineWidth=1.5;ctx.shadowColor='#58dfff';ctx.shadowBlur=13;
   ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(-17,-5);ctx.lineTo(-68,-34-Math.sin(phase*1.5)*12);ctx.lineTo(-48,4);ctx.lineTo(-82,17);ctx.lineTo(-29,15);ctx.lineTo(-10,9);ctx.lineTo(0,16);ctx.lineTo(12,9);ctx.lineTo(31,15);ctx.lineTo(82,17);ctx.lineTo(48,4);ctx.lineTo(68,-34-Math.sin(phase*1.5)*12);ctx.lineTo(17,-5);ctx.closePath();ctx.fill();ctx.stroke();
   // Wing membranes flex independently to give the guardian a readable flying silhouette
