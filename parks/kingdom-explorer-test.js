@@ -564,7 +564,7 @@ kingdomMap.innerHTML=`<div class="kingdom-map-shell"><header class="kingdom-map-
 document.body.append(kingdomMap);
 const mapStyle=document.createElement('style');
 mapStyle.textContent=`
-#kingdomMapOverlay{position:fixed;inset:0;z-index:100;display:none;padding:clamp(8px,2vw,22px);background:radial-gradient(ellipse at 50% 0,#183e50,#020811 75%);color:#edfbff}
+#kingdomMapOverlay{position:fixed!important;inset:0;z-index:2147483000!important;display:none;padding:clamp(8px,2vw,22px);background:radial-gradient(ellipse at 50% 0,#183e50,#020811 75%);color:#edfbff}
 #kingdomMapOverlay.open{display:grid;place-items:center}
 #kingdomMapOverlay .kingdom-map-shell{width:min(1500px,100%);height:min(940px,100%);display:flex;flex-direction:column;gap:12px}
 .kingdom-map-header{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:4px 5px}
@@ -587,8 +587,8 @@ mapStyle.textContent=`
 `;
 document.head.append(mapStyle);
 const mapPositions=[[145,470],[330,330],[510,360],[755,285],[875,220],[1000,155]];
-function openKingdomMap(){const points=mapPositions.slice(0,chapter+1),path=points.map((p,i)=>(i?'L':'M')+p[0]+' '+p[1]).join(' '),trail=document.getElementById('kingdomMapTrail'),core=document.getElementById('kingdomMapTrailCore'),player=document.getElementById('kingdomMapPlayer');trail.setAttribute('d',path);core.setAttribute('d',path);player.setAttribute('transform','translate('+mapPositions[chapter][0]+' '+mapPositions[chapter][1]+')');document.getElementById('kingdomMapStatus').textContent='EXPEDITION ROUTE · SECTOR '+String(chapter+1).padStart(2,'0');document.getElementById('kingdomMapDestination').textContent='CURRENT DESTINATION · '+chapters[chapter].title.toUpperCase();kingdomMap.classList.add('open');document.getElementById('kingdomMapClose').focus()}
-function closeKingdomMap(){kingdomMap.classList.remove('open')}
+function openKingdomMap(){const activeChapter=Math.max(0,Math.min(Number(chapter)||0,mapPositions.length-1)),points=mapPositions.slice(0,activeChapter+1),path=points.map((p,i)=>(i?'L':'M')+p[0]+' '+p[1]).join(' '),trail=document.getElementById('kingdomMapTrail'),core=document.getElementById('kingdomMapTrailCore'),player=document.getElementById('kingdomMapPlayer');kingdomMap.style.display='grid';kingdomMap.classList.add('open');trail.setAttribute('d',path);core.setAttribute('d',path);player.setAttribute('transform','translate('+mapPositions[activeChapter][0]+' '+mapPositions[activeChapter][1]+')');document.getElementById('kingdomMapStatus').textContent='EXPEDITION ROUTE · SECTOR '+String(activeChapter+1).padStart(2,'0');document.getElementById('kingdomMapDestination').textContent='CURRENT DESTINATION · '+(chapters[activeChapter]?.title||'THE LOST KINGDOM').toUpperCase();}
+function closeKingdomMap(){kingdomMap.classList.remove('open');kingdomMap.style.display='none'}
 document.getElementById('kingdomMapClose').addEventListener('click',closeKingdomMap);
 kingdomMap.addEventListener('click',e=>{if(e.target===kingdomMap)closeKingdomMap()});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeKingdomMap()});
