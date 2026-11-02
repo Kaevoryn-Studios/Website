@@ -30,6 +30,22 @@ function rr(x,y,a,b,r,fill,stroke){ctx.beginPath();ctx.roundRect(x,y,a,b,r);ctx.
 function tree(x,y,s,glow){ctx.fillStyle='#182b2b';ctx.fillRect(x-4*s,y-26*s,8*s,35*s);oval(x,y-35*s,19*s,27*s,glow?'#285c50':'#1e493e');if(glow){oval(x-5*s,y-39*s,5*s,7*s,'#82f5d088');}}
 function drawWorld(){const cx=w/2,hor=h*.37,scene=chapters[chapter].scene,route=choiceTrail[0]||'';
  const sky=ctx.createLinearGradient(0,0,0,h);sky.addColorStop(0,scene===5?'#111b42':'#071827');sky.addColorStop(.55,scene===4?'#25465d':'#31576a');sky.addColorStop(1,'#101c22');ctx.fillStyle=sky;ctx.fillRect(0,0,w,h);
+
+ // Cinematic panorama: layered mountain peaks, a distant ruined citadel and drifting valley mist.
+ const mountainPalette=scene===5?['#273e5d','#304d68','#41677a']:scene===4?['#263d49','#34545a','#52716b']:['#172f3b','#254653','#3a6268'];
+ const ridge=(points,color)=>{ctx.beginPath();ctx.moveTo(0,hor+80);for(const p of points)ctx.lineTo(w*p[0],hor+p[1]);ctx.lineTo(w,hor+80);ctx.closePath();ctx.fillStyle=color;ctx.fill();};
+ ridge([[0,-35],[.09,-92],[.18,-48],[.29,-132],[.39,-61],[.51,-158],[.62,-72],[.73,-119],[.84,-54],[.94,-105],[1,-42]],mountainPalette[0]);
+ ctx.strokeStyle=scene===5?'#b7eaff55':'#b9d6d055';ctx.lineWidth=Math.max(2,w*.004);
+ ctx.beginPath();ctx.moveTo(w*.09,hor-92);ctx.lineTo(w*.18,hor-48);ctx.moveTo(w*.29,hor-132);ctx.lineTo(w*.39,hor-61);ctx.moveTo(w*.51,hor-158);ctx.lineTo(w*.62,hor-72);ctx.moveTo(w*.73,hor-119);ctx.lineTo(w*.84,hor-54);ctx.stroke();
+ ridge([[0,12],[.13,-35],[.25,5],[.38,-55],[.52,8],[.67,-43],[.82,4],[.94,-28],[1,10]],mountainPalette[1]);
+ ridge([[0,48],[.16,16],[.31,54],[.48,12],[.64,49],[.81,18],[1,51]],mountainPalette[2]);
+ const castleX=w*.51,castleY=hor-48,castleScale=Math.max(.55,Math.min(1.35,w/760));
+ ctx.save();ctx.globalAlpha=.62;ctx.fillStyle=scene===5?'#263b59':'#263e43';ctx.strokeStyle=scene===5?'#a9eaff77':'#b8d0bc55';ctx.lineWidth=1.2;
+ ctx.beginPath();ctx.moveTo(castleX-75*castleScale,castleY+22*castleScale);ctx.lineTo(castleX-69*castleScale,castleY-25*castleScale);ctx.lineTo(castleX-51*castleScale,castleY-25*castleScale);ctx.lineTo(castleX-47*castleScale,castleY-53*castleScale);ctx.lineTo(castleX-29*castleScale,castleY-53*castleScale);ctx.lineTo(castleX-24*castleScale,castleY-17*castleScale);ctx.lineTo(castleX+5*castleScale,castleY-17*castleScale);ctx.lineTo(castleX+11*castleScale,castleY-65*castleScale);ctx.lineTo(castleX+30*castleScale,castleY-65*castleScale);ctx.lineTo(castleX+35*castleScale,castleY-18*castleScale);ctx.lineTo(castleX+57*castleScale,castleY-18*castleScale);ctx.lineTo(castleX+62*castleScale,castleY-39*castleScale);ctx.lineTo(castleX+78*castleScale,castleY-39*castleScale);ctx.lineTo(castleX+83*castleScale,castleY+22*castleScale);ctx.closePath();ctx.fill();ctx.stroke();
+ ctx.fillStyle=scene===5?'#9feaff':'#e6d49a';for(const dx of [-55,-16,24,60])ctx.fillRect(castleX+dx*castleScale,castleY-10*castleScale,3*castleScale,8*castleScale);
+ ctx.restore();
+ for(let i=0;i<4;i++){const mx=((i*.31+offset*.012)%1.35-.15)*w,my=hor+18+i*17;const fog=ctx.createRadialGradient(mx,my,2,mx,my,Math.max(34,w*.16));fog.addColorStop(0,scene===5?'#9bcfff22':'#d0edf01c');fog.addColorStop(1,'#d0edf000');ctx.fillStyle=fog;ctx.fillRect(mx-w*.18,my-24,w*.36,48);}
+
  // moon / distant signal
  oval(w*.78,h*.13,Math.max(13,w*.025),Math.max(13,w*.025),scene===5?'#d9f7ff':'#b9eaff');oval(w*.78,h*.13,Math.max(19,w*.035),Math.max(19,w*.035),'#9feaff22');
  if(scene===3||scene===5){for(let i=0;i<5;i++){const x=w*(.12+i*.19),y=hor-30-(i%2)*28;rr(x-17,y-60,34,100,3,'#314d5a','#a7c3b6');rr(x-8,y-42,16,23,2,scene===5?'#b8f8ff':'#e7c77c');}if(scene===3&&choiceTrail[3]==='moon'){ctx.fillStyle='#c69aff';ctx.font='bold 25px Georgia';ctx.textAlign='center';ctx.fillText('☾',w/2,hor-65)}else if(scene===3&&choiceTrail[3]==='sun'){ctx.fillStyle='#ffd477';ctx.font='bold 25px Georgia';ctx.textAlign='center';ctx.fillText('☼',w/2,hor-65)}}
