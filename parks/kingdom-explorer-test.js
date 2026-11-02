@@ -57,12 +57,16 @@ function drawWorld(){const cx=w/2,hor=h*.37,scene=chapters[chapter].scene,route=
   }
  }
  ctx.globalAlpha=1;
- // path / track with perspective
+ // winding expedition road with a gentle changing bend
  const road=scene===2?'#3c4544':scene===3?'#4a4940':'#27343a';
- poly([[cx-w*.08,hor],[cx+w*.08,hor],[w*.99,h],[w*.01,h]],road);
- poly([[0,hor],[cx-w*.08,hor],[w*.01,h],[0,h]],scene===1?'#1c493b':'#183b35');poly([[cx+w*.08,hor],[w,hor],[w,h],[w*.99,h]],scene===1?'#1c493b':'#183b35');
- ctx.strokeStyle='#e1d2a177';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(cx-w*.08,hor);ctx.lineTo(w*.01,h);ctx.moveTo(cx+w*.08,hor);ctx.lineTo(w*.99,h);ctx.stroke();
- for(let i=0;i<11;i++){const z=((i/11+offset)%1),y=hor+Math.pow(z,1.65)*(h-hor),lw=1+z*3;ctx.fillStyle=scene===5?'#9cecff':'#d8c99a';ctx.fillRect(cx-lw/2,y,lw,Math.max(2,z*17))}
+ const bend=(Math.sin(offset*Math.PI*2+scene*.9)*.075+Math.sin(offset*Math.PI*4+1.2)*.018)*w;
+ const roadCenter=z=>cx+bend*Math.pow(z,1.35);
+ const edgeAt=(z,side)=>roadCenter(z)+side*w*(.08+.41*Math.pow(z,1.2));
+ ctx.beginPath();ctx.moveTo(edgeAt(0,-1),hor);ctx.lineTo(edgeAt(0,1),hor);ctx.lineTo(edgeAt(1,1),h);ctx.lineTo(edgeAt(1,-1),h);ctx.closePath();ctx.fillStyle=road;ctx.fill();
+ ctx.beginPath();ctx.moveTo(0,hor);ctx.lineTo(edgeAt(0,-1),hor);ctx.lineTo(edgeAt(1,-1),h);ctx.lineTo(0,h);ctx.closePath();ctx.fillStyle=scene===1?'#1c493b':'#183b35';ctx.fill();
+ ctx.beginPath();ctx.moveTo(edgeAt(0,1),hor);ctx.lineTo(w,hor);ctx.lineTo(w,h);ctx.lineTo(edgeAt(1,1),h);ctx.closePath();ctx.fill();
+ ctx.strokeStyle='#e1d2a177';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(edgeAt(0,-1),hor);ctx.lineTo(edgeAt(1,-1),h);ctx.moveTo(edgeAt(0,1),hor);ctx.lineTo(edgeAt(1,1),h);ctx.stroke();
+ for(let i=0;i<11;i++){const z=((i/11+offset)%1),depth=Math.pow(z,1.65),y=hor+depth*(h-hor),markX=roadCenter(depth),lw=1+z*3;ctx.fillStyle=scene===5?'#9cecff':'#d8c99a';ctx.fillRect(markX-lw/2,y,lw,Math.max(2,z*17))}
  if(scene===2){if(choiceTrail[2]==='tunnel'){ctx.strokeStyle='#a7d8e5';ctx.lineWidth=10;ctx.beginPath();ctx.arc(cx,h*.66,w*.15,Math.PI,0);ctx.stroke();ctx.fillStyle='#07131d';ctx.fillRect(cx-w*.145,h*.66,w*.29,h*.2)}else{poly([[cx-w*.22,h*.61],[cx+w*.22,h*.61],[cx+w*.27,h*.68],[cx-w*.27,h*.68]],'#897b61','#c4b28d');for(let i=0;i<5;i++)rr(cx-w*.17+i*w*.085,h*.62,3,22,1,'#c5b48d')}}
  if(scene===5){for(let i=0;i<18;i++){const x=(i*73+offset*200)%w,y=(i*37)%Math.max(1,h*.55);oval(x,y,2,2,'#a8f7ff')}const glow=choiceTrail[4]==='wonder'?'#c69aff':'#7eeaff';oval(cx,h*.28,34,34,glow);oval(cx,h*.28,54,54,glow+'33')}
  // expedition route label
