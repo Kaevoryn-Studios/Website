@@ -99,9 +99,20 @@ function drawEffects(){
   const dx=w*(.5+Math.sin(phase*.42)*.22),dy=h*.22+Math.sin(phase*.8)*9;
   ctx.save();ctx.translate(dx,dy);ctx.fillStyle='#101a30';ctx.strokeStyle='#8deaff';ctx.lineWidth=1.5;ctx.shadowColor='#58dfff';ctx.shadowBlur=13;
   ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(-17,-5);ctx.lineTo(-68,-34-Math.sin(phase*1.5)*12);ctx.lineTo(-48,4);ctx.lineTo(-82,17);ctx.lineTo(-29,15);ctx.lineTo(-10,9);ctx.lineTo(0,16);ctx.lineTo(12,9);ctx.lineTo(31,15);ctx.lineTo(82,17);ctx.lineTo(48,4);ctx.lineTo(68,-34-Math.sin(phase*1.5)*12);ctx.lineTo(17,-5);ctx.closePath();ctx.fill();ctx.stroke();
-  ctx.beginPath();ctx.moveTo(0,8);ctx.lineTo(-5,23);ctx.lineTo(5,23);ctx.stroke();ctx.restore();
+  ctx.beginPath();ctx.moveTo(0,8);ctx.lineTo(-5,23);ctx.lineTo(5,23);ctx.stroke();
+  // The dragon turns and breathes a pulsing stream of fire toward the valley
+  const breath=Math.max(0,Math.sin(phase*1.25+.8)),flameLength=42+breath*72;
+  if(breath>.12){
+   const fire=ctx.createLinearGradient(22,7,22+flameLength,17);
+   fire.addColorStop(0,'#fff4a1');fire.addColorStop(.28,'#ffbd54');fire.addColorStop(.68,'#ff633e');fire.addColorStop(1,'#d52c68');
+   ctx.shadowColor='#ff7a39';ctx.shadowBlur=22;ctx.fillStyle=fire;
+   ctx.beginPath();ctx.moveTo(18,5);ctx.quadraticCurveTo(38,breath*15,22+flameLength,8+Math.sin(phase*5)*7);ctx.quadraticCurveTo(42,25,18,12);ctx.closePath();ctx.fill();
+   for(let i=0;i<12;i++){const t=(i*17+phase*38)%(flameLength+15);ctx.globalAlpha=.35+breath*.45;oval(25+t,8+Math.sin(phase*4+i)*7,1.5+(i%3),1.5+(i%2),'#ffd78a')}
+   ctx.globalAlpha=1;ctx.shadowBlur=0;
+  }
+  ctx.restore();
   // Tiny ember trail hints at the guardian's passage
-  for(let i=0;i<7;i++){ctx.globalAlpha=.35;oval((dx-i*13+w)%w,dy+12+i*3,2,2,'#ffbd79')}ctx.globalAlpha=1;
+  for(let i=0;i<10;i++){const drift=(i*19+phase*34)%(w*.18);ctx.globalAlpha=.25+Math.abs(Math.sin(phase+i))*.45;oval((dx-drift+w)%w,dy+12+i*3,2+(i%2),2,'#ffbd79')}ctx.globalAlpha=1;
  }
  // The Forgotten City's monumental gate parts around the chosen emblem
  if(scene===3){
