@@ -84,6 +84,21 @@ function drawWorld(){const cx=w/2,hor=h*.37,scene=chapters[chapter].scene,route=
    ctx.restore();
   }
  }
+ // Glowing crystal clusters and ancient path lanterns add depth without entering the road
+ if(scene===1||scene===4||scene===5){
+  for(const side of [-1,1]){
+   for(let i=0;i<4;i++){
+    const z=((i/4+offset*.28+(side===1?.13:0))%1),depth=Math.pow(z,1.58),y=hor+depth*(h-hor);
+    const x=edgeAt(depth,side)+side*(9+z*17),size=2+z*9;
+    ctx.save();ctx.globalAlpha=.35+z*.65;
+    const crystal=scene===5?'#a9f5ff':scene===4?'#b99aff':'#65eaff';
+    ctx.shadowColor=crystal;ctx.shadowBlur=3+z*10;ctx.fillStyle=crystal;ctx.strokeStyle='#e4fbff';
+    ctx.beginPath();ctx.moveTo(x,y-size*2.2);ctx.lineTo(x+size*.42,y-size*.72);ctx.lineTo(x+size*.2,y);ctx.lineTo(x-size*.38,y);ctx.lineTo(x-size*.5,y-size*.8);ctx.closePath();ctx.fill();ctx.stroke();
+    if(i%2===0){ctx.shadowBlur=0;ctx.fillStyle='#f4d78c';ctx.fillRect(x+side*size*1.3,y-size*2.4,size*.34,size*1.4);oval(x+side*size*1.47,y-size*2.55,size*.8,size*.8,'#ffe4a0')}
+    ctx.restore();
+   }
+  }
+ }
  if(scene===2){if(choiceTrail[2]==='tunnel'){ctx.strokeStyle='#a7d8e5';ctx.lineWidth=10;ctx.beginPath();ctx.arc(cx,h*.66,w*.15,Math.PI,0);ctx.stroke();ctx.fillStyle='#07131d';ctx.fillRect(cx-w*.145,h*.66,w*.29,h*.2)}else{poly([[cx-w*.22,h*.61],[cx+w*.22,h*.61],[cx+w*.27,h*.68],[cx-w*.27,h*.68]],'#897b61','#c4b28d');for(let i=0;i<5;i++)rr(cx-w*.17+i*w*.085,h*.62,3,22,1,'#c5b48d')}}
  if(scene===5){for(let i=0;i<18;i++){const x=(i*73+offset*200)%w,y=(i*37)%Math.max(1,h*.55);oval(x,y,2,2,'#a8f7ff')}const glow=choiceTrail[4]==='wonder'?'#c69aff':'#7eeaff';oval(cx,h*.28,34,34,glow);oval(cx,h*.28,54,54,glow+'33')}
  // expedition route label
