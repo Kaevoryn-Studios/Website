@@ -176,7 +176,29 @@ function drawEffects(){
   const dragonScale=.72+swoop*.62;
   ctx.save();ctx.translate(dx,dy);ctx.scale(dragonScale,dragonScale);ctx.fillStyle='#101a30';ctx.strokeStyle='#8deaff';ctx.lineWidth=1.5;ctx.shadowColor='#58dfff';ctx.shadowBlur=13;
   ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(-17,-5);ctx.lineTo(-68,-34-Math.sin(phase*1.5)*12);ctx.lineTo(-48,4);ctx.lineTo(-82,17);ctx.lineTo(-29,15);ctx.lineTo(-10,9);ctx.lineTo(0,16);ctx.lineTo(12,9);ctx.lineTo(31,15);ctx.lineTo(82,17);ctx.lineTo(48,4);ctx.lineTo(68,-34-Math.sin(phase*1.5)*12);ctx.lineTo(17,-5);ctx.closePath();ctx.fill();ctx.stroke();
+  // Wing membranes flex independently to give the guardian a readable flying silhouette
+  const flap=Math.sin(phase*2.25)*13;
+  ctx.save();ctx.lineWidth=1.8;ctx.strokeStyle='#78dff5';ctx.fillStyle='#19334a';ctx.globalAlpha=.88;
+  for(const side of [-1,1]){
+   ctx.beginPath();ctx.moveTo(side*12,-4);
+   ctx.quadraticCurveTo(side*37,-27-flap,side*68,-34-flap);
+   ctx.lineTo(side*51,3-flap*.25);ctx.lineTo(side*82,17);
+   ctx.lineTo(side*29,15);ctx.lineTo(side*10,8);ctx.closePath();ctx.fill();ctx.stroke();
+   ctx.beginPath();ctx.moveTo(side*13,2);ctx.lineTo(side*68,-34-flap);
+   ctx.moveTo(side*19,6);ctx.lineTo(side*51,3-flap*.25);
+   ctx.moveTo(side*27,11);ctx.lineTo(side*82,17);ctx.stroke();
+  }
+  ctx.restore();
   ctx.beginPath();ctx.moveTo(0,8);ctx.lineTo(-5,23);ctx.lineTo(5,23);ctx.stroke();
+  // Crown-like horns, bright eyes and fine scale highlights make the guardian feel alive
+  ctx.save();ctx.shadowColor='#9cf4ff';ctx.shadowBlur=12;
+  ctx.strokeStyle='#b6f5ff';ctx.lineWidth=2;
+  ctx.beginPath();ctx.moveTo(-7,-4);ctx.lineTo(-13,-17);ctx.lineTo(-17,-20);
+  ctx.moveTo(7,-4);ctx.lineTo(13,-17);ctx.lineTo(17,-20);ctx.stroke();
+  oval(-8,-2,2.5,2,'#fff2a0');oval(8,-2,2.5,2,'#fff2a0');
+  ctx.strokeStyle='#75d9ec';ctx.lineWidth=1;
+  for(let i=0;i<4;i++){ctx.beginPath();ctx.moveTo(-5+i*3,5+i);ctx.lineTo(-2+i*3,7+i);ctx.stroke()}
+  ctx.restore();
   // A glowing rush ring emphasizes the close swoop toward the Explorer
   if(swoop>.72){ctx.globalAlpha=(swoop-.72)*2.8;ctx.strokeStyle='#a8f5ff';ctx.lineWidth=2;ctx.shadowColor='#70eaff';ctx.shadowBlur=20;ctx.beginPath();ctx.ellipse(0,7,105,38,Math.sin(phase)*.2,0,Math.PI*2);ctx.stroke();ctx.globalAlpha=1}
   // The dragon turns and breathes a pulsing stream of fire toward the valley
