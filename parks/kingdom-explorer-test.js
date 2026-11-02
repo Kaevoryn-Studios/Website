@@ -352,60 +352,75 @@ function drawEffects(){
 }
 function drawCabin(){
  // Keep the moving kingdom visible through the cabin's front and side glass.
- // The interior is an overlay, not an opaque layer over the whole canvas.
  const roof=ctx.createLinearGradient(0,0,0,h*.12);
  roof.addColorStop(0,'#020811');roof.addColorStop(1,'#142a3a');
  ctx.fillStyle=roof;ctx.fillRect(0,0,w,h*.105);
  ctx.fillStyle='#07131dcc';ctx.fillRect(0,h*.105,w*.105,h*.48);ctx.fillRect(w*.895,h*.105,w*.105,h*.48);
- // Soft glass tint leaves the scenery and effects visible behind it.
  ctx.fillStyle='#58b9d522';ctx.fillRect(w*.105,h*.105,w*.79,h*.47);
- ctx.fillStyle='#07131d55';ctx.fillRect(0,h*.105,w*.105,h*.48);ctx.fillRect(w*.895,h*.105,w*.105,h*.48);
- // Windshield frame and side-window pillars.
  ctx.strokeStyle='#8cecff';ctx.lineWidth=Math.max(3,w*.004);
- ctx.beginPath();ctx.moveTo(w*.105,h*.105);ctx.lineTo(w*.105,h*.57);ctx.moveTo(w*.895,h*.105);ctx.lineTo(w*.895,h*.57);
- ctx.moveTo(w*.105,h*.105);ctx.lineTo(w*.895,h*.105);ctx.stroke();
+ ctx.beginPath();ctx.moveTo(w*.105,h*.105);ctx.lineTo(w*.105,h*.57);ctx.moveTo(w*.895,h*.105);ctx.lineTo(w*.895,h*.57);ctx.moveTo(w*.105,h*.105);ctx.lineTo(w*.895,h*.105);ctx.stroke();
  ctx.fillStyle='#101f2ddd';ctx.fillRect(w*.105,h*.105,w*.018,h*.47);ctx.fillRect(w*.877,h*.105,w*.018,h*.47);
- // A slim roof sign identifies the six-passenger cabin without blocking the view.
  ctx.fillStyle='#071522e8';ctx.fillRect(w*.24,h*.018,w*.52,h*.065);
  ctx.strokeStyle='#73e8ff';ctx.lineWidth=1.5;ctx.strokeRect(w*.24,h*.018,w*.52,h*.065);
  ctx.fillStyle='#e1fbff';ctx.font='bold '+Math.max(11,w*.022)+'px system-ui';ctx.textAlign='center';
  ctx.fillText('PASSENGER CABIN · SIX SEATS',w*.5,h*.061);
- // Six compact seats sit in the foreground; the landscape remains visible above them.
+ // Six individual bucket-style passenger seats with headrests, shoulder bolsters,
+ // stitched panels, seat cushions and visible safety belts.
  const rows=[.585,.705,.815],cols=[.235,.765];
  const colors=['#17647a','#59447c','#286b5a','#84603d','#315c91','#754b72'];
- const skin=['#d6a17c','#bd8868','#e0b18a','#a97559','#d19b77','#c18c70'];
+ const seams=['#80eaff','#d4b8ff','#9cf2c5','#ffd39a','#a9d9ff','#f0b5df'];
  let index=0;
- rows.forEach((yy)=>cols.forEach((xx)=>{
-  const x=w*xx,y=h*yy,seatW=Math.min(w*.135,74),seatH=Math.min(h*.055,26);
+ rows.forEach((yy,row)=>cols.forEach((xx,col)=>{
+  const x=w*xx,y=h*yy,sw=Math.min(w*.135,74),sh=Math.min(h*.055,26);
   ctx.save();ctx.translate(x,y);
-  // Seat back, headrest, cushion and armrests.
-  ctx.shadowColor='#35dff5';ctx.shadowBlur=7;
-  rr(-seatW*.43,-seatH*.48,seatW*.86,seatH*.92,9,colors[index],'#8deeff');
+  const seat=colors[index],stitch=seams[index];
+  // Ground shadow and lower seat pedestal.
+  oval(0,sh*.56,sw*.62,sh*.18,'#02070c99');
+  rr(-sw*.12,sh*.25,sw*.24,sh*.32,4,'#182b38','#64899a');
+  // Tall contoured seat back with curved shoulders and side bolsters.
+  ctx.shadowColor='#35dff5';ctx.shadowBlur=6;
+  ctx.beginPath();
+  ctx.moveTo(-sw*.43,sh*.30);ctx.lineTo(-sw*.47,-sh*.18);
+  ctx.quadraticCurveTo(-sw*.49,-sh*.48,-sw*.28,-sh*.54);
+  ctx.lineTo(sw*.28,-sh*.54);
+  ctx.quadraticCurveTo(sw*.49,-sh*.48,sw*.47,-sh*.18);
+  ctx.lineTo(sw*.43,sh*.30);ctx.quadraticCurveTo(0,sh*.43,-sw*.43,sh*.30);
+  ctx.closePath();ctx.fillStyle=seat;ctx.fill();ctx.strokeStyle='#8deeff';ctx.lineWidth=1.4;ctx.stroke();
   ctx.shadowBlur=0;
-  rr(-seatW*.30,-seatH*.56,seatW*.60,seatH*.30,7,colors[index],'#b9f5ff');
-  rr(-seatW*.40,seatH*.13,seatW*.80,seatH*.32,7,'#203e50','#77dff2');
-  rr(-seatW*.53,seatH*.08,seatW*.13,seatH*.31,4,'#31566a','#80eaff');
-  rr(seatW*.40,seatH*.08,seatW*.13,seatH*.31,4,'#31566a','#80eaff');
-  // Small passenger head silhouettes make each seat easy to distinguish.
-  const headR=Math.max(6,seatW*.065),headY=-seatH*.52;
-  oval(0,headY+headR*.7,headR*1.5,headR*1.6,colors[index]);
-  oval(0,headY,headR*.82,headR,skin[index]);
-  oval(0,headY-headR*.36,headR*.86,headR*.38,'#29252b');
-  ctx.strokeStyle='#f2e8c8';ctx.lineWidth=2.3;ctx.beginPath();
-  ctx.moveTo(-seatW*.22,seatH*.02);ctx.lineTo(seatW*.22,seatH*.38);ctx.stroke();
+  // Distinct padded center panel and raised side bolsters.
+  rr(-sw*.29,-sh*.43,sw*.58,sh*.62,sw*.10,'#ffffff12',stitch);
+  ctx.strokeStyle=stitch;ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(-sw*.20,-sh*.35);ctx.quadraticCurveTo(-sw*.25,-sh*.04,-sw*.19,sh*.18);
+  ctx.moveTo(sw*.20,-sh*.35);ctx.quadraticCurveTo(sw*.25,-sh*.04,sw*.19,sh*.18);ctx.stroke();
+  // Separate padded headrest.
+  rr(-sw*.22,-sh*.69,sw*.44,sh*.23,sw*.10,'#24485b',stitch);
+  rr(-sw*.13,-sh*.66,sw*.26,sh*.15,sw*.07,seat);
+  // Seat base projects forward, with a rounded front edge.
+  ctx.beginPath();ctx.moveTo(-sw*.43,sh*.20);ctx.quadraticCurveTo(-sw*.48,sh*.34,-sw*.35,sh*.47);
+  ctx.lineTo(sw*.35,sh*.47);ctx.quadraticCurveTo(sw*.48,sh*.34,sw*.43,sh*.20);
+  ctx.closePath();ctx.fillStyle='#203e50';ctx.fill();ctx.strokeStyle='#77dff2';ctx.stroke();
+  // Cushion seam and front piping.
+  ctx.strokeStyle=stitch;ctx.lineWidth=1.2;ctx.beginPath();
+  ctx.moveTo(-sw*.29,sh*.30);ctx.quadraticCurveTo(0,sh*.39,sw*.29,sh*.30);ctx.stroke();
+  // Armrests on both sides.
+  rr(-sw*.55,sh*.05,sw*.14,sh*.30,4,'#31566a','#80eaff');
+  rr(sw*.41,sh*.05,sw*.14,sh*.30,4,'#31566a','#80eaff');
+  // A diagonal shoulder belt makes the seats read as vehicle seats.
+  ctx.strokeStyle='#d5dce2';ctx.lineWidth=Math.max(1.4,sw*.025);
+  ctx.beginPath();ctx.moveTo(-sw*.31,-sh*.39);ctx.lineTo(sw*.25,sh*.35);ctx.stroke();
+  rr(sw*.15,sh*.22,sw*.12,sh*.09,2,'#b5c6cf','#f1fbff');
+  // Seat number label at the front edge.
   ctx.fillStyle='#effcff';ctx.font='bold '+Math.max(8,w*.013)+'px system-ui';ctx.textAlign='center';
-  ctx.fillText('SEAT '+(index+1),0,seatH*.70);
+  ctx.fillText('SEAT '+(index+1),0,sh*.63);
   ctx.restore();index++;
  }));
- // Dashboard is low enough to preserve the view through the windshield.
+ // Dashboard stays low so the view through the windshield remains open.
  const dash=ctx.createLinearGradient(0,h*.87,0,h);dash.addColorStop(0,'#294454ee');dash.addColorStop(.35,'#0b1722');dash.addColorStop(1,'#02060b');
  ctx.fillStyle=dash;ctx.beginPath();ctx.moveTo(0,h*.885);ctx.quadraticCurveTo(w*.5,h*.84,w,h*.885);ctx.lineTo(w,h);ctx.lineTo(0,h);ctx.closePath();ctx.fill();
  ctx.strokeStyle='#7eeaff';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(0,h*.885);ctx.quadraticCurveTo(w*.5,h*.84,w,h*.885);ctx.stroke();
  rr(w*.39,h*.905,w*.22,h*.065,6,'#071522','#5ddff4');
- ctx.fillStyle='#9df2ff';ctx.font='bold '+Math.max(8,w*.014)+'px system-ui';ctx.textAlign='center';
- ctx.fillText('K A E V O R Y N',w*.5,h*.946);
- ctx.fillStyle='#a8f5ff';ctx.font='bold 9px system-ui';ctx.textAlign='left';
- ctx.fillText('YOU ARE ABOARD · 6 PASSENGERS',10,h-8);
+ ctx.fillStyle='#9df2ff';ctx.font='bold '+Math.max(8,w*.014)+'px system-ui';ctx.textAlign='center';ctx.fillText('K A E V O R Y N',w*.5,h*.946);
+ ctx.fillStyle='#a8f5ff';ctx.font='bold 9px system-ui';ctx.textAlign='left';ctx.fillText('YOU ARE ABOARD · 6 PASSENGERS',10,h-8);
 }
 function draw(){ctx.clearRect(0,0,w,h);drawWorld();drawEffects();if(viewMode==='cabin')drawCabin();else drawVehicle()}
 function frame(now){const dt=Math.min(50,now-last||16);last=now;if(running)offset+=dt*(reduce?.00022:.00055);if(transition>0)transition=Math.max(0,transition-dt/1100);draw();requestAnimationFrame(frame)}
