@@ -425,11 +425,11 @@ function drawCabin(){
  const roof=ctx.createLinearGradient(0,0,0,h*.12);
  roof.addColorStop(0,'#020811');roof.addColorStop(1,'#142a3a');
  ctx.fillStyle=roof;ctx.fillRect(0,0,w,h*.105);
- ctx.fillStyle='#07131dcc';ctx.fillRect(0,h*.105,w*.105,h*.48);ctx.fillRect(w*.895,h*.105,w*.105,h*.48);
- ctx.fillStyle='#58b9d522';ctx.fillRect(w*.105,h*.105,w*.79,h*.47);
+ ctx.fillStyle='#07131dcc';ctx.fillRect(0,h*.105,w*.105,h*.39);ctx.fillRect(w*.895,h*.105,w*.105,h*.39);
+ ctx.fillStyle='#58b9d522';ctx.fillRect(w*.105,h*.105,w*.79,h*.39);
  ctx.strokeStyle='#8cecff';ctx.lineWidth=Math.max(3,w*.004);
- ctx.beginPath();ctx.moveTo(w*.105,h*.105);ctx.lineTo(w*.105,h*.57);ctx.moveTo(w*.895,h*.105);ctx.lineTo(w*.895,h*.57);ctx.moveTo(w*.105,h*.105);ctx.lineTo(w*.895,h*.105);ctx.stroke();
- ctx.fillStyle='#101f2ddd';ctx.fillRect(w*.105,h*.105,w*.018,h*.47);ctx.fillRect(w*.877,h*.105,w*.018,h*.47);
+ ctx.beginPath();ctx.moveTo(w*.105,h*.105);ctx.lineTo(w*.105,h*.49);ctx.moveTo(w*.895,h*.105);ctx.lineTo(w*.895,h*.49);ctx.moveTo(w*.105,h*.105);ctx.lineTo(w*.895,h*.105);ctx.stroke();
+ ctx.fillStyle='#101f2ddd';ctx.fillRect(w*.105,h*.105,w*.018,h*.39);ctx.fillRect(w*.877,h*.105,w*.018,h*.39);
  ctx.fillStyle='#071522e8';ctx.fillRect(w*.24,h*.018,w*.52,h*.065);
  ctx.strokeStyle='#73e8ff';ctx.lineWidth=1.5;ctx.strokeRect(w*.24,h*.018,w*.52,h*.065);
  ctx.fillStyle='#e1fbff';ctx.font='bold '+Math.max(11,w*.022)+'px system-ui';ctx.textAlign='center';
@@ -445,15 +445,15 @@ function drawCabin(){
   ctx.save();ctx.translate(x,y);
   const seat=colors[index],stitch=seams[index];
   // Ground shadow and lower seat pedestal.
-  oval(0,sh*.56,sw*.62,sh*.18,'#02070c99');
+  oval(0,sh*.48,sw*.62,sh*.18,'#02070c99');
   rr(-sw*.12,sh*.25,sw*.24,sh*.32,4,'#182b38','#64899a');
   // Tall contoured seat back with curved shoulders and side bolsters.
   ctx.shadowColor='#35dff5';ctx.shadowBlur=6;
   ctx.beginPath();
   ctx.moveTo(-sw*.43,sh*.30);ctx.lineTo(-sw*.47,-sh*.18);
-  ctx.quadraticCurveTo(-sw*.49,-sh*.48,-sw*.28,-sh*.54);
+  ctx.quadraticCurveTo(-sw*.49,-sh*.39,-sw*.28,-sh*.54);
   ctx.lineTo(sw*.28,-sh*.54);
-  ctx.quadraticCurveTo(sw*.49,-sh*.48,sw*.47,-sh*.18);
+  ctx.quadraticCurveTo(sw*.49,-sh*.39,sw*.47,-sh*.18);
   ctx.lineTo(sw*.43,sh*.30);ctx.quadraticCurveTo(0,sh*.43,-sw*.43,sh*.30);
   ctx.closePath();ctx.fillStyle=seat;ctx.fill();ctx.strokeStyle='#8deeff';ctx.lineWidth=1.4;ctx.stroke();
   ctx.shadowBlur=0;
@@ -466,8 +466,8 @@ function drawCabin(){
   rr(-sw*.22,-sh*.69,sw*.44,sh*.23,sw*.10,'#24485b',stitch);
   rr(-sw*.13,-sh*.66,sw*.26,sh*.15,sw*.07,seat);
   // Seat base projects forward, with a rounded front edge.
-  ctx.beginPath();ctx.moveTo(-sw*.43,sh*.20);ctx.quadraticCurveTo(-sw*.48,sh*.34,-sw*.35,sh*.47);
-  ctx.lineTo(sw*.35,sh*.47);ctx.quadraticCurveTo(sw*.48,sh*.34,sw*.43,sh*.20);
+  ctx.beginPath();ctx.moveTo(-sw*.43,sh*.20);ctx.quadraticCurveTo(-sw*.48,sh*.34,-sw*.35,sh*.39);
+  ctx.lineTo(sw*.35,sh*.39);ctx.quadraticCurveTo(sw*.48,sh*.34,sw*.43,sh*.20);
   ctx.closePath();ctx.fillStyle='#203e50';ctx.fill();ctx.strokeStyle='#77dff2';ctx.stroke();
   // Cushion seam and front piping.
   ctx.strokeStyle=stitch;ctx.lineWidth=1.2;ctx.beginPath();
@@ -484,13 +484,13 @@ function drawCabin(){
   ctx.fillText('SEAT '+(index+1),0,sh*.63);
   ctx.restore();index++;
  }));
- // Dashboard stays low so the view through the windshield remains open.
- const dash=ctx.createLinearGradient(0,h*.87,0,h);dash.addColorStop(0,'#294454ee');dash.addColorStop(.35,'#0b1722');dash.addColorStop(1,'#02060b');
- ctx.fillStyle=dash;ctx.beginPath();ctx.moveTo(0,h*.885);ctx.quadraticCurveTo(w*.5,h*.84,w,h*.885);ctx.lineTo(w,h);ctx.lineTo(0,h);ctx.closePath();ctx.fill();
- ctx.strokeStyle='#7eeaff';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(0,h*.885);ctx.quadraticCurveTo(w*.5,h*.84,w,h*.885);ctx.stroke();
- rr(w*.39,h*.905,w*.22,h*.065,6,'#071522','#5ddff4');
- ctx.fillStyle='#9df2ff';ctx.font='bold '+Math.max(8,w*.014)+'px system-ui';ctx.textAlign='center';ctx.fillText('K A E V O R Y N',w*.5,h*.946);
- ctx.fillStyle='#a8f5ff';ctx.font='bold 9px system-ui';ctx.textAlign='left';ctx.fillText('YOU ARE ABOARD · 6 PASSENGERS',10,h-8);
+ // Raised cockpit console gives the cabin a clear, substantial dashboard.
+ const dash=ctx.createLinearGradient(0,h*.76,0,h);dash.addColorStop(0,'#42677a');dash.addColorStop(.16,'#172e40');dash.addColorStop(.55,'#0b1724');dash.addColorStop(1,'#02060b');
+ ctx.fillStyle=dash;ctx.beginPath();ctx.moveTo(0,h*.79);ctx.quadraticCurveTo(w*.5,h*.70,w,h*.79);ctx.lineTo(w,h);ctx.lineTo(0,h);ctx.closePath();ctx.fill();
+ ctx.strokeStyle='#7eeaff';ctx.lineWidth=2.5;ctx.beginPath();ctx.moveTo(0,h*.79);ctx.quadraticCurveTo(w*.5,h*.70,w,h*.79);ctx.stroke();
+ rr(w*.37,h*.82,w*.26,h*.105,8,'#071522','#5ddff4');
+ ctx.fillStyle='#9df2ff';ctx.font='bold '+Math.max(9,w*.016)+'px system-ui';ctx.textAlign='center';ctx.fillText('K A E V O R Y N',w*.5,h*.865);
+ ctx.fillStyle='#a8f5ff';ctx.font='bold 9px system-ui';ctx.textAlign='left';ctx.fillText('EXPLORER CONTROL SYSTEM · 6 SEATS',12,h*.97);
 }
 function drawStartup(){
  if(startup<=0)return;
@@ -522,7 +522,7 @@ function drawStartup(){
   ctx.restore();
  }
 }
-function draw(){ctx.clearRect(0,0,w,h);drawWorld();drawEffects();if(viewMode==='cabin')drawCabin();else drawVehicle();drawStartup()}
+function draw(){ctx.clearRect(0,0,w,h);drawWorld();drawEffects();if(viewMode==='cabin')drawCabin();else drawVehicle();const cockpitEl=document.getElementById('cockpitConsole');if(cockpitEl)cockpitEl.classList.toggle('active',viewMode==='cabin');drawStartup()}
 function frame(now){const dt=Math.min(50,now-last||16);last=now;if(running){offset+=dt*(reduce?.00022:.00055);startup=Math.max(0,startup-dt/1000)}if(transition>0)transition=Math.max(0,transition-dt/1100);draw();requestAnimationFrame(frame)}
 
 /* Kaevoryn Explorer dashboard */
@@ -556,6 +556,30 @@ dashboard.innerHTML=`<div class="dash-panel"><p class="dash-kicker">KAEVORYN STU
 <button type="button" data-dash="home">⌂ &nbsp; Kingdoms Home<span>Leave this expedition</span></button>
 </div><div class="dash-footer"><button type="button" data-dash="close">CLOSE DASHBOARD</button><button type="button" data-dash="map">VIEW MAP</button></div><div id="kingdomDashDetail" aria-live="polite"></div></div>`;
 document.body.append(dashboard);
+
+/* Visible in-cabin dashboard controls */
+const cockpit=document.createElement('div');cockpit.id='cockpitConsole';
+cockpit.innerHTML='<div class="cockpit-readout" id="cockpitReadout">SYSTEMS READY · SIGNAL LINKED</div><div class="cockpit-buttons"><button type="button" data-cockpit="map">MAP</button><button type="button" data-cockpit="scan">SCAN</button><button type="button" data-cockpit="lights">LIGHTS</button><button type="button" data-cockpit="comms">COMMS</button></div>';
+document.querySelector('.stage')?.append(cockpit);
+const cockpitStyle=document.createElement('style');
+cockpitStyle.textContent=`
+#cockpitConsole{display:none;position:absolute;z-index:4;left:7%;right:7%;bottom:9px;padding:8px 10px 9px;border:1px solid #72eaff;border-radius:13px;background:linear-gradient(180deg,#102b3eeF,#050d19f5);box-shadow:0 0 22px #35dfff44}
+#cockpitConsole.active{display:block}
+#cockpitConsole .cockpit-readout{margin:0 0 7px;color:#9ff3ff;text-align:center;font:700 9px system-ui;letter-spacing:.12em;text-shadow:0 0 8px #36dfff}
+#cockpitConsole .cockpit-buttons{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}
+#cockpitConsole button{min-height:34px;padding:6px 3px;border:1px solid #6bcce0;border-radius:7px;background:linear-gradient(135deg,#183d52,#242044);color:#effcff;font:800 10px system-ui;letter-spacing:.08em}
+#cockpitConsole button:active{background:#23627a;transform:scale(.97)}
+@media(max-width:460px){#cockpitConsole{left:3%;right:3%;bottom:7px;padding:7px}#cockpitConsole .cockpit-buttons{gap:4px}#cockpitConsole button{font-size:9px;min-height:32px}}
+`;
+document.head.append(cockpitStyle);
+cockpit.addEventListener('click',e=>{
+ const b=e.target.closest('[data-cockpit]');if(!b)return;
+ const readout=document.getElementById('cockpitReadout');
+ const messages={map:'NAVIGATION MAP · ROUTE DISPLAY READY',scan:'SCANNING · ANCIENT SIGNAL DETECTED',lights:'CABIN LIGHTS · '+(b.dataset.on==='1'?'DIMMED':'ILLUMINATED'),comms:'COMMS LINK · KINGDOM CONTROL ONLINE'};
+ if(b.dataset.cockpit==='lights'){b.dataset.on=b.dataset.on==='1'?'0':'1';}
+ readout.textContent=messages[b.dataset.cockpit];
+});
+
 const dashButton=document.createElement('button');dashButton.type='button';dashButton.id='kingdomDashboardToggle';dashButton.textContent='Explorer Dashboard';dashButton.setAttribute('aria-haspopup','dialog');document.querySelector('.controls')?.prepend(dashButton);
 function showDashboard(){dashboard.classList.add('open');dashboard.querySelector('button')?.focus()}
 function hideDashboard(){dashboard.classList.remove('open');dashButton.focus()}
