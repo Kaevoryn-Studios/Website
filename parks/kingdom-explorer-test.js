@@ -91,6 +91,21 @@ function drawWorld(){const cx=w/2,hor=h*.37,scene=chapters[chapter].scene,route=
  ctx.beginPath();ctx.moveTo(0,hor);ctx.lineTo(edgeAt(0,-1),hor);ctx.lineTo(edgeAt(1,-1),h);ctx.lineTo(0,h);ctx.closePath();ctx.fillStyle=scene===1?'#1c493b':'#183b35';ctx.fill();
  ctx.beginPath();ctx.moveTo(edgeAt(0,1),hor);ctx.lineTo(w,hor);ctx.lineTo(w,h);ctx.lineTo(edgeAt(1,1),h);ctx.closePath();ctx.fill();
  ctx.strokeStyle='#e1d2a177';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(edgeAt(0,-1),hor);ctx.lineTo(edgeAt(1,-1),h);ctx.moveTo(edgeAt(0,1),hor);ctx.lineTo(edgeAt(1,1),h);ctx.stroke();
+// Foreground roadside trees are drawn AFTER the road so their forward travel is unmistakable.
+ if(scene===0||scene===1||scene===3||scene===5){
+  for(const side of [-1,1]){
+   for(let i=0;i<6;i++){
+    const z=((i/6+offset*.72+(side===1?.11:0))%1),depth=Math.pow(z,1.45);
+    const y=hor+depth*(h-hor),x=edgeAt(depth,side)+side*(22+depth*42);
+    const s=.24+depth*1.08;
+    ctx.save();ctx.globalAlpha=.5+depth*.5;
+    ctx.fillStyle='#142c2b';ctx.fillRect(x-3*s,y-25*s,6*s,29*s);
+    oval(x,y-34*s,17*s,23*s,scene===0||scene===1?'#285c50':'#315b50');
+    oval(x-5*s,y-39*s,4*s,6*s,scene===5?'#9ceeff88':'#82f5d088');
+    ctx.restore();
+   }
+  }
+ }
  for(let i=0;i<11;i++){const z=((i/11+offset*.82)%1),depth=Math.pow(z,1.65),y=hor+depth*(h-hor),markX=roadCenter(depth),lw=1+z*3;ctx.fillStyle=scene===5?'#9cecff':'#d8c99a';ctx.fillRect(markX-lw/2,y,lw,Math.max(2,z*17))}
  // Perspective roadside landmarks: old stone posts and boulders stay outside the driving lane
  for(const side of [-1,1]){
