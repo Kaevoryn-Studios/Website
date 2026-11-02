@@ -96,10 +96,15 @@ function drawEffects(){
  ctx.globalAlpha=1;
  // A distant guardian dragon sweeps over the Wild Pass
  if(scene===1){
-  const dx=w*(.5+Math.sin(phase*.42)*.22),dy=h*.22+Math.sin(phase*.8)*9;
-  ctx.save();ctx.translate(dx,dy);ctx.fillStyle='#101a30';ctx.strokeStyle='#8deaff';ctx.lineWidth=1.5;ctx.shadowColor='#58dfff';ctx.shadowBlur=13;
+  const swoop=Math.max(0,Math.sin(phase*.72-.7));
+  const dx=w*(.5+Math.sin(phase*.42)*(.22-swoop*.06));
+  const dy=h*(.22+swoop*.16)+Math.sin(phase*.8)*9;
+  const dragonScale=.72+swoop*.62;
+  ctx.save();ctx.translate(dx,dy);ctx.scale(dragonScale,dragonScale);ctx.fillStyle='#101a30';ctx.strokeStyle='#8deaff';ctx.lineWidth=1.5;ctx.shadowColor='#58dfff';ctx.shadowBlur=13;
   ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(-17,-5);ctx.lineTo(-68,-34-Math.sin(phase*1.5)*12);ctx.lineTo(-48,4);ctx.lineTo(-82,17);ctx.lineTo(-29,15);ctx.lineTo(-10,9);ctx.lineTo(0,16);ctx.lineTo(12,9);ctx.lineTo(31,15);ctx.lineTo(82,17);ctx.lineTo(48,4);ctx.lineTo(68,-34-Math.sin(phase*1.5)*12);ctx.lineTo(17,-5);ctx.closePath();ctx.fill();ctx.stroke();
   ctx.beginPath();ctx.moveTo(0,8);ctx.lineTo(-5,23);ctx.lineTo(5,23);ctx.stroke();
+  // A glowing rush ring emphasizes the close swoop toward the Explorer
+  if(swoop>.72){ctx.globalAlpha=(swoop-.72)*2.8;ctx.strokeStyle='#a8f5ff';ctx.lineWidth=2;ctx.shadowColor='#70eaff';ctx.shadowBlur=20;ctx.beginPath();ctx.ellipse(0,7,105,38,Math.sin(phase)*.2,0,Math.PI*2);ctx.stroke();ctx.globalAlpha=1}
   // The dragon turns and breathes a pulsing stream of fire toward the valley
   const breath=Math.max(0,Math.sin(phase*1.25+.8)),flameLength=42+breath*72;
   if(breath>.12){
