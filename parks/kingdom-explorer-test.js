@@ -103,8 +103,14 @@ function drawWorld(){const cx=w/2,hor=h*.37,scene=chapters[chapter].scene,route=
     ctx.fillRect(x-size*.42,y-size*2.2,size*.84,size*2.2);ctx.strokeRect(x-size*.42,y-size*2.2,size*.84,size*2.2);
     ctx.fillStyle=scene===5?'#8deeff':'#e7d39b';ctx.fillRect(x-size*.18,y-size*1.65,size*.36,size*.28);
    }else{
-    ctx.fillStyle=scene===2?'#53636a':'#294c40';ctx.strokeStyle=scene===2?'#9ab8c1':'#6e9b79';ctx.lineWidth=Math.max(1,z*1.4);
-    ctx.beginPath();ctx.ellipse(x,y-size*.42,size,size*.58,0,0,Math.PI*2);ctx.fill();ctx.stroke();
+    // Distinct ancient rune-stones instead of plain round roadside shapes
+    const stone=scene===2?'#53636a':'#294c40',rune=scene===2?'#9ceeff':'#78f5d5';
+    ctx.fillStyle=stone;ctx.strokeStyle=scene===2?'#9ab8c1':'#6e9b79';ctx.lineWidth=Math.max(1,z*1.4);
+    ctx.beginPath();ctx.moveTo(x-size*.72,y);ctx.lineTo(x-size*.58,y-size*.88);ctx.lineTo(x-size*.12,y-size*1.45);ctx.lineTo(x+size*.5,y-size*1.28);ctx.lineTo(x+size*.8,y-size*.42);ctx.lineTo(x+size*.48,y+size*.08);ctx.closePath();ctx.fill();ctx.stroke();
+    // A carved glowing rune gives each marker a magical identity
+    ctx.save();ctx.globalAlpha=(.28+z*.62);ctx.strokeStyle=rune;ctx.shadowColor=rune;ctx.shadowBlur=2+z*7;ctx.lineWidth=Math.max(1,z*1.8);
+    ctx.beginPath();ctx.moveTo(x,y-size*1.05);ctx.lineTo(x-size*.22,y-size*.62);ctx.lineTo(x+size*.2,y-size*.43);ctx.lineTo(x-size*.08,y-size*.18);ctx.stroke();
+    ctx.beginPath();ctx.arc(x+size*.12,y-size*.72,size*.16,0,Math.PI*2);ctx.stroke();ctx.restore();
    }
    ctx.restore();
   }
