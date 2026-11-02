@@ -73,7 +73,51 @@ function drawVehicle(){const cx=w/2,base=h*.92,s=Math.min(w/760,h/430)*.95;ctx.s
  ctx.strokeStyle='#72f4ff';ctx.lineWidth=3;ctx.shadowColor='#20dfff';ctx.shadowBlur=12;ctx.beginPath();ctx.moveTo(-91,-74);ctx.lineTo(-66,-61);ctx.lineTo(-82,-47);ctx.lineTo(-42,-40);ctx.moveTo(91,-74);ctx.lineTo(66,-61);ctx.lineTo(82,-47);ctx.lineTo(42,-40);ctx.stroke();ctx.shadowBlur=0;
  rr(-52,-72,104,35,7,'#07182d','#9a75ff');ctx.fillStyle='#e8fbff';ctx.font='bold 10px system-ui';ctx.textAlign='center';ctx.fillText('K A E V O R Y N',0,-50);
  rr(-62,-15,124,12,4,'#91aeb7','#d7faff');rr(-32,-35,64,11,4,'#071722','#7ceaff');for(const x of [-119,119])oval(x,-12,9,13,'#76eaff');ctx.restore()}
-function draw(){ctx.clearRect(0,0,w,h);drawWorld();drawVehicle()}
+function drawEffects(){
+ const scene=chapters[chapter].scene,cx=w/2,phase=offset*Math.PI*2;
+ ctx.save();
+ // Floating motes and drifting magical dust across every chapter
+ for(let i=0;i<44;i++){
+  const x=(i*97+Math.sin(phase*1.7+i)*18+w)%w;
+  const y=(i*53+phase*22)%(h*.78);
+  const r=1+(i%3)*.65;
+  ctx.globalAlpha=.22+((Math.sin(phase*2+i)+1)*.24);
+  ctx.fillStyle=i%4===0?'#ffe5a0':i%3===0?'#c49aff':'#8ceeff';
+  ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();
+ }
+ ctx.globalAlpha=1;
+ // Choice-reactive energy trails and elemental effects
+ if(scene===0&&choiceTrail[0]==='ridge'){
+  ctx.strokeStyle='#a8efff';ctx.lineWidth=2;ctx.shadowColor='#66dcff';ctx.shadowBlur=15;
+  for(let i=0;i<3;i++){const x=w*(.18+i*.31);ctx.beginPath();ctx.moveTo(x, h*.16);ctx.lineTo(x+Math.sin(phase+i)*18,h*.28);ctx.lineTo(x-12,h*.34);ctx.stroke()}
+ }
+ if(scene===1&&choiceTrail[1]==='grove'){
+  ctx.strokeStyle='#8affd4';ctx.lineWidth=2;ctx.shadowColor='#53ffd0';ctx.shadowBlur=18;
+  for(let i=0;i<7;i++){const x=(i*139+phase*30)%w,y=h*(.42+(i%3)*.1);ctx.beginPath();ctx.moveTo(x,y+20);ctx.quadraticCurveTo(x+Math.sin(phase+i)*28,y-15,x+18,y-35);ctx.stroke()}
+ }
+ if(scene===2){
+  // Mist rolls across the ravine; bridge route receives brief electric arcs
+  for(let i=0;i<6;i++){const x=(i*131+phase*9)%w,y=h*(.48+(i%3)*.09);ctx.globalAlpha=.12;oval(x,y,34,8,'#d9faff');}
+  ctx.globalAlpha=1;
+  if(choiceTrail[2]==='bridge'){ctx.strokeStyle='#c9f8ff';ctx.lineWidth=2;ctx.shadowColor='#83eaff';ctx.shadowBlur=14;ctx.beginPath();ctx.moveTo(w*.28,h*.52);ctx.lineTo(w*.34,h*.48);ctx.lineTo(w*.39,h*.54);ctx.lineTo(w*.44,h*.49);ctx.stroke()}
+ }
+ if(scene===3){
+  const sun=choiceTrail[3]==='sun',moon=choiceTrail[3]==='moon',color=sun?'#ffd77a':'#c9a7ff';
+  if(sun||moon){ctx.translate(cx,h*.25);ctx.rotate(phase*.08);ctx.strokeStyle=color;ctx.globalAlpha=.55;ctx.lineWidth=2;ctx.shadowColor=color;ctx.shadowBlur=20;for(let i=0;i<12;i++){ctx.rotate(Math.PI/6);ctx.beginPath();ctx.moveTo(0,-30);ctx.lineTo(0,-(sun?65:52));ctx.stroke()}ctx.globalAlpha=1}
+ }
+ if(scene===4||scene===5){
+  const color=choiceTrail[4]==='wonder'?'#c69aff':'#7eeaff';
+  const y=scene===4?h*.48:h*.3;ctx.strokeStyle=color;ctx.lineWidth=3;ctx.globalAlpha=.7;ctx.shadowColor=color;ctx.shadowBlur=22;
+  for(let i=0;i<3;i++){ctx.beginPath();ctx.ellipse(cx,y,45+i*25,13+i*10,phase*.12+i*.5,0,Math.PI*2);ctx.stroke()}
+  ctx.globalAlpha=1;
+ }
+ if(scene===5){
+  // Slow celebratory starbursts over the awakened kingdom
+  for(let i=0;i<5;i++){const x=w*(.12+i*.19),y=h*(.13+(i%2)*.12),p=(phase*.35+i*1.7)%(Math.PI*2),radius=8+Math.abs(Math.sin(p))*18;ctx.strokeStyle=i%2?'#c69aff':'#ffe08a';ctx.lineWidth=2;ctx.globalAlpha=.65;ctx.beginPath();for(let k=0;k<8;k++){const a=k*Math.PI/4;ctx.moveTo(x+Math.cos(a)*4,y+Math.sin(a)*4);ctx.lineTo(x+Math.cos(a)*radius,y+Math.sin(a)*radius)}ctx.stroke();ctx.globalAlpha=1}
+ }
+ ctx.restore();
+}
+function draw(){ctx.clearRect(0,0,w,h);drawWorld();drawEffects();drawVehicle()}
 function frame(now){const dt=Math.min(50,now-last||16);last=now;if(running&&!reduce)offset=(offset+dt*.0002)%1;draw();requestAnimationFrame(frame)}
 pause.addEventListener('click',()=>{running=!running;pause.textContent=running?'Pause journey':'Resume journey';speed.textContent=running?'EXPLORING':'PAUSED'});
 restart.addEventListener('click',()=>{chapter=0;history=[];choiceTrail=[];offset=0;running=true;pause.textContent='Pause journey';update()});
