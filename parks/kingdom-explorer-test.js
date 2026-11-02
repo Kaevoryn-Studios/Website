@@ -67,6 +67,23 @@ function drawWorld(){const cx=w/2,hor=h*.37,scene=chapters[chapter].scene,route=
  ctx.beginPath();ctx.moveTo(edgeAt(0,1),hor);ctx.lineTo(w,hor);ctx.lineTo(w,h);ctx.lineTo(edgeAt(1,1),h);ctx.closePath();ctx.fill();
  ctx.strokeStyle='#e1d2a177';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(edgeAt(0,-1),hor);ctx.lineTo(edgeAt(1,-1),h);ctx.moveTo(edgeAt(0,1),hor);ctx.lineTo(edgeAt(1,1),h);ctx.stroke();
  for(let i=0;i<11;i++){const z=((i/11+offset)%1),depth=Math.pow(z,1.65),y=hor+depth*(h-hor),markX=roadCenter(depth),lw=1+z*3;ctx.fillStyle=scene===5?'#9cecff':'#d8c99a';ctx.fillRect(markX-lw/2,y,lw,Math.max(2,z*17))}
+ // Perspective roadside landmarks: old stone posts and boulders stay outside the driving lane
+ for(const side of [-1,1]){
+  for(let i=0;i<7;i++){
+   const z=((i/7+offset*.42)%1),depth=Math.pow(z,1.55),y=hor+depth*(h-hor);
+   const x=edgeAt(depth,side)+side*(5+z*13),size=2+z*13;
+   ctx.save();ctx.globalAlpha=.42+z*.58;
+   if(scene===3||scene===5){
+    ctx.fillStyle=scene===5?'#557f91':'#716b59';ctx.strokeStyle=scene===5?'#a8f5ff':'#c6b58b';ctx.lineWidth=Math.max(1,z*1.5);
+    ctx.fillRect(x-size*.42,y-size*2.2,size*.84,size*2.2);ctx.strokeRect(x-size*.42,y-size*2.2,size*.84,size*2.2);
+    ctx.fillStyle=scene===5?'#8deeff':'#e7d39b';ctx.fillRect(x-size*.18,y-size*1.65,size*.36,size*.28);
+   }else{
+    ctx.fillStyle=scene===2?'#53636a':'#294c40';ctx.strokeStyle=scene===2?'#9ab8c1':'#6e9b79';ctx.lineWidth=Math.max(1,z*1.4);
+    ctx.beginPath();ctx.ellipse(x,y-size*.42,size,size*.58,0,0,Math.PI*2);ctx.fill();ctx.stroke();
+   }
+   ctx.restore();
+  }
+ }
  if(scene===2){if(choiceTrail[2]==='tunnel'){ctx.strokeStyle='#a7d8e5';ctx.lineWidth=10;ctx.beginPath();ctx.arc(cx,h*.66,w*.15,Math.PI,0);ctx.stroke();ctx.fillStyle='#07131d';ctx.fillRect(cx-w*.145,h*.66,w*.29,h*.2)}else{poly([[cx-w*.22,h*.61],[cx+w*.22,h*.61],[cx+w*.27,h*.68],[cx-w*.27,h*.68]],'#897b61','#c4b28d');for(let i=0;i<5;i++)rr(cx-w*.17+i*w*.085,h*.62,3,22,1,'#c5b48d')}}
  if(scene===5){for(let i=0;i<18;i++){const x=(i*73+offset*200)%w,y=(i*37)%Math.max(1,h*.55);oval(x,y,2,2,'#a8f7ff')}const glow=choiceTrail[4]==='wonder'?'#c69aff':'#7eeaff';oval(cx,h*.28,34,34,glow);oval(cx,h*.28,54,54,glow+'33')}
  // expedition route label
