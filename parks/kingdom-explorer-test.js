@@ -95,8 +95,8 @@ function drawWorld(){const cx=w/2,hor=h*.37,scene=chapters[chapter].scene,route=
  // Perspective roadside landmarks: old stone posts and boulders stay outside the driving lane
  for(const side of [-1,1]){
   for(let i=0;i<7;i++){
-   const z=((i/7+offset*.42)%1),depth=Math.pow(z,1.55),y=hor+depth*(h-hor);
-   const x=edgeAt(depth,side)+side*(5+z*13),size=2+z*13;
+   const z=(i/7),depth=Math.pow(z,1.55),y=hor+depth*(h-hor);
+   const x=edgeAt(depth,side)+side*(9+z*16),size=3+z*13;
    ctx.save();ctx.globalAlpha=.42+z*.58;
    if(scene===3||scene===5){
     ctx.fillStyle=scene===5?'#557f91':'#716b59';ctx.strokeStyle=scene===5?'#a8f5ff':'#c6b58b';ctx.lineWidth=Math.max(1,z*1.5);
@@ -110,7 +110,7 @@ function drawWorld(){const cx=w/2,hor=h*.37,scene=chapters[chapter].scene,route=
     // A carved glowing rune gives each marker a magical identity
     ctx.save();ctx.globalAlpha=(.28+z*.62);ctx.strokeStyle=rune;ctx.shadowColor=rune;ctx.shadowBlur=2+z*7;ctx.lineWidth=Math.max(1,z*1.8);
     ctx.beginPath();ctx.moveTo(x,y-size*1.05);ctx.lineTo(x-size*.22,y-size*.62);ctx.lineTo(x+size*.2,y-size*.43);ctx.lineTo(x-size*.08,y-size*.18);ctx.stroke();
-    ctx.beginPath();ctx.arc(x+size*.12,y-size*.72,size*.16,0,Math.PI*2);ctx.stroke();ctx.restore();
+    ctx.beginPath();ctx.moveTo(x+size*.12,y-size*.72);ctx.lineTo(x+size*.28,y-size*.48);ctx.lineTo(x+size*.05,y-size*.29);ctx.stroke();ctx.restore();
    }
    ctx.restore();
   }
