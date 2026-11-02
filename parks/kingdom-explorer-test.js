@@ -198,24 +198,70 @@ function drawWorld(){const cx=w/2,hor=h*.37,scene=chapters[chapter].scene,route=
  // expedition route label
  if(route){const labels={ridge:'ROUTE · HIGH RIDGE',forest:'ROUTE · DEEP FOREST'};ctx.fillStyle='#061522bb';ctx.fillRect(12,h-38,Math.min(w-24,205),25);ctx.fillStyle='#a8f5ff';ctx.font='bold 10px system-ui';ctx.textAlign='left';ctx.fillText(labels[route]||'EXPEDITION · '+route.toUpperCase(),22,h-21)}
 }
-function drawVehicle(){const cx=w/2,s=Math.min(w/760,h/430)*.95,base=h-36*s;ctx.save();ctx.translate(cx,base);ctx.scale(s,s);oval(0,36,150,12,'#02070bcc');
- // rugged tires and alloy hubs
- for(const x of [-119,119]){rr(x-25,-59,50,94,13,'#05090f','#506a78');for(let i=0;i<5;i++){ctx.fillStyle='#738d98';ctx.fillRect(x-23+i*10,-72,4,84)}oval(x,-13,14,16,'#172b3a');oval(x,-13,8,9,'#7eeaff');}
- // midnight-blue metallic body with cyan-to-violet paint
- const paint=ctx.createLinearGradient(-130,-170,130,-5);paint.addColorStop(0,'#142b64');paint.addColorStop(.34,'#087f9d');paint.addColorStop(.68,'#34216e');paint.addColorStop(1,'#071a35');
- poly([[-91,-177],[91,-177],[120,-121],[132,-28],[-132,-28],[-120,-121]],paint,'#a8f3ff');
- // roof and rear glass
- poly([[-70,-166],[70,-166],[94,-116],[-94,-116]],'#061421','#8deeff');poly([[-59,-158],[59,-158],[78,-121],[-78,-121]],'#24516c','#a8efff');
- poly([[-116,-110],[116,-110],[132,-28],[-132,-28]],'#102a50','#729daa');
- // electric side blades and luminous trim
- poly([[-126,-83],[-105,-91],[-89,-43],[-120,-34]],'#08d8ff','#9af7ff');poly([[126,-83],[105,-91],[89,-43],[120,-34]],'#a64dff','#e2aaff');
- rr(-118,-100,22,43,7,'#8b203c','#ffaaa0');rr(96,-100,22,43,7,'#8b203c','#ffaaa0');rr(-112,-94,10,30,4,'#ff536e');rr(102,-94,10,30,4,'#ff536e');
- // center crown crest
- ctx.save();ctx.shadowColor='#ffc95d';ctx.shadowBlur=18;ctx.fillStyle='#ffd36a';ctx.font='bold 35px Georgia';ctx.textAlign='center';ctx.fillText('♛',0,-91);ctx.restore();
- // signature lightning graphics
- ctx.strokeStyle='#72f4ff';ctx.lineWidth=3;ctx.shadowColor='#20dfff';ctx.shadowBlur=12;ctx.beginPath();ctx.moveTo(-91,-74);ctx.lineTo(-66,-61);ctx.lineTo(-82,-47);ctx.lineTo(-42,-40);ctx.moveTo(91,-74);ctx.lineTo(66,-61);ctx.lineTo(82,-47);ctx.lineTo(42,-40);ctx.stroke();ctx.shadowBlur=0;
- rr(-52,-72,104,35,7,'#07182d','#9a75ff');ctx.fillStyle='#e8fbff';ctx.font='bold 10px system-ui';ctx.textAlign='center';ctx.fillText('K A E V O R Y N',0,-50);
- rr(-62,-15,124,12,4,'#91aeb7','#d7faff');rr(-32,-35,64,11,4,'#071722','#7ceaff');for(const x of [-119,119])oval(x,-12,9,13,'#76eaff');ctx.restore()}
+function drawVehicle(){
+ const cx=w/2,s=Math.min(w/760,h/430)*.95,base=h-36*s;
+ ctx.save();ctx.translate(cx,base);ctx.scale(s,s);
+ oval(0,38,174,15,'#02070dcc');
+ // Four rugged wheel faces and reinforced fender arches.
+ for(const x of [-126,126]){
+  rr(x-28,-66,56,104,15,'#05090f','#536b79');
+  for(let i=0;i<6;i++){
+   ctx.save();ctx.translate(x,-16);ctx.rotate(i*Math.PI/3);
+   ctx.fillStyle='#7d929c';ctx.fillRect(-2,-48,4,13);ctx.restore();
+  }
+  oval(x,-14,19,21,'#142536','#829eaa');
+  oval(x,-14,12,14,'#263f55','#7eeaff');
+  oval(x,-14,4,5,'#d8fbff');
+  ctx.strokeStyle='#8ba6b3';ctx.lineWidth=3;
+  ctx.beginPath();ctx.arc(x,-35,31,Math.PI,Math.PI*2);ctx.stroke();
+ }
+ // Broad, raised expedition chassis with protective lower armor.
+ const paint=ctx.createLinearGradient(-160,-190,160,-8);
+ paint.addColorStop(0,'#183b70');paint.addColorStop(.3,'#087f9d');
+ paint.addColorStop(.62,'#30266e');paint.addColorStop(1,'#071a35');
+ poly([[-104,-178],[104,-178],[139,-126],[151,-43],[132,-25],[-132,-25],[-151,-43],[-139,-126]],paint,'#a8f3ff');
+ // Gullwing doors are raised on both sides, with visible hinges and glass.
+ poly([[-82,-137],[-112,-207],[-177,-222],[-158,-151],[-111,-112]],'#123b58','#a8f3ff');
+ poly([[82,-137],[112,-207],[177,-222],[158,-151],[111,-112]],'#34265f','#d8b5ff');
+ poly([[-111,-190],[-166,-207],[-151,-157],[-119,-133]],'#061b2b','#71eaff');
+ poly([[111,-190],[166,-207],[151,-157],[119,-133]],'#15162f','#c69aff');
+ ctx.strokeStyle='#d9faff';ctx.lineWidth=2;
+ ctx.beginPath();ctx.moveTo(-82,-137);ctx.lineTo(-112,-207);ctx.lineTo(-177,-222);
+ ctx.moveTo(82,-137);ctx.lineTo(112,-207);ctx.lineTo(177,-222);ctx.stroke();
+ rr(-91,-145,18,10,4,'#b5eaff','#efffff');rr(73,-145,18,10,4,'#b5eaff','#efffff');
+ // Panoramic roof glass and reinforced roof rails.
+ poly([[-75,-169],[75,-169],[101,-122],[-101,-122]],'#061421','#8deeff');
+ poly([[-62,-161],[62,-161],[82,-127],[-82,-127]],'#24516c','#a8efff');
+ ctx.strokeStyle='#9df4ff';ctx.lineWidth=4;
+ ctx.beginPath();ctx.moveTo(-91,-173);ctx.lineTo(91,-173);ctx.stroke();
+ // Hood and sculpted front fascia.
+ poly([[-121,-112],[121,-112],[139,-45],[-139,-45]],'#102a50','#729daa');
+ poly([[-91,-108],[91,-108],[105,-64],[-105,-64]],'#123d5b','#6deaff');
+ ctx.strokeStyle='#72f4ff';ctx.lineWidth=2;ctx.shadowColor='#20dfff';ctx.shadowBlur=10;
+ ctx.beginPath();ctx.moveTo(-83,-99);ctx.lineTo(-52,-83);ctx.lineTo(-69,-67);ctx.lineTo(-25,-59);
+ ctx.moveTo(83,-99);ctx.lineTo(52,-83);ctx.lineTo(69,-67);ctx.lineTo(25,-59);ctx.stroke();ctx.shadowBlur=0;
+ // Rugged grille, bumper and underbody skid plate.
+ rr(-39,-55,78,26,6,'#071522','#77dff2');
+ for(let i=0;i<5;i++)rr(-28+i*14,-49,5,14,2,'#5c91a3');
+ rr(-145,-39,290,16,5,'#182b38','#91b9c8');
+ rr(-103,-31,206,10,4,'#778d98','#d7faff');
+ // Cyan and violet lighting, plus protected corner lamps.
+ rr(-130,-104,25,22,6,'#b8f7ff','#efffff');
+ rr(105,-104,25,22,6,'#c7a6ff','#fff0ff');
+ rr(-119,-94,9,30,4,'#ff536e');rr(110,-94,9,30,4,'#ff536e');
+ for(const x of [-119,119])oval(x,-12,10,14,'#76eaff');
+ // Signature crown and Kaevoryn identity.
+ ctx.save();ctx.shadowColor='#ffc95d';ctx.shadowBlur=18;ctx.fillStyle='#ffd36a';
+ ctx.font='bold 32px Georgia';ctx.textAlign='center';ctx.fillText('♛',0,-91);ctx.restore();
+ rr(-57,-78,114,23,7,'#07182d','#9a75ff');
+ ctx.fillStyle='#e8fbff';ctx.font='bold 10px system-ui';ctx.textAlign='center';
+ ctx.fillText('K A E V O R Y N',0,-63);
+ // Blue energy strips along the side armor.
+ ctx.save();ctx.shadowColor='#20dfff';ctx.shadowBlur=12;ctx.strokeStyle='#72f4ff';ctx.lineWidth=3;
+ ctx.beginPath();ctx.moveTo(-143,-77);ctx.lineTo(-126,-67);ctx.lineTo(-137,-52);
+ ctx.moveTo(143,-77);ctx.lineTo(126,-67);ctx.lineTo(137,-52);ctx.stroke();ctx.restore();
+ ctx.restore();
+}
 function drawEffects(){
  const scene=chapters[chapter].scene,cx=w/2,phase=offset*Math.PI*2;
  ctx.save();
