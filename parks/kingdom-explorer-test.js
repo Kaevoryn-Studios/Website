@@ -84,8 +84,8 @@ function drawWorld(){const cx=w/2,hor=h*.37,scene=chapters[chapter].scene,route=
  ctx.globalAlpha=1;
  // winding expedition road with a gentle changing bend
  const road=scene===2?'#3c4544':scene===3?'#4a4940':'#27343a';
- const bend=(Math.sin(scene*.9+.7)*.055+Math.sin(scene*1.4+1.2)*.012)*w;
- const roadCenter=z=>cx+bend*Math.sin(Math.PI*z);
+ // Keep the roadway straight and symmetrical so the center dashes stay on its true centerline.
+ const roadCenter=z=>cx;
  const edgeAt=(z,side)=>roadCenter(z)+side*w*(.08+.41*Math.pow(z,1.2));
  ctx.beginPath();ctx.moveTo(edgeAt(0,-1),hor);ctx.lineTo(edgeAt(0,1),hor);ctx.lineTo(edgeAt(1,1),h);ctx.lineTo(edgeAt(1,-1),h);ctx.closePath();ctx.fillStyle=road;ctx.fill();
  ctx.beginPath();ctx.moveTo(0,hor);ctx.lineTo(edgeAt(0,-1),hor);ctx.lineTo(edgeAt(1,-1),h);ctx.lineTo(0,h);ctx.closePath();ctx.fillStyle=scene===1?'#1c493b':'#183b35';ctx.fill();
