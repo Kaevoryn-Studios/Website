@@ -35,8 +35,8 @@ function drawWorld(){const cx=w/2,hor=h*.37,scene=chapters[chapter].scene,route=
  if(scene===3||scene===5){for(let i=0;i<5;i++){const x=w*(.12+i*.19),y=hor-30-(i%2)*28;rr(x-17,y-60,34,100,3,'#314d5a','#a7c3b6');rr(x-8,y-42,16,23,2,scene===5?'#b8f8ff':'#e7c77c');}if(scene===3&&choiceTrail[3]==='moon'){ctx.fillStyle='#c69aff';ctx.font='bold 25px Georgia';ctx.textAlign='center';ctx.fillText('☾',w/2,hor-65)}else if(scene===3&&choiceTrail[3]==='sun'){ctx.fillStyle='#ffd477';ctx.font='bold 25px Georgia';ctx.textAlign='center';ctx.fillText('☼',w/2,hor-65)}}
  if(scene===4){poly([[cx-w*.33,hor+15],[cx-w*.2,hor-100],[cx,hor-155],[cx+w*.2,hor-100],[cx+w*.33,hor+15]],'#304a5a','#b6d9d7');const heart=choiceTrail[3]==='moon'?'#c69aff':choiceTrail[3]==='sun'?'#ffd477':'#78eaff';oval(cx,hor-45,28,28,heart);oval(cx,hor-45,48,48,heart+'44')}
  if(scene===2){poly([[0,hor+40],[w*.25,hor-30],[w*.42,h*.72],[0,h*.72]],'#263a40');poly([[w,hor+40],[w*.75,hor-30],[w*.58,h*.72],[w,h*.72]],'#263a40');}
- if(scene===1||scene===0){for(let i=0;i<10;i++){const x=w*(i/10),s=.7+(i%4)*.25;tree(x,hor+15+(i%3)*12,s,scene===1||route==='forest')}if(route==='ridge'){poly([[0,hor+35],[w*.18,hor-45],[w*.34,hor+25]],'#53616a','#9fb9c1');poly([[w,hor+30],[w*.82,hor-50],[w*.66,hor+25]],'#53616a','#9fb9c1')}}
- if(scene===3||scene===5){for(let i=0;i<8;i++){const x=w*(i/8),s=.5+(i%3)*.25;tree(x,hor+25,s,true)}}
+ if(scene===1||scene===0){for(let i=0;i<10;i++){const z=((i/10+offset*.24)%1),depth=Math.pow(z,1.5),x=w*(i/10),s=(.38+z*.92)*(.7+(i%4)*.18);tree(x,hor+12+depth*h*.3,s,scene===1||route==='forest')}if(route==='ridge'){poly([[0,hor+35],[w*.18,hor-45],[w*.34,hor+25]],'#53616a','#9fb9c1');poly([[w,hor+30],[w*.82,hor-50],[w*.66,hor+25]],'#53616a','#9fb9c1')}}
+ if(scene===3||scene===5){for(let i=0;i<8;i++){const z=((i/8+offset*.2)%1),depth=Math.pow(z,1.45),x=w*(i/8),s=(.3+z*.7)*(.5+(i%3)*.18);tree(x,hor+20+depth*h*.25,s,true)}}
  // waterfalls spilling into the ravine
  if(scene===2){for(const side of [-1,1]){const x=cx+side*w*.34;const water=ctx.createLinearGradient(x,hor-35,x+side*8,h*.78);water.addColorStop(0,'#b6f5ff');water.addColorStop(.45,'#39bce0');water.addColorStop(1,'#155c85');ctx.fillStyle=water;ctx.beginPath();ctx.moveTo(x-side*13,hor-28);ctx.lineTo(x+side*13,hor-28);ctx.lineTo(x+side*34,h*.76);ctx.lineTo(x-side*22,h*.76);ctx.closePath();ctx.fill();for(let k=0;k<5;k++){const yy=hor+((k*31+offset*240)%(h*.38));ctx.fillStyle='#c7f7ff99';ctx.fillRect(x-5+(k%2)*8,yy,2,12)}}}
  // Moving atmosphere: drifting ravine mist, waterfall spray and windblown leaves
@@ -95,7 +95,7 @@ function drawWorld(){const cx=w/2,hor=h*.37,scene=chapters[chapter].scene,route=
  // Perspective roadside landmarks: old stone posts and boulders stay outside the driving lane
  for(const side of [-1,1]){
   for(let i=0;i<7;i++){
-   const z=(i/7),depth=Math.pow(z,1.55),y=hor+depth*(h-hor);
+   const z=((i/7+offset*.3)%1),depth=Math.pow(z,1.55),y=hor+depth*(h-hor);
    const x=edgeAt(depth,side)+side*(9+z*16),size=3+z*13;
    ctx.save();ctx.globalAlpha=.42+z*.58;
    if(scene===3||scene===5){
