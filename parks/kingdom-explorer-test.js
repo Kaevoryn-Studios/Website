@@ -557,7 +557,40 @@ function drawStartup(){
   ctx.restore();
  }
 }
-function draw(){ctx.clearRect(0,0,w,h);drawWorld();drawEffects();if(viewMode==='cabin')drawCabin();else drawVehicle();const cockpitEl=document.getElementById('cockpitConsole');if(cockpitEl)cockpitEl.classList.toggle('active',viewMode==='cabin');drawStartup()}
+function drawBoardingPlatform(){
+ const cx=w*.5,phase=offset*Math.PI*2,gateOpen=startup>0?Math.min(1,(3.2-startup)/1.4):1;
+ // Raised arrival deck and illuminated approach lane.
+ poly([[w*.16,h*.67],[w*.84,h*.67],[w*.98,h],[w*.02,h]],'#172c39','#6c9aa8');
+ poly([[w*.19,h*.70],[w*.81,h*.70],[w*.92,h],[w*.08,h]],'#213d4b','#456d7b');
+ const lane=ctx.createLinearGradient(0,h*.68,0,h);lane.addColorStop(0,'#79eaff22');lane.addColorStop(1,'#7eeaff08');
+ poly([[w*.43,h*.69],[w*.57,h*.69],[w*.66,h],[w*.34,h]],lane);
+ // Parallel cyan guidance strips converge toward the boarding doors.
+ ctx.save();ctx.strokeStyle='#80edff';ctx.shadowColor='#38dfff';ctx.shadowBlur=10;ctx.lineWidth=Math.max(2,w*.003);
+ ctx.beginPath();ctx.moveTo(w*.34,h);ctx.lineTo(w*.43,h*.69);ctx.moveTo(w*.66,h);ctx.lineTo(w*.57,h*.69);ctx.stroke();ctx.restore();
+ // Side railings, posts and glowing floor lamps.
+ for(const side of [-1,1]){
+  const x=w*(side<0?.13:.87),inner=w*(side<0?.22:.78);
+  ctx.strokeStyle='#8aaab3';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(x,h*.61);ctx.lineTo(inner,h*.86);ctx.stroke();
+  for(let i=0;i<4;i++){const t=i/3,px=x+(inner-x)*t,py=h*(.61+.25*t);rr(px-3,py-15,6,19,2,'#536f7c','#b1d2d8');}
+  const lampX=w*(side<0?.19:.81),lampY=h*.75;
+  oval(lampX,lampY,8,8,'#9af4ff');oval(lampX,lampY,17,17,'#69eaff25');
+  // Automatic swing gate arm opens as the boarding sequence starts.
+  ctx.save();ctx.translate(w*(side<0?.235:.765),h*.72);ctx.rotate((side<0?-1:1)*(1-gateOpen)*.9);
+  rr(0,-4,w*.095,8,4,'#d8e4e6','#7eeaff');for(let i=0;i<5;i++)rr(w*.018*i,-3,w*.009,6,1,i%2?'#eafaff':'#d94d62');ctx.restore();
+ }
+ // Overhead station canopy and illuminated nameplate.
+ const canopy=ctx.createLinearGradient(0,h*.30,0,h*.39);canopy.addColorStop(0,'#0a1927');canopy.addColorStop(1,'#1b3c4b');
+ poly([[w*.20,h*.29],[w*.80,h*.29],[w*.88,h*.37],[w*.12,h*.37]],canopy,'#75dff0');
+ ctx.strokeStyle='#a8efff';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(w*.20,h*.29);ctx.lineTo(w*.80,h*.29);ctx.stroke();
+ for(const x of [w*.22,w*.78]){const post=ctx.createLinearGradient(x,0,x+8,0);post.addColorStop(0,'#263d4b');post.addColorStop(1,'#718d9b');rr(x-7,h*.35,14,h*.47,3,post,'#7eeaff');rr(x-12,h*.34,24,8,3,'#b8f6ff','#e8ffff');}
+ rr(w*.35,h*.22,w*.30,h*.065,8,'#071827','#76eaff');
+ ctx.fillStyle='#dffaff';ctx.textAlign='center';ctx.font='800 '+Math.max(10,w*.018)+'px system-ui';ctx.fillText('KINGDOM EXPLORER · BOARDING GATE',cx,h*.262);
+ // Six small seat indicators confirm the passenger capacity.
+ for(let i=0;i<6;i++){const x=cx+(i-2.5)*Math.min(18,w*.023);oval(x,h*.315,3.2,3.2,'#9ff4ff');}
+ // Gate status beacon pulses gently; no strobing.
+ const beacon=.55+.35*Math.sin(phase*1.2);ctx.globalAlpha=beacon;oval(cx,h*.405,5,5,'#b5f8ff');oval(cx,h*.405,13,13,'#70eaff25');ctx.globalAlpha=1;
+}
+function draw(){ctx.clearRect(0,0,w,h);drawWorld();drawEffects();if(viewMode!=='cabin')drawBoardingPlatform();if(viewMode==='cabin')drawCabin();else drawVehicle();const cockpitEl=document.getElementById('cockpitConsole');if(cockpitEl)cockpitEl.classList.toggle('active',viewMode==='cabin');drawStartup()}
 function frame(now){const dt=Math.min(50,now-last||16);last=now;if(running){offset+=dt*(reduce?.00022:.00055);startup=Math.max(0,startup-dt/1000)}if(transition>0)transition=Math.max(0,transition-dt/1100);draw();requestAnimationFrame(frame)}
 
 /* Kaevoryn Explorer dashboard */
