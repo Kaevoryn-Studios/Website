@@ -559,7 +559,7 @@ document.body.append(dashboard);
 
 /* Visible in-cabin dashboard controls */
 const cockpit=document.createElement('div');cockpit.id='cockpitConsole';
-cockpit.innerHTML='<div class="cockpit-readout" id="cockpitReadout">SYSTEMS READY · SIGNAL LINKED</div><div class="cockpit-buttons"><button type="button" data-cockpit="map">MAP</button><button type="button" data-cockpit="scan">SCAN</button><button type="button" data-cockpit="lights">LIGHTS</button><button type="button" data-cockpit="comms">COMMS</button></div>';
+cockpit.innerHTML='<div class="cockpit-readout" id="cockpitReadout">SYSTEMS READY · SIGNAL LINKED</div><div class="cockpit-buttons"><button type="button" data-cockpit="map">MAP</button><button type="button" data-cockpit="scan">SCAN</button><button type="button" data-cockpit="lights" aria-pressed="false">LIGHTS · OFF</button><button type="button" data-cockpit="comms">COMMS</button></div><section id="cockpitUtility" class="cockpit-utility" hidden aria-live="polite"><button type="button" class="utility-close" aria-label="Close panel">×</button><div id="cockpitUtilityContent"></div></section>';
 document.querySelector('.stage')?.append(cockpit);
 const cockpitStyle=document.createElement('style');
 cockpitStyle.textContent=`
@@ -569,16 +569,39 @@ cockpitStyle.textContent=`
 #cockpitConsole .cockpit-buttons{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}
 #cockpitConsole button{min-height:34px;padding:6px 3px;border:1px solid #6bcce0;border-radius:7px;background:linear-gradient(135deg,#183d52,#242044);color:#effcff;font:800 10px system-ui;letter-spacing:.08em}
 #cockpitConsole button:active{background:#23627a;transform:scale(.97)}
+#cockpitConsole .cockpit-utility{position:relative;margin-top:8px;padding:10px 34px 10px 11px;border:1px solid #5ccfe8;border-radius:9px;background:linear-gradient(135deg,#0b2537,#171a35);color:#eafaff;font:11px/1.5 system-ui;max-height:115px;overflow:auto}
+#cockpitConsole .cockpit-utility[hidden]{display:none}
+#cockpitConsole .cockpit-utility strong{color:#9af0ff;letter-spacing:.1em}
+#cockpitConsole .cockpit-utility ol{margin:5px 0 0;padding-left:18px}
+#cockpitConsole .utility-close{position:absolute;right:5px;top:4px;min-height:24px!important;width:25px;padding:0!important;border-radius:6px!important;font-size:17px!important}
+#cockpitConsole .scan-pulse{display:inline-block;width:7px;height:7px;margin-right:6px;border-radius:50%;background:#83f5ff;box-shadow:0 0 12px #83f5ff;animation:scanPulse 1s infinite alternate}
+@keyframes scanPulse{to{opacity:.25;transform:scale(.6)}}
+.stage.lights-on:after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;background:radial-gradient(ellipse at 50% 85%,#7eeaff35,transparent 65%);mix-blend-mode:screen}
 @media(max-width:460px){#cockpitConsole{left:3%;right:3%;bottom:7px;padding:7px}#cockpitConsole .cockpit-buttons{gap:4px}#cockpitConsole button{font-size:9px;min-height:32px}}
 `;
 document.head.append(cockpitStyle);
+const utility=document.getElementById('cockpitUtility'),utilityContent=document.getElementById('cockpitUtilityContent'),cockpitReadout=document.getElementById('cockpitReadout'),stage=document.querySelector('.stage');
+function showCockpitPanel(html,status){utilityContent.innerHTML=html;utility.hidden=false;cockpitReadout.textContent=status}
+function closeCockpitPanel(){utility.hidden=true}
+utility.querySelector('.utility-close').addEventListener('click',closeCockpitPanel);
 cockpit.addEventListener('click',e=>{
  const b=e.target.closest('[data-cockpit]');if(!b)return;
- const readout=document.getElementById('cockpitReadout');
- const messages={map:'NAVIGATION MAP · ROUTE DISPLAY READY',scan:'SCANNING · ANCIENT SIGNAL DETECTED',lights:'CABIN LIGHTS · '+(b.dataset.on==='1'?'DIMMED':'ILLUMINATED'),comms:'COMMS LINK · KINGDOM CONTROL ONLINE'};
- if(b.dataset.cockpit==='lights'){b.dataset.on=b.dataset.on==='1'?'0':'1';}
- readout.textContent=messages[b.dataset.cockpit];
+ const action=b.dataset.cockpit,c=chapters[chapter];
+ if(action==='map'){
+  const route=choiceTrail.length?choiceTrail.map((v,i)=>'<li>'+({ridge:'High Ridge',forest:'Deep Forest',stones:'Old Stone Path',grove:'Glowing Grove',bridge:'Ancient Bridge',tunnel:'Hidden Tunnel',sun:'Sun Gate',moon:'Moon Gate',courage:'Courage',wonder:'Wonder'}[v]||v)+'</li>').join(''):'<li>Awaiting your first route choice</li>';
+  showCockpitPanel('<strong>EXPEDITION MAP · '+(chapter+1)+'/6</strong><ol>'+route+'</ol><div>Current destination: '+c.title+'</div>','NAVIGATION · ROUTE UPDATED');
+ }else if(action==='scan'){
+  const discoveries=['A faint blue signal is strongest ahead','Ancient energy traces detected along your route','A hidden kingdom structure is registering nearby','The crystal heart is emitting a measurable pulse','The kingdom energy network is active'];
+  const discovery=chapter===0?discoveries[0]:chapter===1?discoveries[1]:chapter===2?discoveries[2]:chapter===4?discoveries[3]:discoveries[4];
+  showCockpitPanel('<strong><span class="scan-pulse"></span>SCAN COMPLETE · '+c.tag+'</strong><div>'+discovery+'</div><div>Threat level: unknown · Signal strength: '+(72+chapter*5)+'%</div>','SCANNER · DISCOVERY FOUND');
+ }else if(action==='lights'){
+  const on=!stage.classList.contains('lights-on');stage.classList.toggle('lights-on',on);b.setAttribute('aria-pressed',String(on));b.textContent='LIGHTS · '+(on?'ON':'OFF');
+  cockpitReadout.textContent='EXTERIOR LIGHTS · '+(on?'ILLUMINATED':'DIMMED');
+ }else if(action==='comms'){
+  showCockpitPanel('<strong>INCOMING · KINGDOM CONTROL</strong><div>'+c.text+'</div><div>Channel 07 · Signal secure</div>','COMMS · MESSAGE RECEIVED');
+ }
 });
+
 
 const dashButton=document.createElement('button');dashButton.type='button';dashButton.id='kingdomDashboardToggle';dashButton.textContent='Explorer Dashboard';dashButton.setAttribute('aria-haspopup','dialog');document.querySelector('.controls')?.prepend(dashButton);
 function showDashboard(){dashboard.classList.add('open');dashboard.querySelector('button')?.focus()}
