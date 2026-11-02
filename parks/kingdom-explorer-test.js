@@ -371,12 +371,12 @@ function drawCabin(){
  ctx.fillStyle='#e1fbff';ctx.font='bold '+Math.max(11,w*.022)+'px system-ui';ctx.textAlign='center';
  ctx.fillText('PASSENGER CABIN · SIX SEATS',w*.5,h*.061);
  // Six compact seats sit in the foreground; the landscape remains visible above them.
- const rows=[.595,.715,.825],cols=[.275,.725];
+ const rows=[.585,.705,.815],cols=[.235,.765];
  const colors=['#17647a','#59447c','#286b5a','#84603d','#315c91','#754b72'];
  const skin=['#d6a17c','#bd8868','#e0b18a','#a97559','#d19b77','#c18c70'];
  let index=0;
  rows.forEach((yy)=>cols.forEach((xx)=>{
-  const x=w*xx,y=h*yy,seatW=Math.min(w*.17,88),seatH=Math.min(h*.068,32);
+  const x=w*xx,y=h*yy,seatW=Math.min(w*.135,74),seatH=Math.min(h*.055,26);
   ctx.save();ctx.translate(x,y);
   // Seat back, headrest, cushion and armrests.
   ctx.shadowColor='#35dff5';ctx.shadowBlur=7;
