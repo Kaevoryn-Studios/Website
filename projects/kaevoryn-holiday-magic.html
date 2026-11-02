@@ -240,6 +240,13 @@ body.projector-mode .hm-output .hm-scene .scene-name{font-size:clamp(16px,2.2vw,
 .hm-scene .hm-snow,.hm-scene .hm-particles{animation-direction:normal!important}
 .hm-scene .hm-particles{animation-duration:15s!important}
 
+
+/* Prevent projector artwork from drifting vertically during scene changes. */
+.hm-scene .hm-art,.hm-scene .hm-art.hm-art-enter{transform:none!important;animation:hm-art-fade-in .65s ease both!important}
+@keyframes hm-art-fade-in{from{opacity:.35}to{opacity:1}}
+.hm-output .hm-scene{transform:translate(0,0)!important}
+.hm-art .figure{animation:none!important}
+
 </style>
 </head>
 <body>
