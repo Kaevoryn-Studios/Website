@@ -169,7 +169,7 @@ function drawEffects(){
  ctx.restore();
 }
 function draw(){ctx.clearRect(0,0,w,h);drawWorld();drawEffects();drawVehicle()}
-function frame(now){const dt=Math.min(50,now-last||16);last=now;if(running&&!reduce)offset=(offset+dt*.0004)%1;if(transition>0)transition=Math.max(0,transition-dt/1100);draw();requestAnimationFrame(frame)}
+function frame(now){const dt=Math.min(50,now-last||16);last=now;if(running&&!reduce)offset=(offset+dt*.00055)%1;if(transition>0)transition=Math.max(0,transition-dt/1100);draw();requestAnimationFrame(frame)}
 pause.addEventListener('click',()=>{running=!running;pause.textContent=running?'Pause journey':'Resume journey';speed.textContent=running?'EXPLORING':'PAUSED'});
 restart.addEventListener('click',()=>{chapter=0;history=[];choiceTrail=[];offset=0;running=true;pause.textContent='Pause journey';update()});
 new ResizeObserver(resize).observe(canvas);update();resize();if(!reduce)requestAnimationFrame(frame);else draw();
