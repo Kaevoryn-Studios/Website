@@ -425,23 +425,23 @@ function drawCabin(){
  const roof=ctx.createLinearGradient(0,0,0,h*.12);
  roof.addColorStop(0,'#020811');roof.addColorStop(1,'#142a3a');
  ctx.fillStyle=roof;ctx.fillRect(0,0,w,h*.105);
- ctx.fillStyle='#07131dcc';ctx.fillRect(0,h*.105,w*.105,h*.27);ctx.fillRect(w*.895,h*.105,w*.105,h*.27);
- ctx.fillStyle='#58b9d522';ctx.fillRect(w*.105,h*.105,w*.79,h*.27);
+ ctx.fillStyle='#07131dcc';ctx.fillRect(0,h*.105,w*.105,h*.22);ctx.fillRect(w*.895,h*.105,w*.105,h*.22);
+ ctx.fillStyle='#58b9d522';ctx.fillRect(w*.105,h*.105,w*.79,h*.22);
  ctx.strokeStyle='#8cecff';ctx.lineWidth=Math.max(3,w*.004);
- ctx.beginPath();ctx.moveTo(w*.105,h*.105);ctx.lineTo(w*.105,h*.375);ctx.moveTo(w*.895,h*.105);ctx.lineTo(w*.895,h*.375);ctx.moveTo(w*.105,h*.105);ctx.lineTo(w*.895,h*.105);ctx.stroke();
- ctx.fillStyle='#101f2ddd';ctx.fillRect(w*.105,h*.105,w*.018,h*.27);ctx.fillRect(w*.877,h*.105,w*.018,h*.27);
+ ctx.beginPath();ctx.moveTo(w*.105,h*.105);ctx.lineTo(w*.105,h*.325);ctx.moveTo(w*.895,h*.105);ctx.lineTo(w*.895,h*.325);ctx.moveTo(w*.105,h*.105);ctx.lineTo(w*.895,h*.105);ctx.stroke();
+ ctx.fillStyle='#101f2ddd';ctx.fillRect(w*.105,h*.105,w*.018,h*.22);ctx.fillRect(w*.877,h*.105,w*.018,h*.22);
  ctx.fillStyle='#071522e8';ctx.fillRect(w*.24,h*.018,w*.52,h*.065);
  ctx.strokeStyle='#73e8ff';ctx.lineWidth=1.5;ctx.strokeRect(w*.24,h*.018,w*.52,h*.065);
  ctx.fillStyle='#e1fbff';ctx.font='bold '+Math.max(11,w*.022)+'px system-ui';ctx.textAlign='center';
  ctx.fillText('PASSENGER CABIN · SIX SEATS',w*.5,h*.061);
  // Six individual bucket-style passenger seats with headrests, shoulder bolsters,
  // stitched panels, seat cushions and visible safety belts.
- const rows=[.40,.515,.63],cols=[.29,.71];
+ const rows=[.43,.55,.67],cols=[.29,.71];
  const colors=['#17647a','#59447c','#286b5a','#84603d','#315c91','#754b72'];
  const seams=['#80eaff','#d4b8ff','#9cf2c5','#ffd39a','#a9d9ff','#f0b5df'];
  let index=0;
  rows.forEach((yy,row)=>cols.forEach((xx,col)=>{
-  const x=w*xx,y=h*yy,sw=Math.min(w*.22,132),sh=Math.min(h*.075,58);
+  const x=w*xx,y=h*yy,sw=Math.min(w*.23,138),sh=Math.min(h*.105,78);
   ctx.save();ctx.translate(x,y);
   const seat=colors[index],stitch=seams[index];
   // Ground shadow and lower seat pedestal.
@@ -485,9 +485,9 @@ function drawCabin(){
   ctx.restore();index++;
  }));
  // Raised cockpit console gives the cabin a clear, substantial dashboard.
- const dash=ctx.createLinearGradient(0,h*.76,0,h);dash.addColorStop(0,'#42677a');dash.addColorStop(.16,'#172e40');dash.addColorStop(.55,'#0b1724');dash.addColorStop(1,'#02060b');
- ctx.fillStyle=dash;ctx.beginPath();ctx.moveTo(0,h*.79);ctx.quadraticCurveTo(w*.5,h*.70,w,h*.79);ctx.lineTo(w,h);ctx.lineTo(0,h);ctx.closePath();ctx.fill();
- ctx.strokeStyle='#7eeaff';ctx.lineWidth=2.5;ctx.beginPath();ctx.moveTo(0,h*.79);ctx.quadraticCurveTo(w*.5,h*.70,w,h*.79);ctx.stroke();
+ const dash=ctx.createLinearGradient(0,h*.84,0,h);dash.addColorStop(0,'#42677a');dash.addColorStop(.16,'#172e40');dash.addColorStop(.55,'#0b1724');dash.addColorStop(1,'#02060b');
+ ctx.fillStyle=dash;ctx.beginPath();ctx.moveTo(0,h*.86);ctx.quadraticCurveTo(w*.5,h*.78,w,h*.86);ctx.lineTo(w,h);ctx.lineTo(0,h);ctx.closePath();ctx.fill();
+ ctx.strokeStyle='#7eeaff';ctx.lineWidth=2.5;ctx.beginPath();ctx.moveTo(0,h*.86);ctx.quadraticCurveTo(w*.5,h*.78,w,h*.86);ctx.stroke();
  rr(w*.37,h*.82,w*.26,h*.105,8,'#071522','#5ddff4');
  ctx.fillStyle='#9df2ff';ctx.font='bold '+Math.max(9,w*.016)+'px system-ui';ctx.textAlign='center';ctx.fillText('K A E V O R Y N',w*.5,h*.865);
  ctx.fillStyle='#a8f5ff';ctx.font='bold 9px system-ui';ctx.textAlign='left';ctx.fillText('EXPLORER CONTROL SYSTEM · 6 SEATS',12,h*.97);
