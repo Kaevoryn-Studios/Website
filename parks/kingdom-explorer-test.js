@@ -425,23 +425,23 @@ function drawCabin(){
  const roof=ctx.createLinearGradient(0,0,0,h*.12);
  roof.addColorStop(0,'#020811');roof.addColorStop(1,'#142a3a');
  ctx.fillStyle=roof;ctx.fillRect(0,0,w,h*.105);
- ctx.fillStyle='#07131dcc';ctx.fillRect(0,h*.105,w*.105,h*.39);ctx.fillRect(w*.895,h*.105,w*.105,h*.39);
- ctx.fillStyle='#58b9d522';ctx.fillRect(w*.105,h*.105,w*.79,h*.39);
+ ctx.fillStyle='#07131dcc';ctx.fillRect(0,h*.105,w*.105,h*.27);ctx.fillRect(w*.895,h*.105,w*.105,h*.27);
+ ctx.fillStyle='#58b9d522';ctx.fillRect(w*.105,h*.105,w*.79,h*.27);
  ctx.strokeStyle='#8cecff';ctx.lineWidth=Math.max(3,w*.004);
- ctx.beginPath();ctx.moveTo(w*.105,h*.105);ctx.lineTo(w*.105,h*.49);ctx.moveTo(w*.895,h*.105);ctx.lineTo(w*.895,h*.49);ctx.moveTo(w*.105,h*.105);ctx.lineTo(w*.895,h*.105);ctx.stroke();
- ctx.fillStyle='#101f2ddd';ctx.fillRect(w*.105,h*.105,w*.018,h*.39);ctx.fillRect(w*.877,h*.105,w*.018,h*.39);
+ ctx.beginPath();ctx.moveTo(w*.105,h*.105);ctx.lineTo(w*.105,h*.375);ctx.moveTo(w*.895,h*.105);ctx.lineTo(w*.895,h*.375);ctx.moveTo(w*.105,h*.105);ctx.lineTo(w*.895,h*.105);ctx.stroke();
+ ctx.fillStyle='#101f2ddd';ctx.fillRect(w*.105,h*.105,w*.018,h*.27);ctx.fillRect(w*.877,h*.105,w*.018,h*.27);
  ctx.fillStyle='#071522e8';ctx.fillRect(w*.24,h*.018,w*.52,h*.065);
  ctx.strokeStyle='#73e8ff';ctx.lineWidth=1.5;ctx.strokeRect(w*.24,h*.018,w*.52,h*.065);
  ctx.fillStyle='#e1fbff';ctx.font='bold '+Math.max(11,w*.022)+'px system-ui';ctx.textAlign='center';
  ctx.fillText('PASSENGER CABIN · SIX SEATS',w*.5,h*.061);
  // Six individual bucket-style passenger seats with headrests, shoulder bolsters,
  // stitched panels, seat cushions and visible safety belts.
- const rows=[.49,.60,.71],cols=[.29,.71];
+ const rows=[.40,.515,.63],cols=[.29,.71];
  const colors=['#17647a','#59447c','#286b5a','#84603d','#315c91','#754b72'];
  const seams=['#80eaff','#d4b8ff','#9cf2c5','#ffd39a','#a9d9ff','#f0b5df'];
  let index=0;
  rows.forEach((yy,row)=>cols.forEach((xx,col)=>{
-  const x=w*xx,y=h*yy,sw=Math.min(w*.22,132),sh=Math.min(h*.095,72);
+  const x=w*xx,y=h*yy,sw=Math.min(w*.22,132),sh=Math.min(h*.075,58);
   ctx.save();ctx.translate(x,y);
   const seat=colors[index],stitch=seams[index];
   // Ground shadow and lower seat pedestal.
