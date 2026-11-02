@@ -820,7 +820,7 @@ function toggleExplorerView(){
  if('speechSynthesis'in window)window.speechSynthesis.cancel();
 }
 soundButton.addEventListener('click',()=>{soundEnabled=!soundEnabled;soundButton.textContent='SOUND · '+(soundEnabled?'ON':'OFF');soundButton.setAttribute('aria-pressed',String(soundEnabled));if(!soundEnabled&&'speechSynthesis'in window)window.speechSynthesis.cancel();else{tone(740,.16);setBoardingStatus('SOUND EFFECTS ENABLED',1800)}});
-const board=document.getElementById('boardRide');if(board)board.addEventListener('click',()=>{const boarding=viewMode!=='cabin';viewMode=boarding?'cabin':'outside';if(boarding){startBoarding();return;}toggleExplorerView();});
+const board=document.getElementById('boardRide');if(board)board.addEventListener('click',toggleExplorerView);
 pause.addEventListener('click',()=>{running=!running;pause.textContent=running?'Pause journey':'Resume journey';speed.textContent=running?'EXPLORING':'PAUSED'});
 restart.addEventListener('click',()=>{chapter=0;history=[];choiceTrail=[];offset=0;running=true;pause.textContent='Pause journey';update()});
 new ResizeObserver(resize).observe(canvas);update();resize();requestAnimationFrame(frame);
