@@ -10,7 +10,18 @@ const chapters=[
 {tag:'THE KINGDOM AWAKENS',title:'The Kingdom Awakens',text:'The crystal heart shines. Rivers of light race through the city, the towers awaken, and the kingdom glows beneath the stars. Your expedition becomes part of its legend.',prompt:'Your journey is complete. What would you like to do?',options:[['again','Ride the adventure again'],['return','Return to Kingdoms']],scene:5}
 ];
 let chapter=0,history=[],choiceTrail=[],w=0,h=0,dpr=1,offset=0,last=0,running=true,reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
-function update(){const c=chapters[chapter];tag.textContent='CHAPTER '+String(chapter+1).padStart(2,'0')+' · '+c.tag;count.textContent='CHAPTER '+(chapter+1)+' OF 6';title.textContent=c.title;story.textContent=c.text;prompt.textContent=c.prompt;choices.replaceChildren();c.options.forEach(([value,label])=>{const b=document.createElement('button');b.type='button';b.textContent=label;b.addEventListener('click',()=>select(value));choices.append(b)});speed.textContent=chapter===5?'KINGDOM RESTORED':running?'EXPLORING':'PAUSED';}
+function update(){const c=chapters[chapter];tag.textContent='CHAPTER '+String(chapter+1).padStart(2,'0')+' · '+c.tag;count.textContent='CHAPTER '+(chapter+1)+' OF 6';title.textContent=c.title;
+ const consequences=[
+ {ridge:'The high ridge gives you a clear view of the valley. You spot the ancient road before the mist closes in.',forest:'The deep forest answers your signal. Tiny blue lights gather along the trail, guiding the Explorer onward.'},
+ {stones:'The old stone path holds firm. Its carved markings reveal that the kingdom once guarded this route.',grove:'The glowing grove parts around the vehicle. The leaves shimmer and leave a trail of light behind you.'},
+ {bridge:'You cross the ancient bridge above the roaring depths. Far below, something huge stirs in the water.',tunnel:'The hidden passage leads beneath the ravine. You emerge beside a forgotten aqueduct, avoiding the dangerous crossing.'},
+ {sun:'The sun emblem blazes gold. The city gates open, and warm light awakens the towers.',moon:'The moon emblem glows silver-violet. A quiet energy unlocks a secret entrance through the old city.'},
+ {courage:'You offer your courage. The crystal heart answers with a brilliant blue pulse.',wonder:'You offer your wonder. The crystal heart blooms with violet and silver light.'}
+ ];
+ const detail=chapter>0&&chapter<5?consequences[chapter-1]?.[choiceTrail[chapter-1]]:'';
+ const finale=chapter===5?choiceTrail.map((v,i)=>consequences[i]?.[v]).filter(Boolean).join(' '):'';
+ story.textContent=c.text+(detail?' '+detail:'')+(finale?' '+finale:'');
+ prompt.textContent=c.prompt;choices.replaceChildren();c.options.forEach(([value,label])=>{const b=document.createElement('button');b.type='button';b.textContent=label;b.addEventListener('click',()=>select(value));choices.append(b)});speed.textContent=chapter===5?'KINGDOM RESTORED':running?'EXPLORING':'PAUSED';}
 function select(v){if(v==='return'){location.href='kingdoms.html';return}if(v==='again'){chapter=0;history=[];choiceTrail=[];offset=0;running=true;pause.textContent='Pause journey';update();return}history.push(chapter);choiceTrail.push(v);if(chapter<5)chapter++;update()}
 function resize(){const r=canvas.getBoundingClientRect();w=r.width;h=r.height;dpr=Math.min(devicePixelRatio||1,2);canvas.width=Math.max(1,Math.round(w*dpr));canvas.height=Math.max(1,Math.round(h*dpr));ctx.setTransform(dpr,0,0,dpr,0,0);draw()}
 function poly(points,fill,stroke){ctx.beginPath();points.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.closePath();ctx.fillStyle=fill;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=2;ctx.stroke()}}
@@ -21,8 +32,8 @@ function drawWorld(){const cx=w/2,hor=h*.37,scene=chapters[chapter].scene,route=
  const sky=ctx.createLinearGradient(0,0,0,h);sky.addColorStop(0,scene===5?'#111b42':'#071827');sky.addColorStop(.55,scene===4?'#25465d':'#31576a');sky.addColorStop(1,'#101c22');ctx.fillStyle=sky;ctx.fillRect(0,0,w,h);
  // moon / distant signal
  oval(w*.78,h*.13,Math.max(13,w*.025),Math.max(13,w*.025),scene===5?'#d9f7ff':'#b9eaff');oval(w*.78,h*.13,Math.max(19,w*.035),Math.max(19,w*.035),'#9feaff22');
- if(scene===3||scene===5){for(let i=0;i<5;i++){const x=w*(.12+i*.19),y=hor-30-(i%2)*28;rr(x-17,y-60,34,100,3,'#314d5a','#a7c3b6');rr(x-8,y-42,16,23,2,scene===5?'#b8f8ff':'#e7c77c');}}
- if(scene===4){poly([[cx-w*.33,hor+15],[cx-w*.2,hor-100],[cx,hor-155],[cx+w*.2,hor-100],[cx+w*.33,hor+15]],'#304a5a','#b6d9d7');oval(cx,hor-45,28,28,'#78eaff');oval(cx,hor-45,48,48,'#72dfff33')}
+ if(scene===3||scene===5){for(let i=0;i<5;i++){const x=w*(.12+i*.19),y=hor-30-(i%2)*28;rr(x-17,y-60,34,100,3,'#314d5a','#a7c3b6');rr(x-8,y-42,16,23,2,scene===5?'#b8f8ff':'#e7c77c');}if(scene===3&&choiceTrail[3]==='moon'){ctx.fillStyle='#c69aff';ctx.font='bold 25px Georgia';ctx.textAlign='center';ctx.fillText('☾',w/2,hor-65)}else if(scene===3&&choiceTrail[3]==='sun'){ctx.fillStyle='#ffd477';ctx.font='bold 25px Georgia';ctx.textAlign='center';ctx.fillText('☼',w/2,hor-65)}}
+ if(scene===4){poly([[cx-w*.33,hor+15],[cx-w*.2,hor-100],[cx,hor-155],[cx+w*.2,hor-100],[cx+w*.33,hor+15]],'#304a5a','#b6d9d7');const heart=choiceTrail[3]==='moon'?'#c69aff':choiceTrail[3]==='sun'?'#ffd477':'#78eaff';oval(cx,hor-45,28,28,heart);oval(cx,hor-45,48,48,heart+'44')}
  if(scene===2){poly([[0,hor+40],[w*.25,hor-30],[w*.42,h*.72],[0,h*.72]],'#263a40');poly([[w,hor+40],[w*.75,hor-30],[w*.58,h*.72],[w,h*.72]],'#263a40');}
  if(scene===1||scene===0){for(let i=0;i<10;i++){const x=w*(i/10),s=.7+(i%4)*.25;tree(x,hor+15+(i%3)*12,s,scene===1||route==='forest')}if(route==='ridge'){poly([[0,hor+35],[w*.18,hor-45],[w*.34,hor+25]],'#53616a','#9fb9c1');poly([[w,hor+30],[w*.82,hor-50],[w*.66,hor+25]],'#53616a','#9fb9c1')}}
  if(scene===3||scene===5){for(let i=0;i<8;i++){const x=w*(i/8),s=.5+(i%3)*.25;tree(x,hor+25,s,true)}}
