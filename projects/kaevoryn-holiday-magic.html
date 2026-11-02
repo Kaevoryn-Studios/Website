@@ -235,6 +235,11 @@ body.projector-mode .hm-output .hm-scene .scene-name{font-size:clamp(16px,2.2vw,
 .hm-scene .hm-snow{mix-blend-mode:screen}
 .hm-stage.show-running .hm-scene .hm-art svg .window-glow{animation-duration:4s}
 
+
+/* Keep every scene's snow falling downward; the reverse particle layer made flakes appear to rise. */
+.hm-scene .hm-snow,.hm-scene .hm-particles{animation-direction:normal!important}
+.hm-scene .hm-particles{animation-duration:15s!important}
+
 </style>
 </head>
 <body>
