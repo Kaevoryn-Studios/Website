@@ -436,12 +436,12 @@ function drawCabin(){
  ctx.fillText('PASSENGER CABIN · SIX SEATS',w*.5,h*.061);
  // Six individual bucket-style passenger seats with headrests, shoulder bolsters,
  // stitched panels, seat cushions and visible safety belts.
- const rows=[.52,.67,.82],cols=[.29,.71];
+ const rows=[.49,.60,.71],cols=[.29,.71];
  const colors=['#17647a','#59447c','#286b5a','#84603d','#315c91','#754b72'];
  const seams=['#80eaff','#d4b8ff','#9cf2c5','#ffd39a','#a9d9ff','#f0b5df'];
  let index=0;
  rows.forEach((yy,row)=>cols.forEach((xx,col)=>{
-  const x=w*xx,y=h*yy,sw=Math.min(w*.25,148),sh=Math.min(h*.13,88);
+  const x=w*xx,y=h*yy,sw=Math.min(w*.22,132),sh=Math.min(h*.095,72);
   ctx.save();ctx.translate(x,y);
   const seat=colors[index],stitch=seams[index];
   // Ground shadow and lower seat pedestal.
