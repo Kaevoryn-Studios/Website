@@ -435,16 +435,30 @@ function drawCabin(){
  ctx.fillStyle='#e1fbff';ctx.font='bold '+Math.max(11,w*.022)+'px system-ui';ctx.textAlign='center';
  ctx.fillText('PASSENGER CABIN · SIX SEATS',w*.5,h*.061);
 
- // A solid, tapered cabin floor separates the seats from the landscape outside.
+ // A smooth metallic cabin floor with restrained paneling and concealed seat rails.
  const floor=ctx.createLinearGradient(0,h*.30,0,h*.90);
- floor.addColorStop(0,'#263f50');floor.addColorStop(.45,'#172b3b');floor.addColorStop(1,'#09131f');
+ floor.addColorStop(0,'#263f50');floor.addColorStop(.42,'#1b3040');floor.addColorStop(1,'#0a1521');
  ctx.fillStyle=floor;ctx.beginPath();ctx.moveTo(w*.12,h*.31);ctx.lineTo(w*.88,h*.31);ctx.lineTo(w,h*.88);ctx.lineTo(0,h*.88);ctx.closePath();ctx.fill();
- ctx.strokeStyle='#557b8b';ctx.lineWidth=2;
+ // Soft side reflections define the cabin shape without a distracting grid.
+ const leftGlow=ctx.createLinearGradient(0,0,w*.2,0);
+ leftGlow.addColorStop(0,'#75dff51c');leftGlow.addColorStop(1,'#75dff500');
+ ctx.fillStyle=leftGlow;ctx.fillRect(0,h*.32,w*.22,h*.53);
+ const rightGlow=ctx.createLinearGradient(w,0,w*.8,0);
+ rightGlow.addColorStop(0,'#75dff51c');rightGlow.addColorStop(1,'#75dff500');
+ ctx.fillStyle=rightGlow;ctx.fillRect(w*.78,h*.32,w*.22,h*.53);
+ ctx.strokeStyle='#527383';ctx.lineWidth=2;
  ctx.beginPath();ctx.moveTo(w*.12,h*.32);ctx.lineTo(0,h*.88);ctx.moveTo(w*.88,h*.32);ctx.lineTo(w,h*.88);ctx.stroke();
- // Floor rails converge toward the rear to establish depth.
- ctx.strokeStyle='#5e8797';ctx.lineWidth=1;
- for(let i=0;i<5;i++){const xx=.18+i*.16;ctx.beginPath();ctx.moveTo(w*.5+(xx-.5)*w*.25,h*.34);ctx.lineTo(w*xx,h*.84);ctx.stroke();}
- for(let i=0;i<4;i++){const yy=.39+i*.105;ctx.beginPath();ctx.moveTo(w*(.15+i*.025),h*yy);ctx.lineTo(w*(.85-i*.025),h*yy);ctx.stroke();}
+ // A few subtle inset floor panels; no repeated cross-lines or visible grid.
+ ctx.strokeStyle='#6b8c9b55';ctx.lineWidth=1;
+ ctx.beginPath();
+ ctx.moveTo(w*.24,h*.76);ctx.quadraticCurveTo(w*.5,h*.79,w*.76,h*.76);
+ ctx.moveTo(w*.20,h*.82);ctx.quadraticCurveTo(w*.5,h*.85,w*.80,h*.82);
+ ctx.stroke();
+ // Low-profile rails sit under the seat bases rather than across the floor.
+ ctx.strokeStyle='#6e9aaa';ctx.lineWidth=3;
+ ctx.beginPath();ctx.moveTo(w*.35,h*.38);ctx.lineTo(w*.25,h*.82);ctx.moveTo(w*.65,h*.38);ctx.lineTo(w*.75,h*.82);ctx.stroke();
+ ctx.strokeStyle='#142936';ctx.lineWidth=1;
+ ctx.beginPath();ctx.moveTo(w*.35,h*.38);ctx.lineTo(w*.25,h*.82);ctx.moveTo(w*.65,h*.38);ctx.lineTo(w*.75,h*.82);ctx.stroke();
 
  // Draw rear row first and scale each row up toward the viewer.
  const rows=[
