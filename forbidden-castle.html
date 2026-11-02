@@ -34,6 +34,9 @@ footer{text-align:center;padding:20px 0 36px;color:#8f86a6;font-size:10px;letter
 @media(max-width:600px){.scene{min-height:470px}.castle{height:65%;bottom:13%}.scene-caption{bottom:14px}.nav a{margin-left:8px}}
 @keyframes gateGlow{0%{filter:drop-shadow(0 0 4px #b49aff)}100%{filter:drop-shadow(0 0 24px #b49aff)}}
 .scene.gate-open .castle{animation:gateGlow 1.8s ease-in-out infinite alternate}
+.castle-gate{transform-box:view-box;transition:transform 1.6s cubic-bezier(.2,.8,.2,1),opacity 1.2s ease;transform-origin:center}
+.scene.gate-open .gate-left{transform:translateX(-76px) rotateY(48deg);opacity:.3}
+.scene.gate-open .gate-right{transform:translateX(76px) rotateY(-48deg);opacity:.3}
 .scene.gate-open .scene-caption strong{color:var(--gold)}
 .interior{display:none;margin:22px 0 0;padding:clamp(20px,4vw,34px);border:1px solid #b49aff66;border-radius:20px;background:radial-gradient(ellipse at 50% 15%,#5c427a 0,#21172f 48%,#0b0913 100%);overflow:hidden}
 .interior.revealed{display:block;animation:hallReveal 1.1s ease both}
@@ -84,7 +87,8 @@ footer{text-align:center;padding:20px 0 36px;color:#8f86a6;font-size:10px;letter
 <path d="M500 340v160M445 420h110" stroke="#b49aff" stroke-width="3" opacity=".5"/>
 <path d="M410 500V415q0-105 90-105t90 105" fill="none" stroke="#d5c5eb" stroke-width="3" filter="url(#glow)"/>
 <!-- gate bars -->
-<g stroke="#b7a6c8" stroke-width="5"><path d="M450 390v110M475 365v135M500 360v140M525 365v135M550 390v110"/><path d="M435 445h130M430 480h140"/></g>
+<g class="castle-gate gate-left" stroke="#d0c0e0" stroke-width="5" fill="none"><path d="M450 390v110M475 365v135M500 360v140M435 445h65M430 480h70"/></g>
+<g class="castle-gate gate-right" stroke="#d0c0e0" stroke-width="5" fill="none"><path d="M525 365v135M550 390v110M500 360v140M500 445h65M500 480h70"/></g>
 <!-- foreground stairs -->
 <path d="M390 500h220l50 25H340ZM355 525h290l45 22H310ZM325 547h350l35 20H290Z" fill="#383044" stroke="#8c7b9e" stroke-width="3"/>
 <!-- braziers -->
