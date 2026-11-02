@@ -44,6 +44,19 @@ function drawWorld(){const cx=w/2,hor=h*.37,scene=chapters[chapter].scene,route=
  // monumental kingdom skyline and dramatic finale aurora
  if(scene===5){const crownY=hor-115;poly([[cx-w*.34,hor+28],[cx-w*.28,crownY+35],[cx-w*.19,crownY+55],[cx-w*.12,crownY-15],[cx-w*.04,crownY+42],[cx,crownY-75],[cx+w*.04,crownY+42],[cx+w*.12,crownY-15],[cx+w*.19,crownY+55],[cx+w*.28,crownY+35],[cx+w*.34,hor+28]],'#263d59','#b9eaff');const aura=ctx.createRadialGradient(cx,crownY-35,8,cx,crownY-35,w*.42);aura.addColorStop(0,choiceTrail[4]==='wonder'?'#c79aff66':'#75eaff66');aura.addColorStop(1,'#75eaff00');ctx.fillStyle=aura;ctx.fillRect(0,0,w,h*.72);for(let i=0;i<7;i++){const x=w*(.08+i*.14);rr(x-3,hor-15,6,34,2,'#ffd987');oval(x,hor-18,7,7,'#fff0b4')}}
 
+ // Fast roadside rush: layered streaks slide toward the Explorer with depth
+ const rush=offset*1.0;
+ for(let side of [-1,1]){
+  for(let i=0;i<22;i++){
+   const z=((i/22+rush)%1),y=hor+Math.pow(z,1.55)*(h-hor);
+   const edge=cx+side*(w*.085+Math.pow(z,1.25)*w*.43);
+   const length=5+z*24,width=1+z*2;
+   ctx.globalAlpha=.16+z*.42;ctx.strokeStyle=(i%4===0)?'#a8edff':'#b5d6a0';
+   ctx.lineWidth=width;ctx.beginPath();ctx.moveTo(edge,y);ctx.lineTo(edge-side*length*.22,y+length);ctx.stroke();
+   if(i%3===0){ctx.globalAlpha=.28+z*.35;oval(edge-side*length*.35,y+length,1+z*2,1+z*2,i%2?'#8deaff':'#d7c78e')}
+  }
+ }
+ ctx.globalAlpha=1;
  // path / track with perspective
  const road=scene===2?'#3c4544':scene===3?'#4a4940':'#27343a';
  poly([[cx-w*.08,hor],[cx+w*.08,hor],[w*.99,h],[w*.01,h]],road);
