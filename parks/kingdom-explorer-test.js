@@ -701,6 +701,14 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeKingdomMap()});
 const cockpit=document.createElement('div');cockpit.id='cockpitConsole';
 cockpit.innerHTML='<div class="cockpit-readout" id="cockpitReadout">SYSTEMS READY · SIGNAL LINKED</div><div class="cockpit-buttons"><button type="button" data-cockpit="map">MAP</button><button type="button" data-cockpit="scan">SCAN</button><button type="button" data-cockpit="lights" aria-pressed="false">LIGHTS · OFF</button><button type="button" data-cockpit="comms">COMMS</button></div><section id="cockpitUtility" class="cockpit-utility" hidden aria-live="polite"><button type="button" class="utility-close" aria-label="Close panel">×</button><div id="cockpitUtilityContent"></div></section>';
 document.querySelector('.stage')?.append(cockpit);
+const boardingStyle=document.createElement('style');
+boardingStyle.textContent=`
+#boardingStatus{position:absolute;z-index:5;top:48px;left:50%;transform:translate(-50%,-8px);width:max-content;max-width:90%;padding:9px 15px;border:1px solid #7eeaff;border-radius:999px;background:#061827eF;color:#c9f8ff;text-align:center;font:800 10px system-ui;letter-spacing:.12em;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;box-shadow:0 0 22px #35dfff44}
+#boardingStatus.visible{opacity:1;transform:translate(-50%,0)}
+#explorerSoundToggle{border:1px solid #8fdbed!important;background:linear-gradient(135deg,#153b4e,#211c40)!important;color:#eafaff!important}
+@media(max-width:520px){#boardingStatus{top:43px;font-size:8px;letter-spacing:.07em;padding:8px 11px;white-space:normal;width:90%}}
+`;
+document.head.append(boardingStyle);
 const cockpitStyle=document.createElement('style');
 cockpitStyle.textContent=`
 #cockpitConsole{display:none;position:absolute;z-index:4;left:7%;right:7%;bottom:9px;padding:8px 10px 9px;border:1px solid #72eaff;border-radius:13px;background:linear-gradient(180deg,#102b3eeF,#050d19f5);box-shadow:0 0 22px #35dfff44}
@@ -749,7 +757,7 @@ dashboard.addEventListener('click',e=>{
  const button=e.target.closest('[data-dash]');if(!button)return;
  const action=button.dataset.dash,detail=document.getElementById('kingdomDashDetail');
  if(action==='close'||action==='explore'){hideDashboard();return}
- if(action==='vehicle'){const boarding=viewMode!=='cabin';viewMode=boarding?'cabin':'outside';if(boarding)startup=reduce?1.4:3.2;const b=document.getElementById('boardRide');if(b)b.textContent=viewMode==='cabin'?'Return to outside view':'Board the Explorer';hideDashboard();return}
+ if(action==='vehicle'){toggleExplorerView();hideDashboard();return}
  if(action==='map'){hideDashboard();openKingdomMap();return}
  if(action==='missions'){hideDashboard();document.querySelector('.story')?.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'});return}
  if(action==='settings'){running=!running;pause.textContent=running?'Pause journey':'Resume journey';speed.textContent=running?'EXPLORING':'PAUSED';detail.textContent=running?'Journey resumed.':'Journey paused.';return}
@@ -757,7 +765,62 @@ dashboard.addEventListener('click',e=>{
 });
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&dashboard.classList.contains('open'))hideDashboard()});
 
-const board=document.getElementById('boardRide');if(board)board.addEventListener('click',()=>{const boarding=viewMode!=='cabin';viewMode=boarding?'cabin':'outside';if(boarding)startup=reduce?1.4:3.2;board.textContent=viewMode==='cabin'?'Return to outside view':'Board the Explorer';});
+/* Boarding gate audio and passenger sequence */
+let explorerAudio=null,soundEnabled=true,boardingTimer=null;
+const boardingStatus=document.createElement('div');
+boardingStatus.id='boardingStatus';
+boardingStatus.setAttribute('role','status');
+boardingStatus.setAttribute('aria-live','polite');
+boardingStatus.textContent='BOARDING GATE · SIX PASSENGER SEATS READY';
+stage.append(boardingStatus);
+const soundButton=document.createElement('button');
+soundButton.type='button';soundButton.id='explorerSoundToggle';soundButton.textContent='SOUND · ON';
+soundButton.setAttribute('aria-pressed','true');
+document.querySelector('.controls')?.append(soundButton);
+function getAudio(){const AudioCtor=window.AudioContext||window.webkitAudioContext;if(!AudioCtor)return null;if(!explorerAudio)explorerAudio=new AudioCtor();if(explorerAudio.state==='suspended')explorerAudio.resume();return explorerAudio}
+function tone(freq,duration,wave='sine',volume=.07,delay=0,slide=0){
+ const ac=getAudio();if(!ac||!soundEnabled)return;
+ const osc=ac.createOscillator(),gain=ac.createGain(),at=ac.currentTime+delay;
+ osc.type=wave;osc.frequency.setValueAtTime(freq,at);if(slide)osc.frequency.exponentialRampToValueAtTime(Math.max(25,freq+slide),at+duration);
+ gain.gain.setValueAtTime(.0001,at);gain.gain.exponentialRampToValueAtTime(volume,at+.025);gain.gain.exponentialRampToValueAtTime(.0001,at+duration);
+ osc.connect(gain);gain.connect(ac.destination);osc.start(at);osc.stop(at+duration+.03);
+}
+function hiss(duration=.55,delay=0,volume=.035){
+ const ac=getAudio();if(!ac||!soundEnabled)return;
+ const length=Math.max(1,Math.floor(ac.sampleRate*duration)),buffer=ac.createBuffer(1,length,ac.sampleRate),data=buffer.getChannelData(0);
+ for(let i=0;i<length;i++)data[i]=(Math.random()*2-1)*(1-i/length);
+ const source=ac.createBufferSource(),filter=ac.createBiquadFilter(),gain=ac.createGain(),at=ac.currentTime+delay;
+ source.buffer=buffer;filter.type='lowpass';filter.frequency.value=1250;gain.gain.setValueAtTime(volume,at);gain.gain.exponentialRampToValueAtTime(.0001,at+duration);
+ source.connect(filter);filter.connect(gain);gain.connect(ac.destination);source.start(at);source.stop(at+duration);
+}
+function boardingAnnouncement(message){
+ if(!soundEnabled||!('speechSynthesis'in window))return;
+ window.speechSynthesis.cancel();const line=new SpeechSynthesisUtterance(message);line.rate=.92;line.pitch=.88;line.volume=.8;window.speechSynthesis.speak(line);
+}
+function setBoardingStatus(message,hideAfter=0){
+ boardingStatus.textContent=message;boardingStatus.classList.add('visible');
+ if(boardingTimer)clearTimeout(boardingTimer);
+ if(hideAfter)boardingTimer=setTimeout(()=>boardingStatus.classList.remove('visible'),hideAfter);
+}
+function startBoarding(){
+ viewMode='cabin';startup=reduce?1.4:3.2;running=true;
+ const board=document.getElementById('boardRide');if(board)board.textContent='Return to outside view';
+ setBoardingStatus('WELCOME ABOARD · PLEASE TAKE YOUR SEATS',5200);
+ tone(660,.16,'sine',.06);tone(880,.28,'sine',.06,.2);
+ hiss(.8,.55,.045);tone(420,.22,'triangle',.035,1.05,-120);
+ tone(520,.12,'sine',.045,1.65);tone(520,.12,'sine',.045,1.92);tone(520,.12,'sine',.045,2.19);
+ tone(95,1.25,'sawtooth',.035,2.65,75);hiss(.5,2.7,.025);
+ boardingAnnouncement('Welcome aboard the Kingdom Explorer. Please take your seats and fasten your seat belts. Your expedition will begin shortly.');
+ setTimeout(()=>setBoardingStatus('SEAT BELTS CHECKED · EXPEDITION SYSTEMS ONLINE',2500),3000);
+}
+function toggleExplorerView(){
+ if(viewMode!=='cabin'){startBoarding();return}
+ viewMode='outside';const board=document.getElementById('boardRide');if(board)board.textContent='Board the Explorer';
+ setBoardingStatus('EXPLORER PLATFORM · READY FOR BOARDING',2600);hiss(.65,0,.035);tone(330,.3,'sine',.035,.25);
+ if('speechSynthesis'in window)window.speechSynthesis.cancel();
+}
+soundButton.addEventListener('click',()=>{soundEnabled=!soundEnabled;soundButton.textContent='SOUND · '+(soundEnabled?'ON':'OFF');soundButton.setAttribute('aria-pressed',String(soundEnabled));if(!soundEnabled&&'speechSynthesis'in window)window.speechSynthesis.cancel();else{tone(740,.16);setBoardingStatus('SOUND EFFECTS ENABLED',1800)}});
+const board=document.getElementById('boardRide');if(board)board.addEventListener('click',()=>{const boarding=viewMode!=='cabin';viewMode=boarding?'cabin':'outside';if(boarding){startBoarding();return;}toggleExplorerView();});
 pause.addEventListener('click',()=>{running=!running;pause.textContent=running?'Pause journey':'Resume journey';speed.textContent=running?'EXPLORING':'PAUSED'});
 restart.addEventListener('click',()=>{chapter=0;history=[];choiceTrail=[];offset=0;running=true;pause.textContent='Pause journey';update()});
 new ResizeObserver(resize).observe(canvas);update();resize();requestAnimationFrame(frame);
