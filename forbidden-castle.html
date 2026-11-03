@@ -16,7 +16,7 @@ a{color:var(--cyan)}.top{display:flex;justify-content:space-between;align-items:
 .stars{position:absolute;inset:0;background-image:radial-gradient(2px 2px at 13% 20%,#fff 60%,transparent),radial-gradient(1px 1px at 25% 11%,#d7c9ff 60%,transparent),radial-gradient(2px 2px at 72% 18%,#fff 60%,transparent),radial-gradient(1px 1px at 86% 31%,#c6b5ff 60%,transparent),radial-gradient(1px 1px at 43% 9%,#fff 60%,transparent),radial-gradient(2px 2px at 58% 27%,#fff 60%,transparent);opacity:.8}
 .castle{position:absolute;inset:auto 0 0;width:100%;height:100%;filter:drop-shadow(0 18px 28px #000b)}
 .castle svg{width:100%;height:100%;overflow:visible}
-.window{fill:#b99aff;filter:drop-shadow(0 0 9px #b99aff);animation:windowPulse 3.4s ease-in-out infinite alternate}.window:nth-of-type(odd){animation-delay:1.3s}
+.window{animation:windowPulse 4.8s ease-in-out infinite alternate;transform-box:fill-box;transform-origin:center}.window:nth-of-type(odd){animation-delay:1.3s}
 @keyframes windowPulse{from{opacity:.35}to{opacity:1}}
 .fog{position:absolute;bottom:0;left:-15%;width:130%;height:27%;background:radial-gradient(ellipse at 20% 70%,#a18bc533,transparent 50%),radial-gradient(ellipse at 75% 50%,#8cecff22,transparent 48%);filter:blur(18px);animation:fogDrift 13s ease-in-out infinite alternate;pointer-events:none}
 @keyframes fogDrift{to{transform:translateX(6%)}}
@@ -122,13 +122,15 @@ footer{text-align:center;padding:20px 0 36px;color:#8f86a6;font-size:10px;letter
  <filter id="glow"><feGaussianBlur stdDeviation="8" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
  <filter id="shadow"><feGaussianBlur stdDeviation="15"/></filter>
  <g id="litWindow">
-  <path d="M-31 12Q-31-34 0-55Q31-34 31 12V78H-31Z" fill="#080812" stroke="#171321" stroke-width="9"/>
-  <path d="M-27 10Q-27-31 0-49Q27-31 27 10V74H-27Z" fill="#252033" stroke="#b9a9ca" stroke-width="4"/>
-  <path d="M-20 9Q-20-25 0-40Q20-25 20 9V67H-20Z" fill="url(#glass)" filter="url(#glow)"/>
-  <path d="M-16 10Q-16-20 0-34Q16-20 16 10V63H-16Z" fill="#c6a9ff" opacity=".2"/>
-  <path d="M0-39V68M-19 12H19M-19 37H19" stroke="#20172d" stroke-width="5"/>
-  <path d="M-25 10Q-25-30 0-47Q25-30 25 10" fill="none" stroke="#e0d4ec" stroke-width="2" opacity=".75"/>
-  <path d="M-31 77H31" stroke="#d3c4dd" stroke-width="5"/>
+  <!-- Deep stone reveal, recessed shadow, narrow leaded glass and projecting sill -->
+  <path d="M-25 9V-13Q-25-39 0-51Q25-39 25-13V9V53H-25Z" fill="#090812" stroke="#171321" stroke-width="8"/>
+  <path d="M-21 8V-13Q-21-35 0-45Q21-35 21-13V8V48H-21Z" fill="#292236" stroke="#a99ab9" stroke-width="3"/>
+  <path d="M-15 7V-12Q-15-29 0-38Q15-29 15-12V7V42H-15Z" fill="url(#glass)"/>
+  <path d="M-12 5V-11Q-12-25 0-33Q12-25 12-11V5V38H-12Z" fill="#d6bfff" opacity=".18"/>
+  <path d="M0-37V43M-15 5H15M-15 23H15" stroke="#21182d" stroke-width="4"/>
+  <path d="M-18 8V-12Q-18-31 0-41Q18-31 18-12V8" fill="none" stroke="#e0d4ec" stroke-width="1.8" opacity=".7"/>
+  <path d="M-29 53H29L25 59H-25Z" fill="#211b2b" stroke="#b8abc7" stroke-width="2"/>
+  <path d="M-24 61H24" stroke="#080711" stroke-width="4"/>
  </g>
  <g id="darkWindow"><path d="M-25 8Q-25-30 0-45Q25-30 25 8V68H-25Z" fill="#0b0b14" stroke="#8d849b" stroke-width="5"/><path d="M-16 9Q-16-20 0-32Q16-20 16 9V59H-16Z" fill="#9b7bd0" opacity=".34"/></g>
 </defs>
