@@ -420,25 +420,73 @@ footer{text-align:center;padding:20px 0 36px;color:#8f86a6;font-size:10px;letter
  <g fill="#71677c" stroke="#25212e" stroke-width="2">
   <path d="M8 635H28L18 620Z M285 635H305L295 620Z M892 635H912L902 620Z M1172 635H1192L1182 620Z"/>
  </g>
- <!-- left grave row: varied old headstone silhouettes -->
- <g stroke="#24202c" stroke-width="3" stroke-linejoin="round">
-  <path d="M34 674V638Q34 622 51 622Q68 622 68 638V674Z" fill="url(#graveStone)"/>
-  <path d="M105 684V649Q105 629 126 629Q147 629 147 649V684Z" fill="url(#graveShadow)"/>
-  <path d="M190 674V641L202 627 214 641V674Z" fill="url(#graveStone)"/>
-  <path d="M252 690V657Q252 638 272 638Q292 638 292 657V690Z" fill="url(#graveShadow)"/>
-  <path d="M43 641Q51 634 59 641M113 651Q126 640 139 651M197 645L202 638 207 645M260 660Q272 649 284 660" fill="none" stroke="#c5bac9" stroke-width="2" opacity=".6"/>
-  <path d="M126 642V668M118 650H134" stroke="#d2c7d4" stroke-width="2" opacity=".65"/>
-  <path d="M200 652V668M194 658H206" stroke="#d2c7d4" stroke-width="2" opacity=".65"/>
+ <!-- left grave row: individually sculpted, varied weathered headstones -->
+ <g stroke-linejoin="round">
+  <!-- tall rounded Victorian marker -->
+  <g>
+   <path d="M29 687L31 619Q31 601 49 594L61 599Q76 608 75 625L78 687Z" fill="#100e18" opacity=".65"/>
+   <path d="M25 684L28 619Q28 600 47 591Q67 594 73 614L76 684Z" fill="url(#graveStone)" stroke="#292431" stroke-width="4"/>
+   <path d="M34 677L36 621Q37 607 49 602Q63 606 66 621L68 677Z" fill="none" stroke="#b7adbb" stroke-width="2" opacity=".38"/>
+   <path d="M31 623Q49 611 70 625M30 676L75 676" fill="none" stroke="#17141e" stroke-width="4" opacity=".7"/>
+   <path d="M45 632l-5 13 7 8-4 14M61 620l-3 11 5 8" fill="none" stroke="#29232f" stroke-width="2" opacity=".8"/>
+   <path d="M37 608q11-9 22 0" fill="none" stroke="#d1c5d0" stroke-width="2" opacity=".5"/>
+  </g>
+  <!-- broad, low, broken-top slab -->
+  <g>
+   <path d="M94 690L99 640 108 631 143 635 153 649 155 690Z" fill="#17141f" opacity=".8"/>
+   <path d="M91 686L96 639 106 626 140 630 149 644 151 686Z" fill="url(#graveShadow)" stroke="#292431" stroke-width="4"/>
+   <path d="M101 642l10-5 28 4 5 8-2 28-39-1Z" fill="none" stroke="#b8adbd" stroke-width="2" opacity=".32"/>
+   <path d="M111 631l8 9 7-6 8 7" fill="none" stroke="#292330" stroke-width="3"/>
+   <path d="M103 660l9-5-3 13 8 8m22-30-6 11 4 9" fill="none" stroke="#211d29" stroke-width="2"/>
+  </g>
+  <!-- narrow pointed memorial -->
+  <g>
+   <path d="M177 686L181 638 198 612 215 639 220 686Z" fill="#17141f"/>
+   <path d="M174 683L178 638 198 607 217 638 222 683Z" fill="url(#graveStone)" stroke="#292431" stroke-width="4"/>
+   <path d="M185 674L188 640 198 623 208 640 212 674Z" fill="none" stroke="#c0b5c3" stroke-width="2" opacity=".35"/>
+   <path d="M198 630V668M188 645H208" stroke="#c9bdca" stroke-width="3" opacity=".6"/>
+   <path d="M181 641l9 8-4 12m25-22-7 11 5 10" fill="none" stroke="#211d29" stroke-width="2"/>
+  </g>
+  <!-- small leaning, chipped headstone -->
+  <g transform="rotate(-7 271 665)">
+   <path d="M244 690L246 651Q247 635 264 629L285 635 293 650 291 690Z" fill="#17141f"/>
+   <path d="M240 686L242 649Q244 632 263 625L282 631 289 648 287 686Z" fill="url(#graveShadow)" stroke="#292431" stroke-width="4"/>
+   <path d="M250 646q12-12 29 1l-2 29-27-1Z" fill="none" stroke="#b9aebd" stroke-width="2" opacity=".34"/>
+   <path d="M244 650l10 7-3 10m31-29-7 12 5 8" fill="none" stroke="#211d29" stroke-width="2"/>
+  </g>
  </g>
- <!-- right grave row -->
- <g stroke="#24202c" stroke-width="3" stroke-linejoin="round">
-  <path d="M908 674V638Q908 622 925 622Q942 622 942 638V674Z" fill="url(#graveStone)"/>
-  <path d="M970 690V655Q970 635 991 635Q1012 635 1012 655V690Z" fill="url(#graveShadow)"/>
-  <path d="M1050 674V641L1062 627 1074 641V674Z" fill="url(#graveStone)"/>
-  <path d="M1127 684V649Q1127 629 1148 629Q1169 629 1169 649V684Z" fill="url(#graveShadow)"/>
-  <path d="M917 641Q925 634 933 641M978 657Q991 646 1004 657M1057 645L1062 638 1067 645M1135 651Q1148 640 1161 651" fill="none" stroke="#c5bac9" stroke-width="2" opacity=".6"/>
-  <path d="M991 648V674M983 656H999" stroke="#d2c7d4" stroke-width="2" opacity=".65"/>
-  <path d="M1060 652V668M1054 658H1066" stroke="#d2c7d4" stroke-width="2" opacity=".65"/>
+ <!-- right grave row: distinct silhouettes, chipped edges and carved detail -->
+ <g stroke-linejoin="round">
+  <!-- small old rounded marker -->
+  <g>
+   <path d="M902 686L905 638Q907 619 924 614Q943 619 946 638L949 686Z" fill="#17141f"/>
+   <path d="M898 683L901 636Q903 616 923 610Q941 615 944 636L947 683Z" fill="url(#graveShadow)" stroke="#292431" stroke-width="4"/>
+   <path d="M909 675L911 639Q913 624 923 621Q935 625 937 640L938 675Z" fill="none" stroke="#c0b5c3" stroke-width="2" opacity=".35"/>
+   <path d="M904 638q17-13 37 1" fill="none" stroke="#d1c5d0" stroke-width="2" opacity=".45"/>
+   <path d="M910 648l-3 12 6 8-3 9m25-38-5 13 4 7" fill="none" stroke="#211d29" stroke-width="2"/>
+  </g>
+  <!-- tall cross-topped grave -->
+  <g>
+   <path d="M968 690L971 647 981 638 981 619 991 619 991 638 1002 647 1005 690Z" fill="#17141f"/>
+   <path d="M964 686L967 644 978 634 978 614 994 614 994 634 1005 644 1008 686Z" fill="url(#graveStone)" stroke="#292431" stroke-width="4"/>
+   <path d="M986 620V670M973 646H999" stroke="#d0c4d1" stroke-width="3" opacity=".55"/>
+   <path d="M973 654l8 8-4 12m23-28-6 11 4 12" fill="none" stroke="#211d29" stroke-width="2"/>
+  </g>
+  <!-- wide arched family marker -->
+  <g>
+   <path d="M1030 688L1034 642Q1035 617 1060 611Q1085 617 1088 642L1092 688Z" fill="#17141f"/>
+   <path d="M1026 684L1030 640Q1032 613 1059 606Q1084 612 1088 640L1092 684Z" fill="url(#graveStone)" stroke="#292431" stroke-width="4"/>
+   <path d="M1040 674L1043 642Q1045 625 1059 620Q1074 625 1077 642L1080 674Z" fill="none" stroke="#c5bac9" stroke-width="2" opacity=".38"/>
+   <path d="M1034 642q25-20 52 0M1033 675h57" fill="none" stroke="#17141e" stroke-width="4" opacity=".65"/>
+   <path d="M1045 635l-4 13 6 10-3 12m34-40-6 12 5 10" fill="none" stroke="#211d29" stroke-width="2"/>
+  </g>
+  <!-- broken, leaning slab -->
+  <g transform="rotate(6 1150 663)">
+   <path d="M1113 690L1116 649 1128 631 1160 628 1177 644 1180 690Z" fill="#17141f"/>
+   <path d="M1109 686L1112 646 1125 626 1159 623 1173 640 1176 686Z" fill="url(#graveShadow)" stroke="#292431" stroke-width="4"/>
+   <path d="M1121 646l12-8 27 1 8 10-2 28-43 1Z" fill="none" stroke="#c0b5c3" stroke-width="2" opacity=".34"/>
+   <path d="M1115 650l11 7-4 11m44-38-8 13 6 10" fill="none" stroke="#211d29" stroke-width="2"/>
+  </g>
  </g>
  <!-- weathered carved names and dates, kept faint like old eroded inscriptions -->
  <g fill="#d0c5d2" font-family="Georgia,serif" font-size="8" text-anchor="middle" opacity=".58">
