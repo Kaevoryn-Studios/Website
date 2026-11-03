@@ -121,6 +121,14 @@ footer{text-align:center;padding:20px 0 36px;color:#8f86a6;font-size:10px;letter
  <linearGradient id="drive" x2="0" y2="1"><stop stop-color="#777083"/><stop offset="1" stop-color="#171622"/></linearGradient>
  <filter id="glow"><feGaussianBlur stdDeviation="8" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
  <filter id="shadow"><feGaussianBlur stdDeviation="15"/></filter>
+ <filter id="stoneSurface" x="-5%" y="-5%" width="110%" height="110%">
+  <feTurbulence type="fractalNoise" baseFrequency=".038" numOctaves="3" seed="23" result="stoneNoise"/>
+  <feColorMatrix in="stoneNoise" type="saturate" values="0" result="stoneGrey"/>
+  <feComponentTransfer in="stoneGrey" result="stoneRelief"><feFuncA type="table" tableValues="0 .24"/></feComponentTransfer>
+  <feDiffuseLighting in="stoneNoise" surfaceScale="3.5" diffuseConstant=".48" lighting-color="#bdb2c8" result="stoneLight"><feDistantLight azimuth="225" elevation="42"/></feDiffuseLighting>
+  <feBlend in="SourceGraphic" in2="stoneRelief" mode="soft-light" result="grainBlend"/>
+  <feBlend in="grainBlend" in2="stoneLight" mode="soft-light"/>
+ </filter>
  <filter id="stoneDepth" x="-8%" y="-8%" width="116%" height="116%">
   <feTurbulence type="fractalNoise" baseFrequency=".42" numOctaves="2" seed="11" result="grain"/>
   <feColorMatrix in="grain" type="saturate" values="0" result="greyGrain"/>
@@ -191,8 +199,8 @@ footer{text-align:center;padding:20px 0 36px;color:#8f86a6;font-size:10px;letter
 </g>
 <!-- sprawling left and right wings -->
 <g stroke="#a69aaf" stroke-width="5">
- <path d="M15 585V405L65 345H365L415 405V585Z" fill="url(#stone)"/>
- <path d="M785 585V405L835 345H1135L1185 405V585Z" fill="url(#stone)"/>
+ <path d="M15 585V405L65 345H365L415 405V585Z" fill="url(#stone)" filter="url(#stoneSurface)"/>
+ <path d="M785 585V405L835 345H1135L1185 405V585Z" fill="url(#stone)" filter="url(#stoneSurface)"/>
  <path d="M20 405L65 345H365L410 405Z M790 405L835 345H1135L1180 405Z" fill="url(#roofFace)"/>
  <path d="M45 345L100 220H300L355 345Z M845 345L900 220H1100L1155 345Z" fill="url(#roof)"/>
  <path d="M75 230H325M875 230H1125" stroke="#c0b4c9" stroke-width="4"/>
@@ -203,16 +211,16 @@ footer{text-align:center;padding:20px 0 36px;color:#8f86a6;font-size:10px;letter
  <path d="M855 300V230L905 175 955 230V300Z M1005 300V230L1055 175 1105 230V300Z"/>
 </g>
 <!-- central keep mass -->
-<path d="M300 600V300L360 245H840L900 300V600Z" fill="url(#stone)" filter="url(#stoneDepth)" stroke="#b2a6bf" stroke-width="7"/>
+<path d="M300 600V300L360 245H840L900 300V600Z" fill="url(#stone)" filter="url(#stoneSurface)" stroke="#b2a6bf" stroke-width="7"/>
 <path d="M280 310L360 245H840L920 310Z" fill="url(#roofFace)" stroke="#b7abc5" stroke-width="5"/>
 <!-- great central tower -->
-<path d="M440 600V135H760V600Z" fill="url(#stone)" filter="url(#stoneDepth)" stroke="#c0b5ce" stroke-width="7"/>
+<path d="M440 600V135H760V600Z" fill="url(#stone)" filter="url(#stoneSurface)" stroke="#c0b5ce" stroke-width="7"/>
 <path d="M415 155L600 -95 785 155Z" fill="url(#roofFace)" stroke="#d0c4d9" stroke-width="6"/>
 <path d="M600 -95V-130" stroke="#e4d9ec" stroke-width="6"/>
 <path d="M600 -130l18 23-18 22-18-22Z" fill="#c9aaff" filter="url(#glow)"/>
 <!-- flanking tall needle towers -->
 <g stroke="#b6a9c4" stroke-width="6">
- <path d="M340 600V160H440V600Z M760 600V160H860V600Z" fill="url(#stone)"/>
+ <path d="M340 600V160H440V600Z M760 600V160H860V600Z" fill="url(#stone)" filter="url(#stoneSurface)"/>
  <path d="M320 175L390 -45 460 175Z M740 175L810 -45 880 175Z" fill="url(#roofFace)"/>
  <path d="M390 -45V-80M810 -45V-80" stroke="#e1d5ed" stroke-width="5"/>
  <path d="M390 -80l14 18-14 18-14-18ZM810 -80l14 18-14 18-14-18Z" fill="#b99aff" filter="url(#glow)"/>
