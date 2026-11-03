@@ -205,6 +205,25 @@ footer{text-align:center;padding:20px 0 36px;color:#8f86a6;font-size:10px;letter
   <path d="M-40 105H40" stroke="#f0dfc0" stroke-width="2.5"/>
   <path d="M-48 116H48" stroke="#171321" stroke-width="4" opacity=".8"/>
  </g>
+ <g id="stoneGargoyle">
+  <!-- crouched stone body and haunches -->
+  <path d="M-31 30Q-38 14-26 2L-17-8Q-10-20 4-17Q19-15 23-2L34 9 29 28 17 34H-22Z" fill="#302b3a" stroke="#aaa0b1" stroke-width="2.2"/>
+  <path d="M-20 13Q-10 2 1 7L16 21 8 33H-17Z" fill="#554b60" stroke="#211c2b" stroke-width="2"/>
+  <!-- folded, ribbed wings -->
+  <path d="M-18 3Q-42-2-49-25Q-33-22-26-36Q-10-29-7-13L-2 2Z" fill="#4a4055" stroke="#b0a3b8" stroke-width="2.5"/>
+  <path d="M-43-24Q-30-17-21-8M-28-31Q-22-19-13-9M-43-24L-37-5-23 5" fill="none" stroke="#211b2a" stroke-width="2"/>
+  <path d="M18 2Q39-5 48-27Q31-25 24-39Q8-30 8-13L5 3Z" fill="#40364c" stroke="#b0a3b8" stroke-width="2.5"/>
+  <path d="M41-25Q29-17 20-7M27-33Q20-20 13-9M41-25L36-5 22 5" fill="none" stroke="#211b2a" stroke-width="2"/>
+  <!-- hunched neck, horned head and muzzle -->
+  <path d="M-5-12Q-4-27 7-31L19-25 23-12 15-2 2-3Z" fill="#62586a" stroke="#211b2a" stroke-width="2"/>
+  <path d="M0-27L-7-39 6-33M17-27L27-39 25-24" fill="#383143" stroke="#a99bb2" stroke-width="2"/>
+  <path d="M16-17L31-12 24-4 12-7Z" fill="#292433" stroke="#a99bb2" stroke-width="1.6"/>
+  <path d="M9-20L13-19M20-20L24-19" stroke="#f0bd79" stroke-width="2.5" stroke-linecap="round" filter="url(#glow)"/>
+  <!-- foreclaws gripping the ledge -->
+  <path d="M-17 23L-24 36-18 34-13 39-8 27M17 22L23 36 17 34 12 39 8 27" fill="#62586a" stroke="#211b2a" stroke-width="2"/>
+  <path d="M-31 39H34L39 45H-36Z" fill="#51485d" stroke="#b7a9c1" stroke-width="2"/>
+  <path d="M-29 39H32" stroke="#ded0df" stroke-width="1.6" opacity=".7"/>
+ </g>
  <g id="darkWindow"><path d="M-25 8Q-25-30 0-45Q25-30 25 8V68H-25Z" fill="#0b0b14" stroke="#8d849b" stroke-width="5"/><path d="M-16 9Q-16-20 0-32Q16-20 16 9V59H-16Z" fill="#9b7bd0" opacity=".34"/></g>
 </defs>
 <!-- distant mountain silhouettes -->
@@ -257,6 +276,13 @@ footer{text-align:center;padding:20px 0 36px;color:#8f86a6;font-size:10px;letter
  <path d="M430 155L450 112 470 155 463 164H437Z M730 155L750 112 770 155 763 164H737Z"/>
 </g>
 <g fill="#b99aff" filter="url(#glow)"><circle cx="350" cy="248" r="6"/><circle cx="850" cy="248" r="6"/><circle cx="450" cy="110" r="5"/><circle cx="750" cy="110" r="5"/></g>
+<!-- Ancient winged gargoyles crouch on the castle's stone ledges -->
+<g class="gargoyles">
+ <use href="#stoneGargoyle" transform="translate(350 265) scale(.9)"/>
+ <use href="#stoneGargoyle" transform="translate(850 265) scale(-.9 .9)"/>
+ <use href="#stoneGargoyle" transform="translate(157 335) scale(.68)"/>
+ <use href="#stoneGargoyle" transform="translate(1040 320) scale(-.68 .68)"/>
+</g>
 <!-- Visible hand-laid masonry relief: irregular joints, not a rigid grid -->
 <g fill="url(#weatheredMasonry)" opacity=".52" pointer-events="none">
  <path d="M15 585V405L65 345H365L415 405V585Z"/>
