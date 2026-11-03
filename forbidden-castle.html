@@ -10,11 +10,11 @@
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 50% 0%,#39234f 0%,#151023 38%,#080611 78%);color:#f5f0ff;font:16px/1.6 system-ui,Arial,sans-serif;overflow-x:hidden}
 a{color:var(--cyan)}.top{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;padding:17px clamp(18px,5vw,64px);border-bottom:1px solid #c6aaff33;background:#080611d9}.brand{font-size:12px;letter-spacing:.18em;font-weight:900;color:white;text-decoration:none}.brand small{display:block;color:var(--violet);font-size:9px}.nav a{margin-left:16px;text-decoration:none;color:#e6dcff;font-size:11px}
 .wrap{width:min(1120px,calc(100% - 32px));margin:auto}.intro{text-align:center;padding:46px 0 20px}.eyebrow{color:var(--violet);font-size:10px;font-weight:900;letter-spacing:.28em}.intro h1{margin:8px 0;font-size:clamp(40px,8vw,82px);line-height:.96;letter-spacing:-.05em;background:linear-gradient(100deg,#fff,#c8b2ff 48%,#8cecff);color:transparent;background-clip:text}.intro p{max-width:720px;margin:15px auto;color:#c9c1d9;font-size:clamp(15px,2vw,19px)}
-.scene{position:relative;overflow:hidden;min-height:clamp(620px,82vw,860px);border:1px solid #b49aff66;border-radius:24px;background:linear-gradient(#090b20 0%,#17142c 54%,#090811 100%);box-shadow:0 28px 100px #0009;isolation:isolate}
+.scene{position:relative;overflow:hidden;min-height:clamp(700px,94vw,980px);border:1px solid #b49aff66;border-radius:24px;background:linear-gradient(#090b20 0%,#17142c 54%,#090811 100%);box-shadow:0 28px 100px #0009;isolation:isolate}
 .skyglow{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 48%,#8c65c533,transparent 48%),radial-gradient(ellipse at 50% 100%,#6d4a9b44,transparent 50%);pointer-events:none}
 .moon{position:absolute;top:8%;right:16%;width:clamp(54px,9vw,100px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 35% 32%,#fff 0,#e2d8ff 42%,#8d7eb4 100%);box-shadow:0 0 45px #c4adff88,0 0 110px #9a78df55}
 .stars{position:absolute;inset:0;background-image:radial-gradient(2px 2px at 13% 20%,#fff 60%,transparent),radial-gradient(1px 1px at 25% 11%,#d7c9ff 60%,transparent),radial-gradient(2px 2px at 72% 18%,#fff 60%,transparent),radial-gradient(1px 1px at 86% 31%,#c6b5ff 60%,transparent),radial-gradient(1px 1px at 43% 9%,#fff 60%,transparent),radial-gradient(2px 2px at 58% 27%,#fff 60%,transparent);opacity:.8}
-.castle{position:absolute;inset:auto 0 3%;width:100%;height:94%;filter:drop-shadow(0 18px 28px #000b)}
+.castle{position:absolute;inset:auto 0 2%;width:100%;height:97%;filter:drop-shadow(0 18px 28px #000b)}
 .castle svg{width:100%;height:100%;overflow:visible}
 .window{fill:#b99aff;filter:drop-shadow(0 0 9px #b99aff);animation:windowPulse 3.4s ease-in-out infinite alternate}.window:nth-of-type(odd){animation-delay:1.3s}
 @keyframes windowPulse{from{opacity:.35}to{opacity:1}}
@@ -31,7 +31,7 @@ button,.btn{display:inline-flex;justify-content:center;align-items:center;min-he
 button:hover,.btn:hover,button:focus-visible,.btn:focus-visible{outline:2px solid var(--cyan);outline-offset:3px;background:#b49aff38}
 #gateMessage{min-height:26px;margin-top:15px;color:var(--gold);text-align:center;font-weight:700}
 footer{text-align:center;padding:20px 0 36px;color:#8f86a6;font-size:10px;letter-spacing:.15em}
-@media(max-width:600px){.scene{min-height:590px}.castle{height:82%;bottom:12%}.scene-caption{bottom:14px}.nav a{margin-left:8px}}
+@media(max-width:600px){.scene{min-height:700px}.castle{height:82%;bottom:12%}.scene-caption{bottom:14px}.nav a{margin-left:8px}}
 @keyframes gateGlow{0%{filter:drop-shadow(0 0 4px #b49aff)}100%{filter:drop-shadow(0 0 24px #b49aff)}}
 .scene.gate-open .castle{animation:gateGlow 1.8s ease-in-out infinite alternate}
 .castle-gate{transform-box:view-box;transition:transform 1.6s cubic-bezier(.2,.8,.2,1),opacity 1.2s ease;transform-origin:center}
@@ -121,26 +121,26 @@ footer{text-align:center;padding:20px 0 36px;color:#8f86a6;font-size:10px;letter
 <!-- distant battlements -->
 <path d="M90 390V270h45v-35h42v35h35v-70h42v70h35v120M720 390V270h40v-42h45v42h35v-70h48v70h35v120" fill="#282337" stroke="#625678" stroke-width="5"/>
 <!-- main keep -->
-<path d="M245 500V245h510v255Z" fill="url(#stone)" stroke="#9a8caf" stroke-width="5"/>
-<path d="M215 255h570l-32-28H247Z" fill="#4b405e" stroke="#a394b9" stroke-width="4"/>
+<path d="M245 500V190h510v310Z" fill="url(#stone)" stroke="#9a8caf" stroke-width="5"/>
+<path d="M215 200h570l-32-28H247Z" fill="#4b405e" stroke="#a394b9" stroke-width="4"/>
 <!-- central high tower -->
-<path d="M385 275V110h230v390H385Z" fill="url(#stone)" stroke="#b0a1c7" stroke-width="5"/>
-<path d="M365 120 500 5l135 115Z" fill="url(#roof)" stroke="#c1b0d8" stroke-width="5"/>
+<path d="M385 275V55h230v445H385Z" fill="url(#stone)" stroke="#b0a1c7" stroke-width="5"/>
+<path d="M365 65 500 -65l135 130Z" fill="url(#roof)" stroke="#c1b0d8" stroke-width="5"/>
 <path d="M500 5V-20" stroke="#d5c6e8" stroke-width="5"/><path d="M500 -20l25 18-25 15Z" fill="#b49aff"/>
 <!-- side towers -->
-<path d="M145 500V225h125v275Z" fill="url(#stone)" stroke="#a89ab9" stroke-width="5"/>
-<path d="M130 235 207 95l78 140Z" fill="url(#roof)" stroke="#b8a8cd" stroke-width="5"/>
-<path d="M730 500V225h125v275Z" fill="url(#stone)" stroke="#a89ab9" stroke-width="5"/>
-<path d="M715 235 792 95l78 140Z" fill="url(#roof)" stroke="#b8a8cd" stroke-width="5"/>
+<path d="M145 500V165h125v335Z" fill="url(#stone)" stroke="#a89ab9" stroke-width="5"/>
+<path d="M130 175 207 25l78 150Z" fill="url(#roof)" stroke="#b8a8cd" stroke-width="5"/>
+<path d="M730 500V165h125v335Z" fill="url(#stone)" stroke="#a89ab9" stroke-width="5"/>
+<path d="M715 175 792 25l78 150Z" fill="url(#roof)" stroke="#b8a8cd" stroke-width="5"/>
 <!-- smaller corner turrets -->
-<path d="M285 500V300h75v200M640 500V300h75v200" fill="#302a3d" stroke="#9182a8" stroke-width="4"/>
-<path d="M275 310 322 220l48 90ZM630 310 677 220l48 90Z" fill="url(#roof)" stroke="#a99abb" stroke-width="4"/>
+<path d="M285 500V245h75v255M640 500V245h75v255" fill="#302a3d" stroke="#9182a8" stroke-width="4"/>
+<path d="M275 255 322 165l48 90ZM630 255 677 165l48 90Z" fill="url(#roof)" stroke="#a99abb" stroke-width="4"/>
 <!-- expanded manor wings: a mansion facade joined to the fortress keep -->
 <g stroke="#9c8caf" stroke-width="5">
-<path d="M18 505V350l38-38h270l38 38v155Z" fill="url(#stone)"/>
-<path d="M636 505V350l38-38h270l38 38v155Z" fill="url(#stone)"/>
-<path d="M18 352h346l-28-36H55Z M636 352h346l-28-36H664Z" fill="url(#roof)"/>
-<path d="M45 312l30-65h95l30 65M800 312l30-65h95l30 65" fill="url(#roof)"/>
+<path d="M18 505V295l38-38h270l38 38v210Z" fill="url(#stone)"/>
+<path d="M636 505V295l38-38h270l38 38v210Z" fill="url(#stone)"/>
+<path d="M18 297h346l-28-36H55Z M636 297h346l-28-36H664Z" fill="url(#roof)"/>
+<path d="M45 257l30-65h95l30 65M800 257l30-65h95l30 65" fill="url(#roof)"/>
 <path d="M60 247h110M815 247h110" fill="none" stroke="#c2b1d5" stroke-width="4"/>
 </g>
 <g fill="#b99aff" filter="url(#glow)" opacity=".9">
@@ -154,13 +154,13 @@ footer{text-align:center;padding:20px 0 36px;color:#8f86a6;font-size:10px;letter
 <path d="M245 330v-35l24-22 24 22v35M705 330v-35l24-22 24 22v35"/>
 </g>
 <!-- long mansion roofline and stone connecting arcades -->
-<path d="M28 315l30-25h270l30 25M642 315l30-25h270l30 25" fill="none" stroke="#c5b5d8" stroke-width="6"/>
+<path d="M28 260l30-25h270l30 25M642 260l30-25h270l30 25" fill="none" stroke="#c5b5d8" stroke-width="6"/>
 <path d="M0 540Q250 505 500 540T1000 540" fill="none" stroke="#89799c" stroke-width="5" opacity=".65"/>
 <!-- extra needle-like haunted spires to make the estate rise higher -->
 <g stroke="#b5a5c8" stroke-width="5">
-<path d="M292 350V118h78v232Z M630 350V118h78v232Z" fill="url(#stone)"/>
-<path d="M276 125 331 18l55 107Z M614 125 669 18l55 107Z" fill="url(#roof)"/>
-<path d="M331 18V-6M669 18V-6" stroke="#d8c9ed" stroke-width="4"/>
+<path d="M292 350V58h78v292Z M630 350V58h78v292Z" fill="url(#stone)"/>
+<path d="M276 65 331 -42l55 107Z M614 65 669 -42l55 107Z" fill="url(#roof)"/>
+<path d="M331 -42V-66M669 -42V-66" stroke="#d8c9ed" stroke-width="4"/>
 <path d="M331 -6l13 14-13 12-13-12ZM669 -6l13 14-13 12-13-12Z" fill="#b49aff" filter="url(#glow)"/>
 </g>
 <g class="window"><path d="M310 165q20-32 40 0v54h-40Z M650 165q20-32 40 0v54h-40Z"/></g>
