@@ -178,21 +178,36 @@ footer{text-align:center;padding:20px 0 36px;color:#8f86a6;font-size:10px;letter
 <g class="floating-candles" fill="#ffe2a6" stroke="#fff0c8" stroke-width="2"><path d="M150 100q-13-20 0-40 13 20 0 40M270 155q-12-18 0-36 12 18 0 36M630 155q-12-18 0-36 12 18 0 36M750 100q-13-20 0-40 13 20 0 40M450 80q-15-23 0-46 15 23 0 46"/></g>
 <g fill="none" stroke="#c9aaff" stroke-width="4" opacity=".9"><circle cx="450" cy="350" r="55"/><circle cx="450" cy="350" r="34"/><path d="M450 285 466 335 515 350 466 365 450 415 434 365 385 350 434 335Z"/></g>
 <g fill="#b49aff"><circle cx="150" cy="100" r="3"/><circle cx="270" cy="155" r="3"/><circle cx="630" cy="155" r="3"/><circle cx="750" cy="100" r="3"/><circle cx="450" cy="80" r="4"/></g>
-<!-- One broad, unified staircase with worn stone treads and visible cracked edges. -->
+<!-- Solid masonry staircase: deep risers, visible tread tops, side cheeks and a grounded foot. -->
 <g class="hall-stairs-front" stroke-linejoin="round" stroke-linecap="round">
-<path d="M300 374 380 244H520L600 374Z" fill="#120d1a" stroke="#a995bb" stroke-width="5"/>
-<path d="M300 374h300l-12-18H312Z" fill="#81708f" stroke="#d2c0df" stroke-width="3"/>
-<path d="M312 356h276l-13-19H325Z" fill="#71617f" stroke="#c9b6d8" stroke-width="3"/>
-<path d="M325 337h250l-13-19H338Z" fill="#625270" stroke="#bda9ce" stroke-width="3"/>
-<path d="M338 318h224l-13-19H351Z" fill="#544562" stroke="#b29cc7" stroke-width="3"/>
-<path d="M351 299h198l-13-19H364Z" fill="#463754" stroke="#a58dbd" stroke-width="3"/>
-<path d="M364 280h172l-13-19H377Z" fill="#382b48" stroke="#9b83b4" stroke-width="3"/>
-<path d="M380 261h140l-12-17H392Z" fill="#30233e" stroke="#927aa9" stroke-width="3"/>
-<path d="M312 356l-9 9 7 5m28-52-8 8 5 6m30-44-7 7 4 5m35-47-8 8 4 5" fill="none" stroke="#21182b" stroke-width="3"/>
-<path d="M588 356l9 9-7 5m-28-52 8 8-5 6m-30-44 7 7-4 5m-35-47 8 8-4 5" fill="none" stroke="#21182b" stroke-width="3"/>
-<path d="M300 374 380 244M600 374 520 244" fill="none" stroke="#d0bfdf" stroke-width="7"/>
-<path d="M300 374 380 244M600 374 520 244" fill="none" stroke="#8cecff" stroke-width="1.8" opacity=".7"/>
-<path d="M390 260l10 5-5 8m95-13-9 7 4 7m-113 31 12 4-6 8m118-10-10 7 4 8" fill="none" stroke="#201629" stroke-width="2.5"/>
+<!-- Heavy stone body and side supports, extending down into the hall floor. -->
+<path d="M292 385 380 244H520L608 385Z" fill="#21182a" stroke="#9f8bad" stroke-width="5"/>
+<path d="M292 385 380 244 393 252 315 382Z" fill="#40334e" stroke="#b5a3c7" stroke-width="3"/>
+<path d="M608 385 520 244 507 252 585 382Z" fill="#40334e" stroke="#b5a3c7" stroke-width="3"/>
+<!-- Vertical riser faces: these give every step real depth instead of a floating outline. -->
+<path d="M300 374 600 374 588 356 312 356Z" fill="#302438" stroke="#a995b9" stroke-width="2.5"/>
+<path d="M312 356 588 356 575 337 325 337Z" fill="#382b45" stroke="#aa97bc" stroke-width="2.5"/>
+<path d="M325 337 575 337 562 318 338 318Z" fill="#40324f" stroke="#b19fc5" stroke-width="2.5"/>
+<path d="M338 318 562 318 549 299 351 299Z" fill="#493957" stroke="#b9a7cc" stroke-width="2.5"/>
+<path d="M351 299 549 299 536 280 364 280Z" fill="#51415f" stroke="#c0afd1" stroke-width="2.5"/>
+<path d="M364 280 536 280 523 261 377 261Z" fill="#5b4a69" stroke="#c9b8d8" stroke-width="2.5"/>
+<!-- Worn upper surfaces of each tread. -->
+<path d="M300 374 312 356 588 356 600 374Z" fill="#9886a5" stroke="#e0d1e9" stroke-width="2.5"/>
+<path d="M312 356 325 337 575 337 588 356Z" fill="#887594" stroke="#d8c8e4" stroke-width="2.5"/>
+<path d="M325 337 338 318 562 318 575 337Z" fill="#796785" stroke="#cfbfdd" stroke-width="2.5"/>
+<path d="M338 318 351 299 549 299 562 318Z" fill="#6a5878" stroke="#c5b3d5" stroke-width="2.5"/>
+<path d="M351 299 364 280 536 280 549 299Z" fill="#5e4c6e" stroke="#bca9d0" stroke-width="2.5"/>
+<path d="M364 280 377 261 523 261 536 280Z" fill="#51405f" stroke="#b39fc9" stroke-width="2.5"/>
+<path d="M377 261 393 244 507 244 523 261Z" fill="#453451" stroke="#aa95c2" stroke-width="2.5"/>
+<!-- Chips and cracks worn into the old stone. -->
+<g fill="none" stroke="#21182b" stroke-width="3">
+<path d="M326 365l8-5-3-5 7-6m-17-12 7-4-2-5 8-5m-18-13 7-5-3-5 7-5"/>
+<path d="M574 365l-8-5 3-5-7-6m17-12-7-4 2-5-8-5m18-13-7-5 3-5-7-5"/>
+<path d="M405 350l8-3-2-5m74-10-7-4 3-5m-95-26 8-4-2-4m108-10-7-4 2-4"/>
+</g>
+<!-- Weight-bearing bottom course sits flush on the hall floor. -->
+<path d="M286 385H614" stroke="#d0bedf" stroke-width="5"/>
+<path d="M300 389H600" stroke="#080611" stroke-width="8" opacity=".8"/>
 </g>
 <!-- A spectral keeper slowly materializes at the top of the stairs, watches, then fades away. -->
 <g class="stair-phantom" pointer-events="none">
