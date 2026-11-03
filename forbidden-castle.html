@@ -121,6 +121,16 @@ footer{text-align:center;padding:20px 0 36px;color:#8f86a6;font-size:10px;letter
  <linearGradient id="drive" x2="0" y2="1"><stop stop-color="#777083"/><stop offset="1" stop-color="#171622"/></linearGradient>
  <filter id="glow"><feGaussianBlur stdDeviation="8" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
  <filter id="shadow"><feGaussianBlur stdDeviation="15"/></filter>
+ <filter id="stoneDepth" x="-8%" y="-8%" width="116%" height="116%">
+  <feTurbulence type="fractalNoise" baseFrequency=".42" numOctaves="2" seed="11" result="grain"/>
+  <feColorMatrix in="grain" type="saturate" values="0" result="greyGrain"/>
+  <feComponentTransfer in="greyGrain" result="softGrain"><feFuncA type="table" tableValues="0 .10"/></feComponentTransfer>
+  <feBlend in="SourceGraphic" in2="softGrain" mode="soft-light" result="textured"/>
+  <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="softShadow"/>
+  <feOffset in="softShadow" dx="3" dy="5" result="offsetShadow"/>
+  <feComposite in="offsetShadow" in2="SourceAlpha" operator="out" result="edgeShade"/>
+  <feMerge><feMergeNode in="edgeShade"/><feMergeNode in="textured"/></feMerge>
+ </filter>
  <g id="litWindow">
   <path d="M-23 8V-12Q-23-34 0-47Q23-34 23-12V8V55H-23Z" fill="#100d18"/>
   <path d="M-19 7V-12Q-19-30 0-41Q19-30 19-12V7V50H-19Z" fill="#b9a9c8" opacity=".72"/>
@@ -134,7 +144,7 @@ footer{text-align:center;padding:20px 0 36px;color:#8f86a6;font-size:10px;letter
 <path d="M0 405L100 315 175 375 275 270 365 380 480 260 580 375 700 250 810 375 930 280 1040 380 1140 295 1200 355V760H0Z" fill="#111321" opacity=".75"/>
 <!-- rear towers and long fortified skyline -->
 <g stroke="#9d92ad" stroke-width="5">
- <path d="M95 570V315H220V570Z M980 570V300H1100V570Z" fill="url(#stone)"/>
+ <path d="M95 570V315H220V570Z M980 570V300H1100V570Z" fill="url(#stone)" filter="url(#stoneDepth)"/>
  <path d="M75 325L157 125 240 325Z M960 310L1040 85 1120 310Z" fill="url(#roofFace)"/>
  <path d="M157 125V90M1040 85V45" stroke="#c9bdd7" stroke-width="5"/>
  <path d="M157 90l14 18-14 18-14-18ZM1040 45l15 20-15 20-15-20Z" fill="#b49aff" filter="url(#glow)"/>
@@ -153,10 +163,10 @@ footer{text-align:center;padding:20px 0 36px;color:#8f86a6;font-size:10px;letter
  <path d="M855 300V230L905 175 955 230V300Z M1005 300V230L1055 175 1105 230V300Z"/>
 </g>
 <!-- central keep mass -->
-<path d="M300 600V300L360 245H840L900 300V600Z" fill="url(#stone)" stroke="#b2a6bf" stroke-width="7"/>
+<path d="M300 600V300L360 245H840L900 300V600Z" fill="url(#stone)" filter="url(#stoneDepth)" stroke="#b2a6bf" stroke-width="7"/>
 <path d="M280 310L360 245H840L920 310Z" fill="url(#roofFace)" stroke="#b7abc5" stroke-width="5"/>
 <!-- great central tower -->
-<path d="M440 600V135H760V600Z" fill="url(#stone)" stroke="#c0b5ce" stroke-width="7"/>
+<path d="M440 600V135H760V600Z" fill="url(#stone)" filter="url(#stoneDepth)" stroke="#c0b5ce" stroke-width="7"/>
 <path d="M415 155L600 -95 785 155Z" fill="url(#roofFace)" stroke="#d0c4d9" stroke-width="6"/>
 <path d="M600 -95V-130" stroke="#e4d9ec" stroke-width="6"/>
 <path d="M600 -130l18 23-18 22-18-22Z" fill="#c9aaff" filter="url(#glow)"/>
