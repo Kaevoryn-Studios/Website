@@ -405,6 +405,51 @@ footer{text-align:center;padding:20px 0 36px;color:#8f86a6;font-size:10px;letter
 <!-- braziers and broken statues -->
 <g filter="url(#glow)"><path d="M80 565H135L125 635H90Z M1065 565H1120L1110 635H1075Z" fill="#5d5268"/><path d="M108 570Q65 520 108 480Q150 525 108 570M1092 570Q1050 520 1092 480Q1135 525 1092 570" fill="#ffb85f"/></g>
 <g fill="#393344" stroke="#877a96" stroke-width="4"><path d="M175 590l25-70 25 70v45H175Z M975 590l25-70 25 70v45H975Z"/></g>
+<!-- The forgotten graveyard: weathered headstones and wrought-iron rails frame the approach -->
+<g class="castle-graveyard" pointer-events="none">
+ <defs>
+  <linearGradient id="graveStone" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#aaa0b0"/><stop offset=".35" stop-color="#625a6b"/><stop offset="1" stop-color="#211e2b"/></linearGradient>
+  <linearGradient id="graveShadow" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#71677a"/><stop offset="1" stop-color="#25212d"/></linearGradient>
+ </defs>
+ <!-- low, broken perimeter walls and iron railings -->
+ <g fill="none" stroke="#272331" stroke-width="5" stroke-linecap="round" opacity=".95">
+  <path d="M12 646H300M12 646V700M300 646V700M900 646H1188M900 646V700M1188 646V700"/>
+  <path d="M20 635V687M43 635V687M66 635V687M89 635V687M112 635V687M135 635V687M158 635V687M181 635V687M204 635V687M227 635V687M250 635V687M273 635V687M296 635V687"/>
+  <path d="M904 635V687M927 635V687M950 635V687M973 635V687M996 635V687M1019 635V687M1042 635V687M1065 635V687M1088 635V687M1111 635V687M1134 635V687M1157 635V687M1180 635V687"/>
+ </g>
+ <g fill="#71677c" stroke="#25212e" stroke-width="2">
+  <path d="M8 635H28L18 620Z M285 635H305L295 620Z M892 635H912L902 620Z M1172 635H1192L1182 620Z"/>
+ </g>
+ <!-- left grave row: varied old headstone silhouettes -->
+ <g stroke="#24202c" stroke-width="3" stroke-linejoin="round">
+  <path d="M34 674V638Q34 622 51 622Q68 622 68 638V674Z" fill="url(#graveStone)"/>
+  <path d="M105 684V649Q105 629 126 629Q147 629 147 649V684Z" fill="url(#graveShadow)"/>
+  <path d="M190 674V641L202 627 214 641V674Z" fill="url(#graveStone)"/>
+  <path d="M252 690V657Q252 638 272 638Q292 638 292 657V690Z" fill="url(#graveShadow)"/>
+  <path d="M43 641Q51 634 59 641M113 651Q126 640 139 651M197 645L202 638 207 645M260 660Q272 649 284 660" fill="none" stroke="#c5bac9" stroke-width="2" opacity=".6"/>
+  <path d="M126 642V668M118 650H134" stroke="#d2c7d4" stroke-width="2" opacity=".65"/>
+  <path d="M200 652V668M194 658H206" stroke="#d2c7d4" stroke-width="2" opacity=".65"/>
+ </g>
+ <!-- right grave row -->
+ <g stroke="#24202c" stroke-width="3" stroke-linejoin="round">
+  <path d="M908 674V638Q908 622 925 622Q942 622 942 638V674Z" fill="url(#graveStone)"/>
+  <path d="M970 690V655Q970 635 991 635Q1012 635 1012 655V690Z" fill="url(#graveShadow)"/>
+  <path d="M1050 674V641L1062 627 1074 641V674Z" fill="url(#graveStone)"/>
+  <path d="M1127 684V649Q1127 629 1148 629Q1169 629 1169 649V684Z" fill="url(#graveShadow)"/>
+  <path d="M917 641Q925 634 933 641M978 657Q991 646 1004 657M1057 645L1062 638 1067 645M1135 651Q1148 640 1161 651" fill="none" stroke="#c5bac9" stroke-width="2" opacity=".6"/>
+  <path d="M991 648V674M983 656H999" stroke="#d2c7d4" stroke-width="2" opacity=".65"/>
+  <path d="M1060 652V668M1054 658H1066" stroke="#d2c7d4" stroke-width="2" opacity=".65"/>
+ </g>
+ <!-- weathered carved names and dates, kept faint like old eroded inscriptions -->
+ <g fill="#d0c5d2" font-family="Georgia,serif" font-size="8" text-anchor="middle" opacity=".58">
+  <text x="51" y="660">REST</text><text x="126" y="670">1891</text><text x="202" y="660">R.I.P.</text><text x="272" y="674">1874</text>
+  <text x="925" y="660">REST</text><text x="991" y="676">1862</text><text x="1062" y="660">R.I.P.</text><text x="1148" y="670">1888</text>
+ </g>
+ <!-- creeping graveyard mist -->
+ <g fill="#b7a8cf" opacity=".16" filter="url(#shadow)">
+  <ellipse cx="155" cy="690" rx="170" ry="17"/><ellipse cx="1050" cy="690" rx="170" ry="17"/>
+ </g>
+</g>
 <!-- misty ground silhouette -->
 <path d="M0 690Q180 655 340 690T650 690T950 685T1200 690V760H0Z" fill="#090a13" opacity=".7"/>
 </svg></div></div>
