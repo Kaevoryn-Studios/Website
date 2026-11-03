@@ -45,6 +45,10 @@ footer{text-align:center;padding:20px 0 36px;color:#8f86a6;font-size:10px;letter
 .interior-head{text-align:center}.interior-head h2{margin:5px 0;font-size:clamp(27px,5vw,46px);color:#f2e9ff}.interior-head p{margin:0 auto;max-width:650px;color:#d0c3e4}
 .hall-art{display:block;width:min(100%,850px);max-height:58%;height:auto;margin:12px auto 0;object-fit:contain;filter:drop-shadow(0 18px 25px #0009)}
 .floating-candles{animation:candleDrift 4s ease-in-out infinite alternate;transform-origin:center}
+.haunted-portrait{filter:drop-shadow(0 0 9px #9d7ac455);animation:portraitPulse 7s ease-in-out infinite}
+.portrait-eyes{animation:portraitLook 8s ease-in-out infinite;transform-origin:168px 236px}
+@keyframes portraitLook{0%,18%,100%{transform:translateX(0)}28%,43%{transform:translateX(5px)}55%,72%{transform:translateX(-4px)}82%{transform:translateX(0)}}
+@keyframes portraitPulse{0%,100%{filter:drop-shadow(0 0 4px #8feaff22)}50%{filter:drop-shadow(0 0 12px #9d7ac488)}}
 .floating-candles{animation:candleDrift 4s ease-in-out infinite alternate,candleFlicker 2.8s steps(5,end) infinite;filter:drop-shadow(0 0 5px #ffd58a)}
 .phantom-head{transform-box:view-box;transform-origin:450px 222px;animation:headTurn 12s ease-in-out infinite}
 @keyframes headTurn{0%,27%,100%{transform:rotate(0)}34%,48%{transform:rotate(13deg) translateX(3px)}55%,68%{transform:rotate(-9deg) translateX(-2px)}78%{transform:rotate(0)}}
@@ -135,6 +139,23 @@ footer{text-align:center;padding:20px 0 36px;color:#8f86a6;font-size:10px;letter
 <path d="M0 0h900v370L450 230 0 370Z" fill="url(#hallwall)" opacity=".72"/>
 <path d="M310 370V190q0-95 140-95t140 95v180" fill="#120e1c" stroke="#c0afd6" stroke-width="12"/>
 <path d="M350 370V195q0-65 100-65t100 65v175" fill="#332340" stroke="#806a9b" stroke-width="4"/><path d="M380 205l22 17-8 29 20 16-12 31m112-102-17 20 9 22-16 24 12 26M432 150l-8 20 12 12m47 104 8 16-11 20" fill="none" stroke="#b8a8c6" stroke-width="2" opacity=".65"/>
+<!-- Haunted portrait: an old keeper whose gaze subtly shifts in its frame. -->
+<g class="haunted-portrait">
+  <rect x="112" y="172" width="112" height="151" rx="3" fill="#100b18" stroke="#b99a62" stroke-width="8"/>
+  <rect x="122" y="182" width="92" height="131" fill="#292036" stroke="#6e5638" stroke-width="3"/>
+  <path d="M130 303V210Q168 184 206 210V303Z" fill="#11101b" stroke="#9c8058" stroke-width="2"/>
+  <path d="M139 302Q139 271 150 257L145 230Q146 204 168 202Q190 204 191 230L186 257Q197 271 197 302Z" fill="#070811" stroke="#75618b" stroke-width="2"/>
+  <path d="M145 229Q145 202 168 199Q191 202 191 229Q181 219 168 219Q155 219 145 229Z" fill="#0a0911" stroke="#9c8aaa" stroke-width="2"/>
+  <g class="portrait-eyes">
+    <ellipse cx="158" cy="236" rx="5" ry="2.6" fill="#b8f7ff"/>
+    <ellipse cx="178" cy="236" rx="5" ry="2.6" fill="#b8f7ff"/>
+    <circle cx="158" cy="236" r="1.2" fill="#fff"/>
+    <circle cx="178" cy="236" r="1.2" fill="#fff"/>
+  </g>
+  <path d="M168 242l-4 12h8M156 266q12 7 24 0" fill="none" stroke="#85718f" stroke-width="2"/>
+  <path d="M112 184l112 0M112 310l112 0" stroke="#e0c18a" stroke-width="2" opacity=".8"/>
+  <text x="168" y="337" text-anchor="middle" fill="#e6d2a8" font-size="10" letter-spacing="2">THE FORGOTTEN</text>
+</g>
 <!-- clearly visible ancient staircase rising to the sealed inner door -->
 <g class="hall-stairs" stroke-linejoin="round">
 <path d="M300 365h300l-24-20H324Z" fill="#665675" stroke="#c0a9d5" stroke-width="3"/>
