@@ -16,7 +16,7 @@ a{color:var(--cyan)}.top{display:flex;justify-content:space-between;align-items:
 .stars{position:absolute;inset:0;background-image:radial-gradient(2px 2px at 13% 20%,#fff 60%,transparent),radial-gradient(1px 1px at 25% 11%,#d7c9ff 60%,transparent),radial-gradient(2px 2px at 72% 18%,#fff 60%,transparent),radial-gradient(1px 1px at 86% 31%,#c6b5ff 60%,transparent),radial-gradient(1px 1px at 43% 9%,#fff 60%,transparent),radial-gradient(2px 2px at 58% 27%,#fff 60%,transparent);opacity:.8}
 .castle{position:absolute;inset:auto 0 0;width:100%;height:100%;filter:drop-shadow(0 18px 28px #000b)}
 .castle svg{width:100%;height:100%;overflow:visible}
-.window{animation:windowPulse 5.8s ease-in-out infinite alternate;transform-box:fill-box;transform-origin:center;filter:drop-shadow(0 0 3px rgba(185,154,255,.3))}.window:nth-of-type(odd){animation-delay:1.3s}
+.window{animation:windowPulse 7s ease-in-out infinite alternate;transform-box:fill-box;transform-origin:center;filter:drop-shadow(0 2px 4px rgba(0,0,0,.55))}.window:nth-of-type(odd){animation-delay:1.3s}
 @keyframes windowPulse{from{opacity:.35}to{opacity:1}}
 .fog{position:absolute;bottom:0;left:-15%;width:130%;height:27%;background:radial-gradient(ellipse at 20% 70%,#a18bc533,transparent 50%),radial-gradient(ellipse at 75% 50%,#8cecff22,transparent 48%);filter:blur(18px);animation:fogDrift 13s ease-in-out infinite alternate;pointer-events:none}
 @keyframes fogDrift{to{transform:translateX(6%)}}
@@ -132,11 +132,18 @@ footer{text-align:center;padding:20px 0 36px;color:#8f86a6;font-size:10px;letter
   <feMerge><feMergeNode in="edgeShade"/><feMergeNode in="textured"/></feMerge>
  </filter>
  <g id="litWindow">
-  <path d="M-23 8V-12Q-23-34 0-47Q23-34 23-12V8V55H-23Z" fill="#100d18"/>
-  <path d="M-19 7V-12Q-19-30 0-41Q19-30 19-12V7V50H-19Z" fill="#b9a9c8" opacity=".72"/>
-  <path d="M-15 5V-11Q-15-26 0-36Q15-26 15-11V5V45H-15Z" fill="url(#glass)"/>
-  <path d="M0-35V45M-15 8H15M-15 27H15" stroke="#33263f" stroke-width="3.2"/>
-  <path d="M-24 56H24" stroke="#c1b4cc" stroke-width="3"/>
+  <!-- One deep masonry opening with a single carved stone surround -->
+  <path d="M-27 58V-10Q-27-39 0-54Q27-39 27-10V58Z" fill="#0b0912"/>
+  <path d="M-23 56V-10Q-23-35 0-49Q23-35 23-10V56Z" fill="#62596e"/>
+  <path d="M-19 54V-10Q-19-31 0-44Q19-31 19-10V54Z" fill="#171321"/>
+  <path d="M-15 51V-9Q-15-27 0-38Q15-27 15-9V51Z" fill="url(#glass)"/>
+  <path d="M-12 48V-8Q-12-24 0-34Q12-24 12-8V48Z" fill="#f0d8ff" opacity=".13"/>
+  <!-- lead cames and narrow central mullion -->
+  <path d="M0-37V51M-15 7H15M-15 28H15" fill="none" stroke="#21182d" stroke-width="3"/>
+  <path d="M-13-8Q-12-25 0-35" fill="none" stroke="#fff0d2" stroke-width="1.5" opacity=".65"/>
+  <!-- projecting sill and subtle lower stone shadow -->
+  <path d="M-31 58H31L27 64H-27Z" fill="#3c3448"/>
+  <path d="M-28 58H28" stroke="#c3b6ce" stroke-width="2.2"/>
  </g>
  <g id="darkWindow"><path d="M-25 8Q-25-30 0-45Q25-30 25 8V68H-25Z" fill="#0b0b14" stroke="#8d849b" stroke-width="5"/><path d="M-16 9Q-16-20 0-32Q16-20 16 9V59H-16Z" fill="#9b7bd0" opacity=".34"/></g>
 </defs>
