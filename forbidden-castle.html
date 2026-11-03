@@ -87,13 +87,29 @@ footer{text-align:center;padding:20px 0 36px;color:#8f86a6;font-size:10px;letter
 .interior:after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(112deg,transparent 0 95px,#c7b3d012 96px 97px,transparent 98px 180px);opacity:.35}
 .hall-note{text-align:center;color:#f4d49a;font-size:12px;letter-spacing:.12em;margin:10px 0 0}.interior [hidden]{display:none!important}.library-floor{width:100%;display:flex;flex-direction:column;align-items:center;margin-top:24px;padding-top:24px;border-top:1px solid #9a83b855;background:linear-gradient(180deg,#21172f00,#100d19aa)}.library-art{display:block;width:min(100%,850px);max-height:none;height:auto;margin:12px auto 0;filter:drop-shadow(0 18px 25px #0009)}.library-note{text-align:center;color:#c9b6e8;font-size:12px;letter-spacing:.12em}.floor-controls{display:flex;justify-content:center;gap:9px;flex-wrap:wrap;margin:12px 0 4px;position:sticky;top:0;z-index:12;padding:8px 10px;background:#171020ee;border:1px solid #8b75a8;border-radius:14px;box-shadow:0 6px 20px #0008}.floor-button{min-height:40px;padding:9px 13px;font-size:10px;border-color:#9279b6;background:#171020}.floor-button.active{border-color:#8cecff;background:#8cecff20;color:#dffaff}.floor-connector{width:min(100%,850px);margin:26px auto 8px;text-align:center;color:#d7c4ef;position:relative}.floor-connector p:last-child{font-size:11px;letter-spacing:.18em;color:#e7d5ff}.connector-steps{width:min(78%,430px);margin:10px auto 14px;display:flex;flex-direction:column;align-items:center;gap:3px;filter:drop-shadow(0 5px 8px #0009)}.connector-steps i{display:block;height:9px;background:linear-gradient(90deg,#30243d,#a08caf 48%,#30243d);border:1px solid #b5a0c8;border-radius:2px;transform:perspective(80px) rotateX(18deg)}.connector-steps i:nth-child(1){width:34%}.connector-steps i:nth-child(2){width:43%}.connector-steps i:nth-child(3){width:52%}.connector-steps i:nth-child(4){width:61%}.connector-steps i:nth-child(5){width:70%}.connector-steps i:nth-child(6){width:79%}.upper-floors-tease{margin:9px 0 0;color:#a99bb9;text-align:center;font-size:9px;letter-spacing:.13em}.library-ladder{animation:ladderRoll 12s ease-in-out infinite alternate;transform-box:view-box}@keyframes ladderRoll{0%,12%{transform:translateX(0)}88%,100%{transform:translateX(105px)}}.library-candle{animation:candleDrift 3.8s ease-in-out infinite alternate}.library-dust{animation:libraryDust 8s ease-in-out infinite alternate}@keyframes libraryDust{from{transform:translate(0,8px);opacity:.25}to{transform:translate(10px,-12px);opacity:.9}}@media(prefers-reduced-motion:reduce){.library-ladder,.library-candle,.library-dust{animation:none}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;scroll-behavior:auto!important}}
+ 
+/* Haunted-estate atmosphere */
+.haunt-lightning{position:absolute;inset:0;z-index:3;pointer-events:none;opacity:0;background:linear-gradient(112deg,transparent 38%,#d9eaff88 39%,#fff 39.25%,#b9caff55 39.6%,transparent 41%);mix-blend-mode:screen;animation:lightningFlash 11s linear infinite}
+@keyframes lightningFlash{0%,91%,93%,95%,100%{opacity:0}91.2%,92%,94%{opacity:.8}91.5%,93.5%{opacity:.15}}
+.haunt-aura{position:absolute;z-index:2;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 72%,#9b6cff30,transparent 35%),radial-gradient(ellipse at 12% 65%,#8cecff20,transparent 25%),radial-gradient(ellipse at 88% 62%,#b49aff22,transparent 27%);animation:auraPulse 7s ease-in-out infinite alternate}
+@keyframes auraPulse{to{opacity:.38;transform:scale(1.04)}}
+.haunt-mist{position:absolute;z-index:4;bottom:2%;left:-20%;width:140%;height:34%;pointer-events:none;background:radial-gradient(ellipse at 15% 70%,#c4b4e344,transparent 43%),radial-gradient(ellipse at 52% 55%,#b5c8dc33,transparent 45%),radial-gradient(ellipse at 86% 75%,#b49aff38,transparent 42%);filter:blur(13px);animation:mistCrawl 16s ease-in-out infinite alternate}
+@keyframes mistCrawl{to{transform:translateX(12%) translateY(-9px);opacity:.55}}
+.haunt-embers{position:absolute;z-index:4;inset:15% 5% 8%;pointer-events:none;background-image:radial-gradient(2px 2px at 14% 65%,#c9b2ff 60%,transparent),radial-gradient(2px 2px at 31% 83%,#9eeaff 60%,transparent),radial-gradient(1px 1px at 68% 55%,#fff 60%,transparent),radial-gradient(2px 2px at 82% 78%,#b99aff 60%,transparent),radial-gradient(1px 1px at 54% 92%,#fff 60%,transparent);animation:emberRise 9s ease-in-out infinite alternate;opacity:.7}
+@keyframes emberRise{to{transform:translateY(-22px);opacity:.25}}
+.haunt-bats{position:absolute;z-index:5;top:20%;left:-12%;width:125%;height:30%;pointer-events:none;overflow:hidden}
+.haunt-bats:before,.haunt-bats:after{content:"";position:absolute;width:42px;height:18px;background:#080710;clip-path:polygon(0 15%,22% 42%,34% 0,50% 38%,67% 0,78% 42%,100% 15%,84% 100%,51% 70%,17% 100%);filter:drop-shadow(0 0 5px #b49aff66);animation:batFlight 17s linear infinite}
+.haunt-bats:after{top:42%;left:25%;transform:scale(.65);animation-delay:-8s}
+@keyframes batFlight{from{left:-8%;top:18%;transform:translateY(0) scale(.8)}50%{top:55%;transform:translateY(-35px) scale(1)}to{left:110%;top:12%;transform:translateY(20px) scale(.65)}}
+.scene.gate-open .haunt-lightning,.scene.gate-open .haunt-aura,.scene.gate-open .haunt-mist,.scene.gate-open .haunt-embers,.scene.gate-open .haunt-bats{opacity:0;transition:opacity .8s ease}
+@media(prefers-reduced-motion:reduce){.haunt-lightning,.haunt-aura,.haunt-mist,.haunt-embers,.haunt-bats:before,.haunt-bats:after{animation:none}}
 </style></head>
 <body>
 <header class="top"><a class="brand" href="index.html">KAEVORYN STUDIOS<small>CREATE THE IMPOSSIBLE</small></a><nav class="nav"><a href="kingdoms.html">Kingdoms</a><a href="attractions.html">Attractions</a></nav></header>
 <main class="wrap">
 <section class="intro"><p class="eyebrow">KAEVORYN KINGDOMS · A NEW DARK-FANTASY ADVENTURE</p><h1>FORBIDDEN CASTLE</h1><p>Beyond the last lantern stands a castle no map remembers. Its windows are awake. Its gates have been waiting. And something ancient is stirring within.</p></section>
 <section class="scene" aria-label="Illustrated view of the Forbidden Castle at night">
-<div class="skyglow"></div><div class="stars"></div><div class="moon"></div><div class="scene-label">THE OUTER COURTYARD · AFTER DUSK</div>
+<div class="skyglow"></div><div class="stars"></div><div class="moon"></div><div class="haunt-aura"></div><div class="haunt-lightning"></div><div class="haunt-embers"></div><div class="haunt-bats"></div><div class="scene-label">THE OUTER COURTYARD · AFTER DUSK</div>
 <div class="castle">
 <svg viewBox="0 0 1000 570" role="img" aria-label="A towering gothic castle with pointed towers, glowing windows, and a grand arched entrance">
 <defs>
@@ -140,6 +156,14 @@ footer{text-align:center;padding:20px 0 36px;color:#8f86a6;font-size:10px;letter
 <!-- long mansion roofline and stone connecting arcades -->
 <path d="M28 315l30-25h270l30 25M642 315l30-25h270l30 25" fill="none" stroke="#c5b5d8" stroke-width="6"/>
 <path d="M0 540Q250 505 500 540T1000 540" fill="none" stroke="#89799c" stroke-width="5" opacity=".65"/>
+<!-- extra needle-like haunted spires to make the estate rise higher -->
+<g stroke="#b5a5c8" stroke-width="5">
+<path d="M292 350V118h78v232Z M630 350V118h78v232Z" fill="url(#stone)"/>
+<path d="M276 125 331 18l55 107Z M614 125 669 18l55 107Z" fill="url(#roof)"/>
+<path d="M331 18V-6M669 18V-6" stroke="#d8c9ed" stroke-width="4"/>
+<path d="M331 -6l13 14-13 12-13-12ZM669 -6l13 14-13 12-13-12Z" fill="#b49aff" filter="url(#glow)"/>
+</g>
+<g class="window"><path d="M310 165q20-32 40 0v54h-40Z M650 165q20-32 40 0v54h-40Z"/></g>
 <!-- tower windows -->
 <g class="window"><path d="M470 160q30-45 60 0v65h-60Z"/><path d="M185 260q22-34 44 0v58h-44Z"/><path d="M770 260q22-34 44 0v58h-44Z"/><path d="M310 340q18-28 36 0v48h-36Z"/><path d="M655 340q18-28 36 0v48h-36Z"/><path d="M465 300q35-48 70 0v76h-70Z"/><path d="M465 405q35-48 70 0v65h-70Z"/></g>
 <!-- stone ribs and battlements -->
@@ -163,7 +187,7 @@ footer{text-align:center;padding:20px 0 36px;color:#8f86a6;font-size:10px;letter
 <!-- ground -->
 <path d="M0 565Q250 535 500 565T1000 565V570H0Z" fill="#080811"/>
 </svg></div>
-<div class="fog"></div><div class="scene-caption"><strong>THE GATES HAVE NOT OPENED IN CENTURIES</strong><span>Look closely. Something is watching from the highest tower.</span></div>
+<div class="fog"></div><div class="haunt-mist"></div><div class="scene-caption"><strong>THE GATES HAVE NOT OPENED IN CENTURIES</strong><span>Look closely. Something is watching from the highest tower.</span></div>
 <section class="interior" id="entranceHall" aria-live="polite">
 <div class="interior-head" id="floorHeading"><p class="eyebrow">BEYOND THE THRESHOLD · THE CASTLE AWAKENS</p><h2>THE ENTRANCE HALL</h2><p>The gates part. A vast chamber opens before you. An old stone staircase rises toward a sealed inner door, lit by floating candles and violet magic.</p></div>
 <svg id="groundFloorArt" class="hall-art" viewBox="0 0 900 430" role="img" aria-label="A grand gothic entrance hall with towering arches, floating candles, a glowing magical floor crest and a broad, clearly visible old stone staircase leading to a sealed inner door">
