@@ -45,8 +45,8 @@ footer{text-align:center;padding:20px 0 36px;color:#8f86a6;font-size:10px;letter
 .interior-head{text-align:center}.interior-head h2{margin:5px 0;font-size:clamp(27px,5vw,46px);color:#f2e9ff}.interior-head p{margin:0 auto;max-width:650px;color:#d0c3e4}
 .hall-art{display:block;width:min(100%,850px);max-height:58%;height:auto;margin:12px auto 0;object-fit:contain;filter:drop-shadow(0 18px 25px #0009)}
 .floating-candles{animation:candleDrift 4s ease-in-out infinite alternate;transform-origin:center}
-.haunted-chandelier{transform-origin:450px 42px;animation:chandelierSway 5s ease-in-out infinite alternate;filter:drop-shadow(0 0 15px #ffd36aaa) drop-shadow(0 0 5px #fff0c8);}
-@keyframes chandelierSway{from{transform:rotate(-1.2deg)}to{transform:rotate(1.2deg)}}
+.haunted-chandelier{transform-box:view-box;transform-origin:450px 0;animation:chandelierSway 4.4s ease-in-out infinite alternate;filter:drop-shadow(0 0 15px #ffd36aaa) drop-shadow(0 0 5px #fff0c8);will-change:transform}
+@keyframes chandelierSway{0%{transform:rotate(-3.2deg)}50%{transform:rotate(0deg)}100%{transform:rotate(3.2deg)}}
 @media(prefers-reduced-motion:reduce){.haunted-chandelier{animation:none}}
 .haunted-portrait{filter:drop-shadow(0 0 9px #9d7ac455);animation:portraitPulse 7s ease-in-out infinite}
 .portrait-eyes{animation:portraitLook 8s ease-in-out infinite;transform-origin:168px 236px}
