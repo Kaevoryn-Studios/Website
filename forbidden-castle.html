@@ -159,18 +159,21 @@ footer{text-align:center;padding:20px 0 36px;color:#8f86a6;font-size:10px;letter
   <feMerge><feMergeNode in="edgeShade"/><feMergeNode in="textured"/></feMerge>
  </filter>
  <g id="litWindow">
-  <!-- One deep masonry opening with a single carved stone surround -->
-  <path d="M-27 58V-10Q-27-39 0-54Q27-39 27-10V58Z" fill="#0b0912"/>
-  <path d="M-23 56V-10Q-23-35 0-49Q23-35 23-10V56Z" fill="#62596e"/>
-  <path d="M-19 54V-10Q-19-31 0-44Q19-31 19-10V54Z" fill="#171321"/>
-  <path d="M-15 51V-9Q-15-27 0-38Q15-27 15-9V51Z" fill="url(#glass)"/>
-  <path d="M-12 48V-8Q-12-24 0-34Q12-24 12-8V48Z" fill="#f0d8ff" opacity=".13"/>
-  <!-- lead cames and narrow central mullion -->
-  <path d="M0-37V51M-15 7H15M-15 28H15" fill="none" stroke="#21182d" stroke-width="3"/>
-  <path d="M-13-8Q-12-25 0-35" fill="none" stroke="#fff0d2" stroke-width="1.5" opacity=".65"/>
-  <!-- projecting sill and subtle lower stone shadow -->
-  <path d="M-31 58H31L27 64H-27Z" fill="#3c3448"/>
-  <path d="M-28 58H28" stroke="#c3b6ce" stroke-width="2.2"/>
+  <!-- Recessed opening with a substantial stone surround that visibly keys into the wall -->
+  <path d="M-34 65V-11Q-34-43 0-61Q34-43 34-11V65Z" fill="#171321" stroke="#24202c" stroke-width="3"/>
+  <path d="M-30 57V-10Q-30-40 0-56Q30-40 30-10V57Z" fill="#a69baa" stroke="#494151" stroke-width="3"/>
+  <path d="M-25 55V-10Q-25-36 0-51Q25-36 25-10V55Z" fill="#50485b" stroke="#d0c5d6" stroke-width="2"/>
+  <path d="M-20 53V-9Q-20-32 0-46Q20-32 20-9V53Z" fill="#100d18"/>
+  <path d="M-16 50V-9Q-16-28 0-41Q16-28 16-9V50Z" fill="url(#glass)"/>
+  <path d="M-13 47V-8Q-13-25 0-37Q13-25 13-8V47Z" fill="#f0d8ff" opacity=".13"/>
+  <!-- narrow leadwork kept inside the glass, not across the stonework -->
+  <path d="M0-39V50M-16 7H16M-16 28H16" fill="none" stroke="#21182d" stroke-width="3"/>
+  <path d="M-14-8Q-13-27 0-39" fill="none" stroke="#fff0d2" stroke-width="1.5" opacity=".65"/>
+  <!-- projecting sill, shadow and small end-stones anchor the window to the facade -->
+  <path d="M-37 62H37L31 71H-31Z" fill="#211b2a"/>
+  <path d="M-35 58H35L31 65H-31Z" fill="#807587" stroke="#302a38" stroke-width="2"/>
+  <path d="M-32 58H32" stroke="#d1c5d8" stroke-width="2.2"/>
+  <path d="M-32-5L-27-13M32-5L27-13M-32 39L-27 45M32 39L27 45" stroke="#c5b9ca" stroke-width="3" opacity=".7"/>
  </g>
  <g id="grandStainedGlass">
   <!-- Deep recessed stone opening and layered carved surround -->
@@ -363,16 +366,8 @@ footer{text-align:center;padding:20px 0 36px;color:#8f86a6;font-size:10px;letter
  <path d="M430 155L450 112 470 155 463 164H437Z M730 155L750 112 770 155 763 164H737Z"/>
 </g>
 <g fill="#b99aff" filter="url(#glow)"><circle cx="350" cy="248" r="6"/><circle cx="850" cy="248" r="6"/><circle cx="450" cy="110" r="5"/><circle cx="750" cy="110" r="5"/></g>
-<!-- Visible hand-laid masonry relief: irregular joints, not a rigid grid -->
-<g fill="url(#weatheredMasonry)" opacity=".52" pointer-events="none">
- <path d="M15 585V405L65 345H365L415 405V585Z"/>
- <path d="M785 585V405L835 345H1135L1185 405V585Z"/>
- <path d="M300 600V300L360 245H840L900 300V600Z"/>
- <path d="M440 600V135H760V600Z"/>
- <path d="M340 600V160H440V600Z M760 600V160H860V600Z"/>
- <path d="M95 570V315H220V570Z M980 570V300H1100V570Z"/>
-</g>
-<!-- Large, clearly visible stone guardians, layered in front of the masonry so they cannot disappear behind the wall texture -->
+<!-- Stone facades are intentionally left free of decorative joint lines. -->
+ <!-- Large, clearly visible stone guardians, layered in front of the masonry so they cannot disappear behind the wall texture -->
 <g class="gargoyles" pointer-events="none">
  <use href="#stoneGargoyle" transform="translate(350 270) scale(1.55)"/>
  <use href="#stoneGargoyle" transform="translate(850 270) scale(-1.55 1.55)"/>
