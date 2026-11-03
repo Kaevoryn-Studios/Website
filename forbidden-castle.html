@@ -10,11 +10,11 @@
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 50% 0%,#39234f 0%,#151023 38%,#080611 78%);color:#f5f0ff;font:16px/1.6 system-ui,Arial,sans-serif;overflow-x:hidden}
 a{color:var(--cyan)}.top{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;padding:17px clamp(18px,5vw,64px);border-bottom:1px solid #c6aaff33;background:#080611d9}.brand{font-size:12px;letter-spacing:.18em;font-weight:900;color:white;text-decoration:none}.brand small{display:block;color:var(--violet);font-size:9px}.nav a{margin-left:16px;text-decoration:none;color:#e6dcff;font-size:11px}
 .wrap{width:min(1120px,calc(100% - 32px));margin:auto}.intro{text-align:center;padding:46px 0 20px}.eyebrow{color:var(--violet);font-size:10px;font-weight:900;letter-spacing:.28em}.intro h1{margin:8px 0;font-size:clamp(40px,8vw,82px);line-height:.96;letter-spacing:-.05em;background:linear-gradient(100deg,#fff,#c8b2ff 48%,#8cecff);color:transparent;background-clip:text}.intro p{max-width:720px;margin:15px auto;color:#c9c1d9;font-size:clamp(15px,2vw,19px)}
-.scene{position:relative;overflow:hidden;min-height:clamp(430px,68vw,700px);border:1px solid #b49aff66;border-radius:24px;background:linear-gradient(#090b20 0%,#17142c 54%,#090811 100%);box-shadow:0 28px 100px #0009;isolation:isolate}
+.scene{position:relative;overflow:hidden;min-height:clamp(620px,82vw,860px);border:1px solid #b49aff66;border-radius:24px;background:linear-gradient(#090b20 0%,#17142c 54%,#090811 100%);box-shadow:0 28px 100px #0009;isolation:isolate}
 .skyglow{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 48%,#8c65c533,transparent 48%),radial-gradient(ellipse at 50% 100%,#6d4a9b44,transparent 50%);pointer-events:none}
 .moon{position:absolute;top:8%;right:16%;width:clamp(54px,9vw,100px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 35% 32%,#fff 0,#e2d8ff 42%,#8d7eb4 100%);box-shadow:0 0 45px #c4adff88,0 0 110px #9a78df55}
 .stars{position:absolute;inset:0;background-image:radial-gradient(2px 2px at 13% 20%,#fff 60%,transparent),radial-gradient(1px 1px at 25% 11%,#d7c9ff 60%,transparent),radial-gradient(2px 2px at 72% 18%,#fff 60%,transparent),radial-gradient(1px 1px at 86% 31%,#c6b5ff 60%,transparent),radial-gradient(1px 1px at 43% 9%,#fff 60%,transparent),radial-gradient(2px 2px at 58% 27%,#fff 60%,transparent);opacity:.8}
-.castle{position:absolute;inset:auto 0 7%;width:100%;height:78%;filter:drop-shadow(0 18px 28px #000b)}
+.castle{position:absolute;inset:auto 0 3%;width:100%;height:94%;filter:drop-shadow(0 18px 28px #000b)}
 .castle svg{width:100%;height:100%;overflow:visible}
 .window{fill:#b99aff;filter:drop-shadow(0 0 9px #b99aff);animation:windowPulse 3.4s ease-in-out infinite alternate}.window:nth-of-type(odd){animation-delay:1.3s}
 @keyframes windowPulse{from{opacity:.35}to{opacity:1}}
@@ -31,7 +31,7 @@ button,.btn{display:inline-flex;justify-content:center;align-items:center;min-he
 button:hover,.btn:hover,button:focus-visible,.btn:focus-visible{outline:2px solid var(--cyan);outline-offset:3px;background:#b49aff38}
 #gateMessage{min-height:26px;margin-top:15px;color:var(--gold);text-align:center;font-weight:700}
 footer{text-align:center;padding:20px 0 36px;color:#8f86a6;font-size:10px;letter-spacing:.15em}
-@media(max-width:600px){.scene{min-height:470px}.castle{height:65%;bottom:13%}.scene-caption{bottom:14px}.nav a{margin-left:8px}}
+@media(max-width:600px){.scene{min-height:590px}.castle{height:82%;bottom:12%}.scene-caption{bottom:14px}.nav a{margin-left:8px}}
 @keyframes gateGlow{0%{filter:drop-shadow(0 0 4px #b49aff)}100%{filter:drop-shadow(0 0 24px #b49aff)}}
 .scene.gate-open .castle{animation:gateGlow 1.8s ease-in-out infinite alternate}
 .castle-gate{transform-box:view-box;transition:transform 1.6s cubic-bezier(.2,.8,.2,1),opacity 1.2s ease;transform-origin:center}
@@ -119,6 +119,27 @@ footer{text-align:center;padding:20px 0 36px;color:#8f86a6;font-size:10px;letter
 <!-- smaller corner turrets -->
 <path d="M285 500V300h75v200M640 500V300h75v200" fill="#302a3d" stroke="#9182a8" stroke-width="4"/>
 <path d="M275 310 322 220l48 90ZM630 310 677 220l48 90Z" fill="url(#roof)" stroke="#a99abb" stroke-width="4"/>
+<!-- expanded manor wings: a mansion facade joined to the fortress keep -->
+<g stroke="#9c8caf" stroke-width="5">
+<path d="M18 505V350l38-38h270l38 38v155Z" fill="url(#stone)"/>
+<path d="M636 505V350l38-38h270l38 38v155Z" fill="url(#stone)"/>
+<path d="M18 352h346l-28-36H55Z M636 352h346l-28-36H664Z" fill="url(#roof)"/>
+<path d="M45 312l30-65h95l30 65M800 312l30-65h95l30 65" fill="url(#roof)"/>
+<path d="M60 247h110M815 247h110" fill="none" stroke="#c2b1d5" stroke-width="4"/>
+</g>
+<g fill="#b99aff" filter="url(#glow)" opacity=".9">
+<path d="M75 385q22-38 44 0v66H75Z M190 385q22-38 44 0v66h-44Z M285 385q18-32 36 0v58h-36Z"/>
+<path d="M660 385q18-32 36 0v58h-36Z M765 385q22-38 44 0v66h-44Z M880 385q22-38 44 0v66h-44Z"/>
+<path d="M90 270q15-25 30 0v42H90Z M850 270q15-25 30 0v42h-30Z"/>
+</g>
+<g fill="none" stroke="#b5a5c8" stroke-width="4" opacity=".7">
+<path d="M18 370h346M636 370h346M35 485h315M650 485h315"/>
+<path d="M55 355v145M330 355v145M670 355v145M945 355v145"/>
+<path d="M245 330v-35l24-22 24 22v35M705 330v-35l24-22 24 22v35"/>
+</g>
+<!-- long mansion roofline and stone connecting arcades -->
+<path d="M28 315l30-25h270l30 25M642 315l30-25h270l30 25" fill="none" stroke="#c5b5d8" stroke-width="6"/>
+<path d="M0 540Q250 505 500 540T1000 540" fill="none" stroke="#89799c" stroke-width="5" opacity=".65"/>
 <!-- tower windows -->
 <g class="window"><path d="M470 160q30-45 60 0v65h-60Z"/><path d="M185 260q22-34 44 0v58h-44Z"/><path d="M770 260q22-34 44 0v58h-44Z"/><path d="M310 340q18-28 36 0v48h-36Z"/><path d="M655 340q18-28 36 0v48h-36Z"/><path d="M465 300q35-48 70 0v76h-70Z"/><path d="M465 405q35-48 70 0v65h-70Z"/></g>
 <!-- stone ribs and battlements -->
@@ -135,6 +156,10 @@ footer{text-align:center;padding:20px 0 36px;color:#8f86a6;font-size:10px;letter
 <path d="M390 500h220l50 25H340ZM355 525h290l45 22H310ZM325 547h350l35 20H290Z" fill="#383044" stroke="#8c7b9e" stroke-width="3"/>
 <!-- braziers -->
 <g filter="url(#glow)"><path d="M105 500h45l-8 42h-29Z M850 500h45l-8 42h-29Z" fill="#5d4a65"/><path d="M127 495q-28-35 0-60 28 25 0 60M872 495q-28-35 0-60 28 25 0 60" fill="#ffb65e"/></g>
+<!-- sweeping approach drive and estate forecourt -->
+<path d="M390 570Q420 520 450 510Q480 520 510 570Z" fill="#494052" stroke="#8b7b9c" stroke-width="3"/>
+<path d="M420 570Q440 530 450 520Q460 530 480 570" fill="#8e7ca0" opacity=".18"/>
+<path d="M0 555Q170 530 290 560M710 560Q830 530 1000 555" fill="none" stroke="#5c506a" stroke-width="5" opacity=".7"/>
 <!-- ground -->
 <path d="M0 565Q250 535 500 565T1000 565V570H0Z" fill="#080811"/>
 </svg></div>
