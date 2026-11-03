@@ -145,6 +145,20 @@ footer{text-align:center;padding:20px 0 36px;color:#8f86a6;font-size:10px;letter
   <path d="M-31 58H31L27 64H-27Z" fill="#3c3448"/>
   <path d="M-28 58H28" stroke="#c3b6ce" stroke-width="2.2"/>
  </g>
+ <g id="grandStainedGlass">
+  <path d="M-34 72V-12Q-34-48 0-67Q34-48 34-12V72Z" fill="#090812" stroke="#171321" stroke-width="5"/>
+  <path d="M-27 66V-11Q-27-42 0-57Q27-42 27-11V66Z" fill="#b9a9c8" stroke="#d8c8e5" stroke-width="2"/>
+  <path d="M-22 62V-10Q-22-36 0-51Q22-36 22-10V62Z" fill="#18203b"/>
+  <path d="M-20 0L-3-18V-47Q-19-36-20-10Z" fill="#a83e67"/>
+  <path d="M3-18L20 0V-10Q19-36 3-47Z" fill="#386e9c"/>
+  <path d="M-20 5L-3-12V58H-20Z" fill="#4d347d"/>
+  <path d="M3-12L20 5V58H3Z" fill="#b47a36"/>
+  <path d="M-20 18L-3 1V31L-20 47Z" fill="#246b70" opacity=".95"/>
+  <path d="M20 18L3 1V31L20 47Z" fill="#78365d" opacity=".95"/>
+  <path d="M0-49V62M-21 0H21M-21 17H21M-21 48H21M-3-18V62M3-18V62" stroke="#d7c3a0" stroke-width="2.6" fill="none"/>
+  <path d="M0-39L7-27 0-15-7-27Z M0 4L10 15 0 27-10 15Z" fill="#f2d18c" stroke="#f5dfb5" stroke-width="1.5"/>
+  <path d="M-30 70H30" stroke="#c5b6d1" stroke-width="4"/>
+ </g>
  <g id="darkWindow"><path d="M-25 8Q-25-30 0-45Q25-30 25 8V68H-25Z" fill="#0b0b14" stroke="#8d849b" stroke-width="5"/><path d="M-16 9Q-16-20 0-32Q16-20 16 9V59H-16Z" fill="#9b7bd0" opacity=".34"/></g>
 </defs>
 <!-- distant mountain silhouettes -->
@@ -206,8 +220,10 @@ footer{text-align:center;padding:20px 0 36px;color:#8f86a6;font-size:10px;letter
  <use href="#litWindow" x="390" y="440"/><use href="#litWindow" x="810" y="440"/>
  <use href="#litWindow" x="490" y="210"/><use href="#litWindow" x="710" y="210"/>
  <use href="#litWindow" x="490" y="355"/><use href="#litWindow" x="710" y="355"/>
- <use href="#litWindow" x="600" y="190"/>
+ 
 </g>
+<!-- Grand jewel-toned stained-glass feature window in the central tower -->
+<g filter="url(#glow)" opacity=".96"><use href="#grandStainedGlass" x="600" y="245"/></g>
 <!-- grand entrance pavilion and deep arched doors -->
 <path d="M465 600V520Q465 405 600 405Q735 405 735 520V600Z" fill="#15121e" stroke="#d0c4d8" stroke-width="12"/>
 <path d="M490 600V520Q490 435 600 435Q710 435 710 520V600Z" fill="url(#door)" stroke="#746385" stroke-width="7"/>
