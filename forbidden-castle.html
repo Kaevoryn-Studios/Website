@@ -45,7 +45,7 @@ footer{text-align:center;padding:20px 0 36px;color:#8f86a6;font-size:10px;letter
 .interior-head{text-align:center}.interior-head h2{margin:5px 0;font-size:clamp(27px,5vw,46px);color:#f2e9ff}.interior-head p{margin:0 auto;max-width:650px;color:#d0c3e4}
 .hall-art{display:block;width:min(100%,850px);max-height:58%;height:auto;margin:12px auto 0;object-fit:contain;filter:drop-shadow(0 18px 25px #0009)}
 .floating-candles{animation:candleDrift 4s ease-in-out infinite alternate;transform-origin:center}
-.haunted-chandelier{transform-origin:450px 45px;animation:chandelierSway 5s ease-in-out infinite alternate;filter:drop-shadow(0 0 8px #ffd58a88)}
+.haunted-chandelier{transform-origin:450px 42px;animation:chandelierSway 5s ease-in-out infinite alternate;filter:drop-shadow(0 0 15px #ffd36aaa) drop-shadow(0 0 5px #fff0c8);}
 @keyframes chandelierSway{from{transform:rotate(-1.2deg)}to{transform:rotate(1.2deg)}}
 @media(prefers-reduced-motion:reduce){.haunted-chandelier{animation:none}}
 .haunted-portrait{filter:drop-shadow(0 0 9px #9d7ac455);animation:portraitPulse 7s ease-in-out infinite}
@@ -142,16 +142,18 @@ footer{text-align:center;padding:20px 0 36px;color:#8f86a6;font-size:10px;letter
 <path d="M0 0h900v370L450 230 0 370Z" fill="url(#hallwall)" opacity=".72"/>
 <path d="M310 370V190q0-95 140-95t140 95v180" fill="#120e1c" stroke="#c0afd6" stroke-width="12"/>
 <path d="M350 370V195q0-65 100-65t100 65v175" fill="#332340" stroke="#806a9b" stroke-width="4"/><path d="M380 205l22 17-8 29 20 16-12 31m112-102-17 20 9 22-16 24 12 26M432 150l-8 20 12 12m47 104 8 16-11 20" fill="none" stroke="#b8a8c6" stroke-width="2" opacity=".65"/>
-<!-- An ancient iron chandelier hangs above the entrance hall. -->
+<!-- Large, clearly visible gothic chandelier suspended over the entrance hall. -->
 <g class="haunted-chandelier">
-  <path d="M450 0V48" stroke="#b8a5c8" stroke-width="4"/>
-  <path d="M443 48h14l-4 13h-6Z" fill="#756184" stroke="#d4c2df" stroke-width="2"/>
-  <path d="M450 60V78M450 78Q410 70 386 94M450 78Q490 70 514 94M450 78V112" fill="none" stroke="#c5adcf" stroke-width="4"/>
-  <path d="M386 94q-16 0-19 15M514 94q16 0 19 15M450 112v9" fill="none" stroke="#c5adcf" stroke-width="4"/>
-  <path d="M368 109h-10l-5 10h30l-5-10ZM514 109h-10l-5 10h30l-5-10ZM435 121h30l-5 10h-20Z" fill="#594665" stroke="#d4c2df" stroke-width="2"/>
-  <path d="M363 108q-9-15 0-28 9 13 0 28M509 108q-9-15 0-28 9 13 0 28M450 120q-10-17 0-32 10 15 0 32" fill="#ffd58a" stroke="#fff0c8" stroke-width="2"/>
-  <circle cx="450" cy="78" r="7" fill="#b49aff" stroke="#e5d8f2" stroke-width="2"/>
-  <path d="M390 95l-8 10m128-10 8 10" stroke="#e4c88f" stroke-width="3"/>
+  <path d="M450 0V42" stroke="#f0d9aa" stroke-width="6"/>
+  <path d="M438 42h24l-5 18h-14Z" fill="#79618d" stroke="#f3d9a5" stroke-width="3"/>
+  <path d="M450 60V88M450 88Q390 68 350 102M450 88Q510 68 550 102M450 88V130" fill="none" stroke="#f0d9aa" stroke-width="7" stroke-linecap="round"/>
+  <path d="M350 102Q326 103 315 130M550 102Q574 103 585 130M450 130v12" fill="none" stroke="#f0d9aa" stroke-width="6"/>
+  <path d="M315 126h-18l-8 18h52l-8-18ZM585 126h-18l-8 18h52l-8-18ZM425 140h50l-8 18h-34Z" fill="#594665" stroke="#f5dfb5" stroke-width="4"/>
+  <path d="M315 126q-17-27 0-49 17 22 0 49M585 126q-17-27 0-49 17 22 0 49M450 140q-19-30 0-57 19 27 0 57" fill="#ffe09a" stroke="#fff6d8" stroke-width="4"/>
+  <path d="M315 119q-9-16 0-29 9 13 0 29M585 119q-9-16 0-29 9 13 0 29M450 132q-10-17 0-33 10 16 0 33" fill="#fff8d9" opacity=".9"/>
+  <circle cx="450" cy="88" r="12" fill="#b49aff" stroke="#fff0c8" stroke-width="4"/>
+  <path d="M350 103l-13 17m213-17 13 17" stroke="#fff0c8" stroke-width="4"/>
+  <g fill="#b49aff" stroke="#f3d9ff" stroke-width="2"><path d="M300 148l15 14 15-14-15-14ZM570 148l15 14 15-14-15-14Z"/></g>
 </g>
 <!-- Haunted portrait: an old keeper whose gaze subtly shifts in its frame. -->
 <g class="haunted-portrait" transform="translate(0 -36)">
