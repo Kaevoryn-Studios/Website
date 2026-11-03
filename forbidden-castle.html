@@ -121,6 +121,25 @@ footer{text-align:center;padding:20px 0 36px;color:#8f86a6;font-size:10px;letter
  <linearGradient id="drive" x2="0" y2="1"><stop stop-color="#777083"/><stop offset="1" stop-color="#171622"/></linearGradient>
  <filter id="glow"><feGaussianBlur stdDeviation="8" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
  <filter id="shadow"><feGaussianBlur stdDeviation="15"/></filter>
+ <pattern id="weatheredMasonry" patternUnits="userSpaceOnUse" width="190" height="142">
+  <g fill="none" stroke="#171321" stroke-width="3.2" opacity=".62">
+   <path d="M-12 34Q18 30 48 34L77 31 108 35 145 32 202 35"/>
+   <path d="M26 0L23 33 29 69 25 104 30 151"/>
+   <path d="M112 34L108 65 114 98 109 145"/>
+   <path d="M48 34L51 70 45 105 50 145"/>
+   <path d="M-8 105L28 101 61 106 94 102 132 106 198 101"/>
+   <path d="M145 34L149 70 143 105 148 145"/>
+  </g>
+  <g fill="none" stroke="#c8bdcf" stroke-width="1.5" opacity=".28">
+   <path d="M-12 30Q18 26 48 30L77 27 108 31 145 28 202 31"/>
+   <path d="M22 0L19 33 25 69 21 104 26 151M108 34L104 65 110 98 105 145"/>
+   <path d="M44 34L47 70 41 105 46 145M141 34L145 70 139 105 144 145"/>
+   <path d="M-8 101L28 97 61 102 94 98 132 102 198 97"/>
+  </g>
+  <g fill="#171321" opacity=".28">
+   <circle cx="70" cy="52" r="2.4"/><circle cx="85" cy="83" r="1.8"/><circle cx="166" cy="82" r="2.6"/><circle cx="13" cy="126" r="2"/>
+  </g>
+ </pattern>
  <filter id="stoneSurface" x="-5%" y="-5%" width="110%" height="110%">
   <feTurbulence type="fractalNoise" baseFrequency=".038" numOctaves="3" seed="23" result="stoneNoise"/>
   <feColorMatrix in="stoneNoise" type="saturate" values="0" result="stoneGrey"/>
@@ -238,6 +257,15 @@ footer{text-align:center;padding:20px 0 36px;color:#8f86a6;font-size:10px;letter
  <path d="M430 155L450 112 470 155 463 164H437Z M730 155L750 112 770 155 763 164H737Z"/>
 </g>
 <g fill="#b99aff" filter="url(#glow)"><circle cx="350" cy="248" r="6"/><circle cx="850" cy="248" r="6"/><circle cx="450" cy="110" r="5"/><circle cx="750" cy="110" r="5"/></g>
+<!-- Visible hand-laid masonry relief: irregular joints, not a rigid grid -->
+<g fill="url(#weatheredMasonry)" opacity=".52" pointer-events="none">
+ <path d="M15 585V405L65 345H365L415 405V585Z"/>
+ <path d="M785 585V405L835 345H1135L1185 405V585Z"/>
+ <path d="M300 600V300L360 245H840L900 300V600Z"/>
+ <path d="M440 600V135H760V600Z"/>
+ <path d="M340 600V160H440V600Z M760 600V160H860V600Z"/>
+ <path d="M95 570V315H220V570Z M980 570V300H1100V570Z"/>
+</g>
 <!-- Natural stone surfaces remain clean around the window openings. -->
 <!-- repeated illuminated windows -->
 <g class="window">
