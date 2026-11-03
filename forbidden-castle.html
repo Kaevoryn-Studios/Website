@@ -108,7 +108,7 @@ footer{text-align:center;padding:20px 0 36px;color:#8f86a6;font-size:10px;letter
 <header class="top"><a class="brand" href="index.html">KAEVORYN STUDIOS<small>CREATE THE IMPOSSIBLE</small></a><nav class="nav"><a href="kingdoms.html">Kingdoms</a><a href="attractions.html">Attractions</a></nav></header>
 <main class="wrap">
 <section class="intro"><p class="eyebrow">KAEVORYN KINGDOMS · A NEW DARK-FANTASY ADVENTURE</p><h1>FORBIDDEN CASTLE</h1><p>Beyond the last lantern stands a castle no map remembers. Its windows are awake. Its gates have been waiting. And something ancient is stirring within.</p></section>
-<section class="scene" aria-label="Illustrated view of the Forbidden Castle at night">
+<section class="scene" aria-label="Cinematic gothic castle with deep-set violet lancet windows, carved stonework and towering realistic architecture at night">
 <div class="skyglow"></div><div class="stars"></div><div class="moon"></div><div class="haunt-aura"></div><div class="haunt-lightning"></div><div class="haunt-embers"></div><div class="haunt-bats"></div><div class="scene-label">THE OUTER COURTYARD · AFTER DUSK</div>
 <div class="castle">
 <svg viewBox="0 0 1200 760" role="img" aria-label="A vast, realistic cinematic gothic castle with towering spires, steep slate roofs, illuminated arched windows, a grand iron gate and a long stone approach">
@@ -121,7 +121,15 @@ footer{text-align:center;padding:20px 0 36px;color:#8f86a6;font-size:10px;letter
  <linearGradient id="drive" x2="0" y2="1"><stop stop-color="#777083"/><stop offset="1" stop-color="#171622"/></linearGradient>
  <filter id="glow"><feGaussianBlur stdDeviation="8" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
  <filter id="shadow"><feGaussianBlur stdDeviation="15"/></filter>
- <g id="litWindow"><path d="M-23 8Q-23-28 0-42Q23-28 23 8V65H-23Z" fill="#100e1a" stroke="#aaa0b8" stroke-width="5"/><path d="M-15 8Q-15-22 0-32Q15-22 15 8V57H-15Z" fill="url(#glass)" filter="url(#glow)"/><path d="M0-31V58M-15 18H15" stroke="#33283f" stroke-width="4"/></g>
+ <g id="litWindow">
+  <path d="M-31 12Q-31-34 0-55Q31-34 31 12V78H-31Z" fill="#080812" stroke="#171321" stroke-width="9"/>
+  <path d="M-27 10Q-27-31 0-49Q27-31 27 10V74H-27Z" fill="#252033" stroke="#b9a9ca" stroke-width="4"/>
+  <path d="M-20 9Q-20-25 0-40Q20-25 20 9V67H-20Z" fill="url(#glass)" filter="url(#glow)"/>
+  <path d="M-16 10Q-16-20 0-34Q16-20 16 10V63H-16Z" fill="#c6a9ff" opacity=".2"/>
+  <path d="M0-39V68M-19 12H19M-19 37H19" stroke="#20172d" stroke-width="5"/>
+  <path d="M-25 10Q-25-30 0-47Q25-30 25 10" fill="none" stroke="#e0d4ec" stroke-width="2" opacity=".75"/>
+  <path d="M-31 77H31" stroke="#d3c4dd" stroke-width="5"/>
+ </g>
  <g id="darkWindow"><path d="M-25 8Q-25-30 0-45Q25-30 25 8V68H-25Z" fill="#0b0b14" stroke="#8d849b" stroke-width="5"/><path d="M-16 9Q-16-20 0-32Q16-20 16 9V59H-16Z" fill="#9b7bd0" opacity=".34"/></g>
 </defs>
 <!-- distant mountain silhouettes -->
@@ -171,6 +179,34 @@ footer{text-align:center;padding:20px 0 36px;color:#8f86a6;font-size:10px;letter
  <path d="M300 340H900M300 430H900M300 525H900M440 250H760M95 455H415M785 455H1185"/>
  <path d="M330 300V590M410 280V590M790 280V590M870 300V590M45 420V580M385 420V585M815 420V585M1155 420V580"/>
  <path d="M350 300l-22 35v255M850 300l22 35v255M445 155l-22 35v400M755 155l22 35v400"/>
+</g>
+<!-- Deep-set masonry, projecting buttresses and carved Gothic tracery add real architectural depth. -->
+<g fill="none" stroke-linejoin="round">
+ <g stroke="#171421" stroke-width="24" opacity=".72">
+  <path d="M300 300V600M350 265V600M850 265V600M900 300V600M440 145V600M490 135V600M710 135V600M760 145V600"/>
+ </g>
+ <g stroke="#b9adca" stroke-width="9" opacity=".8">
+  <path d="M300 300V600M350 265V600M850 265V600M900 300V600M440 145V600M490 135V600M710 135V600M760 145V600"/>
+ </g>
+ <g stroke="#d9cde4" stroke-width="2.5" opacity=".55">
+  <path d="M310 310V590M360 275V590M840 275V590M890 310V590M450 155V590M500 145V590M700 145V590M750 155V590"/>
+ </g>
+ <g stroke="#171421" stroke-width="12" opacity=".75">
+  <path d="M300 370H900M300 465H900M300 555H900M95 465H415M785 465H1185"/>
+ </g>
+ <g stroke="#c0b4c9" stroke-width="4" opacity=".65">
+  <path d="M300 365H900M300 460H900M300 550H900M95 460H415M785 460H1185"/>
+ </g>
+</g>
+<!-- Carved pinnacles and finials on the main facade -->
+<g fill="url(#roofFace)" stroke="#c8bbd5" stroke-width="4">
+ <path d="M315 300L350 250 385 300 373 310H327Z M815 300L850 250 885 300 873 310H827Z"/>
+ <path d="M430 155L450 112 470 155 463 164H437Z M730 155L750 112 770 155 763 164H737Z"/>
+</g>
+<g fill="#b99aff" filter="url(#glow)"><circle cx="350" cy="248" r="6"/><circle cx="850" cy="248" r="6"/><circle cx="450" cy="110" r="5"/><circle cx="750" cy="110" r="5"/></g>
+<!-- irregular weathering and stone joints -->
+<g fill="none" stroke="#171421" stroke-width="3" opacity=".55">
+ <path d="M318 390l18-8 8 10-6 13m-24 75 14-8 9 8-5 12m530-100 18-8 8 10-6 13m-24 75 14-8 9 8-5 12M470 180l12 8-5 11 8 9m240-28-12 8 5 11-8 9"/>
 </g>
 <!-- repeated illuminated windows -->
 <g class="window">
