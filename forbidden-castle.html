@@ -45,6 +45,12 @@ footer{text-align:center;padding:20px 0 36px;color:#8f86a6;font-size:10px;letter
 .interior-head{text-align:center}.interior-head h2{margin:5px 0;font-size:clamp(27px,5vw,46px);color:#f2e9ff}.interior-head p{margin:0 auto;max-width:650px;color:#d0c3e4}
 .hall-art{display:block;width:min(100%,850px);max-height:58%;height:auto;margin:12px auto 0;object-fit:contain;filter:drop-shadow(0 18px 25px #0009)}
 .floating-candles{animation:candleDrift 4s ease-in-out infinite alternate;transform-origin:center}
+.sealed-inner-door{filter:drop-shadow(0 0 12px #08040d)}
+.door-underlight{animation:doorGlow 3.8s ease-in-out infinite alternate}
+.door-shadow{transform-box:view-box;transform-origin:450px 320px;animation:doorShadow 8s ease-in-out infinite alternate}
+@keyframes doorGlow{from{opacity:.28;filter:drop-shadow(0 0 3px #a56bff)}to{opacity:1;filter:drop-shadow(0 0 13px #b58aff)}}
+@keyframes doorShadow{0%,100%{transform:translateX(-3px) scale(.96);opacity:.35}50%{transform:translateX(5px) scale(1.04);opacity:.82}}
+@media(prefers-reduced-motion:reduce){.door-underlight,.door-shadow{animation:none}}
 .haunted-chandelier{transform-box:view-box;transform-origin:450px 0;animation:chandelierSway 4.4s ease-in-out infinite alternate;filter:drop-shadow(0 0 15px #ffd36aaa) drop-shadow(0 0 5px #fff0c8);will-change:transform}
 @keyframes chandelierSway{0%{transform:rotate(-3.2deg)}50%{transform:rotate(0deg)}100%{transform:rotate(3.2deg)}}
 @media(prefers-reduced-motion:reduce){.haunted-chandelier{animation:none}}
@@ -141,7 +147,28 @@ footer{text-align:center;padding:20px 0 36px;color:#8f86a6;font-size:10px;letter
 <path d="M0 370 450 230 900 370v60H0Z" fill="#171222" stroke="#7d6a99" stroke-width="4"/><path d="M70 370l24-18-8-22 25-16m-17 38 18 12m600-2 18-18-9-22 26-20m-20 42 19 13M260 325l-12-18 9-17m390 44 14-19-8-18" fill="none" stroke="#a99ab4" stroke-width="2" opacity=".55"/>
 <path d="M0 0h900v370L450 230 0 370Z" fill="url(#hallwall)" opacity=".72"/>
 <path d="M310 370V190q0-95 140-95t140 95v180" fill="#120e1c" stroke="#c0afd6" stroke-width="12"/>
-<path d="M350 370V195q0-65 100-65t100 65v175" fill="#332340" stroke="#806a9b" stroke-width="4"/><path d="M380 205l22 17-8 29 20 16-12 31m112-102-17 20 9 22-16 24 12 26M432 150l-8 20 12 12m47 104 8 16-11 20" fill="none" stroke="#b8a8c6" stroke-width="2" opacity=".65"/>
+<path d="M350 370V195q0-65 100-65t100 65v175" fill="#332340" stroke="#806a9b" stroke-width="4"/>
+<!-- The sealed inner door: iron-bound ancient oak beneath the upper arch. -->
+<g class="sealed-inner-door">
+  <path d="M370 369V207Q370 145 450 145Q530 145 530 207V369Z" fill="#100b18" stroke="#c2a66f" stroke-width="7"/>
+  <path d="M382 369V208Q382 158 450 158Q518 158 518 208V369Z" fill="#302033" stroke="#765c42" stroke-width="4"/>
+  <path d="M450 160V369M389 220H511M389 350H511" stroke="#9a7951" stroke-width="5" opacity=".9"/>
+  <path d="M397 218V340M503 218V340" stroke="#17101c" stroke-width="8"/>
+  <path d="M404 226V339M496 226V339" stroke="#b18e5d" stroke-width="2" opacity=".65"/>
+  <path d="M450 178l-12 22 12 18 12-18Z M450 329l-18-18 18-18 18 18Z" fill="#17101d" stroke="#c6a56e" stroke-width="3"/>
+  <circle cx="450" cy="262" r="22" fill="#17101c" stroke="#c6a56e" stroke-width="5"/>
+  <circle cx="450" cy="262" r="11" fill="#8c6d49" stroke="#e0c18a" stroke-width="3"/>
+  <path d="M450 251v22m-10-11h20" stroke="#211624" stroke-width="4"/>
+  <g fill="#d4bd8d" stroke="#f0dfb8" stroke-width="2">
+    <circle cx="390" cy="218" r="4"/><circle cx="510" cy="218" r="4"/>
+    <circle cx="390" cy="350" r="4"/><circle cx="510" cy="350" r="4"/>
+  </g>
+  <!-- A narrow violet seam of light leaks beneath the sealed threshold. -->
+  <path class="door-underlight" d="M392 368H508" stroke="#b58aff" stroke-width="5" opacity=".95" filter="url(#glow)"/>
+  <path d="M385 370H515" stroke="#090711" stroke-width="7"/>
+  <!-- The shadow behind the door shifts, almost too slowly to notice. -->
+  <path class="door-shadow" d="M427 300Q450 268 473 300L467 348H433Z" fill="#05040a" opacity=".72"/>
+</g><path d="M380 205l22 17-8 29 20 16-12 31m112-102-17 20 9 22-16 24 12 26M432 150l-8 20 12 12m47 104 8 16-11 20" fill="none" stroke="#b8a8c6" stroke-width="2" opacity=".65"/>
 <!-- Large, clearly visible gothic chandelier suspended over the entrance hall. -->
 <g class="haunted-chandelier">
   <path d="M450 0V42" stroke="#f0d9aa" stroke-width="6"/>
