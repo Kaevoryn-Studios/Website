@@ -45,6 +45,18 @@ footer{text-align:center;padding:20px 0 36px;color:#8f86a6;font-size:10px;letter
 .interior-head{text-align:center}.interior-head h2{margin:5px 0;font-size:clamp(27px,5vw,46px);color:#f2e9ff}.interior-head p{margin:0 auto;max-width:650px;color:#d0c3e4}
 .hall-art{display:block;width:min(100%,850px);max-height:58%;height:auto;margin:12px auto 0;object-fit:contain;filter:drop-shadow(0 18px 25px #0009)}
 .floating-candles{animation:candleDrift 4s ease-in-out infinite alternate;transform-origin:center}
+.stair-phantom{opacity:0;transform-origin:450px 260px;animation:phantomAppear 12s ease-in-out infinite;filter:drop-shadow(0 0 12px #8deaff)}
+.phantom-robe{transform-origin:450px 245px;animation:phantomFloat 3s ease-in-out infinite alternate}
+.phantom-gaze{animation:phantomEyes 12s ease-in-out infinite}
+@keyframes phantomAppear{
+0%,10%,100%{opacity:0;transform:translateY(12px) scale(.92)}
+18%{opacity:.05;transform:translateY(4px) scale(.96)}
+25%,48%{opacity:.95;transform:translateY(0) scale(1)}
+57%{opacity:.7;transform:translateY(-3px) scale(1.02)}
+67%,82%{opacity:0;transform:translateY(-14px) scale(1.05)}
+}
+@keyframes phantomFloat{from{transform:translateY(1px)}to{transform:translateY(-4px)}}
+@keyframes phantomEyes{0%,18%,67%,100%{opacity:0}25%,57%{opacity:1}}
 .stair-haunt{animation:hauntFade 5s ease-in-out infinite}
 .stair-mist{animation:mistCreep 7s ease-in-out infinite alternate;filter:blur(3px)}
 .mist-two{animation-delay:-3.5s}
@@ -149,6 +161,16 @@ footer{text-align:center;padding:20px 0 36px;color:#8f86a6;font-size:10px;letter
 <path d="M400 249V228Q450 197 500 228V249" fill="#080611" stroke="#806696" stroke-width="3"/>
 <path d="M335 365 385 255M565 365 515 255" fill="none" stroke="#d8c5ed" stroke-width="8"/>
 <path d="M335 365 385 255M565 365 515 255" fill="none" stroke="#8cecff" stroke-width="2"/>
+</g>
+<!-- A spectral keeper slowly materializes at the top of the stairs, watches, then fades away. -->
+<g class="stair-phantom" pointer-events="none">
+  <ellipse cx="450" cy="257" rx="30" ry="7" fill="#a6edff" opacity=".18"/>
+  <path class="phantom-robe" d="M431 236 Q425 218 435 203 Q450 189 465 203 Q475 218 469 236 L482 259 Q470 254 462 262 L450 255 L438 262 Q430 253 418 259Z" fill="#b9eaff" fill-opacity=".24" stroke="#a9e7ff" stroke-opacity=".7" stroke-width="1.5"/>
+  <path d="M435 212 Q450 198 465 212 Q469 222 463 230 L450 237 L437 230 Q431 222 435 212Z" fill="#101020" fill-opacity=".9"/>
+  <g class="phantom-gaze" fill="#bafaff">
+    <ellipse cx="443" cy="220" rx="3.2" ry="1.6"/><ellipse cx="457" cy="220" rx="3.2" ry="1.6"/>
+  </g>
+  <path d="M450 238v12m-9-4 9 4 9-4" stroke="#c7f5ff" stroke-opacity=".5" fill="none"/>
 </g>
 <!-- Ghostly presence clinging to the staircase -->
 <g class="stair-haunt" pointer-events="none">
