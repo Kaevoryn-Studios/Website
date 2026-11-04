@@ -10,11 +10,11 @@
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 50% 0%,#39234f 0%,#151023 38%,#080611 78%);color:#f5f0ff;font:16px/1.6 system-ui,Arial,sans-serif;overflow-x:hidden}
 a{color:var(--cyan)}.top{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;padding:17px clamp(18px,5vw,64px);border-bottom:1px solid #c6aaff33;background:#080611d9}.brand{font-size:12px;letter-spacing:.18em;font-weight:900;color:white;text-decoration:none}.brand small{display:block;color:var(--violet);font-size:9px}.nav a{margin-left:16px;text-decoration:none;color:#e6dcff;font-size:11px}
 .wrap{width:min(1120px,calc(100% - 32px));margin:auto}.intro{text-align:center;padding:46px 0 20px}.eyebrow{color:var(--violet);font-size:10px;font-weight:900;letter-spacing:.28em}.intro h1{margin:8px 0;font-size:clamp(40px,8vw,82px);line-height:.96;letter-spacing:-.05em;background:linear-gradient(100deg,#fff,#c8b2ff 48%,#8cecff);color:transparent;background-clip:text}.intro p{max-width:720px;margin:15px auto;color:#c9c1d9;font-size:clamp(15px,2vw,19px)}
-.scene{position:relative;overflow:hidden;min-height:clamp(760px,105vw,1080px);border:1px solid #b49aff66;border-radius:24px;background:linear-gradient(#090b20 0%,#17142c 54%,#090811 100%);box-shadow:0 28px 100px #0009;isolation:isolate}
+.scene{position:relative;overflow:hidden;min-height:clamp(900px,118vw,1260px);border:1px solid #b49aff66;border-radius:24px;background:linear-gradient(#090b20 0%,#17142c 54%,#090811 100%);box-shadow:0 28px 100px #0009;isolation:isolate}
 .skyglow{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 48%,#8c65c533,transparent 48%),radial-gradient(ellipse at 50% 100%,#6d4a9b44,transparent 50%);pointer-events:none}
 .moon{position:absolute;top:8%;right:16%;width:clamp(54px,9vw,100px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 35% 32%,#fff 0,#e2d8ff 42%,#8d7eb4 100%);box-shadow:0 0 45px #c4adff88,0 0 110px #9a78df55}
 .stars{position:absolute;inset:0;background-image:radial-gradient(2px 2px at 13% 20%,#fff 60%,transparent),radial-gradient(1px 1px at 25% 11%,#d7c9ff 60%,transparent),radial-gradient(2px 2px at 72% 18%,#fff 60%,transparent),radial-gradient(1px 1px at 86% 31%,#c6b5ff 60%,transparent),radial-gradient(1px 1px at 43% 9%,#fff 60%,transparent),radial-gradient(2px 2px at 58% 27%,#fff 60%,transparent);opacity:.8}
-.castle{position:absolute;inset:auto 0 0;width:100%;height:100%;filter:drop-shadow(0 18px 28px #000b)}
+.castle{position:absolute;inset:auto 0 -2% -5%;width:110%;height:112%;filter:drop-shadow(0 18px 28px #000b)}
 .castle svg{width:100%;height:100%;overflow:visible}
 .window{animation:windowPulse 7s ease-in-out infinite alternate;transform-box:fill-box;transform-origin:center;filter:drop-shadow(0 2px 4px rgba(0,0,0,.55))}.window:nth-of-type(odd){animation-delay:1.3s}
 @keyframes windowPulse{from{opacity:.35}to{opacity:1}}
@@ -31,7 +31,7 @@ button,.btn{display:inline-flex;justify-content:center;align-items:center;min-he
 button:hover,.btn:hover,button:focus-visible,.btn:focus-visible{outline:2px solid var(--cyan);outline-offset:3px;background:#b49aff38}
 #gateMessage{min-height:26px;margin-top:15px;color:var(--gold);text-align:center;font-weight:700}
 footer{text-align:center;padding:20px 0 36px;color:#8f86a6;font-size:10px;letter-spacing:.15em}
-@media(max-width:600px){.scene{min-height:760px}.castle{height:82%;bottom:12%}.scene-caption{bottom:14px}.nav a{margin-left:8px}}
+@media(max-width:600px){.scene{min-height:900px}.castle{left:-7%;width:114%;height:100%;bottom:3%}.scene-caption{bottom:14px}.nav a{margin-left:8px}}
 @keyframes gateGlow{0%{filter:drop-shadow(0 0 4px #b49aff)}100%{filter:drop-shadow(0 0 24px #b49aff)}}
 .scene.gate-open .castle{animation:gateGlow 1.8s ease-in-out infinite alternate}
 .castle-gate{transform-box:view-box;transition:transform 1.6s cubic-bezier(.2,.8,.2,1),opacity 1.2s ease;transform-origin:center}
@@ -160,6 +160,24 @@ footer{text-align:center;padding:20px 0 36px;color:#8f86a6;font-size:10px;letter
   <path d="M-43 108H43" stroke="#f2dfbd" stroke-width="3"/>
  </g>
 </defs>
+<!-- The Forbidden Forest: layered ancient trees frame the estate and disappear into the mist. -->
+<g class="forbidden-forest" pointer-events="none">
+ <path d="M0 0H1200V760H0Z" fill="#080d12" opacity=".22"/>
+ <g fill="#080d12" stroke="#111b20" stroke-width="7" stroke-linejoin="round">
+  <path d="M0 570L0 165 28 220 17 95 53 177 69 28 91 174 123 102 113 233 157 163 139 306 190 235 170 390 220 326 203 505 248 451 258 690 0 720Z"/>
+  <path d="M1200 570L1200 145 1170 218 1181 78 1145 170 1128 18 1105 167 1072 94 1085 228 1038 154 1058 303 1008 230 1028 402 980 340 997 520 950 450 942 690 1200 720Z"/>
+  <path d="M0 425L42 338 30 275 75 342 95 220 119 345 158 280 147 405 192 360 181 530 225 480 214 700 0 720Z" opacity=".86"/>
+  <path d="M1200 430L1158 330 1170 270 1125 340 1105 215 1081 340 1042 274 1053 410 1008 355 1019 530 975 470 986 700 1200 720Z" opacity=".86"/>
+ </g>
+ <g fill="none" stroke="#1d2928" stroke-width="13" stroke-linecap="round" opacity=".8">
+  <path d="M48 760Q62 565 44 395M45 500L5 395M51 450L104 350M1152 760Q1137 570 1158 390M1155 500L1196 395M1100 455L1048 350"/>
+  <path d="M180 760Q190 610 165 470M168 565L130 500M170 530L210 450M1020 760Q1010 610 1035 470M1032 565L1070 500M1030 530L990 450"/>
+ </g>
+ <g fill="#10191c" opacity=".92">
+  <path d="M0 520Q90 470 170 520T340 520V760H0Z"/>
+  <path d="M860 520Q950 470 1030 520T1200 520V760H860Z"/>
+ </g>
+</g>
 <!-- Distant storm hills and moonlit ridge -->
 <path d="M0 440L95 350 174 392 275 292 366 402 480 285 575 395 710 270 820 398 938 300 1040 398 1140 320 1200 370V760H0Z" fill="#111321" opacity=".8"/>
 <path d="M0 470L150 405 245 443 360 380 470 445 610 365 760 444 905 382 1035 444 1200 385V760H0Z" fill="#191827" opacity=".72"/>
