@@ -111,398 +111,263 @@ footer{text-align:center;padding:20px 0 36px;color:#8f86a6;font-size:10px;letter
 <section class="scene" aria-label="Cinematic gothic castle with deep-set violet lancet windows, carved stonework and towering realistic architecture at night">
 <div class="skyglow"></div><div class="stars"></div><div class="moon"></div><div class="haunt-aura"></div><div class="haunt-lightning"></div><div class="haunt-embers"></div><div class="haunt-bats"></div><div class="scene-label">THE OUTER COURTYARD · AFTER DUSK</div>
 <div class="castle">
-<svg viewBox="0 0 1200 760" role="img" aria-label="A vast, realistic cinematic gothic castle with towering spires, steep slate roofs, illuminated arched windows, a grand iron gate and a long stone approach">
+<svg viewBox="0 0 1200 760" role="img" aria-label="A monumental realistic Gothic haunted castle built from weathered stone, with deep-set illuminated windows, a jewel-like stained-glass tower window, steep slate roofs, iron gates and an old graveyard">
 <defs>
- <linearGradient id="stone" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#b4a9b9"/><stop offset=".18" stop-color="#766b80"/><stop offset=".46" stop-color="#494253"/><stop offset=".72" stop-color="#292533"/><stop offset="1" stop-color="#11101a"/></linearGradient>
- <linearGradient id="roof" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#777087"/><stop offset=".4" stop-color="#302a40"/><stop offset="1" stop-color="#100f1b"/></linearGradient>
- <linearGradient id="roofFace" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#aaa0b9"/><stop offset=".2" stop-color="#51465f"/><stop offset="1" stop-color="#171522"/></linearGradient>
- <linearGradient id="glass" x2="0" y2="1"><stop stop-color="#f6dca0"/><stop offset=".35" stop-color="#b99aff"/><stop offset="1" stop-color="#47336b"/></linearGradient>
- <linearGradient id="door" x2="1"><stop stop-color="#100d19"/><stop offset=".5" stop-color="#503968"/><stop offset="1" stop-color="#100d19"/></linearGradient>
- <linearGradient id="drive" x2="0" y2="1"><stop stop-color="#777083"/><stop offset="1" stop-color="#171622"/></linearGradient>
- <filter id="glow"><feGaussianBlur stdDeviation="8" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
- <filter id="shadow"><feGaussianBlur stdDeviation="15"/></filter>
- <pattern id="weatheredMasonry" patternUnits="userSpaceOnUse" width="190" height="142">
-  <g fill="none" stroke="#171321" stroke-width="3.2" opacity=".62">
-   <path d="M-12 34Q18 30 48 34L77 31 108 35 145 32 202 35"/>
-   <path d="M26 0L23 33 29 69 25 104 30 151"/>
-   <path d="M112 34L108 65 114 98 109 145"/>
-   <path d="M48 34L51 70 45 105 50 145"/>
-   <path d="M-8 105L28 101 61 106 94 102 132 106 198 101"/>
-   <path d="M145 34L149 70 143 105 148 145"/>
-  </g>
-  <g fill="none" stroke="#c8bdcf" stroke-width="1.5" opacity=".28">
-   <path d="M-12 30Q18 26 48 30L77 27 108 31 145 28 202 31"/>
-   <path d="M22 0L19 33 25 69 21 104 26 151M108 34L104 65 110 98 105 145"/>
-   <path d="M44 34L47 70 41 105 46 145M141 34L145 70 139 105 144 145"/>
-   <path d="M-8 101L28 97 61 102 94 98 132 102 198 97"/>
-  </g>
-  <g fill="#171321" opacity=".28">
-   <circle cx="70" cy="52" r="2.4"/><circle cx="85" cy="83" r="1.8"/><circle cx="166" cy="82" r="2.6"/><circle cx="13" cy="126" r="2"/>
-  </g>
- </pattern>
- <filter id="stoneSurface" x="-5%" y="-5%" width="110%" height="110%">
-  <feTurbulence type="fractalNoise" baseFrequency=".038" numOctaves="3" seed="23" result="stoneNoise"/>
-  <feColorMatrix in="stoneNoise" type="saturate" values="0" result="stoneGrey"/>
-  <feComponentTransfer in="stoneGrey" result="stoneRelief"><feFuncA type="table" tableValues="0 .24"/></feComponentTransfer>
-  <feDiffuseLighting in="stoneNoise" surfaceScale="3.5" diffuseConstant=".48" lighting-color="#bdb2c8" result="stoneLight"><feDistantLight azimuth="225" elevation="42"/></feDiffuseLighting>
-  <feBlend in="SourceGraphic" in2="stoneRelief" mode="soft-light" result="grainBlend"/>
-  <feBlend in="grainBlend" in2="stoneLight" mode="soft-light"/>
- </filter>
- <filter id="stoneDepth" x="-8%" y="-8%" width="116%" height="116%">
-  <feTurbulence type="fractalNoise" baseFrequency=".42" numOctaves="2" seed="11" result="grain"/>
-  <feColorMatrix in="grain" type="saturate" values="0" result="greyGrain"/>
-  <feComponentTransfer in="greyGrain" result="softGrain"><feFuncA type="table" tableValues="0 .10"/></feComponentTransfer>
-  <feBlend in="SourceGraphic" in2="softGrain" mode="soft-light" result="textured"/>
-  <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="softShadow"/>
-  <feOffset in="softShadow" dx="3" dy="5" result="offsetShadow"/>
-  <feComposite in="offsetShadow" in2="SourceAlpha" operator="out" result="edgeShade"/>
-  <feMerge><feMergeNode in="edgeShade"/><feMergeNode in="textured"/></feMerge>
- </filter>
- <g id="litWindow">
-  <!-- Recessed opening with a substantial stone surround that visibly keys into the wall -->
-  <path d="M-34 65V-11Q-34-43 0-61Q34-43 34-11V65Z" fill="#171321" stroke="#24202c" stroke-width="3"/>
-  <path d="M-30 57V-10Q-30-40 0-56Q30-40 30-10V57Z" fill="#a69baa" stroke="#494151" stroke-width="3"/>
-  <path d="M-25 55V-10Q-25-36 0-51Q25-36 25-10V55Z" fill="#50485b" stroke="#d0c5d6" stroke-width="2"/>
-  <path d="M-20 53V-9Q-20-32 0-46Q20-32 20-9V53Z" fill="#100d18"/>
-  <path d="M-16 50V-9Q-16-28 0-41Q16-28 16-9V50Z" fill="url(#glass)"/>
-  <path d="M-13 47V-8Q-13-25 0-37Q13-25 13-8V47Z" fill="#f0d8ff" opacity=".13"/>
-  <!-- narrow leadwork kept inside the glass, not across the stonework -->
-  <path d="M0-39V50M-16 7H16M-16 28H16" fill="none" stroke="#21182d" stroke-width="3"/>
-  <path d="M-14-8Q-13-27 0-39" fill="none" stroke="#fff0d2" stroke-width="1.5" opacity=".65"/>
-  <!-- projecting sill, shadow and small end-stones anchor the window to the facade -->
-  <path d="M-37 62H37L31 71H-31Z" fill="#211b2a"/>
-  <path d="M-35 58H35L31 65H-31Z" fill="#807587" stroke="#302a38" stroke-width="2"/>
-  <path d="M-32 58H32" stroke="#d1c5d8" stroke-width="2.2"/>
-  <path d="M-32-5L-27-13M32-5L27-13M-32 39L-27 45M32 39L27 45" stroke="#c5b9ca" stroke-width="3" opacity=".7"/>
+ <linearGradient id="nightStone" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#aaa0ad"/><stop offset=".16" stop-color="#756b7b"/><stop offset=".48" stop-color="#4b4352"/><stop offset=".78" stop-color="#292532"/><stop offset="1" stop-color="#14121c"/></linearGradient>
+ <linearGradient id="sunlitStone" x1="0" y1="0" x2="0.9" y2="1"><stop stop-color="#c5bac8"/><stop offset=".22" stop-color="#82778b"/><stop offset=".7" stop-color="#4a4352"/><stop offset="1" stop-color="#211e2a"/></linearGradient>
+ <linearGradient id="shadowStone" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#62596d"/><stop offset=".3" stop-color="#393341"/><stop offset="1" stop-color="#17151f"/></linearGradient>
+ <linearGradient id="slateRoof" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#888294"/><stop offset=".25" stop-color="#4c465c"/><stop offset=".7" stop-color="#242233"/><stop offset="1" stop-color="#0c0c16"/></linearGradient>
+ <linearGradient id="roofLit" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#b4aabc"/><stop offset=".2" stop-color="#655d73"/><stop offset="1" stop-color="#191725"/></linearGradient>
+ <linearGradient id="warmGlass" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#fff0b7"/><stop offset=".32" stop-color="#d6a76f"/><stop offset=".7" stop-color="#9869a9"/><stop offset="1" stop-color="#322342"/></linearGradient>
+ <linearGradient id="deepGlass" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f4d99a"/><stop offset=".45" stop-color="#9b76c7"/><stop offset="1" stop-color="#263b60"/></linearGradient>
+ <linearGradient id="driveStone" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#716b7a"/><stop offset=".45" stop-color="#373341"/><stop offset="1" stop-color="#11111a"/></linearGradient>
+ <linearGradient id="graveStone" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#b3aab8"/><stop offset=".3" stop-color="#777080"/><stop offset=".72" stop-color="#393441"/><stop offset="1" stop-color="#17151e"/></linearGradient>
+ <filter id="castShadow" x="-30%" y="-30%" width="160%" height="180%"><feGaussianBlur stdDeviation="12"/></filter>
+ <filter id="stoneGlow"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+ <filter id="stoneGrain" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency=".045" numOctaves="2" seed="17" result="n"/><feColorMatrix in="n" type="saturate" values="0" result="g"/><feComponentTransfer in="g" result="a"><feFuncA type="table" tableValues="0 .12"/></feComponentTransfer><feBlend in="SourceGraphic" in2="a" mode="soft-light"/></filter>
+ <g id="castleWindow">
+  <path d="M-30 68V-4Q-30-38 0-55Q30-38 30-4V68Z" fill="#100e18" stroke="#17131e" stroke-width="5"/>
+  <path d="M-25 63V-4Q-25-34 0-49Q25-34 25-4V63Z" fill="#8e8298" stroke="#c4b8c9" stroke-width="3"/>
+  <path d="M-19 59V-3Q-19-29 0-41Q19-29 19-3V59Z" fill="#171321" stroke="#393044" stroke-width="3"/>
+  <path d="M-15 56V-3Q-15-25 0-36Q15-25 15-3V56Z" fill="url(#warmGlass)"/>
+  <path d="M0-35V56M-15 12H15M-15 34H15" stroke="#2b2034" stroke-width="3" fill="none"/>
+  <path d="M-12-8Q-10-26 0-34" stroke="#fff1c8" stroke-width="2" opacity=".65" fill="none"/>
+  <path d="M-34 66H34L29 75H-29Z" fill="#211c29" stroke="#8c8193" stroke-width="2"/>
+  <path d="M-30 65H30" stroke="#d0c5d4" stroke-width="2"/>
+ </g>
+ <g id="towerWindow">
+  <path d="M-21 50V-8Q-21-34 0-47Q21-34 21-8V50Z" fill="#100d18" stroke="#aaa0b2" stroke-width="4"/>
+  <path d="M-13 44V-7Q-13-27 0-36Q13-27 13-7V44Z" fill="url(#deepGlass)"/>
+  <path d="M0-35V44M-13 11H13" stroke="#21182d" stroke-width="3"/>
+  <path d="M-25 48H25L21 55H-21Z" fill="#302a38" stroke="#c0b5c8" stroke-width="2"/>
  </g>
  <g id="grandStainedGlass">
-  <!-- Deep recessed stone opening and layered carved surround -->
-  <path d="M-49 108V-20Q-49-79 0-105Q49-79 49-20V108Z" fill="#080710" stroke="#171321" stroke-width="7"/>
-  <path d="M-42 103V-19Q-42-70 0-94Q42-70 42-19V103Z" fill="#51465f" stroke="#d3c1dc" stroke-width="3"/>
-  <path d="M-36 98V-18Q-36-63 0-85Q36-63 36-18V98Z" fill="#100e1c" stroke="#21182d" stroke-width="3"/>
-  <!-- Jewel glass: ruby, sapphire, amethyst, emerald and amber -->
-  <path d="M-31 12L-8-12V-75Q-29-61-31-20Z" fill="#9d294f"/>
-  <path d="M8-12L31 12V-20Q29-61 8-75Z" fill="#245f9b"/>
-  <path d="M-31 20L-8-3V94H-31Z" fill="#50318c"/>
-  <path d="M8-3L31 20V94H8Z" fill="#a66a27"/>
-  <path d="M-31 35L-8 12V51L-31 76Z" fill="#176b68"/>
-  <path d="M31 35L8 12V51L31 76Z" fill="#8b315f"/>
-  <path d="M-6-73L0-82 6-73V-17L0-9-6-17Z" fill="#d3a64c"/>
-  <path d="M-6 4L0-3 6 4V93H-6Z" fill="#2d7e88" opacity=".9"/>
-  <!-- Intricate Gothic tracery and lead cames -->
-  <g fill="none" stroke="#d5c4a5" stroke-width="3.2" stroke-linejoin="round">
-   <path d="M0-88V97M-34 14H34M-34 51H34M-34 88H34"/>
-   <path d="M-34-18Q-34-65 0-83Q34-65 34-18"/>
-   <path d="M-34 14L-8-13V-74M34 14L8-13V-74"/>
-   <path d="M-34 51L-8 26V92M34 51L8 26V92"/>
-   <path d="M-8-13L0-28 8-13M-8 26L0 11 8 26"/>
-  </g>
-  <!-- Rosette centerpiece with a faceted jewel -->
-  <path d="M0-58L8-42 25-39 13-26 16-9 0-17-16-9-13-26-25-39-8-42Z" fill="#f0c66e" stroke="#fff0c5" stroke-width="2"/>
-  <circle cx="0" cy="-34" r="8" fill="#8c4c9d" stroke="#f7dca0" stroke-width="2"/>
-  <path d="M0 0L12 14 0 28-12 14Z" fill="#f4d58c" stroke="#fff0c5" stroke-width="2"/>
-  <circle cx="0" cy="14" r="4" fill="#fff4d3"/>
-  <!-- Glass highlights and raised stone sill -->
-  <path d="M-29-18Q-28-62-2-78M-29 23V83" fill="none" stroke="#fff2d4" stroke-width="2" opacity=".55"/>
-  <path d="M-46 105H46L39 114H-39Z" fill="#393044" stroke="#c4b4d0" stroke-width="2"/>
-  <path d="M-40 105H40" stroke="#f0dfc0" stroke-width="2.5"/>
-  <path d="M-48 116H48" stroke="#171321" stroke-width="4" opacity=".8"/>
+  <path d="M-55 112V-20Q-55-82 0-111Q55-82 55-20V112Z" fill="#0b0912" stroke="#17131e" stroke-width="9"/>
+  <path d="M-46 105V-18Q-46-72 0-97Q46-72 46-18V105Z" fill="#665a70" stroke="#d2c2d8" stroke-width="4"/>
+  <path d="M-37 97V-17Q-37-62 0-85Q37-62 37-17V97Z" fill="#171321"/>
+  <path d="M-34 4L-8-17V-73Q-31-57-34-18Z" fill="#a52f56"/>
+  <path d="M8-17L34 4V-18Q31-57 8-73Z" fill="#286c9b"/>
+  <path d="M-34 12L-8-10V92H-34Z" fill="#583b9a"/>
+  <path d="M8-10L34 12V92H8Z" fill="#b07832"/>
+  <path d="M-34 32L-8 9V48L-34 75Z" fill="#1b7773"/>
+  <path d="M34 32L8 9V48L34 75Z" fill="#963c69"/>
+  <path d="M-7-75L0-86 7-75V-17L0-8-7-17Z" fill="#e5bd65"/>
+  <path d="M-7 5L0-3 7 5V92H-7Z" fill="#3a9294"/>
+  <g fill="none" stroke="#e0d1b1" stroke-width="3.5"><path d="M0-88V96M-37 13H37M-37 51H37M-37 88H37"/><path d="M-37-18Q-37-66 0-84Q37-66 37-18"/><path d="M-37 13L-8-17V-75M37 13L8-17V-75M-37 51L-8 25V94M37 51L8 25V94"/><path d="M-8-17L0-34 8-17M-8 25L0 8 8 25"/></g>
+  <path d="M0-60L9-43 27-40 14-26 17-8 0-17-17-8-14-26-27-40-9-43Z" fill="#f1c86f" stroke="#fff0c6" stroke-width="2"/>
+  <circle cx="0" cy="-35" r="8" fill="#8c4d9d" stroke="#ffe6a9" stroke-width="2"/>
+  <path d="M-49 109H49L41 120H-41Z" fill="#332b3d" stroke="#c6b5cd" stroke-width="3"/>
+  <path d="M-43 108H43" stroke="#f2dfbd" stroke-width="3"/>
  </g>
- <linearGradient id="gargoyleStone" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c0b7c4"/><stop offset=".28" stop-color="#817987"/><stop offset=".62" stop-color="#5c5563"/><stop offset="1" stop-color="#302b38"/></linearGradient>
- <g id="stoneGargoyle">
-  <!-- Front-facing cathedral grotesque: a crouched winged stone lion -->
-  <!-- broad folded wings frame the body -->
-  <path d="M-17-12Q-48-28-62-68Q-38-66-23-48Q-26-69-12-84Q8-63 8-39L2-14Z" fill="#34303c" stroke="#17131e" stroke-width="4" stroke-linejoin="round"/>
-  <path d="M17-12Q48-28 62-68Q38-66 23-48Q26-69 12-84Q-8-63-8-39L-2-14Z" fill="#34303c" stroke="#17131e" stroke-width="4" stroke-linejoin="round"/>
-  <path d="M-53-62Q-36-47-20-22M-34-66Q-28-43-12-22M53-62Q36-47 20-22M34-66Q28-43 12-22" fill="none" stroke="#a69dab" stroke-width="2.4" opacity=".7"/>
-  <path d="M-48-49L-39-43M-29-53L-23-39M48-49L39-43M29-53L23-39" stroke="#17131e" stroke-width="2.5"/>
-  <!-- heavy shoulders and crouched haunches -->
-  <path d="M-34-13Q-49 2-42 31Q-34 51-12 43L0 31 12 43Q34 51 42 31Q49 2 34-13Q20-29 0-26Q-20-29-34-13Z" fill="url(#gargoyleStone)" stroke="#211c28" stroke-width="4"/>
-  <path d="M-34-6Q-21-25-5-19L-1 22Q-19 33-31 21Z" fill="#8b8290" opacity=".7"/>
-  <path d="M34-6Q21-25 5-19L1 22Q19 33 31 21Z" fill="#393440" opacity=".7"/>
-  <path d="M-25 3Q-17 12-20 31M-13-3Q-8 12-9 34M25 3Q17 12 20 31M13-3Q8 12 9 34" fill="none" stroke="#c2b8c5" stroke-width="2.4" opacity=".55"/>
-  <!-- horned grotesque head, facing outward -->
-  <path d="M-23-25L-31-51Q-15-48-9-35Q0-42 9-35Q15-48 31-51L23-25Q29-8 18 4L0 12-18 4Q-29-8-23-25Z" fill="url(#gargoyleStone)" stroke="#211c28" stroke-width="4" stroke-linejoin="round"/>
-  <path d="M-20-39L-26-57-11-47M20-39L26-57 11-47" fill="#514958" stroke="#211c28" stroke-width="3" stroke-linejoin="round"/>
-  <path d="M-19-23Q-10-31-2-23L-5-14-19-14ZM19-23Q10-31 2-23L5-14 19-14Z" fill="#211923"/>
-  <path d="M-14-21L-8-21M8-21L14-21" stroke="#d5bd9d" stroke-width="2.2" stroke-linecap="round"/>
-  <path d="M0-19L-7-5 0 1 7-5Z" fill="#514957" stroke="#211c28" stroke-width="2.5"/>
-  <path d="M-13-4Q0 4 13-4L10 8Q0 16-10 8Z" fill="#211923" stroke="#17131e" stroke-width="2.5"/>
-  <path d="M-8 2L-5 8M0 4V10M8 2L5 8" stroke="#e0d5d9" stroke-width="2.4" stroke-linecap="round"/>
-  <path d="M-21-31Q-11-39 0-34Q11-39 21-31" fill="none" stroke="#c6bdca" stroke-width="3" opacity=".65"/>
-  <!-- two massive forelegs draped over the cornice -->
-  <path d="M-27 3Q-39 15-35 37L-27 51-12 45-10 27Q-13 10-27 3Z" fill="url(#gargoyleStone)" stroke="#211c28" stroke-width="3.5"/>
-  <path d="M27 3Q39 15 35 37L27 51 12 45 10 27Q13 10 27 3Z" fill="url(#gargoyleStone)" stroke="#211c28" stroke-width="3.5"/>
-  <path d="M-29 43L-40 56-28 54-22 62-12 48M29 43L40 56 28 54 22 62 12 48" fill="#aaa1ad" stroke="#211c28" stroke-width="2.6" stroke-linejoin="round"/>
-  <!-- carved stone spout / mounting corbel -->
-  <path d="M-54 55L54 55 65 66 58 76H-58L-65 66Z" fill="#4a4351" stroke="#c2b8c7" stroke-width="3.5"/>
-  <path d="M-56 57H56L62 64H-62Z" fill="#a39aa8" opacity=".72"/>
-  <path d="M-48 77H48L38 87H-38Z" fill="#302b37" stroke="#17131e" stroke-width="2.5"/>
-  <path d="M-44 61L-39 69M-15 60L-12 69M15 60L12 69M44 61L39 69" stroke="#ded4df" stroke-width="1.8" opacity=".5"/>
- </g>
-<g id="darkWindow"><path d="M-25 8Q-25-30 0-45Q25-30 25 8V68H-25Z" fill="#0b0b14" stroke="#8d849b" stroke-width="5"/><path d="M-16 9Q-16-20 0-32Q16-20 16 9V59H-16Z" fill="#9b7bd0" opacity=".34"/></g>
 </defs>
-<!-- distant mountain silhouettes -->
-<path d="M0 405L100 315 175 375 275 270 365 380 480 260 580 375 700 250 810 375 930 280 1040 380 1140 295 1200 355V760H0Z" fill="#111321" opacity=".75"/>
-<!-- rear towers and long fortified skyline -->
-<g stroke="#9d92ad" stroke-width="5">
- <path d="M95 570V315H220V570Z M980 570V300H1100V570Z" fill="url(#stone)" filter="url(#stoneDepth)"/>
- <path d="M75 325L157 125 240 325Z M960 310L1040 85 1120 310Z" fill="url(#roofFace)"/>
- <path d="M157 125V90M1040 85V45" stroke="#c9bdd7" stroke-width="5"/>
- <path d="M157 90l14 18-14 18-14-18ZM1040 45l15 20-15 20-15-20Z" fill="#b49aff" filter="url(#glow)"/>
+<!-- Distant storm hills and moonlit ridge -->
+<path d="M0 440L95 350 174 392 275 292 366 402 480 285 575 395 710 270 820 398 938 300 1040 398 1140 320 1200 370V760H0Z" fill="#111321" opacity=".8"/>
+<path d="M0 470L150 405 245 443 360 380 470 445 610 365 760 444 905 382 1035 444 1200 385V760H0Z" fill="#191827" opacity=".72"/>
+<ellipse cx="600" cy="675" rx="540" ry="70" fill="#05050b" opacity=".75" filter="url(#castShadow)"/>
+<!-- Rear curtain wall and distant towers -->
+<g>
+ <path d="M82 565V360L170 315 258 360V565Z" fill="url(#shadowStone)" stroke="#8e8498" stroke-width="5"/>
+ <path d="M942 565V350L1035 300 1128 350V565Z" fill="url(#shadowStone)" stroke="#8e8498" stroke-width="5"/>
+ <path d="M62 365L170 115 278 365Z" fill="url(#slateRoof)" stroke="#a49aaa" stroke-width="5"/>
+ <path d="M170 115L278 365 250 365 170 164Z" fill="#171624" opacity=".8"/>
+ <path d="M922 355L1035 75 1148 355Z" fill="url(#roofLit)" stroke="#b2a7b9" stroke-width="5"/>
+ <path d="M1035 75L1148 355 1117 355 1035 126Z" fill="#171624" opacity=".8"/>
+ <path d="M170 115V69M1035 75V28" stroke="#c6bdcf" stroke-width="5"/>
+ <path d="M170 69l12 18-12 18-12-18ZM1035 28l14 20-14 20-14-20Z" fill="#b49aff" stroke="#e7d9ff" stroke-width="2"/>
+ <path d="M108 360H232M970 350H1100" stroke="#b5aabd" stroke-width="8"/>
+ <path d="M120 380V555M220 380V555M980 370V555M1090 370V555" stroke="#262230" stroke-width="8"/>
 </g>
-<!-- sprawling left and right wings -->
-<g stroke="#a69aaf" stroke-width="5">
- <path d="M15 585V405L65 345H365L415 405V585Z" fill="url(#stone)" filter="url(#stoneSurface)"/>
- <path d="M785 585V405L835 345H1135L1185 405V585Z" fill="url(#stone)" filter="url(#stoneSurface)"/>
- <path d="M20 405L65 345H365L410 405Z M790 405L835 345H1135L1180 405Z" fill="url(#roofFace)"/>
- <path d="M45 345L100 220H300L355 345Z M845 345L900 220H1100L1155 345Z" fill="url(#roof)"/>
- <path d="M75 230H325M875 230H1125" stroke="#c0b4c9" stroke-width="4"/>
+<!-- Main west and east residential ranges, each a solid architectural mass -->
+<g filter="url(#stoneGrain)">
+ <path d="M82 590V420Q82 390 118 378L398 350 456 402V610H82Z" fill="url(#nightStone)" stroke="#b2a7b7" stroke-width="6"/>
+ <path d="M744 402L802 350 1082 378Q1118 390 1118 420V590H744Z" fill="url(#nightStone)" stroke="#b2a7b7" stroke-width="6"/>
+ <path d="M102 420L400 382 435 410V585H102Z" fill="#5b5262" opacity=".22"/>
+ <path d="M765 410L800 382 1098 420V585H765Z" fill="#11101a" opacity=".32"/>
 </g>
-<!-- wing dormers -->
-<g fill="url(#roofFace)" stroke="#a99db6" stroke-width="4">
- <path d="M95 300V230L145 175 195 230V300Z M245 300V230L295 175 345 230V300Z"/>
- <path d="M855 300V230L905 175 955 230V300Z M1005 300V230L1055 175 1105 230V300Z"/>
+<!-- Deep sloping roofs with visible front and side planes -->
+<g stroke-linejoin="round">
+ <path d="M58 422L215 265 430 386 399 410 215 320 102 438Z" fill="url(#roofLit)" stroke="#c1b6c6" stroke-width="6"/>
+ <path d="M215 265L430 386 399 410 215 320Z" fill="#1a1725" opacity=".75"/>
+ <path d="M770 386L985 265 1142 422 1098 438 985 320 801 410Z" fill="url(#slateRoof)" stroke="#b7acbf" stroke-width="6"/>
+ <path d="M985 265L1142 422 1098 438 985 320Z" fill="#151421" opacity=".8"/>
+ <path d="M215 265L202 250 215 233 229 250Z M985 265L972 250 985 233 999 250Z" fill="#b9afc2" stroke="#282333" stroke-width="4"/>
+ <path d="M100 438L215 320 399 410M801 410L985 320 1100 438" fill="none" stroke="#ded3df" stroke-width="3" opacity=".45"/>
 </g>
-<!-- central keep mass -->
-<path d="M300 600V300L360 245H840L900 300V600Z" fill="url(#stone)" filter="url(#stoneSurface)" stroke="#b2a6bf" stroke-width="7"/>
-<path d="M280 310L360 245H840L920 310Z" fill="url(#roofFace)" stroke="#b7abc5" stroke-width="5"/>
-<!-- great central tower -->
-<path d="M440 600V135H760V600Z" fill="url(#stone)" filter="url(#stoneSurface)" stroke="#c0b5ce" stroke-width="7"/>
-<path d="M415 155L600 -95 785 155Z" fill="url(#roofFace)" stroke="#d0c4d9" stroke-width="6"/>
-<path d="M600 -95V-130" stroke="#e4d9ec" stroke-width="6"/>
-<path d="M600 -130l18 23-18 22-18-22Z" fill="#c9aaff" filter="url(#glow)"/>
-<!-- flanking tall needle towers -->
-<g stroke="#b6a9c4" stroke-width="6">
- <path d="M340 600V160H440V600Z M760 600V160H860V600Z" fill="url(#stone)" filter="url(#stoneSurface)"/>
- <path d="M320 175L390 -45 460 175Z M740 175L810 -45 880 175Z" fill="url(#roofFace)"/>
- <path d="M390 -45V-80M810 -45V-80" stroke="#e1d5ed" stroke-width="5"/>
- <path d="M390 -80l14 18-14 18-14-18ZM810 -80l14 18-14 18-14-18Z" fill="#b99aff" filter="url(#glow)"/>
+<!-- Side turrets and their steep slate caps -->
+<g>
+ <path d="M275 410V255Q275 228 305 212Q335 228 335 255V410Z" fill="url(#sunlitStone)" stroke="#bdb2c2" stroke-width="5"/>
+ <path d="M258 255L305 132 352 255Z" fill="url(#slateRoof)" stroke="#c0b6c7" stroke-width="5"/>
+ <path d="M305 132L352 255 334 255 305 161Z" fill="#161522"/>
+ <path d="M305 132V105" stroke="#d8cde0" stroke-width="4"/>
+ <path d="M825 410V255Q825 228 855 212Q885 228 885 255V410Z" fill="url(#shadowStone)" stroke="#a69bab" stroke-width="5"/>
+ <path d="M808 255L855 132 902 255Z" fill="url(#roofLit)" stroke="#c0b6c7" stroke-width="5"/>
+ <path d="M855 132L902 255 884 255 855 161Z" fill="#151421"/>
+ <path d="M855 132V105" stroke="#d8cde0" stroke-width="4"/>
 </g>
-<!-- front corner turrets -->
-<g stroke="#b5a9c2" stroke-width="5">
- <path d="M225 585V365H300V585Z M900 585V365H975V585Z" fill="url(#stone)"/>
- <path d="M210 375L262 220 315 375Z M885 375L937 220 990 375Z" fill="url(#roofFace)"/>
+<!-- Central keep: broad, weighty stone facade with projecting buttresses -->
+<g filter="url(#stoneGrain)">
+ <path d="M386 610V330Q386 280 435 260H765Q814 280 814 330V610Z" fill="url(#sunlitStone)" stroke="#d0c4d3" stroke-width="7"/>
+ <path d="M408 590V334Q408 298 448 282H752Q792 298 792 334V590Z" fill="url(#nightStone)" opacity=".72"/>
+ <path d="M386 610V330Q386 280 435 260H765Q814 280 814 330V610Z" fill="none" stroke="#17141f" stroke-width="12" opacity=".7"/>
 </g>
-<!-- Layered slate roofwork: raised ridges, staggered courses and moonlit edges. -->
-<g class="gothic-roof-details" pointer-events="none" fill="none" stroke-linecap="round" stroke-linejoin="round">
- <!-- Main central spire: subtle slate courses follow the triangular roof plane. -->
- <g stroke="#171321" stroke-width="3" opacity=".48">
-  <path d="M438 125H762 M460 95H740 M482 65H718 M504 35H696 M526 5H674 M548 -25H652 M570 -55H630"/>
-  <path d="M415 155L600 -95 785 155" stroke="#171321" stroke-width="12"/>
- </g>
- <g stroke="#c9bfd3" stroke-width="2" opacity=".48">
-  <path d="M438 121H762 M460 91H740 M482 61H718 M504 31H696 M526 1H674 M548 -29H652 M570 -59H630"/>
-  <path d="M425 148L600 -91 775 148"/>
- </g>
- <g stroke="#a99bb9" stroke-width="2.5" opacity=".45">
-  <path d="M600 -95L600 154"/>
-  <path d="M390 -45L320 175 M810 -45L880 175"/>
- </g>
- <!-- Tall flanking needle roofs: alternating slate seams and bright outer arrises. -->
- <g stroke="#171321" stroke-width="2.8" opacity=".46">
-  <path d="M338 145H442 M347 115H433 M357 85H423 M367 55H413 M377 25H403 M758 145H862 M767 115H853 M777 85H843 M787 55H833 M797 25H823"/>
-  <path d="M320 175L390 -45 460 175 M740 175L810 -45 880 175" stroke-width="10"/>
- </g>
- <g stroke="#d1c7d8" stroke-width="2" opacity=".48">
-  <path d="M338 141H442 M347 111H433 M357 81H423 M367 51H413 M377 21H403 M758 141H862 M767 111H853 M777 81H843 M787 51H833 M797 21H823"/>
-  <path d="M326 166L390 -39 454 166 M746 166L810 -39 874 166"/>
- </g>
- <!-- Broad wing roofs: staggered slate courses, kept within the roof planes. -->
- <g stroke="#171321" stroke-width="4" opacity=".72">
-  <path d="M59 313L87 250H313L341 313 M72 283L99 231H301L328 283 M87 253L111 220H289L313 253"/>
-  <path d="M859 313L887 250H1113L1141 313 M872 283L899 231H1101L1128 283 M887 253L911 220H1089L1113 253"/>
- </g>
- <g stroke="#c7bdcf" stroke-width="2" opacity=".48">
-  <path d="M59 309L87 246H313L341 309 M72 279L99 227H301L328 279 M87 249L111 216H289L313 249"/>
-  <path d="M859 309L887 246H1113L1141 309 M872 279L899 227H1101L1128 279 M887 249L911 216H1089L1113 249"/>
- </g>
- <!-- Main keep roof shoulders: layered stone-slate edge caps. -->
- <g stroke="#211a2b" stroke-width="5" opacity=".8">
-  <path d="M292 310L360 245H840L908 310"/>
-  <path d="M305 316L365 254H835L895 316" stroke-width="2"/>
- </g>
- <g stroke="#d1c5d9" stroke-width="2.5" opacity=".5">
-  <path d="M288 306L360 240H840L912 306"/>
- </g>
- <!-- Small front turrets and rear towers receive crisp cap highlights. -->
- <g stroke="#171321" stroke-width="4" opacity=".72">
-  <path d="M210 375L262 220 315 375 M885 375L937 220 990 375"/>
-  <path d="M75 325L157 125 240 325 M960 310L1040 85 1120 310"/>
- </g>
- <g stroke="#d6cadd" stroke-width="2.5" opacity=".52">
-  <path d="M218 365L262 230 307 365 M893 365L937 230 982 365"/>
-  <path d="M83 315L157 137 232 315 M968 300L1040 98 1112 300"/>
- </g>
- <!-- Delicate finial glints catch the moonlight without changing the stained glass. -->
- <g stroke="#e5d9f0" stroke-width="3" opacity=".8">
-  <path d="M600 -142V-119 M390 -91V-68 M810 -91V-68 M157 78V101 M1040 32V56"/>
- </g>
+<!-- Central tower rises from the keep; layered roof planes create clear depth -->
+<g>
+ <path d="M466 438V155Q466 118 510 98H690Q734 118 734 155V438Z" fill="url(#sunlitStone)" stroke="#d5c9d8" stroke-width="7"/>
+ <path d="M488 422V159Q488 135 520 119H680Q712 135 712 159V422Z" fill="url(#nightStone)" opacity=".55"/>
+ <path d="M448 164L600 34 752 164 718 184 600 83 482 184Z" fill="url(#roofLit)" stroke="#d5c9d8" stroke-width="6"/>
+ <path d="M600 34L752 164 718 184 600 83Z" fill="#161522" opacity=".8"/>
+ <path d="M600 34V4" stroke="#ded5e4" stroke-width="5"/>
+ <path d="M600 4l11 16-11 16-11-16Z" fill="#b49aff" stroke="#fff" stroke-width="2"/>
+ <path d="M475 168H725M482 190H718" stroke="#272232" stroke-width="9"/>
+ <path d="M466 438H734" stroke="#d6cbdc" stroke-width="10"/>
 </g>
-<!-- Tower architecture: projecting corner buttresses and carved cornices add real depth -->
-<g class="tower-stone-details" pointer-events="none" stroke-linejoin="round">
- <!-- central keep corner buttresses -->
- <path d="M440 155L454 145V586L440 600Z M746 145L760 155V600L746 586Z" fill="#393342" stroke="#211b2a" stroke-width="2"/>
- <path d="M440 155L454 145V586L440 600Z" fill="#8d8294" opacity=".72"/>
- <path d="M746 145L760 155V600L746 586Z" fill="#51495b" opacity=".85"/>
- <path d="M435 155H459L466 166H431Z M741 166L748 155H765L769 166Z" fill="#b2a6b8" stroke="#302938" stroke-width="2"/>
- <path d="M435 578H459L466 590H430Z M741 590L748 578H765L770 590Z" fill="#817688" stroke="#302938" stroke-width="2"/>
- <!-- flanking tower edge pilasters -->
- <path d="M340 175L351 165V586L340 600Z M429 165L440 175V600L429 586Z M760 175L771 165V586L760 600Z M849 165L860 175V600L849 586Z" fill="#4a4353" stroke="#211b2a" stroke-width="2"/>
- <path d="M340 175L351 165V586L340 600Z M760 175L771 165V586L760 600Z" fill="#9a90a0" opacity=".58"/>
- <path d="M334 173H355L361 184H330Z M424 184L430 173H445L450 184Z M754 173H775L781 184H750Z M844 184L850 173H865L870 184Z" fill="#b0a5b7" stroke="#302938" stroke-width="2"/>
- <!-- projecting upper string courses, with shadowed undersides -->
- <path d="M433 177H767L779 188H421Z" fill="#8a8091" stroke="#211b2a" stroke-width="2"/>
- <path d="M433 177H767L779 181H421Z" fill="#c1b6c7" opacity=".65"/>
- <path d="M333 188H447L455 197H325Z M753 188H867L875 197H745Z" fill="#817789" stroke="#211b2a" stroke-width="2"/>
- <!-- subtle stone corbels beneath the tower rooflines -->
- <path d="M444 143L458 143 455 154H447Z M742 143H756L753 154H745Z M345 163H356L353 174H347Z M424 163H435L432 174H426Z M765 163H776L773 174H767Z M844 163H855L852 174H846Z" fill="#c2b7c8" stroke="#332c3b" stroke-width="1.5"/>
+<!-- Tower corner turrets: attached to the tower shoulders, not floating -->
+<g>
+ <path d="M445 222V142Q445 125 463 115Q481 125 481 142V222Z" fill="url(#shadowStone)" stroke="#c3b8c8" stroke-width="4"/>
+ <path d="M435 145L463 72 491 145Z" fill="url(#slateRoof)" stroke="#c9bed0" stroke-width="4"/>
+ <path d="M719 222V142Q719 125 737 115Q755 125 755 142V222Z" fill="url(#sunlitStone)" stroke="#c3b8c8" stroke-width="4"/>
+ <path d="M709 145L737 72 765 145Z" fill="url(#roofLit)" stroke="#c9bed0" stroke-width="4"/>
+ <path d="M463 72V52M737 72V52" stroke="#d6cde0" stroke-width="3"/>
 </g>
-<!-- Clean uninterrupted stone facade: no decorative grid lines across the walls. -->
-<!-- The facade ribs remain behind the window openings, without crossing their frames. -->
-<!-- Carved pinnacles and finials on the main facade -->
-<g fill="url(#roofFace)" stroke="#c8bbd5" stroke-width="4">
- <path d="M315 300L350 250 385 300 373 310H327Z M815 300L850 250 885 300 873 310H827Z"/>
- <path d="M430 155L450 112 470 155 463 164H437Z M730 155L750 112 770 155 763 164H737Z"/>
+<!-- Deep-set windows are placed directly on the planes of the building -->
+<g class="window">
+ <use href="#castleWindow" transform="translate(150 468) scale(.82)"/>
+ <use href="#castleWindow" transform="translate(335 468) scale(.82)"/>
+ <use href="#castleWindow" transform="translate(865 468) scale(.82)"/>
+ <use href="#castleWindow" transform="translate(1050 468) scale(.82)"/>
+ <use href="#castleWindow" transform="translate(305 340) scale(.72)"/>
+ <use href="#castleWindow" transform="translate(895 340) scale(.72)"/>
+ <use href="#castleWindow" transform="translate(490 405) scale(.72)"/>
+ <use href="#castleWindow" transform="translate(710 405) scale(.72)"/>
 </g>
-<g fill="#b99aff" filter="url(#glow)"><circle cx="350" cy="248" r="6"/><circle cx="850" cy="248" r="6"/><circle cx="450" cy="110" r="5"/><circle cx="750" cy="110" r="5"/></g>
-<!-- Stone facades are intentionally left free of decorative joint lines. -->
- <!-- Large, clearly visible stone guardians, layered in front of the masonry so they cannot disappear behind the wall texture -->
-<g class="gargoyles" pointer-events="none">
- <use href="#stoneGargoyle" transform="translate(350 270) scale(1.55)"/>
- <use href="#stoneGargoyle" transform="translate(850 270) scale(-1.55 1.55)"/>
- <use href="#stoneGargoyle" transform="translate(157 340) scale(1.12)"/>
- <use href="#stoneGargoyle" transform="translate(1040 325) scale(-1.12 1.12)"/>
+<g class="window">
+ <use href="#towerWindow" transform="translate(520 235)"/>
+ <use href="#towerWindow" transform="translate(680 235)"/>
+ <use href="#towerWindow" transform="translate(520 365) scale(.9)"/>
+ <use href="#towerWindow" transform="translate(680 365) scale(.9)"/>
 </g>
-<!-- Natural stone surfaces remain clean around the window openings. -->
-<!-- repeated illuminated windows -->
-<g class="window" transform="translate(600 370) scale(1.28 1.24) translate(-600 -370)">
- <use href="#litWindow" x="145" y="470"/><use href="#litWindow" x="275" y="470"/>
- <use href="#litWindow" x="925" y="470"/><use href="#litWindow" x="1055" y="470"/>
- <use href="#litWindow" x="390" y="340"/><use href="#litWindow" x="810" y="340"/>
- <use href="#litWindow" x="390" y="440"/><use href="#litWindow" x="810" y="440"/>
- <use href="#litWindow" x="490" y="210"/><use href="#litWindow" x="710" y="210"/>
- <use href="#litWindow" x="490" y="355"/><use href="#litWindow" x="710" y="355"/>
- 
+<!-- The central jewel window is recessed in the tower facade -->
+<ellipse cx="600" cy="300" rx="66" ry="119" fill="#a779d8" opacity=".18" filter="url(#stoneGlow)"/>
+<g transform="translate(600 300) scale(.94)" filter="url(#stoneGlow)"><use href="#grandStainedGlass"/></g>
+<!-- Architectural vertical supports, capitals and stone ledges -->
+<g fill="url(#shadowStone)" stroke="#c1b5c7" stroke-width="3">
+ <path d="M390 328H416V600H390Z M784 328H810V600H784Z"/>
+ <path d="M378 322H428V338H378Z M772 322H822V338H772Z"/>
+ <path d="M398 465H420V478H398Z M780 465H802V478H780Z"/>
+ <path d="M455 186H477V425H455Z M723 186H745V425H723Z"/>
+ <path d="M445 180H487V194H445Z M713 180H755V194H713Z"/>
 </g>
-<!-- Grand jewel-toned stained-glass feature window in the central tower -->
-<ellipse cx="600" cy="292" rx="68" ry="104" fill="#9b62d6" opacity=".14" filter="url(#glow)"/><g transform="translate(600 292) scale(.9)" filter="url(#glow)" opacity="1"><use href="#grandStainedGlass"/></g><path d="M570 300V371Q600 388 630 371V300" fill="none" stroke="#e7cfff" stroke-width="2" opacity=".25" filter="url(#glow)"/>
-<!-- grand entrance pavilion and deep arched doors -->
-<path d="M465 600V520Q465 405 600 405Q735 405 735 520V600Z" fill="#15121e" stroke="#d0c4d8" stroke-width="12"/>
-<path d="M490 600V520Q490 435 600 435Q710 435 710 520V600Z" fill="url(#door)" stroke="#746385" stroke-width="7"/>
-<path d="M600 438V600M510 520H690" stroke="#c1a5e8" stroke-width="5" opacity=".55"/>
-<path d="M465 520Q465 405 600 405Q735 405 735 520" fill="none" stroke="#d9c9e9" stroke-width="5" filter="url(#glow)"/>
-<!-- gate leaves retain opening interaction -->
-<g class="castle-gate gate-left" stroke="#d8c8e5" stroke-width="7" fill="none"><path d="M520 475V600M545 455V600M570 445V600M495 520H600M495 565H600"/><path d="M520 475l25-20 25-10 30 10"/></g>
-<g class="castle-gate gate-right" stroke="#d8c8e5" stroke-width="7" fill="none"><path d="M680 475V600M655 455V600M630 445V600M600 520H705M600 565H705"/><path d="M680 475l-25-20-25-10-30 10"/></g>
-<!-- broad layered stone stair -->
-<path d="M460 600H740L780 625H420Z M425 625H775L815 652H385Z M385 652H815L855 682H345Z" fill="#514a5c" stroke="#aaa0b5" stroke-width="4"/>
-<path d="M420 628H780M385 655H815" stroke="#d1c4d8" stroke-width="3" opacity=".45"/>
-<!-- forecourt perspective drive -->
-<path d="M0 760L355 680H845L1200 760Z" fill="url(#drive)" stroke="#786d84" stroke-width="4"/>
-<path d="M355 680L0 760M845 680L1200 760" stroke="#b6a9c4" stroke-width="5" opacity=".5"/>
-<g stroke="#a89cb4" stroke-width="3" opacity=".35"><path d="M600 690V760M500 695L430 760M700 695L770 760M350 710L250 760M850 710L950 760"/></g>
-<!-- braziers and broken statues -->
-<g filter="url(#glow)"><path d="M80 565H135L125 635H90Z M1065 565H1120L1110 635H1075Z" fill="#5d5268"/><path d="M108 570Q65 520 108 480Q150 525 108 570M1092 570Q1050 520 1092 480Q1135 525 1092 570" fill="#ffb85f"/></g>
-<g fill="#393344" stroke="#877a96" stroke-width="4"><path d="M175 590l25-70 25 70v45H175Z M975 590l25-70 25 70v45H975Z"/></g>
-<!-- The forgotten graveyard: weathered headstones and wrought-iron rails frame the approach -->
+<g fill="none" stroke="#d6cadb" stroke-width="3" opacity=".5">
+ <path d="M402 350V585M798 350V585M466 202V410M734 202V410"/>
+ <path d="M115 425L390 390M810 390L1085 425"/>
+</g>
+<!-- Stone corner quoins, each block has a bevel and shadow rather than wall-wide grid lines -->
+<g stroke="#2a2532" stroke-width="3" stroke-linejoin="round">
+ <path d="M84 430L111 420 111 456 84 466Z M84 475L111 465 111 501 84 511Z M84 520L111 510 111 546 84 556Z M84 565L111 555 111 591 84 601Z" fill="#918798"/>
+ <path d="M1089 420L1116 430 1116 466 1089 456Z M1089 465L1116 475 1116 511 1089 501Z M1089 510L1116 520 1116 556 1089 546Z M1089 555L1116 565 1116 601 1089 591Z" fill="#6b6274"/>
+</g>
+<!-- Upper cornices cast deep shadows over the stone walls -->
+<g>
+ <path d="M75 592H440V614H75Z M760 592H1125V614H760Z" fill="#25212d" stroke="#a79cac" stroke-width="5"/>
+ <path d="M75 592H440M760 592H1125" stroke="#d0c5d5" stroke-width="3"/>
+ <path d="M390 432H810V450H390Z" fill="#292431" stroke="#b4a9ba" stroke-width="4"/>
+</g>
+<!-- Grand entrance: a deep stone portal, recessed oak doors and an iron grille -->
+<g>
+ <path d="M454 610V535Q454 435 600 435Q746 435 746 535V610Z" fill="#17131f" stroke="#c7bacd" stroke-width="12"/>
+ <path d="M476 610V535Q476 458 600 458Q724 458 724 535V610Z" fill="#0a0911" stroke="#6e6079" stroke-width="6"/>
+ <path d="M492 610V536Q492 474 600 474Q708 474 708 536V610Z" fill="#382b40" stroke="#a88bb4" stroke-width="4"/>
+ <path d="M600 478V610M505 535H695M505 574H695" stroke="#bca1c8" stroke-width="4" opacity=".5"/>
+ <path d="M514 488L600 475 686 488" fill="none" stroke="#ead8e9" stroke-width="3" opacity=".55"/>
+ <path d="M600 484V610" stroke="#1a1421" stroke-width="8"/>
+ <circle cx="585" cy="557" r="5" fill="#f2d49a"/><circle cx="615" cy="557" r="5" fill="#f2d49a"/>
+</g>
+<!-- Opening gate leaves retain the existing interaction and are mounted inside the entrance arch -->
+<g class="castle-gate gate-left" stroke="#d8c8e5" stroke-width="7" fill="none" stroke-linecap="round">
+ <path d="M520 500V610M545 480V610M570 470V610M495 535H600M495 575H600"/>
+ <path d="M520 500L545 480 570 470 600 480"/>
+ <path d="M495 535L520 525 545 535 570 525 600 535" stroke-width="4"/>
+</g>
+<g class="castle-gate gate-right" stroke="#d8c8e5" stroke-width="7" fill="none" stroke-linecap="round">
+ <path d="M680 500V610M655 480V610M630 470V610M600 535H705M600 575H705"/>
+ <path d="M680 500L655 480 630 470 600 480"/>
+ <path d="M600 535L630 525 655 535 680 525 705 535" stroke-width="4"/>
+</g>
+<!-- Broad grounded stair, with visible risers and projecting stone nosings -->
+<g stroke-linejoin="round">
+ <path d="M454 610H746L780 630H420Z" fill="#61596b" stroke="#c4b8cb" stroke-width="4"/>
+ <path d="M420 630H780L820 653H380Z" fill="#4e475a" stroke="#b8adbf" stroke-width="4"/>
+ <path d="M380 653H820L864 681H336Z" fill="#403a4b" stroke="#a89caf" stroke-width="4"/>
+ <path d="M336 681H864L900 706H300Z" fill="#302c3b" stroke="#95899f" stroke-width="4"/>
+ <path d="M420 630H780M380 653H820M336 681H864" stroke="#ded3e2" stroke-width="3" opacity=".55"/>
+</g>
+<!-- Forecourt and approach paving -->
+<path d="M0 760L300 706H900L1200 760Z" fill="url(#driveStone)" stroke="#7b7185" stroke-width="4"/>
+<path d="M300 706L0 760M900 706L1200 760" stroke="#c2b7c9" stroke-width="4" opacity=".42"/>
+<path d="M600 706V760M500 711L430 760M700 711L770 760M380 720L300 760M820 720L900 760" stroke="#171520" stroke-width="5" opacity=".65"/>
+<!-- Large old graveyard on both sides of the approach; headstones sit on the ground plane -->
 <g class="castle-graveyard" pointer-events="none">
- <defs>
-  <linearGradient id="graveStone" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#aaa0b0"/><stop offset=".35" stop-color="#625a6b"/><stop offset="1" stop-color="#211e2b"/></linearGradient>
-  <linearGradient id="graveShadow" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#71677a"/><stop offset="1" stop-color="#25212d"/></linearGradient>
- </defs>
- <!-- low, broken perimeter walls and iron railings -->
- <g fill="none" stroke="#272331" stroke-width="5" stroke-linecap="round" opacity=".95">
-  <path d="M12 646H300M12 646V700M300 646V700M900 646H1188M900 646V700M1188 646V700"/>
-  <path d="M20 635V687M43 635V687M66 635V687M89 635V687M112 635V687M135 635V687M158 635V687M181 635V687M204 635V687M227 635V687M250 635V687M273 635V687M296 635V687"/>
-  <path d="M904 635V687M927 635V687M950 635V687M973 635V687M996 635V687M1019 635V687M1042 635V687M1065 635V687M1088 635V687M1111 635V687M1134 635V687M1157 635V687M1180 635V687"/>
+ <g fill="none" stroke="#17141f" stroke-width="6" opacity=".95">
+  <path d="M18 663H286M18 663V713M286 663V713M914 663H1182M914 663V713M1182 663V713"/>
+  <path d="M25 651V704M48 651V704M71 651V704M94 651V704M117 651V704M140 651V704M163 651V704M186 651V704M209 651V704M232 651V704M255 651V704M278 651V704"/>
+  <path d="M922 651V704M945 651V704M968 651V704M991 651V704M1014 651V704M1037 651V704M1060 651V704M1083 651V704M1106 651V704M1129 651V704M1152 651V704M1175 651V704"/>
  </g>
- <g fill="#71677c" stroke="#25212e" stroke-width="2">
-  <path d="M8 635H28L18 620Z M285 635H305L295 620Z M892 635H912L902 620Z M1172 635H1192L1182 620Z"/>
+ <g fill="#797080" stroke="#282330" stroke-width="3">
+  <path d="M12 651H34L23 633Z M270 651H292L281 633Z M908 651H930L919 633Z M1170 651H1192L1181 633Z"/>
  </g>
- <!-- left grave row: individually sculpted, varied weathered headstones -->
- <g stroke-linejoin="round" transform="translate(-30 -410) scale(1.30 1.60)">
-  <!-- tall rounded Victorian marker -->
-  <g>
-   <path d="M29 687L31 619Q31 601 49 594L61 599Q76 608 75 625L78 687Z" fill="#100e18" opacity=".65"/>
-   <path d="M25 684L28 619Q28 600 47 591Q67 594 73 614L76 684Z" fill="url(#graveStone)" stroke="#292431" stroke-width="4"/>
-   <path d="M34 677L36 621Q37 607 49 602Q63 606 66 621L68 677Z" fill="none" stroke="#b7adbb" stroke-width="2" opacity=".38"/>
-   <path d="M31 623Q49 611 70 625M30 676L75 676" fill="none" stroke="#17141e" stroke-width="4" opacity=".7"/>
-   <path d="M45 632l-5 13 7 8-4 14M61 620l-3 11 5 8" fill="none" stroke="#29232f" stroke-width="2" opacity=".8"/>
-   <path d="M37 608q11-9 22 0" fill="none" stroke="#d1c5d0" stroke-width="2" opacity=".5"/>
-   <g font-family="Georgia,serif" text-anchor="middle" fill="#d9cfda" stroke="none" opacity=".9"><text x="51" y="641" font-size="11" letter-spacing=".7">REST</text><text x="51" y="652" font-size="9">IN PEACE</text><text x="51" y="663" font-size="11">1842 – 1891</text></g>
-  </g>
-  <!-- broad, low, broken-top slab -->
-  <g>
-   <path d="M94 690L99 640 108 631 143 635 153 649 155 690Z" fill="#17141f" opacity=".8"/>
-   <path d="M91 686L96 639 106 626 140 630 149 644 151 686Z" fill="url(#graveShadow)" stroke="#292431" stroke-width="4"/>
-   <path d="M101 642l10-5 28 4 5 8-2 28-39-1Z" fill="none" stroke="#b8adbd" stroke-width="2" opacity=".32"/>
-   <path d="M111 631l8 9 7-6 8 7" fill="none" stroke="#292330" stroke-width="3"/>
-   <path d="M103 660l9-5-3 13 8 8m22-30-6 11 4 9" fill="none" stroke="#211d29" stroke-width="2"/>
-   <g font-family="Georgia,serif" text-anchor="middle" fill="#d9cfda" stroke="none" opacity=".88"><text x="121" y="650" font-size="9">HERE LIES</text><text x="121" y="660" font-size="10">A LOST SOUL</text><text x="121" y="671" font-size="8">1861 – 1902</text></g>
-  </g>
-  <!-- narrow pointed memorial -->
-  <g>
-   <path d="M177 686L181 638 198 612 215 639 220 686Z" fill="#17141f"/>
-   <path d="M174 683L178 638 198 607 217 638 222 683Z" fill="url(#graveStone)" stroke="#292431" stroke-width="4"/>
-   <path d="M185 674L188 640 198 623 208 640 212 674Z" fill="none" stroke="#c0b5c3" stroke-width="2" opacity=".35"/>
-   <path d="M198 630V668M188 645H208" stroke="#c9bdca" stroke-width="3" opacity=".6"/>
-   <path d="M181 641l9 8-4 12m25-22-7 11 5 10" fill="none" stroke="#211d29" stroke-width="2"/>
-   <g font-family="Georgia,serif" text-anchor="middle" fill="#ded4df" stroke="none" opacity=".9"><text x="198" y="649" font-size="10">R.I.P.</text><text x="198" y="660" font-size="8">REMEMBERED</text><text x="198" y="670" font-size="7.5">1798 – 1856</text></g>
-  </g>
-  <!-- small leaning, chipped headstone -->
-  <g transform="rotate(-7 271 665)">
-   <path d="M244 690L246 651Q247 635 264 629L285 635 293 650 291 690Z" fill="#17141f"/>
-   <path d="M240 686L242 649Q244 632 263 625L282 631 289 648 287 686Z" fill="url(#graveShadow)" stroke="#292431" stroke-width="4"/>
-   <path d="M250 646q12-12 29 1l-2 29-27-1Z" fill="none" stroke="#b9aebd" stroke-width="2" opacity=".34"/>
-   <path d="M244 650l10 7-3 10m31-29-7 12 5 8" fill="none" stroke="#211d29" stroke-width="2"/>
-   <g font-family="Georgia,serif" text-anchor="middle" fill="#d9cfda" stroke="none" opacity=".88"><text x="265" y="654" font-size="9">NEVER</text><text x="265" y="664" font-size="9">FORGOTTEN</text><text x="265" y="674" font-size="7.5">1874</text></g>
-  </g>
+ <!-- left: large arched family monument -->
+ <g>
+  <path d="M38 692V625Q38 584 82 570Q126 584 126 625V692Z" fill="#14121b" opacity=".75"/>
+  <path d="M31 687V622Q31 581 78 566Q122 581 122 622V687Z" fill="url(#graveStone)" stroke="#c1b7c7" stroke-width="4"/>
+  <path d="M45 676V625Q45 594 78 583Q108 594 108 625V676Z" fill="#292532" stroke="#80778a" stroke-width="3"/>
+  <path d="M78 591V674M47 627H109" stroke="#b9afc1" stroke-width="2" opacity=".42"/>
+  <path d="M48 605Q78 585 108 605M44 680H110" fill="none" stroke="#d0c6d5" stroke-width="3" opacity=".55"/>
+  <g fill="#e1d8e4" font-family="Georgia,serif" text-anchor="middle"><text x="78" y="637" font-size="11">HERE LIES</text><text x="78" y="652" font-size="12">ELIAS VALE</text><text x="78" y="666" font-size="10">1812 — 1879</text></g>
  </g>
- <!-- right grave row: distinct silhouettes, chipped edges and carved detail -->
- <g stroke-linejoin="round" transform="translate(-270 -410) scale(1.25 1.60)">
-  <!-- small old rounded marker -->
-  <g>
-   <path d="M902 686L905 638Q907 619 924 614Q943 619 946 638L949 686Z" fill="#17141f"/>
-   <path d="M898 683L901 636Q903 616 923 610Q941 615 944 636L947 683Z" fill="url(#graveShadow)" stroke="#292431" stroke-width="4"/>
-   <path d="M909 675L911 639Q913 624 923 621Q935 625 937 640L938 675Z" fill="none" stroke="#c0b5c3" stroke-width="2" opacity=".35"/>
-   <path d="M904 638q17-13 37 1" fill="none" stroke="#d1c5d0" stroke-width="2" opacity=".45"/>
-   <path d="M910 648l-3 12 6 8-3 9m25-38-5 13 4 7" fill="none" stroke="#211d29" stroke-width="2"/>
-   <g font-family="Georgia,serif" text-anchor="middle" fill="#d9cfda" stroke="none" opacity=".9"><text x="923" y="650" font-size="10">REST</text><text x="923" y="661" font-size="9">IN PEACE</text><text x="923" y="672" font-size="7.5">1830 – 1888</text></g>
-  </g>
-  <!-- tall cross-topped grave -->
-  <g>
-   <path d="M968 690L971 647 981 638 981 619 991 619 991 638 1002 647 1005 690Z" fill="#17141f"/>
-   <path d="M964 686L967 644 978 634 978 614 994 614 994 634 1005 644 1008 686Z" fill="url(#graveStone)" stroke="#292431" stroke-width="4"/>
-   <path d="M986 620V670M973 646H999" stroke="#d0c4d1" stroke-width="3" opacity=".55"/>
-   <path d="M973 654l8 8-4 12m23-28-6 11 4 12" fill="none" stroke="#211d29" stroke-width="2"/>
-   <g font-family="Georgia,serif" text-anchor="middle" fill="#ded4df" stroke="none" opacity=".9"><text x="986" y="649" font-size="9">IN MEMORY</text><text x="986" y="660" font-size="9">OF THE FALLEN</text><text x="986" y="671" font-size="7.5">1862</text></g>
-  </g>
-  <!-- wide arched family marker -->
-  <g>
-   <path d="M1030 688L1034 642Q1035 617 1060 611Q1085 617 1088 642L1092 688Z" fill="#17141f"/>
-   <path d="M1026 684L1030 640Q1032 613 1059 606Q1084 612 1088 640L1092 684Z" fill="url(#graveStone)" stroke="#292431" stroke-width="4"/>
-   <path d="M1040 674L1043 642Q1045 625 1059 620Q1074 625 1077 642L1080 674Z" fill="none" stroke="#c5bac9" stroke-width="2" opacity=".38"/>
-   <path d="M1034 642q25-20 52 0M1033 675h57" fill="none" stroke="#17141e" stroke-width="4" opacity=".65"/>
-   <path d="M1045 635l-4 13 6 10-3 12m34-40-6 12 5 10" fill="none" stroke="#211d29" stroke-width="2"/>
-   <g font-family="Georgia,serif" text-anchor="middle" fill="#d9cfda" stroke="none" opacity=".9"><text x="1059" y="645" font-size="10">R.I.P.</text><text x="1059" y="657" font-size="8">SLEEP BELOW</text><text x="1059" y="668" font-size="7.5">1811 – 1870</text></g>
-  </g>
-  <!-- broken, leaning slab -->
-  <g transform="rotate(6 1150 663)">
-   <path d="M1113 690L1116 649 1128 631 1160 628 1177 644 1180 690Z" fill="#17141f"/>
-   <path d="M1109 686L1112 646 1125 626 1159 623 1173 640 1176 686Z" fill="url(#graveShadow)" stroke="#292431" stroke-width="4"/>
-   <path d="M1121 646l12-8 27 1 8 10-2 28-43 1Z" fill="none" stroke="#c0b5c3" stroke-width="2" opacity=".34"/>
-   <path d="M1115 650l11 7-4 11m44-38-8 13 6 10" fill="none" stroke="#211d29" stroke-width="2"/>
-   <g font-family="Georgia,serif" text-anchor="middle" fill="#ded4df" stroke="none" opacity=".9"><text x="1143" y="650" font-size="9">LOST TO</text><text x="1143" y="661" font-size="9">TIME</text><text x="1143" y="672" font-size="7.5">1888</text></g>
-  </g>
+ <!-- left: cross-topped marker -->
+ <g>
+  <path d="M143 692L147 625 164 610 164 579 180 579 180 610 198 625 202 692Z" fill="#17141e"/>
+  <path d="M137 687L142 621 159 606 159 573 185 573 185 606 203 621 208 687Z" fill="url(#graveStone)" stroke="#bdb2c4" stroke-width="4"/>
+  <path d="M172 579V661M149 620H195" stroke="#d2c7d8" stroke-width="4" opacity=".6"/>
+  <g fill="#ded5e1" font-family="Georgia,serif" text-anchor="middle"><text x="172" y="644" font-size="10">M. ASH</text><text x="172" y="658" font-size="9">1840 — 1901</text></g>
  </g>
- <!-- creeping graveyard mist -->
- <g fill="#b7a8cf" opacity=".16" filter="url(#shadow)">
-  <ellipse cx="155" cy="690" rx="170" ry="17"/><ellipse cx="1050" cy="690" rx="170" ry="17"/>
+ <!-- left: weathered broken slab -->
+ <g transform="rotate(-5 245 650)">
+  <path d="M215 692L218 622 232 603 277 607 292 628 292 692Z" fill="#17141e"/>
+  <path d="M209 687L212 618 229 596 275 600 286 623 286 687Z" fill="url(#graveStone)" stroke="#a89eaf" stroke-width="4"/>
+  <path d="M223 619L236 610 270 614 276 630 273 674 221 674Z" fill="none" stroke="#d0c7d6" stroke-width="2" opacity=".4"/>
+  <path d="M215 626L232 640 226 654 240 670M276 613L265 634 274 650" fill="none" stroke="#272330" stroke-width="3"/>
+  <g fill="#e2d9e5" font-family="Georgia,serif" text-anchor="middle"><text x="249" y="642" font-size="10">NEVER</text><text x="249" y="655" font-size="10">FORGOTTEN</text><text x="249" y="669" font-size="9">1768 — 1833</text></g>
+ </g>
+ <!-- right: tall gothic pointed marker -->
+ <g>
+  <path d="M925 692L930 624 967 570 1004 624 1009 692Z" fill="#15131d"/>
+  <path d="M918 687L923 620 967 558 1011 620 1016 687Z" fill="url(#graveStone)" stroke="#c0b5c6" stroke-width="4"/>
+  <path d="M937 675L941 624 967 588 993 624 997 675Z" fill="#302a38" stroke="#83798b" stroke-width="3"/>
+  <path d="M967 587V668M941 624H993" stroke="#c9bdcf" stroke-width="3" opacity=".65"/>
+  <g fill="#e2d9e5" font-family="Georgia,serif" text-anchor="middle"><text x="967" y="641" font-size="10">R.I.P.</text><text x="967" y="655" font-size="9">S. WREN</text><text x="967" y="668" font-size="9">1799 — 1860</text></g>
+ </g>
+ <!-- right: broad, old rounded family stone -->
+ <g>
+  <path d="M1030 692V627Q1030 586 1074 574Q1118 586 1118 627V692Z" fill="#17141e"/>
+  <path d="M1023 687V624Q1023 582 1074 568Q1125 582 1125 624V687Z" fill="url(#graveStone)" stroke="#c1b6c7" stroke-width="4"/>
+  <path d="M1039 675V628Q1039 598 1074 585Q1109 598 1109 628V675Z" fill="#302b39" stroke="#80768a" stroke-width="3"/>
+  <path d="M1074 589V673M1040 627H1108" stroke="#c8bdce" stroke-width="2" opacity=".5"/>
+  <g fill="#e1d8e4" font-family="Georgia,serif" text-anchor="middle"><text x="1074" y="640" font-size="10">THE VALE</text><text x="1074" y="654" font-size="10">FAMILY</text><text x="1074" y="668" font-size="9">EST. 1721</text></g>
+ </g>
+ <!-- right: low, broken headstone -->
+ <g transform="rotate(7 1150 656)">
+  <path d="M1122 692L1126 633 1141 614 1172 618 1183 638 1183 692Z" fill="#15131c"/>
+  <path d="M1116 687L1120 628 1138 607 1170 611 1178 633 1178 687Z" fill="url(#graveStone)" stroke="#aaa0b0" stroke-width="4"/>
+  <path d="M1128 632L1141 620 1166 623 1170 640 1168 674 1127 674Z" fill="none" stroke="#d1c7d7" stroke-width="2" opacity=".4"/>
+  <path d="M1122 635L1140 647 1134 662M1170 619L1158 642 1169 655" fill="none" stroke="#26222e" stroke-width="3"/>
+  <g fill="#e1d8e4" font-family="Georgia,serif" text-anchor="middle"><text x="1149" y="647" font-size="10">LOST TO</text><text x="1149" y="660" font-size="10">TIME</text><text x="1149" y="673" font-size="9">1888</text></g>
  </g>
 </g>
-<!-- misty ground silhouette -->
-<path d="M0 690Q180 655 340 690T650 690T950 685T1200 690V760H0Z" fill="#090a13" opacity=".7"/>
+<!-- Foreground shadow, mist and scattered stone debris ground the architecture -->
+<path d="M0 716Q170 687 330 716T650 713T970 710T1200 716V760H0Z" fill="#090a13" opacity=".8"/>
+<g fill="#b8a8ca" opacity=".17" filter="url(#castShadow)"><ellipse cx="170" cy="700" rx="190" ry="24"/><ellipse cx="1030" cy="700" rx="190" ry="24"/></g>
+<g fill="#b5a9c0" opacity=".28"><path d="M18 718l20-9 13 10-26 5ZM274 722l17-8 13 9-20 5ZM920 719l23-11 15 10-27 7ZM1150 720l18-8 14 9-21 6Z"/></g>
 </svg></div></div>
 <div class="fog"></div><div class="haunt-mist"></div><div class="scene-caption"><strong>THE GATES HAVE NOT OPENED IN CENTURIES</strong><span>Look closely. Something is watching from the highest tower.</span></div>
 <section class="interior" id="entranceHall" aria-live="polite">
