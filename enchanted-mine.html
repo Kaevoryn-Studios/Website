@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#080b18">
+<title>The Enchanted Mine | Kaevoryn Studios</title>
+<style>
+:root{color-scheme:dark}*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#050711;color:#eaf7ff;font-family:system-ui,-apple-system,Segoe UI,sans-serif}#world{position:fixed;inset:0}canvas{display:block;width:100%;height:100%;touch-action:none}.top{position:fixed;z-index:5;top:14px;left:14px;right:14px;display:flex;justify-content:space-between;align-items:flex-start;pointer-events:none}.brand{font-size:11px;letter-spacing:.22em;color:#8ceaff;text-shadow:0 0 16px #26bce8}.name{font-size:clamp(20px,4vw,34px);font-weight:800;letter-spacing:.06em;margin-top:4px;text-shadow:0 2px 20px #000}.tag{font-size:11px;color:#c2c9e2;letter-spacing:.12em;margin-top:3px}.sound{pointer-events:auto;border:1px solid #7bdcf477;background:#081426cc;color:#dffaff;border-radius:24px;padding:10px 13px;font-weight:700}.panel{position:fixed;z-index:6;left:50%;top:50%;transform:translate(-50%,-50%);width:min(92vw,510px);padding:26px 24px;border:1px solid #8ceaff66;border-radius:20px;background:linear-gradient(145deg,#101a31ee,#080b18f2);box-shadow:0 0 55px #1aa9d633;text-align:center}.panel h1{font-size:clamp(24px,5vw,38px);margin:0 0 8px;letter-spacing:.06em}.panel p{color:#c2cce0;line-height:1.55;margin:8px 0 18px}.cta{border:0;border-radius:999px;padding:14px 28px;background:linear-gradient(90deg,#43d9ed,#8b7bff);color:#07101e;font-weight:900;letter-spacing:.12em;font-size:14px;box-shadow:0 0 28px #48d9ed55;cursor:pointer;touch-action:manipulation}.cta:active{transform:scale(.97)}.hint{font-size:11px!important;color:#8f9ab7!important;margin-top:14px!important}.hud{position:fixed;z-index:4;bottom:16px;left:14px;right:14px;display:flex;justify-content:space-between;align-items:end;pointer-events:none}.status{font-size:11px;letter-spacing:.12em;color:#a9dff0;text-shadow:0 1px 8px #000}.progress{width:min(38vw,190px);height:4px;background:#ffffff26;border-radius:4px;overflow:hidden;margin-top:7px}.bar{height:100%;width:0;background:#7cecff;box-shadow:0 0 12px #7cecff}.touch{pointer-events:auto;display:none;gap:8px}.touch button{border:1px solid #8ceaff77;background:#071426cc;color:white;border-radius:50%;width:48px;height:48px;font-size:20px;touch-action:manipulation}@media(pointer:coarse){.touch{display:flex}}#fail{display:none;position:fixed;z-index:10;inset:auto 12px 12px;background:#431b27;color:#fff;padding:12px;border-radius:10px;font-size:12px}
+</style>
+</head>
+<body>
+<div id="world"></div>
+<div class="top"><div><div class="brand">KAEVORYN STUDIOS</div><div class="name">THE ENCHANTED MINE</div><div class="tag">A JOURNEY BENEATH THE FORGOTTEN MOUNTAIN</div></div><button class="sound" id="soundBtn">♫ SOUND ON</button></div>
+<div class="panel" id="intro"><div class="brand">THE KINGDOMS OF WONDER</div><h1>THE ENCHANTED MINE</h1><p>Descend into a forgotten crystal mine. Follow the lantern-lit rails, pass the singing shadows, and discover what has been sleeping beneath the mountain.</p><button class="cta" id="startBtn">BOARD THE MINE CART</button><p class="hint">A playable 3D journey · Sound is optional · Best experienced with headphones</p></div>
+<div class="hud"><div><div class="status" id="status">CART STATION · AWAITING RIDER</div><div class="progress"><div class="bar" id="bar"></div></div></div><div class="touch"><button id="lookL" aria-label="Look left">‹</button><button id="lookR" aria-label="Look right">›</button></div></div>
+<div id="fail"></div>
+<script>
+(function(){const b=document.getElementById('startBtn'),panel=document.getElementById('intro'),status=document.getElementById('status');b.addEventListener('click',()=>{status.textContent='AWAKENING THE MINE...';window.dispatchEvent(new Event('mine-start'));});document.getElementById('soundBtn').addEventListener('click',()=>window.dispatchEvent(new Event('mine-sound-toggle')));})();
+</script>
+<script type="module">
+(async()=>{
+let THREE;
+try{THREE=await import('https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js')}catch(e){THREE=await import('https://unpkg.com/three@0.160.0/build/three.module.js')}
+const scene=new THREE.Scene();scene.background=new THREE.Color(0x050711);scene.fog=new THREE.FogExp2(0x080d1c,.018);
+const camera=new THREE.PerspectiveCamera(72,innerWidth/innerHeight,.1,500);
+const renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:'high-performance'});renderer.setPixelRatio(Math.min(devicePixelRatio,1.7));renderer.setSize(innerWidth,innerHeight);renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.15;document.getElementById('world').appendChild(renderer.domElement);
+scene.add(new THREE.HemisphereLight(0x8dbdff,0x17101f,1.1));const key=new THREE.PointLight(0x69dfff,65,85);key.position.set(0,10,8);scene.add(key);
+const mat=(c,r=.8,m=0)=>new THREE.MeshStandardMaterial({color:c,roughness:r,metalness:m});
+const rock=mat(0x25283b),darkRock=mat(0x101626),railMat=mat(0x8795a8,.3,.8),wood=mat(0x49372b),gold=mat(0xffc76b,.4,.25),crystalMats=[mat(0x39d9ed,.22,.2),mat(0x8e74ff,.22,.2),mat(0x75ffcf,.2,.15),mat(0xff76c8,.25,.1)];
+const glowMats=crystalMats.map(m=>{m.emissive=m.color;m.emissiveIntensity=1.35;return m});
+function box(w,h,d,material,x,y,z){const o=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),material);o.position.set(x,y,z);scene.add(o);return o}
+function sphere(r,material,x,y,z){const o=new THREE.Mesh(new THREE.SphereGeometry(r,12,10),material);o.position.set(x,y,z);scene.add(o);return o}
+function rockChunk(x,y,z,s){const o=new THREE.Mesh(new THREE.DodecahedronGeometry(1,1),rock);o.position.set(x,y,z);o.scale.set(s*1.2,s,s*1.1);o.rotation.set(Math.random()*2,Math.random()*2,Math.random()*2);scene.add(o)}
+// Long cavern, rough ceiling and walls
+for(let z=18;z>-190;z-=7){rockChunk(-10+Math.random()*2,5+Math.random()*2,z,3+Math.random()*1.5);rockChunk(10+Math.random()*2,5+Math.random()*2,z,3+Math.random()*1.5);rockChunk((Math.random()-.5)*12,12+Math.random()*2,z,2.2)}
+// tunnel ribs
+for(let z=14;z>-190;z-=12){for(const side of [-1,1]){const rib=new THREE.Mesh(new THREE.CylinderGeometry(.32,.5,9,7),wood);rib.position.set(side*5,3.5,z);rib.rotation.z=side*.12;scene.add(rib)}box(10,.32,.45,wood,0,8,z)}
+// tracks on a gently winding descending path
+const points=[new THREE.Vector3(0,0,16),new THREE.Vector3(0,-.5,-12),new THREE.Vector3(-2,-1.5,-38),new THREE.Vector3(-3,-2,-65),new THREE.Vector3(1,-2.5,-92),new THREE.Vector3(3,-3,-122),new THREE.Vector3(0,-4,-151),new THREE.Vector3(-2,-4.5,-183)];
+const path=new THREE.CatmullRomCurve3(points);const sideVec=new THREE.Vector3(1,0,0);
+for(const s of [-.72,.72]){const pts=[];for(let i=0;i<=260;i++){const u=i/260,p=path.getPoint(u),t=path.getTangent(u),side=new THREE.Vector3(-t.z,0,t.x).normalize();pts.push(p.clone().addScaledVector(side,s))}const rail=new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts),500,.095,8,false),railMat);scene.add(rail)}
+for(let i=0;i<=100;i++){const u=i/100,p=path.getPoint(u),t=path.getTangent(u),q=new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0,0,1),t);const tie=new THREE.Mesh(new THREE.BoxGeometry(2,.16,.35),wood);tie.position.copy(p);tie.quaternion.copy(q);scene.add(tie)}
+// Crystal clusters
+function crystal(x,y,z,scale,colorIndex){const group=new THREE.Group();const geo=new THREE.ConeGeometry(.55,2.8,6);const c=new THREE.Mesh(geo,glowMats[colorIndex%4]);c.position.y=1.2;c.scale.set(scale,scale*(.8+Math.random()*.5),scale);c.rotation.z=(Math.random()-.5)*.35;group.add(c);const c2=new THREE.Mesh(new THREE.ConeGeometry(.32,1.8,6),glowMats[(colorIndex+1)%4]);c2.position.set(.55,.7,.15);c2.rotation.z=-.25;group.add(c2);group.position.set(x,y,z);scene.add(group);const light=new THREE.PointLight(glowMats[colorIndex%4].color,9,13);light.position.set(x,y+1,z);scene.add(light);return group}
+for(let z=5;z>-180;z-=13){crystal(-4.3+Math.random()*1.2,-2,z,1+Math.random()*.7,Math.floor(Math.random()*4));crystal(4.2+Math.random()*1.2,-2,z-5,1+Math.random()*.7,Math.floor(Math.random()*4))}
+for(let i=0;i<18;i++){const x=(Math.random()-.5)*7,z=-25-Math.random()*145;const drip=new THREE.Mesh(new THREE.ConeGeometry(.22,1.3,6),rock);drip.position.set(x,8.3,z);drip.rotation.x=Math.PI;scene.add(drip)}
+// Waterfall and pool section
+const water=new THREE.Mesh(new THREE.PlaneGeometry(8,7),new THREE.MeshBasicMaterial({color:0x36c9ec,transparent:true,opacity:.38,side:THREE.DoubleSide}));water.position.set(3,2,-87);scene.add(water);const pool=new THREE.Mesh(new THREE.CircleGeometry(5,32),new THREE.MeshStandardMaterial({color:0x07506c,metalness:.4,roughness:.2,emissive:0x06394b}));pool.rotation.x=-Math.PI/2;pool.position.set(3,-2.6,-91);scene.add(pool);
+// mine cart ahead of camera: visible front rim and lanterns
+const cart=new THREE.Group();const body=new THREE.Mesh(new THREE.BoxGeometry(2.1,.65,2.7),mat(0x343c4d,.45,.55));body.position.y=-.1;cart.add(body);const rim=new THREE.Mesh(new THREE.BoxGeometry(2.25,.18,2.85),gold);rim.position.y=.28;cart.add(rim);for(const x of [-.78,.78]){const lamp=new THREE.PointLight(0xffbd65,7,12);lamp.position.set(x,.5,-1.1);cart.add(lamp);const bulb=sphere(.13,mat(0xffd58a),x,.5,-1.1);cart.add(bulb)}scene.add(cart);
+// silhouettes: humanoid shadow figures walking on side ledges
+const figures=[];const shadowMat=new THREE.MeshStandardMaterial({color:0x070a16,transparent:true,opacity:.92,roughness:1,emissive:0x14152a,emissiveIntensity:.55});
+function makeFigure(x,z,phase){const g=new THREE.Group();const torso=new THREE.Mesh(new THREE.CapsuleGeometry(.27,.85,4,7),shadowMat);torso.position.y=1.25;g.add(torso);const head=new THREE.Mesh(new THREE.SphereGeometry(.27,10,8),shadowMat);head.position.y=2.05;g.add(head);const armGeo=new THREE.CapsuleGeometry(.09,.65,3,5);for(const s of [-1,1]){const a=new THREE.Mesh(armGeo,shadowMat);a.position.set(s*.36,1.35,0);a.rotation.z=s*.22;g.add(a);const leg=new THREE.Mesh(new THREE.CapsuleGeometry(.11,.75,3,5),shadowMat);leg.position.set(s*.16,.48,0);g.add(leg)}g.position.set(x,-2,z);scene.add(g);figures.push({g,phase,z,baseX:x})}
+for(let i=0;i<12;i++)makeFigure(i%2?4.7:-4.7,-12-i*14,i*1.7);
+// lanterns along route
+for(let z=10;z>-180;z-=18){for(const x of [-4.8,4.8]){const pole=new THREE.Mesh(new THREE.CylinderGeometry(.07,.09,2,7),wood);pole.position.set(x,-1,z);scene.add(pole);const l=new THREE.PointLight(0xffa84f,3,9);l.position.set(x,-.1,z);scene.add(l);sphere(.16,gold,x,-.1,z)}}
+// ambient floating motes
+const motes=new THREE.Group();for(let i=0;i<180;i++){const m=new THREE.Mesh(new THREE.SphereGeometry(.025+Math.random()*.035,6,6),new THREE.MeshBasicMaterial({color:i%3?0x71dff5:0xffc66e,transparent:true,opacity:.6}));m.position.set((Math.random()-.5)*9,Math.random()*7-1,-Math.random()*185);m.userData.seed=Math.random()*6.28;motes.add(m)}scene.add(motes);
+// audio: original synthesized eerie choir pad and mine ambience
+let audioCtx=null,master=null,oscillators=[],soundOn=true,audioReady=false;
+function startAudio(){if(audioReady)return;audioReady=true;const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;audioCtx=new AC();master=audioCtx.createGain();master.gain.value=soundOn?.22:0;master.connect(audioCtx.destination);const notes=[110,164.81,220,261.63];notes.forEach((f,i)=>{const o=audioCtx.createOscillator(),g=audioCtx.createGain(),filter=audioCtx.createBiquadFilter();o.type=i===0?'sine':'triangle';o.frequency.value=f;filter.type='lowpass';filter.frequency.value=520;g.gain.value=[.16,.09,.065,.045][i];o.connect(filter);filter.connect(g);g.connect(master);o.start();oscillators.push({o,g,base:f})});}
+function setSound(v){soundOn=v;document.getElementById('soundBtn').textContent=v?'♫ SOUND ON':'♫ SOUND OFF';if(master&&audioCtx)master.gain.setTargetAtTime(v?.22:0,audioCtx.currentTime,.2)}
+document.getElementById('soundBtn').addEventListener('click',()=>{if(!audioReady&&soundOn)startAudio();setSound(!soundOn)});
+let running=false,elapsed=0,look=0;
+function begin(){if(running)return;running=true;document.getElementById('intro').style.display='none';document.getElementById('status').textContent='DESCENDING · THE SHADOWS ARE SINGING';if(soundOn)startAudio();if(audioCtx&&audioCtx.state==='suspended')audioCtx.resume()}
+window.addEventListener('mine-start',begin);document.getElementById('lookL').onclick=()=>look=Math.max(-.65,look-.18);document.getElementById('lookR').onclick=()=>look=Math.min(.65,look+.18);
+let last=0;function animate(t){requestAnimationFrame(animate);const dt=Math.min((t-last)/1000,.04);last=t;const time=t*.001;
+motes.children.forEach(m=>{m.position.y+=Math.sin(time*1.3+m.userData.seed)*.0018;m.position.x+=Math.cos(time+m.userData.seed)*.0008});
+figures.forEach((f,i)=>{f.g.position.z=f.z+Math.sin(time*.55+f.phase)*1.4;f.g.position.x=f.baseX+Math.sin(time*.7+f.phase)*.22;f.g.children[2].rotation.z=Math.sin(time*3+f.phase)*.35;f.g.children[3].rotation.z=-Math.sin(time*3+f.phase)*.35;f.g.children[4].rotation.x=Math.sin(time*3+f.phase)*.28;f.g.children[5].rotation.x=-Math.sin(time*3+f.phase)*.28});
+if(running){elapsed+=dt;const u=Math.min(elapsed/52,1),p=path.getPoint(u),tan=path.getTangent(u);const ahead=path.getPoint(Math.min(1,u+.018));camera.position.copy(p).add(new THREE.Vector3(0,2.5,0));camera.lookAt(ahead.x+look,ahead.y+1.25,ahead.z);cart.position.copy(p).add(new THREE.Vector3(0,-.55,0));cart.quaternion.setFromUnitVectors(new THREE.Vector3(0,0,1),tan);key.position.copy(p).add(new THREE.Vector3(0,5,0));document.getElementById('bar').style.width=(u*100)+'%';if(u>=1){running=false;document.getElementById('status').textContent='THE LOST VEIN · JOURNEY COMPLETE';document.getElementById('intro').style.display='block';document.querySelector('#intro h1').textContent='THE LOST VEIN';document.querySelector('#intro p').textContent='The mine has revealed its secret. Would you dare descend again?';document.getElementById('startBtn').textContent='RIDE AGAIN';elapsed=0}}
+renderer.render(scene,camera)}
+requestAnimationFrame(animate);
+window.addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
+window.__enchantedMineReady=true;
+})().catch(err=>{const f=document.getElementById('fail');f.style.display='block';f.textContent='The 3D mine could not start. Check your connection and reload. '+err.message;});
+</script>
+</body>
+</html>
