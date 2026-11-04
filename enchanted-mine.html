@@ -184,6 +184,25 @@ const geodeShell=new THREE.Mesh(new THREE.DodecahedronGeometry(2.15,1),material(
 const geodeCore=new THREE.Mesh(new THREE.SphereGeometry(1.52,20,16),material(0x173b52,.25,.1));geodeCore.material.emissive=new THREE.Color(0x087b9b);geodeCore.material.emissiveIntensity=1.6;geode.add(geodeCore);
 for(let i=0;i<18;i++){const a=i*Math.PI*2/18,r=1.25+(i%3)*.12;const shard=new THREE.Mesh(gemGeometry(.95+(i%4)*.2,.19),crystals[i%4]);shard.position.set(Math.cos(a)*r,Math.sin(a)*r,0);shard.rotation.z=a-Math.PI/2;geode.add(shard)}
 const geodeGlow=new THREE.PointLight(0x38dfff,0,34);geodeGlow.position.set(0,0,2);geode.add(geodeGlow);
+// GRAND FINALE: the Lost Vein awakens in a crown of rotating crystal energy.
+const finaleGroup=new THREE.Group();geode.add(finaleGroup);
+const finaleRings=[];
+for(let i=0;i<3;i++){
+ const ring=new THREE.Mesh(new THREE.TorusGeometry(2.55+i*.42,.035,8,72),new THREE.MeshBasicMaterial({color:[0x55efff,0x9a7cff,0x8dffda][i],transparent:true,opacity:0}));
+ ring.rotation.set(i*.7, i*.9, i*.35);finaleGroup.add(ring);finaleRings.push(ring);
+}
+const finaleOrbiters=[];
+for(let i=0;i<8;i++){
+ const shard=new THREE.Mesh(gemGeometry(.65+(i%3)*.22,.2),crystals[i%4]);
+ const a=i*Math.PI/4;shard.position.set(Math.cos(a)*2.9,Math.sin(a)*2.1,.25);shard.rotation.z=a;finaleGroup.add(shard);finaleOrbiters.push(shard);
+}
+const finaleCount=110,finalePositions=new Float32Array(finaleCount*3),finaleSeeds=[];
+for(let i=0;i<finaleCount;i++){const a=Math.random()*Math.PI*2,r=.4+Math.random()*3.5;finalePositions[i*3]=Math.cos(a)*r;finalePositions[i*3+1]=Math.sin(a)*r;finalePositions[i*3+2]=(Math.random()-.5)*1.4;finaleSeeds.push({a,r,speed:.25+Math.random()*.8,phase:Math.random()*6.28})}
+const finaleGeometry=new THREE.BufferGeometry();finaleGeometry.setAttribute('position',new THREE.BufferAttribute(finalePositions,3));
+const finaleDust=new THREE.Points(finaleGeometry,new THREE.PointsMaterial({color:0xc8fbff,size:.085,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false}));finaleGroup.add(finaleDust);
+const finaleBeam=new THREE.Mesh(new THREE.CylinderGeometry(.22,1.05,9,20,1,true),new THREE.MeshBasicMaterial({color:0x6ceeff,transparent:true,opacity:0,side:THREE.DoubleSide,depthWrite:false}));finaleBeam.position.y=4.3;finaleGroup.add(finaleBeam);
+let finaleCuePlayed=false;
+
 
 // Lantern-lit shadow miners: full silhouettes with swinging legs, working arms and pickaxes.
 const figures=[];
@@ -309,7 +328,7 @@ document.getElementById('soundBtn').onclick=()=>{soundOn=!soundOn;document.getEl
 
 function startMineRide(){
  if(running)return;
- elapsed=0;world.position.set(0,0,0);
+ elapsed=0;finaleCuePlayed=false;world.position.set(0,0,0);
  trainCarts.forEach((wagon,i)=>wagon.position.set(0,-1.42,5.3+i*2.65));
  camera.position.set(.9,2.9,12.8);camera.lookAt(0,-1.7,1.3);
  cartWheels.forEach(w=>w.rotation.x=0);
@@ -343,7 +362,18 @@ function animate(t){requestAnimationFrame(animate);const dt=last?Math.min((t-las
  // The hoist visibly cycles; the crystal cathedral and final geode brighten as the cart approaches.
  lift.position.y=Math.sin(tm*1.25)*.62;
  const cathedralPulse=.75+.25*Math.sin(tm*1.7);cathedralLights.forEach(l=>l.intensity=4.2*cathedralPulse);
- const reveal=Math.max(0,Math.min(1,(elapsed-34)/5));geodeGlow.intensity=reveal*18;geodeCore.material.emissiveIntensity=1.1+reveal*2.5;geode.rotation.y=Math.sin(tm*.45)*.08;
+ const reveal=Math.max(0,Math.min(1,(elapsed-34)/5));
+ geodeGlow.intensity=reveal*18;geodeCore.material.emissiveIntensity=1.1+reveal*2.5;geode.rotation.y=Math.sin(tm*.45)*.08;
+ finaleGroup.visible=elapsed>33.5;
+ const finalePower=Math.max(0,Math.min(1,(elapsed-34)/2.2));
+ finaleRings.forEach((ring,i)=>{ring.rotation.x+=dt*(.25+i*.12);ring.rotation.y+=dt*(.4+i*.1);ring.scale.setScalar(1+Math.sin(tm*2.1+i)*.055);ring.material.opacity=finalePower*.82});
+ finaleOrbiters.forEach((shard,i)=>{const a=tm*(.55+i%3*.12)+i*Math.PI/4;shard.position.set(Math.cos(a)*2.9,Math.sin(a)*2.1,.25+Math.sin(a*1.7)*.35);shard.rotation.y+=dt*1.1});
+ const fp=finaleGeometry.attributes.position.array;
+ for(let i=0;i<finaleCount;i++){const s=finaleSeeds[i],a=s.a+tm*s.speed*.32,r=s.r+Math.sin(tm*1.5+s.phase)*.12;fp[i*3]=Math.cos(a)*r;fp[i*3+1]=Math.sin(a)*r;fp[i*3+2]=Math.sin(tm+s.phase)*.7}
+ finaleGeometry.attributes.position.needsUpdate=true;finaleDust.material.opacity=finalePower*.95;
+ finaleBeam.material.opacity=finalePower*(.22+.12*Math.sin(tm*5));finaleBeam.scale.x=finaleBeam.scale.z=.8+Math.sin(tm*3)*.08;
+ if(elapsed>34.2&&!finaleCuePlayed){finaleCuePlayed=true;playMineEffect('crystal');}
+
  figures.forEach(f=>{const step=Math.sin(tm*2.8+f.phase);f.arms[0].rotation.z=step*.28;f.arms[1].rotation.z=-step*.2;f.legs[0].rotation.z=step*.24;f.legs[1].rotation.z=-step*.24;f.torso.rotation.z=Math.sin(tm*1.4+f.phase)*.035;f.tool.rotation.z=Math.sin(tm*2.1+f.phase)*.16});
  renderer.render(scene,camera)}
 requestAnimationFrame(animate);
