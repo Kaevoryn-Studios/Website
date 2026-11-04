@@ -46,10 +46,10 @@ block(8,.18,225,0,-2.95,-105,material(0x282630,1));
 for(const x of [-.82,.82]){const rail=new THREE.Mesh(new THREE.BoxGeometry(.14,.2,220),railMat);rail.position.set(x,-2.05,-103);add(rail)}
 for(let z=8;z>-218;z-=1.65)beam(2.15,.18,.42,0,-2.18,z,wood);
 // A visible little mine cart fixed in the foreground, with four metal wheels.
-const cart=new THREE.Group();scene.add(cart);cart.position.set(0,-1.42,5.3);
+const cart=new THREE.Group();scene.add(cart);cart.position.set(0,-1.42,5.3);const cartWheels=[];
 const tub=new THREE.Mesh(new THREE.BoxGeometry(2.15,.82,2.35),material(0x343d4c,.5,.5));tub.position.y=.05;cart.add(tub);
 const rim=new THREE.Mesh(new THREE.BoxGeometry(2.28,.16,2.48),gold);rim.position.y=.5;cart.add(rim);
-for(const x of [-.88,.88])for(const z of [-.78,.78]){const wheel=new THREE.Mesh(new THREE.CylinderGeometry(.32,.32,.18,16),iron);wheel.rotation.z=Math.PI/2;wheel.position.set(x,-.52,z);cart.add(wheel)}
+for(const x of [-.88,.88])for(const z of [-.78,.78]){const wheel=new THREE.Mesh(new THREE.CylinderGeometry(.32,.32,.18,16),iron);wheel.rotation.z=Math.PI/2;wheel.position.set(x,-.52,z);cart.add(wheel);cartWheels.push(wheel)}
 for(const x of [-.72,.72]){const lampMesh=new THREE.Mesh(new THREE.SphereGeometry(.13,10,8),gold);lampMesh.position.set(x,.64,-1.05);cart.add(lampMesh);const glow=new THREE.PointLight(0xffbd65,3,9);glow.position.set(x,.7,-1.05);cart.add(glow)}
 // Ore skips, crates, tools and extraction machinery.
 function oreSkip(x,z){const g=new THREE.Group();const body=new THREE.Mesh(new THREE.BoxGeometry(1.45,.7,1.7),material(0x493d32,.8,.35));body.position.y=-2.1;g.add(body);for(const sx of [-1,1]){const w=new THREE.Mesh(new THREE.CylinderGeometry(.27,.27,.15,12),iron);w.rotation.z=Math.PI/2;w.position.set(sx*.78,-2.48,0);g.add(w)}for(let i=0;i<6;i++){const nug=new THREE.Mesh(new THREE.DodecahedronGeometry(.2,0),i%3===0?crystals[0]:rock);nug.position.set((Math.random()-.5)*.9,-1.68+Math.random()*.15,(Math.random()-.5)*1.1);g.add(nug)}g.position.set(x,0,z);add(g)}
@@ -136,9 +136,9 @@ function startSound(){if(audio)return;const AC=window.AudioContext||window.webki
  [196,246.94,293.66].forEach((hz,i)=>{const o=audio.createOscillator(),g=audio.createGain(),v=audio.createOscillator(),vg=audio.createGain();o.type='sine';o.frequency.value=hz;o.detune.value=(i-1)*5;g.gain.value=.018;v.frequency.value=.22+i*.07;vg.gain.value=2.2;v.connect(vg);vg.connect(o.detune);o.connect(g);g.connect(master);o.start();v.start()})}
 document.getElementById('soundBtn').onclick=()=>{soundOn=!soundOn;document.getElementById('soundBtn').textContent=soundOn?'♫ SOUND ON':'♫ SOUND OFF';if(soundOn)startSound();if(master)master.gain.setTargetAtTime(soundOn?.13:0,audio.currentTime,.2)};
 let running=false,elapsed=0,last=0;
-document.getElementById('startBtn').onclick=()=>{if(running)return;elapsed=0;world.position.z=0;running=true;document.getElementById('intro').style.display='none';document.getElementById('status').textContent='DESCENDING · SHADOW MINERS AT WORK';if(soundOn)startSound();if(audio&&audio.state==='suspended')audio.resume()};
+document.getElementById('startBtn').onclick=()=>{if(running)return;elapsed=0;world.position.z=0;cart.position.set(0,-1.42,5.3);camera.position.set(0,1.15,11);camera.lookAt(0,.9,-18);cartWheels.forEach(w=>w.rotation.x=0);running=true;document.getElementById('intro').style.display='none';document.getElementById('status').textContent='DESCENDING · SHADOW MINERS AT WORK';if(soundOn)startSound();if(audio&&audio.state==='suspended')audio.resume()};
 function animate(t){requestAnimationFrame(animate);const dt=last?Math.min((t-last)/1000,.04):0;last=t;
- if(running){elapsed=Math.min(52,elapsed+dt);world.position.z=elapsed*3.75;document.getElementById('bar').style.width=(elapsed/52*100)+'%';
+ if(running){elapsed=Math.min(52,elapsed+dt);const travel=elapsed*3.75;cart.position.z=5.3-travel;camera.position.z=cart.position.z+5.7;camera.lookAt(0,.9,cart.position.z-23.3);cartWheels.forEach(w=>w.rotation.x-=dt*5.2);cart.position.y=-1.42+Math.sin(elapsed*5)*.025;document.getElementById('bar').style.width=(elapsed/52*100)+'%';
  const stage=elapsed<17?'DESCENDING · SHADOW MINERS AT WORK':elapsed<34?'THE CRYSTAL CATHEDRAL · FOLLOW THE LIGHT':elapsed<46?'THE OLD ORE LIFT · SHAFT IN MOTION':'THE LOST VEIN · A SECRET AWAKENS';
  document.getElementById('status').textContent=stage;
  if(elapsed>=52){running=false;document.getElementById('status').textContent='THE LOST VEIN · JOURNEY COMPLETE';document.getElementById('intro').style.display='block';document.querySelector('#intro h1').textContent='THE LOST VEIN';document.querySelector('#intro p').textContent='The mine has revealed its secret. Would you dare descend again?';document.getElementById('startBtn').textContent='RIDE AGAIN'}}
