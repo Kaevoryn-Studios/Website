@@ -26,7 +26,7 @@ try{THREE=await import('https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.m
 const scene=new THREE.Scene();scene.background=new THREE.Color(0x080d18);scene.fog=new THREE.FogExp2(0x101a2a,.006);
 const camera=new THREE.PerspectiveCamera(84,innerWidth/innerHeight,.1,400);camera.position.set(.55,.15,14.5);camera.lookAt(0,-1.15,0);
 const renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:'high-performance'});renderer.setPixelRatio(Math.min(devicePixelRatio,1.6));renderer.setSize(innerWidth,innerHeight);renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.48;document.getElementById('world').appendChild(renderer.domElement);
-scene.add(new THREE.HemisphereLight(0xb9dcff,0x3c3448,2.0));scene.add(new THREE.AmbientLight(0xb0c5e8,.85));
+scene.add(new THREE.HemisphereLight(0x9b9b91,0x28221b,.9));scene.add(new THREE.AmbientLight(0x62594b,.38));
 const world=new THREE.Group();scene.add(world);
 let running=false,elapsed=0,last=0;
 const material=(c,r=.8,m=0)=>new THREE.MeshStandardMaterial({color:c,roughness:r,metalness:m});
@@ -43,69 +43,54 @@ const add=(mesh)=>{world.add(mesh);return mesh};
 function block(w,h,d,x,y,z,mat){const o=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat);o.position.set(x,y,z);return add(o)}
 function beam(w,h,d,x,y,z,mat=wood){return block(w,h,d,x,y,z,mat)}
 function light(x,y,z,color=0xffad55,power=7,range=15){const p=new THREE.PointLight(color,power,range);p.position.set(x,y,z);add(p);const bulb=new THREE.Mesh(new THREE.SphereGeometry(.13,8,8),material(color,.3));bulb.position.set(x,y,z);add(bulb)}
-// NATURAL CAVE SIDES: deep, broken strata with strong inward/outward relief.
-function caveNoise(a,b,c=0){return Math.sin(a*1.71+b*.83+c*2.13)*.5+Math.sin(a*.47-b*1.39+c*.71)*.3+Math.sin(a*3.17+b*2.41+c)*.2}
-function makeCaveWall(side){
- const verts=[],colors=[],indices=[],nz=220,ny=24,zStart=9,zStep=1.04,yStart=-2.95,yStep=.39;
- for(let iz=0;iz<=nz;iz++){
-  const z=zStart-iz*zStep;
-  for(let iy=0;iy<=ny;iy++){
-   const y=yStart+iy*yStep;
-   const broad=caveNoise(z*.16,y*.42,side)*.34;
-   const strata=Math.sin(z*.34+y*.76+side)*.22;
-   const fracture=caveNoise(z*.78,y*1.65,side*2)*.19;
-   const sharp=Math.pow(Math.max(0,Math.sin(z*.27+y*.93+side*1.8)),7)*.36;
-   const buttress=Math.pow(Math.max(0,Math.sin(z*.115+side*1.3)),9)*.58*(.45+Math.abs(y-1.1)*.13);
-   const x=side*(3.45+broad+strata+fracture+sharp+buttress);
-   verts.push(x,y+caveNoise(z*.24,y*.3,side)*.07,z);
-   const shade=.66+.18*Math.sin(z*.19+y*.65)+.13*caveNoise(z*.31,y*.91,side);
-   colors.push(.37*shade,.36*shade,.34*shade);
-  }
- }
- for(let iz=0;iz<nz;iz++)for(let iy=0;iy<ny;iy++){
-  const a=iz*(ny+1)+iy,b=a+ny+1;
-  if((iz+iy)%2){indices.push(a,b,a+1,b,b+1,a+1)}else{indices.push(a,b,b+1,a,b+1,a+1)}
- }
- const geo=new THREE.BufferGeometry();
- geo.setAttribute('position',new THREE.Float32BufferAttribute(verts,3));
- geo.setAttribute('color',new THREE.Float32BufferAttribute(colors,3));
- geo.setIndex(indices);geo.computeVertexNormals();
- const mat=new THREE.MeshStandardMaterial({vertexColors:true,roughness:1,metalness:0,flatShading:true,side:THREE.DoubleSide});
- add(new THREE.Mesh(geo,mat));
- // Long, broken dark seams cut into the rock strata.
- for(let k=0;k<42;k++){
-  const pts=[];const z0=7-k*5.25+(side<0?1.2:-.8),y0=-2.35+((k*17)%19)*.43;
-  for(let j=0;j<7;j++){
-   const z=z0-j*.48,y=y0+Math.sin(j*1.3+k*.8)*.19;
-   const x=side*(3.48+caveNoise(z*.16,y*.42,side)*.34+Math.sin(z*.34+y*.76+side)*.22+caveNoise(z*.78,y*1.65,side*2)*.19+.045);
-   pts.push(new THREE.Vector3(x,y,z));
-  }
-  const seam=new THREE.BufferGeometry().setFromPoints(pts);
-  add(new THREE.Line(seam,new THREE.LineBasicMaterial({color:0x11141a,transparent:true,opacity:.72})));
- }
- // Jagged shelves and broken ledges merge into the wall rather than sitting as loose boulders.
- for(let k=0;k<34;k++){
-  const z=5-k*6.55+(side<0?1.4:-1.1),y=-2.1+((k*11)%15)*.53;
-  const ledge=new THREE.Mesh(new THREE.DodecahedronGeometry(.72+(k%4)*.13,1),k%3===0?darkRock:rock);
-  ledge.position.set(side*(3.08+.24*Math.sin(k*2.1)),y,z);
-  ledge.scale.set(.42+((k*7)%5)*.08,.75+((k*3)%4)*.18,1.55+((k*5)%4)*.3);
-  ledge.rotation.set(k*.37,side*k*.29,k*.21);add(ledge);
- }
+// ABANDONED HARD-ROCK MINE: one continuous excavated tunnel, not decorative rock piles.
+const caveStone=new THREE.MeshStandardMaterial({color:0x51483d,roughness:1,metalness:0,vertexColors:true,flatShading:true,side:THREE.DoubleSide});
+function seeded(n){const v=Math.sin(n*127.1+19.7)*43758.5453;return v-Math.floor(v)}
+function buildRockSurface(side){
+ const verts=[],cols=[],idx=[],nz=220,ny=18;
+ for(let iz=0;iz<=nz;iz++){const z=9-iz*1.04;for(let iy=0;iy<=ny;iy++){
+  const y=-2.85+iy*.31,rough=Math.sin(z*.19+y*.51+side)*.22+Math.sin(z*.57-y*1.17)*.11+(seeded(iz*29+iy*7+side*5)-.5)*.22;
+  verts.push(side*(3.55+rough),y+Math.sin(z*.31+iy*.8)*.045,z);
+  const tone=.78+.12*Math.sin(z*.12+y*.8)+.12*(seeded(iz*11+iy*23)-.5);cols.push(.34*tone,.30*tone,.25*tone);
+ }}
+ for(let z=0;z<nz;z++)for(let y=0;y<ny;y++){const a=z*(ny+1)+y,b=a+ny+1;idx.push(a,b,a+1,b,b+1,a+1)}
+ const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(verts,3));g.setAttribute('color',new THREE.Float32BufferAttribute(cols,3));g.setIndex(idx);g.computeVertexNormals();add(new THREE.Mesh(g,caveStone));
 }
-makeCaveWall(-1);makeCaveWall(1);
-for(let z=5;z>-218;z-=5){
- // Jagged overhead rock closes the tunnel into a proper cave instead of an open-sided passage.
- const roof=new THREE.Mesh(new THREE.DodecahedronGeometry(1,1),darkRock);roof.position.set(.0,5.45,z);roof.scale.set(5.15,1.45,2.95);add(roof);
- // Heavy timber legs and a curved timber arch across the ceiling.
- beam(.48,6.25,.62,-4.02,1.12,z,wood);beam(.48,6.25,.62,4.02,1.12,z,wood);
- const archPts=[];for(let j=0;j<=12;j++){const a=Math.PI-j*Math.PI/12;archPts.push(new THREE.Vector3(Math.cos(a)*4.02,2.45+Math.sin(a)*2.05,z));}
- const archCurve=new THREE.CatmullRomCurve3(archPts);const arch=new THREE.Mesh(new THREE.TubeGeometry(archCurve,32,.22,8,false),wood);add(arch);
- // Iron straps and bolts make the timber shoring look constructed and load-bearing.
- for(const x of [-4.02,4.02]){for(const y of [-1.2,1.1,3.25]){const strap=beam(.56,.13,.72,x,y,z,iron);strap.rotation.z=0;}}
- if(Math.round(Math.abs(z))%10===0){
-  const cross=new THREE.Mesh(new THREE.BoxGeometry(7.8,.2,.28),wood);cross.position.set(0,4.52,z);add(cross);
-  for(const x of [-3.8,3.8]){const bolt=new THREE.Mesh(new THREE.SphereGeometry(.09,8,8),gold);bolt.position.set(x,4.52,z+.17);add(bolt);}
- }
+buildRockSurface(-1);buildRockSurface(1);
+// A continuous vaulted ceiling joins both walls into a closed tunnel.
+{
+ const verts=[],cols=[],idx=[],nz=220,nx=28;
+ for(let iz=0;iz<=nz;iz++){const z=9-iz*1.04;for(let ix=0;ix<=nx;ix++){
+  const x=-3.58+ix*(7.16/nx),u=x/3.58,archY=2.12+2.25*Math.sqrt(Math.max(0,1-u*u));
+  const rough=Math.sin(z*.21+x*.73)*.16+Math.sin(z*.63-x*.38)*.08+(seeded(iz*31+ix*13)-.5)*.16;
+  verts.push(x,archY+rough,z);const tone=.75+.15*Math.sin(z*.17+x*.8)+.1*(seeded(iz*17+ix*9)-.5);cols.push(.31*tone,.28*tone,.23*tone);
+ }}
+ for(let z=0;z<nz;z++)for(let x=0;x<nx;x++){const a=z*(nx+1)+x,b=a+nx+1;idx.push(a,a+1,b,b,a+1,b+1)}
+ const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(verts,3));g.setAttribute('color',new THREE.Float32BufferAttribute(cols,3));g.setIndex(idx);g.computeVertexNormals();add(new THREE.Mesh(g,caveStone));
+}
+// Fractured strata are carved into the walls as dark mineral seams.
+for(const side of [-1,1])for(let k=0;k<52;k++){
+ const z=7-k*4.25+(side<0?1.1:-.7),y=-2.4+seeded(k*3+side)*4.6,pts=[];
+ for(let j=0;j<8;j++){const zz=z-j*.55,yy=y+Math.sin(j*.9+k)*.12;pts.push(new THREE.Vector3(side*(3.53+Math.sin(zz*.19+yy*.51+side)*.22+Math.sin(zz*.57-yy*1.17)*.11+.025),yy,zz))}
+ const seam=new THREE.BufferGeometry().setFromPoints(pts);add(new THREE.Line(seam,new THREE.LineBasicMaterial({color:0x171613,transparent:true,opacity:.62})));
+}
+// Aged timber sets, iron plates and cross-bracing support the excavated shaft.
+const agedWood=material(0x59402c,.98),rustIron=material(0x49382c,.88,.35);
+for(let z=5;z>-218;z-=7.5){
+ block(.34,5,.42,-3.35,-.25,z,agedWood);block(.34,5,.42,3.35,-.25,z,agedWood);
+ const pts=[];for(let j=0;j<=16;j++){const a=Math.PI-j*Math.PI/16;pts.push(new THREE.Vector3(Math.cos(a)*3.35,2.05+Math.sin(a)*2.12,z))}
+ add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts),36,.19,7,false),agedWood));
+ for(const x of [-3.35,3.35])for(const y of [-1.8,.1,1.65]){const plate=block(.43,.12,.48,x,y,z+.24,rustIron);plate.rotation.z=x<0?.08:-.08;}
+ if(Math.round(Math.abs(z))%15<2){block(6.55,.16,.22,0,4.12,z,agedWood);for(const x of [-3.1,3.1]){const bolt=new THREE.Mesh(new THREE.CylinderGeometry(.07,.07,.09,8),rustIron);bolt.rotation.x=Math.PI/2;bolt.position.set(x,4.12,z+.15);add(bolt)}}
+}
+// Old electrical cable and caged amber work lamps.
+const cablePts=[];for(let z=8;z>-218;z-=2)cablePts.push(new THREE.Vector3(0,3.95+.16*Math.sin(z*.22),z));
+add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(cablePts),cablePts.length*2,.035,5,false),rustIron));
+for(let z=1;z>-218;z-=22){
+ const lamp=new THREE.Group();lamp.position.set(-2.75,1.35,z);add(lamp);
+ const cage=new THREE.Mesh(new THREE.BoxGeometry(.28,.42,.28),rustIron);lamp.add(cage);
+ const bulb=new THREE.Mesh(new THREE.SphereGeometry(.105,10,8),material(0xffb65c,.3));bulb.position.y=-.02;lamp.add(bulb);
+ const glow=new THREE.PointLight(0xffa84c,2.2,10);glow.position.set(-2.75,1.3,z);add(glow);
 }
 // Winding mine railway: broad S-bends, banked curves and gentle rolling dips.
 block(8,.18,225,0,-2.95,-105,material(0x282630,1));
