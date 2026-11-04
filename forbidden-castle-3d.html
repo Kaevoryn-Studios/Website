@@ -76,7 +76,7 @@ function gableRoof(w,h,d,x,y,z,material){
  const mesh=new THREE.Mesh(g,material);mesh.position.set(x,y,z);mesh.castShadow=true;mesh.receiveShadow=true;scene.add(mesh);return mesh;
 }
 // Deep central keep, stepped wings and projecting entrance bay.
-box(19,20,11,stone,0,10,-46);
+box(5.3,20,11,stone,-6.85,10,-46);\nbox(5.3,20,11,stone,6.85,10,-46);\nbox(8.4,8,11,stone,0,16,-46);
 box(13,13,12,stone,-15,6.5,-43);
 box(15,15,13,stone,15,7.5,-45);
 box(8,17,9,darkStone,0,8.5,-39.8);
@@ -106,7 +106,7 @@ for(const side of [-1,1]){
  for(let dx=-2.5;dx<=2.5;dx+=.5)box(.07,.85,.07,iron,x+dx,3.65,-34.5);
 }
 // Tall deep-set windows on the central facade.
-for(let y of [4,9,14,18])for(let x of [-5.8,-2.1,2.1,5.8]){
+for(let y of [4,9,14,18])for(let x of [-8,-6.1,6.1,8]){
  box(1.75,3,.24,darkStone,x,y,-40.34);
  box(1.28,2.45,.1,glass,x,y,-40.17);
  box(1.95,.2,.35,stone,x,y+1.62,-40.05);
