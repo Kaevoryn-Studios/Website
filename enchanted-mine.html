@@ -24,7 +24,7 @@ document.getElementById("startBtn").addEventListener("click",()=>{window.__mineS
 let THREE;
 try{THREE=await import('https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js')}catch(e){THREE=await import('https://unpkg.com/three@0.160.0/build/three.module.js')}
 const scene=new THREE.Scene();scene.background=new THREE.Color(0x080d18);scene.fog=new THREE.FogExp2(0x101a2a,.006);
-const camera=new THREE.PerspectiveCamera(72,innerWidth/innerHeight,.1,400);camera.position.set(3.4,3.2,13.5);camera.lookAt(0,-.3,7.9);
+const camera=new THREE.PerspectiveCamera(82,innerWidth/innerHeight,.1,400);camera.position.set(.9,3.6,16.5);camera.lookAt(0,-.3,8.8);
 const renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:'high-performance'});renderer.setPixelRatio(Math.min(devicePixelRatio,1.6));renderer.setSize(innerWidth,innerHeight);renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.48;document.getElementById('world').appendChild(renderer.domElement);
 scene.add(new THREE.HemisphereLight(0xb9dcff,0x3c3448,2.0));scene.add(new THREE.AmbientLight(0xb0c5e8,.85));
 const world=new THREE.Group();scene.add(world);
@@ -243,7 +243,7 @@ function startMineRide(){
  if(running)return;
  elapsed=0;world.position.set(0,0,0);
  trainCarts.forEach((wagon,i)=>wagon.position.set(0,-1.42,5.3+i*2.65));
- camera.position.set(3.4,3.2,13.5);camera.lookAt(0,-.3,7.9);
+ camera.position.set(.9,3.6,16.5);camera.lookAt(0,-.3,9.1);
  cartWheels.forEach(w=>w.rotation.x=0);
  running=true;
  document.getElementById('intro').style.display='none';
@@ -255,7 +255,7 @@ const startButton=document.getElementById('startBtn');
 startButton.addEventListener('click',startMineRide);
 if(window.__mineStartRequested){window.__mineStartRequested=false;startMineRide()}
 function animate(t){requestAnimationFrame(animate);const dt=last?Math.min((t-last)/1000,.04):0;last=t;
- if(running){elapsed=Math.min(39,elapsed+dt);const travel=elapsed*5.2;world.position.z=0;trainCarts.forEach((wagon,i)=>{const z=5.3-travel+i*2.65;wagon.position.set(trackX(z),-1.42+trackY(z),z);wagon.rotation.y=trackYaw(z);wagon.rotation.z=trackBank(z)});const leadZ=5.3-travel;camera.position.x=trackX(leadZ)+2.65;camera.position.y=3.2+trackY(leadZ);camera.position.z=13.5-travel;camera.lookAt(trackX(leadZ-5.6),-.3+trackY(leadZ-5.6),camera.position.z-5.6);cartWheels.forEach(w=>w.rotation.x-=dt*6.1);trainCarts.forEach((wagon,i)=>wagon.position.y+=Math.sin(elapsed*5-i*.22)*.018);document.getElementById('bar').style.width=(elapsed/39*100)+'%';
+ if(running){elapsed=Math.min(39,elapsed+dt);const travel=elapsed*5.2;world.position.z=0;trainCarts.forEach((wagon,i)=>{const z=5.3-travel+i*2.65;wagon.position.set(trackX(z),-1.42+trackY(z),z);wagon.rotation.y=trackYaw(z);wagon.rotation.z=trackBank(z)});const leadZ=5.3-travel;camera.position.x=trackX(leadZ)+.9;camera.position.y=3.6+trackY(leadZ);camera.position.z=16.5-travel;camera.lookAt(trackX(leadZ-7.4)+.35,-.3+trackY(leadZ-7.4),camera.position.z-7.4);cartWheels.forEach(w=>w.rotation.x-=dt*6.1);trainCarts.forEach((wagon,i)=>wagon.position.y+=Math.sin(elapsed*5-i*.22)*.018);document.getElementById('bar').style.width=(elapsed/39*100)+'%';
  const stage=elapsed<13?'DESCENDING · SHADOW MINERS AT WORK':elapsed<25?'THE CRYSTAL CATHEDRAL · FOLLOW THE LIGHT':elapsed<34?'THE OLD ORE LIFT · SHAFT IN MOTION':'THE LOST VEIN · A SECRET AWAKENS';
  document.getElementById('status').textContent=stage;
  if(elapsed>=39){running=false;document.getElementById('status').textContent='THE LOST VEIN · JOURNEY COMPLETE';document.getElementById('intro').style.display='block';document.querySelector('#intro h1').textContent='THE LOST VEIN';document.querySelector('#intro p').textContent='The mine has revealed its secret. Would you dare descend again?';document.getElementById('startBtn').textContent='RIDE AGAIN'}}
