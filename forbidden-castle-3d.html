@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#090711">
+<title>FORBIDDEN CASTLE · 3D WALKTHROUGH PROTOTYPE</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#090711;color:#f5efff;font:15px/1.4 system-ui,Arial,sans-serif}#world{position:fixed;inset:0}canvas{display:block;width:100%;height:100%}
+#hud{position:fixed;inset:0;pointer-events:none;display:flex;flex-direction:column;justify-content:space-between;padding:18px}
+.brand{font-size:11px;letter-spacing:.22em;font-weight:900;text-shadow:0 2px 12px #000}.brand span{display:block;color:#c5aaff;font-size:9px;margin-top:4px}
+#message{align-self:center;text-align:center;max-width:min(620px,90vw);padding:10px 16px;border:1px solid #c4a5ff55;border-radius:14px;background:#090711aa;backdrop-filter:blur(8px);font-size:13px;color:#eee4ff;text-shadow:0 1px 8px #000}
+#help{font-size:11px;color:#d6c9ef;text-shadow:0 2px 8px #000;max-width:460px}
+#start{pointer-events:auto;position:fixed;inset:0;display:grid;place-items:center;background:linear-gradient(#08061166,#080611aa);padding:24px}
+.card{max-width:520px;text-align:center;padding:28px 24px;border:1px solid #b69bfa77;border-radius:22px;background:#100d1deF;box-shadow:0 20px 80px #000b}
+h1{font-size:clamp(28px,6vw,48px);line-height:1;margin:0 0 12px;letter-spacing:-.04em}p{color:#d1c6e3}.eyebrow{color:#c3a6ff;font-size:10px;letter-spacing:.25em;font-weight:800}
+button{border:1px solid #d2bcff;background:linear-gradient(120deg,#8060bd,#49366f);color:white;border-radius:999px;padding:13px 22px;font-weight:800;font-size:14px;cursor:pointer}
+#mobile{position:fixed;left:18px;bottom:22px;width:132px;height:132px;display:none;pointer-events:auto;touch-action:none}
+#stickBase{position:absolute;inset:12px;border:1px solid #d9c7ff66;border-radius:50%;background:#100d1d88;backdrop-filter:blur(5px)}
+#stick{position:absolute;width:48px;height:48px;left:42px;top:42px;border-radius:50%;background:#bca0f4aa;border:1px solid #f0e5ff;box-shadow:0 2px 14px #0008}
+#lookHint{position:fixed;right:16px;bottom:28px;display:none;color:#fff9;font-size:10px;text-shadow:0 2px 8px #000;pointer-events:none}
+@media(pointer:coarse){#mobile{display:block}#lookHint{display:block}#help{max-width:45vw}}
+</style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}</script>
+</head>
+<body>
+<div id="world"></div>
+<div id="hud"><div class="brand">KAEVORYN STUDIOS<span>FORBIDDEN CASTLE · REAL-TIME 3D WALKTHROUGH</span></div><div id="message">The forest is quiet. The castle waits beyond the gates.</div><div id="help">PC: WASD / arrow keys to walk · mouse to look · click the scene to capture the mouse · Esc to release<br>Phone: use the left thumbstick to walk · drag the right side to look around</div></div>
+<div id="mobile"><div id="stickBase"></div><div id="stick"></div></div><div id="lookHint">DRAG TO LOOK</div>
+<div id="start"><div class="card"><div class="eyebrow">A CONTINUOUS WORLD · PROTOTYPE 01</div><h1>THE FORBIDDEN CASTLE</h1><p>This is a real-time 3D space, not a sequence of pictures. Walk from the forest gates, across the courtyard, and through the castle doors into the entrance hall.</p><p>Movement is intentionally simple in this first prototype. Look around and explore.</p><button id="enter">ENTER THE GROUNDS</button></div></div>
+<script type="module">
+import * as THREE from 'three';
+const host=document.querySelector('#world'),msg=document.querySelector('#message');
+const scene=new THREE.Scene();scene.background=new THREE.Color(0x11101b);scene.fog=new THREE.FogExp2(0x171321,.018);
+const camera=new THREE.PerspectiveCamera(72,innerWidth/innerHeight,.1,220);camera.position.set(0,1.72,9);
+const renderer=new THREE.WebGLRenderer({antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio,1.7));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.15;host.appendChild(renderer.domElement);
+scene.add(new THREE.HemisphereLight(0xbac8ff,0x21172a,1.45));
+const moon=new THREE.DirectionalLight(0xc9c2ff,2.2);moon.position.set(-16,28,12);moon.castShadow=true;moon.shadow.mapSize.set(1024,1024);scene.add(moon);
+const violet=new THREE.PointLight(0x9a63ff,28,38);violet.position.set(0,5,-32);scene.add(violet);
+const warm=new THREE.PointLight(0xffc982,18,24);warm.position.set(0,4,-68);scene.add(warm);
+const mat=(color,rough=.85,metal=0)=>new THREE.MeshStandardMaterial({color,roughness:rough,metalness:metal});
+const stone=mat(0x55515d),darkStone=mat(0x302b39),floorMat=mat(0x393541),iron=mat(0x171923,.42,.75),gold=mat(0xb28b55,.38,.65),glass= new THREE.MeshStandardMaterial({color:0x8d5bd0,emissive:0x582b9b,emissiveIntensity:1.4,roughness:.25});
+function box(w,h,d,m,x,y,z,parent=scene){const o=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m);o.position.set(x,y,z);o.castShadow=true;o.receiveShadow=true;parent.add(o);return o}
+function cylinder(rt,rb,h,m,x,y,z,seg=10){const o=new THREE.Mesh(new THREE.CylinderGeometry(rt,rb,h,seg),m);o.position.set(x,y,z);o.castShadow=true;o.receiveShadow=true;scene.add(o);return o}
+function arch(x,y,z,r,h,depth,m){const group=new THREE.Group();group.position.set(x,y,z);scene.add(group);box(r*2,h-r,depth,m,0,(h-r)/2,0,group);const curve=new THREE.Mesh(new THREE.TorusGeometry(r,Math.max(.12,depth*.16),8,24,Math.PI),m);curve.rotation.z=Math.PI;curve.position.y=h-r;curve.castShadow=true;group.add(curve);return group}
+// Ground, winding approach, courtyard and hall all share one continuous floor.
+box(100,.5,130,mat(0x171923),0,-.3,-48);
+const path=box(7,.12,72,floorMat,0,-.01,-26);path.receiveShadow=true;
+for(let i=0;i<18;i++){let z=13-i*3.7;box(6.8,.035,.045,mat(0x817b8a),0,.07,z)}
+// Forest walls and tall old trees frame the approach.
+const bark=mat(0x29242a),leaf=mat(0x18251f),leaf2=mat(0x26332a);
+for(let side of [-1,1])for(let i=0;i<18;i++){let x=side*(9+Math.random()*8),z=14-i*4.5+Math.random()*2,h=8+Math.random()*9;
+cylinder(.45,.85,h,bark,x,h/2-.1,z,9);
+for(let k=0;k<4;k++){let crown=new THREE.Mesh(new THREE.IcosahedronGeometry(2.2+Math.random()*1.2,1),k%2?leaf:leaf2);crown.position.set(x+(Math.random()-.5)*1.8,h*.65+k*1.25,z);crown.scale.y=1.1;crown.castShadow=true;scene.add(crown)}
+}
+// Castle walls and towers enclose the courtyard end and open into the entrance.
+box(30,15,2,stone,0,7.5,-55);
+box(10,11,2.4,darkStone,0,5.5,-53.7);
+for(let side of [-1,1]){
+const tx=side*12;
+cylinder(2.25,2.8,19,stone,tx,9.5,-55,12);
+const cap=new THREE.Mesh(new THREE.ConeGeometry(2.65,6,12),darkStone);cap.position.set(tx,22,-55);cap.castShadow=true;scene.add(cap);
+cylinder(2.32,2.32,.45,gold,tx,18.9,-55,12);
+for(let y=5;y<16;y+=3.5){box(.8,1.5,.15,glass,tx, y,-53.82)}
+}
+// Carved arch and open doorway. Walk through z=-57 into the hall.
+box(8,1.1,2.2,darkStone,0,11.5,-53.4);
+for(let x of [-4,4])box(1.1,11,2.2,stone,x,5.5,-53.4);
+arch(0,0,-53.2,4,11,1.8,stone);
+box(24,.35,35,mat(0x292430),0,-.05,-74);
+for(let side of [-1,1]){
+box(1,10,34,stone,side*12,5,-73);
+for(let z=-62;z>-91;z-=6){box(1.6,1,.25,glass,side*11.45,5,z)}
+}
+// Entrance hall: tall nave, pillars, ribs and warm chandeliers.
+box(25,1,2,darkStone,0,12,-91);
+for(let side of [-1,1])for(let z=-61;z>-91;z-=7){
+box(1.3,11,1.3,stone,side*8,5.5,z);
+const capital= new THREE.Mesh(new THREE.BoxGeometry(2.1,.6,2.1),gold);capital.position.set(side*8,10.8,z);scene.add(capital);
+}
+for(let z=-65;z>-90;z-=9){let l=new THREE.PointLight(0xffbd76,12,13);l.position.set(0,7,z);scene.add(l);cylinder(.12,.12,2,gold,0,8,z);for(let x of [-.8,0,.8]){let flame=new THREE.Mesh(new THREE.SphereGeometry(.13,8,8),new THREE.MeshBasicMaterial({color:0xffd48b}));flame.position.set(x,6.8,z);scene.add(flame)}}
+box(8,.6,3,gold,0,.35,-83);
+for(let side of [-1,1]){box(5,.3,12,stone,side*5,1.2,-78);for(let i=0;i<5;i++)box(.18,.25,11, gold,side*(2.8+i*.9),1.4,-78)}
+// Gate leaves are real hinged 3D ironwork, opening as the visitor approaches.
+const gateGroup=new THREE.Group();gateGroup.position.set(0,0,-10);scene.add(gateGroup);
+function gateLeaf(side){const hinge=new THREE.Group();hinge.position.x=side*3.1;gateGroup.add(hinge);const leafGroup=new THREE.Group();leafGroup.position.x=-side*3.1;hinge.add(leafGroup);box(3.1,4.4,.22,iron,side*1.55,2.2,0,leafGroup);
+for(let i=0;i<=8;i++){let x=side*(-1.48+i*.37);cylinder(.045,.045,4.6,iron,x,2.25,0,6);let tip=new THREE.Mesh(new THREE.ConeGeometry(.12,.42,6),gold);tip.position.set(x,4.58,0);leafGroup.add(tip)}
+box(3.1,.16,.28,gold,side*1.55,1.15,0,leafGroup);return hinge}
+const leftGate=gateLeaf(-1),rightGate=gateLeaf(1);
+// Courtyard lamps and stone markers.
+for(let z=-16;z>-49;z-=8)for(let side of [-1,1]){
+box(.75,2.4,.75,darkStone,side*6,1.2,z);
+const glow=new THREE.PointLight(0xb18aff,3,8);glow.position.set(side*6,3,z);scene.add(glow);
+const orb=new THREE.Mesh(new THREE.SphereGeometry(.2,12,12),new THREE.MeshBasicMaterial({color:0xc8a7ff}));orb.position.set(side*6,3,z);scene.add(orb);
+}
+// Door leaves stand inside the entry arch and swing away from the passage.
+const doors=[];
+for(let side of [-1,1]){const hinge=new THREE.Group();hinge.position.set(side*2,0,-53.0);scene.add(hinge);box(2,8,.35,mat(0x211a2a),-side,4,0,hinge);for(let y of [2,4,6])box(1.7,.12,.12,gold,-side, y,.2,hinge);const ring=new THREE.Mesh(new THREE.TorusGeometry(.25,.055,8,16),gold);ring.position.set(-side*1.6,4,.24);hinge.add(ring);doors.push({hinge,side})}
+// Ambient fireflies and drifting mist points.
+const dustGeo=new THREE.BufferGeometry(),dustCount=500,positions=new Float32Array(dustCount*3);
+for(let i=0;i<dustCount;i++){positions[i*3]=(Math.random()-.5)*36;positions[i*3+1]=Math.random()*8;positions[i*3+2]=Math.random()*95-88}
+dustGeo.setAttribute('position',new THREE.BufferAttribute(positions,3));const dust=new THREE.Points(dustGeo,new THREE.PointsMaterial({color:0xbca5ff,size:.055,transparent:true,opacity:.65}));scene.add(dust);
+let yaw=0,pitch=0,keys={},started=false,gateOpened=false,doorOpened=false;const clock=new THREE.Clock();
+function say(t){msg.textContent=t}
+function clamp(v,a,b){return Math.max(a,Math.min(b,v))}
+function update(dt){if(!started)return;
+let forward=(keys.KeyW||keys.ArrowUp?1:0)-(keys.KeyS||keys.ArrowDown?1:0),strafe=(keys.KeyD||keys.ArrowRight?1:0)-(keys.KeyA||keys.ArrowLeft?1:0);
+const speed=keys.ShiftLeft?7:3.4;const dir=new THREE.Vector3(-Math.sin(yaw),0,-Math.cos(yaw));const right=new THREE.Vector3(Math.cos(yaw),0,-Math.sin(yaw));
+camera.position.addScaledVector(dir,forward*speed*dt);camera.position.addScaledVector(right,strafe*speed*dt);
+camera.position.x=clamp(camera.position.x,-8.5,8.5);camera.position.z=clamp(camera.position.z,-88,13);camera.position.y=1.72+((forward||strafe)?Math.sin(clock.elapsedTime*10)*.035:0);
+camera.rotation.order='YXZ';camera.rotation.y=yaw;camera.rotation.x=pitch;
+if(!gateOpened&&camera.position.z<-6.3){gateOpened=true;say('The iron gates groan and swing open. Keep walking into the courtyard.')}
+let open=clamp(((-camera.position.z)-6)/5,0,1);leftGate.rotation.y=-open*1.25;rightGate.rotation.y=open*1.25;
+if(!doorOpened&&camera.position.z<-47){doorOpened=true;say('The great entrance doors begin to open. Walk forward into the entrance hall.')}
+let d=clamp(((-camera.position.z)-47)/5,0,1);doors[0].hinge.rotation.y=-d*1.15;doors[1].hinge.rotation.y=d*1.15;
+if(camera.position.z<-59)say('You are inside the entrance hall. Look around and explore the connected space.');
+}
+function animate(){requestAnimationFrame(animate);const dt=Math.min(clock.getDelta(),.04);update(dt);dust.rotation.y+=dt*.008;renderer.render(scene,camera)}animate();
+addEventListener('keydown',e=>{keys[e.code]=true;if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Space'].includes(e.code))e.preventDefault()});
+addEventListener('keyup',e=>keys[e.code]=false);
+renderer.domElement.addEventListener('click',()=>{if(started&&matchMedia('(pointer:fine)').matches)renderer.domElement.requestPointerLock?.()});
+addEventListener('mousemove',e=>{if(document.pointerLockElement===renderer.domElement){yaw-=e.movementX*.0022;pitch=clamp(pitch-e.movementY*.0022,-1.15,1.15)}});
+let dragging=false,lastX=0,lastY=0;renderer.domElement.addEventListener('pointerdown',e=>{if(e.pointerType!=='mouse'&&e.clientX>innerWidth*.38){dragging=true;lastX=e.clientX;lastY=e.clientY;renderer.domElement.setPointerCapture(e.pointerId)}});
+renderer.domElement.addEventListener('pointermove',e=>{if(dragging){yaw-=(e.clientX-lastX)*.004;pitch=clamp(pitch-(e.clientY-lastY)*.003,-1.15,1.15);lastX=e.clientX;lastY=e.clientY}});
+renderer.domElement.addEventListener('pointerup',()=>dragging=false);renderer.domElement.addEventListener('pointercancel',()=>dragging=false);
+const pad=document.querySelector('#mobile'),stick=document.querySelector('#stick');let joy={x:0,y:0},padOn=false;
+pad.addEventListener('pointerdown',e=>{padOn=true;pad.setPointerCapture(e.pointerId);moveJoy(e)});
+pad.addEventListener('pointermove',e=>{if(padOn)moveJoy(e)});pad.addEventListener('pointerup',()=>{padOn=false;joy={x:0,y:0};stick.style.transform='translate(0,0)'});
+function moveJoy(e){const r=pad.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;let x=e.clientX-cx,y=e.clientY-cy,l=Math.hypot(x,y),m=43;if(l>m){x=x/l*m;y=y/l*m}joy={x:x/m,y:y/m};stick.style.transform='translate('+x+'px,'+y+'px)';keys.KeyW=joy.y<-.18;keys.KeyS=joy.y>.18;keys.KeyA=joy.x<-.18;keys.KeyD=joy.x>.18}
+document.querySelector('#enter').addEventListener('click',()=>{started=true;document.querySelector('#start').style.display='none';say('Walk toward the iron gates. They will open as you approach.')});
+addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
+</script>
+</body></html>
