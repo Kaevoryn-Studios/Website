@@ -24,7 +24,7 @@ document.getElementById("startBtn").addEventListener("click",()=>{window.__mineS
 let THREE;
 try{THREE=await import('https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js')}catch(e){THREE=await import('https://unpkg.com/three@0.160.0/build/three.module.js')}
 const scene=new THREE.Scene();scene.background=new THREE.Color(0x050711);scene.fog=new THREE.FogExp2(0x080d1c,.012);
-const camera=new THREE.PerspectiveCamera(72,innerWidth/innerHeight,.1,400);camera.position.set(0,1.15,11);camera.lookAt(0,.9,-18);
+const camera=new THREE.PerspectiveCamera(72,innerWidth/innerHeight,.1,400);camera.position.set(0,1.15,16.5);camera.lookAt(0,.9,-12);
 const renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:'high-performance'});renderer.setPixelRatio(Math.min(devicePixelRatio,1.6));renderer.setSize(innerWidth,innerHeight);renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.12;document.getElementById('world').appendChild(renderer.domElement);
 scene.add(new THREE.HemisphereLight(0x9bcaff,0x17101f,1.25));scene.add(new THREE.AmbientLight(0x8a9bb8,.35));
 const world=new THREE.Group();scene.add(world);
@@ -32,8 +32,8 @@ let running=false,elapsed=0,last=0;
 document.getElementById('startBtn').addEventListener('click',()=>{
  if(running)return;
  elapsed=0;world.position.set(0,0,0);
- cart.position.set(0,-1.42,5.3);
- camera.position.set(0,1.15,11);camera.lookAt(0,.9,-18);
+ trainCarts.forEach((wagon,i)=>wagon.position.set(0,-1.42,5.3+i*2.65));
+ camera.position.set(0,1.15,16.5);camera.lookAt(0,.9,-12);
  cartWheels.forEach(w=>w.rotation.x=0);
  running=true;
  document.getElementById('intro').style.display='none';
@@ -98,7 +98,7 @@ for(const z of [-1.48,1.48]){const buffer=new THREE.Mesh(new THREE.CylinderGeome
 // Four substantial flanged steel wheels, with raised rims and visible axles.
 for(const x of [-.94,.94])for(const z of [-.78,.78]){
  const axle=new THREE.Mesh(new THREE.CylinderGeometry(.105,.105,2.12,12),cartDark);axle.rotation.z=Math.PI/2;axle.position.set(0,-.48,z);cart.add(axle);
- const wheel=new THREE.Group();wheel.position.set(x,-.49,z);cart.add(wheel);
+ const wheel=new THREE.Group();wheel.userData.isMineCartWheel=true;wheel.position.set(x,-.49,z);cart.add(wheel);
  const tread=new THREE.Mesh(new THREE.CylinderGeometry(.34,.34,.2,20),cartSteel);tread.rotation.z=Math.PI/2;wheel.add(tread);
  for(const side of [-1,1]){const flange=new THREE.Mesh(new THREE.CylinderGeometry(.39,.39,.07,20),cartEdge);flange.rotation.z=Math.PI/2;flange.position.x=side*.12;wheel.add(flange)}
  const hub=new THREE.Mesh(new THREE.CylinderGeometry(.14,.14,.24,16),cartBrass);hub.rotation.z=Math.PI/2;wheel.add(hub);
@@ -115,6 +115,15 @@ for(const x of [-.72,.72]){
  const glass=new THREE.Mesh(new THREE.SphereGeometry(.105,12,10),new THREE.MeshBasicMaterial({color:0xffc66f}));glass.position.set(x,.91,-1.02);cart.add(glass);
  const cage=new THREE.Mesh(new THREE.TorusGeometry(.19,.025,6,16),cartBrass);cage.position.set(x,.92,-1.02);cart.add(cage);
  const glow=new THREE.PointLight(0xffbd65,3.4,11);glow.position.set(x,.95,-1.02);cart.add(glow);
+}
+// Three connected wagons follow the lead cart as one mine train.
+// Cloned geometry keeps the extra carts lightweight while preserving the full wagon details.
+const trainCarts=[cart];
+for(let i=1;i<3;i++){
+ const wagon=cart.clone(true);
+ wagon.position.set(0,-1.42,5.3+i*2.65);
+ wagon.traverse(o=>{if(o.userData&&o.userData.isMineCartWheel)cartWheels.push(o)});
+ scene.add(wagon);trainCarts.push(wagon);
 }
 // Ore skips, crates, tools and extraction machinery.
 function oreSkip(x,z){const g=new THREE.Group();const body=new THREE.Mesh(new THREE.BoxGeometry(1.45,.7,1.7),material(0x493d32,.8,.35));body.position.y=-2.1;g.add(body);for(const sx of [-1,1]){const w=new THREE.Mesh(new THREE.CylinderGeometry(.27,.27,.15,12),iron);w.rotation.z=Math.PI/2;w.position.set(sx*.78,-2.48,0);g.add(w)}for(let i=0;i<6;i++){const nug=new THREE.Mesh(new THREE.DodecahedronGeometry(.2,0),i%3===0?crystals[0]:rock);nug.position.set((Math.random()-.5)*.9,-1.68+Math.random()*.15,(Math.random()-.5)*1.1);g.add(nug)}g.position.set(x,0,z);add(g)}
@@ -234,7 +243,7 @@ function startSound(){if(audio)return;const AC=window.AudioContext||window.webki
 document.getElementById('soundBtn').onclick=()=>{soundOn=!soundOn;document.getElementById('soundBtn').textContent=soundOn?'♫ SOUND ON':'♫ SOUND OFF';if(soundOn)startSound();if(master)master.gain.setTargetAtTime(soundOn?.13:0,audio.currentTime,.2)};
 
 function animate(t){requestAnimationFrame(animate);const dt=last?Math.min((t-last)/1000,.04):0;last=t;
- if(running){elapsed=Math.min(52,elapsed+dt);const travel=elapsed*3.75;world.position.z=0;cart.position.z=5.3-travel;camera.position.z=11-travel*0.95;camera.lookAt(0,.9,camera.position.z-29);cartWheels.forEach(w=>w.rotation.x-=dt*5.2);cart.position.y=-1.42+Math.sin(elapsed*5)*.025;document.getElementById('bar').style.width=(elapsed/52*100)+'%';
+ if(running){elapsed=Math.min(52,elapsed+dt);const travel=elapsed*3.75;world.position.z=0;trainCarts.forEach((wagon,i)=>wagon.position.z=5.3-travel+i*2.65);camera.position.z=16.5-travel*0.95;camera.lookAt(0,.9,camera.position.z-29);cartWheels.forEach(w=>w.rotation.x-=dt*5.2);trainCarts.forEach((wagon,i)=>wagon.position.y=-1.42+Math.sin(elapsed*5-i*.22)*.025);document.getElementById('bar').style.width=(elapsed/52*100)+'%';
  const stage=elapsed<17?'DESCENDING · SHADOW MINERS AT WORK':elapsed<34?'THE CRYSTAL CATHEDRAL · FOLLOW THE LIGHT':elapsed<46?'THE OLD ORE LIFT · SHAFT IN MOTION':'THE LOST VEIN · A SECRET AWAKENS';
  document.getElementById('status').textContent=stage;
  if(elapsed>=52){running=false;document.getElementById('status').textContent='THE LOST VEIN · JOURNEY COMPLETE';document.getElementById('intro').style.display='block';document.querySelector('#intro h1').textContent='THE LOST VEIN';document.querySelector('#intro p').textContent='The mine has revealed its secret. Would you dare descend again?';document.getElementById('startBtn').textContent='RIDE AGAIN'}}
