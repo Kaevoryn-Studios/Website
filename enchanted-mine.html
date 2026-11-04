@@ -255,16 +255,16 @@ const startButton=document.getElementById('startBtn');
 startButton.addEventListener('click',startMineRide);
 if(window.__mineStartRequested){window.__mineStartRequested=false;startMineRide()}
 function animate(t){requestAnimationFrame(animate);const dt=last?Math.min((t-last)/1000,.04):0;last=t;
- if(running){elapsed=Math.min(46,elapsed+dt);const travel=elapsed*4.4;world.position.z=0;trainCarts.forEach((wagon,i)=>{const z=5.3-travel+i*2.65;wagon.position.set(trackX(z),-1.42+trackY(z),z);wagon.rotation.y=trackYaw(z);wagon.rotation.z=trackBank(z)});const leadZ=5.3-travel;camera.position.x=trackX(leadZ)+2.65;camera.position.y=3.2+trackY(leadZ);camera.position.z=13.5-travel;camera.lookAt(trackX(leadZ-5.6),-.3+trackY(leadZ-5.6),camera.position.z-5.6);cartWheels.forEach(w=>w.rotation.x-=dt*5.2);trainCarts.forEach((wagon,i)=>wagon.position.y+=Math.sin(elapsed*5-i*.22)*.018);document.getElementById('bar').style.width=(elapsed/46*100)+'%';
- const stage=elapsed<15?'DESCENDING · SHADOW MINERS AT WORK':elapsed<30?'THE CRYSTAL CATHEDRAL · FOLLOW THE LIGHT':elapsed<40?'THE OLD ORE LIFT · SHAFT IN MOTION':'THE LOST VEIN · A SECRET AWAKENS';
+ if(running){elapsed=Math.min(39,elapsed+dt);const travel=elapsed*5.2;world.position.z=0;trainCarts.forEach((wagon,i)=>{const z=5.3-travel+i*2.65;wagon.position.set(trackX(z),-1.42+trackY(z),z);wagon.rotation.y=trackYaw(z);wagon.rotation.z=trackBank(z)});const leadZ=5.3-travel;camera.position.x=trackX(leadZ)+2.65;camera.position.y=3.2+trackY(leadZ);camera.position.z=13.5-travel;camera.lookAt(trackX(leadZ-5.6),-.3+trackY(leadZ-5.6),camera.position.z-5.6);cartWheels.forEach(w=>w.rotation.x-=dt*6.1);trainCarts.forEach((wagon,i)=>wagon.position.y+=Math.sin(elapsed*5-i*.22)*.018);document.getElementById('bar').style.width=(elapsed/39*100)+'%';
+ const stage=elapsed<13?'DESCENDING · SHADOW MINERS AT WORK':elapsed<25?'THE CRYSTAL CATHEDRAL · FOLLOW THE LIGHT':elapsed<34?'THE OLD ORE LIFT · SHAFT IN MOTION':'THE LOST VEIN · A SECRET AWAKENS';
  document.getElementById('status').textContent=stage;
- if(elapsed>=46){running=false;document.getElementById('status').textContent='THE LOST VEIN · JOURNEY COMPLETE';document.getElementById('intro').style.display='block';document.querySelector('#intro h1').textContent='THE LOST VEIN';document.querySelector('#intro p').textContent='The mine has revealed its secret. Would you dare descend again?';document.getElementById('startBtn').textContent='RIDE AGAIN'}}
+ if(elapsed>=39){running=false;document.getElementById('status').textContent='THE LOST VEIN · JOURNEY COMPLETE';document.getElementById('intro').style.display='block';document.querySelector('#intro h1').textContent='THE LOST VEIN';document.querySelector('#intro p').textContent='The mine has revealed its secret. Would you dare descend again?';document.getElementById('startBtn').textContent='RIDE AGAIN'}}
  const tm=t*.001;
  fan.rotation.z=tm*.7;flickerLights.forEach((l,i)=>l.intensity=1.7+Math.sin(tm*7+i*1.9)*.35);
  // The hoist visibly cycles; the crystal cathedral and final geode brighten as the cart approaches.
  lift.position.y=Math.sin(tm*1.25)*.62;
  const cathedralPulse=.75+.25*Math.sin(tm*1.7);cathedralLights.forEach(l=>l.intensity=4.2*cathedralPulse);
- const reveal=Math.max(0,Math.min(1,(elapsed-41)/5));geodeGlow.intensity=reveal*18;geodeCore.material.emissiveIntensity=1.1+reveal*2.5;geode.rotation.y=Math.sin(tm*.45)*.08;
+ const reveal=Math.max(0,Math.min(1,(elapsed-34)/5));geodeGlow.intensity=reveal*18;geodeCore.material.emissiveIntensity=1.1+reveal*2.5;geode.rotation.y=Math.sin(tm*.45)*.08;
  figures.forEach(f=>{const step=Math.sin(tm*2.8+f.phase);f.arms[0].rotation.z=step*.28;f.arms[1].rotation.z=-step*.2;f.legs[0].rotation.z=step*.24;f.legs[1].rotation.z=-step*.24;f.torso.rotation.z=Math.sin(tm*1.4+f.phase)*.035;f.tool.rotation.z=Math.sin(tm*2.1+f.phase)*.16});
  renderer.render(scene,camera)}
 requestAnimationFrame(animate);
