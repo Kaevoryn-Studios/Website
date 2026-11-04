@@ -290,6 +290,18 @@ for(const x of [-2.2,2.2]){
 const fallingRocks=[];
 for(let i=0;i<14;i++){const mesh=new THREE.Mesh(new THREE.DodecahedronGeometry(.13+Math.random()*.2,0),darkRock);mesh.position.set((Math.random()-.5)*7,6+Math.random()*3,-95-Math.random()*20);add(mesh);fallingRocks.push({mesh,baseX:mesh.position.x,baseZ:mesh.position.z,speed:.035+Math.random()*.055,phase:Math.random()*8})}
 const shockwave=new THREE.Mesh(new THREE.TorusGeometry(1,.045,8,48),new THREE.MeshBasicMaterial({color:0x8cf4ff,transparent:true,opacity:0}));shockwave.position.set(0,-1.65,-108);add(shockwave);
+ // A living crystal vortex: three rotating rune rings and a spiral of colored motes.
+ const vortex=new THREE.Group();vortex.position.set(0,1.15,-108);add(vortex);
+ const vortexRings=[];
+ [0x55eaff,0xa58aff,0x7dffd0].forEach((color,i)=>{
+  const ring=new THREE.Mesh(new THREE.TorusGeometry(2.25+i*.42,.035,8,96),new THREE.MeshBasicMaterial({color,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false}));
+  ring.rotation.set(i*.72,i*.55,i*.38);vortex.add(ring);vortexRings.push(ring);
+ });
+ const moteCount=150,motePositions=new Float32Array(moteCount*3),moteSeeds=[];
+ for(let i=0;i<moteCount;i++)moteSeeds.push({a:Math.random()*Math.PI*2,r:1.3+Math.random()*2.5,y:(Math.random()-.5)*4,speed:.35+Math.random()*.8,phase:Math.random()*Math.PI*2});
+ const moteGeo=new THREE.BufferGeometry();moteGeo.setAttribute('position',new THREE.BufferAttribute(motePositions,3));
+ const motes=new THREE.Points(moteGeo,new THREE.PointsMaterial({color:0xa9faff,size:.075,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false}));vortex.add(motes);
+ const vortexLight=new THREE.PointLight(0x67eaff,0,16);vortexLight.position.set(0,1.3,-108);add(vortexLight);
 let lastCrystalChime=-10,lastThunder=-10,lastSteam=-10,lastBurst=-10;
 function triggerCrystalBurst(time){playMineEffect('crystal');const b=crystalBursts[Math.floor(Math.random()*crystalBursts.length)];b.group.visible=true;b.started=time;b.bits.forEach(p=>{p.mesh.position.set(0,0,0);p.velocity.set((Math.random()-.5)*.15,.04+Math.random()*.15,(Math.random()-.5)*.15)});shockwave.scale.setScalar(.2);shockwave.material.opacity=.9}
 function updateSpecialEffects(time){
@@ -302,6 +314,14 @@ function updateSpecialEffects(time){
  crystalBursts.forEach(b=>{if(!b.group.visible)return;const age=time-b.started;if(age>1.25){b.group.visible=false;return}b.bits.forEach(p=>{p.mesh.position.add(p.velocity);p.velocity.y-=.004;p.mesh.scale.multiplyScalar(.985)})});
  if(running&&elapsed>31&&time-lastSteam>1.5){lastSteam=time;playMineEffect('steam');steamPuffs.forEach(s=>s.puffs.forEach(p=>p.phase=0))}
  steamPuffs.forEach(s=>s.puffs.forEach(p=>{p.phase+=.025;const a=p.phase;p.mesh.position.y=Math.min(2.6,a*1.7);p.mesh.scale.setScalar(1+a*.65);p.mesh.material.opacity=running&&elapsed>30&&a<1.5?Math.max(0,.32-a*.2):0}));
+ const vortexActive=running&&elapsed>14&&elapsed<27;
+  const vortexPower=vortexActive?(0.55+0.45*Math.sin(time*2.2)):0;
+  vortex.visible=vortexActive;
+  vortexRings.forEach((ring,i)=>{ring.rotation.x+=.006*(i+1);ring.rotation.y+=.009*(i%2?1:-1);ring.material.opacity=vortexPower*.72;});
+  vortexLight.intensity=vortexPower*8;
+  const mp=moteGeo.attributes.position.array;
+  for(let i=0;i<moteCount;i++){const q=moteSeeds[i],a=q.a+time*q.speed;mp[i*3]=Math.cos(a)*q.r;mp[i*3+1]=q.y+Math.sin(a*1.7+q.phase)*.22;mp[i*3+2]=Math.sin(a)*q.r;}
+  moteGeo.attributes.position.needsUpdate=true;motes.material.opacity=vortexPower*.9;
  const rockFall=running&&elapsed>12&&elapsed<27;
  fallingRocks.forEach(r=>{r.mesh.visible=rockFall;if(rockFall){r.mesh.position.y-=r.speed;r.mesh.rotation.x+=.025;r.mesh.rotation.z+=.018;if(r.mesh.position.y< -2.2){r.mesh.position.y=6+Math.random()*2;r.mesh.position.x=r.baseX+(Math.random()-.5)*1.2}}});
  shockwave.scale.multiplyScalar(1.045);shockwave.material.opacity=Math.max(0,shockwave.material.opacity-.025);
