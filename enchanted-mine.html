@@ -43,20 +43,23 @@ const add=(mesh)=>{world.add(mesh);return mesh};
 function block(w,h,d,x,y,z,mat){const o=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat);o.position.set(x,y,z);return add(o)}
 function beam(w,h,d,x,y,z,mat=wood){return block(w,h,d,x,y,z,mat)}
 function light(x,y,z,color=0xffad55,power=7,range=15){const p=new THREE.PointLight(color,power,range);p.position.set(x,y,z);add(p);const bulb=new THREE.Mesh(new THREE.SphereGeometry(.13,8,8),material(color,.3));bulb.position.set(x,y,z);add(bulb)}
-// REAL UNDERGROUND MINE: continuous, naturally fractured rock faces instead of repeated boulder shapes.
+// NATURAL CAVE SIDES: deep, broken strata with strong inward/outward relief.
+function caveNoise(a,b,c=0){return Math.sin(a*1.71+b*.83+c*2.13)*.5+Math.sin(a*.47-b*1.39+c*.71)*.3+Math.sin(a*3.17+b*2.41+c)*.2}
 function makeCaveWall(side){
- const verts=[],colors=[],indices=[],nz=152,ny=15,zStart=9,zStep=1.5,yStart=-2.85,yStep=.59;
+ const verts=[],colors=[],indices=[],nz=220,ny=24,zStart=9,zStep=1.04,yStart=-2.95,yStep=.39;
  for(let iz=0;iz<=nz;iz++){
   const z=zStart-iz*zStep;
   for(let iy=0;iy<=ny;iy++){
    const y=yStart+iy*yStep;
-   const broad=Math.sin(z*.105+y*.42)*.24+Math.sin(z*.235-y*.31)*.13;
-   const broken=Math.sin(z*.71+y*1.9)*.075+Math.sin(z*1.37-y*.83)*.045;
-   const lip=Math.pow(Math.abs(Math.sin(z*.19+y*.7)),5)*.16;
-   const x=side*(4.55+broad+broken+lip);
-   verts.push(x,y,z);
-   const shade=.72+.16*Math.sin(z*.31+y*.91)+.1*Math.sin(z*.83-y*1.4);
-   colors.push(.25*shade,.27*shade,.32*shade);
+   const broad=caveNoise(z*.16,y*.42,side)*.34;
+   const strata=Math.sin(z*.34+y*.76+side)*.22;
+   const fracture=caveNoise(z*.78,y*1.65,side*2)*.19;
+   const sharp=Math.pow(Math.max(0,Math.sin(z*.27+y*.93+side*1.8)),7)*.36;
+   const buttress=Math.pow(Math.max(0,Math.sin(z*.115+side*1.3)),9)*.58*(.45+Math.abs(y-1.1)*.13);
+   const x=side*(3.45+broad+strata+fracture+sharp+buttress);
+   verts.push(x,y+caveNoise(z*.24,y*.3,side)*.07,z);
+   const shade=.66+.18*Math.sin(z*.19+y*.65)+.13*caveNoise(z*.31,y*.91,side);
+   colors.push(.37*shade,.36*shade,.34*shade);
   }
  }
  for(let iz=0;iz<nz;iz++)for(let iy=0;iy<ny;iy++){
@@ -69,20 +72,25 @@ function makeCaveWall(side){
  geo.setIndex(indices);geo.computeVertexNormals();
  const mat=new THREE.MeshStandardMaterial({vertexColors:true,roughness:1,metalness:0,flatShading:true,side:THREE.DoubleSide});
  add(new THREE.Mesh(geo,mat));
- // Deep, broken mineral seams follow the natural layers of the stone.
- const seamPts=[];
- for(let k=0;k<17;k++){
-  const z=7-k*13.2+(side<0?1.7:-1.2);
-  const y=-1.9+((k*7)%11)*.58;
-  for(let j=0;j<5;j++){
-   const zz=z-j*.72,yy=y+Math.sin(j*1.7+k)*.12;
-   const x=side*(4.58+Math.sin(zz*.105+yy*.42)*.24+Math.sin(zz*.235-yy*.31)*.13+.025);
-   seamPts.push(new THREE.Vector3(x,yy,zz));
+ // Long, broken dark seams cut into the rock strata.
+ for(let k=0;k<42;k++){
+  const pts=[];const z0=7-k*5.25+(side<0?1.2:-.8),y0=-2.35+((k*17)%19)*.43;
+  for(let j=0;j<7;j++){
+   const z=z0-j*.48,y=y0+Math.sin(j*1.3+k*.8)*.19;
+   const x=side*(3.48+caveNoise(z*.16,y*.42,side)*.34+Math.sin(z*.34+y*.76+side)*.22+caveNoise(z*.78,y*1.65,side*2)*.19+.045);
+   pts.push(new THREE.Vector3(x,y,z));
   }
+  const seam=new THREE.BufferGeometry().setFromPoints(pts);
+  add(new THREE.Line(seam,new THREE.LineBasicMaterial({color:0x11141a,transparent:true,opacity:.72})));
  }
- const seamGeo=new THREE.BufferGeometry().setFromPoints(seamPts);
- const seamMat=new THREE.LineBasicMaterial({color:0x171d29,transparent:true,opacity:.48});
- add(new THREE.LineSegments(seamGeo,seamMat));
+ // Jagged shelves and broken ledges merge into the wall rather than sitting as loose boulders.
+ for(let k=0;k<34;k++){
+  const z=5-k*6.55+(side<0?1.4:-1.1),y=-2.1+((k*11)%15)*.53;
+  const ledge=new THREE.Mesh(new THREE.DodecahedronGeometry(.72+(k%4)*.13,1),k%3===0?darkRock:rock);
+  ledge.position.set(side*(3.08+.24*Math.sin(k*2.1)),y,z);
+  ledge.scale.set(.42+((k*7)%5)*.08,.75+((k*3)%4)*.18,1.55+((k*5)%4)*.3);
+  ledge.rotation.set(k*.37,side*k*.29,k*.21);add(ledge);
+ }
 }
 makeCaveWall(-1);makeCaveWall(1);
 for(let z=5;z>-218;z-=5){
