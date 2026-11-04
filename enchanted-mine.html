@@ -47,14 +47,44 @@ function light(x,y,z,color=0xffad55,power=7,range=15){const p=new THREE.PointLig
 const caveStone=new THREE.MeshStandardMaterial({color:0x51483d,roughness:1,metalness:0,vertexColors:true,flatShading:true,side:THREE.DoubleSide});
 function seeded(n){const v=Math.sin(n*127.1+19.7)*43758.5453;return v-Math.floor(v)}
 function buildRockSurface(side){
- const verts=[],cols=[],idx=[],nz=220,ny=18;
- for(let iz=0;iz<=nz;iz++){const z=9-iz*1.04;for(let iy=0;iy<=ny;iy++){
-  const y=-2.85+iy*.31,rough=Math.sin(z*.19+y*.51+side)*.22+Math.sin(z*.57-y*1.17)*.11+(seeded(iz*29+iy*7+side*5)-.5)*.22;
-  verts.push(side*(3.55+rough),y+Math.sin(z*.31+iy*.8)*.045,z);
-  const tone=.78+.12*Math.sin(z*.12+y*.8)+.12*(seeded(iz*11+iy*23)-.5);cols.push(.34*tone,.30*tone,.25*tone);
+ // Dense, multi-scale displacement creates real broken rock relief rather than a smooth sheet.
+ const verts=[],cols=[],idx=[],nz=300,ny=38;
+ for(let iz=0;iz<=nz;iz++){const z=9-iz*.76;for(let iy=0;iy<=ny;iy++){
+  const y=-3.05+iy*(6.1/ny);
+  const broad=Math.sin(z*.105+y*.72+side*.8)*.34+Math.sin(z*.17-y*.39)*.22;
+  const ledges=Math.sin(z*.34+y*1.55+side)*.19+Math.sin(z*.58-y*1.08)*.13;
+  const fractured=Math.sin(z*1.12+y*2.35+side*2)*.075+(seeded(iz*43+iy*17+side*11)-.5)*.22;
+  const face=broad+ledges+fractured;
+  const vertical=Math.sin(z*.24+iy*.51)*.11+Math.sin(z*.71+y*1.8)*.055+(seeded(iz*19+iy*31+side*7)-.5)*.09;
+  verts.push(side*(3.48+face),y+vertical,z);
+  const strata=Math.sin(z*.16+y*1.25+side)*.12;
+  const grain=(seeded(iz*29+iy*37+side*3)-.5)*.13;
+  const tone=.72+strata+grain;
+  cols.push(.34*tone,.30*tone,.25*tone);
  }}
- for(let z=0;z<nz;z++)for(let y=0;y<ny;y++){const a=z*(ny+1)+y,b=a+ny+1;idx.push(a,b,a+1,b,b+1,a+1)}
- const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(verts,3));g.setAttribute('color',new THREE.Float32BufferAttribute(cols,3));g.setIndex(idx);g.computeVertexNormals();add(new THREE.Mesh(g,caveStone));
+ for(let z=0;z<nz;z++)for(let y=0;y<ny;y++){
+  const a=z*(ny+1)+y,b=a+ny+1;
+  if((z+y)%2){idx.push(a,b,a+1,a+1,b,b+1)}else{idx.push(a,b,b+1,a,a+1,b+1)}
+ }
+ const g=new THREE.BufferGeometry();
+ g.setAttribute('position',new THREE.Float32BufferAttribute(verts,3));
+ g.setAttribute('color',new THREE.Float32BufferAttribute(cols,3));
+ g.setIndex(idx);g.computeVertexNormals();
+ add(new THREE.Mesh(g,caveStone));
+ // Large fractured outcrops break the wall silhouette and catch hard side-light.
+ const outcropMat=new THREE.MeshStandardMaterial({color:0x51483d,roughness:1,flatShading:true});
+ for(let i=0;i<145;i++){
+  const z=7-seeded(i*13+side*31)*214;
+  const y=-2.75+seeded(i*23+side*47)*5.45;
+  const xRel=Math.sin(z*.105+y*.72+side*.8)*.34+Math.sin(z*.17-y*.39)*.22+
+    Math.sin(z*.34+y*1.55+side)*.19+Math.sin(z*.58-y*1.08)*.13;
+  const rockMesh=new THREE.Mesh(new THREE.IcosahedronGeometry(1,1),outcropMat);
+  const sx=.18+seeded(i*7+side*5)*.42,sy=.22+seeded(i*17+side*9)*.62,sz=.28+seeded(i*29+side*15)*.78;
+  rockMesh.scale.set(sx,sy,sz);
+  rockMesh.position.set(side*(3.48+xRel+sx*.24),y,z);
+  rockMesh.rotation.set(seeded(i*5)*1.2,seeded(i*11)*Math.PI,seeded(i*19)*.9);
+  add(rockMesh);
+ }
 }
 buildRockSurface(-1);buildRockSurface(1);
 // A continuous vaulted ceiling joins both walls into a closed tunnel.
