@@ -69,18 +69,36 @@ for(let i=0;i<3;i++)beam(4,.12,.12,0,-2.2+i*.55,-172,wood);
 light(-2,3,-177,0xffa94f,10,22);light(2,3,-177,0xffa94f,10,22);
 // Glowing crystal clusters embedded in the cave walls.
 for(let z=-8;z>-205;z-=14)for(const side of [-1,1]){const x=side*(3.7+Math.random()*.35),y=-1.7+Math.random()*1.8;const g=new THREE.Group();for(let i=0;i<3;i++){const c=new THREE.Mesh(new THREE.ConeGeometry(.35+Math.random()*.18,1.7+Math.random(),6),crystals[(Math.floor(Math.random()*4))]);c.position.set((i-1)*.38,.55,0);c.rotation.z=(Math.random()-.5)*.35;g.add(c)}g.position.set(x,y,z);add(g);const glow=new THREE.PointLight(0x42d9f3,3,9);glow.position.set(x,y+1,z);add(glow)}
+// A truly separate cavern room: a vast vaulted chamber replaces the cramped tunnel visually.
+const cavernShellMat=new THREE.MeshStandardMaterial({color:0x141d32,roughness:1,side:THREE.BackSide});
+const cavernShell=new THREE.Mesh(new THREE.SphereGeometry(1,32,24),cavernShellMat);
+cavernShell.scale.set(10.5,8.5,23);cavernShell.position.set(0,1.2,-111);add(cavernShell);
+block(18,.55,43,0,-3.05,-111,material(0x242b39,1));
+for(const x of [-8.1,8.1])for(const z of [-94,-108,-124]){
+ const pillar=new THREE.Mesh(new THREE.DodecahedronGeometry(1,1),rock);
+ pillar.position.set(x,1.1,z);pillar.scale.set(1.35,5.4,1.8);add(pillar);
+}
+for(const z of [-94,-124]){
+ const arch=new THREE.Group();arch.position.z=z;add(arch);
+ for(const x of [-7.2,7.2]){const post=new THREE.Mesh(new THREE.BoxGeometry(.65,8,.7),wood);post.position.set(x,1,0);arch.add(post)}
+ const crown=new THREE.Mesh(new THREE.BoxGeometry(15,.7,.8),wood);crown.position.y=5.1;arch.add(crown);
+ for(const x of [-7.2,7.2]){const brace=new THREE.Mesh(new THREE.BoxGeometry(2.2,.35,.45),iron);brace.position.set(x*.78,4.45,0);brace.rotation.z=x>0?-.45:.45;arch.add(brace)}
+}
+for(const x of [-5.8,5.8]){const post=new THREE.Mesh(new THREE.BoxGeometry(.42,6,.48),gold);post.position.set(x,1.1,-111);add(post)}
+light(-5,4,-105,0x4edfff,16,30);light(5,4,-115,0xa27bff,16,30);light(0,6,-111,0x54f5d9,20,34);
+
 // THE GREAT CRYSTAL CATHEDRAL: a broad chamber filled with towering luminous crystal spires.
 const cathedralLights=[];
 for(const side of [-1,1]){
  for(let i=0;i<7;i++){
-  const height=3.2+(i%3)*1.1,xx=side*(1.25+(i%3)*.75),zz=-101-Math.floor(i/3)*3;
-  const shard=new THREE.Mesh(new THREE.ConeGeometry(.65+(i%2)*.18,height,7),crystals[(i+1)%4]);
-  shard.position.set(xx,-1.15+height*.38,zz);shard.rotation.z=side*.13;add(shard);
+  const height=5.2+(i%3)*1.7,xx=side*(2.0+(i%3)*1.05),zz=-101-Math.floor(i/3)*3;
+  const shard=new THREE.Mesh(new THREE.ConeGeometry(.95+(i%2)*.28,height,7),crystals[(i+1)%4]);
+  shard.position.set(xx,-2.65+height*.5,zz);shard.rotation.z=side*.13;add(shard);
   const glow=new THREE.PointLight(crystalColors[(i+1)%4],5,15);glow.position.set(xx,1.2,zz);add(glow);cathedralLights.push(glow);
  }
 }
 // A crown of crystals overhead frames the cavern as the cart enters.
-for(let i=0;i<9;i++){const shard=new THREE.Mesh(new THREE.ConeGeometry(.42,2.8+(i%3)*.5,6),crystals[i%4]);shard.position.set(-3.2+i*.8,4.1,-105-(i%2)*1.5);shard.rotation.z=Math.PI;add(shard)}
+for(let i=0;i<9;i++){const shard=new THREE.Mesh(new THREE.ConeGeometry(.72,4.2+(i%3)*.7,6),crystals[i%4]);shard.position.set(-5+i*1.25,6.6,-105-(i%2)*1.5);shard.rotation.z=Math.PI;add(shard)}
 light(0,2.5,-103,0x63eaff,13,28);
 
 // THE LOST VEIN: a giant geode reveal at the end of the tunnel.
