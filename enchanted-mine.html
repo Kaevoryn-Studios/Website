@@ -130,6 +130,75 @@ function mineSign(x,y,z,label){
  const tex=new THREE.CanvasTexture(canvas);const face=new THREE.Mesh(new THREE.PlaneGeometry(1.2,.45),new THREE.MeshBasicMaterial({map:tex,transparent:true}));face.position.set(x,y,z-.075);scene.add(face);
 }
 mineSign(-4.02,3.45,-39,'SHAFT 02');mineSign(4.02,3.45,-132,'DANGER');
+
+// MAJOR MINE INSTALLATION: a large timber portal and an industrial extraction chamber.
+// These structures are deliberately oversized so the ride reads as a working mine at a glance.
+const mineTimber=mat(0x65452d,1), mineIron=mat(0x303944,.32,.88), warningYellow=mat(0xe2b34d,.65,.15);
+function largeBeam(w,h,d,x,y,z,material=mineTimber,rz=0){const o=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),material);o.position.set(x,y,z);o.rotation.z=rz;scene.add(o);return o}
+function industrialLamp(x,y,z){const cage=new THREE.Mesh(new THREE.CylinderGeometry(.22,.22,.42,8,1,true),mineIron);cage.position.set(x,y,z);scene.add(cage);const bulb=new THREE.PointLight(0xffa94f,8,18);bulb.position.set(x,y-.35,z);scene.add(bulb);const lens=new THREE.Mesh(new THREE.SphereGeometry(.14,10,8),gold);lens.position.set(x,y-.35,z);scene.add(lens)}
+// Grand entrance portal at the boarding end: massive square-cut timbers, iron plates and a mine sign.
+for(const x of [-4.25,4.25]){
+ largeBeam(.72,8.2,.8,x,1.6,12);
+ largeBeam(.9,.22,1.0,x,5.25,12,mineIron);
+ for(const y of [-1.8,0,2.2,4.4])largeBeam(.82,.16,.92,x,y,12,mineIron);
+}
+largeBeam(9.2,.85,1.0,0,5.45,12);
+largeBeam(9.2,.18,1.05,0,4.85,12,mineIron);
+largeBeam(1.1,.22,.8,-2.8,4.9,12,mineTimber,.2);
+largeBeam(1.1,.22,.8,2.8,4.9,12,mineTimber,-.2);
+const portalSign=box(3.5,.82,.18,mat(0x171b22,.8,.3),0,4.15,11.48);
+mineSign(-1.75,4.15,11.35,'MINE 01');
+industrialLamp(-3.6,4.2,10.8);industrialLamp(3.6,4.2,10.8);
+// A large extraction chamber in the middle of the journey, with a headframe, winch drum,
+// cable, hanging lift cage, loading hopper and ore chute.
+const chamberZ=-82;
+for(const x of [-3.85,3.85]){
+ largeBeam(.62,8.5,.72,x,1.45,chamberZ);
+ largeBeam(.75,.2,.9,x,4.7,chamberZ,mineIron);
+ largeBeam(.6,.6,.72,x,5.5,chamberZ);
+}
+largeBeam(8.3,.72,.85,0,5.7,chamberZ);
+largeBeam(7.4,.22,.9,0,5.15,chamberZ,mineIron);
+// Tall winch gantry and diagonal braces.
+for(const x of [-2.5,2.5]){
+ largeBeam(.34,5.8,.4,x,2.2,chamberZ-1.5);
+ largeBeam(.3,4.2,.4,x*.72,2.4,chamberZ-1.5,x<0?mineTimber:mineTimber,x<0?-.38:.38);
+}
+const drum=new THREE.Mesh(new THREE.CylinderGeometry(.72,.72,3.8,16),mineIron);drum.rotation.z=Math.PI/2;drum.position.set(0,3.45,chamberZ-1.5);scene.add(drum);
+for(const x of [-1.95,1.95]){const flange=new THREE.Mesh(new THREE.CylinderGeometry(1.0,1.0,.18,16),warningYellow);flange.rotation.z=Math.PI/2;flange.position.set(x,3.45,chamberZ-1.5);scene.add(flange)}
+const drumAxle=new THREE.Mesh(new THREE.CylinderGeometry(.16,.16,4.5,12),gold);drumAxle.rotation.z=Math.PI/2;drumAxle.position.set(0,3.45,chamberZ-1.5);scene.add(drumAxle);
+const cable=new THREE.Mesh(new THREE.CylinderGeometry(.045,.045,4.5,8),mineIron);cable.position.set(0,1.0,chamberZ-1.5);scene.add(cable);
+const lift=new THREE.Group();
+largeBeam(1.9,.18,2.0,0,0,0,mineIron);
+for(const x of [-.8,.8])largeBeam(.16,2.1,.16,x,.95,0,mineTimber);
+for(const y of [.35,1.55])largeBeam(1.75,.14,.18,0,y,0,mineTimber);
+lift.position.set(0,-.55,chamberZ-1.5);scene.add(lift);
+// Heavy ore hopper and sloping loading chute on the right-hand side.
+const hopper=new THREE.Mesh(new THREE.CylinderGeometry(.7,1.25,1.35,4,1,true),mat(0x514333,.9,.3));hopper.position.set(3.05,1.2,chamberZ+2);hopper.rotation.y=Math.PI/4;scene.add(hopper);
+largeBeam(1.2,.18,2.6,3.05,.25,chamberZ+3.3,mineIron,-.48);
+for(let i=0;i<8;i++){const lump=new THREE.Mesh(new THREE.DodecahedronGeometry(.22+Math.random()*.18,0),i%3===0?glowMats[1]:mat(0x77716a));lump.position.set(3+(Math.random()-.5)*1.1,1.95+Math.random()*.4,chamberZ+2+(Math.random()-.5));scene.add(lump)}
+// Oversized industrial lamps make the extraction station readable from the moving cart.
+industrialLamp(-3.35,4.65,chamberZ-3);industrialLamp(3.35,4.65,chamberZ-3);
+// Rail-side loading platform, stacked sleepers, barrels and a hand-operated control wheel.
+for(const x of [-3.25,3.25]){
+ largeBeam(1.35,.28,5.2,x,-1.75,chamberZ+8,mineTimber);
+ for(let z=chamberZ+6;z<chamberZ+10;z+=1.1)largeBeam(1.42,.12,.18,x,-1.5,z,mineIron);
+ const barrel=new THREE.Mesh(new THREE.CylinderGeometry(.38,.42,.9,10),mat(0x4a382b,1));barrel.position.set(x,-1.1,chamberZ+5);scene.add(barrel);
+}
+const controlWheel=new THREE.Mesh(new THREE.TorusGeometry(.58,.09,8,20),mineIron);controlWheel.position.set(-3.05,.15,chamberZ+5);controlWheel.rotation.y=Math.PI/2;scene.add(controlWheel);
+const controlHub=new THREE.Mesh(new THREE.CylinderGeometry(.15,.15,.35,12),gold);controlHub.rotation.z=Math.PI/2;controlHub.position.set(-3.05,.15,chamberZ+5);scene.add(controlHub);
+// A second, distant crosscut with a visible timber doorway and warning stripes.
+for(const z of [-48,-145]){
+ for(const x of [-3.75,3.75])largeBeam(.38,5.2,.42,x,.6,z);
+ largeBeam(7.8,.42,.5,0,3.2,z);
+ for(let i=-3;i<=3;i++)largeBeam(.13,4.5,.18,i*1.05,.7,z-.28,mineIron);
+ industrialLamp(-3.2,3.7,z-1);industrialLamp(3.2,3.7,z-1);
+}
+// Bigger, more deliberate mineral veins and ore heaps around the machinery.
+for(const [x,z] of [[-3.2,-83],[3.15,-86],[-3.2,-47],[3.2,-146]]){
+ for(let i=0;i<18;i++){const size=.2+Math.random()*.3;const chunk=new THREE.Mesh(new THREE.DodecahedronGeometry(size,1),i%5===0?glowMats[0]:mat(0x625b57,1));chunk.position.set(x+(Math.random()-.5)*1.5,-2.5+Math.random()*.3,z+(Math.random()-.5)*2);scene.add(chunk)}
+}
+
 // tracks on a gently winding descending path
 const points=[new THREE.Vector3(0,-2,16),new THREE.Vector3(0,-2,-12),new THREE.Vector3(-2,-2,-38),new THREE.Vector3(-3,-2,-65),new THREE.Vector3(1,-2,-92),new THREE.Vector3(3,-2,-122),new THREE.Vector3(0,-2,-151),new THREE.Vector3(-2,-2,-183)];
 const path=new THREE.CatmullRomCurve3(points);const sideVec=new THREE.Vector3(1,0,0);
