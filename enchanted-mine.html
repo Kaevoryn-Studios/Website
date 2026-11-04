@@ -14,6 +14,11 @@
 <div class="panel" id="intro"><div class="brand">THE KINGDOMS OF WONDER</div><h1>THE ENCHANTED MINE</h1><p>Board the mine cart and rumble through rough-hewn rock tunnels, timber-framed shafts, forgotten tools and glowing crystal caverns. Watch for the shadow miners at work.</p><button class="cta" id="startBtn">BOARD THE MINE CART</button><p style="font-size:11px">A forward-only 3D journey · Sound is optional</p></div>
 <div class="hud"><div class="status" id="status">CART STATION · AWAITING RIDER</div><div class="progress"><div class="bar" id="bar"></div></div></div>
 <div id="fail"></div>
+<script>
+// Capture an early tap while the 3D engine is still loading.
+window.__mineStartRequested=false;
+document.getElementById("startBtn").addEventListener("click",()=>{window.__mineStartRequested=true},{capture:true});
+</script>
 <script type="module">
 (async()=>{
 let THREE;
@@ -34,6 +39,7 @@ document.getElementById('startBtn').addEventListener('click',()=>{
  document.getElementById('intro').style.display='none';
  document.getElementById('status').textContent='DESCENDING · SHADOW MINERS AT WORK';
  if(soundOn)startSound();
+ if(window.__mineStartRequested)window.__mineStartRequested=false;
  if(audio&&audio.state==='suspended')audio.resume();
 });
 const material=(c,r=.8,m=0)=>new THREE.MeshStandardMaterial({color:c,roughness:r,metalness:m});
@@ -163,6 +169,7 @@ function animate(t){requestAnimationFrame(animate);const dt=last?Math.min((t-las
  renderer.render(scene,camera)}
 requestAnimationFrame(animate);
 addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
+if(window.__mineStartRequested){window.__mineStartRequested=false;document.getElementById('startBtn').click()}
 window.__enchantedMineReady=true;
 })().catch(e=>{const f=document.getElementById('fail');f.style.display='block';f.textContent='The mine could not start: '+e.message});
 </script>
