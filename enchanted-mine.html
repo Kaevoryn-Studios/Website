@@ -3,240 +3,87 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<meta name="theme-color" content="#080b18">
 <title>The Enchanted Mine | Kaevoryn Studios</title>
 <style>
-:root{color-scheme:dark}*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#050711;color:#eaf7ff;font-family:system-ui,-apple-system,Segoe UI,sans-serif}#world{position:fixed;inset:0}canvas{display:block;width:100%;height:100%;touch-action:none}.top{position:fixed;z-index:5;top:14px;left:14px;right:14px;display:flex;justify-content:space-between;align-items:flex-start;pointer-events:none}.brand{font-size:11px;letter-spacing:.22em;color:#8ceaff;text-shadow:0 0 16px #26bce8}.name{font-size:clamp(20px,4vw,34px);font-weight:800;letter-spacing:.06em;margin-top:4px;text-shadow:0 2px 20px #000}.tag{font-size:11px;color:#c2c9e2;letter-spacing:.12em;margin-top:3px}.sound{pointer-events:auto;border:1px solid #7bdcf477;background:#081426cc;color:#dffaff;border-radius:24px;padding:10px 13px;font-weight:700}.panel{position:fixed;z-index:6;left:50%;top:50%;transform:translate(-50%,-50%);width:min(92vw,510px);padding:26px 24px;border:1px solid #8ceaff66;border-radius:20px;background:linear-gradient(145deg,#101a31ee,#080b18f2);box-shadow:0 0 55px #1aa9d633;text-align:center}.panel h1{font-size:clamp(24px,5vw,38px);margin:0 0 8px;letter-spacing:.06em}.panel p{color:#c2cce0;line-height:1.55;margin:8px 0 18px}.cta{border:0;border-radius:999px;padding:14px 28px;background:linear-gradient(90deg,#43d9ed,#8b7bff);color:#07101e;font-weight:900;letter-spacing:.12em;font-size:14px;box-shadow:0 0 28px #48d9ed55;cursor:pointer;touch-action:manipulation}.cta:active{transform:scale(.97)}.hint{font-size:11px!important;color:#8f9ab7!important;margin-top:14px!important}.hud{position:fixed;z-index:4;bottom:16px;left:14px;right:14px;display:flex;justify-content:space-between;align-items:end;pointer-events:none}.status{font-size:11px;letter-spacing:.12em;color:#a9dff0;text-shadow:0 1px 8px #000}.progress{width:min(38vw,190px);height:4px;background:#ffffff26;border-radius:4px;overflow:hidden;margin-top:7px}.bar{height:100%;width:0;background:#7cecff;box-shadow:0 0 12px #7cecff}.touch{pointer-events:auto;display:none;gap:8px}.touch button{border:1px solid #8ceaff77;background:#071426cc;color:white;border-radius:50%;width:48px;height:48px;font-size:20px;touch-action:manipulation}@media(pointer:coarse){.touch{display:flex}}#fail{display:none;position:fixed;z-index:10;inset:auto 12px 12px;background:#431b27;color:#fff;padding:12px;border-radius:10px;font-size:12px}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#050711;color:#eaf7ff;font-family:system-ui,sans-serif}#world{position:fixed;inset:0}canvas{display:block;width:100%;height:100%;touch-action:none}.top{position:fixed;z-index:3;top:14px;left:14px;right:14px;display:flex;justify-content:space-between;pointer-events:none}.brand{font-size:11px;letter-spacing:.2em;color:#8ceaff}.name{font-size:clamp(20px,4vw,34px);font-weight:850;margin-top:4px;text-shadow:0 2px 18px #000}.tag{font-size:10px;letter-spacing:.12em;color:#c4cde0}.sound{pointer-events:auto;border:1px solid #7bdcf477;background:#081426dd;color:#dffaff;border-radius:24px;padding:10px 13px}.panel{position:fixed;z-index:5;left:50%;top:50%;transform:translate(-50%,-50%);width:min(92vw,510px);padding:26px 22px;border:1px solid #8ceaff66;border-radius:20px;background:#0b1224f2;box-shadow:0 0 55px #1aa9d633;text-align:center}.panel h1{font-size:clamp(24px,5vw,38px);margin:8px 0}.panel p{color:#c2cce0;line-height:1.5}.cta{border:0;border-radius:30px;padding:14px 28px;background:linear-gradient(90deg,#43d9ed,#8b7bff);color:#07101e;font-weight:900;letter-spacing:.1em}.hud{position:fixed;z-index:3;bottom:16px;left:14px;right:14px;pointer-events:none}.status{font-size:11px;letter-spacing:.12em;color:#a9dff0;text-shadow:0 1px 8px #000}.progress{width:min(45vw,210px);height:4px;background:#ffffff26;border-radius:4px;margin-top:7px;overflow:hidden}.bar{height:100%;width:0;background:#7cecff}#fail{display:none;position:fixed;z-index:8;bottom:10px;left:10px;right:10px;background:#431b27;padding:12px;border-radius:10px}
 </style>
 </head>
 <body>
 <div id="world"></div>
 <div class="top"><div><div class="brand">KAEVORYN STUDIOS</div><div class="name">THE ENCHANTED MINE</div><div class="tag">A JOURNEY BENEATH THE FORGOTTEN MOUNTAIN</div></div><button class="sound" id="soundBtn">♫ SOUND ON</button></div>
-<div class="panel" id="intro"><div class="brand">THE KINGDOMS OF WONDER</div><h1>THE ENCHANTED MINE</h1><p>Descend into a forgotten crystal mine. Follow the lantern-lit rails, pass the singing shadows, and discover what has been sleeping beneath the mountain.</p><button class="cta" id="startBtn">BOARD THE MINE CART</button><p class="hint">A playable 3D journey · Sound is optional · Best experienced with headphones</p></div>
-<div class="hud"><div><div class="status" id="status">CART STATION · AWAITING RIDER</div><div class="progress"><div class="bar" id="bar"></div></div></div><div class="touch"><button id="lookL" aria-label="Look left">‹</button><button id="lookR" aria-label="Look right">›</button></div></div>
+<div class="panel" id="intro"><div class="brand">THE KINGDOMS OF WONDER</div><h1>THE ENCHANTED MINE</h1><p>Board the little mine train and descend through ancient timber shafts, glowing crystal caverns and the lost extraction chamber.</p><button class="cta" id="startBtn">BOARD THE MINE CART</button><p style="font-size:11px">A forward-only 3D journey · Sound is optional</p></div>
+<div class="hud"><div class="status" id="status">CART STATION · AWAITING RIDER</div><div class="progress"><div class="bar" id="bar"></div></div></div>
 <div id="fail"></div>
-<script>
-(function(){const b=document.getElementById('startBtn'),panel=document.getElementById('intro'),status=document.getElementById('status');b.addEventListener('click',()=>{status.textContent='AWAKENING THE MINE...';window.dispatchEvent(new Event('mine-start'));});document.getElementById('soundBtn').addEventListener('click',()=>window.dispatchEvent(new Event('mine-sound-toggle')));})();
-</script>
 <script type="module">
 (async()=>{
 let THREE;
 try{THREE=await import('https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js')}catch(e){THREE=await import('https://unpkg.com/three@0.160.0/build/three.module.js')}
-const scene=new THREE.Scene();scene.background=new THREE.Color(0x050711);scene.fog=new THREE.FogExp2(0x080d1c,.018);
-const camera=new THREE.PerspectiveCamera(72,innerWidth/innerHeight,.1,500);
-const renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:'high-performance'});renderer.setPixelRatio(Math.min(devicePixelRatio,1.7));renderer.setSize(innerWidth,innerHeight);renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.15;document.getElementById('world').appendChild(renderer.domElement);
-scene.add(new THREE.HemisphereLight(0x8dbdff,0x17101f,1.1));const key=new THREE.PointLight(0x69dfff,65,85);key.position.set(0,10,8);scene.add(key);
-const mat=(c,r=.8,m=0)=>new THREE.MeshStandardMaterial({color:c,roughness:r,metalness:m});
-const rock=mat(0x25283b),darkRock=mat(0x101626),railMat=mat(0x8795a8,.3,.8),wood=mat(0x49372b),gold=mat(0xffc76b,.4,.25),crystalMats=[mat(0x39d9ed,.22,.2),mat(0x8e74ff,.22,.2),mat(0x75ffcf,.2,.15),mat(0xff76c8,.25,.1)];
-const glowMats=crystalMats.map(m=>{m.emissive=m.color;m.emissiveIntensity=1.35;return m});
-function box(w,h,d,material,x,y,z){const o=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),material);o.position.set(x,y,z);scene.add(o);return o}
-function sphere(r,material,x,y,z){const o=new THREE.Mesh(new THREE.SphereGeometry(r,12,10),material);o.position.set(x,y,z);scene.add(o);return o}
-function rockChunk(x,y,z,s){const o=new THREE.Mesh(new THREE.DodecahedronGeometry(1,1),rock);o.position.set(x,y,z);o.scale.set(s*1.2,s,s*1.1);o.rotation.set(Math.random()*2,Math.random()*2,Math.random()*2);scene.add(o)}
-// Enclosed, hand-hewn mine tunnel: irregular rock shell, close walls and low ceiling
-{
- const verts=[],indices=[],rings=150,sides=40;
- for(let j=0;j<=rings;j++){
-  const z=20-j*1.42;
-  for(let i=0;i<=sides;i++){
-   const a=i/sides*Math.PI*2;
-   const noise=Math.sin(j*.63+i*1.7)*.16+Math.sin(j*.19-i*.73)*.12;
-   const rx=5.15+noise, ry=4.7+noise*.8;
-   verts.push(Math.cos(a)*rx,2.15+Math.sin(a)*ry,z);
-  }
- }
- for(let j=0;j<rings;j++)for(let i=0;i<sides;i++){
-  const a=j*(sides+1)+i,b=a+sides+1;
-  indices.push(a,b,a+1,b,b+1,a+1);
- }
- const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.Float32BufferAttribute(verts,3));geo.setIndex(indices);geo.computeVertexNormals();
- const shell=new THREE.Mesh(geo,new THREE.MeshStandardMaterial({color:0x343342,roughness:1,side:THREE.DoubleSide}));scene.add(shell);
+const scene=new THREE.Scene();scene.background=new THREE.Color(0x050711);scene.fog=new THREE.FogExp2(0x080d1c,.012);
+const camera=new THREE.PerspectiveCamera(72,innerWidth/innerHeight,.1,400);camera.position.set(0,1.15,11);camera.lookAt(0,.9,-18);
+const renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:'high-performance'});renderer.setPixelRatio(Math.min(devicePixelRatio,1.6));renderer.setSize(innerWidth,innerHeight);renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.12;document.getElementById('world').appendChild(renderer.domElement);
+scene.add(new THREE.HemisphereLight(0x9bcaff,0x17101f,1.25));scene.add(new THREE.AmbientLight(0x8a9bb8,.35));
+const world=new THREE.Group();scene.add(world);
+const material=(c,r=.8,m=0)=>new THREE.MeshStandardMaterial({color:c,roughness:r,metalness:m});
+const rock=material(0x292b3b,1),darkRock=material(0x111827,1),wood=material(0x62432c,1),iron=material(0x303944,.35,.8),gold=material(0xffc76b,.4,.25),railMat=material(0x9aa7b8,.28,.85);
+const crystalColors=[0x39d9ed,0x987aff,0x75ffcf,0xff76c8];
+const crystals=crystalColors.map(c=>{const m=material(c,.2,.15);m.emissive=new THREE.Color(c);m.emissiveIntensity=1.3;return m});
+const add=(mesh)=>{world.add(mesh);return mesh};
+function block(w,h,d,x,y,z,mat){const o=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat);o.position.set(x,y,z);return add(o)}
+function beam(w,h,d,x,y,z,mat=wood){return block(w,h,d,x,y,z,mat)}
+function light(x,y,z,color=0xffad55,power=7,range=15){const p=new THREE.PointLight(color,power,range);p.position.set(x,y,z);add(p);const bulb=new THREE.Mesh(new THREE.SphereGeometry(.13,8,8),material(color,.3));bulb.position.set(x,y,z);add(bulb)}
+// Continuous hand-cut stone tunnel: repeated arched rock ribs and rough wall blocks.
+for(let z=5;z>-218;z-=5){
+ const left=new THREE.Mesh(new THREE.DodecahedronGeometry(1,1),rock);left.position.set(-4.65,1.4,z);left.scale.set(1.25,4.3,2.8);add(left);
+ const right=left.clone();right.position.x=4.65;add(right);
+ const roof=new THREE.Mesh(new THREE.DodecahedronGeometry(1,1),darkRock);roof.position.set(0,5.8,z);roof.scale.set(5.1,1.4,2.9);add(roof);
+ // heavy timber sets with iron collars
+ beam(.42,7.1,.5,-4.05,1.4,z);beam(.42,7.1,.5,4.05,1.4,z);beam(8.3,.42,.55,0,4.75,z);
+ for(const x of [-4.05,4.05])for(const y of [-1.5,1,3.5])beam(.5,.12,.62,x,y,z,iron);
+ if(Math.round(Math.abs(z))%10===0){beam(1.2,.2,.25,-3.35,2.6,z-.3,wood);beam(1.2,.2,.25,3.35,2.6,z-.3,wood)}
 }
-// Jagged exposed rock faces break up the tunnel silhouette
-for(let z=17;z>-190;z-=4.5){
- for(const side of [-1,1])rockChunk(side*(4.55+Math.random()*.45),1+Math.random()*4,z,1.1+Math.random()*.9);
- if(Math.random()>.22)rockChunk((Math.random()-.5)*7,6.1+Math.random()*.4,z,1.1+Math.random()*.8);
-}
-// Mine floor: uneven packed earth and loose broken stone
-const floor= new THREE.Mesh(new THREE.PlaneGeometry(10,220,1,80),new THREE.MeshStandardMaterial({color:0x252431,roughness:1}));floor.rotation.x=-Math.PI/2;floor.position.set(0,-2.85,-85);scene.add(floor);
-for(let i=0;i<460;i++){const x=(Math.random()-.5)*8.7,z=16-Math.random()*202,s=.08+Math.random()*.28;const peb=new THREE.Mesh(new THREE.DodecahedronGeometry(s,0),i%4===0?darkRock:rock);peb.position.set(x,-2.72+Math.random()*.08,z);peb.rotation.set(Math.random()*3,Math.random()*3,Math.random()*3);peb.scale.y=.45;scene.add(peb)}
-// Thin mineral seams running through the exposed stone
-for(let z=8;z>-180;z-=22){for(const side of [-1,1]){const seam=new THREE.Mesh(new THREE.TorusGeometry(.85,.045,5,18),new THREE.MeshStandardMaterial({color:0x786b55,metalness:.35,roughness:.65,emissive:0x30251a}));seam.position.set(side*4.75,2+Math.random()*2,z);seam.scale.set(1.4,.45,1);seam.rotation.y=side*.25;scene.add(seam)}}
-// Heavy squared timber sets: unmistakable mine-shaft framing
-const beamMat=mat(0x59402c,1),ironMat=mat(0x252b34,.35,.85);
-function timber(w,h,d,x,y,z,rz=0){const o=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),beamMat);o.position.set(x,y,z);o.rotation.z=rz;scene.add(o);return o}
-for(let z=14;z>-190;z-=9){
- for(const side of [-1,1]){
-  timber(.42,7.2,.48,side*4.35,1.35,z,side*-.045);
-  timber(.52,1.2,.62,side*4.35,5.1,z);
-  // dark iron collar bands around the upright posts
-  for(const y of [0,2.7,5.2]){const band=new THREE.Mesh(new THREE.BoxGeometry(.49,.12,.55),ironMat);band.position.set(side*4.35,y,z);scene.add(band)}
- }
- timber(9.1,.48,.58,0,5.35,z);
- timber(1.0,.28,.55,-2.8,4.95,z,.18);timber(1.0,.28,.55,2.8,4.95,z,-.18);
-}
-// Working-mine details: ore skips, tool rack, crates and a marked side shaft
-function oreSkip(x,z,scale=1){
- const g=new THREE.Group();
- const tub=new THREE.Mesh(new THREE.BoxGeometry(1.45,.72,1.75),mat(0x493d32,.8,.35));tub.position.y=.65;g.add(tub);
- const rim=new THREE.Mesh(new THREE.BoxGeometry(1.58,.12,1.88),ironMat);rim.position.y=1.05;g.add(rim);
- for(const side of [-1,1]){const wheel=new THREE.Mesh(new THREE.CylinderGeometry(.3,.3,.16,12),ironMat);wheel.rotation.z=Math.PI/2;wheel.position.set(side*.78,.28,0);g.add(wheel)}
- const oreMat=mat(0x5a514c,1),oreGlow=mat(0x4a7b83,.55,.25);oreGlow.emissive.set(0x12343b);
- for(let i=0;i<7;i++){const nug=new THREE.Mesh(new THREE.DodecahedronGeometry(.18+Math.random()*.16,0),i%3===0?oreGlow:oreMat);nug.position.set((Math.random()-.5)*.95,1.12+Math.random()*.25,(Math.random()-.5)*1.2);g.add(nug)}
- g.position.set(x,-2.8,z);g.scale.setScalar(scale);scene.add(g);
-}
-oreSkip(-3.35,-4,.9);oreSkip(3.35,-48,.85);oreSkip(-3.3,-112,.9);
-function crate(x,z){const g=new THREE.Group();const wood2=mat(0x765338,1);const base=new THREE.Mesh(new THREE.BoxGeometry(1.1,.9,1),wood2);base.position.y=-2.25;g.add(base);for(let y=-2.65;y<-1.9;y+=.22){const slat=new THREE.Mesh(new THREE.BoxGeometry(1.14,.07,1.04),beamMat);slat.position.y=y;g.add(slat)}g.position.set(x,0,z);scene.add(g)}
-crate(3.55,-17);crate(-3.55,-76);crate(3.5,-139);
-// Pickaxes and shovel silhouettes mounted on the timber posts
-function wallTool(x,y,z,kind){const g=new THREE.Group();const handle=new THREE.Mesh(new THREE.CylinderGeometry(.045,.055,1.35,7),mat(0x8b623c));handle.rotation.z=.2;g.add(handle);const head=new THREE.Mesh(new THREE.BoxGeometry(kind==='pick'?.95:.18,.13,.16),ironMat);head.position.y=.48;g.add(head);if(kind==='pick'){const tip=new THREE.Mesh(new THREE.ConeGeometry(.09,.45,6),ironMat);tip.position.set(-.53,.48,0);tip.rotation.z=Math.PI/2;g.add(tip)}g.position.set(x,y,z);scene.add(g)}
-wallTool(-4.02,1.1,-8,'pick');wallTool(4.02,1.1,-57,'shovel');wallTool(-4.02,1.1,-124,'pick');
-// A timber-framed side passage with a readable mine marker
-for(const z of [-31,-101,-161]){const x=3.9;timber(.3,3.8,.35,x,0,z);timber(.3,3.8,.35,x+1.7,0,z);timber(2,.3,.4,x+.85,1.8,z);const sign=box(1.25,.55,.12,mat(0x30261f),x+.85,1.25,z-.24);}
-// Abandoned extraction machinery: a timber hoist, pulley wheel and hanging ore bucket
-function hoistStation(x,z){
- const g=new THREE.Group();
- const frameMat=mat(0x493321,1),steel=mat(0x343b46,.35,.85);
- for(const sx of [-1,1]){const post=new THREE.Mesh(new THREE.BoxGeometry(.28,4.4,.32),frameMat);post.position.set(sx*1.35,0,0);g.add(post)}
- const cross=new THREE.Mesh(new THREE.BoxGeometry(3.1,.3,.38),frameMat);cross.position.y=2.15;g.add(cross);
- const wheel=new THREE.Mesh(new THREE.TorusGeometry(.72,.13,8,20),steel);wheel.position.set(0,1.25,.15);wheel.rotation.y=Math.PI/2;g.add(wheel);
- const hub=new THREE.Mesh(new THREE.CylinderGeometry(.18,.18,.5,12),gold);hub.rotation.z=Math.PI/2;hub.position.set(0,1.25,.15);g.add(hub);
- const cable=new THREE.Mesh(new THREE.CylinderGeometry(.025,.025,1.8,6),steel);cable.position.set(0,.1,.15);g.add(cable);
- const bucket=new THREE.Mesh(new THREE.CylinderGeometry(.34,.25,.65,8,1,true),mat(0x514437,.8,.25));bucket.position.set(0,-.95,.15);g.add(bucket);
- g.position.set(x,-.15,z);scene.add(g);
-}
-hoistStation(-3.45,-35);hoistStation(3.45,-126);
-// A miner's workbench with a lamp, tools and sorted ore samples
-function workbench(x,z){
- const g=new THREE.Group(),plank=mat(0x67472e,1),metal=mat(0x353b45,.4,.8);
- const top=new THREE.Mesh(new THREE.BoxGeometry(1.8,.16,.85),plank);top.position.y=-.25;g.add(top);
- for(const sx of [-.72,.72])for(const sz of [-.28,.28]){const leg=new THREE.Mesh(new THREE.BoxGeometry(.12,.85,.12),plank);leg.position.set(sx,-.7,sz);g.add(leg)}
- for(let i=0;i<3;i++){const ore=new THREE.Mesh(new THREE.DodecahedronGeometry(.16,0),i===1?glowMats[0]:mat(0x77716b));ore.position.set(-.45+i*.42,-.08,0);g.add(ore)}
- const lamp=new THREE.Mesh(new THREE.SphereGeometry(.16,8,8),gold);lamp.position.set(.68,.02,0);g.add(lamp);
- const glow=new THREE.PointLight(0xffb95e,4,8);glow.position.set(.68,.25,0);g.add(glow);
- const pick=new THREE.Mesh(new THREE.BoxGeometry(.9,.07,.07),metal);pick.position.set(-.15,.02,.28);pick.rotation.z=-.2;g.add(pick);
- g.position.set(x,0,z);scene.add(g);
-}
-workbench(-3.35,-68);workbench(3.35,-151);
-// Ore piles beside the rails, including a few luminous mineral fragments
-for(const [x,z] of [[-3.25,-21],[3.25,-59],[-3.25,-96],[3.25,-174]]){
- for(let i=0;i<10;i++){const nug=new THREE.Mesh(new THREE.DodecahedronGeometry(.18+Math.random()*.22,0),i%4===0?glowMats[1]:mat(0x5a5655,1));nug.position.set(x+(Math.random()-.5)*1.1,-2.55+Math.random()*.2,z+(Math.random()-.5)*1.2);scene.add(nug)}
-}
-// Warning boards and numbered shaft markers fixed to the mine supports
-function mineSign(x,y,z,label){
- const board=box(1.35,.58,.12,mat(0x35271f,1),x,y,z);
- const stripe=box(1.12,.055,.035,gold,x,y,z-.08);
- const canvas=document.createElement('canvas');canvas.width=256;canvas.height=96;
- const ctx=canvas.getContext('2d');ctx.fillStyle='#e9c98b';ctx.font='bold 34px sans-serif';ctx.textAlign='center';ctx.fillText(label,128,59);
- const tex=new THREE.CanvasTexture(canvas);const face=new THREE.Mesh(new THREE.PlaneGeometry(1.2,.45),new THREE.MeshBasicMaterial({map:tex,transparent:true}));face.position.set(x,y,z-.075);scene.add(face);
-}
-mineSign(-4.02,3.45,-39,'SHAFT 02');mineSign(4.02,3.45,-132,'DANGER');
-
-// MAJOR MINE INSTALLATION: a large timber portal and an industrial extraction chamber.
-// These structures are deliberately oversized so the ride reads as a working mine at a glance.
-const mineTimber=mat(0x65452d,1), mineIron=mat(0x303944,.32,.88), warningYellow=mat(0xe2b34d,.65,.15);
-function largeBeam(w,h,d,x,y,z,material=mineTimber,rz=0){const o=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),material);o.position.set(x,y,z);o.rotation.z=rz;scene.add(o);return o}
-function industrialLamp(x,y,z){const cage=new THREE.Mesh(new THREE.CylinderGeometry(.22,.22,.42,8,1,true),mineIron);cage.position.set(x,y,z);scene.add(cage);const bulb=new THREE.PointLight(0xffa94f,8,18);bulb.position.set(x,y-.35,z);scene.add(bulb);const lens=new THREE.Mesh(new THREE.SphereGeometry(.14,10,8),gold);lens.position.set(x,y-.35,z);scene.add(lens)}
-// Grand entrance portal at the boarding end: massive square-cut timbers, iron plates and a mine sign.
-for(const x of [-4.25,4.25]){
- largeBeam(.72,8.2,.8,x,1.6,12);
- largeBeam(.9,.22,1.0,x,5.25,12,mineIron);
- for(const y of [-1.8,0,2.2,4.4])largeBeam(.82,.16,.92,x,y,12,mineIron);
-}
-largeBeam(9.2,.85,1.0,0,5.45,12);
-largeBeam(9.2,.18,1.05,0,4.85,12,mineIron);
-largeBeam(1.1,.22,.8,-2.8,4.9,12,mineTimber,.2);
-largeBeam(1.1,.22,.8,2.8,4.9,12,mineTimber,-.2);
-const portalSign=box(3.5,.82,.18,mat(0x171b22,.8,.3),0,4.15,11.48);
-mineSign(-1.75,4.15,11.35,'MINE 01');
-industrialLamp(-3.6,4.2,10.8);industrialLamp(3.6,4.2,10.8);
-// A large extraction chamber in the middle of the journey, with a headframe, winch drum,
-// cable, hanging lift cage, loading hopper and ore chute.
-const chamberZ=-82;
-for(const x of [-3.85,3.85]){
- largeBeam(.62,8.5,.72,x,1.45,chamberZ);
- largeBeam(.75,.2,.9,x,4.7,chamberZ,mineIron);
- largeBeam(.6,.6,.72,x,5.5,chamberZ);
-}
-largeBeam(8.3,.72,.85,0,5.7,chamberZ);
-largeBeam(7.4,.22,.9,0,5.15,chamberZ,mineIron);
-// Tall winch gantry and diagonal braces.
-for(const x of [-2.5,2.5]){
- largeBeam(.34,5.8,.4,x,2.2,chamberZ-1.5);
- largeBeam(.3,4.2,.4,x*.72,2.4,chamberZ-1.5,x<0?mineTimber:mineTimber,x<0?-.38:.38);
-}
-const drum=new THREE.Mesh(new THREE.CylinderGeometry(.72,.72,3.8,16),mineIron);drum.rotation.z=Math.PI/2;drum.position.set(0,3.45,chamberZ-1.5);scene.add(drum);
-for(const x of [-1.95,1.95]){const flange=new THREE.Mesh(new THREE.CylinderGeometry(1.0,1.0,.18,16),warningYellow);flange.rotation.z=Math.PI/2;flange.position.set(x,3.45,chamberZ-1.5);scene.add(flange)}
-const drumAxle=new THREE.Mesh(new THREE.CylinderGeometry(.16,.16,4.5,12),gold);drumAxle.rotation.z=Math.PI/2;drumAxle.position.set(0,3.45,chamberZ-1.5);scene.add(drumAxle);
-const cable=new THREE.Mesh(new THREE.CylinderGeometry(.045,.045,4.5,8),mineIron);cable.position.set(0,1.0,chamberZ-1.5);scene.add(cable);
-const lift=new THREE.Group();
-largeBeam(1.9,.18,2.0,0,0,0,mineIron);
-for(const x of [-.8,.8])largeBeam(.16,2.1,.16,x,.95,0,mineTimber);
-for(const y of [.35,1.55])largeBeam(1.75,.14,.18,0,y,0,mineTimber);
-lift.position.set(0,-.55,chamberZ-1.5);scene.add(lift);
-// Heavy ore hopper and sloping loading chute on the right-hand side.
-const hopper=new THREE.Mesh(new THREE.CylinderGeometry(.7,1.25,1.35,4,1,true),mat(0x514333,.9,.3));hopper.position.set(3.05,1.2,chamberZ+2);hopper.rotation.y=Math.PI/4;scene.add(hopper);
-largeBeam(1.2,.18,2.6,3.05,.25,chamberZ+3.3,mineIron,-.48);
-for(let i=0;i<8;i++){const lump=new THREE.Mesh(new THREE.DodecahedronGeometry(.22+Math.random()*.18,0),i%3===0?glowMats[1]:mat(0x77716a));lump.position.set(3+(Math.random()-.5)*1.1,1.95+Math.random()*.4,chamberZ+2+(Math.random()-.5));scene.add(lump)}
-// Oversized industrial lamps make the extraction station readable from the moving cart.
-industrialLamp(-3.35,4.65,chamberZ-3);industrialLamp(3.35,4.65,chamberZ-3);
-// Rail-side loading platform, stacked sleepers, barrels and a hand-operated control wheel.
-for(const x of [-3.25,3.25]){
- largeBeam(1.35,.28,5.2,x,-1.75,chamberZ+8,mineTimber);
- for(let z=chamberZ+6;z<chamberZ+10;z+=1.1)largeBeam(1.42,.12,.18,x,-1.5,z,mineIron);
- const barrel=new THREE.Mesh(new THREE.CylinderGeometry(.38,.42,.9,10),mat(0x4a382b,1));barrel.position.set(x,-1.1,chamberZ+5);scene.add(barrel);
-}
-const controlWheel=new THREE.Mesh(new THREE.TorusGeometry(.58,.09,8,20),mineIron);controlWheel.position.set(-3.05,.15,chamberZ+5);controlWheel.rotation.y=Math.PI/2;scene.add(controlWheel);
-const controlHub=new THREE.Mesh(new THREE.CylinderGeometry(.15,.15,.35,12),gold);controlHub.rotation.z=Math.PI/2;controlHub.position.set(-3.05,.15,chamberZ+5);scene.add(controlHub);
-// A second, distant crosscut with a visible timber doorway and warning stripes.
-for(const z of [-48,-145]){
- for(const x of [-3.75,3.75])largeBeam(.38,5.2,.42,x,.6,z);
- largeBeam(7.8,.42,.5,0,3.2,z);
- for(let i=-3;i<=3;i++)largeBeam(.13,4.5,.18,i*1.05,.7,z-.28,mineIron);
- industrialLamp(-3.2,3.7,z-1);industrialLamp(3.2,3.7,z-1);
-}
-// Bigger, more deliberate mineral veins and ore heaps around the machinery.
-for(const [x,z] of [[-3.2,-83],[3.15,-86],[-3.2,-47],[3.2,-146]]){
- for(let i=0;i<18;i++){const size=.2+Math.random()*.3;const chunk=new THREE.Mesh(new THREE.DodecahedronGeometry(size,1),i%5===0?glowMats[0]:mat(0x625b57,1));chunk.position.set(x+(Math.random()-.5)*1.5,-2.5+Math.random()*.3,z+(Math.random()-.5)*2);scene.add(chunk)}
-}
-
-// tracks on a gently winding descending path
-const points=[new THREE.Vector3(0,-2,16),new THREE.Vector3(0,-2,-12),new THREE.Vector3(0,-2,-38),new THREE.Vector3(0,-2,-65),new THREE.Vector3(0,-2,-92),new THREE.Vector3(0,-2,-122),new THREE.Vector3(0,-2,-151),new THREE.Vector3(0,-2,-183)];
-const path=new THREE.CatmullRomCurve3(points);const sideVec=new THREE.Vector3(1,0,0);
-for(const s of [-.72,.72]){const pts=[];for(let i=0;i<=260;i++){const u=i/260,p=path.getPoint(u),t=path.getTangent(u),side=new THREE.Vector3(-t.z,0,t.x).normalize();pts.push(p.clone().addScaledVector(side,s))}const rail=new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts),500,.095,8,false),railMat);scene.add(rail)}
-for(let i=0;i<=100;i++){const u=i/100,p=path.getPoint(u),t=path.getTangent(u),q=new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0,0,1),t);const tie=new THREE.Mesh(new THREE.BoxGeometry(2,.16,.35),wood);tie.position.copy(p);tie.quaternion.copy(q);scene.add(tie)}
-// Crystal clusters
-function crystal(x,y,z,scale,colorIndex){const group=new THREE.Group();const geo=new THREE.ConeGeometry(.55,2.8,6);const c=new THREE.Mesh(geo,glowMats[colorIndex%4]);c.position.y=1.2;c.scale.set(scale,scale*(.8+Math.random()*.5),scale);c.rotation.z=(Math.random()-.5)*.35;group.add(c);const c2=new THREE.Mesh(new THREE.ConeGeometry(.32,1.8,6),glowMats[(colorIndex+1)%4]);c2.position.set(.55,.7,.15);c2.rotation.z=-.25;group.add(c2);group.position.set(x,y,z);scene.add(group);const light=new THREE.PointLight(glowMats[colorIndex%4].color,9,13);light.position.set(x,y+1,z);scene.add(light);return group}
-for(let z=5;z>-180;z-=13){crystal(-4.3+Math.random()*1.2,-2,z,1+Math.random()*.7,Math.floor(Math.random()*4));crystal(4.2+Math.random()*1.2,-2,z-5,1+Math.random()*.7,Math.floor(Math.random()*4))}
-for(let i=0;i<18;i++){const x=(Math.random()-.5)*7,z=-25-Math.random()*145;const drip=new THREE.Mesh(new THREE.ConeGeometry(.22,1.3,6),rock);drip.position.set(x,8.3,z);drip.rotation.x=Math.PI;scene.add(drip)}
-// Waterfall and pool section
-const water=new THREE.Mesh(new THREE.PlaneGeometry(8,7),new THREE.MeshBasicMaterial({color:0x36c9ec,transparent:true,opacity:.38,side:THREE.DoubleSide}));water.position.set(3,2,-87);scene.add(water);const pool=new THREE.Mesh(new THREE.CircleGeometry(5,32),new THREE.MeshStandardMaterial({color:0x07506c,metalness:.4,roughness:.2,emissive:0x06394b}));pool.rotation.x=-Math.PI/2;pool.position.set(3,-2.6,-91);scene.add(pool);
-// mine cart ahead of camera: visible front rim and lanterns
-const cart=new THREE.Group();const body=new THREE.Mesh(new THREE.BoxGeometry(2.1,.65,2.7),mat(0x343c4d,.45,.55));body.position.y=-.1;cart.add(body);const rim=new THREE.Mesh(new THREE.BoxGeometry(2.25,.18,2.85),gold);rim.position.y=.28;cart.add(rim);for(const x of [-.78,.78]){const lamp=new THREE.PointLight(0xffbd65,7,12);lamp.position.set(x,.5,-1.1);cart.add(lamp);const bulb=sphere(.13,mat(0xffd58a),x,.5,-1.1);cart.add(bulb)}scene.add(cart);
-// silhouettes: humanoid shadow figures walking on side ledges
-const figures=[];const shadowMat=new THREE.MeshStandardMaterial({color:0x070a16,transparent:true,opacity:.92,roughness:1,emissive:0x14152a,emissiveIntensity:.55});
-function makeFigure(x,z,phase){const g=new THREE.Group();const torso=new THREE.Mesh(new THREE.CapsuleGeometry(.27,.85,4,7),shadowMat);torso.position.y=1.25;g.add(torso);const head=new THREE.Mesh(new THREE.SphereGeometry(.27,10,8),shadowMat);head.position.y=2.05;g.add(head);const armGeo=new THREE.CapsuleGeometry(.09,.65,3,5);for(const s of [-1,1]){const a=new THREE.Mesh(armGeo,shadowMat);a.position.set(s*.36,1.35,0);a.rotation.z=s*.22;g.add(a);const leg=new THREE.Mesh(new THREE.CapsuleGeometry(.11,.75,3,5),shadowMat);leg.position.set(s*.16,.48,0);g.add(leg)}g.position.set(x,-2,z);scene.add(g);figures.push({g,phase,z,baseX:x})}
-for(let i=0;i<12;i++)makeFigure(i%2?4.7:-4.7,-12-i*14,i*1.7);
-// lanterns along route
-for(let z=10;z>-180;z-=18){for(const x of [-4.8,4.8]){const pole=new THREE.Mesh(new THREE.CylinderGeometry(.07,.09,2,7),wood);pole.position.set(x,-1,z);scene.add(pole);const l=new THREE.PointLight(0xffa84f,3,9);l.position.set(x,-.1,z);scene.add(l);sphere(.16,gold,x,-.1,z)}}
-// ambient floating motes
-const motes=new THREE.Group();for(let i=0;i<180;i++){const m=new THREE.Mesh(new THREE.SphereGeometry(.025+Math.random()*.035,6,6),new THREE.MeshBasicMaterial({color:i%3?0x71dff5:0xffc66e,transparent:true,opacity:.6}));m.position.set((Math.random()-.5)*9,Math.random()*7-1,-Math.random()*185);m.userData.seed=Math.random()*6.28;motes.add(m)}scene.add(motes);
-// audio: original synthesized eerie choir pad and mine ambience
-let audioCtx=null,master=null,oscillators=[],soundOn=true,audioReady=false;
-function startAudio(){if(audioReady)return;audioReady=true;const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;audioCtx=new AC();master=audioCtx.createGain();master.gain.value=soundOn?.22:0;master.connect(audioCtx.destination);const notes=[110,164.81,220,261.63];notes.forEach((f,i)=>{const o=audioCtx.createOscillator(),g=audioCtx.createGain(),filter=audioCtx.createBiquadFilter();o.type=i===0?'sine':'triangle';o.frequency.value=f;filter.type='lowpass';filter.frequency.value=520;g.gain.value=[.16,.09,.065,.045][i];o.connect(filter);filter.connect(g);g.connect(master);o.start();oscillators.push({o,g,base:f})});}
-function setSound(v){soundOn=v;document.getElementById('soundBtn').textContent=v?'♫ SOUND ON':'♫ SOUND OFF';if(master&&audioCtx)master.gain.setTargetAtTime(v?.22:0,audioCtx.currentTime,.2)}
-document.getElementById('soundBtn').addEventListener('click',()=>{if(!audioReady&&soundOn)startAudio();setSound(!soundOn)});
-let running=false,elapsed=0,look=0;
-function begin(){if(running)return;running=true;document.getElementById('intro').style.display='none';document.getElementById('status').textContent='DESCENDING · THE SHADOWS ARE SINGING';if(soundOn)startAudio();if(audioCtx&&audioCtx.state==='suspended')audioCtx.resume()}
-window.addEventListener('mine-start',begin);document.getElementById('lookL').onclick=()=>look=Math.max(-.65,look-.18);document.getElementById('lookR').onclick=()=>look=Math.min(.65,look+.18);
-let last=0;function animate(t){requestAnimationFrame(animate);const dt=Math.min((t-last)/1000,.04);last=t;const time=t*.001;
-motes.children.forEach(m=>{m.position.y+=Math.sin(time*1.3+m.userData.seed)*.0018;m.position.x+=Math.cos(time+m.userData.seed)*.0008});
-figures.forEach((f,i)=>{f.g.position.z=f.z+Math.sin(time*.55+f.phase)*1.4;f.g.position.x=f.baseX+Math.sin(time*.7+f.phase)*.22;f.g.children[2].rotation.z=Math.sin(time*3+f.phase)*.35;f.g.children[3].rotation.z=-Math.sin(time*3+f.phase)*.35;f.g.children[4].rotation.x=Math.sin(time*3+f.phase)*.28;f.g.children[5].rotation.x=-Math.sin(time*3+f.phase)*.28});
-if(running){elapsed=Math.min(elapsed+dt,52);const u=elapsed/52;const rideZ=16-(199*u);camera.position.set(0,.5,rideZ);camera.lookAt(0,.5,rideZ-12);cart.position.set(0,-2.55,rideZ);cart.rotation.set(0,0,0);key.position.set(0,5,rideZ);document.getElementById('bar').style.width=(u*100)+'%';if(u>=1){running=false;document.getElementById('status').textContent='THE LOST VEIN · JOURNEY COMPLETE';document.getElementById('intro').style.display='block';document.querySelector('#intro h1').textContent='THE LOST VEIN';document.querySelector('#intro p').textContent='The mine has revealed its secret. Would you dare descend again?';document.getElementById('startBtn').textContent='RIDE AGAIN';elapsed=0}}
-renderer.render(scene,camera)}
+// Rails, sleepers and packed-earth bed
+block(8,.18,225,0,-2.95,-105,material(0x282630,1));
+for(const x of [-.82,.82]){const rail=new THREE.Mesh(new THREE.BoxGeometry(.14,.2,220),railMat);rail.position.set(x,-2.05,-103);add(rail)}
+for(let z=8;z>-218;z-=1.65)beam(2.15,.18,.42,0,-2.18,z,wood);
+// A visible little mine cart fixed in the foreground, with four metal wheels.
+const cart=new THREE.Group();scene.add(cart);cart.position.set(0,-1.42,5.3);
+const tub=new THREE.Mesh(new THREE.BoxGeometry(2.15,.82,2.35),material(0x343d4c,.5,.5));tub.position.y=.05;cart.add(tub);
+const rim=new THREE.Mesh(new THREE.BoxGeometry(2.28,.16,2.48),gold);rim.position.y=.5;cart.add(rim);
+for(const x of [-.88,.88])for(const z of [-.78,.78]){const wheel=new THREE.Mesh(new THREE.CylinderGeometry(.32,.32,.18,16),iron);wheel.rotation.z=Math.PI/2;wheel.position.set(x,-.52,z);cart.add(wheel)}
+for(const x of [-.72,.72]){const lampMesh=new THREE.Mesh(new THREE.SphereGeometry(.13,10,8),gold);lampMesh.position.set(x,.64,-1.05);cart.add(lampMesh);const glow=new THREE.PointLight(0xffbd65,3,9);glow.position.set(x,.7,-1.05);cart.add(glow)}
+// Ore skips, crates, tools and extraction machinery.
+function oreSkip(x,z){const g=new THREE.Group();const body=new THREE.Mesh(new THREE.BoxGeometry(1.45,.7,1.7),material(0x493d32,.8,.35));body.position.y=-2.1;g.add(body);for(const sx of [-1,1]){const w=new THREE.Mesh(new THREE.CylinderGeometry(.27,.27,.15,12),iron);w.rotation.z=Math.PI/2;w.position.set(sx*.78,-2.48,0);g.add(w)}for(let i=0;i<6;i++){const nug=new THREE.Mesh(new THREE.DodecahedronGeometry(.2,0),i%3===0?crystals[0]:rock);nug.position.set((Math.random()-.5)*.9,-1.68+Math.random()*.15,(Math.random()-.5)*1.1);g.add(nug)}g.position.set(x,0,z);add(g)}
+oreSkip(-3.2,-16);oreSkip(3.2,-52);oreSkip(-3.2,-119);
+for(const [x,z] of [[3.45,-26],[-3.45,-76],[3.45,-151]]){const crate=block(1.15,.9,1,x,-2.25,z,wood);for(let y=-2.65;y<-1.9;y+=.22)beam(1.2,.07,1.05,x,y,z,wood)}
+for(const [x,z] of [[-3.7,-39],[3.7,-93],[-3.7,-143]]){beam(.12,1.4,.12,x,1,z,wood);beam(1,.12,.12,x,1.45,z,iron)}
+// Large hoist and ore lift in the deep extraction chamber.
+for(const x of [-2.4,2.4])beam(.42,5,.5,x,.1,-177,wood);beam(5.2,.42,.55,0,2.55,-177,wood);
+const drum=new THREE.Mesh(new THREE.CylinderGeometry(.85,.85,.65,20),iron);drum.rotation.z=Math.PI/2;drum.position.set(0,1.25,-177);add(drum);
+beam(.08,2.1,.08,0,.05,-177,iron);
+const cage=block(1.5,2,1.5,0,-1.2,-177,iron);for(const x of [-.6,.6])beam(.12,2.2,.12,x,-1.1,-177,gold);
+for(let i=0;i<3;i++)beam(4,.12,.12,0,-2.2+i*.55,-172,wood);
+light(-2,3,-177,0xffa94f,10,22);light(2,3,-177,0xffa94f,10,22);
+// Glowing crystal clusters embedded in the cave walls.
+for(let z=-8;z>-205;z-=14)for(const side of [-1,1]){const x=side*(3.7+Math.random()*.35),y=-1.7+Math.random()*1.8;const g=new THREE.Group();for(let i=0;i<3;i++){const c=new THREE.Mesh(new THREE.ConeGeometry(.35+Math.random()*.18,1.7+Math.random(),6),crystals[(Math.floor(Math.random()*4))]);c.position.set((i-1)*.38,.55,0);c.rotation.z=(Math.random()-.5)*.35;g.add(c)}g.position.set(x,y,z);add(g);const glow=new THREE.PointLight(0x42d9f3,3,9);glow.position.set(x,y+1,z);add(glow)}
+// Lanterns and mysterious miners. Their positions are fixed in the tunnel; only limbs animate.
+const figures=[];
+for(let z=-20;z>-190;z-=25){for(const x of [-4.7,4.7]){light(x,-.1,z,0xffa84f,2.5,8);const g=new THREE.Group();const dark=material(0x080b16,1);const torso=new THREE.Mesh(new THREE.CapsuleGeometry(.25,.8,4,7),dark);torso.position.y=1.2;g.add(torso);const head=new THREE.Mesh(new THREE.SphereGeometry(.24,10,8),dark);head.position.y=2;g.add(head);const arms=[];for(const side of [-1,1]){const arm=new THREE.Mesh(new THREE.CapsuleGeometry(.08,.6,3,5),dark);arm.position.set(side*.32,1.25,0);g.add(arm);arms.push(arm)}g.position.set(x,-2,z);add(g);figures.push({arms,phase:Math.random()*6})}}
+// Small ore piles and scattered stones
+for(let i=0;i<180;i++){const x=(Math.random()-.5)*8,z=8-Math.random()*215,s=.12+Math.random()*.28;const o=new THREE.Mesh(new THREE.DodecahedronGeometry(s,0),i%8===0?darkRock:rock);o.position.set(x,-2.65+Math.random()*.12,z);add(o)}
+// Optional original synthesized atmospheric tones.
+let audio=null,master=null,soundOn=true;
+function startSound(){if(audio)return;const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;audio=new AC();master=audio.createGain();master.gain.value=soundOn?.13:0;master.connect(audio.destination);[110,164.81,220].forEach((hz,i)=>{const o=audio.createOscillator(),g=audio.createGain();o.type='sine';o.frequency.value=hz;g.gain.value=.12/(i+1);o.connect(g);g.connect(master);o.start()})}
+document.getElementById('soundBtn').onclick=()=>{soundOn=!soundOn;document.getElementById('soundBtn').textContent=soundOn?'♫ SOUND ON':'♫ SOUND OFF';if(soundOn)startSound();if(master)master.gain.setTargetAtTime(soundOn?.13:0,audio.currentTime,.2)};
+let running=false,elapsed=0,last=0;
+document.getElementById('startBtn').onclick=()=>{if(running)return;elapsed=0;world.position.z=0;running=true;document.getElementById('intro').style.display='none';document.getElementById('status').textContent='DESCENDING · THE SHADOWS ARE SINGING';if(soundOn)startSound();if(audio&&audio.state==='suspended')audio.resume()};
+function animate(t){requestAnimationFrame(animate);const dt=last?Math.min((t-last)/1000,.04):0;last=t;
+ if(running){elapsed=Math.min(52,elapsed+dt);world.position.z=elapsed*3.75;document.getElementById('bar').style.width=(elapsed/52*100)+'%';if(elapsed>=52){running=false;document.getElementById('status').textContent='THE LOST VEIN · JOURNEY COMPLETE';document.getElementById('intro').style.display='block';document.querySelector('#intro h1').textContent='THE LOST VEIN';document.querySelector('#intro p').textContent='The mine has revealed its secret. Would you dare descend again?';document.getElementById('startBtn').textContent='RIDE AGAIN'}}
+ const tm=t*.001;figures.forEach(f=>{f.arms[0].rotation.z=Math.sin(tm*3+f.phase)*.22;f.arms[1].rotation.z=-Math.sin(tm*3+f.phase)*.22});
+ renderer.render(scene,camera)}
 requestAnimationFrame(animate);
-window.addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
+addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
 window.__enchantedMineReady=true;
-})().catch(err=>{const f=document.getElementById('fail');f.style.display='block';f.textContent='The 3D mine could not start. Check your connection and reload. '+err.message;});
+})().catch(e=>{const f=document.getElementById('fail');f.style.display='block';f.textContent='The mine could not start: '+e.message});
 </script>
 </body>
 </html>
