@@ -47,9 +47,7 @@ function light(x,y,z,color=0xffad55,power=7,range=15){const p=new THREE.PointLig
 for(let z=5;z>-218;z-=5){
  const left=new THREE.Mesh(new THREE.DodecahedronGeometry(1,1),rock);left.position.set(-4.65,1.4,z);left.scale.set(1.25,4.3,2.8);add(left);
  const right=left.clone();right.position.x=4.65;add(right);
- const roof=new THREE.Mesh(new THREE.DodecahedronGeometry(1,1),darkRock);roof.position.set((Math.random()-.5)*.5,6.75+(Math.random()-.5)*.35,z);roof.scale.set(5.5,1.9,3.15);add(roof);
- // Jagged stalactites soften the roofline and make the overhead cavern feel natural.
- for(let k=0;k<3;k++){const h=1.05+Math.random()*1.15,spike=new THREE.Mesh(new THREE.ConeGeometry(.28+Math.random()*.2,h,6),darkRock);spike.rotation.z=Math.PI;spike.position.set((Math.random()-.5)*7.2,5.85+Math.random()*.25,z+(Math.random()-.5)*2.1);spike.rotation.x=(Math.random()-.5)*.22;add(spike)}
+ // Open overhead: no roof mesh or hanging ceiling pieces in the ride corridor.
  // heavy timber sets with iron collars
  beam(.42,7.1,.5,-4.05,1.4,z);beam(.42,7.1,.5,4.05,1.4,z);// Open rock vault: no straight horizontal beam across the ceiling.
  for(const x of [-4.05,4.05])for(const y of [-1.5,1,3.5])beam(.5,.12,.62,x,y,z,iron);
@@ -143,9 +141,7 @@ light(-2,3,-177,0xffa94f,10,22);light(2,3,-177,0xffa94f,10,22);
 // Glowing crystal clusters embedded in the cave walls.
 for(let z=-8;z>-205;z-=14)for(const side of [-1,1]){const x=side*(3.7+Math.random()*.35),y=-1.7+Math.random()*1.8;const g=new THREE.Group();for(let i=0;i<3;i++){const c=new THREE.Mesh(gemGeometry(1.7+Math.random(),.35+Math.random()*.18),crystals[(Math.floor(Math.random()*4))]);c.position.set((i-1)*.38,.55,0);c.rotation.z=(Math.random()-.5)*.35;g.add(c)}g.position.set(x,y,z);add(g);const glow=new THREE.PointLight(0x42d9f3,3,9);glow.position.set(x,y+1,z);add(glow)}
 // A truly separate cavern room: a vast vaulted chamber replaces the cramped tunnel visually.
-const cavernShellMat=new THREE.MeshStandardMaterial({color:0x303b55,roughness:1,side:THREE.BackSide});
-const cavernShell=new THREE.Mesh(new THREE.SphereGeometry(1,32,24),cavernShellMat);
-cavernShell.scale.set(10.5,8.5,23);cavernShell.position.set(0,1.2,-111);add(cavernShell);
+// The cathedral chamber has no overhead shell; the upper view falls into darkness.
 block(18,.55,43,0,-3.05,-111,material(0x242b39,1));
 for(const x of [-8.1,8.1])for(const z of [-94,-108,-124]){
  const pillar=new THREE.Mesh(new THREE.DodecahedronGeometry(1,1),rock);
@@ -154,8 +150,7 @@ for(const x of [-8.1,8.1])for(const z of [-94,-108,-124]){
 for(const z of [-94,-124]){
  const arch=new THREE.Group();arch.position.z=z;add(arch);
  for(const x of [-7.2,7.2]){const post=new THREE.Mesh(new THREE.BoxGeometry(.65,8,.7),wood);post.position.set(x,1,0);arch.add(post)}
- const crown=new THREE.Mesh(new THREE.BoxGeometry(15,.7,.8),wood);crown.position.y=5.1;arch.add(crown);
- for(const x of [-7.2,7.2]){const brace=new THREE.Mesh(new THREE.BoxGeometry(2.2,.35,.45),iron);brace.position.set(x*.78,4.45,0);brace.rotation.z=x>0?-.45:.45;arch.add(brace)}
+ // Open-topped timber side frames; no crosspiece blocking the view above.
 }
 for(const x of [-5.8,5.8]){const post=new THREE.Mesh(new THREE.BoxGeometry(.42,6,.48),gold);post.position.set(x,1.1,-111);add(post)}
 light(-5,4,-105,0x4edfff,16,30);light(5,4,-115,0xa27bff,16,30);light(0,6,-111,0x54f5d9,20,34);
