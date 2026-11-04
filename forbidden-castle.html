@@ -129,6 +129,20 @@ footer{text-align:center;padding:20px 0 36px;color:#8f86a6;font-size:10px;letter
 .scene>.castle,.scene>.forest-back,.scene>.forest-front{display:none!important}
 .scene>.skyglow,.scene>.stars,.scene>.moon,.scene>.haunt-aura,.scene>.haunt-lightning,.scene>.haunt-embers,.scene>.haunt-bats,.scene>.fog,.scene>.haunt-mist,.scene>.scene-label,.scene>.scene-caption{display:none!important}
 @media(max-width:600px){.scene{min-height:0;height:auto;aspect-ratio:1/1;background-position:center center}}
+ 
+/* Connected, forward-moving castle journey */
+.journey-step{position:absolute;z-index:8;left:50%;bottom:clamp(18px,4vw,38px);transform:translateX(-50%);width:min(88%,560px);padding:18px 20px;text-align:center;border:1px solid #b49aff99;border-radius:18px;background:linear-gradient(180deg,rgba(12,9,22,.88),rgba(8,7,15,.96));box-shadow:0 12px 45px #000b;backdrop-filter:blur(10px);display:none}
+.journey-step.active{display:block;animation:journeyIn .7s ease both}
+.journey-kicker{margin:0 0 7px;color:#c5a7ff;font-size:11px;font-weight:800;letter-spacing:.2em}
+.journey-step h2{margin:0 0 7px;color:#f4edff;font-size:clamp(22px,4vw,32px)}
+.journey-step p:not(.journey-kicker){margin:0 auto 14px;max-width:460px;color:#d8cfe5;font-size:14px;line-height:1.55}
+.journey-step button{border:1px solid #c6a5ff;border-radius:999px;padding:12px 22px;background:linear-gradient(120deg,#56367b,#282047);color:#fff;font-weight:800;letter-spacing:.04em}
+@keyframes journeyIn{from{opacity:0;transform:translate(-50%,18px)}to{opacity:1;transform:translate(-50%,0)}}
+.scene{transition:background-size 2.2s cubic-bezier(.2,.75,.2,1),background-position 2.2s ease,filter 1.4s ease}
+.scene.courtyard-walk{background-size:175% auto!important;background-position:center 78%!important;filter:saturate(1.12) brightness(.9)}
+.scene.courtyard-walk .scene-label,.scene.courtyard-walk .scene-caption{opacity:0!important}
+.scene.entering-hall{filter:brightness(.62);transition:filter 1.2s ease}
+@media(max-width:600px){.journey-step{bottom:12px;padding:15px 14px}.scene.courtyard-walk{background-size:205% auto!important;background-position:center 78%!important}}
 </style></head>
 <body>
 <header class="top"><a class="brand" href="index.html">KAEVORYN STUDIOS<small>CREATE THE IMPOSSIBLE</small></a><nav class="nav"><a href="kingdoms.html">Kingdoms</a><a href="attractions.html">Attractions</a></nav></header>
@@ -242,6 +256,12 @@ footer{text-align:center;padding:20px 0 36px;color:#8f86a6;font-size:10px;letter
 <g fill="#0b0d16" opacity=".92"><path d="M0 820Q100 750 210 820L270 900H0ZM930 830Q1080 740 1200 820V900H900Z"/></g>
 </svg>
 <div class="fog"></div><div class="haunt-mist"></div><div class="scene-caption"><strong>THE GATES HAVE NOT OPENED IN CENTURIES</strong><span>Look closely. Something is watching from the highest tower.</span></div>
+<div class="journey-step" id="journeyStep" aria-live="polite">
+  <p class="journey-kicker" id="journeyKicker">THE OUTER GATES</p>
+  <h2 id="journeyTitle">The gates are opening</h2>
+  <p id="journeyCopy">A cold wind moves through the ironwork. Step forward when the way is clear.</p>
+  <button id="journeyNext" type="button">Walk through the gates</button>
+</div>
 <section class="interior" id="entranceHall" aria-live="polite">
 <div class="interior-head" id="floorHeading"><p class="eyebrow">BEYOND THE THRESHOLD · THE CASTLE AWAKENS</p><h2>THE ENTRANCE HALL</h2><p>The gates part. A vast chamber opens before you. An old stone staircase rises toward a sealed inner door, lit by floating candles and violet magic.</p></div>
 <svg id="groundFloorArt" class="hall-art" viewBox="0 0 900 430" role="img" aria-label="A grand gothic entrance hall with towering arches, floating candles, a glowing magical floor crest and a broad, clearly visible old stone staircase leading to a sealed inner door">
@@ -421,6 +441,49 @@ M605 55h20v58h-20z M632 62h24v51h-24z M663 51h18v62h-18z M690 58h22v55h-22z M720
 <section class="panel"><p class="eyebrow">THE FIRST APPROACH</p><h2>Will you enter?</h2><p>The outer gate is sealed. A violet light flickers behind the ironwork, and a low sound rolls through the stone beneath your feet.</p><div class="actions"><button id="approach" type="button">Approach the gates</button><a class="btn" href="kingdoms.html">Return to Kingdoms</a></div><p id="gateMessage" aria-live="polite">The castle is silent… for now.</p></section>
 </main><footer>KAEVORYN STUDIOS · CREATE THE IMPOSSIBLE</footer>
 <script>
-(()=>{const b=document.getElementById('approach'),m=document.getElementById('gateMessage'),scene=document.querySelector('.scene'),hall=document.getElementById('entranceHall');let opened=false;function creak(){try{const C=window.AudioContext||window.webkitAudioContext;if(!C)return;const c=new C(),o=c.createOscillator(),g=c.createGain(),f=c.createBiquadFilter();o.type='sine';o.frequency.setValueAtTime(92,c.currentTime);o.frequency.exponentialRampToValueAtTime(43,c.currentTime+1.05);f.type='lowpass';f.frequency.setValueAtTime(170,c.currentTime);f.frequency.linearRampToValueAtTime(95,c.currentTime+1.1);g.gain.setValueAtTime(.0001,c.currentTime);g.gain.linearRampToValueAtTime(.035,c.currentTime+.18);g.gain.linearRampToValueAtTime(.0001,c.currentTime+1.15);o.connect(f);f.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+1.2);o.onended=()=>c.close();}catch(e){}}function whisper(){try{const C=window.AudioContext||window.webkitAudioContext;if(!C)return;const c=new C(),n=c.createBuffer(1,c.sampleRate*1.8,c.sampleRate),d=n.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*.7;const src=c.createBufferSource(),f=c.createBiquadFilter(),g=c.createGain(),o=c.createOscillator(),og=c.createGain();src.buffer=n;f.type='bandpass';f.frequency.setValueAtTime(520,c.currentTime);f.frequency.linearRampToValueAtTime(260,c.currentTime+1.5);f.Q.value=.7;g.gain.setValueAtTime(.0001,c.currentTime);g.gain.linearRampToValueAtTime(.045,c.currentTime+.35);g.gain.linearRampToValueAtTime(.0001,c.currentTime+1.7);o.type='sine';o.frequency.setValueAtTime(76,c.currentTime);o.frequency.linearRampToValueAtTime(58,c.currentTime+1.6);og.gain.setValueAtTime(.0001,c.currentTime);og.gain.linearRampToValueAtTime(.018,c.currentTime+.4);og.gain.linearRampToValueAtTime(.0001,c.currentTime+1.7);src.connect(f);f.connect(g);g.connect(c.destination);o.connect(og);og.connect(c.destination);src.start();o.start();src.stop(c.currentTime+1.8);o.stop(c.currentTime+1.8);src.onended=()=>c.close();}catch(e){}}b.addEventListener('click',()=>{opened=!opened;scene.classList.toggle('gate-open',opened);hall.classList.toggle('revealed',opened);if(opened){creak();setTimeout(whisper,950);}m.textContent=opened?'The ancient gates groan open. A voice whispers: “We have been expecting you.”':'The heavy gates creak shut. The entrance hall disappears into shadow.';b.textContent=opened?'Close the gates':'Open the castle gates';});})();
+(()=> {
+ const begin=document.getElementById('approach');
+ const message=document.getElementById('gateMessage');
+ const scene=document.querySelector('.scene');
+ const hall=document.getElementById('entranceHall');
+ const step=document.getElementById('journeyStep');
+ const kicker=document.getElementById('journeyKicker');
+ const title=document.getElementById('journeyTitle');
+ const copy=document.getElementById('journeyCopy');
+ const next=document.getElementById('journeyNext');
+ let stage=0;
+ function sound(freq=92,duration=1.1){
+  try{const C=window.AudioContext||window.webkitAudioContext;if(!C)return;const c=new C(),o=c.createOscillator(),g=c.createGain(),f=c.createBiquadFilter();o.type='sine';o.frequency.setValueAtTime(freq,c.currentTime);o.frequency.exponentialRampToValueAtTime(Math.max(35,freq*.48),c.currentTime+duration);f.type='lowpass';f.frequency.setValueAtTime(180,c.currentTime);f.frequency.linearRampToValueAtTime(90,c.currentTime+duration);g.gain.setValueAtTime(.0001,c.currentTime);g.gain.linearRampToValueAtTime(.035,c.currentTime+.16);g.gain.linearRampToValueAtTime(.0001,c.currentTime+duration);o.connect(f);f.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+duration+.05);o.onended=()=>c.close()}catch(e){}
+ }
+ function showStep(k,t,c,b){kicker.textContent=k;title.textContent=t;copy.textContent=c;next.textContent=b;step.classList.remove('active');void step.offsetWidth;step.classList.add('active')}
+ begin.addEventListener('click',()=>{
+  if(stage!==0)return;
+  stage=1;
+  scene.classList.add('gate-open');
+  step.classList.add('active');
+  showStep('THE OUTER GATES','The gates are opening','Ancient hinges groan as the iron gates swing apart. Violet light spills onto the path.','Walk through the gates');
+  message.textContent='The gates begin to open. The path into the Forbidden Forest is clear.';
+  begin.textContent='Gates opening…';
+  begin.disabled=true;
+  sound(82,1.7);
+ });
+ next.addEventListener('click',()=>{
+  if(stage===1){
+   stage=2;
+   scene.classList.add('courtyard-walk');
+   showStep('THE COURTYARD','You step beyond the gates','Your footsteps carry across the wet stone path. The castle towers rise above you as the entrance draws nearer.','Approach the castle doors');
+   message.textContent='You are inside the grounds. Keep walking toward the castle.';
+   sound(68,1.35);
+  }else if(stage===2){
+   stage=3;
+   scene.classList.add('entering-hall');
+   step.classList.remove('active');
+   message.textContent='The great doors yield. You cross the threshold into the entrance hall.';
+   sound(55,1.8);
+   setTimeout(()=>{hall.classList.add('revealed');scene.classList.remove('entering-hall');},650);
+   begin.textContent='You have entered the castle';
+  }
+ });
+})();
 </script>
 </body></html>
