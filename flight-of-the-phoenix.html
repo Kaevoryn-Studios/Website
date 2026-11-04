@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#090711">
+<title>FLIGHT OF THE PHOENIX · Kaevoryn Studios</title>
+<style>
+:root{color-scheme:dark;--gold:#ffbd62;--ember:#ff693d;--ink:#080914}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--ink);font-family:Arial,Helvetica,sans-serif;color:#fff}canvas{display:block}
+#hud{position:fixed;inset:0;pointer-events:none;background:linear-gradient(180deg,#080914a8,transparent 22%,transparent 70%,#0809149c)}
+.top{position:absolute;top:18px;left:20px;right:20px;display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.brand{font-size:10px;letter-spacing:.24em;color:#ffd49b;font-weight:800}.brand small{display:block;color:#d9c5b5;font-size:9px;margin-top:5px;letter-spacing:.16em}
+#state{font-size:10px;letter-spacing:.15em;color:#ffe1b4;text-align:right}
+.intro{position:absolute;left:50%;top:48%;transform:translate(-50%,-50%);width:min(620px,calc(100% - 38px));text-align:center;padding:28px 24px;background:#090914b8;border:1px solid #ffbd6255;border-radius:18px;backdrop-filter:blur(12px);pointer-events:auto}
+.kicker{font-size:10px;letter-spacing:.28em;color:#ffbd62;font-weight:800}.intro h1{font-size:clamp(34px,7vw,68px);line-height:.98;margin:12px 0;text-transform:uppercase;letter-spacing:-.04em}.intro p{color:#e0d6d0;line-height:1.6;font-size:14px;max-width:470px;margin:0 auto 20px}
+button{border:1px solid #ffd08a;background:linear-gradient(120deg,#9e3d22,#d66b2c);color:white;border-radius:999px;padding:13px 22px;font-weight:800;letter-spacing:.1em;font-size:11px;cursor:pointer;pointer-events:auto}
+#controls{position:absolute;bottom:18px;left:18px;right:18px;display:flex;justify-content:space-between;align-items:end;gap:12px;pointer-events:none}
+.hint{font-size:10px;line-height:1.6;color:#e6d9d0;text-shadow:0 2px 6px #000;max-width:240px}
+.actions{display:flex;gap:8px;pointer-events:auto}.actions button{padding:10px 14px;font-size:9px;background:#10101dcc;border-color:#ffbd6277}
+#progress{position:absolute;bottom:0;left:0;height:3px;width:0;background:linear-gradient(90deg,#ff542f,#ffd16b);box-shadow:0 0 12px #ff7a39}
+#mobileLook{position:absolute;inset:20% 0 20%;pointer-events:auto;display:none}
+@media(pointer:coarse){#mobileLook{display:block}.hint{max-width:150px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div id="hud">
+ <div class="top"><div class="brand">KAEVORYN STUDIOS<small>THE KINGDOMS OF WONDER</small></div><div id="state">ATTRACTION PREVIEW · NOT YET RELEASED</div></div>
+ <div class="intro" id="intro"><div class="kicker">A LEGEND TAKES FLIGHT</div><h1>Flight of the<br>Phoenix</h1><p>Climb into the sky above an ancient kingdom. Dive through the Ember Peaks, race beside waterfalls, and meet the legendary firebird.</p><button id="start">BOARD THE FLIGHT</button></div>
+ <div id="mobileLook" aria-label="Drag to look around"></div>
+ <div id="controls"><div class="hint" id="hint">PC: Mouse to look around · Esc to release mouse<br>Phone: Drag the screen to look around</div><div class="actions"><button id="pause">PAUSE</button><button id="restart">RESTART</button></div></div>
+ <div id="progress"></div>
+</div>
+<script type="module">
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
+const scene=new THREE.Scene();scene.background=new THREE.Color(0x100c1c);scene.fog=new THREE.FogExp2(0x211321,.012);
+const camera=new THREE.PerspectiveCamera(72,innerWidth/innerHeight,.1,900);
+const renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:'high-performance'});renderer.setPixelRatio(Math.min(devicePixelRatio,1.7));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.12;document.body.appendChild(renderer.domElement);
+scene.add(new THREE.HemisphereLight(0xb8c8ff,0x35151b,1.5));
+const moon=new THREE.DirectionalLight(0xc7d7ff,2.1);moon.position.set(-45,75,25);moon.castShadow=true;moon.shadow.mapSize.set(1024,1024);scene.add(moon);
+const fireLight=new THREE.PointLight(0xff5a21,180,95,2);fireLight.position.set(0,13,-115);scene.add(fireLight);
+const ground=new THREE.Mesh(new THREE.PlaneGeometry(900,900),new THREE.MeshStandardMaterial({color:0x101b1b,roughness:1}));ground.rotation.x=-Math.PI/2;ground.position.y=-5;ground.receiveShadow=true;scene.add(ground);
+function mat(color,rough=.8,metal=0,emissive=0,ei=0){return new THREE.MeshStandardMaterial({color,roughness:rough,metalness:metal,emissive,emissiveIntensity:ei})}
+const rockMat=mat(0x39313a,1),darkRock=mat(0x201e2c,1),pineMat=mat(0x102c29,1),woodMat=mat(0x3a211c),goldMat=mat(0xb77b3b,.45,.55),trackMat=mat(0x3b2630,.35,.75),flameMat=mat(0xff762e,.4,.1,0xff3a08,2.4);
+function mountain(x,y,z,sx,sy,sz,material=rockMat){const m=new THREE.Mesh(new THREE.ConeGeometry(1,1,7),material);m.position.set(x,y,z);m.scale.set(sx,sy,sz);m.rotation.y=Math.random()*2;m.castShadow=true;m.receiveShadow=true;scene.add(m);return m}
+for(let i=0;i<45;i++){let z=-35-i*10;mountain(-48-Math.random()*32,8,z,15+Math.random()*20,35+Math.random()*45,15+Math.random()*15,i%3?rockMat:darkRock);mountain(48+Math.random()*32,5,z,15+Math.random()*22,30+Math.random()*45,15+Math.random()*15,darkRock)}
+function tree(x,z,h){const g=new THREE.Group();const trunk=new THREE.Mesh(new THREE.CylinderGeometry(.45,.8,h*.22,7),woodMat);trunk.position.y=h*.11;trunk.castShadow=true;g.add(trunk);for(let j=0;j<4;j++){const c=new THREE.Mesh(new THREE.ConeGeometry(h*(.16-j*.018),h*.34,7),pineMat);c.position.y=h*(.25+j*.17);c.castShadow=true;g.add(c)}g.position.set(x,-5,z);scene.add(g)}
+for(let i=0;i<100;i++){const z=-10-Math.random()*360;tree(-18-Math.random()*35,z,10+Math.random()*17);tree(18+Math.random()*35,z,10+Math.random()*18)}
+// Kingdom skyline and a distant illuminated citadel
+const castle=new THREE.Group();const stone=mat(0x77717b,.9),roof=mat(0x211d2d,.7,.2),windowMat=mat(0xffc46d,.35,.1,0xff8b2a,2);
+function tower(x,y,z,r,h){const b=new THREE.Mesh(new THREE.CylinderGeometry(r*.82,r,h,10),stone);b.position.set(x,y+h/2,z);b.castShadow=true;castle.add(b);const cap=new THREE.Mesh(new THREE.ConeGeometry(r*1.25,h*.35,10),roof);cap.position.set(x,y+h+h*.17,z);cap.castShadow=true;castle.add(cap);const w=new THREE.Mesh(new THREE.BoxGeometry(.55,2.5,.3),windowMat);w.position.set(x,y+h*.55,z+r*.9);castle.add(w)}
+const hall=new THREE.Mesh(new THREE.BoxGeometry(34,27,17),stone);hall.position.set(0,8,-320);hall.castShadow=true;castle.add(hall);tower(-13,-5,-320,4,48);tower(13,-5,-320,4,57);tower(0,-5,-320,5,72);
+for(let x=-9;x<=9;x+=6){const w=new THREE.Mesh(new THREE.BoxGeometry(1.1,3,.35),windowMat);w.position.set(x,11,-311.2);castle.add(w)}
+castle.position.z=0;scene.add(castle);
+// Coaster path: a continuous swooping flight above the valley
+const points=[new THREE.Vector3(0,2,15),new THREE.Vector3(0,9,-15),new THREE.Vector3(-8,20,-48),new THREE.Vector3(-19,29,-82),new THREE.Vector3(-12,16,-115),new THREE.Vector3(12,12,-150),new THREE.Vector3(22,28,-188),new THREE.Vector3(5,42,-220),new THREE.Vector3(-18,34,-252),new THREE.Vector3(0,22,-290),new THREE.Vector3(0,12,-330)];
+const path=new THREE.CatmullRomCurve3(points);const track=new THREE.Mesh(new THREE.TubeGeometry(path,500,.22,10,false),trackMat);scene.add(track);
+for(let i=0;i<=80;i++){const t=i/80,p=path.getPoint(t),tan=path.getTangent(t);const side=new THREE.Vector3(-tan.z,0,tan.x).normalize();for(const s of [-1,1]){const rail=new THREE.Mesh(new THREE.CylinderGeometry(.09,.09,.95,7),goldMat);rail.position.copy(p).addScaledVector(side,s*1.05);rail.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),new THREE.Vector3(0,1,0));scene.add(rail)}}
+function arch(z,y=16){const g=new THREE.Group();const a=new THREE.Mesh(new THREE.TorusGeometry(12,.8,8,28,Math.PI),goldMat);a.rotation.z=Math.PI; a.position.y=y;g.add(a);for(let x of [-12,12]){const p=new THREE.Mesh(new THREE.CylinderGeometry(.8,1.1,y,8),darkRock);p.position.set(x,y/2,0);g.add(p)}g.position.z=z;scene.add(g)}arch(-75,22);arch(-210,35);
+// Phoenix model with articulated wings
+const bird=new THREE.Group();const body=new THREE.Mesh(new THREE.SphereGeometry(2.3,16,12),mat(0x9c321b,.4,.15,0x5a1605,.7));body.scale.set(.8,1,2);bird.add(body);
+const chest=new THREE.Mesh(new THREE.SphereGeometry(1.5,14,10),mat(0xffa33b,.38,.1,0xff5b13,1.5));chest.position.set(0,.2,-2);bird.add(chest);
+const head=new THREE.Mesh(new THREE.SphereGeometry(.85,14,10),mat(0xffc15d,.35,.1,0xff7a1b,1.8));head.position.set(0,1.5,-3.1);bird.add(head);
+const beak=new THREE.Mesh(new THREE.ConeGeometry(.38,1,5),goldMat);beak.rotation.x=-Math.PI/2;beak.position.set(0,1.25,-4);bird.add(beak);
+const wings=[];for(const s of [-1,1]){const wing=new THREE.Group();const base=new THREE.Mesh(new THREE.BoxGeometry(1, .35, 8),mat(0x9e2e17,.5,.1,0x541400,.7));base.position.set(s*4,0,0);base.rotation.z=s*.16;wing.add(base);for(let j=0;j<7;j++){const feather=new THREE.Mesh(new THREE.ConeGeometry(.55,5.5,5),mat(j%2?0xff7a25:0xffb044,.4,.1,0xff4b0a,1.2));feather.rotation.x=Math.PI/2;feather.position.set(s*(2.5+j*.9),-.15,-1.4+j*.65);wing.add(feather)}wing.position.x=s*1.2;bird.add(wing);wings.push({wing,s})}
+for(let i=0;i<5;i++){const tail=new THREE.Mesh(new THREE.ConeGeometry(.45,8,6),mat(i%2?0xff6a22:0xffb84d,.4,.1,0xff3c08,1.4));tail.rotation.x=Math.PI/2;tail.rotation.z=(i-2)*.12;tail.position.set((i-2)*.6,-.7,5);bird.add(tail)}
+bird.scale.setScalar(1.5);bird.position.set(0,19,-155);scene.add(bird);
+const emberGeo=new THREE.BufferGeometry();const N=450,arr=new Float32Array(N*3),vel=[];for(let i=0;i<N;i++){arr[i*3]=(Math.random()-.5)*80;arr[i*3+1]=Math.random()*45-5;arr[i*3+2]=-Math.random()*350;vel.push(.15+Math.random()*.55)}emberGeo.setAttribute('position',new THREE.BufferAttribute(arr,3));const embers=new THREE.Points(emberGeo,new THREE.PointsMaterial({color:0xff9a50,size:.65,transparent:true,opacity:.8}));scene.add(embers);
+let riding=false,paused=false,t=0,lookX=0,lookY=0,drag=false,lastX=0,lastY=0;const intro=document.getElementById('intro'),progress=document.getElementById('progress'),state=document.getElementById('state');
+function begin(){riding=true;paused=false;intro.style.display='none';state.textContent='FLIGHT IN PROGRESS';if(innerWidth>700&&renderer.domElement.requestPointerLock)renderer.domElement.requestPointerLock();}document.getElementById('start').onclick=begin;
+document.getElementById('pause').onclick=()=>{if(!riding)return;paused=!paused;document.getElementById('pause').textContent=paused?'RESUME':'PAUSE';state.textContent=paused?'FLIGHT PAUSED':'FLIGHT IN PROGRESS'};
+document.getElementById('restart').onclick=()=>{t=0;riding=false;paused=false;intro.style.display='block';progress.style.width='0%';state.textContent='READY TO BOARD';document.getElementById('pause').textContent='PAUSE';document.exitPointerLock?.()};
+document.addEventListener('mousemove',e=>{if(document.pointerLockElement){lookX-=e.movementX*.0018;lookY-=e.movementY*.0015;lookY=THREE.MathUtils.clamp(lookY,-.65,.65)}});
+const touch=document.getElementById('mobileLook');touch.addEventListener('pointerdown',e=>{drag=true;lastX=e.clientX;lastY=e.clientY;touch.setPointerCapture(e.pointerId)});touch.addEventListener('pointermove',e=>{if(!drag)return;lookX-=(e.clientX-lastX)*.004;lookY-=(e.clientY-lastY)*.004;lookY=THREE.MathUtils.clamp(lookY,-.7,.7);lastX=e.clientX;lastY=e.clientY});touch.addEventListener('pointerup',()=>drag=false);touch.addEventListener('pointercancel',()=>drag=false);
+const clock=new THREE.Clock();
+function animate(){requestAnimationFrame(animate);const dt=Math.min(clock.getDelta(),.04);if(riding&&!paused){t=Math.min(1,t+dt/68);const p=path.getPointAt(t),tan=path.getTangentAt(t);camera.position.copy(p).add(new THREE.Vector3(0,2.4,0));const target=p.clone().add(tan.multiplyScalar(13)).add(new THREE.Vector3(lookX*28,lookY*25,0));camera.lookAt(target);progress.style.width=(t*100)+'%';if(t>=1){riding=false;state.textContent='THE KINGDOM AWAITS';intro.style.display='block';intro.querySelector('.kicker').textContent='THE FLIGHT IS COMPLETE';intro.querySelector('h1').innerHTML='The Phoenix<br>has awakened';intro.querySelector('p').textContent='Your journey above the kingdom is complete. Restart to fly again.';document.getElementById('start').textContent='FLY AGAIN';}}
+else if(!riding){camera.position.set(0,5,28);camera.lookAt(0,18,-120)}
+const flap=Math.sin(performance.now()*.004)*.5;wings.forEach(({wing,s})=>wing.rotation.z=s*(.18+flap*.42));bird.position.y=19+Math.sin(performance.now()*.0015)*1.8;fireLight.intensity=150+Math.sin(performance.now()*.01)*35;
+const a=emberGeo.attributes.position.array;for(let i=0;i<N;i++){a[i*3+1]+=vel[i]*dt*4;if(a[i*3+1]>48)a[i*3+1]=-5}emberGeo.attributes.position.needsUpdate=true;renderer.render(scene,camera)}
+animate();addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
+</script>
+</body></html>
