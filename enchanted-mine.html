@@ -32,8 +32,35 @@ const glowMats=crystalMats.map(m=>{m.emissive=m.color;m.emissiveIntensity=1.35;r
 function box(w,h,d,material,x,y,z){const o=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),material);o.position.set(x,y,z);scene.add(o);return o}
 function sphere(r,material,x,y,z){const o=new THREE.Mesh(new THREE.SphereGeometry(r,12,10),material);o.position.set(x,y,z);scene.add(o);return o}
 function rockChunk(x,y,z,s){const o=new THREE.Mesh(new THREE.DodecahedronGeometry(1,1),rock);o.position.set(x,y,z);o.scale.set(s*1.2,s,s*1.1);o.rotation.set(Math.random()*2,Math.random()*2,Math.random()*2);scene.add(o)}
-// Long cavern, rough ceiling and walls
-for(let z=18;z>-190;z-=7){rockChunk(-10+Math.random()*2,5+Math.random()*2,z,3+Math.random()*1.5);rockChunk(10+Math.random()*2,5+Math.random()*2,z,3+Math.random()*1.5);rockChunk((Math.random()-.5)*12,12+Math.random()*2,z,2.2)}
+// Enclosed, hand-hewn mine tunnel: irregular rock shell, close walls and low ceiling
+{
+ const verts=[],indices=[],rings=150,sides=40;
+ for(let j=0;j<=rings;j++){
+  const z=20-j*1.42;
+  for(let i=0;i<=sides;i++){
+   const a=i/sides*Math.PI*2;
+   const noise=Math.sin(j*.63+i*1.7)*.16+Math.sin(j*.19-i*.73)*.12;
+   const rx=5.15+noise, ry=4.7+noise*.8;
+   verts.push(Math.cos(a)*rx,2.15+Math.sin(a)*ry,z);
+  }
+ }
+ for(let j=0;j<rings;j++)for(let i=0;i<sides;i++){
+  const a=j*(sides+1)+i,b=a+sides+1;
+  indices.push(a,b,a+1,b,b+1,a+1);
+ }
+ const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.Float32BufferAttribute(verts,3));geo.setIndex(indices);geo.computeVertexNormals();
+ const shell=new THREE.Mesh(geo,new THREE.MeshStandardMaterial({color:0x343342,roughness:1,side:THREE.DoubleSide}));scene.add(shell);
+}
+// Jagged exposed rock faces break up the tunnel silhouette
+for(let z=17;z>-190;z-=4.5){
+ for(const side of [-1,1])rockChunk(side*(4.55+Math.random()*.45),1+Math.random()*4,z,1.1+Math.random()*.9);
+ if(Math.random()>.22)rockChunk((Math.random()-.5)*7,6.1+Math.random()*.4,z,1.1+Math.random()*.8);
+}
+// Mine floor: uneven packed earth and loose broken stone
+const floor= new THREE.Mesh(new THREE.PlaneGeometry(10,220,1,80),new THREE.MeshStandardMaterial({color:0x252431,roughness:1}));floor.rotation.x=-Math.PI/2;floor.position.set(0,-2.85,-85);scene.add(floor);
+for(let i=0;i<460;i++){const x=(Math.random()-.5)*8.7,z=16-Math.random()*202,s=.08+Math.random()*.28;const peb=new THREE.Mesh(new THREE.DodecahedronGeometry(s,0),i%4===0?darkRock:rock);peb.position.set(x,-2.72+Math.random()*.08,z);peb.rotation.set(Math.random()*3,Math.random()*3,Math.random()*3);peb.scale.y=.45;scene.add(peb)}
+// Thin mineral seams running through the exposed stone
+for(let z=8;z>-180;z-=22){for(const side of [-1,1]){const seam=new THREE.Mesh(new THREE.TorusGeometry(.85,.045,5,18),new THREE.MeshStandardMaterial({color:0x786b55,metalness:.35,roughness:.65,emissive:0x30251a}));seam.position.set(side*4.75,2+Math.random()*2,z);seam.scale.set(1.4,.45,1);seam.rotation.y=side*.25;scene.add(seam)}}
 // tunnel ribs
 for(let z=14;z>-190;z-=12){for(const side of [-1,1]){const rib=new THREE.Mesh(new THREE.CylinderGeometry(.32,.5,9,7),wood);rib.position.set(side*5,3.5,z);rib.rotation.z=side*.12;scene.add(rib)}box(10,.32,.45,wood,0,8,z)}
 // tracks on a gently winding descending path
