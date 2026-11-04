@@ -123,6 +123,12 @@ footer{text-align:center;padding:20px 0 36px;color:#8f86a6;font-size:10px;letter
 .scene.gate-open .gate-right{transform:translateX(76px) rotateY(-48deg);opacity:.3}
 @media(max-width:600px){.scene{min-height:780px}.castle{left:-3%;width:106%;height:100%;bottom:0}.forest-front{width:110%;left:-5%}.scene-caption{bottom:14px}}
 @media(prefers-reduced-motion:reduce){.window{animation:none}.fog{animation:none}}
+
+/* Photoreal Forbidden Castle hero artwork */
+.scene{background-image:linear-gradient(180deg,rgba(4,5,12,.12) 0%,rgba(4,5,12,.08) 48%,rgba(4,5,12,.72) 100%),url('./forbidden-castle-hero.jpg');background-size:cover;background-position:center center;background-repeat:no-repeat}
+.scene>.castle,.scene>.forest-back,.scene>.forest-front{display:none!important}
+.scene>.skyglow,.scene>.stars,.scene>.moon,.scene>.haunt-aura,.scene>.haunt-lightning,.scene>.haunt-embers,.scene>.haunt-bats,.scene>.fog,.scene>.haunt-mist{pointer-events:none}
+@media(max-width:600px){.scene{background-position:54% center}}
 </style></head>
 <body>
 <header class="top"><a class="brand" href="index.html">KAEVORYN STUDIOS<small>CREATE THE IMPOSSIBLE</small></a><nav class="nav"><a href="kingdoms.html">Kingdoms</a><a href="attractions.html">Attractions</a></nav></header>
