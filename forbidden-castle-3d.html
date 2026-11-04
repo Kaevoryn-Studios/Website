@@ -133,8 +133,8 @@ camera.position.x=clamp(camera.position.x,-8.5,8.5);camera.position.z=clamp(came
 camera.rotation.order='YXZ';camera.rotation.y=yaw;camera.rotation.x=pitch;
 if(!gateOpened&&camera.position.z<-6.3){gateOpened=true;say('The iron gates groan and swing open. Keep walking into the courtyard.')}
 let open=clamp(((-camera.position.z)-6)/5,0,1);leftGate.rotation.y=-open*1.25;rightGate.rotation.y=open*1.25;
-if(!doorOpened&&camera.position.z<-47){doorOpened=true;say('The great entrance doors begin to open. Walk forward into the entrance hall.')}
-let d=clamp(((-camera.position.z)-47)/5,0,1);doors[0].hinge.rotation.y=-d*1.15;doors[1].hinge.rotation.y=d*1.15;
+if(!doorOpened&&camera.position.z<-29){doorOpened=true;say('The great entrance doors begin to open. Walk forward into the entrance hall.')}
+let d=clamp(((-camera.position.z)-29)/5,0,1);doors[0].hinge.rotation.y=-d*1.15;doors[1].hinge.rotation.y=d*1.15;
 if(camera.position.z<-59)say('You are inside the entrance hall. Look around and explore the connected space.');
 }
 function animate(){requestAnimationFrame(animate);const dt=Math.min(clock.getDelta(),.04);update(dt);dust.rotation.y+=dt*.008;renderer.render(scene,camera)}animate();
