@@ -70,6 +70,18 @@ const tub=new THREE.Mesh(new THREE.BoxGeometry(2.15,.82,2.35),material(0x343d4c,
 const rim=new THREE.Mesh(new THREE.BoxGeometry(2.28,.16,2.48),gold);rim.position.y=.5;cart.add(rim);
 for(const x of [-.88,.88])for(const z of [-.78,.78]){const wheel=new THREE.Mesh(new THREE.CylinderGeometry(.32,.32,.18,16),iron);wheel.rotation.z=Math.PI/2;wheel.position.set(x,-.52,z);cart.add(wheel);cartWheels.push(wheel)}
 for(const x of [-.72,.72]){const lampMesh=new THREE.Mesh(new THREE.SphereGeometry(.13,10,8),gold);lampMesh.position.set(x,.64,-1.05);cart.add(lampMesh);const glow=new THREE.PointLight(0xffbd65,3,9);glow.position.set(x,.7,-1.05);cart.add(glow)}
+// Extra cart craftsmanship: plank cladding, rivets, axle bars, seat and a load of ore.
+const cartWood=material(0x49301f,.9),cartSteel=material(0x566473,.35,.82);
+for(const side of [-1,1]){
+ for(let y=-.22;y<=.28;y+=.22){const plank=new THREE.Mesh(new THREE.BoxGeometry(2.02,.13,.09),cartWood);plank.position.set(0,y,side*1.19);cart.add(plank)}
+ for(const x of [-.91,.91])for(const y of [-.25,.2,.48]){const rivet=new THREE.Mesh(new THREE.SphereGeometry(.055,8,6),gold);rivet.position.set(x,y,side*1.245);cart.add(rivet)}
+ const brace=new THREE.Mesh(new THREE.BoxGeometry(.12,.9,.12),cartSteel);brace.position.set(side*1.02,.04,0);cart.add(brace);
+}
+for(const z of [-.86,.86]){const axle=new THREE.Mesh(new THREE.CylinderGeometry(.09,.09,2.05,10),cartSteel);axle.rotation.z=Math.PI/2;axle.position.set(0,-.5,z);cart.add(axle)}
+const seat=new THREE.Mesh(new THREE.BoxGeometry(1.15,.16,.65),cartWood);seat.position.set(0,.32,.25);cart.add(seat);
+const oreLoad=material(0x7b8794,.48,.45);
+for(let i=0;i<9;i++){const nug=new THREE.Mesh(new THREE.DodecahedronGeometry(.18+(i%3)*.035,0),i%3===0?crystals[0]:oreLoad);nug.position.set(-.7+(i%3)*.65,.48+Math.floor(i/3)*.08,-.65+Math.floor(i/3)*.55);cart.add(nug)}
+const frontBumper=new THREE.Mesh(new THREE.BoxGeometry(2.35,.18,.16),cartSteel);frontBumper.position.set(0,-.35,-1.27);cart.add(frontBumper);
 // Ore skips, crates, tools and extraction machinery.
 function oreSkip(x,z){const g=new THREE.Group();const body=new THREE.Mesh(new THREE.BoxGeometry(1.45,.7,1.7),material(0x493d32,.8,.35));body.position.y=-2.1;g.add(body);for(const sx of [-1,1]){const w=new THREE.Mesh(new THREE.CylinderGeometry(.27,.27,.15,12),iron);w.rotation.z=Math.PI/2;w.position.set(sx*.78,-2.48,0);g.add(w)}for(let i=0;i<6;i++){const nug=new THREE.Mesh(new THREE.DodecahedronGeometry(.2,0),i%3===0?crystals[0]:rock);nug.position.set((Math.random()-.5)*.9,-1.68+Math.random()*.15,(Math.random()-.5)*1.1);g.add(nug)}g.position.set(x,0,z);add(g)}
 oreSkip(-3.2,-16);oreSkip(3.2,-52);oreSkip(-3.2,-119);
@@ -145,6 +157,32 @@ for(let z=-20;z>-190;z-=25){for(const side of [-1,1]){
  const headTool=new THREE.Mesh(new THREE.BoxGeometry(.9,.1,.12),iron);headTool.position.set(.22,.48,0);tool.add(headTool);tool.position.set(.45,1.55,.08);g.add(tool);
  g.position.set(x,-2,z);add(g);figures.push({arms,legs,torso,tool,phase:Math.random()*6,side});
 }}
+// Working-mine details: overhead stalactites, ventilation pipes, cable runs and warning lamps.
+const flickerLights=[];
+for(let z=0;z>-210;z-=10){
+ for(const side of [-1,1]){
+  const spike=new THREE.Mesh(new THREE.ConeGeometry(.28+Math.random()*.22,1.1+Math.random()*1.2,6),darkRock);
+  spike.position.set(side*(2.4+Math.random()*.8),4.25,z-2);spike.rotation.z=side*.18;add(spike);
+ }
+ const pipe=new THREE.Mesh(new THREE.CylinderGeometry(.075,.075,8.1,8),iron);pipe.rotation.z=Math.PI/2;pipe.position.set(0,3.95,z);add(pipe);
+ const cable=new THREE.Mesh(new THREE.CylinderGeometry(.035,.035,8.2,6),material(0x161d2b,.7,.5));cable.rotation.z=Math.PI/2;cable.position.set(0,4.18,z);add(cable);
+ if(z%30===0){
+  const lamp=new THREE.PointLight(0xffa95b,2.1,11);lamp.position.set(0,3.55,z);add(lamp);flickerLights.push(lamp);
+  const shade=new THREE.Mesh(new THREE.CylinderGeometry(.22,.32,.2,10),iron);shade.position.set(0,3.82,z);add(shade);
+ }
+}
+// Numbered-looking route markers and danger boards at key tunnel junctions.
+for(const [z,side] of [[-32,-1],[-67,1],[-137,-1],[-166,1]]){
+ const sign=new THREE.Group();sign.position.set(side*3.25,1.15,z);sign.rotation.y=side<0?.18:-.18;add(sign);
+ const board=new THREE.Mesh(new THREE.BoxGeometry(1.35,.72,.12),material(0x34251d,.9));sign.add(board);
+ const edge=new THREE.Mesh(new THREE.BoxGeometry(1.48,.09,.16),gold);edge.position.y=.39;sign.add(edge);
+ for(const x of [-.5,.5]){const bolt=new THREE.Mesh(new THREE.SphereGeometry(.055,8,6),iron);bolt.position.set(x,.22,.09);sign.add(bolt)}
+ const post=new THREE.Mesh(new THREE.BoxGeometry(.12,1.4,.12),wood);post.position.y=-.95;sign.add(post);
+}
+// A slow turning ventilation wheel in the old shaft.
+const fan=new THREE.Group();fan.position.set(0,3.15,-72);add(fan);
+const hub=new THREE.Mesh(new THREE.CylinderGeometry(.24,.24,.28,12),gold);hub.rotation.x=Math.PI/2;fan.add(hub);
+for(let i=0;i<6;i++){const blade=new THREE.Mesh(new THREE.BoxGeometry(.18,1.55,.09),iron);blade.position.y=.82;blade.rotation.z=i*Math.PI/3;fan.add(blade)}
 // Small ore piles and scattered stones
 for(let i=0;i<180;i++){const x=(Math.random()-.5)*8,z=8-Math.random()*215,s=.12+Math.random()*.28;const o=new THREE.Mesh(new THREE.DodecahedronGeometry(s,0),i%8===0?darkRock:rock);o.position.set(x,-2.65+Math.random()*.12,z);add(o)}
 // Optional original synthesized atmospheric tones.
@@ -161,6 +199,7 @@ function animate(t){requestAnimationFrame(animate);const dt=last?Math.min((t-las
  document.getElementById('status').textContent=stage;
  if(elapsed>=52){running=false;document.getElementById('status').textContent='THE LOST VEIN · JOURNEY COMPLETE';document.getElementById('intro').style.display='block';document.querySelector('#intro h1').textContent='THE LOST VEIN';document.querySelector('#intro p').textContent='The mine has revealed its secret. Would you dare descend again?';document.getElementById('startBtn').textContent='RIDE AGAIN'}}
  const tm=t*.001;
+ fan.rotation.z=tm*.7;flickerLights.forEach((l,i)=>l.intensity=1.7+Math.sin(tm*7+i*1.9)*.35);
  // The hoist visibly cycles; the crystal cathedral and final geode brighten as the cart approaches.
  lift.position.y=Math.sin(tm*1.25)*.62;
  const cathedralPulse=.75+.25*Math.sin(tm*1.7);cathedralLights.forEach(l=>l.intensity=4.2*cathedralPulse);
