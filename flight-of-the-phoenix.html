@@ -32,7 +32,22 @@ button{border:1px solid #ffd08a;background:linear-gradient(120deg,#9e3d22,#d66b2
  <div id="progress"></div>
 </div>
 <script type="module">
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
+let THREE;
+try {
+  THREE = await import('https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js');
+} catch (primaryError) {
+  try {
+    THREE = await import('https://unpkg.com/three@0.160.0/build/three.module.js');
+  } catch (fallbackError) {
+    const panel=document.getElementById('intro');
+    panel.querySelector('.kicker').textContent='RIDE ENGINE COULD NOT LOAD';
+    panel.querySelector('p').textContent='The 3D engine could not be reached. Check your connection, then reload this page.';
+    document.getElementById('start').textContent='RELOAD RIDE';
+    document.getElementById('start').onclick=()=>location.reload();
+    document.getElementById('state').textContent='WAITING FOR 3D ENGINE';
+    throw fallbackError;
+  }
+}
 const scene=new THREE.Scene();scene.background=new THREE.Color(0x100c1c);scene.fog=new THREE.FogExp2(0x211321,.012);
 const camera=new THREE.PerspectiveCamera(72,innerWidth/innerHeight,.1,900);
 const renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:'high-performance'});renderer.setPixelRatio(Math.min(devicePixelRatio,1.7));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.12;document.body.appendChild(renderer.domElement);
