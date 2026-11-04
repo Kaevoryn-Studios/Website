@@ -104,7 +104,7 @@ for(let z=-65;z>-90;z-=9){let l=new THREE.PointLight(0xffbd76,12,13);l.position.
 box(8,.6,3,gold,0,.35,-83);
 for(let side of [-1,1]){box(5,.3,12,stone,side*5,1.2,-78);for(let i=0;i<5;i++)box(.18,.25,11, gold,side*(2.8+i*.9),1.4,-78)}
 // Gate leaves are real hinged 3D ironwork, opening as the visitor approaches.
-const gateGroup=new THREE.Group();gateGroup.position.set(0,0,-10);scene.add(gateGroup);
+const gateGroup=new THREE.Group();gateGroup.position.set(0,0,-20);scene.add(gateGroup);
 function gateLeaf(side){const hinge=new THREE.Group();hinge.position.x=side*3.1;gateGroup.add(hinge);const leafGroup=new THREE.Group();leafGroup.position.x=-side*3.1;hinge.add(leafGroup);box(3.1,4.4,.22,iron,side*1.55,2.2,0,leafGroup);
 for(let i=0;i<=8;i++){let x=side*(-1.48+i*.37);cylinder(.045,.045,4.6,iron,x,2.25,0,6);let tip=new THREE.Mesh(new THREE.ConeGeometry(.12,.42,6),gold);tip.position.set(x,4.58,0);leafGroup.add(tip)}
 box(3.1,.16,.28,gold,side*1.55,1.15,0,leafGroup);return hinge}
@@ -131,8 +131,8 @@ const speed=keys.ShiftLeft?7:3.4;const dir=new THREE.Vector3(-Math.sin(yaw),0,-M
 camera.position.addScaledVector(dir,forward*speed*dt);camera.position.addScaledVector(right,strafe*speed*dt);
 camera.position.x=clamp(camera.position.x,-8.5,8.5);camera.position.z=clamp(camera.position.z,-88,13);camera.position.y=1.72+((forward||strafe)?Math.sin(clock.elapsedTime*10)*.035:0);
 camera.rotation.order='YXZ';camera.rotation.y=yaw;camera.rotation.x=pitch;
-if(!gateOpened&&camera.position.z<-6.3){gateOpened=true;say('The iron gates groan and swing open. Keep walking into the courtyard.')}
-let open=clamp(((-camera.position.z)-6)/5,0,1);leftGate.rotation.y=-open*1.25;rightGate.rotation.y=open*1.25;
+if(!gateOpened&&camera.position.z<-16.3){gateOpened=true;say('The iron gates groan and swing open in front of the castle. Walk through them into the courtyard.')}
+let open=clamp(((-camera.position.z)-16)/5,0,1);leftGate.rotation.y=-open*1.25;rightGate.rotation.y=open*1.25;
 if(!doorOpened&&camera.position.z<-29){doorOpened=true;say('The great entrance doors begin to open. Walk forward into the entrance hall.')}
 let d=clamp(((-camera.position.z)-29)/5,0,1);doors[0].hinge.rotation.y=-d*1.15;doors[1].hinge.rotation.y=d*1.15;
 if(camera.position.z<-59)say('You are inside the entrance hall. Look around and explore the connected space.');
@@ -149,7 +149,7 @@ const pad=document.querySelector('#mobile'),stick=document.querySelector('#stick
 pad.addEventListener('pointerdown',e=>{padOn=true;pad.setPointerCapture(e.pointerId);moveJoy(e)});
 pad.addEventListener('pointermove',e=>{if(padOn)moveJoy(e)});pad.addEventListener('pointerup',()=>{padOn=false;joy={x:0,y:0};stick.style.transform='translate(0,0)'});
 function moveJoy(e){const r=pad.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;let x=e.clientX-cx,y=e.clientY-cy,l=Math.hypot(x,y),m=43;if(l>m){x=x/l*m;y=y/l*m}joy={x:x/m,y:y/m};stick.style.transform='translate('+x+'px,'+y+'px)';keys.KeyW=joy.y<-.18;keys.KeyS=joy.y>.18;keys.KeyA=joy.x<-.18;keys.KeyD=joy.x>.18}
-document.querySelector('#enter').addEventListener('click',()=>{started=true;document.querySelector('#start').style.display='none';say('Walk toward the iron gates. They will open as you approach.')});
+document.querySelector('#enter').addEventListener('click',()=>{started=true;document.querySelector('#start').style.display='none';say('You are standing outside the closed iron gates. The castle rises beyond them. Walk forward to open the gates.')});
 addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
 </script>
 </body></html>
