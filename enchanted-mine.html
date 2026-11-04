@@ -11,7 +11,7 @@
 <body>
 <div id="world"></div>
 <div class="top"><div><div class="brand">KAEVORYN STUDIOS</div><div class="name">THE ENCHANTED MINE</div><div class="tag">A JOURNEY BENEATH THE FORGOTTEN MOUNTAIN</div></div><button class="sound" id="soundBtn">♫ SOUND ON</button></div>
-<div class="panel" id="intro"><div class="brand">THE KINGDOMS OF WONDER</div><h1>THE ENCHANTED MINE</h1><p>Board the little mine train and descend through ancient timber shafts, glowing crystal caverns and the lost extraction chamber.</p><button class="cta" id="startBtn">BOARD THE MINE CART</button><p style="font-size:11px">A forward-only 3D journey · Sound is optional</p></div>
+<div class="panel" id="intro"><div class="brand">THE KINGDOMS OF WONDER</div><h1>THE ENCHANTED MINE</h1><p>Board the mine cart and rumble through rough-hewn rock tunnels, timber-framed shafts, forgotten tools and glowing crystal caverns. Watch for the shadow miners at work.</p><button class="cta" id="startBtn">BOARD THE MINE CART</button><p style="font-size:11px">A forward-only 3D journey · Sound is optional</p></div>
 <div class="hud"><div class="status" id="status">CART STATION · AWAITING RIDER</div><div class="progress"><div class="bar" id="bar"></div></div></div>
 <div id="fail"></div>
 <script type="module">
@@ -65,20 +65,38 @@ for(let i=0;i<3;i++)beam(4,.12,.12,0,-2.2+i*.55,-172,wood);
 light(-2,3,-177,0xffa94f,10,22);light(2,3,-177,0xffa94f,10,22);
 // Glowing crystal clusters embedded in the cave walls.
 for(let z=-8;z>-205;z-=14)for(const side of [-1,1]){const x=side*(3.7+Math.random()*.35),y=-1.7+Math.random()*1.8;const g=new THREE.Group();for(let i=0;i<3;i++){const c=new THREE.Mesh(new THREE.ConeGeometry(.35+Math.random()*.18,1.7+Math.random(),6),crystals[(Math.floor(Math.random()*4))]);c.position.set((i-1)*.38,.55,0);c.rotation.z=(Math.random()-.5)*.35;g.add(c)}g.position.set(x,y,z);add(g);const glow=new THREE.PointLight(0x42d9f3,3,9);glow.position.set(x,y+1,z);add(glow)}
-// Lanterns and mysterious miners. Their positions are fixed in the tunnel; only limbs animate.
+// Lantern-lit shadow miners: full silhouettes with swinging legs, working arms and pickaxes.
 const figures=[];
-for(let z=-20;z>-190;z-=25){for(const x of [-4.7,4.7]){light(x,-.1,z,0xffa84f,2.5,8);const g=new THREE.Group();const dark=material(0x080b16,1);const torso=new THREE.Mesh(new THREE.CapsuleGeometry(.25,.8,4,7),dark);torso.position.y=1.2;g.add(torso);const head=new THREE.Mesh(new THREE.SphereGeometry(.24,10,8),dark);head.position.y=2;g.add(head);const arms=[];for(const side of [-1,1]){const arm=new THREE.Mesh(new THREE.CapsuleGeometry(.08,.6,3,5),dark);arm.position.set(side*.32,1.25,0);g.add(arm);arms.push(arm)}g.position.set(x,-2,z);add(g);figures.push({arms,phase:Math.random()*6})}}
+for(let z=-20;z>-190;z-=25){for(const side of [-1,1]){
+ const x=side*3.55;light(side*4.35,-.05,z,0xffa84f,3,10);
+ const g=new THREE.Group(),dark=material(0x070a12,1),edge=material(0x171d2b,.9);
+ const torso=new THREE.Mesh(new THREE.CapsuleGeometry(.29,.86,5,8),dark);torso.position.y=1.25;g.add(torso);
+ const coat=new THREE.Mesh(new THREE.ConeGeometry(.48,.9,7),dark);coat.position.set(0,.72,.03);g.add(coat);
+ const head=new THREE.Mesh(new THREE.SphereGeometry(.25,12,10),dark);head.position.y=2.05;g.add(head);
+ const cap=new THREE.Mesh(new THREE.CylinderGeometry(.27,.3,.13,10),edge);cap.position.y=2.25;g.add(cap);
+ const lamp=new THREE.PointLight(0xffb95c,1.5,5);lamp.position.set(0,2.28,-.12);g.add(lamp);
+ const arms=[],legs=[];
+ for(const s of [-1,1]){const arm=new THREE.Mesh(new THREE.CapsuleGeometry(.09,.66,4,6),dark);arm.position.set(s*.37,1.35,0);arm.rotation.z=s*.12;g.add(arm);arms.push(arm);
+ const leg=new THREE.Mesh(new THREE.CapsuleGeometry(.11,.64,4,6),dark);leg.position.set(s*.16,.22,0);g.add(leg);legs.push(leg)}
+ // A long-handled pickaxe held by one miner's raised arm.
+ const tool=new THREE.Group();const handle=new THREE.Mesh(new THREE.CylinderGeometry(.035,.045,1.2,7),wood);handle.rotation.z=-.32;tool.add(handle);
+ const headTool=new THREE.Mesh(new THREE.BoxGeometry(.9,.1,.12),iron);headTool.position.set(.22,.48,0);tool.add(headTool);tool.position.set(.45,1.55,.08);g.add(tool);
+ g.position.set(x,-2,z);add(g);figures.push({arms,legs,torso,tool,phase:Math.random()*6,side});
+}}
 // Small ore piles and scattered stones
 for(let i=0;i<180;i++){const x=(Math.random()-.5)*8,z=8-Math.random()*215,s=.12+Math.random()*.28;const o=new THREE.Mesh(new THREE.DodecahedronGeometry(s,0),i%8===0?darkRock:rock);o.position.set(x,-2.65+Math.random()*.12,z);add(o)}
 // Optional original synthesized atmospheric tones.
 let audio=null,master=null,soundOn=true;
-function startSound(){if(audio)return;const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;audio=new AC();master=audio.createGain();master.gain.value=soundOn?.13:0;master.connect(audio.destination);[110,164.81,220].forEach((hz,i)=>{const o=audio.createOscillator(),g=audio.createGain();o.type='sine';o.frequency.value=hz;g.gain.value=.12/(i+1);o.connect(g);g.connect(master);o.start()})}
+function startSound(){if(audio)return;const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;audio=new AC();master=audio.createGain();master.gain.value=soundOn?.13:0;master.connect(audio.destination);
+ // Low mine rumble plus a soft, eerie three-note miner chorus.
+ [55,82.41,110].forEach((hz,i)=>{const o=audio.createOscillator(),g=audio.createGain();o.type='sine';o.frequency.value=hz;g.gain.value=.09/(i+1);o.connect(g);g.connect(master);o.start()});
+ [196,246.94,293.66].forEach((hz,i)=>{const o=audio.createOscillator(),g=audio.createGain(),v=audio.createOscillator(),vg=audio.createGain();o.type='sine';o.frequency.value=hz;o.detune.value=(i-1)*5;g.gain.value=.018;v.frequency.value=.22+i*.07;vg.gain.value=2.2;v.connect(vg);vg.connect(o.detune);o.connect(g);g.connect(master);o.start();v.start()})}
 document.getElementById('soundBtn').onclick=()=>{soundOn=!soundOn;document.getElementById('soundBtn').textContent=soundOn?'♫ SOUND ON':'♫ SOUND OFF';if(soundOn)startSound();if(master)master.gain.setTargetAtTime(soundOn?.13:0,audio.currentTime,.2)};
 let running=false,elapsed=0,last=0;
-document.getElementById('startBtn').onclick=()=>{if(running)return;elapsed=0;world.position.z=0;running=true;document.getElementById('intro').style.display='none';document.getElementById('status').textContent='DESCENDING · THE SHADOWS ARE SINGING';if(soundOn)startSound();if(audio&&audio.state==='suspended')audio.resume()};
+document.getElementById('startBtn').onclick=()=>{if(running)return;elapsed=0;world.position.z=0;running=true;document.getElementById('intro').style.display='none';document.getElementById('status').textContent='DESCENDING · SHADOW MINERS AT WORK';if(soundOn)startSound();if(audio&&audio.state==='suspended')audio.resume()};
 function animate(t){requestAnimationFrame(animate);const dt=last?Math.min((t-last)/1000,.04):0;last=t;
  if(running){elapsed=Math.min(52,elapsed+dt);world.position.z=elapsed*3.75;document.getElementById('bar').style.width=(elapsed/52*100)+'%';if(elapsed>=52){running=false;document.getElementById('status').textContent='THE LOST VEIN · JOURNEY COMPLETE';document.getElementById('intro').style.display='block';document.querySelector('#intro h1').textContent='THE LOST VEIN';document.querySelector('#intro p').textContent='The mine has revealed its secret. Would you dare descend again?';document.getElementById('startBtn').textContent='RIDE AGAIN'}}
- const tm=t*.001;figures.forEach(f=>{f.arms[0].rotation.z=Math.sin(tm*3+f.phase)*.22;f.arms[1].rotation.z=-Math.sin(tm*3+f.phase)*.22});
+ const tm=t*.001;figures.forEach(f=>{const step=Math.sin(tm*2.8+f.phase);f.arms[0].rotation.z=step*.28;f.arms[1].rotation.z=-step*.2;f.legs[0].rotation.z=step*.24;f.legs[1].rotation.z=-step*.24;f.torso.rotation.z=Math.sin(tm*1.4+f.phase)*.035;f.tool.rotation.z=Math.sin(tm*2.1+f.phase)*.16});
  renderer.render(scene,camera)}
 requestAnimationFrame(animate);
 addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
