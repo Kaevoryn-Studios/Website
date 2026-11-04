@@ -60,11 +60,36 @@ for(const [x,z] of [[-3.7,-39],[3.7,-93],[-3.7,-143]]){beam(.12,1.4,.12,x,1,z,wo
 for(const x of [-2.4,2.4])beam(.42,5,.5,x,.1,-177,wood);beam(5.2,.42,.55,0,2.55,-177,wood);
 const drum=new THREE.Mesh(new THREE.CylinderGeometry(.85,.85,.65,20),iron);drum.rotation.z=Math.PI/2;drum.position.set(0,1.25,-177);add(drum);
 beam(.08,2.1,.08,0,.05,-177,iron);
-const cage=block(1.5,2,1.5,0,-1.2,-177,iron);for(const x of [-.6,.6])beam(.12,2.2,.12,x,-1.1,-177,gold);
+// Moving ore cage on a visible lift: the shaft cage rises and lowers while the cart passes.
+const lift=new THREE.Group();lift.position.set(0,0,-177);add(lift);
+const cageBody=new THREE.Mesh(new THREE.BoxGeometry(1.5,2,1.5),iron);cageBody.position.y=-1.2;lift.add(cageBody);
+for(const x of [-.6,.6]){const post=new THREE.Mesh(new THREE.BoxGeometry(.12,2.2,.12),gold);post.position.set(x,-1.1,0);lift.add(post)}
+for(const z of [-.65,.65]){const bar=new THREE.Mesh(new THREE.BoxGeometry(1.5,.1,.1),gold);bar.position.set(0,-.25,z);lift.add(bar)}
 for(let i=0;i<3;i++)beam(4,.12,.12,0,-2.2+i*.55,-172,wood);
 light(-2,3,-177,0xffa94f,10,22);light(2,3,-177,0xffa94f,10,22);
 // Glowing crystal clusters embedded in the cave walls.
 for(let z=-8;z>-205;z-=14)for(const side of [-1,1]){const x=side*(3.7+Math.random()*.35),y=-1.7+Math.random()*1.8;const g=new THREE.Group();for(let i=0;i<3;i++){const c=new THREE.Mesh(new THREE.ConeGeometry(.35+Math.random()*.18,1.7+Math.random(),6),crystals[(Math.floor(Math.random()*4))]);c.position.set((i-1)*.38,.55,0);c.rotation.z=(Math.random()-.5)*.35;g.add(c)}g.position.set(x,y,z);add(g);const glow=new THREE.PointLight(0x42d9f3,3,9);glow.position.set(x,y+1,z);add(glow)}
+// THE GREAT CRYSTAL CATHEDRAL: a broad chamber filled with towering luminous crystal spires.
+const cathedralLights=[];
+for(const side of [-1,1]){
+ for(let i=0;i<7;i++){
+  const height=3.2+(i%3)*1.1,xx=side*(1.25+(i%3)*.75),zz=-101-Math.floor(i/3)*3;
+  const shard=new THREE.Mesh(new THREE.ConeGeometry(.65+(i%2)*.18,height,7),crystals[(i+1)%4]);
+  shard.position.set(xx,-1.15+height*.38,zz);shard.rotation.z=side*.13;add(shard);
+  const glow=new THREE.PointLight(crystalColors[(i+1)%4],5,15);glow.position.set(xx,1.2,zz);add(glow);cathedralLights.push(glow);
+ }
+}
+// A crown of crystals overhead frames the cavern as the cart enters.
+for(let i=0;i<9;i++){const shard=new THREE.Mesh(new THREE.ConeGeometry(.42,2.8+(i%3)*.5,6),crystals[i%4]);shard.position.set(-3.2+i*.8,4.1,-105-(i%2)*1.5);shard.rotation.z=Math.PI;add(shard)}
+light(0,2.5,-103,0x63eaff,13,28);
+
+// THE LOST VEIN: a giant geode reveal at the end of the tunnel.
+const geode=new THREE.Group();geode.position.set(0,-.15,-207);add(geode);
+const geodeShell=new THREE.Mesh(new THREE.DodecahedronGeometry(2.15,1),material(0x343847,.72,.25));geode.add(geodeShell);
+const geodeCore=new THREE.Mesh(new THREE.SphereGeometry(1.52,20,16),material(0x173b52,.25,.1));geodeCore.material.emissive=new THREE.Color(0x087b9b);geodeCore.material.emissiveIntensity=1.6;geode.add(geodeCore);
+for(let i=0;i<18;i++){const a=i*Math.PI*2/18,r=1.25+(i%3)*.12;const shard=new THREE.Mesh(new THREE.ConeGeometry(.19,.95+(i%4)*.2,6),crystals[i%4]);shard.position.set(Math.cos(a)*r,Math.sin(a)*r,0);shard.rotation.z=a-Math.PI/2;geode.add(shard)}
+const geodeGlow=new THREE.PointLight(0x38dfff,0,34);geodeGlow.position.set(0,0,2);geode.add(geodeGlow);
+
 // Lantern-lit shadow miners: full silhouettes with swinging legs, working arms and pickaxes.
 const figures=[];
 for(let z=-20;z>-190;z-=25){for(const side of [-1,1]){
@@ -95,8 +120,16 @@ document.getElementById('soundBtn').onclick=()=>{soundOn=!soundOn;document.getEl
 let running=false,elapsed=0,last=0;
 document.getElementById('startBtn').onclick=()=>{if(running)return;elapsed=0;world.position.z=0;running=true;document.getElementById('intro').style.display='none';document.getElementById('status').textContent='DESCENDING · SHADOW MINERS AT WORK';if(soundOn)startSound();if(audio&&audio.state==='suspended')audio.resume()};
 function animate(t){requestAnimationFrame(animate);const dt=last?Math.min((t-last)/1000,.04):0;last=t;
- if(running){elapsed=Math.min(52,elapsed+dt);world.position.z=elapsed*3.75;document.getElementById('bar').style.width=(elapsed/52*100)+'%';if(elapsed>=52){running=false;document.getElementById('status').textContent='THE LOST VEIN · JOURNEY COMPLETE';document.getElementById('intro').style.display='block';document.querySelector('#intro h1').textContent='THE LOST VEIN';document.querySelector('#intro p').textContent='The mine has revealed its secret. Would you dare descend again?';document.getElementById('startBtn').textContent='RIDE AGAIN'}}
- const tm=t*.001;figures.forEach(f=>{const step=Math.sin(tm*2.8+f.phase);f.arms[0].rotation.z=step*.28;f.arms[1].rotation.z=-step*.2;f.legs[0].rotation.z=step*.24;f.legs[1].rotation.z=-step*.24;f.torso.rotation.z=Math.sin(tm*1.4+f.phase)*.035;f.tool.rotation.z=Math.sin(tm*2.1+f.phase)*.16});
+ if(running){elapsed=Math.min(52,elapsed+dt);world.position.z=elapsed*3.75;document.getElementById('bar').style.width=(elapsed/52*100)+'%';
+ const stage=elapsed<17?'DESCENDING · SHADOW MINERS AT WORK':elapsed<34?'THE CRYSTAL CATHEDRAL · FOLLOW THE LIGHT':elapsed<46?'THE OLD ORE LIFT · SHAFT IN MOTION':'THE LOST VEIN · A SECRET AWAKENS';
+ document.getElementById('status').textContent=stage;
+ if(elapsed>=52){running=false;document.getElementById('status').textContent='THE LOST VEIN · JOURNEY COMPLETE';document.getElementById('intro').style.display='block';document.querySelector('#intro h1').textContent='THE LOST VEIN';document.querySelector('#intro p').textContent='The mine has revealed its secret. Would you dare descend again?';document.getElementById('startBtn').textContent='RIDE AGAIN'}}
+ const tm=t*.001;
+ // The hoist visibly cycles; the crystal cathedral and final geode brighten as the cart approaches.
+ lift.position.y=Math.sin(tm*1.25)*.62;
+ const cathedralPulse=.75+.25*Math.sin(tm*1.7);cathedralLights.forEach(l=>l.intensity=4.2*cathedralPulse);
+ const reveal=Math.max(0,Math.min(1,(elapsed-47)/5));geodeGlow.intensity=reveal*18;geodeCore.material.emissiveIntensity=1.1+reveal*2.5;geode.rotation.y=Math.sin(tm*.45)*.08;
+ figures.forEach(f=>{const step=Math.sin(tm*2.8+f.phase);f.arms[0].rotation.z=step*.28;f.arms[1].rotation.z=-step*.2;f.legs[0].rotation.z=step*.24;f.legs[1].rotation.z=-step*.24;f.torso.rotation.z=Math.sin(tm*1.4+f.phase)*.035;f.tool.rotation.z=Math.sin(tm*2.1+f.phase)*.16});
  renderer.render(scene,camera)}
 requestAnimationFrame(animate);
 addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
