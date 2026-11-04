@@ -53,8 +53,9 @@ cylinder(.45,.85,h,bark,x,h/2-.1,z,9);
 for(let k=0;k<4;k++){let crown=new THREE.Mesh(new THREE.IcosahedronGeometry(2.2+Math.random()*1.2,1),k%2?leaf:leaf2);crown.position.set(x+(Math.random()-.5)*1.8,h*.65+k*1.25,z);crown.scale.y=1.1;crown.castShadow=true;scene.add(crown)}
 }
 // Castle walls and towers enclose the courtyard end and open into the entrance.
-box(30,15,2,stone,0,7.5,-55);
-box(10,11,2.4,darkStone,0,5.5,-53.7);
+box(10,15,2,stone,-10,7.5,-55);
+box(10,15,2,stone,10,7.5,-55);
+box(8.4,1.4,2.2,darkStone,0,11.2,-53.7);
 for(let side of [-1,1]){
 const tx=side*12;
 cylinder(2.25,2.8,19,stone,tx,9.5,-55,12);
