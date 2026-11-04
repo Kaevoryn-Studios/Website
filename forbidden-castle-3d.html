@@ -38,7 +38,16 @@ const moon=new THREE.DirectionalLight(0xded8ff,3.4);moon.position.set(-16,28,12)
 const violet=new THREE.PointLight(0x9a63ff,28,38);violet.position.set(0,5,-32);scene.add(violet);
 const warm=new THREE.PointLight(0xffc982,18,24);warm.position.set(0,4,-68);scene.add(warm);
 const mat=(color,rough=.85,metal=0)=>new THREE.MeshStandardMaterial({color,roughness:rough,metalness:metal});
-const stone=mat(0x85808b,.82),darkStone=mat(0x494352,.82),floorMat=mat(0x393541),iron=mat(0x171923,.42,.75),gold=mat(0xb28b55,.38,.65),glass= new THREE.MeshStandardMaterial({color:0x8d5bd0,emissive:0x582b9b,emissiveIntensity:1.4,roughness:.25});
+function masonryTexture(base,grout,seed){
+ const c=document.createElement('canvas');c.width=512;c.height=512;const x=c.getContext('2d');x.fillStyle=grout;x.fillRect(0,0,512,512);
+ let n=seed;const rand=()=>{n=(n*1664525+1013904223)>>>0;return n/4294967296};
+ for(let row=0;row<16;row++){let offset=row%2?-32:0;for(let col=-1;col<9;col++){let px=col*68+offset,py=row*32;x.fillStyle=base;x.fillRect(px+2,py+2,64,28);for(let k=0;k<24;k++){let v=Math.floor(70+rand()*100);x.fillStyle='rgba('+v+','+v+','+v+',.12)';x.fillRect(px+rand()*64,py+rand()*28,2+rand()*9,1+rand()*3)}x.fillStyle='rgba(255,255,255,.08)';x.fillRect(px+3,py+3,58,1)}}
+ const tex=new THREE.CanvasTexture(c);tex.wrapS=tex.wrapT=THREE.RepeatWrapping;tex.repeat.set(2,2);tex.colorSpace=THREE.SRGBColorSpace;return tex;
+}
+const stoneTex=masonryTexture('#77727b','#393640',17),darkTex=masonryTexture('#45414c','#282530',29);
+const stone=new THREE.MeshStandardMaterial({color:0xc1b9ad,map:stoneTex,roughness:.94});
+const darkStone=new THREE.MeshStandardMaterial({color:0xc0b7aa,map:darkTex,roughness:.9});
+const slate=mat(0x252632,.72),floorMat=mat(0x393541),iron=mat(0x171923,.42,.75),gold=mat(0x9b815c,.5,.55),glass=new THREE.MeshStandardMaterial({color:0x9c8ab7,emissive:0x30203f,emissiveIntensity:.45,roughness:.22});
 function box(w,h,d,m,x,y,z,parent=scene){const o=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m);o.position.set(x,y,z);o.castShadow=true;o.receiveShadow=true;parent.add(o);return o}
 function cylinder(rt,rb,h,m,x,y,z,seg=10){const o=new THREE.Mesh(new THREE.CylinderGeometry(rt,rb,h,seg),m);o.position.set(x,y,z);o.castShadow=true;o.receiveShadow=true;scene.add(o);return o}
 function arch(x,y,z,r,h,depth,m){const group=new THREE.Group();group.position.set(x,y,z);scene.add(group);box(r*2,h-r,depth,m,0,(h-r)/2,0,group);const curve=new THREE.Mesh(new THREE.TorusGeometry(r,Math.max(.12,depth*.16),8,24,Math.PI),m);curve.rotation.z=Math.PI;curve.position.y=h-r;curve.castShadow=true;group.add(curve);return group}
@@ -59,7 +68,7 @@ box(8.4,1.4,2.2,darkStone,0,11.2,-35.7);
 for(let side of [-1,1]){
 const tx=side*12;
 cylinder(2.25,2.8,19,stone,tx,9.5,-37,12);
-const cap=new THREE.Mesh(new THREE.ConeGeometry(2.65,6,12),darkStone);cap.position.set(tx,22,-37);cap.castShadow=true;scene.add(cap);
+const cap=new THREE.Mesh(new THREE.ConeGeometry(2.65,6,12),slate);cap.position.set(tx,22,-37);cap.castShadow=true;scene.add(cap);
 cylinder(2.32,2.32,.45,gold,tx,18.9,-37,12);
 for(let y=5;y<16;y+=3.5){box(.8,1.5,.15,glass,tx, y,-35.82)}
 }
@@ -69,15 +78,15 @@ box(15,1,9,stone,0,26,-43);
 for(let side of [-1,1]){
   box(7,9,7,stone,side*10,16,-44);
   box(7.8,.8,7.8,darkStone,side*10,20.7,-44);
-  const roof=new THREE.Mesh(new THREE.ConeGeometry(4.7,8,8),darkStone);
+  const roof=new THREE.Mesh(new THREE.ConeGeometry(4.7,7,8),slate);
   roof.position.set(side*10,25,-44);roof.castShadow=true;scene.add(roof);
   const finial=new THREE.Mesh(new THREE.ConeGeometry(.38,2.4,8),gold);
   finial.position.set(side*10,30,-44);scene.add(finial);
 }
-const centralRoof=new THREE.Mesh(new THREE.ConeGeometry(7.5,10,10),darkStone);
-centralRoof.position.set(0,32,-43);centralRoof.castShadow=true;scene.add(centralRoof);
+const centralRoof=new THREE.Mesh(new THREE.ConeGeometry(7.5,7,10),slate);
+centralRoof.position.set(0,31,-43);centralRoof.castShadow=true;scene.add(centralRoof);
 const centralFinial=new THREE.Mesh(new THREE.ConeGeometry(.5,3,8),gold);
-centralFinial.position.set(0,38,-43);scene.add(centralFinial);
+centralFinial.position.set(0,35,-43);scene.add(centralFinial);
 for(let y of [15,19,23])for(let x of [-4.2,4.2]){
   box(1.25,2.2,.22,glass,x,y,-38.85);
   box(1.65,.18,.32,gold,x,y+1.15,-38.72);
@@ -85,6 +94,14 @@ for(let y of [15,19,23])for(let x of [-4.2,4.2]){
 for(let x=-13;x<=13;x+=2.6){
   box(1.15,1.1,1.15,darkStone,x,15.6,-35.8);
 }
+// Architectural detailing: projecting stone courses, corner quoins, crenellations and roof dormers.
+for(let y of [1.1,4.8,9.2,14.7,20.4,26.4]){const width=y>19?15:20;box(width,.28,.28,gold,0,y,-41.88)}
+for(let side of [-1,1]){
+ for(let y of [2,5,8,11,14]) box(.38,1.2,.34,stone,side*9.65,y,-35.78);
+ for(let x of [-12,-9,-6,6,9,12]) box(1,1.5,1,stone,x,15.8,-35.9);
+ for(let x of [-2.6,2.6]){box(1.2,2.1,.42,darkStone,side*10+x,23.2,-39.9);const peak=new THREE.Mesh(new THREE.ConeGeometry(.95,1.6,4),slate);peak.position.set(side*10+x,25,-39.9);peak.rotation.y=Math.PI/4;scene.add(peak)}
+}
+for(let x=-6;x<=6;x+=2) box(.5,1.1,1.1,stone,x,27.1,-43);
 // Carved arch and open doorway. Walk through z=-57 into the hall.
 box(8,1.1,2.2,darkStone,0,11.5,-35.4);
 for(let x of [-4,4])box(1.1,11,2.2,stone,x,5.5,-35.4);
