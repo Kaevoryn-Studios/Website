@@ -103,299 +103,138 @@ footer{text-align:center;padding:20px 0 36px;color:#8f86a6;font-size:10px;letter
 @keyframes batFlight{from{left:-8%;top:18%;transform:translateY(0) scale(.8)}50%{top:55%;transform:translateY(-35px) scale(1)}to{left:110%;top:12%;transform:translateY(20px) scale(.65)}}
 .scene.gate-open .haunt-lightning,.scene.gate-open .haunt-aura,.scene.gate-open .haunt-mist,.scene.gate-open .haunt-embers,.scene.gate-open .haunt-bats{opacity:0;transition:opacity .8s ease}
 @media(prefers-reduced-motion:reduce){.haunt-lightning,.haunt-aura,.haunt-mist,.haunt-embers,.haunt-bats:before,.haunt-bats:after{animation:none}}
+
+/* CLEAN-SLATE FORBIDDEN FOREST EXTERIOR */
+.scene{min-height:clamp(780px,88vw,1050px);border:1px solid #a99acb88;border-radius:22px;background:radial-gradient(ellipse at 50% 34%,#34304a 0%,#151a27 42%,#070a10 100%);box-shadow:0 30px 110px #000d;isolation:isolate}
+.scene:before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#080d1c22 0%,#0b101b00 42%,#05070cbb 100%);z-index:1;pointer-events:none}
+.skyglow{background:radial-gradient(ellipse at 50% 55%,#b18bd944,transparent 48%),radial-gradient(ellipse at 50% 100%,#9c8ab833,transparent 50%);z-index:0}
+.stars{z-index:0;opacity:.65}
+.moon{z-index:0;top:7%;right:18%;box-shadow:0 0 55px #d8d0ff99,0 0 150px #bba7ff55}
+.forest-back{position:absolute;inset:0;width:100%;height:100%;z-index:1}
+.castle{z-index:2;left:0;right:0;bottom:-1%;width:100%;height:100%;filter:drop-shadow(0 22px 28px #000e)}
+.castle svg{width:100%;height:100%;overflow:visible}
+.forest-front{position:absolute;inset:0;width:100%;height:100%;z-index:3;pointer-events:none}
+.fog{z-index:4;height:32%;background:radial-gradient(ellipse at 18% 72%,#c2b5d455,transparent 48%),radial-gradient(ellipse at 80% 62%,#a9c4d433,transparent 50%),linear-gradient(0deg,#080a11aa,transparent)}
+.scene-label{z-index:5;background:#080a11d9;border-color:#d0c1e688;color:#f0e7ff}
+.scene-caption{z-index:5}
+.haunt-mist{z-index:4}
+.castle-gate{transform-box:view-box;transition:transform 1.6s cubic-bezier(.2,.8,.2,1),opacity 1.2s ease;transform-origin:center}
+.scene.gate-open .gate-left{transform:translateX(-76px) rotateY(48deg);opacity:.3}
+.scene.gate-open .gate-right{transform:translateX(76px) rotateY(-48deg);opacity:.3}
+@media(max-width:600px){.scene{min-height:780px}.castle{left:-3%;width:106%;height:100%;bottom:0}.forest-front{width:110%;left:-5%}.scene-caption{bottom:14px}}
+@media(prefers-reduced-motion:reduce){.window{animation:none}.fog{animation:none}}
 </style></head>
 <body>
 <header class="top"><a class="brand" href="index.html">KAEVORYN STUDIOS<small>CREATE THE IMPOSSIBLE</small></a><nav class="nav"><a href="kingdoms.html">Kingdoms</a><a href="attractions.html">Attractions</a></nav></header>
 <main class="wrap">
-<section class="intro"><p class="eyebrow">KAEVORYN KINGDOMS · A NEW DARK-FANTASY ADVENTURE</p><h1>FORBIDDEN CASTLE</h1><p>Beyond the last lantern stands a castle no map remembers. Its windows are awake. Its gates have been waiting. And something ancient is stirring within.</p></section>
+<section class="intro"><p class="eyebrow">KAEVORYN KINGDOMS · A NEW DARK-FANTASY ADVENTURE</p><h1>FORBIDDEN CASTLE</h1><p>Deep beneath the oldest trees of the Forbidden Forest stands a castle too vast for any map. Follow the winding path. Watch the towers. Something has been waiting in the dark.</p></section>
 <section class="scene" aria-label="Cinematic gothic castle with deep-set violet lancet windows, carved stonework and towering realistic architecture at night">
-<div class="skyglow"></div><div class="stars"></div><div class="moon"></div><div class="haunt-aura"></div><div class="haunt-lightning"></div><div class="haunt-embers"></div><div class="haunt-bats"></div><div class="scene-label">THE OUTER COURTYARD · AFTER DUSK</div>
+<div class="skyglow"></div><div class="stars"></div><div class="moon"></div><div class="haunt-aura"></div><div class="haunt-lightning"></div><div class="haunt-embers"></div><div class="haunt-bats"></div><div class="scene-label">DEEP WITHIN THE FORBIDDEN FOREST</div>
+<svg class="forest-back" viewBox="0 0 1200 900" aria-hidden="true">
+<defs><linearGradient id="forestBark" x2="1"><stop stop-color="#080b12"/><stop offset=".45" stop-color="#242333"/><stop offset="1" stop-color="#090b12"/></linearGradient></defs>
+<g fill="#080b12" stroke="#171a26" stroke-width="9" stroke-linejoin="round">
+<path d="M0 900V80l55 80 18-112 42 94 35-126 22 151 53-68-18 130 54-40 31 711Z"/>
+<path d="M1200 900V48l-48 110-28-144-48 102-42-116-18 155-62-70 20 145-52-34-30 704Z"/>
+<path d="M145 900l25-370-75-90 90 42 30-220 28 228 76-62-68 112 30 360Z"/>
+<path d="M1055 900l-25-370 75-90-90 42-30-220-28 228-76-62 68 112-30 360Z"/>
+</g>
+<g fill="none" stroke="#333244" stroke-width="13" stroke-linecap="round" opacity=".8">
+<path d="M82 900Q62 650 96 380M96 480L20 350M94 565L180 410M1110 900Q1140 630 1090 350M1095 485L1180 330M1100 570L1015 410"/>
+<path d="M260 900Q230 690 255 500M255 600L195 520M945 900Q970 680 945 490M945 590L1010 510"/>
+</g>
+</svg>
 <div class="castle">
-<svg viewBox="0 0 1200 760" role="img" aria-label="A monumental realistic Gothic haunted castle built from weathered stone, with deep-set illuminated windows, a jewel-like stained-glass tower window, steep slate roofs, iron gates and an old graveyard">
+<svg viewBox="0 0 1200 900" role="img" aria-label="A vast, towering Gothic castle of weathered stone hidden deep within an ancient forest, with steep slate roofs, glowing lancet windows, a great central keep and iron entrance gates">
 <defs>
- <linearGradient id="nightStone" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#aaa0ad"/><stop offset=".16" stop-color="#756b7b"/><stop offset=".48" stop-color="#4b4352"/><stop offset=".78" stop-color="#292532"/><stop offset="1" stop-color="#14121c"/></linearGradient>
- <linearGradient id="sunlitStone" x1="0" y1="0" x2="0.9" y2="1"><stop stop-color="#c5bac8"/><stop offset=".22" stop-color="#82778b"/><stop offset=".7" stop-color="#4a4352"/><stop offset="1" stop-color="#211e2a"/></linearGradient>
- <linearGradient id="shadowStone" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#62596d"/><stop offset=".3" stop-color="#393341"/><stop offset="1" stop-color="#17151f"/></linearGradient>
- <linearGradient id="slateRoof" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#888294"/><stop offset=".25" stop-color="#4c465c"/><stop offset=".7" stop-color="#242233"/><stop offset="1" stop-color="#0c0c16"/></linearGradient>
- <linearGradient id="roofLit" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#b4aabc"/><stop offset=".2" stop-color="#655d73"/><stop offset="1" stop-color="#191725"/></linearGradient>
- <linearGradient id="warmGlass" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#fff0b7"/><stop offset=".32" stop-color="#d6a76f"/><stop offset=".7" stop-color="#9869a9"/><stop offset="1" stop-color="#322342"/></linearGradient>
- <linearGradient id="deepGlass" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f4d99a"/><stop offset=".45" stop-color="#9b76c7"/><stop offset="1" stop-color="#263b60"/></linearGradient>
- <linearGradient id="driveStone" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#716b7a"/><stop offset=".45" stop-color="#373341"/><stop offset="1" stop-color="#11111a"/></linearGradient>
- <linearGradient id="graveStone" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#b3aab8"/><stop offset=".3" stop-color="#777080"/><stop offset=".72" stop-color="#393441"/><stop offset="1" stop-color="#17151e"/></linearGradient>
- <filter id="castShadow" x="-30%" y="-30%" width="160%" height="180%"><feGaussianBlur stdDeviation="12"/></filter>
- <filter id="stoneGlow"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
- <filter id="stoneGrain" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency=".045" numOctaves="2" seed="17" result="n"/><feColorMatrix in="n" type="saturate" values="0" result="g"/><feComponentTransfer in="g" result="a"><feFuncA type="table" tableValues="0 .12"/></feComponentTransfer><feBlend in="SourceGraphic" in2="a" mode="soft-light"/></filter>
- <g id="castleWindow">
-  <path d="M-30 68V-4Q-30-38 0-55Q30-38 30-4V68Z" fill="#100e18" stroke="#17131e" stroke-width="5"/>
-  <path d="M-25 63V-4Q-25-34 0-49Q25-34 25-4V63Z" fill="#8e8298" stroke="#c4b8c9" stroke-width="3"/>
-  <path d="M-19 59V-3Q-19-29 0-41Q19-29 19-3V59Z" fill="#171321" stroke="#393044" stroke-width="3"/>
-  <path d="M-15 56V-3Q-15-25 0-36Q15-25 15-3V56Z" fill="url(#warmGlass)"/>
-  <path d="M0-35V56M-15 12H15M-15 34H15" stroke="#2b2034" stroke-width="3" fill="none"/>
-  <path d="M-12-8Q-10-26 0-34" stroke="#fff1c8" stroke-width="2" opacity=".65" fill="none"/>
-  <path d="M-34 66H34L29 75H-29Z" fill="#211c29" stroke="#8c8193" stroke-width="2"/>
-  <path d="M-30 65H30" stroke="#d0c5d4" stroke-width="2"/>
- </g>
- <g id="towerWindow">
-  <path d="M-21 50V-8Q-21-34 0-47Q21-34 21-8V50Z" fill="#100d18" stroke="#aaa0b2" stroke-width="4"/>
-  <path d="M-13 44V-7Q-13-27 0-36Q13-27 13-7V44Z" fill="url(#deepGlass)"/>
-  <path d="M0-35V44M-13 11H13" stroke="#21182d" stroke-width="3"/>
-  <path d="M-25 48H25L21 55H-21Z" fill="#302a38" stroke="#c0b5c8" stroke-width="2"/>
- </g>
- <g id="grandStainedGlass">
-  <path d="M-55 112V-20Q-55-82 0-111Q55-82 55-20V112Z" fill="#0b0912" stroke="#17131e" stroke-width="9"/>
-  <path d="M-46 105V-18Q-46-72 0-97Q46-72 46-18V105Z" fill="#665a70" stroke="#d2c2d8" stroke-width="4"/>
-  <path d="M-37 97V-17Q-37-62 0-85Q37-62 37-17V97Z" fill="#171321"/>
-  <path d="M-34 4L-8-17V-73Q-31-57-34-18Z" fill="#a52f56"/>
-  <path d="M8-17L34 4V-18Q31-57 8-73Z" fill="#286c9b"/>
-  <path d="M-34 12L-8-10V92H-34Z" fill="#583b9a"/>
-  <path d="M8-10L34 12V92H8Z" fill="#b07832"/>
-  <path d="M-34 32L-8 9V48L-34 75Z" fill="#1b7773"/>
-  <path d="M34 32L8 9V48L34 75Z" fill="#963c69"/>
-  <path d="M-7-75L0-86 7-75V-17L0-8-7-17Z" fill="#e5bd65"/>
-  <path d="M-7 5L0-3 7 5V92H-7Z" fill="#3a9294"/>
-  <g fill="none" stroke="#e0d1b1" stroke-width="3.5"><path d="M0-88V96M-37 13H37M-37 51H37M-37 88H37"/><path d="M-37-18Q-37-66 0-84Q37-66 37-18"/><path d="M-37 13L-8-17V-75M37 13L8-17V-75M-37 51L-8 25V94M37 51L8 25V94"/><path d="M-8-17L0-34 8-17M-8 25L0 8 8 25"/></g>
-  <path d="M0-60L9-43 27-40 14-26 17-8 0-17-17-8-14-26-27-40-9-43Z" fill="#f1c86f" stroke="#fff0c6" stroke-width="2"/>
-  <circle cx="0" cy="-35" r="8" fill="#8c4d9d" stroke="#ffe6a9" stroke-width="2"/>
-  <path d="M-49 109H49L41 120H-41Z" fill="#332b3d" stroke="#c6b5cd" stroke-width="3"/>
-  <path d="M-43 108H43" stroke="#f2dfbd" stroke-width="3"/>
- </g>
+ <linearGradient id="stoneA" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#b4a9ae"/><stop offset=".24" stop-color="#77717e"/><stop offset=".62" stop-color="#403b4a"/><stop offset="1" stop-color="#171722"/></linearGradient>
+ <linearGradient id="stoneB" x1="0" y1="0" x2="0.9" y2="1"><stop stop-color="#938995"/><stop offset=".35" stop-color="#595260"/><stop offset="1" stop-color="#211f2b"/></linearGradient>
+ <linearGradient id="roofA" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#777184"/><stop offset=".38" stop-color="#353346"/><stop offset="1" stop-color="#10121d"/></linearGradient>
+ <linearGradient id="windowA" x2="0" y2="1"><stop stop-color="#fff0c0"/><stop offset=".35" stop-color="#e6b87d"/><stop offset=".72" stop-color="#9a72c6"/><stop offset="1" stop-color="#302542"/></linearGradient>
+ <linearGradient id="glassA" x2="1" y2="1"><stop stop-color="#9df3ff"/><stop offset=".4" stop-color="#a77cda"/><stop offset=".72" stop-color="#f2c77e"/><stop offset="1" stop-color="#4e3a70"/></linearGradient>
+ <linearGradient id="gateA" x2="0" y2="1"><stop stop-color="#81748d"/><stop offset=".5" stop-color="#302b3d"/><stop offset="1" stop-color="#0b0c15"/></linearGradient>
+ <filter id="castleGlow"><feGaussianBlur stdDeviation="8"/></filter>
+ <pattern id="stoneBlocks" width="92" height="48" patternUnits="userSpaceOnUse"><path d="M0 0H92M0 24H92M46 0V24M18 24V48" fill="none" stroke="#d6cbd0" stroke-opacity=".10" stroke-width="2"/></pattern>
+ <g id="lancet"><path d="M0 52V19Q0 0 17 0Q34 0 34 19V52Z" fill="#100f1a" stroke="#b5a8b7" stroke-width="5"/><path d="M5 49V20Q5 5 17 5Q29 5 29 20V49Z" fill="url(#windowA)"/><path d="M17 5V50M5 29H29" stroke="#463650" stroke-width="3"/></g>
+ <g id="turret"><path d="M0 205V58H120V205Z" fill="url(#stoneB)" stroke="#211e2b" stroke-width="6"/><path d="M-15 60L60 -65 135 60Z" fill="url(#roofA)" stroke="#aaa0ae" stroke-width="5"/><path d="M60 -65V-91" stroke="#b7aabd" stroke-width="5"/><path d="M10 70H110M10 192H110" stroke="#c5b8c6" stroke-opacity=".18" stroke-width="5"/><use href="#lancet" x="43" y="92" width="34" height="52"/></g>
 </defs>
-<!-- The Forbidden Forest: layered ancient trees frame the estate and disappear into the mist. -->
-<!-- Readable foreground tree silhouettes frame the castle approach. -->
-<g class="forest-foreground" pointer-events="none" fill="#111b1d" stroke="#34413e" stroke-width="5" stroke-linejoin="round" opacity=".98">
- <path d="M0 760V410L35 350 20 280 63 324 48 215 91 270 78 155 121 240 142 180 137 330 182 292 160 430 210 395 195 560 242 530 250 760Z"/>
- <path d="M1200 760V400L1165 340 1180 270 1137 315 1152 205 1109 265 1122 145 1079 235 1058 175 1063 325 1018 290 1040 430 990 395 1005 560 958 530 950 760Z"/>
+<!-- Distant forested ridge -->
+<path d="M0 615L85 510 145 584 225 455 300 570 385 460 470 565 560 430 645 560 735 450 820 580 900 445 990 575 1085 455 1200 590V900H0Z" fill="#101321"/>
+<path d="M0 700Q170 600 330 690T650 680T960 670T1200 650V900H0Z" fill="#171724"/>
+<!-- The broad, grounded castle silhouette -->
+<path d="M140 740V405H315V320H440V270H760V320H885V405H1060V740Z" fill="#080a13" opacity=".8"/>
+<!-- Left wing and towers -->
+<path d="M135 720V470H340V720Z" fill="url(#stoneB)" stroke="#171622" stroke-width="10"/>
+<path d="M112 475L238 285 365 475Z" fill="url(#roofA)" stroke="#aaa0ad" stroke-width="7"/>
+<path d="M170 470V370Q170 335 205 335Q240 335 240 370V470Z" fill="#242331" stroke="#c2b5c0" stroke-width="7"/>
+<use href="#lancet" x="184" y="363"/>
+<path d="M260 720V430H390V720Z" fill="url(#stoneA)" stroke="#171622" stroke-width="8"/>
+<path d="M245 435L325 300 405 435Z" fill="url(#roofA)" stroke="#aaa0ad" stroke-width="6"/>
+<use href="#lancet" x="307" y="480"/>
+<!-- Right wing -->
+<path d="M810 720V430H940V720Z" fill="url(#stoneA)" stroke="#171622" stroke-width="8"/>
+<path d="M795 435L875 300 955 435Z" fill="url(#roofA)" stroke="#aaa0ad" stroke-width="6"/>
+<use href="#lancet" x="857" y="480"/>
+<path d="M860 720V470H1065V720Z" fill="url(#stoneB)" stroke="#171622" stroke-width="10"/>
+<path d="M835 475L962 285 1088 475Z" fill="url(#roofA)" stroke="#aaa0ad" stroke-width="7"/>
+<path d="M960 470V370Q960 335 995 335Q1030 335 1030 370V470Z" fill="#242331" stroke="#c2b5c0" stroke-width="7"/>
+<use href="#lancet" x="978" y="363"/>
+<!-- Central keep, taller than every wing -->
+<path d="M365 720V300H835V720Z" fill="url(#stoneA)" stroke="#171622" stroke-width="12"/>
+<path d="M345 305L600 48 855 305Z" fill="url(#roofA)" stroke="#b2a6b5" stroke-width="9"/>
+<path d="M600 48V8" stroke="#c9bdc9" stroke-width="6"/><path d="M580 10H620M600 -8V30" stroke="#c9bdc9" stroke-width="4"/>
+<path d="M430 302V235Q430 170 490 170Q550 170 550 235V302Z" fill="#1b1a29" stroke="#bdb1c0" stroke-width="8"/>
+<path d="M440 295V237Q440 181 490 181Q540 181 540 237V295Z" fill="url(#glassA)"/>
+<path d="M490 181V295M440 240H540M465 194L515 282M515 194L465 282" stroke="#3d3151" stroke-width="5"/>
+<path d="M650 302V235Q650 170 710 170Q770 170 770 235V302Z" fill="#1b1a29" stroke="#bdb1c0" stroke-width="8"/>
+<use href="#lancet" x="663" y="191" />
+<!-- Central facade stonework, buttresses and recessed windows -->
+<path d="M365 330H835M365 690H835M390 320V720M810 320V720" stroke="#c9bdc8" stroke-opacity=".22" stroke-width="8"/>
+<path d="M410 340L445 720M790 340L755 720" stroke="#171622" stroke-width="18"/>
+<g><use href="#lancet" x="470" y="390"/><use href="#lancet" x="535" y="390"/><use href="#lancet" x="630" y="390"/><use href="#lancet" x="695" y="390"/></g>
+<g opacity=".72"><use href="#lancet" x="470" y="510"/><use href="#lancet" x="535" y="510"/><use href="#lancet" x="630" y="510"/><use href="#lancet" x="695" y="510"/></g>
+<!-- Stone block texture kept subtle, not decorative wall lines -->
+<path d="M365 300H835V720H365Z" fill="url(#stoneBlocks)" opacity=".45"/>
+<!-- Tall corner turrets -->
+<g transform="translate(295 275) scale(.8 1.15)"><use href="#turret"/></g>
+<g transform="translate(785 275) scale(.8 1.15)"><use href="#turret"/></g>
+<!-- lower buttressed gatehouse -->
+<path d="M390 720V625Q390 570 450 570H750Q810 570 810 625V720Z" fill="url(#stoneB)" stroke="#171622" stroke-width="10"/>
+<path d="M475 720V635Q475 570 600 570Q725 570 725 635V720Z" fill="#0a0b14" stroke="#c2b6c5" stroke-width="9"/>
+<path d="M490 720V640Q490 590 600 590Q710 590 710 640V720Z" fill="#11101b" stroke="#6c6076" stroke-width="5"/>
+<path d="M505 720V648Q505 605 600 605Q695 605 695 648V720Z" fill="#05070d"/>
+<!-- warm gatehouse lamps -->
+<g fill="#ffdda0" filter="url(#castleGlow)" opacity=".75"><circle cx="435" cy="600" r="15"/><circle cx="765" cy="600" r="15"/></g>
+<g fill="#ffdfa5"><circle cx="435" cy="600" r="6"/><circle cx="765" cy="600" r="6"/></g>
+<!-- Iron gates are the moving interactive doors -->
+<g class="castle-gate gate-left" transform-box="view-box" transform-origin="600px 700px">
+<path d="M505 720V650Q505 610 552 610V720Z" fill="url(#gateA)" stroke="#a99db2" stroke-width="5"/>
+<path d="M515 720V650Q515 620 545 620V720M520 650V720M535 630V720" fill="none" stroke="#c3b7c8" stroke-width="4"/>
+<path d="M505 645L528 620 552 645" fill="none" stroke="#c4b8c8" stroke-width="5"/>
 </g>
-<g fill="none" stroke="#68766a" stroke-width="5" opacity=".35" pointer-events="none">
- <path d="M58 760Q75 560 48 350M58 510L8 405M62 450L120 355M1140 760Q1125 560 1152 350M1142 510L1192 405M1138 450L1080 355"/>
+<g class="castle-gate gate-right" transform-box="view-box" transform-origin="600px 700px">
+<path d="M695 720V650Q695 610 648 610V720Z" fill="url(#gateA)" stroke="#a99db2" stroke-width="5"/>
+<path d="M685 720V650Q685 620 655 620V720M680 650V720M665 630V720" fill="none" stroke="#c3b7c8" stroke-width="4"/>
+<path d="M695 645L672 620 648 645" fill="none" stroke="#c4b8c8" stroke-width="5"/>
 </g>
-
-<g class="forbidden-forest" pointer-events="none">
- <path d="M0 0H1200V760H0Z" fill="#080d12" opacity=".08"/>
- <g fill="#172326" stroke="#344347" stroke-width="8" stroke-linejoin="round">
-  <path d="M0 570L0 165 28 220 17 95 53 177 69 28 91 174 123 102 113 233 157 163 139 306 190 235 170 390 220 326 203 505 248 451 258 690 0 720Z"/>
-  <path d="M1200 570L1200 145 1170 218 1181 78 1145 170 1128 18 1105 167 1072 94 1085 228 1038 154 1058 303 1008 230 1028 402 980 340 997 520 950 450 942 690 1200 720Z"/>
-  <path d="M0 425L42 338 30 275 75 342 95 220 119 345 158 280 147 405 192 360 181 530 225 480 214 700 0 720Z" opacity=".86"/>
-  <path d="M1200 430L1158 330 1170 270 1125 340 1105 215 1081 340 1042 274 1053 410 1008 355 1019 530 975 470 986 700 1200 720Z" opacity=".86"/>
- </g>
- <g fill="none" stroke="#40504a" stroke-width="17" stroke-linecap="round" opacity=".96">
-  <path d="M48 760Q62 565 44 395M45 500L5 395M51 450L104 350M1152 760Q1137 570 1158 390M1155 500L1196 395M1100 455L1048 350"/>
-  <path d="M180 760Q190 610 165 470M168 565L130 500M170 530L210 450M1020 760Q1010 610 1035 470M1032 565L1070 500M1030 530L990 450"/>
- </g>
- <g fill="#202d2d" opacity=".96">
-  <path d="M0 520Q90 470 170 520T340 520V760H0Z"/>
-  <path d="M860 520Q950 470 1030 520T1200 520V760H860Z"/>
- </g>
+<!-- A long, winding stone causeway -->
+<path d="M555 720L645 720 820 900H380Z" fill="#292638" stroke="#71657c" stroke-width="5"/>
+<path d="M570 735L630 735 720 900H480Z" fill="#5c5264" opacity=".45"/>
+<path d="M600 740L600 900" stroke="#b5a9b9" stroke-opacity=".18" stroke-width="4"/>
+<path d="M555 770L645 770M520 820L680 820M450 880L750 880" stroke="#9b8ca3" stroke-opacity=".35" stroke-width="4"/>
+<!-- Foreground graves barely emerging from the forest floor -->
+<g fill="#383541" stroke="#8e8392" stroke-width="4"><path d="M95 805V755Q95 720 130 720Q165 720 165 755V805Z"/><path d="M1030 810V755Q1030 715 1065 715Q1100 715 1100 755V810Z"/></g>
+<g fill="#c9bdc7" opacity=".55" font-size="14" font-family="serif"><text x="130" y="778" text-anchor="middle">1891</text><text x="1065" y="778" text-anchor="middle">1887</text></g>
+</svg></div>
+<svg class="forest-front" viewBox="0 0 1200 900" aria-hidden="true">
+<g fill="#080a11" stroke="#20202d" stroke-width="10" stroke-linejoin="round">
+<path d="M0 900V330L38 365 56 210 83 350 120 160 145 365 178 270 200 900Z"/>
+<path d="M1200 900V300L1165 350 1142 195 1115 350 1078 140 1052 370 1020 260 1000 900Z"/>
 </g>
-<!-- Distant storm hills and moonlit ridge -->
-<path d="M0 440L95 350 174 392 275 292 366 402 480 285 575 395 710 270 820 398 938 300 1040 398 1140 320 1200 370V760H0Z" fill="#111321" opacity=".8"/>
-<path d="M0 470L150 405 245 443 360 380 470 445 610 365 760 444 905 382 1035 444 1200 385V760H0Z" fill="#191827" opacity=".72"/>
-<ellipse cx="600" cy="675" rx="540" ry="70" fill="#05050b" opacity=".75" filter="url(#castShadow)"/>
-<!-- Rear curtain wall and distant towers -->
-<g>
- <path d="M82 565V360L170 315 258 360V565Z" fill="url(#shadowStone)" stroke="#8e8498" stroke-width="5"/>
- <path d="M942 565V350L1035 300 1128 350V565Z" fill="url(#shadowStone)" stroke="#8e8498" stroke-width="5"/>
- <path d="M62 365L170 115 278 365Z" fill="url(#slateRoof)" stroke="#a49aaa" stroke-width="5"/>
- <path d="M170 115L278 365 250 365 170 164Z" fill="#171624" opacity=".8"/>
- <path d="M922 355L1035 75 1148 355Z" fill="url(#roofLit)" stroke="#b2a7b9" stroke-width="5"/>
- <path d="M1035 75L1148 355 1117 355 1035 126Z" fill="#171624" opacity=".8"/>
- <path d="M170 115V69M1035 75V28" stroke="#c6bdcf" stroke-width="5"/>
- <path d="M170 69l12 18-12 18-12-18ZM1035 28l14 20-14 20-14-20Z" fill="#b49aff" stroke="#e7d9ff" stroke-width="2"/>
- <path d="M108 360H232M970 350H1100" stroke="#b5aabd" stroke-width="8"/>
- <path d="M120 380V555M220 380V555M980 370V555M1090 370V555" stroke="#262230" stroke-width="8"/>
+<g fill="none" stroke="#343242" stroke-width="15" stroke-linecap="round" opacity=".9">
+<path d="M90 900Q65 600 120 300M110 540L28 430M116 620L190 470M1110 900Q1140 600 1080 300M1090 540L1172 420M1084 620L1010 470"/>
 </g>
-<!-- Main west and east residential ranges, each a solid architectural mass -->
-<g filter="url(#stoneGrain)">
- <path d="M82 590V420Q82 390 118 378L398 350 456 402V610H82Z" fill="url(#nightStone)" stroke="#b2a7b7" stroke-width="6"/>
- <path d="M744 402L802 350 1082 378Q1118 390 1118 420V590H744Z" fill="url(#nightStone)" stroke="#b2a7b7" stroke-width="6"/>
- <path d="M102 420L400 382 435 410V585H102Z" fill="#5b5262" opacity=".22"/>
- <path d="M765 410L800 382 1098 420V585H765Z" fill="#11101a" opacity=".32"/>
-</g>
-<!-- Deep sloping roofs with visible front and side planes -->
-<g stroke-linejoin="round">
- <path d="M58 422L215 265 430 386 399 410 215 320 102 438Z" fill="url(#roofLit)" stroke="#c1b6c6" stroke-width="6"/>
- <path d="M215 265L430 386 399 410 215 320Z" fill="#1a1725" opacity=".75"/>
- <path d="M770 386L985 265 1142 422 1098 438 985 320 801 410Z" fill="url(#slateRoof)" stroke="#b7acbf" stroke-width="6"/>
- <path d="M985 265L1142 422 1098 438 985 320Z" fill="#151421" opacity=".8"/>
- <path d="M215 265L202 250 215 233 229 250Z M985 265L972 250 985 233 999 250Z" fill="#b9afc2" stroke="#282333" stroke-width="4"/>
- <path d="M100 438L215 320 399 410M801 410L985 320 1100 438" fill="none" stroke="#ded3df" stroke-width="3" opacity=".45"/>
-</g>
-<!-- Side turrets and their steep slate caps -->
-<g>
- <path d="M275 410V255Q275 228 305 212Q335 228 335 255V410Z" fill="url(#sunlitStone)" stroke="#bdb2c2" stroke-width="5"/>
- <path d="M258 255L305 132 352 255Z" fill="url(#slateRoof)" stroke="#c0b6c7" stroke-width="5"/>
- <path d="M305 132L352 255 334 255 305 161Z" fill="#161522"/>
- <path d="M305 132V105" stroke="#d8cde0" stroke-width="4"/>
- <path d="M825 410V255Q825 228 855 212Q885 228 885 255V410Z" fill="url(#shadowStone)" stroke="#a69bab" stroke-width="5"/>
- <path d="M808 255L855 132 902 255Z" fill="url(#roofLit)" stroke="#c0b6c7" stroke-width="5"/>
- <path d="M855 132L902 255 884 255 855 161Z" fill="#151421"/>
- <path d="M855 132V105" stroke="#d8cde0" stroke-width="4"/>
-</g>
-<!-- Central keep: broad, weighty stone facade with projecting buttresses -->
-<g filter="url(#stoneGrain)">
- <path d="M386 610V330Q386 280 435 260H765Q814 280 814 330V610Z" fill="url(#sunlitStone)" stroke="#d0c4d3" stroke-width="7"/>
- <path d="M408 590V334Q408 298 448 282H752Q792 298 792 334V590Z" fill="url(#nightStone)" opacity=".72"/>
- <path d="M386 610V330Q386 280 435 260H765Q814 280 814 330V610Z" fill="none" stroke="#17141f" stroke-width="12" opacity=".7"/>
-</g>
-<!-- Central tower rises from the keep; layered roof planes create clear depth -->
-<g>
- <path d="M466 438V155Q466 118 510 98H690Q734 118 734 155V438Z" fill="url(#sunlitStone)" stroke="#d5c9d8" stroke-width="7"/>
- <path d="M488 422V159Q488 135 520 119H680Q712 135 712 159V422Z" fill="url(#nightStone)" opacity=".55"/>
- <path d="M448 164L600 34 752 164 718 184 600 83 482 184Z" fill="url(#roofLit)" stroke="#d5c9d8" stroke-width="6"/>
- <path d="M600 34L752 164 718 184 600 83Z" fill="#161522" opacity=".8"/>
- <path d="M600 34V4" stroke="#ded5e4" stroke-width="5"/>
- <path d="M600 4l11 16-11 16-11-16Z" fill="#b49aff" stroke="#fff" stroke-width="2"/>
- <path d="M475 168H725M482 190H718" stroke="#272232" stroke-width="9"/>
- <path d="M466 438H734" stroke="#d6cbdc" stroke-width="10"/>
-</g>
-<!-- Tower corner turrets: attached to the tower shoulders, not floating -->
-<g>
- <path d="M445 222V142Q445 125 463 115Q481 125 481 142V222Z" fill="url(#shadowStone)" stroke="#c3b8c8" stroke-width="4"/>
- <path d="M435 145L463 72 491 145Z" fill="url(#slateRoof)" stroke="#c9bed0" stroke-width="4"/>
- <path d="M719 222V142Q719 125 737 115Q755 125 755 142V222Z" fill="url(#sunlitStone)" stroke="#c3b8c8" stroke-width="4"/>
- <path d="M709 145L737 72 765 145Z" fill="url(#roofLit)" stroke="#c9bed0" stroke-width="4"/>
- <path d="M463 72V52M737 72V52" stroke="#d6cde0" stroke-width="3"/>
-</g>
-<!-- Deep-set windows are placed directly on the planes of the building -->
-<g class="window">
- <use href="#castleWindow" transform="translate(150 468) scale(.82)"/>
- <use href="#castleWindow" transform="translate(335 468) scale(.82)"/>
- <use href="#castleWindow" transform="translate(865 468) scale(.82)"/>
- <use href="#castleWindow" transform="translate(1050 468) scale(.82)"/>
- <use href="#castleWindow" transform="translate(305 340) scale(.72)"/>
- <use href="#castleWindow" transform="translate(895 340) scale(.72)"/>
- <use href="#castleWindow" transform="translate(490 405) scale(.72)"/>
- <use href="#castleWindow" transform="translate(710 405) scale(.72)"/>
-</g>
-<g class="window">
- <use href="#towerWindow" transform="translate(520 235)"/>
- <use href="#towerWindow" transform="translate(680 235)"/>
- <use href="#towerWindow" transform="translate(520 365) scale(.9)"/>
- <use href="#towerWindow" transform="translate(680 365) scale(.9)"/>
-</g>
-<!-- The central jewel window is recessed in the tower facade -->
-<ellipse cx="600" cy="300" rx="66" ry="119" fill="#a779d8" opacity=".18" filter="url(#stoneGlow)"/>
-<g transform="translate(600 300) scale(.94)" filter="url(#stoneGlow)"><use href="#grandStainedGlass"/></g>
-<!-- Architectural vertical supports, capitals and stone ledges -->
-<g fill="url(#shadowStone)" stroke="#c1b5c7" stroke-width="3">
- <path d="M390 328H416V600H390Z M784 328H810V600H784Z"/>
- <path d="M378 322H428V338H378Z M772 322H822V338H772Z"/>
- <path d="M398 465H420V478H398Z M780 465H802V478H780Z"/>
- <path d="M455 186H477V425H455Z M723 186H745V425H723Z"/>
- <path d="M445 180H487V194H445Z M713 180H755V194H713Z"/>
-</g>
-<g fill="none" stroke="#d6cadb" stroke-width="3" opacity=".5">
- <path d="M402 350V585M798 350V585M466 202V410M734 202V410"/>
- <path d="M115 425L390 390M810 390L1085 425"/>
-</g>
-<!-- Stone corner quoins, each block has a bevel and shadow rather than wall-wide grid lines -->
-<g stroke="#2a2532" stroke-width="3" stroke-linejoin="round">
- <path d="M84 430L111 420 111 456 84 466Z M84 475L111 465 111 501 84 511Z M84 520L111 510 111 546 84 556Z M84 565L111 555 111 591 84 601Z" fill="#918798"/>
- <path d="M1089 420L1116 430 1116 466 1089 456Z M1089 465L1116 475 1116 511 1089 501Z M1089 510L1116 520 1116 556 1089 546Z M1089 555L1116 565 1116 601 1089 591Z" fill="#6b6274"/>
-</g>
-<!-- Upper cornices cast deep shadows over the stone walls -->
-<g>
- <path d="M75 592H440V614H75Z M760 592H1125V614H760Z" fill="#25212d" stroke="#a79cac" stroke-width="5"/>
- <path d="M75 592H440M760 592H1125" stroke="#d0c5d5" stroke-width="3"/>
- <path d="M390 432H810V450H390Z" fill="#292431" stroke="#b4a9ba" stroke-width="4"/>
-</g>
-<!-- Grand entrance: a deep stone portal, recessed oak doors and an iron grille -->
-<g>
- <path d="M454 610V535Q454 435 600 435Q746 435 746 535V610Z" fill="#17131f" stroke="#c7bacd" stroke-width="12"/>
- <path d="M476 610V535Q476 458 600 458Q724 458 724 535V610Z" fill="#0a0911" stroke="#6e6079" stroke-width="6"/>
- <path d="M492 610V536Q492 474 600 474Q708 474 708 536V610Z" fill="#382b40" stroke="#a88bb4" stroke-width="4"/>
- <path d="M600 478V610M505 535H695M505 574H695" stroke="#bca1c8" stroke-width="4" opacity=".5"/>
- <path d="M514 488L600 475 686 488" fill="none" stroke="#ead8e9" stroke-width="3" opacity=".55"/>
- <path d="M600 484V610" stroke="#1a1421" stroke-width="8"/>
- <circle cx="585" cy="557" r="5" fill="#f2d49a"/><circle cx="615" cy="557" r="5" fill="#f2d49a"/>
-</g>
-<!-- Opening gate leaves retain the existing interaction and are mounted inside the entrance arch -->
-<g class="castle-gate gate-left" stroke="#d8c8e5" stroke-width="7" fill="none" stroke-linecap="round">
- <path d="M520 500V610M545 480V610M570 470V610M495 535H600M495 575H600"/>
- <path d="M520 500L545 480 570 470 600 480"/>
- <path d="M495 535L520 525 545 535 570 525 600 535" stroke-width="4"/>
-</g>
-<g class="castle-gate gate-right" stroke="#d8c8e5" stroke-width="7" fill="none" stroke-linecap="round">
- <path d="M680 500V610M655 480V610M630 470V610M600 535H705M600 575H705"/>
- <path d="M680 500L655 480 630 470 600 480"/>
- <path d="M600 535L630 525 655 535 680 525 705 535" stroke-width="4"/>
-</g>
-<!-- Broad grounded stair, with visible risers and projecting stone nosings -->
-<g stroke-linejoin="round">
- <path d="M454 610H746L780 630H420Z" fill="#61596b" stroke="#c4b8cb" stroke-width="4"/>
- <path d="M420 630H780L820 653H380Z" fill="#4e475a" stroke="#b8adbf" stroke-width="4"/>
- <path d="M380 653H820L864 681H336Z" fill="#403a4b" stroke="#a89caf" stroke-width="4"/>
- <path d="M336 681H864L900 706H300Z" fill="#302c3b" stroke="#95899f" stroke-width="4"/>
- <path d="M420 630H780M380 653H820M336 681H864" stroke="#ded3e2" stroke-width="3" opacity=".55"/>
-</g>
-<!-- Forecourt and approach paving -->
-<path d="M0 760L300 706H900L1200 760Z" fill="url(#driveStone)" stroke="#7b7185" stroke-width="4"/>
-<path d="M300 706L0 760M900 706L1200 760" stroke="#c2b7c9" stroke-width="4" opacity=".42"/>
-<path d="M600 706V760M500 711L430 760M700 711L770 760M380 720L300 760M820 720L900 760" stroke="#171520" stroke-width="5" opacity=".65"/>
-<!-- Large old graveyard on both sides of the approach; headstones sit on the ground plane -->
-<g class="castle-graveyard" pointer-events="none">
- <g fill="none" stroke="#17141f" stroke-width="6" opacity=".95">
-  <path d="M18 663H286M18 663V713M286 663V713M914 663H1182M914 663V713M1182 663V713"/>
-  <path d="M25 651V704M48 651V704M71 651V704M94 651V704M117 651V704M140 651V704M163 651V704M186 651V704M209 651V704M232 651V704M255 651V704M278 651V704"/>
-  <path d="M922 651V704M945 651V704M968 651V704M991 651V704M1014 651V704M1037 651V704M1060 651V704M1083 651V704M1106 651V704M1129 651V704M1152 651V704M1175 651V704"/>
- </g>
- <g fill="#797080" stroke="#282330" stroke-width="3">
-  <path d="M12 651H34L23 633Z M270 651H292L281 633Z M908 651H930L919 633Z M1170 651H1192L1181 633Z"/>
- </g>
- <!-- left: large arched family monument -->
- <g>
-  <path d="M38 692V625Q38 584 82 570Q126 584 126 625V692Z" fill="#14121b" opacity=".75"/>
-  <path d="M31 687V622Q31 581 78 566Q122 581 122 622V687Z" fill="url(#graveStone)" stroke="#c1b7c7" stroke-width="4"/>
-  <path d="M45 676V625Q45 594 78 583Q108 594 108 625V676Z" fill="#292532" stroke="#80778a" stroke-width="3"/>
-  <path d="M78 591V674M47 627H109" stroke="#b9afc1" stroke-width="2" opacity=".42"/>
-  <path d="M48 605Q78 585 108 605M44 680H110" fill="none" stroke="#d0c6d5" stroke-width="3" opacity=".55"/>
-  <g fill="#e1d8e4" font-family="Georgia,serif" text-anchor="middle"><text x="78" y="637" font-size="11">HERE LIES</text><text x="78" y="652" font-size="12">ELIAS VALE</text><text x="78" y="666" font-size="10">1812 — 1879</text></g>
- </g>
- <!-- left: cross-topped marker -->
- <g>
-  <path d="M143 692L147 625 164 610 164 579 180 579 180 610 198 625 202 692Z" fill="#17141e"/>
-  <path d="M137 687L142 621 159 606 159 573 185 573 185 606 203 621 208 687Z" fill="url(#graveStone)" stroke="#bdb2c4" stroke-width="4"/>
-  <path d="M172 579V661M149 620H195" stroke="#d2c7d8" stroke-width="4" opacity=".6"/>
-  <g fill="#ded5e1" font-family="Georgia,serif" text-anchor="middle"><text x="172" y="644" font-size="10">M. ASH</text><text x="172" y="658" font-size="9">1840 — 1901</text></g>
- </g>
- <!-- left: weathered broken slab -->
- <g transform="rotate(-5 245 650)">
-  <path d="M215 692L218 622 232 603 277 607 292 628 292 692Z" fill="#17141e"/>
-  <path d="M209 687L212 618 229 596 275 600 286 623 286 687Z" fill="url(#graveStone)" stroke="#a89eaf" stroke-width="4"/>
-  <path d="M223 619L236 610 270 614 276 630 273 674 221 674Z" fill="none" stroke="#d0c7d6" stroke-width="2" opacity=".4"/>
-  <path d="M215 626L232 640 226 654 240 670M276 613L265 634 274 650" fill="none" stroke="#272330" stroke-width="3"/>
-  <g fill="#e2d9e5" font-family="Georgia,serif" text-anchor="middle"><text x="249" y="642" font-size="10">NEVER</text><text x="249" y="655" font-size="10">FORGOTTEN</text><text x="249" y="669" font-size="9">1768 — 1833</text></g>
- </g>
- <!-- right: tall gothic pointed marker -->
- <g>
-  <path d="M925 692L930 624 967 570 1004 624 1009 692Z" fill="#15131d"/>
-  <path d="M918 687L923 620 967 558 1011 620 1016 687Z" fill="url(#graveStone)" stroke="#c0b5c6" stroke-width="4"/>
-  <path d="M937 675L941 624 967 588 993 624 997 675Z" fill="#302a38" stroke="#83798b" stroke-width="3"/>
-  <path d="M967 587V668M941 624H993" stroke="#c9bdcf" stroke-width="3" opacity=".65"/>
-  <g fill="#e2d9e5" font-family="Georgia,serif" text-anchor="middle"><text x="967" y="641" font-size="10">R.I.P.</text><text x="967" y="655" font-size="9">S. WREN</text><text x="967" y="668" font-size="9">1799 — 1860</text></g>
- </g>
- <!-- right: broad, old rounded family stone -->
- <g>
-  <path d="M1030 692V627Q1030 586 1074 574Q1118 586 1118 627V692Z" fill="#17141e"/>
-  <path d="M1023 687V624Q1023 582 1074 568Q1125 582 1125 624V687Z" fill="url(#graveStone)" stroke="#c1b6c7" stroke-width="4"/>
-  <path d="M1039 675V628Q1039 598 1074 585Q1109 598 1109 628V675Z" fill="#302b39" stroke="#80768a" stroke-width="3"/>
-  <path d="M1074 589V673M1040 627H1108" stroke="#c8bdce" stroke-width="2" opacity=".5"/>
-  <g fill="#e1d8e4" font-family="Georgia,serif" text-anchor="middle"><text x="1074" y="640" font-size="10">THE VALE</text><text x="1074" y="654" font-size="10">FAMILY</text><text x="1074" y="668" font-size="9">EST. 1721</text></g>
- </g>
- <!-- right: low, broken headstone -->
- <g transform="rotate(7 1150 656)">
-  <path d="M1122 692L1126 633 1141 614 1172 618 1183 638 1183 692Z" fill="#15131c"/>
-  <path d="M1116 687L1120 628 1138 607 1170 611 1178 633 1178 687Z" fill="url(#graveStone)" stroke="#aaa0b0" stroke-width="4"/>
-  <path d="M1128 632L1141 620 1166 623 1170 640 1168 674 1127 674Z" fill="none" stroke="#d1c7d7" stroke-width="2" opacity=".4"/>
-  <path d="M1122 635L1140 647 1134 662M1170 619L1158 642 1169 655" fill="none" stroke="#26222e" stroke-width="3"/>
-  <g fill="#e1d8e4" font-family="Georgia,serif" text-anchor="middle"><text x="1149" y="647" font-size="10">LOST TO</text><text x="1149" y="660" font-size="10">TIME</text><text x="1149" y="673" font-size="9">1888</text></g>
- </g>
-</g>
-<!-- Foreground shadow, mist and scattered stone debris ground the architecture -->
-<path d="M0 716Q170 687 330 716T650 713T970 710T1200 716V760H0Z" fill="#090a13" opacity=".8"/>
-<g fill="#b8a8ca" opacity=".17" filter="url(#castShadow)"><ellipse cx="170" cy="700" rx="190" ry="24"/><ellipse cx="1030" cy="700" rx="190" ry="24"/></g>
-<g fill="#b5a9c0" opacity=".28"><path d="M18 718l20-9 13 10-26 5ZM274 722l17-8 13 9-20 5ZM920 719l23-11 15 10-27 7ZM1150 720l18-8 14 9-21 6Z"/></g>
-</svg></div></div>
+<g fill="#0b0d16" opacity=".92"><path d="M0 820Q100 750 210 820L270 900H0ZM930 830Q1080 740 1200 820V900H900Z"/></g>
+</svg>
 <div class="fog"></div><div class="haunt-mist"></div><div class="scene-caption"><strong>THE GATES HAVE NOT OPENED IN CENTURIES</strong><span>Look closely. Something is watching from the highest tower.</span></div>
 <section class="interior" id="entranceHall" aria-live="polite">
 <div class="interior-head" id="floorHeading"><p class="eyebrow">BEYOND THE THRESHOLD · THE CASTLE AWAKENS</p><h2>THE ENTRANCE HALL</h2><p>The gates part. A vast chamber opens before you. An old stone staircase rises toward a sealed inner door, lit by floating candles and violet magic.</p></div>
