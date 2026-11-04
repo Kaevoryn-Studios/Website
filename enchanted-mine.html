@@ -23,6 +23,19 @@ const camera=new THREE.PerspectiveCamera(72,innerWidth/innerHeight,.1,400);camer
 const renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:'high-performance'});renderer.setPixelRatio(Math.min(devicePixelRatio,1.6));renderer.setSize(innerWidth,innerHeight);renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.12;document.getElementById('world').appendChild(renderer.domElement);
 scene.add(new THREE.HemisphereLight(0x9bcaff,0x17101f,1.25));scene.add(new THREE.AmbientLight(0x8a9bb8,.35));
 const world=new THREE.Group();scene.add(world);
+let running=false,elapsed=0,last=0;
+document.getElementById('startBtn').addEventListener('click',()=>{
+ if(running)return;
+ elapsed=0;world.position.set(0,0,0);
+ cart.position.set(0,-1.42,5.3);
+ camera.position.set(0,1.15,11);camera.lookAt(0,.9,-18);
+ cartWheels.forEach(w=>w.rotation.x=0);
+ running=true;
+ document.getElementById('intro').style.display='none';
+ document.getElementById('status').textContent='DESCENDING · SHADOW MINERS AT WORK';
+ if(soundOn)startSound();
+ if(audio&&audio.state==='suspended')audio.resume();
+});
 const material=(c,r=.8,m=0)=>new THREE.MeshStandardMaterial({color:c,roughness:r,metalness:m});
 const rock=material(0x292b3b,1),darkRock=material(0x111827,1),wood=material(0x62432c,1),iron=material(0x303944,.35,.8),gold=material(0xffc76b,.4,.25),railMat=material(0x9aa7b8,.28,.85);
 const crystalColors=[0x39d9ed,0x987aff,0x75ffcf,0xff76c8];
@@ -135,8 +148,7 @@ function startSound(){if(audio)return;const AC=window.AudioContext||window.webki
  [55,82.41,110].forEach((hz,i)=>{const o=audio.createOscillator(),g=audio.createGain();o.type='sine';o.frequency.value=hz;g.gain.value=.09/(i+1);o.connect(g);g.connect(master);o.start()});
  [196,246.94,293.66].forEach((hz,i)=>{const o=audio.createOscillator(),g=audio.createGain(),v=audio.createOscillator(),vg=audio.createGain();o.type='sine';o.frequency.value=hz;o.detune.value=(i-1)*5;g.gain.value=.018;v.frequency.value=.22+i*.07;vg.gain.value=2.2;v.connect(vg);vg.connect(o.detune);o.connect(g);g.connect(master);o.start();v.start()})}
 document.getElementById('soundBtn').onclick=()=>{soundOn=!soundOn;document.getElementById('soundBtn').textContent=soundOn?'♫ SOUND ON':'♫ SOUND OFF';if(soundOn)startSound();if(master)master.gain.setTargetAtTime(soundOn?.13:0,audio.currentTime,.2)};
-let running=false,elapsed=0,last=0;
-document.getElementById('startBtn').onclick=()=>{if(running)return;elapsed=0;world.position.set(0,0,0);cart.position.set(0,-1.42,5.3);camera.position.set(0,1.15,11);camera.lookAt(0,.9,-18);cartWheels.forEach(w=>w.rotation.x=0);running=true;document.getElementById('intro').style.display='none';document.getElementById('status').textContent='DESCENDING · SHADOW MINERS AT WORK';if(soundOn)startSound();if(audio&&audio.state==='suspended')audio.resume()};
+
 function animate(t){requestAnimationFrame(animate);const dt=last?Math.min((t-last)/1000,.04):0;last=t;
  if(running){elapsed=Math.min(52,elapsed+dt);const travel=elapsed*3.75;world.position.z=0;cart.position.z=5.3-travel;camera.position.z=cart.position.z+5.7;camera.lookAt(0,.9,cart.position.z-23.3);cartWheels.forEach(w=>w.rotation.x-=dt*5.2);cart.position.y=-1.42+Math.sin(elapsed*5)*.025;document.getElementById('bar').style.width=(elapsed/52*100)+'%';
  const stage=elapsed<17?'DESCENDING · SHADOW MINERS AT WORK':elapsed<34?'THE CRYSTAL CATHEDRAL · FOLLOW THE LIGHT':elapsed<46?'THE OLD ORE LIFT · SHAFT IN MOTION':'THE LOST VEIN · A SECRET AWAKENS';
