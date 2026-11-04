@@ -24,7 +24,7 @@ document.getElementById("startBtn").addEventListener("click",()=>{window.__mineS
 let THREE;
 try{THREE=await import('https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js')}catch(e){THREE=await import('https://unpkg.com/three@0.160.0/build/three.module.js')}
 const scene=new THREE.Scene();scene.background=new THREE.Color(0x050711);scene.fog=new THREE.FogExp2(0x080d1c,.012);
-const camera=new THREE.PerspectiveCamera(72,innerWidth/innerHeight,.1,400);camera.position.set(0,1.15,16.5);camera.lookAt(0,.9,-12);
+const camera=new THREE.PerspectiveCamera(72,innerWidth/innerHeight,.1,400);camera.position.set(4.2,3.4,16.5);camera.lookAt(0,-.2,-12);
 const renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:'high-performance'});renderer.setPixelRatio(Math.min(devicePixelRatio,1.6));renderer.setSize(innerWidth,innerHeight);renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.12;document.getElementById('world').appendChild(renderer.domElement);
 scene.add(new THREE.HemisphereLight(0x9bcaff,0x17101f,1.25));scene.add(new THREE.AmbientLight(0x8a9bb8,.35));
 const world=new THREE.Group();scene.add(world);
@@ -33,7 +33,7 @@ document.getElementById('startBtn').addEventListener('click',()=>{
  if(running)return;
  elapsed=0;world.position.set(0,0,0);
  trainCarts.forEach((wagon,i)=>wagon.position.set(0,-1.42,5.3+i*2.65));
- camera.position.set(0,1.15,16.5);camera.lookAt(0,.9,-12);
+ camera.position.set(4.2,3.4,16.5);camera.lookAt(0,-.2,-12);
  cartWheels.forEach(w=>w.rotation.x=0);
  running=true;
  document.getElementById('intro').style.display='none';
@@ -243,7 +243,7 @@ function startSound(){if(audio)return;const AC=window.AudioContext||window.webki
 document.getElementById('soundBtn').onclick=()=>{soundOn=!soundOn;document.getElementById('soundBtn').textContent=soundOn?'♫ SOUND ON':'♫ SOUND OFF';if(soundOn)startSound();if(master)master.gain.setTargetAtTime(soundOn?.13:0,audio.currentTime,.2)};
 
 function animate(t){requestAnimationFrame(animate);const dt=last?Math.min((t-last)/1000,.04):0;last=t;
- if(running){elapsed=Math.min(52,elapsed+dt);const travel=elapsed*3.75;world.position.z=0;trainCarts.forEach((wagon,i)=>wagon.position.z=5.3-travel+i*2.65);camera.position.z=16.5-travel*0.95;camera.lookAt(0,.9,camera.position.z-29);cartWheels.forEach(w=>w.rotation.x-=dt*5.2);trainCarts.forEach((wagon,i)=>wagon.position.y=-1.42+Math.sin(elapsed*5-i*.22)*.025);document.getElementById('bar').style.width=(elapsed/52*100)+'%';
+ if(running){elapsed=Math.min(52,elapsed+dt);const travel=elapsed*3.75;world.position.z=0;trainCarts.forEach((wagon,i)=>wagon.position.z=5.3-travel+i*2.65);camera.position.x=4.2;camera.position.y=3.4;camera.position.z=16.5-travel*0.95;camera.lookAt(0,-.2,camera.position.z-29);cartWheels.forEach(w=>w.rotation.x-=dt*5.2);trainCarts.forEach((wagon,i)=>wagon.position.y=-1.42+Math.sin(elapsed*5-i*.22)*.025);document.getElementById('bar').style.width=(elapsed/52*100)+'%';
  const stage=elapsed<17?'DESCENDING · SHADOW MINERS AT WORK':elapsed<34?'THE CRYSTAL CATHEDRAL · FOLLOW THE LIGHT':elapsed<46?'THE OLD ORE LIFT · SHAFT IN MOTION':'THE LOST VEIN · A SECRET AWAKENS';
  document.getElementById('status').textContent=stage;
  if(elapsed>=52){running=false;document.getElementById('status').textContent='THE LOST VEIN · JOURNEY COMPLETE';document.getElementById('intro').style.display='block';document.querySelector('#intro h1').textContent='THE LOST VEIN';document.querySelector('#intro p').textContent='The mine has revealed its secret. Would you dare descend again?';document.getElementById('startBtn').textContent='RIDE AGAIN'}}
