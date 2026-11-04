@@ -31,6 +31,31 @@ button{border:1px solid #ffd08a;background:linear-gradient(120deg,#9e3d22,#d66b2
  <div id="controls"><div class="hint" id="hint">PC: Mouse to look around · Esc to release mouse<br>Phone: Drag the screen to look around</div><div class="actions"><button id="pause">PAUSE</button><button id="restart">RESTART</button></div></div>
  <div id="progress"></div>
 </div>
+<script>
+(() => {
+  const button = document.getElementById('start');
+  let requested = false;
+  button.addEventListener('click', () => {
+    if (button.dataset.retry === '1') { location.reload(); return; }
+    requested = true;
+    window.__phoenixStartQueued = true;
+    button.textContent = 'PREPARING FLIGHT...';
+    button.disabled = true;
+    document.getElementById('state').textContent = 'STARTING RIDE ENGINE';
+    if (window.__phoenixRideReady) window.dispatchEvent(new Event('phoenix-start'));
+    window.setTimeout(() => {
+      if (requested && !window.__phoenixRideReady) {
+        button.disabled = false;
+        button.dataset.retry = '1';
+        button.textContent = 'RELOAD RIDE';
+        document.getElementById('state').textContent = 'RIDE ENGINE DID NOT START';
+        const p = document.querySelector('#intro p');
+        p.textContent = 'The 3D ride did not finish starting. Tap Reload Ride to try again. If it still fails, the device browser may be blocking the 3D engine.';
+      }
+    }, 12000);
+  });
+})();
+</script>
 <script type="module">
 let THREE;
 try {
@@ -91,7 +116,7 @@ for(let i=0;i<5;i++){const tail=new THREE.Mesh(new THREE.ConeGeometry(.45,8,6),m
 bird.scale.setScalar(1.5);bird.position.copy(path.getPointAt(.48)).add(new THREE.Vector3(9,7,0));scene.add(bird);
 const emberGeo=new THREE.BufferGeometry();const N=450,arr=new Float32Array(N*3),vel=[];for(let i=0;i<N;i++){arr[i*3]=(Math.random()-.5)*80;arr[i*3+1]=Math.random()*45-5;arr[i*3+2]=-Math.random()*350;vel.push(.15+Math.random()*.55)}emberGeo.setAttribute('position',new THREE.BufferAttribute(arr,3));const embers=new THREE.Points(emberGeo,new THREE.PointsMaterial({color:0xff9a50,size:.65,transparent:true,opacity:.8}));scene.add(embers);
 let riding=false,paused=false,t=0,lookX=0,lookY=0,drag=false,lastX=0,lastY=0;const intro=document.getElementById('intro'),progress=document.getElementById('progress'),state=document.getElementById('state');
-function begin(){riding=true;paused=false;intro.style.display='none';state.textContent='FLIGHT IN PROGRESS';if(innerWidth>700&&renderer.domElement.requestPointerLock)renderer.domElement.requestPointerLock();}document.getElementById('start').onclick=begin;
+function begin(){riding=true;paused=false;intro.style.display='none';state.textContent='FLIGHT IN PROGRESS';if(innerWidth>700&&renderer.domElement.requestPointerLock)renderer.domElement.requestPointerLock();}window.addEventListener('phoenix-start',begin);
 document.getElementById('pause').onclick=()=>{if(!riding)return;paused=!paused;document.getElementById('pause').textContent=paused?'RESUME':'PAUSE';state.textContent=paused?'FLIGHT PAUSED':'FLIGHT IN PROGRESS'};
 document.getElementById('restart').onclick=()=>{t=0;riding=false;paused=false;intro.style.display='block';progress.style.width='0%';state.textContent='READY TO BOARD';document.getElementById('pause').textContent='PAUSE';document.exitPointerLock?.()};
 document.addEventListener('mousemove',e=>{if(document.pointerLockElement){lookX-=e.movementX*.0018;lookY-=e.movementY*.0015;lookY=THREE.MathUtils.clamp(lookY,-.65,.65)}});
@@ -101,6 +126,8 @@ function animate(){requestAnimationFrame(animate);const dt=Math.min(clock.getDel
 else if(!riding){camera.position.set(0,5,28);camera.lookAt(0,18,-120)}
 const flap=Math.sin(performance.now()*.004)*.5;wings.forEach(({wing,s})=>wing.rotation.z=s*(.18+flap*.42));if(riding){const birdT=Math.min(.98,Math.max(.02,t+.045)),bp=path.getPointAt(birdT),bt=path.getTangentAt(birdT),bs=new THREE.Vector3(-bt.z,0,bt.x).normalize();bird.position.copy(bp).addScaledVector(bs,9).add(new THREE.Vector3(0,7+Math.sin(performance.now()*.0015)*1.8,0));bird.rotation.y=Math.atan2(bt.x,bt.z)}else{bird.position.y=path.getPointAt(.48).y+7+Math.sin(performance.now()*.0015)*1.8}fireLight.intensity=150+Math.sin(performance.now()*.01)*35;
 const a=emberGeo.attributes.position.array;for(let i=0;i<N;i++){a[i*3+1]+=vel[i]*dt*4;if(a[i*3+1]>48)a[i*3+1]=-5}emberGeo.attributes.position.needsUpdate=true;renderer.render(scene,camera)}
+window.__phoenixRideReady=true;
+if(window.__phoenixStartQueued) begin();
 animate();addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
 </script>
 </body></html>
