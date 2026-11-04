@@ -63,6 +63,28 @@ const cap=new THREE.Mesh(new THREE.ConeGeometry(2.65,6,12),darkStone);cap.positi
 cylinder(2.32,2.32,.45,gold,tx,18.9,-55,12);
 for(let y=5;y<16;y+=3.5){box(.8,1.5,.15,glass,tx, y,-53.82)}
 }
+// The main castle keep rises well above the gatehouse so the silhouette reads as a castle from the forest path.
+box(13,12,8,darkStone,0,20,-61);
+box(15,1,9,stone,0,26,-61);
+for(let side of [-1,1]){
+  box(7,9,7,stone,side*10,16,-62);
+  box(7.8,.8,7.8,darkStone,side*10,20.7,-62);
+  const roof=new THREE.Mesh(new THREE.ConeGeometry(4.7,8,8),darkStone);
+  roof.position.set(side*10,25,-62);roof.castShadow=true;scene.add(roof);
+  const finial=new THREE.Mesh(new THREE.ConeGeometry(.38,2.4,8),gold);
+  finial.position.set(side*10,30,-62);scene.add(finial);
+}
+const centralRoof=new THREE.Mesh(new THREE.ConeGeometry(7.5,10,10),darkStone);
+centralRoof.position.set(0,32,-61);centralRoof.castShadow=true;scene.add(centralRoof);
+const centralFinial=new THREE.Mesh(new THREE.ConeGeometry(.5,3,8),gold);
+centralFinial.position.set(0,38,-61);scene.add(centralFinial);
+for(let y of [15,19,23])for(let x of [-4.2,4.2]){
+  box(1.25,2.2,.22,glass,x,y,-56.85);
+  box(1.65,.18,.32,gold,x,y+1.15,-56.72);
+}
+for(let x=-13;x<=13;x+=2.6){
+  box(1.15,1.1,1.15,darkStone,x,15.6,-53.8);
+}
 // Carved arch and open doorway. Walk through z=-57 into the hall.
 box(8,1.1,2.2,darkStone,0,11.5,-53.4);
 for(let x of [-4,4])box(1.1,11,2.2,stone,x,5.5,-53.4);
