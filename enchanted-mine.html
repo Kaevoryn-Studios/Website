@@ -246,6 +246,51 @@ const sparkCount=42,sparkPositions=new Float32Array(sparkCount*3),sparkSeeds=[];
 for(let i=0;i<sparkCount;i++){sparkPositions[i*3]=(Math.random()-.5)*2.4;sparkPositions[i*3+1]=Math.random()*2.2;sparkPositions[i*3+2]=(Math.random()-.5)*1.6;sparkSeeds.push(Math.random()*Math.PI*2)}
 const sparkGeometry=new THREE.BufferGeometry();sparkGeometry.setAttribute('position',new THREE.BufferAttribute(sparkPositions,3));
 const sparks=new THREE.Points(sparkGeometry,new THREE.PointsMaterial({color:0xffc36b,size:.095,transparent:true,opacity:.85,depthWrite:false}));sparks.position.set(0,-.4,-177);add(sparks);
+// CINEMATIC SPECIAL EFFECTS: timed crystal surges, cave lightning, steam bursts and falling rock.
+const effectGroup=new THREE.Group();add(effectGroup);
+const effectBolts=[];
+const boltMat=new THREE.LineBasicMaterial({color:0x9ff7ff,transparent:true,opacity:0});
+function makeBolt(x1,y1,z1,x2,y2,z2){
+ const pts=[];const steps=9;
+ for(let i=0;i<=steps;i++){const f=i/steps;pts.push(new THREE.Vector3(x1+(x2-x1)*f+(i===0||i===steps?0:(Math.random()-.5)*.8),y1+(y2-y1)*f+(i===0||i===steps?0:(Math.random()-.5)*.7),z1+(z2-z1)*f))}
+ const geo=new THREE.BufferGeometry().setFromPoints(pts),line=new THREE.Line(geo,boltMat.clone());line.material.opacity=0;effectGroup.add(line);effectBolts.push(line);
+}
+for(let i=0;i<5;i++)makeBolt(-5+i*2.5,5,-98, -4+i*2.2,-2,-108);
+const flashLight=new THREE.PointLight(0xb8f6ff,0,34);flashLight.position.set(0,2,-103);add(flashLight);
+const crystalBursts=[];
+for(let i=0;i<5;i++){
+ const group=new THREE.Group();group.position.set((i-2)*1.1,1.2,-108);add(group);
+ const bits=[];
+ for(let j=0;j<18;j++){const bit=new THREE.Mesh(new THREE.OctahedronGeometry(.07+Math.random()*.09),crystals[j%4]);bit.position.set((Math.random()-.5)*.5,(Math.random()-.5)*.5,(Math.random()-.5)*.5);group.add(bit);bits.push({mesh:bit,velocity:new THREE.Vector3((Math.random()-.5)*.12,Math.random()*.13,(Math.random()-.5)*.12)})}
+ group.visible=false;crystalBursts.push({group,bits,started:-100});
+}
+const steamPuffs=[];
+for(const x of [-2.2,2.2]){
+ const group=new THREE.Group();group.position.set(x,-1.9,-177);add(group);
+ const puffs=[];
+ for(let i=0;i<12;i++){const puff=new THREE.Mesh(new THREE.SphereGeometry(.16+Math.random()*.13,8,7),new THREE.MeshBasicMaterial({color:0xb9d7e8,transparent:true,opacity:0,depthWrite:false}));puff.position.set((Math.random()-.5)*.5,0,(Math.random()-.5)*.5);group.add(puff);puffs.push({mesh:puff,phase:Math.random()*Math.PI*2})}
+ steamPuffs.push({group,puffs});
+}
+const fallingRocks=[];
+for(let i=0;i<14;i++){const mesh=new THREE.Mesh(new THREE.DodecahedronGeometry(.13+Math.random()*.2,0),darkRock);mesh.position.set((Math.random()-.5)*7,6+Math.random()*3,-95-Math.random()*20);add(mesh);fallingRocks.push({mesh,baseX:mesh.position.x,baseZ:mesh.position.z,speed:.035+Math.random()*.055,phase:Math.random()*8})}
+const shockwave=new THREE.Mesh(new THREE.TorusGeometry(1,.045,8,48),new THREE.MeshBasicMaterial({color:0x8cf4ff,transparent:true,opacity:0}));shockwave.position.set(0,-1.65,-108);add(shockwave);
+let lastCrystalChime=-10,lastThunder=-10,lastSteam=-10,lastBurst=-10;
+function triggerCrystalBurst(time){const b=crystalBursts[Math.floor(Math.random()*crystalBursts.length)];b.group.visible=true;b.started=time;b.bits.forEach(p=>{p.mesh.position.set(0,0,0);p.velocity.set((Math.random()-.5)*.15,.04+Math.random()*.15,(Math.random()-.5)*.15)});shockwave.scale.setScalar(.2);shockwave.material.opacity=.9}
+function updateSpecialEffects(time){
+ const inCavern=running&&elapsed>12&&elapsed<27;
+ const lightningWindow=inCavern&&Math.sin(time*1.13)> .985;
+ effectBolts.forEach((line,i)=>{line.visible=lightningWindow;line.material.opacity=lightningWindow?.9:0;line.material.color.setHex(i%2?0x8b8aff:0xa9fbff)});
+ flashLight.intensity=lightningWindow?24:Math.max(0,flashLight.intensity-.8);
+ if(lightningWindow&&lastThunder<time-2.8)lastThunder=time;
+ if(inCavern&&time-lastCrystalChime>4.2){lastCrystalChime=time;triggerCrystalBurst(time)}
+ crystalBursts.forEach(b=>{if(!b.group.visible)return;const age=time-b.started;if(age>1.25){b.group.visible=false;return}b.bits.forEach(p=>{p.mesh.position.add(p.velocity);p.velocity.y-=.004;p.mesh.scale.multiplyScalar(.985)})});
+ if(running&&elapsed>31&&time-lastSteam>1.5){lastSteam=time;steamPuffs.forEach(s=>s.puffs.forEach(p=>p.phase=0))}
+ steamPuffs.forEach(s=>s.puffs.forEach(p=>{p.phase+=.025;const a=p.phase;p.mesh.position.y=Math.min(2.6,a*1.7);p.mesh.scale.setScalar(1+a*.65);p.mesh.material.opacity=running&&elapsed>30&&a<1.5?Math.max(0,.32-a*.2):0}));
+ const rockFall=running&&elapsed>12&&elapsed<27;
+ fallingRocks.forEach(r=>{r.mesh.visible=rockFall;if(rockFall){r.mesh.position.y-=r.speed;r.mesh.rotation.x+=.025;r.mesh.rotation.z+=.018;if(r.mesh.position.y< -2.2){r.mesh.position.y=6+Math.random()*2;r.mesh.position.x=r.baseX+(Math.random()-.5)*1.2}}});
+ shockwave.scale.multiplyScalar(1.045);shockwave.material.opacity=Math.max(0,shockwave.material.opacity-.025);
+}
+
 // Optional original synthesized atmospheric tones.
 let audio=null,master=null,soundOn=true;
 function startSound(){if(audio)return;const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;audio=new AC();master=audio.createGain();master.gain.value=soundOn?.13:0;master.connect(audio.destination);
