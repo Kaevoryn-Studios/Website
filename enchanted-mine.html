@@ -43,15 +43,22 @@ const add=(mesh)=>{world.add(mesh);return mesh};
 function block(w,h,d,x,y,z,mat){const o=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat);o.position.set(x,y,z);return add(o)}
 function beam(w,h,d,x,y,z,mat=wood){return block(w,h,d,x,y,z,mat)}
 function light(x,y,z,color=0xffad55,power=7,range=15){const p=new THREE.PointLight(color,power,range);p.position.set(x,y,z);add(p);const bulb=new THREE.Mesh(new THREE.SphereGeometry(.13,8,8),material(color,.3));bulb.position.set(x,y,z);add(bulb)}
-// Continuous hand-cut stone tunnel: repeated arched rock ribs and rough wall blocks.
+// REAL UNDERGROUND MINE: uneven rock walls, a low natural stone roof and repeated timber arch supports.
 for(let z=5;z>-218;z-=5){
- const left=new THREE.Mesh(new THREE.DodecahedronGeometry(1,1),rock);left.position.set(-4.65,1.4,z);left.scale.set(1.25,4.3,2.8);add(left);
- const right=left.clone();right.position.x=4.65;add(right);
- // Open overhead: no roof mesh or hanging ceiling pieces in the ride corridor.
- // heavy timber sets with iron collars
- beam(.42,7.1,.5,-4.05,1.4,z);beam(.42,7.1,.5,4.05,1.4,z);// Open rock vault: no straight horizontal beam across the ceiling.
- for(const x of [-4.05,4.05])for(const y of [-1.5,1,3.5])beam(.5,.12,.62,x,y,z,iron);
- if(Math.round(Math.abs(z))%10===0){beam(1.2,.2,.25,-3.35,2.6,z-.3,wood);beam(1.2,.2,.25,3.35,2.6,z-.3,wood)}
+ const left=new THREE.Mesh(new THREE.DodecahedronGeometry(1,1),rock);left.position.set(-4.65,1.4,z);left.scale.set(1.35,4.3,2.9);add(left);
+ const right=left.clone();right.position.x=4.65;right.scale.set(1.35,4.3,2.9);add(right);
+ // Jagged overhead rock closes the tunnel into a proper cave instead of an open-sided passage.
+ const roof=new THREE.Mesh(new THREE.DodecahedronGeometry(1,1),darkRock);roof.position.set(.0,5.45,z);roof.scale.set(5.15,1.45,2.95);add(roof);
+ // Heavy timber legs and a curved timber arch across the ceiling.
+ beam(.48,6.25,.62,-4.02,1.12,z,wood);beam(.48,6.25,.62,4.02,1.12,z,wood);
+ const archPts=[];for(let j=0;j<=12;j++){const a=Math.PI-j*Math.PI/12;archPts.push(new THREE.Vector3(Math.cos(a)*4.02,2.45+Math.sin(a)*2.05,z));}
+ const archCurve=new THREE.CatmullRomCurve3(archPts);const arch=new THREE.Mesh(new THREE.TubeGeometry(archCurve,32,.22,8,false),wood);add(arch);
+ // Iron straps and bolts make the timber shoring look constructed and load-bearing.
+ for(const x of [-4.02,4.02]){for(const y of [-1.2,1.1,3.25]){const strap=beam(.56,.13,.72,x,y,z,iron);strap.rotation.z=0;}}
+ if(Math.round(Math.abs(z))%10===0){
+  const cross=new THREE.Mesh(new THREE.BoxGeometry(7.8,.2,.28),wood);cross.position.set(0,4.52,z);add(cross);
+  for(const x of [-3.8,3.8]){const bolt=new THREE.Mesh(new THREE.SphereGeometry(.09,8,8),gold);bolt.position.set(x,4.52,z+.17);add(bolt);}
+ }
 }
 // Winding mine railway: broad S-bends, banked curves and gentle rolling dips.
 block(8,.18,225,0,-2.95,-105,material(0x282630,1));
@@ -245,8 +252,9 @@ for(const [z,side] of [[-32,-1],[-67,1],[-137,-1],[-166,1]]){
 const fan=new THREE.Group();fan.position.set(0,3.15,-72);add(fan);
 const hub=new THREE.Mesh(new THREE.CylinderGeometry(.24,.24,.28,12),gold);hub.rotation.x=Math.PI/2;fan.add(hub);
 for(let i=0;i<6;i++){const blade=new THREE.Mesh(new THREE.BoxGeometry(.18,1.55,.09),iron);blade.position.y=.82;blade.rotation.z=i*Math.PI/3;fan.add(blade)}
-// Small ore piles and scattered stones
-for(let i=0;i<180;i++){const x=(Math.random()-.5)*8,z=8-Math.random()*215,s=.12+Math.random()*.28;const o=new THREE.Mesh(new THREE.DodecahedronGeometry(s,0),i%8===0?darkRock:rock);o.position.set(x,-2.65+Math.random()*.12,z);add(o)}
+// Scattered rubble and substantial spoil heaps along the track edges.
+for(let i=0;i<230;i++){const side=Math.random()<.5?-1:1,x=side*(1.65+Math.random()*2.25),z=8-Math.random()*215,s=.12+Math.random()*.38;const o=new THREE.Mesh(new THREE.DodecahedronGeometry(s,0),i%7===0?darkRock:rock);o.position.set(x,-2.65+Math.random()*.16,z);o.rotation.set(Math.random(),Math.random(),Math.random());add(o)}
+for(const z of [-24,-47,-83,-124,-156,-188]){for(const side of [-1,1]){const heap=new THREE.Group();for(let i=0;i<16;i++){const nug=new THREE.Mesh(new THREE.DodecahedronGeometry(.18+Math.random()*.34,0),i%4===0?gold:rock);nug.position.set((Math.random()-.5)*1.5,Math.random()*.48,(Math.random()-.5)*1.9);heap.add(nug)}heap.position.set(side*2.75,-2.45,z);add(heap)}}
 // Atmospheric cave dust drifting through lantern beams.
 const dustCount=190,dustPositions=new Float32Array(dustCount*3),dustSeeds=[];
 for(let i=0;i<dustCount;i++){dustPositions[i*3]=(Math.random()-.5)*8.2;dustPositions[i*3+1]=-1.8+Math.random()*5.8;dustPositions[i*3+2]=5-Math.random()*215;dustSeeds.push(Math.random()*Math.PI*2)}
