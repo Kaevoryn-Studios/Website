@@ -43,10 +43,49 @@ const add=(mesh)=>{world.add(mesh);return mesh};
 function block(w,h,d,x,y,z,mat){const o=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat);o.position.set(x,y,z);return add(o)}
 function beam(w,h,d,x,y,z,mat=wood){return block(w,h,d,x,y,z,mat)}
 function light(x,y,z,color=0xffad55,power=7,range=15){const p=new THREE.PointLight(color,power,range);p.position.set(x,y,z);add(p);const bulb=new THREE.Mesh(new THREE.SphereGeometry(.13,8,8),material(color,.3));bulb.position.set(x,y,z);add(bulb)}
-// REAL UNDERGROUND MINE: uneven rock walls, a low natural stone roof and repeated timber arch supports.
+// REAL UNDERGROUND MINE: continuous, naturally fractured rock faces instead of repeated boulder shapes.
+function makeCaveWall(side){
+ const verts=[],colors=[],indices=[],nz=152,ny=15,zStart=9,zStep=1.5,yStart=-2.85,yStep=.59;
+ for(let iz=0;iz<=nz;iz++){
+  const z=zStart-iz*zStep;
+  for(let iy=0;iy<=ny;iy++){
+   const y=yStart+iy*yStep;
+   const broad=Math.sin(z*.105+y*.42)*.24+Math.sin(z*.235-y*.31)*.13;
+   const broken=Math.sin(z*.71+y*1.9)*.075+Math.sin(z*1.37-y*.83)*.045;
+   const lip=Math.pow(Math.abs(Math.sin(z*.19+y*.7)),5)*.16;
+   const x=side*(4.55+broad+broken+lip);
+   verts.push(x,y,z);
+   const shade=.72+.16*Math.sin(z*.31+y*.91)+.1*Math.sin(z*.83-y*1.4);
+   colors.push(.25*shade,.27*shade,.32*shade);
+  }
+ }
+ for(let iz=0;iz<nz;iz++)for(let iy=0;iy<ny;iy++){
+  const a=iz*(ny+1)+iy,b=a+ny+1;
+  if((iz+iy)%2){indices.push(a,b,a+1,b,b+1,a+1)}else{indices.push(a,b,b+1,a,b+1,a+1)}
+ }
+ const geo=new THREE.BufferGeometry();
+ geo.setAttribute('position',new THREE.Float32BufferAttribute(verts,3));
+ geo.setAttribute('color',new THREE.Float32BufferAttribute(colors,3));
+ geo.setIndex(indices);geo.computeVertexNormals();
+ const mat=new THREE.MeshStandardMaterial({vertexColors:true,roughness:1,metalness:0,flatShading:true,side:THREE.DoubleSide});
+ add(new THREE.Mesh(geo,mat));
+ // Deep, broken mineral seams follow the natural layers of the stone.
+ const seamPts=[];
+ for(let k=0;k<17;k++){
+  const z=7-k*13.2+(side<0?1.7:-1.2);
+  const y=-1.9+((k*7)%11)*.58;
+  for(let j=0;j<5;j++){
+   const zz=z-j*.72,yy=y+Math.sin(j*1.7+k)*.12;
+   const x=side*(4.58+Math.sin(zz*.105+yy*.42)*.24+Math.sin(zz*.235-yy*.31)*.13+.025);
+   seamPts.push(new THREE.Vector3(x,yy,zz));
+  }
+ }
+ const seamGeo=new THREE.BufferGeometry().setFromPoints(seamPts);
+ const seamMat=new THREE.LineBasicMaterial({color:0x171d29,transparent:true,opacity:.48});
+ add(new THREE.LineSegments(seamGeo,seamMat));
+}
+makeCaveWall(-1);makeCaveWall(1);
 for(let z=5;z>-218;z-=5){
- const left=new THREE.Mesh(new THREE.DodecahedronGeometry(1,1),rock);left.position.set(-4.65,1.4,z);left.scale.set(1.35,4.3,2.9);add(left);
- const right=left.clone();right.position.x=4.65;right.scale.set(1.35,4.3,2.9);add(right);
  // Jagged overhead rock closes the tunnel into a proper cave instead of an open-sided passage.
  const roof=new THREE.Mesh(new THREE.DodecahedronGeometry(1,1),darkRock);roof.position.set(.0,5.45,z);roof.scale.set(5.15,1.45,2.95);add(roof);
  // Heavy timber legs and a curved timber arch across the ceiling.
