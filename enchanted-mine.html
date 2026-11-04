@@ -45,7 +45,13 @@ document.getElementById('startBtn').addEventListener('click',()=>{
 const material=(c,r=.8,m=0)=>new THREE.MeshStandardMaterial({color:c,roughness:r,metalness:m});
 const rock=material(0x292b3b,1),darkRock=material(0x111827,1),wood=material(0x62432c,1),iron=material(0x303944,.35,.8),gold=material(0xffc76b,.4,.25),railMat=material(0x9aa7b8,.28,.85);
 const crystalColors=[0x39d9ed,0x987aff,0x75ffcf,0xff76c8];
-const crystals=crystalColors.map(c=>{const m=material(c,.2,.15);m.emissive=new THREE.Color(c);m.emissiveIntensity=1.3;return m});
+const crystals=crystalColors.map(c=>new THREE.MeshPhysicalMaterial({color:c,roughness:.1,metalness:.12,clearcoat:1,clearcoatRoughness:.04,transmission:.12,thickness:.8,emissive:c,emissiveIntensity:.55,flatShading:true}));
+const diamondMat=new THREE.MeshPhysicalMaterial({color:0xeaffff,roughness:.045,metalness:.08,clearcoat:1,clearcoatRoughness:.02,emissive:0x4bbdff,emissiveIntensity:.22,flatShading:true});
+function gemGeometry(height,radius){
+ const g=new THREE.BufferGeometry(),v=[],n=8;
+ for(let i=0;i<n;i++){const a=i*Math.PI*2/n,b=(i+1)*Math.PI*2/n,p=[Math.cos(a)*radius,0,Math.sin(a)*radius],q=[Math.cos(b)*radius,0,Math.sin(b)*radius],top=[0,height*.68,0],bottom=[0,-height*.32,0];v.push(...top,...p,...q,...bottom,...q,...p)}
+ g.setAttribute('position',new THREE.Float32BufferAttribute(v,3));g.computeVertexNormals();return g;
+}
 const add=(mesh)=>{world.add(mesh);return mesh};
 function block(w,h,d,x,y,z,mat){const o=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat);o.position.set(x,y,z);return add(o)}
 function beam(w,h,d,x,y,z,mat=wood){return block(w,h,d,x,y,z,mat)}
@@ -99,7 +105,7 @@ for(const z of [-.65,.65]){const bar=new THREE.Mesh(new THREE.BoxGeometry(1.5,.1
 for(let i=0;i<3;i++)beam(4,.12,.12,0,-2.2+i*.55,-172,wood);
 light(-2,3,-177,0xffa94f,10,22);light(2,3,-177,0xffa94f,10,22);
 // Glowing crystal clusters embedded in the cave walls.
-for(let z=-8;z>-205;z-=14)for(const side of [-1,1]){const x=side*(3.7+Math.random()*.35),y=-1.7+Math.random()*1.8;const g=new THREE.Group();for(let i=0;i<3;i++){const c=new THREE.Mesh(new THREE.ConeGeometry(.35+Math.random()*.18,1.7+Math.random(),6),crystals[(Math.floor(Math.random()*4))]);c.position.set((i-1)*.38,.55,0);c.rotation.z=(Math.random()-.5)*.35;g.add(c)}g.position.set(x,y,z);add(g);const glow=new THREE.PointLight(0x42d9f3,3,9);glow.position.set(x,y+1,z);add(glow)}
+for(let z=-8;z>-205;z-=14)for(const side of [-1,1]){const x=side*(3.7+Math.random()*.35),y=-1.7+Math.random()*1.8;const g=new THREE.Group();for(let i=0;i<3;i++){const c=new THREE.Mesh(gemGeometry(1.7+Math.random(),.35+Math.random()*.18),crystals[(Math.floor(Math.random()*4))]);c.position.set((i-1)*.38,.55,0);c.rotation.z=(Math.random()-.5)*.35;g.add(c)}g.position.set(x,y,z);add(g);const glow=new THREE.PointLight(0x42d9f3,3,9);glow.position.set(x,y+1,z);add(glow)}
 // A truly separate cavern room: a vast vaulted chamber replaces the cramped tunnel visually.
 const cavernShellMat=new THREE.MeshStandardMaterial({color:0x141d32,roughness:1,side:THREE.BackSide});
 const cavernShell=new THREE.Mesh(new THREE.SphereGeometry(1,32,24),cavernShellMat);
@@ -123,20 +129,26 @@ const cathedralLights=[];
 for(const side of [-1,1]){
  for(let i=0;i<7;i++){
   const height=5.2+(i%3)*1.7,xx=side*(2.0+(i%3)*1.05),zz=-101-Math.floor(i/3)*3;
-  const shard=new THREE.Mesh(new THREE.ConeGeometry(.95+(i%2)*.28,height,7),crystals[(i+1)%4]);
+  const shard=new THREE.Mesh(gemGeometry(height,.95+(i%2)*.28),crystals[(i+1)%4]);
   shard.position.set(xx,-2.65+height*.5,zz);shard.rotation.z=side*.13;add(shard);
   const glow=new THREE.PointLight(crystalColors[(i+1)%4],5,15);glow.position.set(xx,1.2,zz);add(glow);cathedralLights.push(glow);
  }
 }
+// Diamond seams: bright clear-cut gems with pale highlights and mineral facets.
+for(let z=-12;z>-203;z-=18)for(const side of [-1,1]){
+ const seam=new THREE.Group();seam.position.set(side*(3.5+Math.random()*.35),-1.2+Math.random()*1.5,z);add(seam);
+ for(let i=0;i<5;i++){const h=.65+Math.random()*1.35,rad=.16+Math.random()*.2;const gem=new THREE.Mesh(gemGeometry(h,rad),i%3===0?diamondMat:crystals[(i+Math.floor(Math.random()*4))%4]);gem.position.set((i-2)*.31,Math.random()*.28,(Math.random()-.5)*.45);gem.rotation.z=(Math.random()-.5)*.28;seam.add(gem)}
+ const glint=new THREE.PointLight(0xb9f4ff,2.8,8);glint.position.set(0,.8,.4);seam.add(glint);
+}
 // A crown of crystals overhead frames the cavern as the cart enters.
-for(let i=0;i<9;i++){const shard=new THREE.Mesh(new THREE.ConeGeometry(.72,4.2+(i%3)*.7,6),crystals[i%4]);shard.position.set(-5+i*1.25,6.6,-105-(i%2)*1.5);shard.rotation.z=Math.PI;add(shard)}
+for(let i=0;i<9;i++){const shard=new THREE.Mesh(gemGeometry(4.2+(i%3)*.7,.72),crystals[i%4]);shard.position.set(-5+i*1.25,6.6,-105-(i%2)*1.5);shard.rotation.z=Math.PI;add(shard)}
 light(0,2.5,-103,0x63eaff,13,28);
 
 // THE LOST VEIN: a giant geode reveal at the end of the tunnel.
 const geode=new THREE.Group();geode.position.set(0,-.15,-207);add(geode);
 const geodeShell=new THREE.Mesh(new THREE.DodecahedronGeometry(2.15,1),material(0x343847,.72,.25));geode.add(geodeShell);
 const geodeCore=new THREE.Mesh(new THREE.SphereGeometry(1.52,20,16),material(0x173b52,.25,.1));geodeCore.material.emissive=new THREE.Color(0x087b9b);geodeCore.material.emissiveIntensity=1.6;geode.add(geodeCore);
-for(let i=0;i<18;i++){const a=i*Math.PI*2/18,r=1.25+(i%3)*.12;const shard=new THREE.Mesh(new THREE.ConeGeometry(.19,.95+(i%4)*.2,6),crystals[i%4]);shard.position.set(Math.cos(a)*r,Math.sin(a)*r,0);shard.rotation.z=a-Math.PI/2;geode.add(shard)}
+for(let i=0;i<18;i++){const a=i*Math.PI*2/18,r=1.25+(i%3)*.12;const shard=new THREE.Mesh(gemGeometry(.95+(i%4)*.2,.19),crystals[i%4]);shard.position.set(Math.cos(a)*r,Math.sin(a)*r,0);shard.rotation.z=a-Math.PI/2;geode.add(shard)}
 const geodeGlow=new THREE.PointLight(0x38dfff,0,34);geodeGlow.position.set(0,0,2);geode.add(geodeGlow);
 
 // Lantern-lit shadow miners: full silhouettes with swinging legs, working arms and pickaxes.
