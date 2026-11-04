@@ -30,15 +30,15 @@ button{border:1px solid #d2bcff;background:linear-gradient(120deg,#8060bd,#49366
 <script type="module">
 import * as THREE from 'three';
 const host=document.querySelector('#world'),msg=document.querySelector('#message');
-const scene=new THREE.Scene();scene.background=new THREE.Color(0x11101b);scene.fog=new THREE.FogExp2(0x171321,.018);
+const scene=new THREE.Scene();scene.background=new THREE.Color(0x11101b);scene.fog=new THREE.FogExp2(0x171321,.009);
 const camera=new THREE.PerspectiveCamera(72,innerWidth/innerHeight,.1,220);camera.position.set(0,1.72,9);
 const renderer=new THREE.WebGLRenderer({antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio,1.7));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.15;host.appendChild(renderer.domElement);
-scene.add(new THREE.HemisphereLight(0xbac8ff,0x21172a,1.45));
-const moon=new THREE.DirectionalLight(0xc9c2ff,2.2);moon.position.set(-16,28,12);moon.castShadow=true;moon.shadow.mapSize.set(1024,1024);scene.add(moon);
+scene.add(new THREE.HemisphereLight(0xd7dcff,0x30283b,2.25));
+const moon=new THREE.DirectionalLight(0xded8ff,3.4);moon.position.set(-16,28,12);moon.castShadow=true;moon.shadow.mapSize.set(1024,1024);scene.add(moon);
 const violet=new THREE.PointLight(0x9a63ff,28,38);violet.position.set(0,5,-32);scene.add(violet);
 const warm=new THREE.PointLight(0xffc982,18,24);warm.position.set(0,4,-68);scene.add(warm);
 const mat=(color,rough=.85,metal=0)=>new THREE.MeshStandardMaterial({color,roughness:rough,metalness:metal});
-const stone=mat(0x55515d),darkStone=mat(0x302b39),floorMat=mat(0x393541),iron=mat(0x171923,.42,.75),gold=mat(0xb28b55,.38,.65),glass= new THREE.MeshStandardMaterial({color:0x8d5bd0,emissive:0x582b9b,emissiveIntensity:1.4,roughness:.25});
+const stone=mat(0x85808b,.82),darkStone=mat(0x494352,.82),floorMat=mat(0x393541),iron=mat(0x171923,.42,.75),gold=mat(0xb28b55,.38,.65),glass= new THREE.MeshStandardMaterial({color:0x8d5bd0,emissive:0x582b9b,emissiveIntensity:1.4,roughness:.25});
 function box(w,h,d,m,x,y,z,parent=scene){const o=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m);o.position.set(x,y,z);o.castShadow=true;o.receiveShadow=true;parent.add(o);return o}
 function cylinder(rt,rb,h,m,x,y,z,seg=10){const o=new THREE.Mesh(new THREE.CylinderGeometry(rt,rb,h,seg),m);o.position.set(x,y,z);o.castShadow=true;o.receiveShadow=true;scene.add(o);return o}
 function arch(x,y,z,r,h,depth,m){const group=new THREE.Group();group.position.set(x,y,z);scene.add(group);box(r*2,h-r,depth,m,0,(h-r)/2,0,group);const curve=new THREE.Mesh(new THREE.TorusGeometry(r,Math.max(.12,depth*.16),8,24,Math.PI),m);curve.rotation.z=Math.PI;curve.position.y=h-r;curve.castShadow=true;group.add(curve);return group}
@@ -53,42 +53,42 @@ cylinder(.45,.85,h,bark,x,h/2-.1,z,9);
 for(let k=0;k<4;k++){let crown=new THREE.Mesh(new THREE.IcosahedronGeometry(2.2+Math.random()*1.2,1),k%2?leaf:leaf2);crown.position.set(x+(Math.random()-.5)*1.8,h*.65+k*1.25,z);crown.scale.y=1.1;crown.castShadow=true;scene.add(crown)}
 }
 // Castle walls and towers enclose the courtyard end and open into the entrance.
-box(10,15,2,stone,-10,7.5,-55);
-box(10,15,2,stone,10,7.5,-55);
-box(8.4,1.4,2.2,darkStone,0,11.2,-53.7);
+box(10,15,2,stone,-10,7.5,-37);
+box(10,15,2,stone,10,7.5,-37);
+box(8.4,1.4,2.2,darkStone,0,11.2,-35.7);
 for(let side of [-1,1]){
 const tx=side*12;
-cylinder(2.25,2.8,19,stone,tx,9.5,-55,12);
-const cap=new THREE.Mesh(new THREE.ConeGeometry(2.65,6,12),darkStone);cap.position.set(tx,22,-55);cap.castShadow=true;scene.add(cap);
-cylinder(2.32,2.32,.45,gold,tx,18.9,-55,12);
-for(let y=5;y<16;y+=3.5){box(.8,1.5,.15,glass,tx, y,-53.82)}
+cylinder(2.25,2.8,19,stone,tx,9.5,-37,12);
+const cap=new THREE.Mesh(new THREE.ConeGeometry(2.65,6,12),darkStone);cap.position.set(tx,22,-37);cap.castShadow=true;scene.add(cap);
+cylinder(2.32,2.32,.45,gold,tx,18.9,-37,12);
+for(let y=5;y<16;y+=3.5){box(.8,1.5,.15,glass,tx, y,-35.82)}
 }
 // The main castle keep rises well above the gatehouse so the silhouette reads as a castle from the forest path.
-box(13,12,8,darkStone,0,20,-61);
-box(15,1,9,stone,0,26,-61);
+box(13,12,8,darkStone,0,20,-43);
+box(15,1,9,stone,0,26,-43);
 for(let side of [-1,1]){
-  box(7,9,7,stone,side*10,16,-62);
-  box(7.8,.8,7.8,darkStone,side*10,20.7,-62);
+  box(7,9,7,stone,side*10,16,-44);
+  box(7.8,.8,7.8,darkStone,side*10,20.7,-44);
   const roof=new THREE.Mesh(new THREE.ConeGeometry(4.7,8,8),darkStone);
-  roof.position.set(side*10,25,-62);roof.castShadow=true;scene.add(roof);
+  roof.position.set(side*10,25,-44);roof.castShadow=true;scene.add(roof);
   const finial=new THREE.Mesh(new THREE.ConeGeometry(.38,2.4,8),gold);
-  finial.position.set(side*10,30,-62);scene.add(finial);
+  finial.position.set(side*10,30,-44);scene.add(finial);
 }
 const centralRoof=new THREE.Mesh(new THREE.ConeGeometry(7.5,10,10),darkStone);
-centralRoof.position.set(0,32,-61);centralRoof.castShadow=true;scene.add(centralRoof);
+centralRoof.position.set(0,32,-43);centralRoof.castShadow=true;scene.add(centralRoof);
 const centralFinial=new THREE.Mesh(new THREE.ConeGeometry(.5,3,8),gold);
-centralFinial.position.set(0,38,-61);scene.add(centralFinial);
+centralFinial.position.set(0,38,-43);scene.add(centralFinial);
 for(let y of [15,19,23])for(let x of [-4.2,4.2]){
-  box(1.25,2.2,.22,glass,x,y,-56.85);
-  box(1.65,.18,.32,gold,x,y+1.15,-56.72);
+  box(1.25,2.2,.22,glass,x,y,-38.85);
+  box(1.65,.18,.32,gold,x,y+1.15,-38.72);
 }
 for(let x=-13;x<=13;x+=2.6){
-  box(1.15,1.1,1.15,darkStone,x,15.6,-53.8);
+  box(1.15,1.1,1.15,darkStone,x,15.6,-35.8);
 }
 // Carved arch and open doorway. Walk through z=-57 into the hall.
-box(8,1.1,2.2,darkStone,0,11.5,-53.4);
-for(let x of [-4,4])box(1.1,11,2.2,stone,x,5.5,-53.4);
-arch(0,0,-53.2,4,11,1.8,stone);
+box(8,1.1,2.2,darkStone,0,11.5,-35.4);
+for(let x of [-4,4])box(1.1,11,2.2,stone,x,5.5,-35.4);
+arch(0,0,-35.2,4,11,1.8,stone);
 box(24,.35,35,mat(0x292430),0,-.05,-74);
 for(let side of [-1,1]){
 box(1,10,34,stone,side*12,5,-73);
@@ -117,7 +117,7 @@ const orb=new THREE.Mesh(new THREE.SphereGeometry(.2,12,12),new THREE.MeshBasicM
 }
 // Door leaves stand inside the entry arch and swing away from the passage.
 const doors=[];
-for(let side of [-1,1]){const hinge=new THREE.Group();hinge.position.set(side*2,0,-53.0);scene.add(hinge);box(2,8,.35,mat(0x211a2a),-side,4,0,hinge);for(let y of [2,4,6])box(1.7,.12,.12,gold,-side, y,.2,hinge);const ring=new THREE.Mesh(new THREE.TorusGeometry(.25,.055,8,16),gold);ring.position.set(-side*1.6,4,.24);hinge.add(ring);doors.push({hinge,side})}
+for(let side of [-1,1]){const hinge=new THREE.Group();hinge.position.set(side*2,0,-35.0);scene.add(hinge);box(2,8,.35,mat(0x211a2a),-side,4,0,hinge);for(let y of [2,4,6])box(1.7,.12,.12,gold,-side, y,.2,hinge);const ring=new THREE.Mesh(new THREE.TorusGeometry(.25,.055,8,16),gold);ring.position.set(-side*1.6,4,.24);hinge.add(ring);doors.push({hinge,side})}
 // Ambient fireflies and drifting mist points.
 const dustGeo=new THREE.BufferGeometry(),dustCount=500,positions=new Float32Array(dustCount*3);
 for(let i=0;i<dustCount;i++){positions[i*3]=(Math.random()-.5)*36;positions[i*3+1]=Math.random()*8;positions[i*3+2]=Math.random()*95-88}
