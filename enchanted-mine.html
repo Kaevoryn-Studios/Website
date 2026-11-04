@@ -275,16 +275,16 @@ const fallingRocks=[];
 for(let i=0;i<14;i++){const mesh=new THREE.Mesh(new THREE.DodecahedronGeometry(.13+Math.random()*.2,0),darkRock);mesh.position.set((Math.random()-.5)*7,6+Math.random()*3,-95-Math.random()*20);add(mesh);fallingRocks.push({mesh,baseX:mesh.position.x,baseZ:mesh.position.z,speed:.035+Math.random()*.055,phase:Math.random()*8})}
 const shockwave=new THREE.Mesh(new THREE.TorusGeometry(1,.045,8,48),new THREE.MeshBasicMaterial({color:0x8cf4ff,transparent:true,opacity:0}));shockwave.position.set(0,-1.65,-108);add(shockwave);
 let lastCrystalChime=-10,lastThunder=-10,lastSteam=-10,lastBurst=-10;
-function triggerCrystalBurst(time){const b=crystalBursts[Math.floor(Math.random()*crystalBursts.length)];b.group.visible=true;b.started=time;b.bits.forEach(p=>{p.mesh.position.set(0,0,0);p.velocity.set((Math.random()-.5)*.15,.04+Math.random()*.15,(Math.random()-.5)*.15)});shockwave.scale.setScalar(.2);shockwave.material.opacity=.9}
+function triggerCrystalBurst(time){playMineEffect('crystal');const b=crystalBursts[Math.floor(Math.random()*crystalBursts.length)];b.group.visible=true;b.started=time;b.bits.forEach(p=>{p.mesh.position.set(0,0,0);p.velocity.set((Math.random()-.5)*.15,.04+Math.random()*.15,(Math.random()-.5)*.15)});shockwave.scale.setScalar(.2);shockwave.material.opacity=.9}
 function updateSpecialEffects(time){
  const inCavern=running&&elapsed>12&&elapsed<27;
  const lightningWindow=inCavern&&Math.sin(time*1.13)> .985;
  effectBolts.forEach((line,i)=>{line.visible=lightningWindow;line.material.opacity=lightningWindow?.9:0;line.material.color.setHex(i%2?0x8b8aff:0xa9fbff)});
  flashLight.intensity=lightningWindow?24:Math.max(0,flashLight.intensity-.8);
- if(lightningWindow&&lastThunder<time-2.8)lastThunder=time;
+ if(lightningWindow&&lastThunder<time-2.8){lastThunder=time;playMineEffect('thunder')}
  if(inCavern&&time-lastCrystalChime>4.2){lastCrystalChime=time;triggerCrystalBurst(time)}
  crystalBursts.forEach(b=>{if(!b.group.visible)return;const age=time-b.started;if(age>1.25){b.group.visible=false;return}b.bits.forEach(p=>{p.mesh.position.add(p.velocity);p.velocity.y-=.004;p.mesh.scale.multiplyScalar(.985)})});
- if(running&&elapsed>31&&time-lastSteam>1.5){lastSteam=time;steamPuffs.forEach(s=>s.puffs.forEach(p=>p.phase=0))}
+ if(running&&elapsed>31&&time-lastSteam>1.5){lastSteam=time;playMineEffect('steam');steamPuffs.forEach(s=>s.puffs.forEach(p=>p.phase=0))}
  steamPuffs.forEach(s=>s.puffs.forEach(p=>{p.phase+=.025;const a=p.phase;p.mesh.position.y=Math.min(2.6,a*1.7);p.mesh.scale.setScalar(1+a*.65);p.mesh.material.opacity=running&&elapsed>30&&a<1.5?Math.max(0,.32-a*.2):0}));
  const rockFall=running&&elapsed>12&&elapsed<27;
  fallingRocks.forEach(r=>{r.mesh.visible=rockFall;if(rockFall){r.mesh.position.y-=r.speed;r.mesh.rotation.x+=.025;r.mesh.rotation.z+=.018;if(r.mesh.position.y< -2.2){r.mesh.position.y=6+Math.random()*2;r.mesh.position.x=r.baseX+(Math.random()-.5)*1.2}}});
@@ -297,6 +297,14 @@ function startSound(){if(audio)return;const AC=window.AudioContext||window.webki
  // Low mine rumble plus a soft, eerie three-note miner chorus.
  [55,82.41,110].forEach((hz,i)=>{const o=audio.createOscillator(),g=audio.createGain();o.type='sine';o.frequency.value=hz;g.gain.value=.09/(i+1);o.connect(g);g.connect(master);o.start()});
  [196,246.94,293.66].forEach((hz,i)=>{const o=audio.createOscillator(),g=audio.createGain(),v=audio.createOscillator(),vg=audio.createGain();o.type='sine';o.frequency.value=hz;o.detune.value=(i-1)*5;g.gain.value=.018;v.frequency.value=.22+i*.07;vg.gain.value=2.2;v.connect(vg);vg.connect(o.detune);o.connect(g);g.connect(master);o.start();v.start()})}
+function playMineEffect(kind){
+ if(!soundOn||!audio||!master)return;
+ const now=audio.currentTime,osc=audio.createOscillator(),gain=audio.createGain(),filter=audio.createBiquadFilter();
+ filter.type='lowpass';filter.frequency.value=kind==='thunder'?420:kind==='steam'?900:3600;
+ osc.connect(filter);filter.connect(gain);gain.connect(master);
+ if(kind==='crystal'){osc.type='sine';osc.frequency.setValueAtTime(880,now);osc.frequency.exponentialRampToValueAtTime(1760,now+.22);gain.gain.setValueAtTime(.0001,now);gain.gain.exponentialRampToValueAtTime(.13,now+.025);gain.gain.exponentialRampToValueAtTime(.0001,now+.8);osc.start(now);osc.stop(now+.82)}
+ else{osc.type='sawtooth';osc.frequency.setValueAtTime(kind==='thunder'?95:180,now);osc.frequency.exponentialRampToValueAtTime(kind==='thunder'?34:55,now+(kind==='thunder'?1.5:.45));gain.gain.setValueAtTime(.0001,now);gain.gain.linearRampToValueAtTime(kind==='thunder'?.2:.11,now+.04);gain.gain.exponentialRampToValueAtTime(.0001,now+(kind==='thunder'?1.8:.55));osc.start(now);osc.stop(now+(kind==='thunder'?1.85:.6))}
+}
 document.getElementById('soundBtn').onclick=()=>{soundOn=!soundOn;document.getElementById('soundBtn').textContent=soundOn?'♫ SOUND ON':'♫ SOUND OFF';if(soundOn)startSound();if(master)master.gain.setTargetAtTime(soundOn?.13:0,audio.currentTime,.2)};
 
 function startMineRide(){
@@ -320,6 +328,7 @@ function animate(t){requestAnimationFrame(animate);const dt=last?Math.min((t-las
  document.getElementById('status').textContent=stage;
  if(elapsed>=39){running=false;document.getElementById('status').textContent='THE LOST VEIN · JOURNEY COMPLETE';document.getElementById('intro').style.display='block';document.querySelector('#intro h1').textContent='THE LOST VEIN';document.querySelector('#intro p').textContent='The mine has revealed its secret. Would you dare descend again?';document.getElementById('startBtn').textContent='RIDE AGAIN'}}
  const tm=t*.001;
+ updateSpecialEffects(tm);
  // Ambient dust drifts slowly through the lantern beams.
  const dp=dustGeometry.attributes.position.array;
  for(let i=0;i<dustCount;i++){dp[i*3+1]+=.0025*Math.sin(tm*1.3+dustSeeds[i]);dp[i*3]+=.0018*Math.cos(tm*.8+dustSeeds[i]);if(dp[i*3+1]>4.2)dp[i*3+1]=-1.8}
