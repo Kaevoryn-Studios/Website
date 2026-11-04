@@ -61,8 +61,37 @@ const floor= new THREE.Mesh(new THREE.PlaneGeometry(10,220,1,80),new THREE.MeshS
 for(let i=0;i<460;i++){const x=(Math.random()-.5)*8.7,z=16-Math.random()*202,s=.08+Math.random()*.28;const peb=new THREE.Mesh(new THREE.DodecahedronGeometry(s,0),i%4===0?darkRock:rock);peb.position.set(x,-2.72+Math.random()*.08,z);peb.rotation.set(Math.random()*3,Math.random()*3,Math.random()*3);peb.scale.y=.45;scene.add(peb)}
 // Thin mineral seams running through the exposed stone
 for(let z=8;z>-180;z-=22){for(const side of [-1,1]){const seam=new THREE.Mesh(new THREE.TorusGeometry(.85,.045,5,18),new THREE.MeshStandardMaterial({color:0x786b55,metalness:.35,roughness:.65,emissive:0x30251a}));seam.position.set(side*4.75,2+Math.random()*2,z);seam.scale.set(1.4,.45,1);seam.rotation.y=side*.25;scene.add(seam)}}
-// tunnel ribs
-for(let z=14;z>-190;z-=12){for(const side of [-1,1]){const rib=new THREE.Mesh(new THREE.CylinderGeometry(.32,.5,9,7),wood);rib.position.set(side*5,3.5,z);rib.rotation.z=side*.12;scene.add(rib)}box(10,.32,.45,wood,0,8,z)}
+// Heavy squared timber sets: unmistakable mine-shaft framing
+const beamMat=mat(0x59402c,1),ironMat=mat(0x252b34,.35,.85);
+function timber(w,h,d,x,y,z,rz=0){const o=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),beamMat);o.position.set(x,y,z);o.rotation.z=rz;scene.add(o);return o}
+for(let z=14;z>-190;z-=9){
+ for(const side of [-1,1]){
+  timber(.42,7.2,.48,side*4.35,1.35,z,side*-.045);
+  timber(.52,1.2,.62,side*4.35,5.1,z);
+  // dark iron collar bands around the upright posts
+  for(const y of [0,2.7,5.2]){const band=new THREE.Mesh(new THREE.BoxGeometry(.49,.12,.55),ironMat);band.position.set(side*4.35,y,z);scene.add(band)}
+ }
+ timber(9.1,.48,.58,0,5.35,z);
+ timber(1.0,.28,.55,-2.8,4.95,z,.18);timber(1.0,.28,.55,2.8,4.95,z,-.18);
+}
+// Working-mine details: ore skips, tool rack, crates and a marked side shaft
+function oreSkip(x,z,scale=1){
+ const g=new THREE.Group();
+ const tub=new THREE.Mesh(new THREE.BoxGeometry(1.45,.72,1.75),mat(0x493d32,.8,.35));tub.position.y=.65;g.add(tub);
+ const rim=new THREE.Mesh(new THREE.BoxGeometry(1.58,.12,1.88),ironMat);rim.position.y=1.05;g.add(rim);
+ for(const side of [-1,1]){const wheel=new THREE.Mesh(new THREE.CylinderGeometry(.3,.3,.16,12),ironMat);wheel.rotation.z=Math.PI/2;wheel.position.set(side*.78,.28,0);g.add(wheel)}
+ const oreMat=mat(0x5a514c,1),oreGlow=mat(0x4a7b83,.55,.25);oreGlow.emissive.set(0x12343b);
+ for(let i=0;i<7;i++){const nug=new THREE.Mesh(new THREE.DodecahedronGeometry(.18+Math.random()*.16,0),i%3===0?oreGlow:oreMat);nug.position.set((Math.random()-.5)*.95,1.12+Math.random()*.25,(Math.random()-.5)*1.2);g.add(nug)}
+ g.position.set(x,-2.8,z);g.scale.setScalar(scale);scene.add(g);
+}
+oreSkip(-3.35,-4,.9);oreSkip(3.35,-48,.85);oreSkip(-3.3,-112,.9);
+function crate(x,z){const g=new THREE.Group();const wood2=mat(0x765338,1);const base=new THREE.Mesh(new THREE.BoxGeometry(1.1,.9,1),wood2);base.position.y=-2.25;g.add(base);for(let y=-2.65;y<-1.9;y+=.22){const slat=new THREE.Mesh(new THREE.BoxGeometry(1.14,.07,1.04),beamMat);slat.position.y=y;g.add(slat)}g.position.set(x,0,z);scene.add(g)}
+crate(3.55,-17);crate(-3.55,-76);crate(3.5,-139);
+// Pickaxes and shovel silhouettes mounted on the timber posts
+function wallTool(x,y,z,kind){const g=new THREE.Group();const handle=new THREE.Mesh(new THREE.CylinderGeometry(.045,.055,1.35,7),mat(0x8b623c));handle.rotation.z=.2;g.add(handle);const head=new THREE.Mesh(new THREE.BoxGeometry(kind==='pick'?.95:.18,.13,.16),ironMat);head.position.y=.48;g.add(head);if(kind==='pick'){const tip=new THREE.Mesh(new THREE.ConeGeometry(.09,.45,6),ironMat);tip.position.set(-.53,.48,0);tip.rotation.z=Math.PI/2;g.add(tip)}g.position.set(x,y,z);scene.add(g)}
+wallTool(-4.02,1.1,-8,'pick');wallTool(4.02,1.1,-57,'shovel');wallTool(-4.02,1.1,-124,'pick');
+// A timber-framed side passage with a readable mine marker
+for(const z of [-31,-101,-161]){const x=3.9;timber(.3,3.8,.35,x,0,z);timber(.3,3.8,.35,x+1.7,0,z);timber(2,.3,.4,x+.85,1.8,z);const sign=box(1.25,.55,.12,mat(0x30261f),x+.85,1.25,z-.24);}
 // tracks on a gently winding descending path
 const points=[new THREE.Vector3(0,-2,16),new THREE.Vector3(0,-2,-12),new THREE.Vector3(-2,-2,-38),new THREE.Vector3(-3,-2,-65),new THREE.Vector3(1,-2,-92),new THREE.Vector3(3,-2,-122),new THREE.Vector3(0,-2,-151),new THREE.Vector3(-2,-2,-183)];
 const path=new THREE.CatmullRomCurve3(points);const sideVec=new THREE.Vector3(1,0,0);
