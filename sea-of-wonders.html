@@ -8,7 +8,28 @@
 <title>The Sea of Wonders · Kaevoryn Studios</title>
 <style>
 *{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#07354a;color:#f4fbff;font:15px/1.5 Arial,sans-serif}body{overflow-x:hidden}.top{position:absolute;z-index:3;top:0;left:0;right:0;padding:18px clamp(16px,4vw,48px);display:flex;justify-content:space-between;align-items:center;background:linear-gradient(#03283acc,transparent)}.brand{font-size:11px;letter-spacing:.2em;font-weight:900;color:white;text-decoration:none}.brand small{display:block;color:#a9efff;font-size:9px}.top a:last-child{color:#e4faff;text-decoration:none;font-size:12px}.stage{height:100svh;min-height:560px;position:relative;overflow:hidden;background:linear-gradient(#8bc8dc 0%,#c3e3e7 36%,#398da5 62%,#07506b 100%)}canvas{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:0}
-.seabed{position:absolute;z-index:1;left:-3%;right:-3%;bottom:-2px;height:29%;pointer-events:none;overflow:hidden;clip-path:polygon(0 24%,7% 20%,13% 26%,20% 15%,27% 22%,34% 13%,41% 20%,49% 11%,56% 19%,64% 13%,72% 23%,80% 15%,88% 22%,94% 17%,100% 25%,100% 100%,0 100%);background:radial-gradient(ellipse at 12% 30%,#54717a 0%,#263f4c 20%,transparent 42%),radial-gradient(ellipse at 37% 22%,#3b5965 0%,#1b3544 25%,transparent 47%),radial-gradient(ellipse at 67% 28%,#526a70 0%,#203d49 23%,transparent 45%),radial-gradient(ellipse at 91% 31%,#3e5961 0%,#1b3543 25%,transparent 45%),linear-gradient(180deg,#254956 0%,#102d3c 34%,#061c2a 100%);box-shadow:inset 0 18px 28px rgba(125,190,194,.12),0 -12px 30px rgba(4,43,58,.22)}.seabed:before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 8% 18%,rgba(147,174,168,.22) 0 1%,transparent 17%),radial-gradient(ellipse at 24% 45%,rgba(5,19,29,.58) 0 2%,transparent 20%),radial-gradient(ellipse at 44% 17%,rgba(139,163,155,.18) 0 1%,transparent 16%),radial-gradient(ellipse at 58% 49%,rgba(3,17,27,.62) 0 2%,transparent 19%),radial-gradient(ellipse at 78% 20%,rgba(153,175,164,.18) 0 1%,transparent 18%),radial-gradient(ellipse at 94% 43%,rgba(3,18,27,.55) 0 2%,transparent 20%),repeating-radial-gradient(ellipse at 50% 50%,rgba(151,177,171,.045) 0 1px,transparent 2px 9px);mix-blend-mode:screen;opacity:.8}.seabed:after{content:"";position:absolute;left:0;right:0;bottom:0;height:58%;background:radial-gradient(ellipse at 4% 100%,#071b28 0 17%,transparent 38%),radial-gradient(ellipse at 29% 100%,#0b2533 0 20%,transparent 40%),radial-gradient(ellipse at 54% 100%,#061a27 0 19%,transparent 39%),radial-gradient(ellipse at 79% 100%,#0a2331 0 22%,transparent 42%),radial-gradient(ellipse at 100% 100%,#061923 0 19%,transparent 38%);filter:blur(5px);opacity:.95}@media(prefers-reduced-motion:reduce){.seabed *{animation:none!important}}
+.seabed{position:absolute;z-index:1;left:-2%;right:-2%;bottom:-2px;height:34%;pointer-events:none;overflow:hidden;clip-path:polygon(0 32%,4% 25%,8% 30%,13% 17%,18% 28%,23% 21%,29% 34%,34% 18%,40% 27%,46% 13%,51% 25%,57% 19%,63% 31%,69% 16%,75% 28%,81% 19%,87% 33%,93% 21%,100% 30%,100% 100%,0 100%);background:linear-gradient(180deg,rgba(48,79,85,.96) 0%,#294550 18%,#172f3d 57%,#081c29 100%);isolation:isolate}
+.seabed:before{content:"";position:absolute;inset:0;background:
+radial-gradient(ellipse 14% 36% at 7% 24%,#78908a 0%,#465e61 25%,#263f4b 54%,transparent 75%),
+radial-gradient(ellipse 11% 27% at 18% 44%,#526d70 0%,#243e4b 52%,transparent 76%),
+radial-gradient(ellipse 17% 34% at 31% 25%,#6d8580 0%,#405a60 27%,#1d3745 62%,transparent 78%),
+radial-gradient(ellipse 12% 29% at 44% 43%,#50696c 0%,#213b48 55%,transparent 78%),
+radial-gradient(ellipse 18% 35% at 57% 24%,#778c83 0%,#435c60 28%,#203b47 62%,transparent 79%),
+radial-gradient(ellipse 12% 30% at 70% 40%,#526d6e 0%,#233e49 54%,transparent 78%),
+radial-gradient(ellipse 17% 34% at 84% 25%,#6b817b 0%,#3b555b 31%,#1c3542 63%,transparent 80%),
+radial-gradient(ellipse 12% 28% at 96% 41%,#52686a 0%,#203946 58%,transparent 80%),
+linear-gradient(180deg,transparent 30%,rgba(4,19,29,.82) 100%);
+filter:contrast(1.12) saturate(.72)}
+.seabed:after{content:"";position:absolute;inset:0;background:
+repeating-linear-gradient(164deg,transparent 0 18px,rgba(5,19,27,.22) 19px 22px,transparent 23px 39px),
+repeating-linear-gradient(24deg,transparent 0 31px,rgba(164,181,168,.075) 32px 34px,transparent 35px 57px),
+radial-gradient(ellipse at 12% 48%,rgba(1,13,22,.85) 0 2%,transparent 9%),
+radial-gradient(ellipse at 39% 53%,rgba(1,13,22,.82) 0 2.5%,transparent 10%),
+radial-gradient(ellipse at 66% 48%,rgba(1,13,22,.86) 0 2%,transparent 9%),
+radial-gradient(ellipse at 91% 51%,rgba(1,13,22,.82) 0 2.5%,transparent 10%),
+linear-gradient(180deg,rgba(121,174,177,.08),transparent 42%);
+mix-blend-mode:screen;opacity:.8}
+@media(prefers-reduced-motion:reduce){.seabed *{animation:none!important}}}
 
 .heading{position:absolute;z-index:2;top:17%;left:0;right:0;text-align:center;padding:0 18px;pointer-events:none;text-shadow:0 3px 18px #07354a88}.eyebrow{font-size:10px;font-weight:800;letter-spacing:.25em;color:#e4fbff}.heading h1{font-size:clamp(38px,7vw,76px);line-height:.98;letter-spacing:-.045em;margin:12px 0;color:#fff}.heading p{max-width:520px;margin:12px auto;color:#f0fcff;font-size:clamp(14px,2vw,17px)}.foot{position:absolute;z-index:2;bottom:14px;left:0;right:0;text-align:center;color:#e1f8ff;font-size:10px;letter-spacing:.12em;text-shadow:0 2px 8px #001d2b}.foot a{color:#fff}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
 </style>
