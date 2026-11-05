@@ -10,7 +10,7 @@
 :root{color-scheme:dark;--cyan:#8deaff;--violet:#a58cff;--gold:#d6b47a}
 *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#080914;color:#f5efff;font-family:Georgia,serif}
 #world{position:fixed;inset:0}canvas{display:block;width:100%;height:100%}
-.vignette{position:fixed;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 46%,transparent 35%,#03040bd9 100%);z-index:2}
+.vignette{position:fixed;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 46%,transparent 52%,#03040b80 100%);z-index:2}
 .hud{position:fixed;z-index:5;inset:0;pointer-events:none}
 .brand{position:absolute;top:18px;left:20px;text-shadow:0 2px 18px #000}
 .brand small{display:block;color:var(--cyan);font:10px/1.5 system-ui;letter-spacing:.3em}
@@ -49,13 +49,13 @@ h1{font-size:clamp(34px,7vw,76px);line-height:.95;margin:18px 0;text-shadow:0 0 
 (()=>{
 const world=document.getElementById('world'),msg=document.getElementById('message'),intro=document.getElementById('intro'),flash=document.getElementById('flash');
 if(!window.THREE){msg.textContent='3D ENGINE COULD NOT LOAD. CHECK YOUR CONNECTION AND RELOAD.';return;}
-const T=window.THREE,scene=new T.Scene();scene.background=new T.Color(0x080b1c);scene.fog=new T.FogExp2(0x101329,.027);
+const T=window.THREE,scene=new T.Scene();scene.background=new T.Color(0x080b1c);scene.fog=new T.FogExp2(0x18213b,.018);
 const camera=new T.PerspectiveCamera(68,innerWidth/innerHeight,.1,240);camera.position.set(0,2.1,16);
-const renderer=new T.WebGLRenderer({antialias:true,powerPreference:'high-performance'});renderer.setPixelRatio(Math.min(devicePixelRatio,1.7));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=T.PCFSoftShadowMap;renderer.outputColorSpace=T.SRGBColorSpace;renderer.toneMapping=T.ACESFilmicToneMapping;renderer.toneMappingExposure=1.15;world.appendChild(renderer.domElement);
+const renderer=new T.WebGLRenderer({antialias:true,powerPreference:'high-performance'});renderer.setPixelRatio(Math.min(devicePixelRatio,1.7));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=T.PCFSoftShadowMap;renderer.outputColorSpace=T.SRGBColorSpace;renderer.toneMapping=T.ACESFilmicToneMapping;renderer.toneMappingExposure=1.38;world.appendChild(renderer.domElement);
 const mat=(color,roughness=.85,metalness=0)=>new T.MeshStandardMaterial({color,roughness,metalness});
 const stone=mat(0x666574),darkStone=mat(0x343746),oldStone=mat(0x77717a),iron=mat(0x171b2a,.42,.72),wood=mat(0x211923),gold=mat(0x9c7042,.35,.65),glass=new T.MeshStandardMaterial({color:0xff344e,emissive:0x8d071f,emissiveIntensity:2}),warm=new T.MeshStandardMaterial({color:0xffc36b,emissive:0xff8b28,emissiveIntensity:2.3});
-scene.add(new T.HemisphereLight(0x9aa8ff,0x17121d,1.35));
-const moonLight=new T.DirectionalLight(0x9eb6ff,2.1);moonLight.position.set(-22,35,14);moonLight.castShadow=true;moonLight.shadow.mapSize.set(1024,1024);scene.add(moonLight);
+scene.add(new T.HemisphereLight(0xb9c9ff,0x282235,1.85));
+const moonLight=new T.DirectionalLight(0xb5caff,2.7);moonLight.position.set(-22,35,14);moonLight.castShadow=true;moonLight.shadow.mapSize.set(1024,1024);scene.add(moonLight);
 const redLight=new T.PointLight(0xff183c,35,38);redLight.position.set(0,7,-27);scene.add(redLight);
 const ground=new T.Mesh(new T.PlaneGeometry(220,220),mat(0x171923));ground.rotation.x=-Math.PI/2;ground.position.y=-.12;ground.receiveShadow=true;scene.add(ground);
 function box(w,h,d,m,x,y,z){const o=new T.Mesh(new T.BoxGeometry(w,h,d),m);o.position.set(x,y,z);o.castShadow=true;o.receiveShadow=true;scene.add(o);return o}
@@ -80,7 +80,18 @@ for(const x of [-12,12]){const r=new T.Mesh(new T.ConeGeometry(3.8,5,4),mat(0x17
 const sign=box(7,1.2,.18,mat(0x160d1c),0,12.7,-35.2);const signLight=new T.PointLight(0xff174d,16,15);signLight.position.set(0,12.5,-33);scene.add(signLight);
 const signText=document.createElement('div');signText.textContent='HAUNTED HOTEL';signText.style.cssText='position:fixed;z-index:1;top:31%;left:50%;transform:translate(-50%,-50%);font:bold clamp(16px,3vw,30px) Georgia;color:#ff3d66;text-shadow:0 0 8px #ff174d,0 0 25px #ff174d;letter-spacing:.14em;pointer-events:none';document.body.appendChild(signText);
 // moon
-const moon=sphere(5,new T.MeshBasicMaterial({color:0xdce4ff}),-22,27,-64);const moonGlow=new T.PointLight(0x8faaff,30,90);moonGlow.position.set(-22,27,-60);scene.add(moonGlow);
+const moonX=-22,moonY=27,moonZ=-64;
+const moonAura=new T.Mesh(new T.SphereGeometry(8.2,32,24),new T.MeshBasicMaterial({color:0x739cff,transparent:true,opacity:.10,depthWrite:false}));
+moonAura.position.set(moonX,moonY,moonZ);scene.add(moonAura);
+const moonHalo=new T.Mesh(new T.SphereGeometry(6.8,32,24),new T.MeshBasicMaterial({color:0xb6d1ff,transparent:true,opacity:.13,depthWrite:false}));
+moonHalo.position.set(moonX,moonY,moonZ);scene.add(moonHalo);
+const moon=sphere(5.8,new T.MeshBasicMaterial({color:0xf0f3ff}),moonX,moonY,moonZ);
+const craterMat=new T.MeshBasicMaterial({color:0xb7c4e0,transparent:true,opacity:.32});
+for(const [cx,cy,r] of [[-1.5,1.2,.55],[1.2,.6,.7],[.1,-1.5,.48],[-2,-.8,.34],[2,1.8,.28]]){
+ const crater=new T.Mesh(new T.SphereGeometry(r,16,12),craterMat);
+ crater.position.set(moonX+cx,moonY+cy,moonZ+5.35);crater.scale.z=.18;scene.add(crater);
+}
+const moonGlow=new T.PointLight(0x9bbaff,48,110);moonGlow.position.set(moonX,moonY,moonZ+3);scene.add(moonGlow);
 // lanterns
 const lanterns=[];for(const x of [-5.5,5.5,-13,13]){const z=x===-5.5||x===5.5?-5:-24;box(.18,3,.18,iron,x,1.5,z);box(.65,.1,.65,gold,x,3,z);const l=new T.PointLight(0xffa64b,7,13);l.position.set(x,2.7,z);scene.add(l);lanterns.push(l);sphere(.22,warm,x,2.7,z);}
 const fountain=cylinder(1.5,2,.45,oldStone,0,.2,-18,12);cylinder(.12,.2,2,oldStone,0,1.2,-18,10);cylinder(.8,1,.2,oldStone,0,2.2,-18,12);
