@@ -290,6 +290,7 @@ try{
  for(let x=-9;x<=9;x+=3)box(.055,.02,30,gold,x,.22,-18,false);
  for(let z=-4;z>=-32;z-=3)box(20,.02,.055,gold,0,.22,z,false);
  // GRAND STAIRCASE — rebuilt as one grounded, continuous Victorian flight.
+ const beamBetween=(a,b,radius,material)=>{const av=new THREE.Vector3(...a),bv=new THREE.Vector3(...b),delta=new THREE.Vector3().subVectors(bv,av);const mesh=new THREE.Mesh(new THREE.CylinderGeometry(radius,radius,delta.length(),12),material);mesh.position.copy(av).add(bv).multiplyScalar(.5);mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),delta.normalize());mesh.castShadow=true;mesh.receiveShadow=true;scene.add(mesh);return mesh;};
  const stairStone=mat(0x393238,.98),stairNose=mat(0x77666a,.92),runner=mat(0x54202a,.98),runnerDark=mat(0x35151e,.98),iron=mat(0x17171b,.68,.65),oakRail=mat(0x38231e,.84),panelMat=mat(0x24191b,.94);
  // One solid triangular masonry core connects the lobby floor to the upper landing.
  const xl=-9.35,xr=-3.65,zFront=-6.65,zBack=-14.05,yBase=.20,yTop=3.42;
