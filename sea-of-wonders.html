@@ -10,10 +10,70 @@
 *{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#07354a;color:#f4fbff;font:15px/1.5 Arial,sans-serif}body{overflow-x:hidden}.top{position:absolute;z-index:3;top:0;left:0;right:0;padding:18px clamp(16px,4vw,48px);display:flex;justify-content:space-between;align-items:center;background:linear-gradient(#03283acc,transparent)}.brand{font-size:11px;letter-spacing:.2em;font-weight:900;color:white;text-decoration:none}.brand small{display:block;color:#a9efff;font-size:9px}.top a:last-child{color:#e4faff;text-decoration:none;font-size:12px}.stage{height:100svh;min-height:560px;position:relative;overflow:hidden;background:linear-gradient(#8bc8dc 0%,#c3e3e7 36%,#398da5 62%,#07506b 100%)}canvas{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:0}
 .heading{position:absolute;z-index:2;top:17%;left:0;right:0;text-align:center;padding:0 18px;pointer-events:none;text-shadow:0 3px 18px #07354a88}.eyebrow{font-size:10px;font-weight:800;letter-spacing:.25em;color:#e4fbff}.heading h1{font-size:clamp(38px,7vw,76px);line-height:.98;letter-spacing:-.045em;margin:12px 0;color:#fff}.heading p{max-width:520px;margin:12px auto;color:#f0fcff;font-size:clamp(14px,2vw,17px)}.foot{position:absolute;z-index:2;bottom:14px;left:0;right:0;text-align:center;color:#e1f8ff;font-size:10px;letter-spacing:.12em;text-shadow:0 2px 8px #001d2b}.foot a{color:#fff}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
 
+
+/* Harbor dock */
+.harbor-dock{position:absolute;z-index:1;left:50%;bottom:-1px;width:min(112vw,1180px);height:auto;transform:translateX(-50%);pointer-events:none;filter:drop-shadow(0 -8px 18px #062b3a66)}
+.harbor-dock svg{display:block;width:100%;height:auto;overflow:visible}
+@media(max-width:600px){.harbor-dock{width:145vw;max-width:none;bottom:0}}
 </style>
 </head>
 <body>
-<header class="top"><a class="brand" href="kingdoms.html">KAEVORYN STUDIOS<small>CREATE THE IMPOSSIBLE</small></a><a href="kingdoms.html">← The Kingdoms of Wonder</a></header>
+<header class="top"><a class="brand" href="kingdoms.html">KAEVORYN STUDIOS<small>CREATE THE IMPOSSIBLE<<div class="harbor-dock" aria-hidden="true">
+<svg viewBox="0 0 1200 470" xmlns="http://www.w3.org/2000/svg">
+<defs>
+ <linearGradient id="dockWood" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#a97849"/><stop offset=".28" stop-color="#79502f"/><stop offset="1" stop-color="#39291f"/></linearGradient>
+ <linearGradient id="dockSide" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#604027"/><stop offset="1" stop-color="#211c19"/></linearGradient>
+ <linearGradient id="dockPost" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#241b16"/><stop offset=".35" stop-color="#805332"/><stop offset=".7" stop-color="#4b3020"/><stop offset="1" stop-color="#171514"/></linearGradient>
+</defs>
+<!-- distant end and side structure -->
+<path d="M476 164 L724 164 L1172 470 L28 470Z" fill="#2b2925" opacity=".7"/>
+<path d="M496 174 L704 174 L1120 450 L80 450Z" fill="url(#dockWood)" stroke="#302219" stroke-width="13"/>
+<!-- heavy side stringers -->
+<path d="M476 180 L496 174 L80 450 L34 470Z M704 174 L724 180 L1166 470 L1120 450Z" fill="url(#dockSide)" stroke="#171615" stroke-width="6"/>
+<!-- plank seams following perspective -->
+<g fill="none" stroke="#3d2a1d" stroke-width="5" opacity=".9">
+ <path d="M491 198 L709 198 M466 224 L734 224 M431 254 L769 254 M391 286 L809 286 M344 322 L856 322 M287 363 L913 363 M220 408 L980 408"/>
+</g>
+<g fill="none" stroke="#c18a55" stroke-width="2" opacity=".55">
+ <path d="M493 190 L707 190 M455 246 L745 246 M365 314 L835 314 M245 396 L955 396"/>
+</g>
+<!-- long individual boards -->
+<g fill="none" stroke="#4b3020" stroke-width="3" opacity=".85">
+ <path d="M520 177 L356 450 M550 177 L480 450 M580 177 L575 450 M610 177 L670 450 M640 177 L770 450 M670 177 L900 450"/>
+</g>
+<g fill="none" stroke="#d0a06a" stroke-width="2" opacity=".28">
+ <path d="M531 180 L385 445 M563 180 L506 445 M594 180 L600 445 M625 180 L694 445 M656 180 L792 445"/>
+</g>
+<!-- iron bolts on boards -->
+<g fill="#202326" stroke="#b08a5c" stroke-width="2">
+ <circle cx="510" cy="225" r="4"/><circle cx="690" cy="225" r="4"/><circle cx="456" cy="286" r="5"/><circle cx="744" cy="286" r="5"/>
+ <circle cx="365" cy="363" r="5"/><circle cx="835" cy="363" r="5"/><circle cx="215" cy="425" r="6"/><circle cx="985" cy="425" r="6"/>
+</g>
+<!-- mooring posts -->
+<g>
+ <path d="M465 155 L482 155 L488 254 L458 254Z M718 155 L735 155 L742 254 L712 254Z" fill="url(#dockPost)" stroke="#201914" stroke-width="5"/>
+ <ellipse cx="473" cy="156" rx="14" ry="7" fill="#9a7047" stroke="#241b17" stroke-width="4"/>
+ <ellipse cx="727" cy="156" rx="14" ry="7" fill="#9a7047" stroke="#241b17" stroke-width="4"/>
+ <path d="M460 190 L486 190 M714 190 L740 190" stroke="#c0925e" stroke-width="4" opacity=".7"/>
+</g>
+<!-- foreground timber piles -->
+<g fill="url(#dockPost)" stroke="#1c1714" stroke-width="7">
+ <path d="M85 315 L125 315 L145 470 L62 470Z"/><path d="M1075 315 L1115 315 L1138 470 L1055 470Z"/>
+ <path d="M250 405 L278 405 L292 470 L238 470Z"/><path d="M922 405 L950 405 L964 470 L908 470Z"/>
+</g>
+<g fill="#a77a4c" stroke="#241a15" stroke-width="5">
+ <ellipse cx="105" cy="316" rx="22" ry="9"/><ellipse cx="1095" cy="316" rx="22" ry="9"/>
+</g>
+<!-- rope rails on outer edges -->
+<g fill="none" stroke-linecap="round">
+ <path d="M105 318 Q260 240 475 160" stroke="#29201a" stroke-width="13"/>
+ <path d="M1095 318 Q940 240 725 160" stroke="#29201a" stroke-width="13"/>
+ <path d="M105 312 Q260 234 475 154" stroke="#b18a5d" stroke-width="5"/>
+ <path d="M1095 312 Q940 234 725 154" stroke="#b18a5d" stroke-width="5"/>
+</g>
+<!-- waterline reflections beneath the pier -->
+<path d="M0 456 Q170 438 310 458 T610 457 T900 455 T1200 450" fill="none" stroke="#d8f5f4" stroke-width="5" opacity=".35"/>
+</svg></div>/small></a><a href="kingdoms.html">← The Kingdoms of Wonder</a></header>
 <main><section class="stage" aria-label="Open ocean"><canvas id="ocean" aria-hidden="true"></canvas><div class="heading"><div class="eyebrow">THE KINGDOMS OF WONDER · WATER ADVENTURE</div><h1>THE SEA OF WONDERS</h1><p>Step aboard and set sail across a vast, living ocean.</p></div><div class="foot">KAEVORYN STUDIOS · <a href="kingdoms.html">RETURN TO THE PARK</a></div></section></main>
 <script>
 (()=>{
