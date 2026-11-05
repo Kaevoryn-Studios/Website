@@ -28,6 +28,14 @@
  <radialGradient id="hotelGlow"><stop stop-color="#d98b4d" stop-opacity=".6"/><stop offset="1" stop-color="#d98b4d" stop-opacity="0"/></radialGradient>
  <filter id="hotelTexture"><feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="3" seed="12"/><feColorMatrix values=".24 0 0 0 .16 .24 0 0 0 .13 .24 0 0 0 .12 0 0 0 .17 0"/><feBlend in="SourceGraphic" mode="soft-light"/></filter>
  <filter id="hotelBlur"><feGaussianBlur stdDeviation="19"/></filter>
+ <pattern id="agedStone" width="46" height="38" patternUnits="userSpaceOnUse">
+  <circle cx="7" cy="9" r="1.8" fill="#09080d" opacity=".42"/><circle cx="32" cy="25" r="2.4" fill="#d8c2a2" opacity=".16"/><path d="M15 4l-3 7m25 13l-5 5M3 32l7-2" stroke="#08070b" stroke-width="2" opacity=".35"/>
+ </pattern>
+ <pattern id="slateWear" width="42" height="26" patternUnits="userSpaceOnUse">
+  <path d="M0 1H42M21 1V13M0 13H42M10 13V26" fill="none" stroke="#b8a18a" stroke-opacity=".24" stroke-width="2"/>
+  <path d="M4 4l8 2m17 9l7-2" stroke="#08070b" stroke-opacity=".55" stroke-width="2"/>
+ </pattern>
+ <clipPath id="hotelBodyClip"><path d="M150 355H435V675H150Z M765 355H1050V675H765Z M410 190H790V676H410Z"/></clipPath>
  <pattern id="hotelMasonry" width="100" height="54" patternUnits="userSpaceOnUse"><path d="M0 1H100M0 53H100M50 1V27M0 27H100M25 27V53" fill="none" stroke="#e1c8a8" stroke-opacity=".12" stroke-width="2"/></pattern>
 </defs>
 <!-- ground shadow and reflected entrance light -->
@@ -81,6 +89,37 @@
 <g fill="none" stroke="#d0b38c" stroke-opacity=".35" stroke-width="4">
  <path d="M180 420V640M235 390V650M350 390V650M865 390V650M965 390V650M445 275V650M755 275V650"/>
  <path d="M175 455H420M175 585H420M780 455H1025M780 585H1025M440 335H760M440 465H760"/>
+</g>
+<!-- aged slate, mineral staining and decades of neglect -->
+<path d="M365 235L405 142L470 104H730L795 142L835 235L785 221L740 185H460L415 221Z" fill="url(#slateWear)" opacity=".8"/>
+<g clip-path="url(#hotelBodyClip)" pointer-events="none">
+ <rect x="140" y="180" width="930" height="510" fill="url(#agedStone)" opacity=".8"/>
+ <g fill="#08070b" opacity=".28">
+  <path d="M180 365Q215 380 205 430T218 520L205 545Q194 485 185 455Z"/>
+  <path d="M285 380Q315 398 305 452T316 510L300 536Q292 475 286 440Z"/>
+  <path d="M845 365Q875 390 864 438T879 520L860 548Q852 480 846 440Z"/>
+  <path d="M965 380Q990 400 980 454T993 530L977 550Q968 485 964 450Z"/>
+  <path d="M465 260Q490 285 480 340T493 420L478 455Q470 390 466 345Z"/>
+  <path d="M710 255Q735 278 725 330T738 415L722 450Q714 385 710 340Z"/>
+ </g>
+ <g fill="none" stroke="#0a090e" stroke-width="7" stroke-linecap="round" opacity=".72">
+  <path d="M215 370l-9 42 12 23-18 31 8 38-15 29M330 380l-6 30 10 22-14 26 7 33M875 370l11 37-13 25 15 28-8 34 13 24M990 385l-7 34 12 21-10 32 8 35"/>
+  <path d="M475 270l-11 35 13 22-17 30 9 31-12 29M735 270l10 38-13 20 15 31-8 32 12 25"/>
+ </g>
+ <g fill="none" stroke="#c7ad8c" stroke-width="3" opacity=".25">
+  <path d="M160 430l22-8 10 8-7 12M350 550l17-7 12 9M790 470l22-9 12 10M930 570l18-8 13 8M440 500l19-8 10 9M740 610l16-7 10 8"/>
+ </g>
+</g>
+<!-- chipped stone edges, moss in joints and soot below rooflines -->
+<g fill="none" stroke-linecap="round">
+ <path d="M155 355l18 3 8-5 17 4 10-4 19 3M765 355l18 3 8-5 17 4 10-4 19 3M415 220l16 3 9-5 18 3" stroke="#171116" stroke-width="10"/>
+ <path d="M155 356l18 2 8-4 17 3M765 356l18 2 8-4 17 3M415 221l16 2 9-4 18 3" stroke="#a48a6c" stroke-width="3" opacity=".5"/>
+ <path d="M170 645q18-17 34 0t32-2M1015 646q-18-17-34 0t-32-2M430 650q16-15 30 0t28-2" stroke="#263025" stroke-width="8" opacity=".8"/>
+</g>
+<!-- roof slate seams and weathered copper ridges -->
+<g fill="none" stroke="#b69a75" stroke-width="3" opacity=".45">
+ <path d="M405 145L455 180M470 108L485 175M520 108L520 178M570 108L570 178M630 108L630 178M680 108L680 178M730 108L715 178M795 145L745 180"/>
+ <path d="M375 235H825M150 355H435M765 355H1050"/>
 </g>
 <!-- deep vertical pilasters, making the facade read as a real hotel -->
 <g fill="url(#hotelSide)" stroke="#b59a76" stroke-width="4">
