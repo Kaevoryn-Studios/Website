@@ -16,79 +16,118 @@
 <main><section class="stage" aria-label="Open ocean water preview"><canvas id="ocean" aria-hidden="true"></canvas><div class="heading"><div class="eyebrow">THE KINGDOMS OF WONDER · WATER ADVENTURE</div><h1>THE SEA OF WONDERS</h1><p>First, we build the ocean. Nothing else — just open water, natural waves, and a distant horizon.</p></div><div class="foot">KAEVORYN STUDIOS · <a href="kingdoms.html">RETURN TO THE PARK</a></div></section></main>
 <script>
 (()=>{
- const canvas=document.getElementById('ocean'),ctx=canvas.getContext('2d',{alpha:false});
- if(!ctx)return;
- const surface=document.createElement('canvas'),sctx=surface.getContext('2d');
- let w=0,h=0,dpr=1,frame,pixels,last=0;
+ const canvas=document.getElementById('ocean');
+ const gl=canvas.getContext('webgl',{alpha:false,antialias:true,powerPreference:'high-performance'});
+ if(!gl){
+  const c=canvas.getContext('2d');if(c){c.fillStyle='#07506b';c.fillRect(0,0,canvas.width,canvas.height);}
+  return;
+ }
+ const vertex=`
+ attribute vec2 position;
+ varying vec2 uv;
+ void main(){uv=position*.5+.5;gl_Position=vec4(position,0.,1.);}
+ `;
+ const fragment=`
+ precision highp float;
+ varying vec2 uv;
+ uniform vec2 resolution;
+ uniform float time;
+ const float PI=3.14159265;
+ float wave(vec2 p,vec2 d,float f,float a,float s,float t){
+  float q=dot(p,d)*f+t*s;
+  return a*sin(q);
+ }
+ float ocean(vec2 p,float t){
+  float h=0.;
+  h+=wave(p,normalize(vec2(1.,.28)),.27,.34,1.00,t);
+  h+=wave(p,normalize(vec2(.62,-.78)),.39,.22,.83,t);
+  h+=wave(p,normalize(vec2(-.34,-1.)),.19,.28,.67,t);
+  h+=wave(p,normalize(vec2(.92,.66)),.62,.095,1.31,t);
+  h+=wave(p,normalize(vec2(-.8,.3)),.92,.035,1.8,t);
+  return h;
+ }
+ vec3 skyColor(vec3 rd){
+  float y=max(rd.y,0.);
+  vec3 sky=mix(vec3(.72,.82,.84),vec3(.24,.48,.61),pow(y,.65));
+  vec3 sunDir=normalize(vec3(.46,.35,-.82));
+  float sun=pow(max(dot(rd,sunDir),0.),180.);
+  float halo=pow(max(dot(rd,sunDir),0.),12.);
+  sky+=vec3(1.,.72,.43)*sun*.9+vec3(1.,.75,.53)*halo*.18;
+  return sky;
+ }
+ void main(){
+  vec2 p=(gl_FragCoord.xy-.5*resolution)/resolution.y;
+  vec3 ro=vec3(0.,1.65,5.2);
+  vec3 rd=normalize(vec3(p.x*1.55,p.y*1.12-.19,-1.75));
+  if(rd.y>-.008){gl_FragColor=vec4(skyColor(rd),1.);return;}
+  float t=ro.y/(-rd.y);
+  t=clamp(t,0.,180.);
+  vec3 pos=ro+rd*t;
+  for(int i=0;i<6;i++){
+   float f=pos.y-ocean(pos.xz,time);
+   t+=f/max(-rd.y,.018);
+   t=clamp(t,0.,180.);
+   pos=ro+rd*t;
+  }
+  if(t>175.){gl_FragColor=vec4(skyColor(rd),1.);return;}
+  float e=.035+ t*.0015;
+  float h=ocean(pos.xz,time);
+  float hx=ocean(pos.xz+vec2(e,0.),time)-ocean(pos.xz-vec2(e,0.),time);
+  float hz=ocean(pos.xz+vec2(0.,e),time)-ocean(pos.xz-vec2(0.,e),time);
+  vec3 n=normalize(vec3(-hx/(2.*e),1.,-hz/(2.*e)));
+  vec3 light=normalize(vec3(-.42,.72,.55));
+  vec3 view=normalize(ro-pos);
+  float diffuse=max(dot(n,light),0.);
+  float fresnel=pow(1.-max(dot(n,view),0.),4.);
+  float spec=pow(max(dot(reflect(-light,n),view),0.),96.);
+  float distanceFade=clamp(t/95.,0.,1.);
+  vec3 deep=vec3(.012,.105,.16);
+  vec3 shallow=vec3(.025,.30,.36);
+  vec3 water=mix(shallow,deep,distanceFade*.82);
+  water*=.52+diffuse*.58;
+  water+=vec3(.12,.28,.31)*spec*1.6;
+  water=mix(water,skyColor(reflect(-view,n)),fresnel*.62);
+  float crest= smoothstep(.24,.52,length(vec2(hx,hz)));
+  float peak=smoothstep(.12,.38,h);
+  float foam=crest*peak*(1.-distanceFade*.45);
+  float noise=sin(pos.x*3.1+time*1.7)*sin(pos.z*2.7-time*1.2);
+  foam*=smoothstep(-.15,.48,noise)*.8;
+  water=mix(water,vec3(.78,.88,.86),foam*.82);
+  float sunGlint=pow(max(dot(reflect(-light,n),view),0.),180.);
+  water+=vec3(1.,.83,.62)*sunGlint*.7;
+  float haze=smoothstep(35.,125.,t);
+  water=mix(water,vec3(.29,.51,.57),haze*.5);
+  gl_FragColor=vec4(water,1.);
+ }
+ `;
+ function shader(type,src){
+  const sh=gl.createShader(type);gl.shaderSource(sh,src);gl.compileShader(sh);
+  if(!gl.getShaderParameter(sh,gl.COMPILE_STATUS)){console.error(gl.getShaderInfoLog(sh));return null;}return sh;
+ }
+ const vs=shader(gl.VERTEX_SHADER,vertex),fs=shader(gl.FRAGMENT_SHADER,fragment);
+ if(!vs||!fs)return;
+ const program=gl.createProgram();gl.attachShader(program,vs);gl.attachShader(program,fs);gl.linkProgram(program);
+ if(!gl.getProgramParameter(program,gl.LINK_STATUS)){console.error(gl.getProgramInfoLog(program));return;}
+ gl.useProgram(program);
+ const buffer=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buffer);
+ gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+ const loc=gl.getAttribLocation(program,'position');gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
+ const res=gl.getUniformLocation(program,'resolution'),tm=gl.getUniformLocation(program,'time');
+ const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
  function resize(){
-  const r=canvas.getBoundingClientRect();w=Math.max(1,r.width);h=Math.max(1,r.height);
-  dpr=Math.min(window.devicePixelRatio||1,1.25);
-  canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);
-  ctx.setTransform(dpr,0,0,dpr,0,0);
-  surface.width=Math.max(180,Math.round(w*.58));surface.height=Math.max(190,Math.round(h*.58));
-  frame=sctx.createImageData(surface.width,surface.height);pixels=frame.data;
+  const d=Math.min(window.devicePixelRatio||1,1.5),w=Math.max(1,canvas.clientWidth),h=Math.max(1,canvas.clientHeight);
+  canvas.width=Math.round(w*d);canvas.height=Math.round(h*d);gl.viewport(0,0,canvas.width,canvas.height);
+  gl.uniform2f(res,canvas.width,canvas.height);
  }
  if('ResizeObserver'in window)new ResizeObserver(resize).observe(canvas);else window.addEventListener('resize',resize);
  resize();
- // One connected ocean surface: intersecting long swells, not separate wave bands.
- function heightAt(x,z,t){
-  return 1.35*Math.sin(x*.010+z*.020+t*.72)
-   +.82*Math.sin(x*.016-z*.012-t*.56+.8)
-   +.62*Math.sin(x*.006+z*.031+t*.43+2.1)
-   +.22*Math.sin(x*.031+z*.009-t*1.18+1.7)
-   +.12*Math.sin(x*.052-z*.024+t*1.55);
+ let start=performance.now();
+ function draw(now){
+  gl.uniform1f(tm,reduce?0:(now-start)*.00032);
+  gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+  requestAnimationFrame(draw);
  }
- function render(ms){
-  requestAnimationFrame(render);if(ms-last<34)return;last=ms;
-  const t=ms*.001,sw=surface.width,sh=surface.height,horizon=h*.425;
-  const sky=ctx.createLinearGradient(0,0,0,horizon);
-  sky.addColorStop(0,'#789eae');sky.addColorStop(.68,'#c0d5d5');sky.addColorStop(1,'#d4ded9');
-  ctx.fillStyle=sky;ctx.fillRect(0,0,w,horizon+1);
-  const glow=ctx.createRadialGradient(w*.69,horizon*.12,1,w*.69,horizon*.12,w*.38);
-  glow.addColorStop(0,'rgba(255,240,211,.35)');glow.addColorStop(1,'rgba(255,240,211,0)');
-  ctx.fillStyle=glow;ctx.fillRect(0,0,w,horizon);
-  for(let py=0;py<sh;py++){
-   const depth=py/(sh-1),z=depth*215;
-   for(let px=0;px<sw;px++){
-    const x=(px/sw-.5)*w*1.65,scale=.32+depth*1.8,xx=x*scale;
-    const v=heightAt(xx,z,t);
-    const dx=(heightAt(xx+2,z,t)-heightAt(xx-2,z,t))*.25;
-    const dz=(heightAt(xx,z+2,t)-heightAt(xx,z-2,t))*.25;
-    const curvature=heightAt(xx+4,z,t)+heightAt(xx-4,z,t)+heightAt(xx,z+4,t)+heightAt(xx,z-4,t)-4*v;
-    const nx=-dx*2.5,ny=-dz*2.2,nz=1,inv=1/Math.sqrt(nx*nx+ny*ny+nz*nz);
-    const diffuse=Math.max(0,(nx*.22+ny*-.58+nz*.78)*inv);
-    const spec=Math.pow(Math.max(0,(nx*.32+ny*-.7+nz*.64)*inv),34);
-    const crest=Math.max(0,v-(1.55+depth*.12));
-    const breaking=Math.max(0,curvature*.22+Math.max(0,dx)*.2-.13);
-    const foam=Math.min(.8,crest*.12+breaking*.32)*Math.min(1,depth*1.6);
-    const worldX=px/sw*w,sunWidth=w*(.018+depth*.15);
-    const sunTrack=Math.exp(-Math.pow((worldX-w*.69)/(sunWidth||1),2));
-    const sparkle=.35+.65*Math.max(0,Math.sin(xx*.074+z*.12+t*2.1));
-    const reflection=sunTrack*sparkle*(.1+depth*.3)*(spec*2+.12);
-    const grain=(Math.sin(px*13.7+py*8.3+t*2)*Math.sin(px*5.1-py*11.4-t*1.4))*.018*depth;
-    const light=(diffuse-.38)*30+spec*155+reflection*130+grain*255;
-    const idx=(py*sw+px)*4;
-    pixels[idx]=Math.max(0,Math.min(255,5+depth*5+light*.2+foam*185));
-    pixels[idx+1]=Math.max(0,Math.min(255,38-depth*12+light*.68+foam*207));
-    pixels[idx+2]=Math.max(0,Math.min(255,57-depth*10+light+foam*218));
-    pixels[idx+3]=255;
-   }
-  }
-  sctx.putImageData(frame,0,0);ctx.imageSmoothingEnabled=true;
-  ctx.drawImage(surface,0,horizon,w,h-horizon);
-  // Foam fragments follow individual steep crests on the same surface.
-  for(let i=0;i<170;i++){
-   const depth=(i%17)/17,y=horizon+depth*depth*(h-horizon-8);
-   const x=((i*91.7+t*(8+depth*20))%(w+60))-30;
-   const xx=(x/w-.5)*w*1.65*(.32+depth*1.8),z=depth*215,v=heightAt(xx,z,t);
-   const slope=(heightAt(xx+3,z,t)-heightAt(xx-3,z,t))*.5;
-   if(v<1.7+depth*.1||slope<.12)continue;
-   const size=1+depth*7;
-   ctx.beginPath();ctx.moveTo(x-size,y);ctx.quadraticCurveTo(x,y-1-depth*2,x+size*1.4,y+.4);
-   ctx.strokeStyle='rgba(229,247,242,'+(.08+depth*.2)+')';ctx.lineWidth=.6+depth*.8;ctx.stroke();
-  }
- }
- requestAnimationFrame(render);
+ requestAnimationFrame(draw);
 })();
 </script>
 </body></html>
