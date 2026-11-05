@@ -57,7 +57,26 @@
 @keyframes hotel-fog-drift{0%{transform:translate3d(-8%,0,0) scale(.88)}50%{transform:translate3d(2%,-9px,0) scale(1.04)}100%{transform:translate3d(9%,2px,0) scale(.94)}}
 @keyframes moon-haunt{0%,100%{opacity:.34;filter:blur(1px)}50%{opacity:.58;filter:blur(3px)}}
 @media(prefers-reduced-motion:reduce){.mist:before,.mist:after,.moon{animation:none!important}.arrival-trigger,#hotel-door-panels{transition:none!important}#hotel-arrival.awakened #hotel-door-panels{transform:scaleX(.035);opacity:.18}#hotel-arrival.awakened #doorway-fog{animation:none!important;opacity:.3;transform:none}}
-</style>
+
+/* Playable 3D Haunted Hotel Doom */
+#doom-3d-play{padding-top:46px}
+.doom-game{border:1px solid #765d50;background:#0b090d;border-radius:14px;overflow:hidden;box-shadow:0 22px 65px #0009}
+.doom-game-top,.doom-game-bottom{padding:13px 16px;background:#151015;display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}
+.doom-game-top{font:700 9px Arial,sans-serif;letter-spacing:.16em;color:#d9bd8e}
+#doom-hint{color:#a99a89}
+.doom-canvas-wrap{height:clamp(360px,62vw,650px);min-height:360px;position:relative;background:radial-gradient(#382b30,#09070b);overflow:hidden;touch-action:none}
+.doom-canvas-wrap canvas{display:block;width:100%;height:100%;outline:none}
+.doom-loading{position:absolute;inset:0;display:grid;place-items:center;color:#e4c58f;font:700 11px Arial,sans-serif;letter-spacing:.2em;background:#09070b;z-index:2}
+.doom-loading.hidden{display:none}
+.doom-game-actions{display:flex;gap:8px;flex-wrap:wrap}
+.doom-game-note{width:100%;margin:0;color:#b9ad9e;font-size:11px}
+.doom-touch{display:none;align-items:center;gap:16px;width:100%;justify-content:space-between}
+.doom-pad{display:grid;gap:5px;justify-items:center}
+.doom-pad>div{display:flex;gap:5px}
+.doom-pad button{width:44px;height:42px;border:1px solid #a88b60;border-radius:8px;background:#2b2024;color:#f4e6d0;font-size:17px;touch-action:none}
+.doom-look-note{font:10px Arial,sans-serif;color:#c7b8a8;max-width:140px}
+@media(max-width:720px){.doom-touch{display:flex}.doom-canvas-wrap{height:58svh;min-height:340px}.doom-game-top{font-size:8px}.doom-game-actions .btn{font-size:9px;padding:10px}}
+\n</style>
 </head>
 <body>
 <header class="top"><a href="kingdoms.html">KAEVORYN STUDIOS<small>CREATE THE IMPOSSIBLE</small></a><nav><a href="kingdoms.html">THE KINGDOMS OF WONDER</a><a href="attractions.html">ATTRACTIONS</a></nav></header>
@@ -155,6 +174,22 @@
 <div class="hero-copy"><div class="eyebrow">A VICTORIAN NIGHTMARE · THE KINGDOMS OF WONDER</div><h1>HAUNTED<br>HOTEL DOOM</h1><p>Once the grandest address in the county. Now the doors are open — and the hotel has been expecting you.</p><span class="stamp">8 FLOORS ABOVE · NO PROMISE OF A SAFE RETURN</span></div>
 <button class="arrival-trigger" id="awaken-hotel" type="button">AWAKEN THE ENTRANCE</button><div class="arrival-status" id="arrival-status" aria-live="polite">The lanterns are waiting. The doors have not moved.</div><button id="enter-hotel" type="button">STEP INSIDE THE HOTEL</button><div class="entry-walk" id="entry-walk" aria-hidden="true"><div class="entry-caption">HAUNTED HOTEL DOOM · GRAND LOBBY</div><div class="entry-ceiling"></div><div class="entry-left"></div><div class="entry-right"></div><div class="entry-floor"></div><div class="entry-end"></div><div class="entry-sconce left"></div><div class="entry-sconce right"></div></div><div class="scroll">THE HOTEL IS AWAKE · ENTER BELOW</div>
 </section>
+
+<section class="section wrap" id="doom-3d-play">
+  <div class="section-head"><div class="eyebrow">THE HOTEL IS NOW PLAYABLE</div><h2>Enter the world of Doom.</h2><p>Explore a 3D version of the hotel. Walk through the entrance, cross the Grand Lobby, and find the haunted corridor.</p></div>
+  <div class="doom-game" id="doom-game">
+    <div class="doom-game-top"><span id="doom-location">OUTSIDE · HOTEL GROUNDS</span><span id="doom-hint">WASD / ARROW KEYS · MOUSE TO LOOK</span></div>
+    <div class="doom-canvas-wrap" id="doom-canvas-wrap"><div class="doom-loading" id="doom-loading">PREPARING THE HOTEL…</div></div>
+    <div class="doom-game-bottom">
+      <div class="doom-game-actions"><button class="btn primary" id="doom-start">ENTER THE HOTEL</button><button class="btn" id="doom-reset">RETURN OUTSIDE</button><button class="btn" id="doom-fullscreen">FULL SCREEN</button></div>
+      <div class="doom-touch" aria-label="Mobile movement controls">
+        <div class="doom-pad"><button type="button" data-move="forward" aria-label="Move forward">▲</button><div><button type="button" data-move="left" aria-label="Move left">◀</button><button type="button" data-move="back" aria-label="Move backward">▼</button><button type="button" data-move="right" aria-label="Move right">▶</button></div></div>
+        <div class="doom-look-note">Drag the scene to look around · Use arrows to walk</div>
+      </div>
+      <p class="doom-game-note">Desktop: click the scene to capture the mouse, then use WASD or arrow keys. Phone/tablet: drag to look and use the directional pad. Head toward the illuminated entrance to go inside.</p>
+    </div>
+  </div>
+</section>
 <section class="section wrap" id="walkthrough">
 <div class="section-head"><div class="eyebrow">THE WALK-THROUGH</div><h2>Every room remembers.</h2><p>Explore the hotel's public spaces. Choose a location to uncover what remains inside.</p></div>
 <div class="choices" role="group" aria-label="Explore hotel locations">
@@ -190,5 +225,102 @@ call.addEventListener("click",()=>{clearSequence();say("A bell rings somewhere a
 ride.addEventListener("click",()=>{clearSequence();ride.disabled=true;call.disabled=true;say("The doors close. The brass floor indicator climbs: 1… 2… 3…",false);const beats=[["4… 5… 6… The lights begin to flicker.",1800],["7… 8. A voice says: “You are not checked out.”",3600],["BLACKOUT. The cable groans. The floor disappears beneath you.",5400],["A sudden supernatural drop — then absolute silence.",7200],["The doors open. You are back in the lobby. The guest book has changed.",9000]];beats.forEach(([msg,delay],i)=>timer.push(setTimeout(()=>{say(msg,i===beats.length-1);if(i===beats.length-1){ride.disabled=true;call.disabled=false;}},delay)));});
 reset.addEventListener("click",()=>{clearSequence();doors.classList.remove("open");say("The elevator waits with its doors closed.");call.disabled=false;ride.disabled=true;});
 </script>
-</body>
+
+<script type="module">
+import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.module.js";
+(()=>{
+const host=document.getElementById("doom-canvas-wrap"),loading=document.getElementById("doom-loading");
+const locationLabel=document.getElementById("doom-location"),hint=document.getElementById("doom-hint");
+if(!host)return;
+let renderer,scene,camera,clock,locked=false,dragging=false,lastX=0,lastY=0,yaw=0,pitch=0,inside=false,started=false;
+const keys={},touch={forward:false,back:false,left:false,right:false};
+const colliders=[];
+try{
+ scene=new THREE.Scene();scene.background=new THREE.Color(0x09080d);scene.fog=new THREE.FogExp2(0x09080d,.022);
+ camera=new THREE.PerspectiveCamera(70,host.clientWidth/host.clientHeight,.1,180);camera.position.set(0,1.7,18);
+ renderer=new THREE.WebGLRenderer({antialias:true,alpha:false});renderer.setPixelRatio(Math.min(devicePixelRatio,1.7));renderer.setSize(host.clientWidth,host.clientHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.15;host.appendChild(renderer.domElement);
+ clock=new THREE.Clock();
+ const mat=(color,rough=.85,metal=0)=>new THREE.MeshStandardMaterial({color,roughness:rough,metalness:metal});
+ const stone=mat(0x51464a),darkStone=mat(0x28232a),roofMat=mat(0x17171f),trim=mat(0x9b8061),wood=mat(0x3a2118),gold=mat(0xb08a54,.45,.65),floorMat=mat(0x383139,.42),wall=mat(0x30252d),black=mat(0x09080d),velvet=mat(0x321e25),portraitMat=mat(0x15151b);
+ const box=(w,h,d,material,x,y,z,shadows=true)=>{const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),material);m.position.set(x,y,z);m.castShadow=shadows;m.receiveShadow=true;scene.add(m);return m};
+ const cyl=(r1,r2,h,material,x,y,z,segments=12)=>{const m=new THREE.Mesh(new THREE.CylinderGeometry(r1,r2,h,segments),material);m.position.set(x,y,z);m.castShadow=true;m.receiveShadow=true;scene.add(m);return m};
+ const point=(x,y,z,color,intensity,dist)=>{const l=new THREE.PointLight(color,intensity,dist,2);l.position.set(x,y,z);scene.add(l);return l};
+ scene.add(new THREE.HemisphereLight(0x9ba4c0,0x171016,.55));
+ const moon=new THREE.DirectionalLight(0x9da8c2,1.1);moon.position.set(-8,18,10);moon.castShadow=true;moon.shadow.mapSize.set(1024,1024);scene.add(moon);
+ // Grounds and the imposing Victorian exterior.
+ box(100,.5,100,mat(0x111116),0,-.3,0);
+ const building=box(25,17,5,stone,0,8.2,-5);
+ box(27,.6,5.6,trim,0,16.7,-5);box(28,.5,5.8,darkStone,0,17.1,-5);
+ const roof=cyl(0,1,0,roofMat,0,0,0);scene.remove(roof);
+ const roofGeo=new THREE.ConeGeometry(5.5,3.6,4);const roofMesh=new THREE.Mesh(roofGeo,roofMat);roofMesh.rotation.y=Math.PI/4;roofMesh.position.set(0,18.5,-5);roofMesh.castShadow=true;scene.add(roofMesh);
+ for(let side of [-1,1]){box(7,13,5,stone,side*16,6.2,-5);box(7.4,.55,5.5,trim,side*16,12.8,-5);const turret=new THREE.Mesh(new THREE.ConeGeometry(4.3,3.2,4),roofMat);turret.position.set(side*16,14.6,-5);turret.rotation.y=Math.PI/4;scene.add(turret);}
+ // Facade pilasters, cornices, and lit arch entrance.
+ for(let x=-11;x<=11;x+=5.5){box(.42,16,.65,trim,x,8,-2.3);}
+ for(let y=3;y<16;y+=3.1)box(25.5,.25,.35,trim,0,y,-2.2);
+ box(4.8,7,.5,black,0,3.4,-2.05);
+ const arch=new THREE.Mesh(new THREE.TorusGeometry(2.4,.23,10,32,Math.PI),trim);arch.position.set(0,6.8,-1.78);arch.rotation.z=Math.PI;scene.add(arch);
+ // Double oak doors swing open when the player approaches.
+ const doorL=new THREE.Group(),doorR=new THREE.Group();doorL.position.set(-2.25,0,-1.8);doorR.position.set(2.25,0,-1.8);scene.add(doorL,doorR);
+ const d1=new THREE.Mesh(new THREE.BoxGeometry(2.2,6.3,.28),wood),d2=d1.clone();d1.position.set(1.1,3.15,0);d2.position.set(-1.1,3.15,0);doorL.add(d1);doorR.add(d2);
+ for(let g of [doorL,doorR]){const panel=box;for(let yy of [1.3,3.4,5.2]){const p=new THREE.Mesh(new THREE.BoxGeometry(1.25,1.25,.12),mat(0x24140f));p.position.set(g===doorL?1.1:-1.1,yy,.2);g.add(p);}}
+ // Exterior lanterns and old iron fence.
+ for(let x of [-3.3,3.3]){box(.18,1.2,.18,gold,x,5.5,-1.7);const glow=point(x,5.8,-1.4,0xffb96e,2.1,10);const lamp=new THREE.Mesh(new THREE.BoxGeometry(.45,.65,.45),mat(0xffbd73,.3));lamp.position.set(x,5.8,-1.7);scene.add(lamp);}
+ for(let x=-28;x<=28;x+=2){box(.12,1.6,.12,mat(0x17161a),x,.8,5);box(.2,.2,.2,gold,x,1.65,5);}
+ box(56,.15,.15,gold,0,1.35,5);
+ // Interior volume: grand lobby and a corridor extending deeper into the hotel.
+ box(22,.5,34,floorMat,0,-.05,-17);box(22,12,1.2,wall,0,6,-34);box(1,12,34,wall,-11,6,-17);box(1,12,34,wall,11,6,-17);box(22,.5,34,mat(0x171218),0,12,-17);
+ for(let z=-3;z>=-32;z-=5){box(22,.3,.5,trim,0,.25,z);}
+ // Marble floor inlay.
+ for(let x=-9;x<=9;x+=3)box(.055,.02,30,gold,x,.22,-18,false);
+ for(let z=-4;z>=-32;z-=3)box(20,.02,.055,gold,0,.22,z,false);
+ // Grand staircase: broad lower steps, split upper flights and landings.
+ for(let i=0;i<9;i++){const step=box(5.5,.32,.8,mat(0x57464a),-6.5,0.22+i*.34,-8-i*.65);step.position.x=-6.5;box(.12,.12,.82,gold,-6.5,step.position.y+.18,step.position.z-.02);}
+ box(5.5,.35,1.2,trim,-6.5,3.25,-14);
+ for(let i=0;i<8;i++){box(.85,.34,.8,mat(0x57464a),-8.9+i*.63,3.55+i*.34,-15-i*.55);}
+ // Reception desk and brass bell.
+ box(6,1.45,1.5,wood,3,1,-8);box(6.2,.18,1.7,gold,3,1.8,-8);box(5.5,.12,1.3,mat(0x171015),3,1.9,-8);
+ cyl(.12,.12,.16,gold,3.2,2.02,-8,16);
+ // Chandelier with warm bulbs.
+ const chain=cyl(.04,.04,2,trim,0,10,-13);const ring=new THREE.Mesh(new THREE.TorusGeometry(2,.09,8,32),gold);ring.position.set(0,8.8,-13);scene.add(ring);
+ for(let i=0;i<8;i++){const a=i*Math.PI/4,x=Math.cos(a)*1.8,z=-13+Math.sin(a)*1.8;box(.09,1.3,.09,gold,x,8.3,z);const bulb=point(x,7.7,z,0xffc47a,1.3,7);const sphere=new THREE.Mesh(new THREE.SphereGeometry(.16,10,10),mat(0xffd18b,.25));sphere.position.set(x,7.7,z);scene.add(sphere);}
+ point(0,8.7,-13,0xffb96e,2.2,15);
+ // Portrait frames along the walls and shadowed corridor sconces.
+ for(let z=-5;z>=-30;z-=4){for(let x of [-10.35,10.35]){box(.18,2.6,.12,gold,x,5,z);box(.12,2.3,.08,portraitMat,x+(x<0?.12:-.12),5,z);point(x*.94,5.3,z,0xffb66b,.35,4);}}
+ for(let z=-19;z>=-31;z-=4){for(let x of [-8.5,8.5]){box(.12,1,.12,gold,x,3.2,z);point(x,3.6,z,0xffa95c,.8,6);}}
+ // Side passage and ominous Room 813 door at corridor end.
+ box(4,.4,.4,trim,0,.3,-32);box(3.2,6,.35,wood,0,3,-33.2);box(2.4,4.8,.1,velvet,0,3,-33);
+ const plaque=box(.7,.35,.12,gold,0,5.8,-32.8);const plaqueText=mat(0x21140d);
+ // Stair/door destination illumination.
+ point(0,3,-31,0x9c2936,1.7,8);
+ // Trees and dead silhouettes outside.
+ for(let x of [-24,24]){cyl(.35,.6,9,mat(0x171319),x,4,3,7);for(let b=0;b<5;b++){const branch=box(.18,5,.18,mat(0x171319),x+(b-2)*1.2,7,3);branch.rotation.z=(b-2)*.22;}}
+ // Low, atmospheric lamps in the forecourt.
+ point(-12,2,4,0x65708c,.7,16);point(12,2,4,0x65708c,.7,16);
+ const player={speed:5.2,turn:1.8};let lastTime=0;
+ function setInside(v){inside=v;locationLabel.textContent=v?(camera.position.z<-16?"PORTRAIT HALL · HOTEL INTERIOR":"INSIDE · GRAND LOBBY"):"OUTSIDE · HOTEL GROUNDS";hint.textContent=v?"EXPLORE THE LOBBY · FIND THE PORTRAIT HALL":"WASD / ARROWS · APPROACH THE OPEN DOORS";}
+ function resetPlayer(){camera.position.set(0,1.7,18);yaw=0;pitch=0;doorL.rotation.y=0;doorR.rotation.y=0;setInside(false);}
+ function update(dt){if(!started)return;let forward=(keys.KeyW||keys.ArrowUp||touch.forward?1:0)-(keys.KeyS||keys.ArrowDown||touch.back?1:0);let side=(keys.KeyD||keys.ArrowRight||touch.right?1:0)-(keys.KeyA||keys.ArrowLeft||touch.left?1:0);const len=Math.hypot(forward,side)||1;forward/=len;side/=len;const speed=player.speed*dt;camera.position.x+= (Math.sin(yaw)*forward+Math.cos(yaw)*side)*speed;camera.position.z+=(-Math.cos(yaw)*forward+Math.sin(yaw)*side)*speed;camera.position.x=THREE.MathUtils.clamp(camera.position.x,-9.4,9.4);camera.position.z=THREE.MathUtils.clamp(camera.position.z,-37,22);camera.position.y=1.7;camera.rotation.order="YXZ";camera.rotation.y=yaw;camera.rotation.x=pitch;
+ const nearDoor=Math.abs(camera.position.x)<3.2&&camera.position.z<1.5&&camera.position.z>-4.5;doorL.rotation.y=THREE.MathUtils.damp(doorL.rotation.y,nearDoor?-.95:0,2.8,dt);doorR.rotation.y=THREE.MathUtils.damp(doorR.rotation.y,nearDoor?.95:0,2.8,dt);
+ if(camera.position.z<-.5&&!inside)setInside(true);if(camera.position.z<-19&&inside)locationLabel.textContent="PORTRAIT HALL · HOTEL INTERIOR";if(camera.position.z>-0.2&&inside)setInside(false);
+ }
+ function animate(){requestAnimationFrame(animate);const dt=Math.min(clock.getDelta(),.05);update(dt);renderer.render(scene,camera);}animate();
+ function resize(){const w=host.clientWidth,h=host.clientHeight;camera.aspect=w/h;camera.updateProjectionMatrix();renderer.setSize(w,h);}
+ new ResizeObserver(resize).observe(host);
+ const canvas=renderer.domElement;
+ canvas.addEventListener("click",()=>{if(started&&!matchMedia("(pointer:coarse)").matches&&canvas.requestPointerLock)canvas.requestPointerLock();});
+ document.addEventListener("pointerlockchange",()=>{locked=document.pointerLockElement===canvas;});
+ document.addEventListener("mousemove",e=>{if(!locked)return;yaw-=e.movementX*.0022;pitch=THREE.MathUtils.clamp(pitch-e.movementY*.0018,-1.1,1.1);});
+ canvas.addEventListener("pointerdown",e=>{if(!matchMedia("(pointer:coarse)").matches)return;dragging=true;lastX=e.clientX;lastY=e.clientY;canvas.setPointerCapture(e.pointerId);});
+ canvas.addEventListener("pointermove",e=>{if(!dragging)return;const dx=e.clientX-lastX,dy=e.clientY-lastY;lastX=e.clientX;lastY=e.clientY;yaw-=dx*.004;pitch=THREE.MathUtils.clamp(pitch-dy*.003,-1.1,1.1);});
+ canvas.addEventListener("pointerup",()=>dragging=false);canvas.addEventListener("pointercancel",()=>dragging=false);
+ document.addEventListener("keydown",e=>{keys[e.code]=true;if(["ArrowUp","ArrowDown","ArrowLeft","ArrowRight","Space"].includes(e.code))e.preventDefault();});document.addEventListener("keyup",e=>keys[e.code]=false);window.addEventListener("blur",()=>{Object.keys(keys).forEach(k=>keys[k]=false);Object.keys(touch).forEach(k=>touch[k]=false);});
+ document.querySelectorAll("[data-move]").forEach(btn=>{const dir=btn.dataset.move;const down=e=>{e.preventDefault();touch[dir]=true;};const up=e=>{e.preventDefault();touch[dir]=false;};btn.addEventListener("pointerdown",down);btn.addEventListener("pointerup",up);btn.addEventListener("pointerleave",up);btn.addEventListener("pointercancel",up);});
+ document.getElementById("doom-start").addEventListener("click",()=>{started=true;resetPlayer();document.getElementById("doom-start").textContent="EXPLORING";if(matchMedia("(pointer:coarse)").matches){hint.textContent="DRAG TO LOOK · DIRECTION PAD TO WALK";}else{hint.textContent="CLICK SCENE · WASD / ARROWS TO WALK";}});
+ document.getElementById("doom-reset").addEventListener("click",resetPlayer);
+ document.getElementById("doom-fullscreen").addEventListener("click",()=>{const el=document.getElementById("doom-game");if(!document.fullscreenElement)el.requestFullscreen?.();else document.exitFullscreen?.();});
+ loading.classList.add("hidden");
+}catch(err){console.error("Haunted Hotel 3D failed",err);loading.textContent="THE HOTEL COULD NOT LOAD · CHECK YOUR CONNECTION AND RELOAD";}
+})();
+</script>
+\n</body>
 </html>
