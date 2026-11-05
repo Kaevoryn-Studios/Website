@@ -33,82 +33,79 @@
  uniform vec2 resolution;
  uniform float time;
 
- float swell(vec2 p, vec2 direction, float frequency, float amplitude, float speed, float t){
-   float phase=dot(p,direction)*frequency-t*speed;
-   return amplitude*(sin(phase)+0.24*sin(2.0*phase+0.65));
+ float wave(vec2 p,vec2 d,float f,float a,float speed,float t){
+   float q=dot(p,d)*f-t*speed;
+   return a*(0.78*sin(q)+0.22*sin(2.0*q+0.8));
  }
  float ocean(vec2 p,float t){
    float h=0.0;
-   h+=swell(p,normalize(vec2(1.0,0.22)),0.105,0.78,0.58,t);
-   h+=swell(p,normalize(vec2(0.58,-0.82)),0.145,0.53,0.49,t);
-   h+=swell(p,normalize(vec2(-0.34,-1.0)),0.205,0.31,0.66,t);
-   h+=swell(p,normalize(vec2(0.92,0.48)),0.31,0.16,0.82,t);
-   h+=swell(p,normalize(vec2(-0.8,0.35)),0.52,0.065,1.08,t);
-   h+=swell(p,normalize(vec2(0.2,-1.0)),0.88,0.025,1.38,t);
+   h+=wave(p,normalize(vec2(1.0,0.18)),0.34,0.54,0.62,t);
+   h+=wave(p,normalize(vec2(0.62,-0.78)),0.48,0.39,0.53,t);
+   h+=wave(p,normalize(vec2(-0.32,-1.0)),0.67,0.25,0.73,t);
+   h+=wave(p,normalize(vec2(0.92,0.42)),0.92,0.13,0.91,t);
+   h+=wave(p,normalize(vec2(-0.78,0.36)),1.38,0.065,1.17,t);
+   h+=wave(p,normalize(vec2(0.18,-1.0)),2.15,0.026,1.48,t);
    return h;
  }
  vec3 skyColor(vec3 rd){
    float y=max(rd.y,0.0);
-   vec3 sky=mix(vec3(0.76,0.85,0.87),vec3(0.27,0.53,0.66),pow(y,0.7));
+   vec3 sky=mix(vec3(0.78,0.86,0.88),vec3(0.28,0.54,0.67),pow(y,0.72));
    vec3 sunDir=normalize(vec3(-0.48,0.34,-0.82));
    float sun=pow(max(dot(rd,sunDir),0.0),190.0);
    float halo=pow(max(dot(rd,sunDir),0.0),14.0);
-   return sky+vec3(1.0,0.83,0.65)*sun+vec3(1.0,0.78,0.59)*halo*0.14;
+   return sky+vec3(1.0,0.84,0.67)*sun+vec3(1.0,0.78,0.59)*halo*0.14;
  }
  void main(){
    vec2 screen=(gl_FragCoord.xy-0.5*resolution)/resolution.y;
-   vec3 ro=vec3(0.0,1.42,5.7);
-   vec3 rd=normalize(vec3(screen.x*1.38,screen.y*0.98-0.16,-1.72));
+   vec3 ro=vec3(0.0,1.12,4.6);
+   vec3 rd=normalize(vec3(screen.x*1.34,screen.y*0.96-0.13,-1.62));
    if(rd.y>=-0.006){gl_FragColor=vec4(skyColor(rd),1.0);return;}
 
-   // Find the actual intersection with the moving ocean surface.
-   float lo=0.0;
-   float hi=180.0;
-   for(int i=0;i<28;i++){
+   float lo=0.0,hi=180.0;
+   for(int i=0;i<30;i++){
      float mid=(lo+hi)*0.5;
      vec3 q=ro+rd*mid;
-     float above=q.y-ocean(q.xz,time);
-     if(above>0.0) lo=mid; else hi=mid;
+     if(q.y-ocean(q.xz,time)>0.0)lo=mid;else hi=mid;
    }
    float dist=(lo+hi)*0.5;
    vec3 pos=ro+rd*dist;
-   float eps=0.035+dist*0.0007;
+   float eps=0.018+dist*0.00035;
    float h=ocean(pos.xz,time);
    float dx=ocean(pos.xz+vec2(eps,0.0),time)-ocean(pos.xz-vec2(eps,0.0),time);
    float dz=ocean(pos.xz+vec2(0.0,eps),time)-ocean(pos.xz-vec2(0.0,eps),time);
-   vec3 normal=normalize(vec3(-dx/(2.0*eps),1.0,-dz/(2.0*eps)));
+   vec3 n=normalize(vec3(-dx/(2.0*eps),1.0,-dz/(2.0*eps)));
    vec3 light=normalize(vec3(-0.48,0.76,0.42));
-   vec3 viewDir=normalize(ro-pos);
-   float diffuse=max(dot(normal,light),0.0);
-   float fresnel=pow(1.0-max(dot(normal,viewDir),0.0),5.0);
-   float spec=pow(max(dot(reflect(-light,normal),viewDir),0.0),100.0);
+   vec3 v=normalize(ro-pos);
+   float ndl=max(dot(n,light),0.0);
+   float fresnel=pow(1.0-max(dot(n,v),0.0),5.0);
+   float spec=pow(max(dot(reflect(-light,n),v),0.0),110.0);
 
-   float farFade=smoothstep(24.0,150.0,dist);
-   vec3 deep=vec3(0.006,0.075,0.125);
-   vec3 nearWater=vec3(0.018,0.235,0.30);
-   vec3 water=mix(nearWater,deep,farFade*0.82);
-   water*=0.42+0.78*diffuse;
+   float farFade=smoothstep(18.0,135.0,dist);
+   vec3 water=mix(vec3(0.012,0.20,0.27),vec3(0.004,0.065,0.12),farFade*0.84);
+   water*=0.48+0.76*ndl;
+   float face=dot(n,light);
+   water*=0.66+0.48*smoothstep(-0.48,0.68,face);
 
-   // Broad light and dark faces make each swell read as a real rolling wave.
-   float face=dot(normal,light);
-   water*=0.78+0.34*smoothstep(-0.42,0.62,face);
-   water+=vec3(0.17,0.34,0.37)*spec*1.25;
-   water=mix(water,skyColor(reflect(-viewDir,normal)),fresnel*0.48);
+   // Fine wind ripples disturb the reflection without turning the sea into static.
+   float ripple=sin(pos.x*8.0+pos.z*5.4-time*1.8)
+               *sin(pos.z*7.2-pos.x*4.6-time*1.35);
+   float ripple2=sin(pos.x*13.0-pos.z*8.0-time*2.2);
+   water+=vec3(0.018,0.045,0.052)*(0.5+0.5*ripple)*(1.0-farFade);
+   water+=vec3(0.12,0.25,0.28)*spec*1.3;
+   water=mix(water,skyColor(reflect(-v,n)),fresnel*0.52);
 
-   // Broken foam follows steep wave shoulders rather than forming uniform stripes.
+   // Small broken whitecaps appear only on steep upper shoulders of nearby swells.
    float slope=length(vec2(dx,dz))/(2.0*eps);
-   float crest=smoothstep(0.34,0.82,slope);
-   float crestBand=1.0-smoothstep(0.04,0.34,abs(h-0.36));
-   float foamNoise=sin(pos.x*2.1+pos.z*1.3-time*0.45)
-                 *sin(pos.z*2.7-pos.x*0.9+time*0.31);
-   float foam=crest*max(crestBand,0.0)*smoothstep(-0.38,0.5,foamNoise);
-   float fleck=sin(pos.x*11.0+pos.z*7.0-time)*sin(pos.z*9.0-pos.x*5.0+time*0.8);
-   foam*=0.72+0.18*fleck;
-   water=mix(water,vec3(0.72,0.86,0.87),clamp(foam*(1.0-farFade*0.55),0.0,0.82));
+   float crest=smoothstep(0.52,1.05,slope);
+   float crestPattern=sin(pos.x*1.6+pos.z*2.1-time*0.28)
+                    *sin(pos.z*1.2-pos.x*1.9+time*0.22);
+   float whitecap=crest*smoothstep(-0.08,0.58,crestPattern)*(1.0-farFade);
+   float foamGrain=0.82+0.18*sin(pos.x*17.0+pos.z*11.0-time*1.6);
+   water=mix(water,vec3(0.72,0.85,0.86),clamp(whitecap*foamGrain,0.0,0.62));
 
-   float glint=pow(max(dot(reflect(-light,normal),viewDir),0.0),180.0);
-   water+=vec3(1.0,0.88,0.72)*glint*0.75;
-   water=mix(water,vec3(0.31,0.53,0.60),farFade*0.52);
+   float sunGlint=pow(max(dot(reflect(-light,n),v),0.0),190.0);
+   water+=vec3(1.0,0.88,0.72)*sunGlint*0.72;
+   water=mix(water,vec3(0.34,0.55,0.61),farFade*0.55);
    gl_FragColor=vec4(water,1.0);
  }
 `;
