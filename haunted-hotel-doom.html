@@ -248,17 +248,17 @@ let renderer,scene,camera,clock,locked=false,dragging=false,lastX=0,lastY=0,yaw=
 const keys={},touch={forward:false,back:false,left:false,right:false};
 const colliders=[];
 try{
- scene=new THREE.Scene();scene.background=new THREE.Color(0x09080d);scene.fog=new THREE.FogExp2(0x09080d,.022);
+ scene=new THREE.Scene();scene.background=new THREE.Color(0x191720);scene.fog=new THREE.FogExp2(0x28232b,.009);
  camera=new THREE.PerspectiveCamera(70,host.clientWidth/host.clientHeight,.1,180);camera.position.set(0,1.7,18);
- renderer=new THREE.WebGLRenderer({antialias:true,alpha:false});renderer.setPixelRatio(Math.min(devicePixelRatio,1.7));renderer.setSize(host.clientWidth,host.clientHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.15;host.appendChild(renderer.domElement);
+ renderer=new THREE.WebGLRenderer({antialias:true,alpha:false});renderer.setPixelRatio(Math.min(devicePixelRatio,1.7));renderer.setSize(host.clientWidth,host.clientHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.38;host.appendChild(renderer.domElement);
  clock=new THREE.Clock();
  const mat=(color,rough=.85,metal=0)=>new THREE.MeshStandardMaterial({color,roughness:rough,metalness:metal});
- const stone=mat(0x51464a),darkStone=mat(0x28232a),roofMat=mat(0x17171f),trim=mat(0x9b8061),wood=mat(0x3a2118),gold=mat(0xb08a54,.45,.65),floorMat=mat(0x383139,.42),wall=mat(0x30252d),black=mat(0x09080d),velvet=mat(0x321e25),portraitMat=mat(0x15151b);
+ const stone=mat(0x65585b),darkStone=mat(0x38313a),roofMat=mat(0x22212a),trim=mat(0xb49a78),wood=mat(0x523326),gold=mat(0xc5a16a,.45,.55),floorMat=mat(0x62565d,.42),wall=mat(0x51434b),black=mat(0x17131a),velvet=mat(0x49303a),portraitMat=mat(0x25232a);
  const box=(w,h,d,material,x,y,z,shadows=true)=>{const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),material);m.position.set(x,y,z);m.castShadow=shadows;m.receiveShadow=true;scene.add(m);return m};
  const cyl=(r1,r2,h,material,x,y,z,segments=12)=>{const m=new THREE.Mesh(new THREE.CylinderGeometry(r1,r2,h,segments),material);m.position.set(x,y,z);m.castShadow=true;m.receiveShadow=true;scene.add(m);return m};
  const point=(x,y,z,color,intensity,dist)=>{const l=new THREE.PointLight(color,intensity,dist,2);l.position.set(x,y,z);scene.add(l);return l};
- scene.add(new THREE.HemisphereLight(0x9ba4c0,0x171016,.55));
- const moon=new THREE.DirectionalLight(0x9da8c2,1.1);moon.position.set(-8,18,10);moon.castShadow=true;moon.shadow.mapSize.set(1024,1024);scene.add(moon);
+ scene.add(new THREE.AmbientLight(0xffffff,.42));\n scene.add(new THREE.HemisphereLight(0xd4d9ed,0x51434a,1.05));
+ const moon=new THREE.DirectionalLight(0xc3c9df,1.55);moon.position.set(-8,18,10);moon.castShadow=true;moon.shadow.mapSize.set(1024,1024);scene.add(moon);
  // Grounds and the imposing Victorian exterior.
  box(100,.5,100,mat(0x111116),0,-.3,0);
  const building=box(25,17,5,stone,0,8.2,-5);
@@ -295,10 +295,10 @@ try{
  // Chandelier with warm bulbs.
  const chain=cyl(.04,.04,2,trim,0,10,-13);const ring=new THREE.Mesh(new THREE.TorusGeometry(2,.09,8,32),gold);ring.position.set(0,8.8,-13);scene.add(ring);
  for(let i=0;i<8;i++){const a=i*Math.PI/4,x=Math.cos(a)*1.8,z=-13+Math.sin(a)*1.8;box(.09,1.3,.09,gold,x,8.3,z);const bulb=point(x,7.7,z,0xffc47a,1.3,7);const sphere=new THREE.Mesh(new THREE.SphereGeometry(.16,10,10),mat(0xffd18b,.25));sphere.position.set(x,7.7,z);scene.add(sphere);}
- point(0,8.7,-13,0xffb96e,2.2,15);
+ point(0,8.7,-13,0xffc987,3.1,19);\n // Soft fill lights keep the lobby and corridor readable while preserving haunted shadows.\n point(0,5.2,-5,0xffd5a0,2.0,13);point(-5,4.5,-12,0xd5c9e8,1.35,10);point(5,4.5,-17,0xffc58a,1.5,11);point(0,4.5,-25,0xd5c9e8,1.15,12);
  // Portrait frames along the walls and shadowed corridor sconces.
- for(let z=-5;z>=-30;z-=4){for(let x of [-10.35,10.35]){box(.18,2.6,.12,gold,x,5,z);box(.12,2.3,.08,portraitMat,x+(x<0?.12:-.12),5,z);point(x*.94,5.3,z,0xffb66b,.35,4);}}
- for(let z=-19;z>=-31;z-=4){for(let x of [-8.5,8.5]){box(.12,1,.12,gold,x,3.2,z);point(x,3.6,z,0xffa95c,.8,6);}}
+ for(let z=-5;z>=-30;z-=4){for(let x of [-10.35,10.35]){box(.18,2.6,.12,gold,x,5,z);box(.12,2.3,.08,portraitMat,x+(x<0?.12:-.12),5,z);point(x*.94,5.3,z,0xffc783,.65,6);}}
+ for(let z=-19;z>=-31;z-=4){for(let x of [-8.5,8.5]){box(.12,1,.12,gold,x,3.2,z);point(x,3.6,z,0xffbd78,1.15,8);}}
  // Side passage and ominous Room 813 door at corridor end.
  box(4,.4,.4,trim,0,.3,-32);box(3.2,6,.35,wood,0,3,-33.2);box(2.4,4.8,.1,velvet,0,3,-33);
  const plaque=box(.7,.35,.12,gold,0,5.8,-32.8);const plaqueText=mat(0x21140d);
