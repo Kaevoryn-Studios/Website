@@ -87,28 +87,27 @@
    water*=0.66+0.48*smoothstep(-0.48,0.68,face);
 
    // Fine wind ripples disturb the reflection without turning the sea into static.
-   float ripple=sin(pos.x*8.0+pos.z*5.4-time*1.8)
-               *sin(pos.z*7.2-pos.x*4.6-time*1.35);
-   float ripple2=sin(pos.x*13.0-pos.z*8.0-time*2.2);
-   water+=vec3(0.018,0.045,0.052)*(0.5+0.5*ripple)*(1.0-farFade);
+   float ripple=sin(pos.x*10.5+pos.z*2.4-time*2.0);
+   float rippleSoft=0.5+0.5*cos(pos.x*17.0+pos.z*3.1-time*2.8);
+   water+=vec3(0.012,0.027,0.032)*(0.5+0.5*ripple)*rippleSoft*(1.0-farFade);
    water+=vec3(0.12,0.25,0.28)*spec*1.3;
    water=mix(water,skyColor(reflect(-v,n)),fresnel*0.52);
 
    // Small broken whitecaps appear only on steep upper shoulders of nearby swells.
    float slope=length(vec2(dx,dz))/(2.0*eps);
    float crest=smoothstep(0.52,1.05,slope);
-   float crestPattern=sin(pos.x*1.6+pos.z*2.1-time*0.28)
-                    *sin(pos.z*1.2-pos.x*1.9+time*0.22);
-   float whitecap=crest*smoothstep(-0.08,0.58,crestPattern)*(1.0-farFade);
-   float foamGrain=0.82+0.18*sin(pos.x*17.0+pos.z*11.0-time*1.6);
-   water=mix(water,vec3(0.72,0.85,0.86),clamp(whitecap*foamGrain,0.0,0.62));
+   float crestPattern=sin(pos.x*1.25+pos.z*2.35-time*0.24);
+   float brokenEdges=smoothstep(-0.15,0.62,crestPattern);
+   float whitecap=crest*brokenEdges*(1.0-farFade);
+   float foamGrain=0.92+0.08*sin(pos.x*19.0+pos.z*5.0-time*1.4);
+   water=mix(water,vec3(0.72,0.85,0.86),clamp(whitecap*foamGrain,0.0,0.48));
 
    float sunGlint=pow(max(dot(reflect(-light,n),v),0.0),190.0);
    water+=vec3(1.0,0.88,0.72)*sunGlint*0.72;
    water=mix(water,vec3(0.34,0.55,0.61),farFade*0.55);
    gl_FragColor=vec4(water,1.0);
  }
-`;
+;
  function shader(type,src){
   const sh=gl.createShader(type);gl.shaderSource(sh,src);gl.compileShader(sh);
   if(!gl.getShaderParameter(sh,gl.COMPILE_STATUS)){console.error(gl.getShaderInfoLog(sh));return null;}return sh;
