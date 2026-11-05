@@ -1,60 +1,55 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#041b2b">
-<meta name="description" content="Sail into the Sea of Wonders, a magical ocean voyage in The Kingdoms of Wonder.">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#07354a">
+<meta name="description" content="The Sea of Wonders — an ocean adventure in The Kingdoms of Wonder.">
 <title>The Sea of Wonders · Kaevoryn Studios</title>
 <style>
-:root{color-scheme:dark;--cyan:#83efff;--gold:#ffe3a0;--violet:#b9a4ff}*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#031321;color:#f4fbff;font:15px/1.6 Arial,sans-serif}body{overflow-x:hidden}.top{position:absolute;z-index:4;top:0;left:0;right:0;padding:18px clamp(16px,4vw,48px);display:flex;justify-content:space-between;align-items:center;gap:14px;background:linear-gradient(#031321cc,transparent)}.brand{font-size:11px;letter-spacing:.2em;font-weight:900;color:#fff;text-decoration:none}.brand small{display:block;color:var(--cyan);font-size:9px}.top a:last-child{color:#dffaff;text-decoration:none;font-size:12px}.stage{height:min(82vh,850px);min-height:610px;position:relative;isolation:isolate;background:radial-gradient(ellipse at 50% 55%,#126e8a,#06283f 48%,#031321 85%);overflow:hidden}.stage:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(0deg,#031321 0%,transparent 30%,#03132122 70%,#03132155)}canvas{position:absolute;inset:0;width:100%;height:100%;display:block}.intro{position:absolute;z-index:2;inset:0;display:grid;place-items:center;text-align:center;padding:90px 20px 30px;pointer-events:none}.intro-inner{max-width:760px;text-shadow:0 4px 25px #00111c}.eyebrow{color:var(--cyan);font-size:10px;font-weight:800;letter-spacing:.24em;text-transform:uppercase}.intro h1{font-size:clamp(42px,8vw,88px);line-height:.98;letter-spacing:-.055em;margin:12px 0;background:linear-gradient(100deg,#fff,#a8f5ff 48%,#d8c6ff);background-clip:text;color:transparent}.intro p{max-width:620px;margin:16px auto;color:#d5f5ff;font-size:clamp(15px,2vw,19px)}.actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:22px;pointer-events:auto}.btn{border:1px solid #9cefff88;border-radius:99px;padding:12px 20px;background:#0b4761d9;color:#fff;font-weight:800;cursor:pointer;text-decoration:none;box-shadow:0 0 24px #3bdcff22}.btn.primary{background:linear-gradient(110deg,#147f9b,#6253a7);border-color:#d3faff}.btn:focus-visible{outline:3px solid white;outline-offset:3px}.hud{position:absolute;z-index:3;left:16px;right:16px;bottom:18px;display:flex;justify-content:space-between;gap:10px;align-items:end;pointer-events:none}.pill{background:#041a2bc9;border:1px solid #83efff44;border-radius:14px;padding:9px 13px;color:#d8f8ff;font-size:11px;backdrop-filter:blur(8px)}.pill strong{display:block;color:var(--gold);letter-spacing:.12em;font-size:10px}.hud button{pointer-events:auto}.below{width:min(1040px,calc(100% - 34px));margin:0 auto;padding:45px 0 70px}.below h2{font-size:clamp(25px,4vw,38px);margin:5px 0 8px}.below>p{max-width:750px;color:#b7d2e0}.chapters{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;margin-top:25px}.chapter{padding:19px;border:1px solid #83efff2d;border-radius:16px;background:linear-gradient(145deg,#0b2b40,#071725)}.chapter span{font-size:24px}.chapter h3{margin:8px 0 4px}.chapter p{margin:0;color:#b7cedd;font-size:13px}.foot{border-top:1px solid #ffffff1a;padding:22px;text-align:center;color:#8eafbf;font-size:11px}.foot a{color:var(--cyan)}#sound{min-width:104px}@media(max-width:650px){.stage{height:78vh;min-height:570px}.chapters{grid-template-columns:1fr}.hud{align-items:center}.pill{max-width:65%}}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#07354a;color:#f4fbff;font:15px/1.5 Arial,sans-serif}body{overflow-x:hidden}.top{position:absolute;z-index:3;top:0;left:0;right:0;padding:18px clamp(16px,4vw,48px);display:flex;justify-content:space-between;align-items:center;background:linear-gradient(#03283acc,transparent)}.brand{font-size:11px;letter-spacing:.2em;font-weight:900;color:white;text-decoration:none}.brand small{display:block;color:#a9efff;font-size:9px}.top a:last-child{color:#e4faff;text-decoration:none;font-size:12px}.stage{height:100svh;min-height:560px;position:relative;overflow:hidden;background:linear-gradient(#8bc8dc 0%,#c3e3e7 36%,#398da5 62%,#07506b 100%)}canvas{position:absolute;inset:0;width:100%;height:100%;display:block}.heading{position:absolute;z-index:2;top:17%;left:0;right:0;text-align:center;padding:0 18px;pointer-events:none;text-shadow:0 3px 18px #07354a88}.eyebrow{font-size:10px;font-weight:800;letter-spacing:.25em;color:#e4fbff}.heading h1{font-size:clamp(38px,7vw,76px);line-height:.98;letter-spacing:-.045em;margin:12px 0;color:#fff}.heading p{max-width:520px;margin:12px auto;color:#f0fcff;font-size:clamp(14px,2vw,17px)}.foot{position:absolute;z-index:2;bottom:14px;left:0;right:0;text-align:center;color:#e1f8ff;font-size:10px;letter-spacing:.12em;text-shadow:0 2px 8px #001d2b}.foot a{color:#fff}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
 </style>
 </head>
 <body>
 <header class="top"><a class="brand" href="kingdoms.html">KAEVORYN STUDIOS<small>CREATE THE IMPOSSIBLE</small></a><a href="kingdoms.html">← The Kingdoms of Wonder</a></header>
-<main>
-<section class="stage" aria-label="Animated ocean voyage preview"><canvas id="sea" aria-hidden="true"></canvas>
-<div class="intro" id="intro"><div class="intro-inner"><div class="eyebrow">THE KINGDOMS OF WONDER · WATER ADVENTURE</div><h1>THE SEA OF<br>WONDERS</h1><p>Beyond the golden shore lies an ocean that remembers every dream. Climb aboard, follow the glowing current, and discover what sleeps beneath the waves.</p><div class="actions"><button class="btn primary" id="begin">Begin the voyage</button><button class="btn" id="sound">Sound: Off</button></div></div></div>
-<div class="hud"><div class="pill" id="chapter"><strong>VOYAGE STATUS</strong>Awaiting your arrival</div><div class="pill"><strong>KA E V O R Y N</strong>Imagination Made Possible</div></div>
-</section>
-<section class="below"><div class="eyebrow">A JOURNEY THROUGH THE IMPOSSIBLE</div><h2>Four wonders. One endless sea.</h2><p>Your voyage begins beneath a brilliant sky, then follows a trail of living light into the deep. This is the first virtual concept build of the attraction.</p>
-<div class="chapters"><article class="chapter"><span>🌅</span><h3>The Golden Shore</h3><p>Leave the harbor as sunlight dances across the waves and distant islands emerge.</p></article><article class="chapter"><span>🐋</span><h3>The Singing Deep</h3><p>Glowing sea life gathers around the boat as an ancient guardian passes below.</p></article><article class="chapter"><span>💎</span><h3>The Hidden Kingdom</h3><p>Follow a radiant current toward a secret reef crowned with waterfalls and crystal light.</p></article></div>
-</section>
-</main><footer class="foot">KAEVORYN STUDIOS · CREATE THE IMPOSSIBLE · <a href="kingdoms.html">Return to the park</a></footer>
+<main><section class="stage" aria-label="Open ocean water preview"><canvas id="ocean" aria-hidden="true"></canvas><div class="heading"><div class="eyebrow">THE KINGDOMS OF WONDER · WATER ADVENTURE</div><h1>THE SEA OF WONDERS</h1><p>First, we build the ocean. Nothing else — just open water, natural waves, and a distant horizon.</p></div><div class="foot">KAEVORYN STUDIOS · <a href="kingdoms.html">RETURN TO THE PARK</a></div></section></main>
 <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
 <script>
 (()=>{
-const canvas=document.getElementById('sea'),intro=document.getElementById('intro'),begin=document.getElementById('begin'),soundBtn=document.getElementById('sound'),chapter=document.getElementById('chapter');
-if(!window.THREE){chapter.innerHTML='<strong>PREVIEW</strong>3D scene could not load. Please refresh.';return;}
-const THREE=window.THREE,scene=new THREE.Scene();scene.background=new THREE.Color(0x9bd9e8);scene.fog=new THREE.Fog(0x9bd9e8,85,230);
-const camera=new THREE.PerspectiveCamera(58,1,.1,500);camera.position.set(0,5.4,12.8);
-const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:false});renderer.setPixelRatio(Math.min(devicePixelRatio,1.7));renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
-scene.add(new THREE.HemisphereLight(0xe4f8ff,0x244b54,1.45));const sun=new THREE.DirectionalLight(0xfff0d2,2.2);sun.position.set(-9,16,7);sun.castShadow=true;scene.add(sun);
-const waterGeo=new THREE.PlaneGeometry(260,300,220,240);waterGeo.rotateX(-Math.PI/2);const waterColors=new Float32Array(waterGeo.attributes.position.count*3);waterGeo.setAttribute('color',new THREE.BufferAttribute(waterColors,3));const deepColor=new THREE.Color(0x07506b),midColor=new THREE.Color(0x168eaa),crestColor=new THREE.Color(0xe4f7f2);const waterMat=new THREE.MeshPhysicalMaterial({color:0xffffff,vertexColors:true,roughness:.12,metalness:.08,clearcoat:1,clearcoatRoughness:.025,reflectivity:1,side:THREE.DoubleSide});const water=new THREE.Mesh(waterGeo,waterMat);water.position.y=-.4;water.receiveShadow=true;scene.add(water);const base=waterGeo.attributes.position.array.slice();
-const shoreMat=new THREE.MeshStandardMaterial({color:0x8c8062,roughness:1});
-function island(x,z,s){const g=new THREE.Group();const mound=new THREE.Mesh(new THREE.DodecahedronGeometry(s,2),shoreMat);mound.scale.set(1.5,.8,1);mound.position.y=1.2;mound.castShadow=true;g.add(mound);for(let i=0;i<5;i++){const tree=new THREE.Group(),tr=new THREE.Mesh(new THREE.CylinderGeometry(.12,.22,1.8,7),new THREE.MeshStandardMaterial({color:0x60472f}));tr.position.y=2;tree.add(tr);const crown=new THREE.Mesh(new THREE.ConeGeometry(.85,2.8,7),new THREE.MeshStandardMaterial({color:i%2?0x176b66:0x238477}));crown.position.y=3.7;tree.add(crown);tree.position.set((Math.random()-.5)*s*1.4,0,(Math.random()-.5)*s);g.add(tree);}g.position.set(x,0,z);scene.add(g);return g;}
-island(-30,-90,7);island(34,-125,9);island(-42,-175,11);
-const sunBall=new THREE.Mesh(new THREE.SphereGeometry(4,24,18),new THREE.MeshBasicMaterial({color:0xffe5ad}));sunBall.position.set(-30,25,-110);scene.add(sunBall);
-const boat=new THREE.Group();const wood=new THREE.MeshStandardMaterial({color:0x68432b,roughness:.42}),trim=new THREE.MeshStandardMaterial({color:0xd6a75c,metalness:.55,roughness:.3}),canvasMat=new THREE.MeshStandardMaterial({color:0xf4e7c7,side:THREE.DoubleSide,roughness:.88});
-const hullSections=[[-4.5,.12],[-3.7,1.05],[-2.4,1.55],[0,1.72],[2.5,1.55],[3.8,1.05],[4.3,.12]],hullVerts=[],hullFaces=[];for(let i=0;i<hullSections.length;i++){const [z,w]=hullSections[i];hullVerts.push(-w,.72,z,w,.72,z,w*.78,-.05,z,0,-.58,z,-w*.78,-.05,z);}for(let i=0;i<hullSections.length-1;i++)for(let j=0;j<5;j++){const a=i*5+j,b=i*5+(j+1)%5,c=(i+1)*5+(j+1)%5,d=(i+1)*5+j;hullFaces.push(a,b,d,b,c,d);}const hullGeo=new THREE.BufferGeometry();hullGeo.setAttribute('position',new THREE.Float32BufferAttribute(hullVerts,3));hullGeo.setIndex(hullFaces);hullGeo.computeVertexNormals();const hull=new THREE.Mesh(hullGeo,new THREE.MeshStandardMaterial({color:0x503322,roughness:.38,side:THREE.DoubleSide}));hull.castShadow=true;hull.receiveShadow=true;boat.add(hull);
-const deck=new THREE.Mesh(new THREE.BoxGeometry(3.05,.22,7.5),wood);deck.position.y=.69;deck.castShadow=true;boat.add(deck);const innerDeck=new THREE.Mesh(new THREE.BoxGeometry(2.55,.08,6.9),new THREE.MeshStandardMaterial({color:0xb88750,roughness:.7}));innerDeck.position.y=.83;boat.add(innerDeck);
-for(let row=0;row<3;row++){const seat=new THREE.Mesh(new THREE.BoxGeometry(2.25,.22,.34),wood);seat.position.set(0,1.08,-2.15+row*2.05);boat.add(seat);const back=new THREE.Mesh(new THREE.BoxGeometry(2.25,.48,.13),trim);back.position.set(0,1.35,-2.32+row*2.05);boat.add(back);}
-const railMat=new THREE.MeshStandardMaterial({color:0x9b7448,metalness:.35,roughness:.4});for(const side of [-1,1]){for(let i=0;i<8;i++){const post=new THREE.Mesh(new THREE.CylinderGeometry(.055,.07,.72,8),railMat);post.position.set(side*1.42,1.12,-3.25+i*.92);boat.add(post);}const rail=new THREE.Mesh(new THREE.CylinderGeometry(.065,.065,7.2,8),trim);rail.rotation.x=Math.PI/2;rail.position.set(side*1.42,1.49,.0);boat.add(rail);}
-const cabin=new THREE.Group();const cabinBody=new THREE.Mesh(new THREE.BoxGeometry(2.05,1.05,1.45),new THREE.MeshStandardMaterial({color:0x31566a,roughness:.48}));cabinBody.position.y=1.48;cabin.add(cabinBody);const cabinRoof=new THREE.Mesh(new THREE.BoxGeometry(2.35,.16,1.75),trim);cabinRoof.position.y=2.08;cabin.add(cabinRoof);for(let side of [-1,1]){const window=new THREE.Mesh(new THREE.BoxGeometry(.035,.48,.65),new THREE.MeshPhysicalMaterial({color:0x8eeaff,metalness:.2,roughness:.12,transparent:true,opacity:.75}));window.position.set(side*1.04,1.52,0);cabin.add(window);}cabin.position.z=1.45;boat.add(cabin);
-const mast=new THREE.Mesh(new THREE.CylinderGeometry(.1,.15,5.1,10),wood);mast.position.set(0,3.35,-1.45);boat.add(mast);const sail=new THREE.Mesh(new THREE.PlaneGeometry(3.35,3.15),canvasMat);sail.position.set(0,3.85,-1.45);boat.add(sail);const yard=new THREE.Mesh(new THREE.CylinderGeometry(.07,.07,3.65,8),wood);yard.rotation.z=Math.PI/2;yard.position.set(0,5.25,-1.45);boat.add(yard);const flag=new THREE.Mesh(new THREE.ConeGeometry(.28,.95,4),new THREE.MeshBasicMaterial({color:0x77edff}));flag.rotation.z=Math.PI/2;flag.position.set(0,6.05,-1.45);boat.add(flag);boat.scale.setScalar(1.55);boat.position.set(0,.15,-2);scene.add(boat);
-// Removed decorative floating crystals so the ocean reads as open water.
-// Open ocean: removed artificial floating sea-creature props.
-let active=false,elapsed=0,sound=false,audio=null,osc=null,gain=null,last=performance.now();
-function resize(){const w=canvas.clientWidth,h=canvas.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();}new ResizeObserver(resize).observe(canvas);resize();
-function setChapter(t){let label=t<12?'THE GOLDEN SHORE':t<27?'THE SINGING DEEP':t<42?'THE HIDDEN KINGDOM':'VOYAGE COMPLETE';chapter.innerHTML='<strong>NOW EXPLORING</strong>'+label;}
-function startAudio(){if(!sound||audio)return;audio=new (window.AudioContext||window.webkitAudioContext)();osc=audio.createOscillator();gain=audio.createGain();const filter=audio.createBiquadFilter();osc.type='sine';osc.frequency.value=110;filter.type='lowpass';filter.frequency.value=320;gain.gain.value=.025;osc.connect(filter);filter.connect(gain);gain.connect(audio.destination);osc.start();}
-soundBtn.addEventListener('click',()=>{sound=!sound;soundBtn.textContent='Sound: '+(sound?'On':'Off');if(sound)startAudio();else if(audio){audio.close();audio=null;}});
-begin.addEventListener('click',()=>{active=true;intro.style.display='none';elapsed=0;setChapter(0);if(sound)startAudio();});
-function animate(now){requestAnimationFrame(animate);const dt=Math.min((now-last)/1000,.04);last=now;const t=now*.001;
-const pos=waterGeo.attributes.position,col=waterGeo.attributes.color;for(let i=0;i<pos.count;i++){const x=base[i*3],z=base[i*3+2];const wave=Math.sin(x*.075+t*.72)*.24+Math.cos(z*.065+t*.58)*.20+Math.sin((x+z)*.038+t*.9)*.09+Math.sin(x*.22-z*.13+t*1.2)*.025;pos.setY(i,base[i*3+1]+wave);const crest=THREE.MathUtils.smoothstep(wave,.43,.72);const shade=THREE.MathUtils.smoothstep(wave,-.35,.42);const c=deepColor.clone().lerp(midColor,shade).lerp(crestColor,crest);col.setXYZ(i,c.r,c.g,c.b);}pos.needsUpdate=true;col.needsUpdate=true;waterGeo.computeVertexNormals();
-
-if(active){elapsed+=dt;const z=-2-Math.min(elapsed,48)*2.25;const x=Math.sin(elapsed*.18)*1.5;const wave=Math.sin(x*.075+t*.72)*.24+Math.cos(z*.065+t*.58)*.20+Math.sin((x+z)*.038+t*.9)*.09+Math.sin(x*.22-z*.13+t*1.2)*.025+Math.sin(x*.48+z*.29-t*2.1)*.035;const waterline=-.4+wave;boat.position.set(x,waterline+.25,z);boat.rotation.set(0,Math.sin(elapsed*.12)*.012,Math.sin(elapsed*.22)*.003);camera.position.lerp(new THREE.Vector3(boat.position.x+.2,4.6+Math.sin(elapsed*.5)*.035,boat.position.z+10.5),.055);camera.lookAt(boat.position.x,1.35,boat.position.z-5.5);setChapter(elapsed);if(elapsed>48){active=false;intro.style.display='grid';intro.querySelector('h1').innerHTML='THE SEA<br>REMAINS';intro.querySelector('p').textContent='The hidden kingdom has revealed its light. Your next voyage is waiting beyond the horizon.';begin.textContent='Sail again';}}
-else{const x=0,z=-2;const wave=Math.sin(x*.075+t*.72)*.24+Math.cos(z*.065+t*.58)*.20+Math.sin((x+z)*.038+t*.9)*.09+Math.sin(x*.22-z*.13+t*1.2)*.025;boat.position.set(0,-.4+wave+.25,-2);boat.rotation.set(0,Math.sin(t*.12)*.012,Math.sin(t*.22)*.003);camera.position.lerp(new THREE.Vector3(0,5.4,12.8),.035);camera.lookAt(0,1.15,-2);}
+const canvas=document.getElementById('ocean');
+if(!window.THREE)return;
+const THREE=window.THREE,scene=new THREE.Scene();
+scene.background=new THREE.Color(0x9bcbd9);
+scene.fog=new THREE.Fog(0x9bcbd9,95,270);
+const camera=new THREE.PerspectiveCamera(54,1,.1,600);
+camera.position.set(0,8,24);camera.lookAt(0,0,-45);
+const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:false});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.6));
+renderer.outputColorSpace=THREE.SRGBColorSpace;
+scene.add(new THREE.HemisphereLight(0xe8faff,0x17465a,1.35));
+const sunlight=new THREE.DirectionalLight(0xfff4df,2.0);sunlight.position.set(-35,45,20);scene.add(sunlight);
+const geometry=new THREE.PlaneGeometry(420,520,260,320);geometry.rotateX(-Math.PI/2);
+const base=geometry.attributes.position.array.slice();
+const colors=new Float32Array(geometry.attributes.position.count*3);
+geometry.setAttribute('color',new THREE.BufferAttribute(colors,3));
+const deep=new THREE.Color(0x06445f),blue=new THREE.Color(0x087c9c),aqua=new THREE.Color(0x35a8b8),foam=new THREE.Color(0xc9e9e5);
+const material=new THREE.MeshPhysicalMaterial({color:0xffffff,vertexColors:true,roughness:.22,metalness:.04,clearcoat:.85,clearcoatRoughness:.12,reflectivity:.8});
+const water=new THREE.Mesh(geometry,material);water.position.set(0,-.5,-105);scene.add(water);
+function waveAt(x,z,t){
+ return Math.sin(x*.035+t*.52)*.19+
+ Math.sin((x*.72+z)*.027-t*.43)*.22+
+ Math.cos(z*.052+t*.38)*.12+
+ Math.sin((x+z)*.095+t*.8)*.035+
+ Math.sin(x*.19-z*.16+t*1.15)*.012;
+}
+function resize(){const w=canvas.clientWidth,h=canvas.clientHeight;if(!w||!h)return;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();}
+if(window.ResizeObserver)new ResizeObserver(resize).observe(canvas);else window.addEventListener('resize',resize);resize();
+const clock=new THREE.Clock();
+function animate(){requestAnimationFrame(animate);const t=clock.getElapsedTime(),p=geometry.attributes.position,c=geometry.attributes.color;
+for(let i=0;i<p.count;i++){const x=base[i*3],z=base[i*3+2];const wave=waveAt(x,z,t);p.setY(i,base[i*3+1]+wave);const shallow=THREE.MathUtils.smoothstep(z,-255,-5);const crest=THREE.MathUtils.smoothstep(wave,.27,.48);const col=deep.clone().lerp(blue,shallow*.78).lerp(aqua,shallow*.28).lerp(foam,crest*.42);c.setXYZ(i,col.r,col.g,col.b);}
+p.needsUpdate=true;c.needsUpdate=true;geometry.computeVertexNormals();
 renderer.render(scene,camera);}
-requestAnimationFrame(animate);
+animate();
 })();
 </script>
 </body></html>
