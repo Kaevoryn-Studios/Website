@@ -289,10 +289,56 @@ try{
  // Marble floor inlay.
  for(let x=-9;x<=9;x+=3)box(.055,.02,30,gold,x,.22,-18,false);
  for(let z=-4;z>=-32;z-=3)box(20,.02,.055,gold,0,.22,z,false);
- // Grand staircase: broad lower steps, split upper flights and landings.
- for(let i=0;i<9;i++){const step=box(5.5,.32,.8,mat(0x57464a),-6.5,0.22+i*.34,-8-i*.65);step.position.x=-6.5;box(.12,.12,.82,gold,-6.5,step.position.y+.18,step.position.z-.02);}
- box(5.5,.35,1.2,trim,-6.5,3.25,-14);
- for(let i=0;i<8;i++){box(.85,.34,.8,mat(0x57464a),-8.9+i*.63,3.55+i*.34,-15-i*.55);}
+ // Grand staircase: aged Victorian stone, a faded runner, wrought iron and carved oak.
+ const stairStone=mat(0x39343a,.96),stairEdge=mat(0x716166,.92),runner=mat(0x54232d,.98),runnerWear=mat(0x321820,.98),iron=mat(0x17191d,.62,.72),oakRail=mat(0x38251f,.82),dust=mat(0x91827a,1);
+ const beamBetween=(a,b,radius,material)=>{const av=new THREE.Vector3(...a),bv=new THREE.Vector3(...b),delta=new THREE.Vector3().subVectors(bv,av);const mesh=new THREE.Mesh(new THREE.CylinderGeometry(radius,radius,delta.length(),10),material);mesh.position.copy(av).add(bv).multiplyScalar(.5);mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),delta.normalize());mesh.castShadow=true;mesh.receiveShadow=true;scene.add(mesh);return mesh;};
+ for(let i=0;i<9;i++){
+  const z=-8-i*.65,top=.38+i*.34;
+  box(5.65,.36,.86,stairStone,-6.5,.20+i*.34,z);
+  box(5.58,.07,.82,stairEdge,-6.5,top-.025,z-.015);
+  box(2.25,.035,.66,runner,-6.5,top+.012,z-.035);
+  box(2.18,.012,.55,runnerWear,-6.5,top+.034,z-.035);
+  for(const side of [-1,1]){
+   box(.18,.025,.13,dust,-6.5+side*2.55,top+.018,z-.28,false);
+   box(.11,.018,.19,stairEdge,-6.5+side*2.62,top+.025,z+.22,false);
+   const postX=-6.5+side*2.48,postY=top+.92;
+   beamBetween([postX,top+.08,z-.28],[postX,postY,z-.28],.045,iron);
+  }
+ }
+ box(5.8,.42,1.35,stairStone,-6.5,3.25,-14);
+ box(5.72,.08,1.3,stairEdge,-6.5,3.48,-14);
+ box(2.3,.035,1.0,runner,-6.5,3.53,-14);
+ for(const side of [-1,1]){
+  const x=-6.5+side*2.48;
+  beamBetween([x,1.48,-7.72],[x,4.65,-13.55],.105,oakRail);
+  beamBetween([x,1.37,-7.72],[x,4.54,-13.55],.045,iron);
+  for(let i=0;i<9;i++){
+   const z=-8-i*.65,y=.38+i*.34;
+   beamBetween([x,y+.08,z],[x,y+.93,z],.045,iron);
+  }
+  cyl(.19,.14,.32,oakRail,x,.36,-7.72,8);
+  cyl(.15,.11,.28,oakRail,x,3.72,-13.55,8);
+  cyl(.17,.17,.1,gold,x,3.91,-13.55,8);
+ }
+ for(let i=0;i<8;i++){
+  const x=-8.9+i*.63,z=-15-i*.55,top=3.72+i*.34;
+  box(.94,.36,.9,stairStone,x,top-.18,z);
+  box(.91,.07,.88,stairEdge,x,top-.025,z-.015);
+  box(.52,.035,.67,runner,x,top+.012,z-.02);
+  for(const side of [-1,1]){
+   const px=x+side*.43,pz=z+side*.38;
+   beamBetween([px,top+.08,pz],[px,top+.91,pz],.04,iron);
+  }
+ }
+ for(const side of [-1,1]){
+  const offsetX=side*.47,offsetZ=side*.39;
+  beamBetween([-8.9+offsetX,4.78,-15+offsetZ],[-8.9+7*.63+offsetX,7.05,-15-7*.55+offsetZ],.085,oakRail);
+ }
+ for(const p of [[-9.55,2.8,-10.4],[-3.45,4.7,-13.5],[-8.7,6.2,-17.5]]){
+  box(.12,.12,.48,iron,p[0],p[1],p[2]);
+  point(p[0],p[1]+.12,p[2]-.2,0xffa45c,.8,5);
+  const cage=new THREE.Mesh(new THREE.BoxGeometry(.22,.34,.22),gold);cage.position.set(p[0],p[1]+.16,p[2]-.22);scene.add(cage);
+ }
  // Reception desk and brass bell.
  box(6,1.45,1.5,wood,3,1,-8);box(6.2,.18,1.7,gold,3,1.8,-8);box(5.5,.12,1.3,mat(0x171015),3,1.9,-8);
  const bellGroup=new THREE.Group();bellGroup.position.set(3.2,2.02,-8);scene.add(bellGroup);
