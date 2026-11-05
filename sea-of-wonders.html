@@ -3,133 +3,104 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#123d53">
-<meta name="description" content="The Sea of Wonders — a living ocean adventure in The Kingdoms of Wonder.">
+<meta name="theme-color" content="#087b91">
+<meta name="description" content="The Sea of Wonders — a quiet tropical beach at the edge of a limitless ocean.">
 <title>The Sea of Wonders · Kaevoryn Studios</title>
 <style>
-:root{color-scheme:dark;--foam:#d9fff7;--aqua:#51d5cc;--deep:#073b58}
 *{box-sizing:border-box}
-html,body{margin:0;width:100%;min-height:100%;background:#092d43;color:#f5fbff;font-family:Arial,Helvetica,sans-serif}
+html,body{margin:0;width:100%;height:100%;background:#087b91;color:#fff;font-family:Arial,Helvetica,sans-serif}
 body{overflow:hidden}
-.scene{position:relative;width:100%;height:100svh;min-height:560px;overflow:hidden;background:linear-gradient(180deg,#263f60 0%,#d28d79 19%,#f0bd91 34%,#498a9a 47%,#07516e 100%)}
+.scene{position:relative;width:100%;height:100svh;min-height:520px;overflow:hidden;background:linear-gradient(#79c5d4 0%,#f5c6a0 34%,#8bd5d0 50%,#087b91 100%)}
 .art{position:absolute;inset:0;width:100%;height:100%;display:block}
-.skyglow{position:absolute;width:min(34vw,440px);aspect-ratio:1;left:53%;top:8%;transform:translateX(-50%);border-radius:50%;background:radial-gradient(circle,#ffe6b6 0%,#f7c99a 20%,#e8a68e 39%,#d78f87 54%,transparent 72%);filter:blur(4px);opacity:.92}
-.heading{position:absolute;z-index:5;top:10%;left:0;right:0;text-align:center;padding:0 18px;text-shadow:0 3px 22px #092c45aa;pointer-events:none}
-.eyebrow{font-size:10px;font-weight:800;letter-spacing:.28em;color:#f4e6d7}
-h1{font-size:clamp(36px,6.7vw,76px);line-height:.98;letter-spacing:-.045em;margin:12px 0;color:#fff}
-.heading p{font-size:clamp(13px,1.7vw,17px);margin:12px auto;color:#fff5eb;max-width:540px}
-.top{position:absolute;z-index:8;top:0;left:0;right:0;padding:18px clamp(16px,4vw,48px);display:flex;justify-content:space-between;align-items:center;background:linear-gradient(#061d32aa,transparent)}
-.brand{font-size:11px;letter-spacing:.2em;font-weight:900;color:white;text-decoration:none}.brand small{display:block;color:#b8e9f0;font-size:9px;margin-top:3px}
-.top a:last-child,.foot a{color:#fff;text-decoration:none;font-size:12px}
-.foot{position:absolute;z-index:8;bottom:15px;left:0;right:0;text-align:center;color:#e9f9f8;font-size:10px;letter-spacing:.16em;text-shadow:0 2px 10px #001a2a}
-.wave{animation:drift 18s linear infinite}.wave.w2{animation-duration:26s;animation-direction:reverse}.wave.w3{animation-duration:34s}
-.water-shimmer{animation:shimmer 5s ease-in-out infinite alternate}
-@keyframes drift{from{transform:translateX(0)}to{transform:translateX(-120px)}}
-@keyframes shimmer{from{opacity:.22}to{opacity:.62}}
-@media(max-width:650px){.heading{top:13%}.heading p{max-width:310px}.skyglow{width:66vw;top:12%;left:57%}.top{padding:14px 15px}.top a:last-child{font-size:10px}.brand{font-size:9px}.brand small{font-size:8px}.foot{font-size:9px}}
-@media(prefers-reduced-motion:reduce){.wave,.water-shimmer{animation:none}}
+.top{position:absolute;z-index:3;top:0;left:0;right:0;padding:18px clamp(16px,4vw,48px);display:flex;justify-content:space-between;align-items:center;background:linear-gradient(#082b3c88,transparent)}
+.brand{font-size:11px;letter-spacing:.2em;font-weight:900;color:#fff;text-decoration:none;text-shadow:0 2px 12px #003b4b}
+.brand small{display:block;color:#e1ffff;font-size:9px;margin-top:4px}
+.top a:last-child{color:#fff;text-decoration:none;font-size:12px;text-shadow:0 2px 8px #003b4b}
+.caption{position:absolute;z-index:2;top:12%;left:0;right:0;text-align:center;padding:0 18px;text-shadow:0 2px 18px #124b58aa;pointer-events:none}
+.eyebrow{font-size:10px;letter-spacing:.3em;font-weight:800;color:#fff5e8}
+h1{font-size:clamp(34px,6vw,70px);letter-spacing:.12em;margin:14px 0 8px;font-weight:700}
+.caption p{font-size:clamp(12px,1.6vw,16px);letter-spacing:.04em;margin:0;color:#fff8ef}
+.footer{position:absolute;z-index:3;bottom:15px;left:0;right:0;text-align:center;font-size:10px;letter-spacing:.18em;text-shadow:0 2px 10px #003b4b}
+.footer a{color:#fff;text-decoration:none}
+.wave{animation:wave 18s linear infinite}
+.wave.two{animation-duration:25s;animation-direction:reverse}
+.glint{animation:glint 4s ease-in-out infinite alternate}
+@keyframes wave{from{transform:translateX(0)}to{transform:translateX(-100px)}}
+@keyframes glint{from{opacity:.18}to{opacity:.62}}
+@media(max-width:650px){.top{padding:14px}.brand{font-size:9px}.brand small{font-size:8px}.top a:last-child{font-size:10px}.caption{top:15%}.caption p{max-width:300px;margin:auto;line-height:1.5}.footer{font-size:9px}}
+@media(prefers-reduced-motion:reduce){.wave,.glint{animation:none}}
 </style>
 </head>
 <body>
-<header class="top"><a class="brand" href="kingdoms.html">KAEVORYN STUDIOS<small>CREATE THE IMPOSSIBLE</small></a><a href="kingdoms.html">← The Kingdoms of Wonder</a></header>
-<main class="scene" aria-label="Wide sunset view of the Sea of Wonders">
-<div class="skyglow"></div>
-<div class="heading"><div class="eyebrow">THE KINGDOMS OF WONDER · WATER ADVENTURE</div><h1>THE SEA OF WONDERS</h1><p>A hidden coast. A limitless ocean. An adventure beyond the horizon.</p></div>
-<svg class="art" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" role="img" aria-label="A wide ocean vista with a turquoise lagoon, rocky shore and wooden pier at sunset">
+<header class="top">
+<a class="brand" href="kingdoms.html">KAEVORYN STUDIOS<small>CREATE THE IMPOSSIBLE</small></a>
+<a href="kingdoms.html">← THE KINGDOMS OF WONDER</a>
+</header>
+<main class="scene" aria-label="A tropical beach with pale sand, shallow turquoise water and a calm ocean">
+<svg class="art" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Sunlit tropical beach, gentle waves and turquoise shallows">
 <defs>
- <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#233b5b"/><stop offset=".38" stop-color="#b8787c"/><stop offset=".72" stop-color="#f0bd91"/><stop offset="1" stop-color="#e6b994"/></linearGradient>
- <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#548f9c"/><stop offset=".24" stop-color="#17647d"/><stop offset=".58" stop-color="#084b6a"/><stop offset="1" stop-color="#032d4a"/></linearGradient>
- <linearGradient id="lagoon" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#baf4df"/><stop offset=".28" stop-color="#70e1cf"/><stop offset=".62" stop-color="#32c5bd"/><stop offset="1" stop-color="#087b9e"/></linearGradient>
- <linearGradient id="shallowBed" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#d8c69b" stop-opacity=".12"/><stop offset=".55" stop-color="#c6b58a" stop-opacity=".28"/><stop offset="1" stop-color="#a38d68" stop-opacity=".42"/></linearGradient>
- <linearGradient id="sand" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#e2c49b"/><stop offset="1" stop-color="#9a8069"/></linearGradient>
- <linearGradient id="wood" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#b98250"/><stop offset=".5" stop-color="#765035"/><stop offset="1" stop-color="#382b25"/></linearGradient>
- <linearGradient id="post" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#241e1b"/><stop offset=".4" stop-color="#80583a"/><stop offset=".75" stop-color="#4b3427"/><stop offset="1" stop-color="#1e1a18"/></linearGradient>
- <filter id="soft"><feGaussianBlur stdDeviation="22"/></filter>
- <filter id="shadow"><feGaussianBlur stdDeviation="8"/></filter>
- <clipPath id="oceanClip"><path d="M0 365 Q300 330 590 365 T1160 356 T1600 370 V900 H0Z"/></clipPath>
+ <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#4b9eae"/><stop offset=".52" stop-color="#f4c6a0"/><stop offset="1" stop-color="#ffe0b7"/></linearGradient>
+ <linearGradient id="ocean" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#278e9c"/><stop offset=".4" stop-color="#087b91"/><stop offset="1" stop-color="#07516c"/></linearGradient>
+ <linearGradient id="shallows" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#b9f0d9"/><stop offset=".32" stop-color="#70dfcf"/><stop offset=".72" stop-color="#29bdb7"/><stop offset="1" stop-color="#168d9b"/></linearGradient>
+ <linearGradient id="sand" x1="0" y1="0" x2=".25" y2="1"><stop stop-color="#fff0cf"/><stop offset=".45" stop-color="#e9c99b"/><stop offset="1" stop-color="#c5a47c"/></linearGradient>
+ <radialGradient id="sunGlow"><stop stop-color="#fff4d7" stop-opacity=".95"/><stop offset=".3" stop-color="#ffe3b9" stop-opacity=".55"/><stop offset="1" stop-color="#ffd6a6" stop-opacity="0"/></radialGradient>
+ <filter id="blur"><feGaussianBlur stdDeviation="24"/></filter>
+ <clipPath id="waterClip"><path d="M0 390 Q250 370 500 390 T1000 390 T1600 385 V900 H0Z"/></clipPath>
 </defs>
-<!-- distant sunset sky and horizon -->
+<!-- open sky -->
 <rect width="1600" height="900" fill="url(#sky)"/>
-<ellipse cx="900" cy="310" rx="310" ry="74" fill="#ffd9ae" opacity=".2" filter="url(#soft)"/>
-<circle cx="900" cy="325" r="48" fill="#ffe4bb" opacity=".88"/>
-<circle cx="900" cy="325" r="86" fill="#ffd6a8" opacity=".18" filter="url(#soft)"/>
-<path d="M0 355 Q250 340 480 358 T960 350 T1600 356" fill="none" stroke="#ffe1c1" stroke-width="4" opacity=".4"/>
-<!-- far ocean -->
-<path d="M0 365 Q300 330 590 365 T1160 356 T1600 370 V900 H0Z" fill="url(#sea)"/>
-<g clip-path="url(#oceanClip)" fill="none" stroke-linecap="round">
- <g class="wave" stroke="#b6e6df" opacity=".28" stroke-width="3"><path d="M-80 430 Q100 414 280 430 T640 430 T1000 430 T1360 430 T1720 430"/><path d="M-100 492 Q100 477 300 492 T700 492 T1100 492 T1500 492 T1900 492"/></g>
- <g class="wave w2" stroke="#8bd4d1" opacity=".22" stroke-width="2"><path d="M-60 550 Q120 535 300 550 T660 550 T1020 550 T1380 550 T1740 550"/><path d="M-100 625 Q100 608 300 625 T700 625 T1100 625 T1500 625 T1900 625"/></g>
- <g class="wave w3" stroke="#d0f4e8" opacity=".17" stroke-width="2"><path d="M-100 700 Q100 686 300 700 T700 700 T1100 700 T1500 700 T1900 700"/></g>
+<circle cx="1120" cy="245" r="190" fill="url(#sunGlow)"/>
+<circle cx="1120" cy="245" r="54" fill="#fff0ce" opacity=".9"/>
+<path d="M0 360 Q250 345 500 360 T1000 355 T1600 360" fill="none" stroke="#fff0d4" stroke-width="4" opacity=".45"/>
+<!-- distant ocean -->
+<path d="M0 390 Q250 370 500 390 T1000 390 T1600 385 V900 H0Z" fill="url(#ocean)"/>
+<g clip-path="url(#waterClip)" fill="none" stroke-linecap="round">
+ <g class="wave" stroke="#c5f3e9" stroke-width="3" opacity=".32">
+  <path d="M-100 435 Q80 420 260 435 T620 435 T980 435 T1340 435 T1700 435"/>
+  <path d="M-100 495 Q100 480 300 495 T700 495 T1100 495 T1500 495 T1900 495"/>
+ </g>
+ <g class="wave two" stroke="#a5e9df" stroke-width="2" opacity=".26">
+  <path d="M-100 555 Q100 540 300 555 T700 555 T1100 555 T1500 555 T1900 555"/>
+  <path d="M-100 625 Q100 610 300 625 T700 625 T1100 625 T1500 625 T1900 625"/>
+ </g>
 </g>
-<!-- distant low headland -->
-<path d="M0 385 Q110 320 220 350 Q320 380 420 365 Q510 350 600 390 L600 455 L0 455Z" fill="#344c4d"/>
-<path d="M0 387 Q130 342 220 365 Q335 390 440 375 Q520 370 600 405" fill="none" stroke="#9c9580" stroke-width="9" opacity=".8"/>
-<!-- broad shallow turquoise lagoon in foreground -->
-<path d="M0 500 Q180 445 365 475 Q520 498 650 470 Q785 438 920 485 Q1055 530 1185 505 L1300 900 H0Z" fill="url(#lagoon)"/>
-<path d="M0 500 Q180 445 365 475 Q520 498 650 470 Q785 438 920 485 Q1055 530 1185 505" fill="none" stroke="#d6fff0" stroke-width="9" opacity=".78"/>
-<path d="M0 530 Q190 478 365 505 Q525 530 665 500 Q800 475 920 515 Q1040 555 1190 530" fill="none" stroke="#a3f5e3" stroke-width="5" opacity=".7"/>
-<path d="M0 610 Q220 560 430 590 Q650 620 820 580 Q1010 545 1200 605 L1300 900 H0Z" fill="url(#shallowBed)"/>
-<g fill="none" stroke="#e8dfbd" stroke-width="3" opacity=".3">
- <path d="M35 665 Q155 640 270 665 M330 710 Q465 682 590 710 M95 790 Q225 765 355 790 M500 825 Q630 800 760 825 M820 700 Q930 680 1040 700"/>
+<!-- far islands -->
+<path d="M0 392 Q80 350 165 366 Q235 380 300 358 Q365 340 430 390Z" fill="#476e62" opacity=".8"/>
+<path d="M1250 390 Q1335 345 1410 362 Q1490 380 1600 340 V410Z" fill="#527766" opacity=".8"/>
+<!-- shallow lagoon sweeping into foreground -->
+<path d="M0 505 Q190 455 370 480 Q560 510 720 475 Q900 435 1080 485 Q1290 545 1600 485 V900 H0Z" fill="url(#shallows)"/>
+<path d="M0 505 Q190 455 370 480 Q560 510 720 475 Q900 435 1080 485 Q1290 545 1600 485" fill="none" stroke="#e3fff0" stroke-width="12" opacity=".85"/>
+<path d="M0 530 Q190 482 370 505 Q560 535 720 500 Q900 460 1080 510 Q1290 570 1600 510" fill="none" stroke="#b7f7e6" stroke-width="5" opacity=".8"/>
+<!-- soft sandy seabed visible through clear water -->
+<path d="M0 655 Q220 610 420 640 Q620 675 820 625 Q1040 575 1250 650 Q1420 705 1600 650 V900 H0Z" fill="#d8c39c" opacity=".23"/>
+<g fill="none" stroke="#f7e8c7" stroke-width="3" opacity=".34">
+ <path d="M80 710 Q210 685 340 710 M390 770 Q540 740 680 770 M820 700 Q960 675 1100 700 M1190 790 Q1330 760 1470 790"/>
+ <path d="M160 835 Q280 815 400 835 M650 855 Q770 830 890 855"/>
 </g>
-<g class="water-shimmer" fill="none" stroke="#e1fff4" stroke-linecap="round">
- <path d="M110 585 Q175 570 238 585 M280 625 Q350 609 420 625 M75 690 Q150 674 225 690 M450 560 Q510 546 570 560" stroke-width="4"/>
- <path d="M160 745 Q230 730 300 745 M360 700 Q430 686 500 700 M570 630 Q630 619 690 630" stroke-width="3"/>
+<!-- sunlit reflections -->
+<g class="glint" fill="none" stroke="#effff0" stroke-linecap="round">
+ <path d="M930 430 Q1010 422 1090 430 M1050 465 Q1145 455 1240 465 M1150 505 Q1240 495 1330 505" stroke-width="4"/>
+ <path d="M120 590 Q190 578 260 590 M350 625 Q430 612 510 625 M720 570 Q790 558 860 570 M1380 610 Q1450 600 1520 610" stroke-width="3"/>
+ <path d="M220 740 Q285 730 350 740 M520 810 Q590 800 660 810 M1020 750 Q1090 740 1160 750" stroke-width="3"/>
 </g>
-<!-- shoreline beach curve -->
-<path d="M0 430 Q135 400 270 430 Q385 460 470 520 Q560 590 660 625 Q760 660 850 635 Q960 600 1080 640 L1210 900 H0Z" fill="url(#sand)"/>
-<path d="M0 430 Q135 400 270 430 Q385 460 470 520 Q560 590 660 625 Q760 660 850 635 Q960 600 1080 640" fill="none" stroke="#f1d5aa" stroke-width="13"/>
-<path d="M0 445 Q140 418 265 448 Q390 480 455 535" fill="none" stroke="#fff0d0" stroke-width="5" opacity=".7"/>
-<!-- rocky shore on left and right -->
-<g fill="#454b48" stroke="#303b3b" stroke-width="7">
- <path d="M0 360 L70 334 130 356 168 405 120 438 35 430 0 410Z"/>
- <path d="M150 390 L205 365 260 394 282 438 240 466 175 447Z"/>
- <path d="M-15 470 L48 440 108 466 120 520 60 550 0 530Z"/>
- <path d="M980 570 L1040 548 1100 580 1110 635 1050 660 995 635Z"/>
- <path d="M1080 620 L1145 590 1210 625 1235 690 1170 720 1100 680Z"/>
+<!-- broad, natural beach foreground -->
+<path d="M0 570 Q150 540 300 575 Q430 610 520 675 Q610 745 740 760 Q900 780 1040 720 Q1190 655 1320 690 Q1460 730 1600 690 V900 H0Z" fill="url(#sand)"/>
+<!-- delicate wet-sand edge -->
+<path d="M0 570 Q150 540 300 575 Q430 610 520 675 Q610 745 740 760 Q900 780 1040 720 Q1190 655 1320 690 Q1460 730 1600 690" fill="none" stroke="#fff2d7" stroke-width="12" opacity=".9"/>
+<path d="M0 590 Q155 560 300 594 Q430 630 510 690 Q610 760 740 780 Q900 800 1050 740 Q1190 675 1320 710 Q1460 750 1600 710" fill="none" stroke="#fff8e8" stroke-width="4" opacity=".75"/>
+<!-- scattered natural shoreline stones -->
+<g fill="#8e8a72" opacity=".6">
+ <ellipse cx="90" cy="640" rx="20" ry="8"/><ellipse cx="145" cy="658" rx="13" ry="6"/>
+ <ellipse cx="420" cy="725" rx="17" ry="7"/><ellipse cx="480" cy="752" rx="11" ry="5"/>
+ <ellipse cx="1370" cy="770" rx="22" ry="8"/><ellipse cx="1450" cy="790" rx="14" ry="6"/>
 </g>
-<g fill="#778078" opacity=".72">
- <path d="M20 365 L68 344 105 362 60 370Z"/><path d="M176 399 L210 379 247 399 210 405Z"/><path d="M1005 584 L1048 562 1080 585 1040 592Z"/>
-</g>
-<!-- raised docking mount built into land -->
-<ellipse cx="635" cy="710" rx="390" ry="64" fill="#142e32" opacity=".28" filter="url(#shadow)"/>
-<path d="M260 535 L540 490 L770 575 L475 640Z" fill="#342b25" stroke="#211e1b" stroke-width="14"/>
-<path d="M275 516 L540 474 L748 552 L480 613Z" fill="url(#wood)" stroke="#30231c" stroke-width="10"/>
-<g stroke="#4c3425" stroke-width="7" fill="none" opacity=".95">
- <path d="M305 523 L540 488 L715 554 M330 546 L535 510 L690 569 M365 568 L530 535 L660 585"/>
- <path d="M410 496 L425 589 M520 480 L530 568 M625 515 L630 600"/>
-</g>
-<!-- pier out over water -->
-<path d="M620 520 L1035 430 L1110 482 L690 585Z" fill="#30241e" stroke="#211a16" stroke-width="14"/>
-<path d="M620 502 L1030 414 L1090 458 L685 563Z" fill="url(#wood)" stroke="#34251c" stroke-width="9"/>
-<g stroke="#4b3324" stroke-width="6" fill="none">
- <path d="M650 511 L1062 433 M666 535 L1078 457 M685 558 L1090 480"/>
- <path d="M735 478 L750 548 M835 457 L850 523 M935 435 L950 502 M1020 420 L1035 480"/>
-</g>
-<!-- exactly two stout supports on the shore and two in the shallow water -->
-<g fill="url(#post)" stroke="#251d18" stroke-width="8">
- <path d="M390 590 L430 580 L445 735 L385 745Z"/>
- <path d="M535 570 L575 558 L590 735 L530 745Z"/>
- <path d="M855 525 L895 516 L915 805 L850 810Z"/>
- <path d="M995 495 L1035 486 L1055 765 L990 775Z"/>
-</g>
-<!-- timber caps and bollards -->
-<g fill="#33251c" stroke="#1e1915" stroke-width="5">
- <path d="M350 505 L370 500 376 532 344 538Z"/><path d="M690 488 L710 480 720 512 688 520Z"/>
- <path d="M310 510 L328 505 338 530 308 536Z"/>
-</g>
-<!-- white foam around timber feet -->
-<g fill="none" stroke="#e1fff4" stroke-width="6" opacity=".72">
- <path d="M825 805 Q875 785 925 805 M835 827 Q885 810 935 830"/>
- <path d="M965 770 Q1015 750 1065 772 M975 792 Q1025 775 1075 795"/>
-</g>
-<!-- near-shore pebbles -->
-<g fill="#5c6058" opacity=".85">
- <ellipse cx="90" cy="565" rx="24" ry="10"/><ellipse cx="145" cy="590" rx="18" ry="8"/><ellipse cx="215" cy="560" rx="15" ry="7"/>
- <ellipse cx="1120" cy="735" rx="24" ry="10"/><ellipse cx="1180" cy="770" rx="17" ry="8"/>
+<!-- faint beach texture -->
+<g fill="none" stroke="#fff4dc" stroke-width="2" opacity=".32">
+ <path d="M80 820 Q220 800 360 820 M250 875 Q390 858 530 875 M920 850 Q1060 830 1200 850 M1260 880 Q1380 865 1500 880"/>
 </g>
 </svg>
-<div class="foot">KAEVORYN STUDIOS · <a href="kingdoms.html">RETURN TO THE PARK</a></div>
+<div class="caption"><div class="eyebrow">THE KINGDOMS OF WONDER</div><h1>THE SEA OF WONDERS</h1><p>A quiet stretch of shore. A whole ocean waiting beyond it.</p></div>
+<div class="footer">KAEVORYN STUDIOS · <a href="kingdoms.html">RETURN TO THE PARK</a></div>
 </main>
 </body>
 </html>
