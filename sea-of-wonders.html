@@ -39,11 +39,13 @@
  }
  float ocean(vec2 p,float t){
   float h=0.;
-  h+=wave(p,normalize(vec2(1.,.28)),.27,.34,1.00,t);
-  h+=wave(p,normalize(vec2(.62,-.78)),.39,.22,.83,t);
-  h+=wave(p,normalize(vec2(-.34,-1.)),.19,.28,.67,t);
-  h+=wave(p,normalize(vec2(.92,.66)),.62,.095,1.31,t);
-  h+=wave(p,normalize(vec2(-.8,.3)),.92,.035,1.8,t);
+  h+=wave(p,normalize(vec2(1.,.28)),.235,.43,.92,t);
+  h+=wave(p,normalize(vec2(.62,-.78)),.335,.29,.78,t);
+  h+=wave(p,normalize(vec2(-.34,-1.)),.165,.34,.61,t);
+  h+=wave(p,normalize(vec2(.92,.66)),.54,.105,1.18,t);
+  h+=wave(p,normalize(vec2(-.8,.3)),.82,.048,1.62,t);
+  h+=wave(p,normalize(vec2(.18,-1.)),1.34,.018,2.15,t);
+  h+=wave(p,normalize(vec2(-.92,-.18)),1.82,.009,2.75,t);
   return h;
  }
  vec3 skyColor(vec3 rd){
@@ -87,12 +89,18 @@
   water*=.52+diffuse*.58;
   water+=vec3(.12,.28,.31)*spec*1.6;
   water=mix(water,skyColor(reflect(-view,n)),fresnel*.62);
-  float crest= smoothstep(.24,.52,length(vec2(hx,hz)));
-  float peak=smoothstep(.12,.38,h);
-  float foam=crest*peak*(1.-distanceFade*.45);
-  float noise=sin(pos.x*3.1+time*1.7)*sin(pos.z*2.7-time*1.2);
-  foam*=smoothstep(-.15,.48,noise)*.8;
-  water=mix(water,vec3(.78,.88,.86),foam*.82);
+  float slope=length(vec2(hx,hz));
+  float crest=smoothstep(.30,.68,slope);
+  float peak=smoothstep(.02,.30,h);
+  float breakup=sin(pos.x*1.7+pos.z*.83+time*.34)
+              *sin(pos.z*1.23-pos.x*.61-time*.27);
+  float foamMask=crest*peak*smoothstep(-.30,.42,breakup);
+  float foamDetail=sin(pos.x*7.3+pos.z*4.1+time*.8)
+                  *sin(pos.z*6.2-pos.x*3.4-time*.65);
+  float foam=foamMask*(.58+.22*foamDetail)*(1.-distanceFade*.42);
+  water=mix(water,vec3(.82,.91,.91),clamp(foam,0.,.88));
+  float faceShade=smoothstep(-.34,.22,h);
+  water*=.88+.12*faceShade;
   float sunGlint=pow(max(dot(reflect(-light,n),view),0.),180.);
   water+=vec3(1.,.83,.62)*sunGlint*.7;
   float haze=smoothstep(35.,125.,t);
