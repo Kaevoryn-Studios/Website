@@ -3,185 +3,130 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#07354a">
-<meta name="description" content="The Sea of Wonders — an ocean adventure in The Kingdoms of Wonder.">
+<meta name="theme-color" content="#123d53">
+<meta name="description" content="The Sea of Wonders — a living ocean adventure in The Kingdoms of Wonder.">
 <title>The Sea of Wonders · Kaevoryn Studios</title>
 <style>
-*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#07354a;color:#f4fbff;font:15px/1.5 Arial,sans-serif}body{overflow-x:hidden}.top{position:absolute;z-index:3;top:0;left:0;right:0;padding:18px clamp(16px,4vw,48px);display:flex;justify-content:space-between;align-items:center;background:linear-gradient(#03283acc,transparent)}.brand{font-size:11px;letter-spacing:.2em;font-weight:900;color:white;text-decoration:none}.brand small{display:block;color:#a9efff;font-size:9px}.top a:last-child{color:#e4faff;text-decoration:none;font-size:12px}.stage{height:100svh;min-height:560px;position:relative;overflow:hidden;background:linear-gradient(#8bc8dc 0%,#c3e3e7 36%,#398da5 62%,#07506b 100%)}canvas{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:0}
-.heading{position:absolute;z-index:2;top:17%;left:0;right:0;text-align:center;padding:0 18px;pointer-events:none;text-shadow:0 3px 18px #07354a88}.eyebrow{font-size:10px;font-weight:800;letter-spacing:.25em;color:#e4fbff}.heading h1{font-size:clamp(38px,7vw,76px);line-height:.98;letter-spacing:-.045em;margin:12px 0;color:#fff}.heading p{max-width:520px;margin:12px auto;color:#f0fcff;font-size:clamp(14px,2vw,17px)}.foot{position:absolute;z-index:2;bottom:14px;left:0;right:0;text-align:center;color:#e1f8ff;font-size:10px;letter-spacing:.12em;text-shadow:0 2px 8px #001d2b}.foot a{color:#fff}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
-
-
-/* Harbor dock */
-.harbor-dock{display:block;position:absolute;z-index:2;left:50%;top:auto;bottom:8%;width:min(78vw,860px);height:auto;transform:translateX(-50%);visibility:visible;opacity:1;pointer-events:none;filter:drop-shadow(0 10px 22px #062b3a66)}
-.harbor-dock svg{display:block;width:100%;height:auto;overflow:visible}
-@media(max-width:600px){.harbor-dock{width:96vw;max-width:none;top:auto;bottom:10%}}
+:root{color-scheme:dark;--foam:#d9fff7;--aqua:#51d5cc;--deep:#073b58}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;min-height:100%;background:#092d43;color:#f5fbff;font-family:Arial,Helvetica,sans-serif}
+body{overflow:hidden}
+.scene{position:relative;width:100%;height:100svh;min-height:560px;overflow:hidden;background:linear-gradient(180deg,#263f60 0%,#d28d79 19%,#f0bd91 34%,#498a9a 47%,#07516e 100%)}
+.art{position:absolute;inset:0;width:100%;height:100%;display:block}
+.skyglow{position:absolute;width:min(34vw,440px);aspect-ratio:1;left:53%;top:8%;transform:translateX(-50%);border-radius:50%;background:radial-gradient(circle,#ffe6b6 0%,#f7c99a 20%,#e8a68e 39%,#d78f87 54%,transparent 72%);filter:blur(4px);opacity:.92}
+.heading{position:absolute;z-index:5;top:10%;left:0;right:0;text-align:center;padding:0 18px;text-shadow:0 3px 22px #092c45aa;pointer-events:none}
+.eyebrow{font-size:10px;font-weight:800;letter-spacing:.28em;color:#f4e6d7}
+h1{font-size:clamp(36px,6.7vw,76px);line-height:.98;letter-spacing:-.045em;margin:12px 0;color:#fff}
+.heading p{font-size:clamp(13px,1.7vw,17px);margin:12px auto;color:#fff5eb;max-width:540px}
+.top{position:absolute;z-index:8;top:0;left:0;right:0;padding:18px clamp(16px,4vw,48px);display:flex;justify-content:space-between;align-items:center;background:linear-gradient(#061d32aa,transparent)}
+.brand{font-size:11px;letter-spacing:.2em;font-weight:900;color:white;text-decoration:none}.brand small{display:block;color:#b8e9f0;font-size:9px;margin-top:3px}
+.top a:last-child,.foot a{color:#fff;text-decoration:none;font-size:12px}
+.foot{position:absolute;z-index:8;bottom:15px;left:0;right:0;text-align:center;color:#e9f9f8;font-size:10px;letter-spacing:.16em;text-shadow:0 2px 10px #001a2a}
+.wave{animation:drift 18s linear infinite}.wave.w2{animation-duration:26s;animation-direction:reverse}.wave.w3{animation-duration:34s}
+.water-shimmer{animation:shimmer 5s ease-in-out infinite alternate}
+@keyframes drift{from{transform:translateX(0)}to{transform:translateX(-120px)}}
+@keyframes shimmer{from{opacity:.22}to{opacity:.62}}
+@media(max-width:650px){.heading{top:13%}.heading p{max-width:310px}.skyglow{width:66vw;top:12%;left:57%}.top{padding:14px 15px}.top a:last-child{font-size:10px}.brand{font-size:9px}.brand small{font-size:8px}.foot{font-size:9px}}
+@media(prefers-reduced-motion:reduce){.wave,.water-shimmer{animation:none}}
 </style>
 </head>
 <body>
 <header class="top"><a class="brand" href="kingdoms.html">KAEVORYN STUDIOS<small>CREATE THE IMPOSSIBLE</small></a><a href="kingdoms.html">← The Kingdoms of Wonder</a></header>
-<main><section class="stage" aria-label="Open ocean"><canvas id="ocean" aria-hidden="true"></canvas><div class="heading"><div class="eyebrow">THE KINGDOMS OF WONDER · WATER ADVENTURE</div><h1>THE SEA OF WONDERS</h1><p>Step aboard and set sail across a vast, living ocean.</p></div><div class="harbor-dock" aria-hidden="true">
-<svg viewBox="0 0 1200 470" xmlns="http://www.w3.org/2000/svg">
+<main class="scene" aria-label="Wide sunset view of the Sea of Wonders">
+<div class="skyglow"></div>
+<div class="heading"><div class="eyebrow">THE KINGDOMS OF WONDER · WATER ADVENTURE</div><h1>THE SEA OF WONDERS</h1><p>A hidden coast. A limitless ocean. An adventure beyond the horizon.</p></div>
+<svg class="art" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" role="img" aria-label="A wide ocean vista with a turquoise lagoon, rocky shore and wooden pier at sunset">
 <defs>
- <linearGradient id="dockWood" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#d2a16a"/><stop offset=".45" stop-color="#93613a"/><stop offset="1" stop-color="#42291b"/></linearGradient>
- <linearGradient id="dockPile" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#211915"/><stop offset=".3" stop-color="#805331"/><stop offset=".7" stop-color="#4a2e1d"/><stop offset="1" stop-color="#171413"/></linearGradient>
- <linearGradient id="shoreSoil" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#786044"/><stop offset="1" stop-color="#29251f"/></linearGradient>
-  <linearGradient id="lagoonShallows" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#8be6d9" stop-opacity=".92"/><stop offset=".52" stop-color="#36b8b4" stop-opacity=".82"/><stop offset="1" stop-color="#16849b" stop-opacity=".08"/></linearGradient>
+ <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#233b5b"/><stop offset=".38" stop-color="#b8787c"/><stop offset=".72" stop-color="#f0bd91"/><stop offset="1" stop-color="#e6b994"/></linearGradient>
+ <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#548f9c"/><stop offset=".24" stop-color="#17647d"/><stop offset=".58" stop-color="#084b6a"/><stop offset="1" stop-color="#032d4a"/></linearGradient>
+ <linearGradient id="lagoon" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#a0f0d9"/><stop offset=".32" stop-color="#55d8c9"/><stop offset=".68" stop-color="#23aeb1"/><stop offset="1" stop-color="#117b9a"/></linearGradient>
+ <linearGradient id="sand" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#e2c49b"/><stop offset="1" stop-color="#9a8069"/></linearGradient>
+ <linearGradient id="wood" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#b98250"/><stop offset=".5" stop-color="#765035"/><stop offset="1" stop-color="#382b25"/></linearGradient>
+ <linearGradient id="post" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#241e1b"/><stop offset=".4" stop-color="#80583a"/><stop offset=".75" stop-color="#4b3427"/><stop offset="1" stop-color="#1e1a18"/></linearGradient>
+ <filter id="soft"><feGaussianBlur stdDeviation="22"/></filter>
+ <filter id="shadow"><feGaussianBlur stdDeviation="8"/></filter>
+ <clipPath id="oceanClip"><path d="M0 365 Q300 330 590 365 T1160 356 T1600 370 V900 H0Z"/></clipPath>
 </defs>
-<path d="M0 105 Q170 65 355 105 Q470 132 600 185 L600 470 L0 470Z" fill="#30463a"/>
-<path d="M0 142 Q180 100 360 143 Q470 166 600 220 L600 470 L0 470Z" fill="url(#shoreSoil)"/>
-<path d="M0 140 Q180 98 360 141 Q470 164 600 218" fill="none" stroke="#b09a70" stroke-width="9"/>
-<!-- Clearly visible shallow turquoise water hugging the shoreline -->
- <path d="M350 143 Q475 164 600 218 L600 360 Q530 314 468 275 Q410 238 350 203Z" fill="url(#lagoonShallows)"/>
- <path d="M365 155 Q470 178 590 232" fill="none" stroke="#b8fff0" stroke-width="7" opacity=".72"/>
- <path d="M395 178 Q490 205 580 252" fill="none" stroke="#d7fff6" stroke-width="3" opacity=".55"/>
- <!-- Wide raised docking mount integrated with the shoreline -->
-<path d="M210 174 L480 145 L690 225 L420 270Z" fill="#3d281c" stroke="#211712" stroke-width="12"/>
-<path d="M220 160 L480 132 L680 207 L420 250Z" fill="url(#dockWood)" stroke="#281a13" stroke-width="8"/>
-<path d="M245 165 L480 141 L650 207 M260 183 L470 161 L625 220 M290 202 L455 183 L595 232" fill="none" stroke="#5c3923" stroke-width="5"/>
-<!-- Pier continues from the mount out over the water -->
-<path d="M490 132 L1030 205 L1120 272 L585 203Z" fill="#3d281c" stroke="#211712" stroke-width="12"/>
-<path d="M500 120 L1030 190 L1095 246 L590 185Z" fill="url(#dockWood)" stroke="#281a13" stroke-width="7"/>
-<g fill="none" stroke="#684326" stroke-width="5">
- <path d="M520 132 L1080 243 M515 150 L1060 260 M505 168 L1035 276"/>
- <path d="M600 133 L585 184 M710 147 L695 198 M820 162 L805 213 M930 176 L915 228 M1020 190 L1005 240"/>
+<!-- distant sunset sky and horizon -->
+<rect width="1600" height="900" fill="url(#sky)"/>
+<ellipse cx="900" cy="310" rx="310" ry="74" fill="#ffd9ae" opacity=".2" filter="url(#soft)"/>
+<circle cx="900" cy="325" r="48" fill="#ffe4bb" opacity=".88"/>
+<circle cx="900" cy="325" r="86" fill="#ffd6a8" opacity=".18" filter="url(#soft)"/>
+<path d="M0 355 Q250 340 480 358 T960 350 T1600 356" fill="none" stroke="#ffe1c1" stroke-width="4" opacity=".4"/>
+<!-- far ocean -->
+<path d="M0 365 Q300 330 590 365 T1160 356 T1600 370 V900 H0Z" fill="url(#sea)"/>
+<g clip-path="url(#oceanClip)" fill="none" stroke-linecap="round">
+ <g class="wave" stroke="#b6e6df" opacity=".28" stroke-width="3"><path d="M-80 430 Q100 414 280 430 T640 430 T1000 430 T1360 430 T1720 430"/><path d="M-100 492 Q100 477 300 492 T700 492 T1100 492 T1500 492 T1900 492"/></g>
+ <g class="wave w2" stroke="#8bd4d1" opacity=".22" stroke-width="2"><path d="M-60 550 Q120 535 300 550 T660 550 T1020 550 T1380 550 T1740 550"/><path d="M-100 625 Q100 608 300 625 T700 625 T1100 625 T1500 625 T1900 625"/></g>
+ <g class="wave w3" stroke="#d0f4e8" opacity=".17" stroke-width="2"><path d="M-100 700 Q100 686 300 700 T700 700 T1100 700 T1500 700 T1900 700"/></g>
 </g>
-<g fill="url(#dockPile)" stroke="#201712" stroke-width="7">
- <path d="M760 192 L798 197 L810 420 L748 414Z"/><path d="M900 210 L938 215 L950 440 L888 433Z"/><path d="M1030 227 L1068 232 L1080 435 L1018 428Z"/>
- <path d="M300 224 L340 218 L350 390 L290 398Z"/><path d="M455 202 L495 196 L505 420 L445 428Z"/>
+<!-- distant low headland -->
+<path d="M0 385 Q110 320 220 350 Q320 380 420 365 Q510 350 600 390 L600 455 L0 455Z" fill="#344c4d"/>
+<path d="M0 387 Q130 342 220 365 Q335 390 440 375 Q520 370 600 405" fill="none" stroke="#9c9580" stroke-width="9" opacity=".8"/>
+<!-- broad shallow turquoise lagoon in foreground -->
+<path d="M0 500 Q180 445 365 475 Q520 498 650 470 Q785 438 920 485 Q1055 530 1185 505 L1300 900 H0Z" fill="url(#lagoon)"/>
+<path d="M0 500 Q180 445 365 475 Q520 498 650 470 Q785 438 920 485 Q1055 530 1185 505" fill="none" stroke="#d6fff0" stroke-width="9" opacity=".78"/>
+<path d="M0 530 Q190 478 365 505 Q525 530 665 500 Q800 475 920 515 Q1040 555 1190 530" fill="none" stroke="#a3f5e3" stroke-width="5" opacity=".7"/>
+<g class="water-shimmer" fill="none" stroke="#e1fff4" stroke-linecap="round">
+ <path d="M110 585 Q175 570 238 585 M280 625 Q350 609 420 625 M75 690 Q150 674 225 690 M450 560 Q510 546 570 560" stroke-width="4"/>
+ <path d="M160 745 Q230 730 300 745 M360 700 Q430 686 500 700 M570 630 Q630 619 690 630" stroke-width="3"/>
 </g>
-<g fill="#3b281e" stroke="#1d1713" stroke-width="6">
- <path d="M310 145 L330 142 L338 184 L302 188Z"/><path d="M560 142 L580 150 L590 190 L552 180Z"/>
+<!-- shoreline beach curve -->
+<path d="M0 430 Q135 400 270 430 Q385 460 470 520 Q560 590 660 625 Q760 660 850 635 Q960 600 1080 640 L1210 900 H0Z" fill="url(#sand)"/>
+<path d="M0 430 Q135 400 270 430 Q385 460 470 520 Q560 590 660 625 Q760 660 850 635 Q960 600 1080 640" fill="none" stroke="#f1d5aa" stroke-width="13"/>
+<path d="M0 445 Q140 418 265 448 Q390 480 455 535" fill="none" stroke="#fff0d0" stroke-width="5" opacity=".7"/>
+<!-- rocky shore on left and right -->
+<g fill="#454b48" stroke="#303b3b" stroke-width="7">
+ <path d="M0 360 L70 334 130 356 168 405 120 438 35 430 0 410Z"/>
+ <path d="M150 390 L205 365 260 394 282 438 240 466 175 447Z"/>
+ <path d="M-15 470 L48 440 108 466 120 520 60 550 0 530Z"/>
+ <path d="M980 570 L1040 548 1100 580 1110 635 1050 660 995 635Z"/>
+ <path d="M1080 620 L1145 590 1210 625 1235 690 1170 720 1100 680Z"/>
 </g>
-<g fill="none" stroke="#d4f3f2" stroke-width="5" opacity=".82">
- <path d="M720 400 Q770 383 825 400 M735 418 Q780 405 835 420"/><path d="M870 420 Q925 402 975 420 M1010 410 Q1060 395 1110 412"/>
+<g fill="#778078" opacity=".72">
+ <path d="M20 365 L68 344 105 362 60 370Z"/><path d="M176 399 L210 379 247 399 210 405Z"/><path d="M1005 584 L1048 562 1080 585 1040 592Z"/>
 </g>
-</svg></div><div class="foot">KAEVORYN STUDIOS · <a href="kingdoms.html">RETURN TO THE PARK</a></div></section></main>
-<script>
-(()=>{
- const canvas=document.getElementById('ocean');
- const gl=canvas.getContext('webgl',{alpha:false,antialias:true,powerPreference:'high-performance'});
- if(!gl){
-  canvas.style.background='linear-gradient(180deg,#9bcbd8 0%,#4b9caf 42%,#08718b 68%,#033d58 100%)';
-  return;
- }
- const vertex=`
- attribute vec2 position;
- varying vec2 uv;
- void main(){uv=position*.5+.5;gl_Position=vec4(position,0.,1.);}
- `;
- const fragment=`
- precision highp float;
- varying vec2 uv;
- uniform vec2 resolution;
- uniform float time;
-
- float wave(vec2 p,vec2 d,float f,float a,float speed,float t){
-   float q=dot(p,d)*f-t*speed;
-   return a*(0.78*sin(q)+0.22*sin(2.0*q+0.8));
- }
- float ocean(vec2 p,float t){
-   float h=0.0;
-   h+=wave(p,normalize(vec2(1.0,0.18)),0.34,0.54,0.62,t);
-   h+=wave(p,normalize(vec2(0.62,-0.78)),0.48,0.39,0.53,t);
-   h+=wave(p,normalize(vec2(-0.32,-1.0)),0.67,0.25,0.73,t);
-   h+=wave(p,normalize(vec2(0.92,0.42)),0.92,0.13,0.91,t);
-   h+=wave(p,normalize(vec2(-0.78,0.36)),1.38,0.065,1.17,t);
-   h+=wave(p,normalize(vec2(0.18,-1.0)),2.15,0.026,1.48,t);
-   return h;
- }
- vec3 skyColor(vec3 rd){
-   float y=max(rd.y,0.0);
-   vec3 sky=mix(vec3(0.78,0.86,0.88),vec3(0.28,0.54,0.67),pow(y,0.72));
-   vec3 sunDir=normalize(vec3(-0.48,0.34,-0.82));
-   float sun=pow(max(dot(rd,sunDir),0.0),190.0);
-   float halo=pow(max(dot(rd,sunDir),0.0),14.0);
-   return sky+vec3(1.0,0.84,0.67)*sun+vec3(1.0,0.78,0.59)*halo*0.14;
- }
- void main(){
-   vec2 screen=(gl_FragCoord.xy-0.5*resolution)/resolution.y;
-   vec3 ro=vec3(0.0,4.5,38.0);
-   vec3 rd=normalize(vec3(screen.x*3.65,screen.y*2.35-0.04,-1.18));
-   if(rd.y>=-0.006){gl_FragColor=vec4(skyColor(rd),1.0);return;}
-
-   float lo=0.0,hi=180.0;
-   for(int i=0;i<30;i++){
-     float mid=(lo+hi)*0.5;
-     vec3 q=ro+rd*mid;
-     if(q.y-ocean(q.xz,time)>0.0)lo=mid;else hi=mid;
-   }
-   float dist=(lo+hi)*0.5;
-   vec3 pos=ro+rd*dist;
-   float eps=0.018+dist*0.00035;
-   float h=ocean(pos.xz,time);
-   float dx=ocean(pos.xz+vec2(eps,0.0),time)-ocean(pos.xz-vec2(eps,0.0),time);
-   float dz=ocean(pos.xz+vec2(0.0,eps),time)-ocean(pos.xz-vec2(0.0,eps),time);
-   vec3 n=normalize(vec3(-dx/(2.0*eps),1.0,-dz/(2.0*eps)));
-   vec3 light=normalize(vec3(-0.48,0.76,0.42));
-   vec3 v=normalize(ro-pos);
-   float ndl=max(dot(n,light),0.0);
-   float fresnel=pow(1.0-max(dot(n,v),0.0),5.0);
-   float spec=pow(max(dot(reflect(-light,n),v),0.0),110.0);
-
-   float farFade=smoothstep(18.0,135.0,dist);
-   float shallow=1.0-smoothstep(7.0,72.0,dist);
-   vec3 water=mix(vec3(0.012,0.20,0.27),vec3(0.004,0.065,0.12),farFade*0.84);
-   water=mix(water,vec3(0.035,0.48,0.52),shallow*0.88);
-   water*=0.48+0.76*ndl;
-   float face=dot(n,light);
-   water*=0.66+0.48*smoothstep(-0.48,0.68,face);
-
-   // Fine wind ripples disturb the reflection without turning the sea into static.
-   float ripple=sin(pos.x*10.5+pos.z*2.4-time*2.0);
-   float rippleSoft=0.5+0.5*cos(pos.x*17.0+pos.z*3.1-time*2.8);
-   water+=vec3(0.012,0.027,0.032)*(0.5+0.5*ripple)*rippleSoft*(1.0-farFade);
-   water+=vec3(0.12,0.25,0.28)*spec*1.3;
-   water=mix(water,skyColor(reflect(-v,n)),fresnel*0.52);
-
-   // Small broken whitecaps appear only on steep upper shoulders of nearby swells.
-   float slope=length(vec2(dx,dz))/(2.0*eps);
-   float crest=smoothstep(0.52,1.05,slope);
-   float crestPattern=sin(pos.x*1.25+pos.z*2.35-time*0.24);
-   float brokenEdges=smoothstep(-0.15,0.62,crestPattern);
-   float whitecap=crest*brokenEdges*(1.0-farFade);
-   float foamGrain=0.92+0.08*sin(pos.x*19.0+pos.z*5.0-time*1.4);
-   water=mix(water,vec3(0.72,0.85,0.86),clamp(whitecap*foamGrain,0.0,0.48));
-
-   float sunGlint=pow(max(dot(reflect(-light,n),v),0.0),190.0);
-   water+=vec3(1.0,0.88,0.72)*sunGlint*0.72;
-   water=mix(water,vec3(0.34,0.55,0.61),farFade*0.55);
-   gl_FragColor=vec4(water,1.0);
- }
-`;
- function shader(type,src){
-  const sh=gl.createShader(type);gl.shaderSource(sh,src);gl.compileShader(sh);
-  if(!gl.getShaderParameter(sh,gl.COMPILE_STATUS)){console.error(gl.getShaderInfoLog(sh));return null;}return sh;
- }
- const vs=shader(gl.VERTEX_SHADER,vertex),fs=shader(gl.FRAGMENT_SHADER,fragment);
- if(!vs||!fs){gl.clearColor(0.015,0.22,0.30,1.0);gl.clear(gl.COLOR_BUFFER_BIT);canvas.style.background='linear-gradient(180deg,#9bcbd8 0%,#4b9caf 42%,#08718b 68%,#033d58 100%)';return;}
- const program=gl.createProgram();gl.attachShader(program,vs);gl.attachShader(program,fs);gl.linkProgram(program);
- if(!gl.getProgramParameter(program,gl.LINK_STATUS)){console.error(gl.getProgramInfoLog(program));gl.clearColor(0.015,0.22,0.30,1.0);gl.clear(gl.COLOR_BUFFER_BIT);canvas.style.background='linear-gradient(180deg,#9bcbd8 0%,#4b9caf 42%,#08718b 68%,#033d58 100%)';return;}
- gl.useProgram(program);
- const buffer=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buffer);
- gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
- const loc=gl.getAttribLocation(program,'position');gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
- const res=gl.getUniformLocation(program,'resolution'),tm=gl.getUniformLocation(program,'time');
- const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
- function resize(){
-  const d=Math.min(window.devicePixelRatio||1,1.5),w=Math.max(1,canvas.clientWidth),h=Math.max(1,canvas.clientHeight);
-  canvas.width=Math.round(w*d);canvas.height=Math.round(h*d);gl.viewport(0,0,canvas.width,canvas.height);
-  gl.uniform2f(res,canvas.width,canvas.height);
- }
- if('ResizeObserver'in window)new ResizeObserver(resize).observe(canvas);else window.addEventListener('resize',resize);
- resize();
- let start=performance.now();
- function draw(now){
-  gl.uniform1f(tm,reduce?0:(now-start)*.00032);
-  gl.clearColor(0.015,0.22,0.30,1.0);gl.clear(gl.COLOR_BUFFER_BIT);
-  gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
-  requestAnimationFrame(draw);
- }
- requestAnimationFrame(draw);
-})();
-</script>
-
-</body></html>
+<!-- raised docking mount built into land -->
+<ellipse cx="635" cy="710" rx="390" ry="64" fill="#142e32" opacity=".28" filter="url(#shadow)"/>
+<path d="M260 535 L540 490 L770 575 L475 640Z" fill="#342b25" stroke="#211e1b" stroke-width="14"/>
+<path d="M275 516 L540 474 L748 552 L480 613Z" fill="url(#wood)" stroke="#30231c" stroke-width="10"/>
+<g stroke="#4c3425" stroke-width="7" fill="none" opacity=".95">
+ <path d="M305 523 L540 488 L715 554 M330 546 L535 510 L690 569 M365 568 L530 535 L660 585"/>
+ <path d="M410 496 L425 589 M520 480 L530 568 M625 515 L630 600"/>
+</g>
+<!-- pier out over water -->
+<path d="M620 520 L1035 430 L1110 482 L690 585Z" fill="#30241e" stroke="#211a16" stroke-width="14"/>
+<path d="M620 502 L1030 414 L1090 458 L685 563Z" fill="url(#wood)" stroke="#34251c" stroke-width="9"/>
+<g stroke="#4b3324" stroke-width="6" fill="none">
+ <path d="M650 511 L1062 433 M666 535 L1078 457 M685 558 L1090 480"/>
+ <path d="M735 478 L750 548 M835 457 L850 523 M935 435 L950 502 M1020 420 L1035 480"/>
+</g>
+<!-- stout timber legs visibly descending into shallows -->
+<g fill="url(#post)" stroke="#251d18" stroke-width="8">
+ <path d="M748 550 L783 544 L798 790 L738 800Z"/>
+ <path d="M875 520 L912 512 L930 805 L870 810Z"/>
+ <path d="M1005 493 L1040 485 L1060 760 L1000 770Z"/>
+ <path d="M385 600 L425 590 L440 740 L380 750Z"/>
+ <path d="M540 580 L580 568 L595 745 L535 755Z"/>
+</g>
+<!-- timber caps and bollards -->
+<g fill="#33251c" stroke="#1e1915" stroke-width="5">
+ <path d="M350 505 L370 500 376 532 344 538Z"/><path d="M690 488 L710 480 720 512 688 520Z"/>
+ <path d="M310 510 L328 505 338 530 308 536Z"/>
+</g>
+<!-- white foam around timber feet -->
+<g fill="none" stroke="#e1fff4" stroke-width="6" opacity=".72">
+ <path d="M715 790 Q755 770 805 790 M720 812 Q765 795 820 815"/>
+ <path d="M850 804 Q900 784 950 805 M865 826 Q915 810 965 830"/>
+ <path d="M980 758 Q1030 740 1080 760"/>
+</g>
+<!-- near-shore pebbles -->
+<g fill="#5c6058" opacity=".85">
+ <ellipse cx="90" cy="565" rx="24" ry="10"/><ellipse cx="145" cy="590" rx="18" ry="8"/><ellipse cx="215" cy="560" rx="15" ry="7"/>
+ <ellipse cx="1120" cy="735" rx="24" ry="10"/><ellipse cx="1180" cy="770" rx="17" ry="8"/>
+</g>
+</svg>
+<div class="foot">KAEVORYN STUDIOS · <a href="kingdoms.html">RETURN TO THE PARK</a></div>
+</main>
+</body>
+</html>
