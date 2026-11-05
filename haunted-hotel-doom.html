@@ -59,6 +59,18 @@
 @media(prefers-reduced-motion:reduce){.mist:before,.mist:after,.moon{animation:none!important}.arrival-trigger,#hotel-door-panels{transition:none!important}#hotel-arrival.awakened #hotel-door-panels{transform:scaleX(.035);opacity:.18}#hotel-arrival.awakened #doorway-fog{animation:none!important;opacity:.3;transform:none}}
 
 /* Playable 3D Haunted Hotel Doom */
+#doom-3d-play{display:none}
+#doom-3d-play.game-active{display:block;position:fixed;inset:0;z-index:9999;width:100%;height:100vh;height:100dvh;max-width:none;margin:0;padding:0;background:#09070b;overflow:hidden}
+#doom-3d-play.game-active .section-head{display:none}
+#doom-3d-play.game-active .doom-game{height:100%;width:100%;border:0;border-radius:0;display:flex;flex-direction:column;box-shadow:none}
+#doom-3d-play.game-active .doom-game-top{flex:0 0 auto;padding:12px 16px;padding-top:max(12px,env(safe-area-inset-top))}
+#doom-3d-play.game-active .doom-canvas-wrap{height:auto;min-height:0;flex:1 1 auto}
+#doom-3d-play.game-active .doom-game-bottom{flex:0 0 auto;padding-bottom:max(12px,env(safe-area-inset-bottom))}
+#doom-3d-play.game-active .doom-game-note{display:none}
+#doom-3d-play.game-active .doom-touch{display:flex}
+#doom-3d-play.game-active .doom-game-actions{width:100%;justify-content:space-between}
+body.hotel-game-open{overflow:hidden}
+#doom-exit{border-color:#a83236;color:#f0d8d3}
 #doom-3d-play{padding-top:46px}
 .doom-game{border:1px solid #765d50;background:#0b090d;border-radius:14px;overflow:hidden;box-shadow:0 22px 65px #0009}
 .doom-game-top,.doom-game-bottom{padding:13px 16px;background:#151015;display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}
@@ -181,7 +193,7 @@
     <div class="doom-game-top"><span id="doom-location">OUTSIDE · HOTEL GROUNDS</span><span id="doom-hint">WASD / ARROW KEYS · MOUSE TO LOOK</span></div>
     <div class="doom-canvas-wrap" id="doom-canvas-wrap"><div class="doom-loading" id="doom-loading">PREPARING THE HOTEL…</div></div>
     <div class="doom-game-bottom">
-      <div class="doom-game-actions"><button class="btn primary" id="doom-start">ENTER THE HOTEL</button><button class="btn" id="doom-reset">RETURN OUTSIDE</button><button class="btn" id="doom-fullscreen">FULL SCREEN</button></div>
+      <div class="doom-game-actions"><button class="btn primary" id="doom-start">ENTER THE HOTEL</button><button class="btn" id="doom-reset">RETURN OUTSIDE</button><button class="btn" id="doom-fullscreen">FULL SCREEN</button><button class="btn" id="doom-exit">EXIT GAME</button></div>
       <div class="doom-touch" aria-label="Mobile movement controls">
         <div class="doom-pad"><button type="button" data-move="forward" aria-label="Move forward">▲</button><div><button type="button" data-move="left" aria-label="Move left">◀</button><button type="button" data-move="back" aria-label="Move backward">▼</button><button type="button" data-move="right" aria-label="Move right">▶</button></div></div>
         <div class="doom-look-note">Drag the scene to look around · Use arrows to walk</div>
@@ -232,7 +244,7 @@ import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.m
 const host=document.getElementById("doom-canvas-wrap"),loading=document.getElementById("doom-loading");
 const locationLabel=document.getElementById("doom-location"),hint=document.getElementById("doom-hint");
 if(!host)return;
-let renderer,scene,camera,clock,locked=false,dragging=false,lastX=0,lastY=0,yaw=0,pitch=0,inside=false,started=false;
+let renderer,scene,camera,clock,locked=false,dragging=false,lastX=0,lastY=0,yaw=0,pitch=0,inside=false,started=false,autoEntering=false;
 const keys={},touch={forward:false,back:false,left:false,right:false};
 const colliders=[];
 try{
@@ -298,8 +310,8 @@ try{
  point(-12,2,4,0x65708c,.7,16);point(12,2,4,0x65708c,.7,16);
  const player={speed:5.2,turn:1.8};let lastTime=0;
  function setInside(v){inside=v;locationLabel.textContent=v?(camera.position.z<-16?"PORTRAIT HALL · HOTEL INTERIOR":"INSIDE · GRAND LOBBY"):"OUTSIDE · HOTEL GROUNDS";hint.textContent=v?"EXPLORE THE LOBBY · FIND THE PORTRAIT HALL":"WASD / ARROWS · APPROACH THE OPEN DOORS";}
- function resetPlayer(){camera.position.set(0,1.7,18);yaw=0;pitch=0;doorL.rotation.y=0;doorR.rotation.y=0;setInside(false);}
- function update(dt){if(!started)return;let forward=(keys.KeyW||keys.ArrowUp||touch.forward?1:0)-(keys.KeyS||keys.ArrowDown||touch.back?1:0);let side=(keys.KeyD||keys.ArrowRight||touch.right?1:0)-(keys.KeyA||keys.ArrowLeft||touch.left?1:0);const len=Math.hypot(forward,side)||1;forward/=len;side/=len;const speed=player.speed*dt;camera.position.x+= (Math.sin(yaw)*forward+Math.cos(yaw)*side)*speed;camera.position.z+=(-Math.cos(yaw)*forward+Math.sin(yaw)*side)*speed;camera.position.x=THREE.MathUtils.clamp(camera.position.x,-9.4,9.4);camera.position.z=THREE.MathUtils.clamp(camera.position.z,-37,22);camera.position.y=1.7;camera.rotation.order="YXZ";camera.rotation.y=yaw;camera.rotation.x=pitch;
+ function resetPlayer(){camera.position.set(0,1.7,18);yaw=0;pitch=0;autoEntering=false;doorL.rotation.y=0;doorR.rotation.y=0;setInside(false);}
+ function update(dt){if(!started)return;if(autoEntering){camera.position.z-=dt*3.2;if(camera.position.z<=-3.5){camera.position.z=-3.5;autoEntering=false;}}let forward=(keys.KeyW||keys.ArrowUp||touch.forward?1:0)-(keys.KeyS||keys.ArrowDown||touch.back?1:0);let side=(keys.KeyD||keys.ArrowRight||touch.right?1:0)-(keys.KeyA||keys.ArrowLeft||touch.left?1:0);const len=Math.hypot(forward,side)||1;forward/=len;side/=len;const speed=player.speed*dt;camera.position.x+= (Math.sin(yaw)*forward+Math.cos(yaw)*side)*speed;camera.position.z+=(-Math.cos(yaw)*forward+Math.sin(yaw)*side)*speed;camera.position.x=THREE.MathUtils.clamp(camera.position.x,-9.4,9.4);camera.position.z=THREE.MathUtils.clamp(camera.position.z,-37,22);camera.position.y=1.7;camera.rotation.order="YXZ";camera.rotation.y=yaw;camera.rotation.x=pitch;
  const nearDoor=Math.abs(camera.position.x)<3.2&&camera.position.z<1.5&&camera.position.z>-4.5;doorL.rotation.y=THREE.MathUtils.damp(doorL.rotation.y,nearDoor?-.95:0,2.8,dt);doorR.rotation.y=THREE.MathUtils.damp(doorR.rotation.y,nearDoor?.95:0,2.8,dt);
  if(camera.position.z<-.5&&!inside)setInside(true);if(camera.position.z<-19&&inside)locationLabel.textContent="PORTRAIT HALL · HOTEL INTERIOR";if(camera.position.z>-0.2&&inside)setInside(false);
  }
@@ -315,7 +327,11 @@ try{
  canvas.addEventListener("pointerup",()=>dragging=false);canvas.addEventListener("pointercancel",()=>dragging=false);
  document.addEventListener("keydown",e=>{keys[e.code]=true;if(["ArrowUp","ArrowDown","ArrowLeft","ArrowRight","Space"].includes(e.code))e.preventDefault();});document.addEventListener("keyup",e=>keys[e.code]=false);window.addEventListener("blur",()=>{Object.keys(keys).forEach(k=>keys[k]=false);Object.keys(touch).forEach(k=>touch[k]=false);});
  document.querySelectorAll("[data-move]").forEach(btn=>{const dir=btn.dataset.move;const down=e=>{e.preventDefault();touch[dir]=true;};const up=e=>{e.preventDefault();touch[dir]=false;};btn.addEventListener("pointerdown",down);btn.addEventListener("pointerup",up);btn.addEventListener("pointerleave",up);btn.addEventListener("pointercancel",up);});
- document.getElementById("doom-start").addEventListener("click",()=>{started=true;resetPlayer();document.getElementById("doom-start").textContent="EXPLORING";if(matchMedia("(pointer:coarse)").matches){hint.textContent="DRAG TO LOOK · DIRECTION PAD TO WALK";}else{hint.textContent="CLICK SCENE · WASD / ARROWS TO WALK";}});
+ function launchGame(){const section=document.getElementById("doom-3d-play");section.classList.add("game-active");document.body.classList.add("hotel-game-open");started=true;camera.position.set(0,1.7,4.8);yaw=0;pitch=0;inside=false;autoEntering=true;doorL.rotation.y=0;doorR.rotation.y=0;setInside(false);document.getElementById("doom-start").textContent="EXPLORING";if(matchMedia("(pointer:coarse)").matches){hint.textContent="DRAG TO LOOK · DIRECTION PAD TO WALK";}else{hint.textContent="CLICK SCENE · WASD / ARROWS TO WALK";}resize();}
+ document.getElementById("doom-start").addEventListener("click",launchGame);
+ document.getElementById("enter-hotel").addEventListener("click",launchGame);
+ document.getElementById("doom-exit").addEventListener("click",()=>{document.getElementById("doom-3d-play").classList.remove("game-active");document.body.classList.remove("hotel-game-open");started=false;autoEntering=false;if(document.pointerLockElement)document.exitPointerLock();resetPlayer();});
+
  document.getElementById("doom-reset").addEventListener("click",resetPlayer);
  document.getElementById("doom-fullscreen").addEventListener("click",()=>{const el=document.getElementById("doom-game");if(!document.fullscreenElement)el.requestFullscreen?.();else document.exitFullscreen?.();});
  loading.classList.add("hidden");
