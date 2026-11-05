@@ -292,6 +292,28 @@ try{
  // Grand staircase: solid Victorian construction with closed risers, heavy stringers and carved rails.
  const stairStone=mat(0x39343a,.96),stairEdge=mat(0x716166,.92),runner=mat(0x54232d,.98),runnerWear=mat(0x321820,.98),iron=mat(0x17191d,.62,.72),oakRail=mat(0x38251f,.82),dust=mat(0x91827a,1);
  const beamBetween=(a,b,radius,material)=>{const av=new THREE.Vector3(...a),bv=new THREE.Vector3(...b),delta=new THREE.Vector3().subVectors(bv,av);const mesh=new THREE.Mesh(new THREE.CylinderGeometry(radius,radius,delta.length(),12),material);mesh.position.copy(av).add(bv).multiplyScalar(.5);mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),delta.normalize());mesh.castShadow=true;mesh.receiveShadow=true;scene.add(mesh);return mesh;};
+ // Solid closed underside: a continuous timber stair carriage fills the gaps beneath the treads.
+ const stairCarriage=mat(0x24191b,.94),stairSide=mat(0x302125,.92);
+ const lowerCarriage=box(5.9,.72,7.05,stairCarriage,-6.5,1.62,-10.65);
+ lowerCarriage.rotation.x=.46;
+ // Deep carved side cheeks make the flight read as one architectural staircase.
+ for(const side of [-1,1]){
+  const cheek=box(.42,1.02,7.15,stairSide,-6.5+side*2.92,1.72,-10.65);
+  cheek.rotation.x=.46;
+  // Recessed decorative panels along the outside of each cheek.
+  for(let i=0;i<4;i++){
+   const z=-8.55-i*1.35,y=.62+i*.69;
+   box(.08,.56,.62,oakRail,-6.5+side*3.16,y,z);
+   box(.035,.38,.42,gold,-6.5+side*3.205,y,z);
+  }
+ }
+ // Carved dark-oak newel posts and thicker rails at the foot of the stairs.
+ for(const side of [-1,1]){
+  const x=-6.5+side*2.48;
+  box(.34,1.45,.34,oakRail,x,1.05,-7.82);
+  cyl(.24,.20,.22,gold,x,1.83,-7.82,10);
+  const finial=new THREE.Mesh(new THREE.SphereGeometry(.19,12,10),oakRail);finial.position.set(x,2.02,-7.82);scene.add(finial);
+ }
  // Lower flight: stone treads sit on continuous dark timber stringers, not floating in space.
  for(const side of [-1,0,1]){
   const x=-6.5+side*2.42;
