@@ -240,11 +240,11 @@ reset.addEventListener("click",()=>{clearSequence();doors.classList.remove("open
 </script>
 
 <script type="module">
-(async()=>{
 const loading=document.getElementById("doom-loading");
 let THREE;
 try{ THREE=await import("https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.module.js"); }
-catch(err){ console.error("Haunted Hotel engine could not load",err); if(loading){loading.textContent="THE HOTEL ENGINE COULD NOT LOAD · CHECK YOUR CONNECTION AND RELOAD";} return; }
+catch(err){ console.error("Haunted Hotel engine could not load",err); if(loading){loading.textContent="THE HOTEL ENGINE COULD NOT LOAD · CHECK YOUR CONNECTION AND RELOAD";} }
+if(THREE){
 (()=>{
 const host=document.getElementById("doom-canvas-wrap"),loading=document.getElementById("doom-loading");
 const locationLabel=document.getElementById("doom-location"),hint=document.getElementById("doom-hint");
@@ -345,6 +345,7 @@ try{
  loading.classList.add("hidden");
 }catch(err){console.error("Haunted Hotel 3D failed",err);loading.textContent="THE HOTEL COULD NOT LOAD · CHECK YOUR CONNECTION AND RELOAD";}
 })();
+}
 </script>
 
 </body>
