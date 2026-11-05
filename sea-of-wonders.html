@@ -8,60 +8,92 @@
 <title>The Sea of Wonders · Kaevoryn Studios</title>
 <style>
 *{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#07354a;color:#f4fbff;font:15px/1.5 Arial,sans-serif}body{overflow-x:hidden}.top{position:absolute;z-index:3;top:0;left:0;right:0;padding:18px clamp(16px,4vw,48px);display:flex;justify-content:space-between;align-items:center;background:linear-gradient(#03283acc,transparent)}.brand{font-size:11px;letter-spacing:.2em;font-weight:900;color:white;text-decoration:none}.brand small{display:block;color:#a9efff;font-size:9px}.top a:last-child{color:#e4faff;text-decoration:none;font-size:12px}.stage{height:100svh;min-height:560px;position:relative;overflow:hidden;background:linear-gradient(#8bc8dc 0%,#c3e3e7 36%,#398da5 62%,#07506b 100%)}canvas{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:0}
-.water-motion{position:absolute;z-index:1;left:0;right:0;top:42%;bottom:0;overflow:hidden;pointer-events:none;background:linear-gradient(180deg,rgba(23,139,165,.08),rgba(0,48,75,.42))}
-.water-motion:before,.water-motion:after{content:"";position:absolute;left:-30%;width:160%;height:75%;border-radius:48%;background:repeating-linear-gradient(176deg,transparent 0 17px,rgba(220,250,249,.22) 18px,transparent 21px,transparent 38px);filter:blur(2px);animation:seaDrift 9s linear infinite}
-.water-motion:before{top:18%;transform:rotate(-3deg) scaleY(.72)}
-.water-motion:after{top:42%;opacity:.7;transform:rotate(2deg) scaleY(.85);animation:seaDriftBack 13s linear infinite}
-.water-motion i{position:absolute;top:8%;left:-20%;width:140%;height:22%;background:linear-gradient(90deg,transparent 0%,rgba(255,249,218,.04) 25%,rgba(255,249,218,.5) 49%,rgba(255,249,218,.08) 58%,transparent 80%);filter:blur(9px);transform:rotate(-7deg);animation:sunGlide 11s ease-in-out infinite}
-@keyframes seaDrift{from{translate:0 0}to{translate:12% 8%}}
-@keyframes seaDriftBack{from{translate:10% 0}to{translate:-12% -5%}}
-@keyframes sunGlide{0%,100%{translate:-8% 0;opacity:.35}50%{translate:18% 12%;opacity:.9}}
 .heading{position:absolute;z-index:2;top:17%;left:0;right:0;text-align:center;padding:0 18px;pointer-events:none;text-shadow:0 3px 18px #07354a88}.eyebrow{font-size:10px;font-weight:800;letter-spacing:.25em;color:#e4fbff}.heading h1{font-size:clamp(38px,7vw,76px);line-height:.98;letter-spacing:-.045em;margin:12px 0;color:#fff}.heading p{max-width:520px;margin:12px auto;color:#f0fcff;font-size:clamp(14px,2vw,17px)}.foot{position:absolute;z-index:2;bottom:14px;left:0;right:0;text-align:center;color:#e1f8ff;font-size:10px;letter-spacing:.12em;text-shadow:0 2px 8px #001d2b}.foot a{color:#fff}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
 </style>
 </head>
 <body>
 <header class="top"><a class="brand" href="kingdoms.html">KAEVORYN STUDIOS<small>CREATE THE IMPOSSIBLE</small></a><a href="kingdoms.html">← The Kingdoms of Wonder</a></header>
-<main><section class="stage" aria-label="Open ocean water preview"><canvas id="ocean" aria-hidden="true"></canvas><div class="water-motion" aria-hidden="true"><i></i></div><div class="heading"><div class="eyebrow">THE KINGDOMS OF WONDER · WATER ADVENTURE</div><h1>THE SEA OF WONDERS</h1><p>First, we build the ocean. Nothing else — just open water, natural waves, and a distant horizon.</p></div><div class="foot">KAEVORYN STUDIOS · <a href="kingdoms.html">RETURN TO THE PARK</a></div></section></main>
-<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+<main><section class="stage" aria-label="Open ocean water preview"><canvas id="ocean" aria-hidden="true"></canvas><div class="heading"><div class="eyebrow">THE KINGDOMS OF WONDER · WATER ADVENTURE</div><h1>THE SEA OF WONDERS</h1><p>First, we build the ocean. Nothing else — just open water, natural waves, and a distant horizon.</p></div><div class="foot">KAEVORYN STUDIOS · <a href="kingdoms.html">RETURN TO THE PARK</a></div></section></main>
 <script>
 (()=>{
-const canvas=document.getElementById('ocean');
-if(!window.THREE)return;
-const THREE=window.THREE,scene=new THREE.Scene();
-scene.background=new THREE.Color(0x9bcbd9);
-scene.fog=new THREE.Fog(0x9bcbd9,95,270);
-const camera=new THREE.PerspectiveCamera(54,1,.1,600);
-camera.position.set(0,8,24);camera.lookAt(0,0,-45);
-const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:false});
-renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.6));
-renderer.outputColorSpace=THREE.SRGBColorSpace;
-scene.add(new THREE.HemisphereLight(0xe8faff,0x17465a,1.35));
-const sunlight=new THREE.DirectionalLight(0xfff4df,2.0);sunlight.position.set(-35,45,20);scene.add(sunlight);
-const geometry=new THREE.PlaneGeometry(420,520,320,380);geometry.rotateX(-Math.PI/2);
-const base=geometry.attributes.position.array.slice();
-const colors=new Float32Array(geometry.attributes.position.count*3);
-geometry.setAttribute('color',new THREE.BufferAttribute(colors,3));
-const deep=new THREE.Color(0x032f4b),blue=new THREE.Color(0x05658a),aqua=new THREE.Color(0x20a0b2),foam=new THREE.Color(0xe5f4ed),sunGlint=new THREE.Color(0xfff4d8);
-const material=new THREE.MeshPhysicalMaterial({color:0xffffff,vertexColors:true,roughness:.115,metalness:.09,clearcoat:1,clearcoatRoughness:.035,reflectivity:1});
-const water=new THREE.Mesh(geometry,material);water.position.set(0,-.5,-105);scene.add(water);
-function waveAt(x,z,t){
- const swell=Math.sin(x*.022+t*.29)*.34+
- Math.sin((x*.58+z)*.017-t*.25)*.31+
- Math.cos(z*.029+t*.21)*.17;
- const cross=Math.sin((x*.8-z)*.068+t*.61)*.075+
- Math.sin((x+z)*.125-t*.82)*.032+
- Math.sin(x*.19+z*.11+t*.48)*.018;
- return swell+cross;
+const canvas=document.getElementById('ocean'),ctx=canvas.getContext('2d',{alpha:false});
+if(!ctx)return;
+let w=0,h=0,dpr=1,raf=0,last=0;
+const reduced=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+function resize(){
+ const r=canvas.getBoundingClientRect();dpr=Math.min(window.devicePixelRatio||1,1.5);
+ w=Math.max(1,r.width);h=Math.max(1,r.height);
+ canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);
+ ctx.setTransform(dpr,0,0,dpr,0,0);
 }
-function resize(){const w=canvas.clientWidth,h=canvas.clientHeight;if(!w||!h)return;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();}
-if(window.ResizeObserver)new ResizeObserver(resize).observe(canvas);else window.addEventListener('resize',resize);resize();
-const clock=new THREE.Clock();
-const waterColor=new THREE.Color();
-function animate(){requestAnimationFrame(animate);const t=clock.getElapsedTime(),p=geometry.attributes.position,c=geometry.attributes.color;
-for(let i=0;i<p.count;i++){const x=base[i*3],z=base[i*3+2];const wave=waveAt(x,z,t);p.setY(i,base[i*3+1]+wave);const distance=THREE.MathUtils.smoothstep(z,-255,-8);const crest=THREE.MathUtils.smoothstep(wave,.53,.76);const ripple=Math.sin((x*.8-z)*.068+t*.61)*.5+.5;const foamMask=Math.max(crest*.48,THREE.MathUtils.smoothstep(ripple,.965,1)*.22);const bandOne=-20+Math.sin(z*.019+t*.24)*7;const bandTwo=17+Math.sin(z*.014-t*.19)*9;const glintOne=Math.exp(-Math.pow((x-bandOne)/4.5,2));const glintTwo=Math.exp(-Math.pow((x-bandTwo)/3.2,2));const sparkle=Math.pow(Math.max(0,Math.sin(z*.27+t*1.7)*Math.sin(x*.31-t*.9)),12);const glimmer=Math.min(.72,glintOne*(.24+.76*sparkle)*.48+glintTwo*(.18+.82*sparkle)*.3);waterColor.copy(deep).lerp(blue,distance*.86).lerp(aqua,distance*.24).lerp(sunGlint,glimmer).lerp(foam,foamMask);c.setXYZ(i,waterColor.r,waterColor.g,waterColor.b);}
-p.needsUpdate=true;c.needsUpdate=true;geometry.computeVertexNormals();
-renderer.render(scene,camera);}
-animate();
+if(window.ResizeObserver)new ResizeObserver(resize).observe(canvas);else window.addEventListener('resize',resize);
+resize();
+function draw(ms){
+ raf=requestAnimationFrame(draw);
+ if(ms-last<32)return;last=ms;
+ const t=reduced?0:ms*.00022;
+ const horizon=h*.43;
+ let sky=ctx.createLinearGradient(0,0,0,horizon);
+ sky.addColorStop(0,'#8bbdce');sky.addColorStop(.65,'#c5dfe0');sky.addColorStop(1,'#78adba');
+ ctx.fillStyle=sky;ctx.fillRect(0,0,w,horizon+2);
+ const glow=ctx.createRadialGradient(w*.67,horizon*.04,2,w*.67,horizon*.04,w*.45);
+ glow.addColorStop(0,'rgba(255,244,211,.46)');glow.addColorStop(1,'rgba(255,244,211,0)');
+ ctx.fillStyle=glow;ctx.fillRect(0,0,w,horizon);
+ let sea=ctx.createLinearGradient(0,horizon,0,h);
+ sea.addColorStop(0,'#39889a');sea.addColorStop(.24,'#12647c');sea.addColorStop(.62,'#06445f');sea.addColorStop(1,'#022b46');
+ ctx.fillStyle=sea;ctx.fillRect(0,horizon,w,h-horizon);
+ // distant, low swells establish the horizon without a repeating stripe pattern
+ for(let layer=0;layer<4;layer++){
+  const y=horizon+10+layer*15,amp=2+layer*1.8,phase=t*(.6+layer*.12)+layer*1.7;
+  ctx.beginPath();ctx.moveTo(0,y);
+  for(let x=0;x<=w+8;x+=8){
+   const yy=y+Math.sin(x*.009+phase)*amp+Math.sin(x*.021-phase*.7)*amp*.32;
+   ctx.lineTo(x,yy);
+  }
+  ctx.strokeStyle=['rgba(220,244,239,.14)','rgba(174,222,224,.12)','rgba(7,63,83,.18)','rgba(190,230,228,.09)'][layer];
+  ctx.lineWidth=layer===0?1.4:1;ctx.stroke();
+ }
+ // broad, soft sunlight path that breaks into irregular glints toward the viewer
+ const sunX=w*(.67+Math.sin(t*.38)*.035);
+ for(let i=0;i<155;i++){
+  const depth=i/155,y=horizon+18+depth*depth*(h-horizon-18);
+  const spread=5+depth*depth*w*.19;
+  const x=sunX+(Math.sin(i*12.989+t*2.1)*.5)*spread;
+  const len=(2+depth*12)*(0.35+Math.abs(Math.sin(i*7.13+t*3))*.8);
+  const alpha=(.05+depth*.22)*(0.3+Math.abs(Math.sin(i*3.7+t*1.8))*.7);
+  ctx.beginPath();ctx.moveTo(x-len,y);ctx.quadraticCurveTo(x,y-1-depth*1.5,x+len*.7,y);
+  ctx.strokeStyle='rgba(255,239,196,'+alpha+')';ctx.lineWidth=.5+depth*1.1;ctx.stroke();
+ }
+ // long, overlapping swells: varied spacing and phase keep the surface from looking tiled
+ for(let layer=0;layer<13;layer++){
+  const depth=layer/12,y=horizon+30+depth*depth*(h-horizon-22);
+  const amp=2+depth*10,period= w*(.13+depth*.13),phase=t*(.7+depth*.8)+layer*2.31;
+  ctx.beginPath();ctx.moveTo(0,y);
+  for(let x=0;x<=w+6;x+=6){
+   const wave=Math.sin(x/period*Math.PI*2+phase)*amp+
+    Math.sin(x/(period*.43)*Math.PI*2-phase*1.23)*amp*.22+
+    Math.sin(x/(period*2.4)*Math.PI*2+phase*.61)*amp*.32;
+   ctx.lineTo(x,y+wave);
+  }
+  const a=.045+depth*.12;
+  ctx.strokeStyle='rgba(180,226,226,'+a+')';ctx.lineWidth=.7+depth*1.1;ctx.stroke();
+ }
+ // sparse, irregular crest foam, only on selected wave peaks
+ for(let i=0;i<48;i++){
+  const depth=(i%16)/15,y=horizon+42+depth*depth*(h-horizon-35);
+  const x=((i*137.5+Math.sin(t*1.3+i)*48)% (w+40))-20;
+  const wave=Math.sin(x*.012+t*1.4+i)* (2+depth*9);
+  const len=2+depth*15;
+  ctx.beginPath();ctx.moveTo(x-len,y+wave);
+  ctx.quadraticCurveTo(x,y+wave-1-depth*2,x+len,y+wave);
+  ctx.strokeStyle='rgba(231,246,239,'+(.06+depth*.16)+')';ctx.lineWidth=.6+depth*.9;ctx.stroke();
+ }
+ // subtle atmospheric horizon veil
+ const veil=ctx.createLinearGradient(0,horizon-8,0,horizon+30);
+ veil.addColorStop(0,'rgba(221,239,234,0)');veil.addColorStop(.55,'rgba(221,239,234,.17)');veil.addColorStop(1,'rgba(221,239,234,0)');
+ ctx.fillStyle=veil;ctx.fillRect(0,horizon-8,w,38);
+}
+raf=requestAnimationFrame(draw);
 })();
 </script>
 </body></html>
