@@ -88,7 +88,8 @@ body.hotel-game-open{overflow:hidden}
 .doom-pad button{width:44px;height:42px;border:1px solid #a88b60;border-radius:8px;background:#2b2024;color:#f4e6d0;font-size:17px;touch-action:none}
 .doom-look-note{font:10px Arial,sans-serif;color:#c7b8a8;max-width:140px}
 @media(max-width:720px){.doom-touch{display:flex}.doom-canvas-wrap{height:58svh;min-height:340px}.doom-game-top{font-size:8px}.doom-game-actions .btn{font-size:9px;padding:10px}}
-\n</style>
+
+</style>
 </head>
 <body>
 <header class="top"><a href="kingdoms.html">KAEVORYN STUDIOS<small>CREATE THE IMPOSSIBLE</small></a><nav><a href="kingdoms.html">THE KINGDOMS OF WONDER</a><a href="attractions.html">ATTRACTIONS</a></nav></header>
@@ -239,7 +240,11 @@ reset.addEventListener("click",()=>{clearSequence();doors.classList.remove("open
 </script>
 
 <script type="module">
-import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.module.js";
+(async()=>{
+const loading=document.getElementById("doom-loading");
+let THREE;
+try{ THREE=await import("https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.module.js"); }
+catch(err){ console.error("Haunted Hotel engine could not load",err); if(loading){loading.textContent="THE HOTEL ENGINE COULD NOT LOAD · CHECK YOUR CONNECTION AND RELOAD";} return; }
 (()=>{
 const host=document.getElementById("doom-canvas-wrap"),loading=document.getElementById("doom-loading");
 const locationLabel=document.getElementById("doom-location"),hint=document.getElementById("doom-hint");
@@ -257,7 +262,8 @@ try{
  const box=(w,h,d,material,x,y,z,shadows=true)=>{const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),material);m.position.set(x,y,z);m.castShadow=shadows;m.receiveShadow=true;scene.add(m);return m};
  const cyl=(r1,r2,h,material,x,y,z,segments=12)=>{const m=new THREE.Mesh(new THREE.CylinderGeometry(r1,r2,h,segments),material);m.position.set(x,y,z);m.castShadow=true;m.receiveShadow=true;scene.add(m);return m};
  const point=(x,y,z,color,intensity,dist)=>{const l=new THREE.PointLight(color,intensity,dist,2);l.position.set(x,y,z);scene.add(l);return l};
- scene.add(new THREE.AmbientLight(0xffffff,.42));\n scene.add(new THREE.HemisphereLight(0xd4d9ed,0x51434a,1.05));
+ scene.add(new THREE.AmbientLight(0xffffff,.42));
+ scene.add(new THREE.HemisphereLight(0xd4d9ed,0x51434a,1.05));
  const moon=new THREE.DirectionalLight(0xc3c9df,1.55);moon.position.set(-8,18,10);moon.castShadow=true;moon.shadow.mapSize.set(1024,1024);scene.add(moon);
  // Grounds and the imposing Victorian exterior.
  box(100,.5,100,mat(0x111116),0,-.3,0);
@@ -295,7 +301,9 @@ try{
  // Chandelier with warm bulbs.
  const chain=cyl(.04,.04,2,trim,0,10,-13);const ring=new THREE.Mesh(new THREE.TorusGeometry(2,.09,8,32),gold);ring.position.set(0,8.8,-13);scene.add(ring);
  for(let i=0;i<8;i++){const a=i*Math.PI/4,x=Math.cos(a)*1.8,z=-13+Math.sin(a)*1.8;box(.09,1.3,.09,gold,x,8.3,z);const bulb=point(x,7.7,z,0xffc47a,1.3,7);const sphere=new THREE.Mesh(new THREE.SphereGeometry(.16,10,10),mat(0xffd18b,.25));sphere.position.set(x,7.7,z);scene.add(sphere);}
- point(0,8.7,-13,0xffc987,3.1,19);\n // Soft fill lights keep the lobby and corridor readable while preserving haunted shadows.\n point(0,5.2,-5,0xffd5a0,2.0,13);point(-5,4.5,-12,0xd5c9e8,1.35,10);point(5,4.5,-17,0xffc58a,1.5,11);point(0,4.5,-25,0xd5c9e8,1.15,12);
+ point(0,8.7,-13,0xffc987,3.1,19);
+ // Soft fill lights keep the lobby and corridor readable while preserving haunted shadows.
+ point(0,5.2,-5,0xffd5a0,2.0,13);point(-5,4.5,-12,0xd5c9e8,1.35,10);point(5,4.5,-17,0xffc58a,1.5,11);point(0,4.5,-25,0xd5c9e8,1.15,12);
  // Portrait frames along the walls and shadowed corridor sconces.
  for(let z=-5;z>=-30;z-=4){for(let x of [-10.35,10.35]){box(.18,2.6,.12,gold,x,5,z);box(.12,2.3,.08,portraitMat,x+(x<0?.12:-.12),5,z);point(x*.94,5.3,z,0xffc783,.65,6);}}
  for(let z=-19;z>=-31;z-=4){for(let x of [-8.5,8.5]){box(.12,1,.12,gold,x,3.2,z);point(x,3.6,z,0xffbd78,1.15,8);}}
@@ -338,5 +346,6 @@ try{
 }catch(err){console.error("Haunted Hotel 3D failed",err);loading.textContent="THE HOTEL COULD NOT LOAD · CHECK YOUR CONNECTION AND RELOAD";}
 })();
 </script>
-\n</body>
+
+</body>
 </html>
