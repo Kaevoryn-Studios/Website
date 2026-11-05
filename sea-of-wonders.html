@@ -18,102 +18,77 @@
 (()=>{
 const canvas=document.getElementById('ocean'),ctx=canvas.getContext('2d',{alpha:false});
 if(!ctx)return;
-let w=0,h=0,dpr=1,raf=0,last=0;
-const reduced=false; // Keep the ocean animated; motion is part of this ride preview.
+const water=document.createElement('canvas'),wctx=water.getContext('2d');
+let w=0,h=0,dpr=1,raf=0,last=0,frame=null,pixels=null;
 function resize(){
  const r=canvas.getBoundingClientRect();dpr=Math.min(window.devicePixelRatio||1,1.5);
  w=Math.max(1,r.width);h=Math.max(1,r.height);
  canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);
  ctx.setTransform(dpr,0,0,dpr,0,0);
+ water.width=Math.max(160,Math.round(w*.62));
+ water.height=Math.max(180,Math.round(h*.62));
+ frame=wctx.createImageData(water.width,water.height);pixels=frame.data;
 }
 if(window.ResizeObserver)new ResizeObserver(resize).observe(canvas);else window.addEventListener('resize',resize);
 resize();
 function draw(ms){
  raf=requestAnimationFrame(draw);
- if(ms-last<32)return;last=ms;
- const t=ms*.00031;
- const horizon=h*.43;
+ if(ms-last<33)return;last=ms;
+ const t=ms*.001;
+ const horizon=h*.43,wh=water.height,ww=water.width;
  let sky=ctx.createLinearGradient(0,0,0,horizon);
- sky.addColorStop(0,'#8bbdce');sky.addColorStop(.65,'#c5dfe0');sky.addColorStop(1,'#78adba');
+ sky.addColorStop(0,'#8bbdce');sky.addColorStop(.68,'#c5dfe0');sky.addColorStop(1,'#83b5bf');
  ctx.fillStyle=sky;ctx.fillRect(0,0,w,horizon+2);
- const glow=ctx.createRadialGradient(w*.67,horizon*.04,2,w*.67,horizon*.04,w*.45);
- glow.addColorStop(0,'rgba(255,244,211,.46)');glow.addColorStop(1,'rgba(255,244,211,0)');
- ctx.fillStyle=glow;ctx.fillRect(0,0,w,horizon);
- let sea=ctx.createLinearGradient(0,horizon,0,h);
- sea.addColorStop(0,'#39889a');sea.addColorStop(.24,'#12647c');sea.addColorStop(.62,'#06445f');sea.addColorStop(1,'#022b46');
- ctx.fillStyle=sea;ctx.fillRect(0,horizon,w,h-horizon);
- // soft atmospheric movement near the horizon
- const haze=ctx.createLinearGradient(0,horizon-3,0,horizon+42);
- haze.addColorStop(0,'rgba(225,243,237,0)');
- haze.addColorStop(.45,'rgba(225,243,237,.13)');
- haze.addColorStop(1,'rgba(225,243,237,0)');
- ctx.fillStyle=haze;ctx.fillRect(0,horizon-3,w,42);
- // broken sunlight reflections drift with the changing surface
- const sunX=w*.67;
- for(let i=0;i<210;i++){
-  const depth=i/210,y=horizon+14+depth*depth*(h-horizon-14);
-  const spread=4+depth*depth*w*.22;
-  const drift=t*(8+depth*24);
-  const x=sunX+Math.sin(i*12.989+t*(.55+depth))*spread+Math.sin(i*3.17+t)*9+drift*.08;
-  const len=(1.5+depth*13)*(.25+Math.abs(Math.sin(i*7.13+t*2.4))*.85);
-  const alpha=(.035+depth*.19)*(.25+Math.abs(Math.sin(i*3.7+t*1.7))*.75);
-  ctx.beginPath();ctx.moveTo(x-len,y);
-  ctx.quadraticCurveTo(x,y-1-depth*2,x+len*.8,y+Math.sin(t+i)*.7);
-  ctx.strokeStyle='rgba(255,239,202,'+alpha+')';
-  ctx.lineWidth=.45+depth*1.05;ctx.stroke();
- }
- // broad, uneven ocean swells. Each crest bends and travels diagonally.
- for(let layer=0;layer<8;layer++){
-  const depth=layer/7;
-  const base=horizon+30+depth*depth*(h-horizon-20);
-  const amp=4+depth*15;
-  const wavelength=w*(.19+depth*.18);
-  const phase=t*(.9+depth*.8)+layer*1.83;
-  const points=[];
-  for(let x=-12;x<=w+12;x+=4){
-   const drift=x*.0035;
-   const primary=Math.sin((x/wavelength)*Math.PI*2+phase+drift)*amp;
-   const secondary=Math.sin((x/(wavelength*.57))*Math.PI*2-phase*1.31+drift*2)*amp*.28;
-   const irregular=Math.sin(x*.031+phase*1.7+layer)*amp*.12;
-   points.push([x,base+primary+secondary+irregular]);
-  }
-  const depthWidth=5+depth*20;
-  const shade=ctx.createLinearGradient(0,base-depthWidth,0,base+depthWidth*2);
-  shade.addColorStop(0,'rgba(116,190,195,'+(.025+depth*.045)+')');
-  shade.addColorStop(.32,'rgba(25,111,132,'+(.025+depth*.07)+')');
-  shade.addColorStop(.72,'rgba(1,48,70,'+(.045+depth*.09)+')');
-  shade.addColorStop(1,'rgba(1,34,54,'+(.04+depth*.1)+')');
-  ctx.beginPath();
-  ctx.moveTo(points[0][0],points[0][1]-depthWidth);
-  for(let p=1;p<points.length;p++)ctx.lineTo(points[p][0],points[p][1]-depthWidth);
-  for(let p=points.length-1;p>=0;p--)ctx.lineTo(points[p][0],points[p][1]+depthWidth*1.8);
-  ctx.closePath();ctx.fillStyle=shade;ctx.fill();
-  // Only broken sections catch light; avoid outlining every wave.
-  for(let p=8;p<points.length-8;p+=Math.max(10,Math.floor(18+depth*14))){
-   if(Math.sin(p*2.17+layer*4.1)>-.18){
-    const q=points.slice(p,Math.min(p+5+Math.floor(depth*7),points.length));
-    if(q.length<3)continue;
-    ctx.beginPath();ctx.moveTo(q[0][0],q[0][1]-1);
-    for(let j=1;j<q.length;j++)ctx.lineTo(q[j][0],q[j][1]-1);
-    ctx.strokeStyle='rgba(197,231,226,'+(.035+depth*.09)+')';
-    ctx.lineWidth=.5+depth*.8;ctx.stroke();
-   }
+ const sun=ctx.createRadialGradient(w*.67,horizon*.06,1,w*.67,horizon*.06,w*.42);
+ sun.addColorStop(0,'rgba(255,246,218,.42)');sun.addColorStop(1,'rgba(255,246,218,0)');
+ ctx.fillStyle=sun;ctx.fillRect(0,0,w,horizon);
+ const lightX=w*.67;
+ // Shade every water pixel from several crossing wave fields. This creates
+ // continuous moving light and dark faces instead of drawn wave outlines.
+ for(let py=0;py<wh;py++){
+  const depth=py/(wh-1),y=horizon+depth*(h-horizon);
+  const row=py*ww*4;
+  for(let px=0;px<ww;px++){
+   const x=px/ww*w;
+   const fade=.28+depth*.95;
+   const a1=x*.014+y*.021+t*1.05;
+   const a2=x*.008-y*.032-t*.78;
+   const a3=x*.027+y*.009-t*1.42;
+   const a4=x*.043-y*.018+t*1.9;
+   const heightWave=Math.sin(a1)*(1+depth*9)+Math.sin(a2)*(1+depth*6)*.62+Math.sin(a3)*(1+depth*3)*.22+Math.sin(a4)*(1+depth*1.5)*.1;
+   const dx=Math.cos(a1)*.014*(1+depth*9)+Math.cos(a2)*.008*(1+depth*6)*.62+Math.cos(a3)*.027*(1+depth*3)*.22+Math.cos(a4)*.043*(1+depth*1.5)*.1;
+   const dy=Math.cos(a1)*.021*(1+depth*9)-Math.cos(a2)*.032*(1+depth*6)*.62+Math.cos(a3)*.009*(1+depth*3)*.22-Math.cos(a4)*.018*(1+depth*1.5)*.1;
+   const nx=-dx*2.4,ny=-dy*2.4,nz=1;
+   const inv=1/Math.sqrt(nx*nx+ny*ny+nz*nz);
+   const ndl=Math.max(0,(nx*.22+ny*-.48+nz*.85)*inv);
+   const spec=Math.pow(Math.max(0,(nx*.34+ny*-.56+nz*.76)*inv),30);
+   const crest=Math.max(0,heightWave-(2.8+depth*3.5));
+   const foam=Math.min(.24,crest*.018)*depth;
+   const reflection=Math.exp(-Math.pow((x-lightX)/(w*(.018+depth*.19)),2))*(.08+depth*.32)*(0.35+spec*1.8);
+   const texture=(Math.sin(px*12.31+py*7.17+t*2.1)*Math.sin(px*3.7-py*9.1-t))*.012*depth;
+   const baseR=12+depth*2,baseG=82-depth*38,baseB=103-depth*35;
+   const light=(ndl-.45)*17+spec*125+reflection*105+texture*255;
+   const idx=row+px*4;
+   pixels[idx]=Math.max(0,Math.min(255,baseR+light*.24+foam*190));
+   pixels[idx+1]=Math.max(0,Math.min(255,baseG+light*.72+foam*210));
+   pixels[idx+2]=Math.max(0,Math.min(255,baseB+light+foam*205));
+   pixels[idx+3]=255;
   }
  }
- // sparse, irregular crest foam, only on selected wave peaks
- for(let i=0;i<48;i++){
-  const depth=(i%16)/15,y=horizon+42+depth*depth*(h-horizon-35);
-  const x=((i*137.5+Math.sin(t*2.1+i)*58)% (w+40))-20;
-  const wave=Math.sin(x*.012+t*2.1+i)* (3+depth*14);
-  const len=2+depth*15;
-  ctx.beginPath();ctx.moveTo(x-len,y+wave);
-  ctx.quadraticCurveTo(x,y+wave-1-depth*2,x+len,y+wave);
-  ctx.strokeStyle='rgba(231,246,239,'+(.06+depth*.16)+')';ctx.lineWidth=.6+depth*.9;ctx.stroke();
+ wctx.putImageData(frame,0,0);
+ ctx.imageSmoothingEnabled=true;
+ ctx.drawImage(water,0,horizon,w,h-horizon);
+ // Fine, broken glints ride on the moving wave field, not on fixed lines.
+ for(let i=0;i<95;i++){
+  const depth=(i%19)/18,y=horizon+18+depth*depth*(h-horizon-18);
+  const spread=5+depth*depth*w*.18;
+  const x=lightX+Math.sin(i*13.7+t*(.7+depth))*spread+Math.sin(i*4.3-t*.8)*8;
+  const length=(1+depth*9)*(.25+Math.abs(Math.sin(i*2.3+t*2))*.8);
+  const alpha=(.035+depth*.13)*(.3+Math.abs(Math.sin(i*5.1+t))*.7);
+  ctx.beginPath();ctx.moveTo(x-length,y);
+  ctx.quadraticCurveTo(x,y-1-depth,x+length,y);
+  ctx.strokeStyle='rgba(255,242,211,'+alpha+')';ctx.lineWidth=.5+depth*.7;ctx.stroke();
  }
- // subtle atmospheric horizon veil
- const veil=ctx.createLinearGradient(0,horizon-8,0,horizon+30);
- veil.addColorStop(0,'rgba(221,239,234,0)');veil.addColorStop(.55,'rgba(221,239,234,.17)');veil.addColorStop(1,'rgba(221,239,234,0)');
- ctx.fillStyle=veil;ctx.fillRect(0,horizon-8,w,38);
 }
 raf=requestAnimationFrame(draw);
 })();
