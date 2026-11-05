@@ -15,82 +15,84 @@
 <header class="top"><a class="brand" href="kingdoms.html">KAEVORYN STUDIOS<small>CREATE THE IMPOSSIBLE</small></a><a href="kingdoms.html">← The Kingdoms of Wonder</a></header>
 <main><section class="stage" aria-label="Open ocean water preview"><canvas id="ocean" aria-hidden="true"></canvas><div class="heading"><div class="eyebrow">THE KINGDOMS OF WONDER · WATER ADVENTURE</div><h1>THE SEA OF WONDERS</h1><p>First, we build the ocean. Nothing else — just open water, natural waves, and a distant horizon.</p></div><div class="foot">KAEVORYN STUDIOS · <a href="kingdoms.html">RETURN TO THE PARK</a></div></section></main>
 <script>
-(()=>{
+(()=> {
 const canvas=document.getElementById('ocean'),ctx=canvas.getContext('2d',{alpha:false});
 if(!ctx)return;
 const water=document.createElement('canvas'),wctx=water.getContext('2d');
-let w=0,h=0,dpr=1,raf=0,last=0,frame=null,pixels=null;
+let w=0,h=0,dpr=1,frame,pixels,last=0;
 function resize(){
- const r=canvas.getBoundingClientRect();dpr=Math.min(window.devicePixelRatio||1,1.5);
- w=Math.max(1,r.width);h=Math.max(1,r.height);
+ const r=canvas.getBoundingClientRect();w=Math.max(1,r.width);h=Math.max(1,r.height);
+ dpr=Math.min(window.devicePixelRatio||1,1.5);
  canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);
  ctx.setTransform(dpr,0,0,dpr,0,0);
- water.width=Math.max(160,Math.round(w*.62));
- water.height=Math.max(180,Math.round(h*.62));
+ water.width=Math.max(220,Math.round(w*.72));water.height=Math.max(220,Math.round(h*.72));
  frame=wctx.createImageData(water.width,water.height);pixels=frame.data;
 }
-if(window.ResizeObserver)new ResizeObserver(resize).observe(canvas);else window.addEventListener('resize',resize);
-resize();
+new ResizeObserver(resize).observe(canvas);resize();
+function wave(x,z,t){
+ const a=Math.sin(x*.010+z*.020+t*.78)*1.15;
+ const b=Math.sin(x*.017-z*.014-t*.58)*.58;
+ const c=Math.sin(x*.006+z*.038+t*.46)*.72;
+ const d=Math.sin(x*.032+z*.011-t*1.12)*.20;
+ const e=Math.sin(x*.052-z*.027+t*1.5)*.09;
+ return a+b+c+d+e;
+}
 function draw(ms){
- raf=requestAnimationFrame(draw);
- if(ms-last<33)return;last=ms;
- const t=ms*.001;
- const horizon=h*.43,wh=water.height,ww=water.width;
+ requestAnimationFrame(draw);if(ms-last<30)return;last=ms;
+ const t=ms*.001,ww=water.width,wh=water.height,horizon=h*.425;
  let sky=ctx.createLinearGradient(0,0,0,horizon);
- sky.addColorStop(0,'#8bbdce');sky.addColorStop(.68,'#c5dfe0');sky.addColorStop(1,'#83b5bf');
- ctx.fillStyle=sky;ctx.fillRect(0,0,w,horizon+2);
- const sun=ctx.createRadialGradient(w*.67,horizon*.06,1,w*.67,horizon*.06,w*.42);
- sun.addColorStop(0,'rgba(255,246,218,.42)');sun.addColorStop(1,'rgba(255,246,218,0)');
- ctx.fillStyle=sun;ctx.fillRect(0,0,w,horizon);
- const lightX=w*.67;
- // Shade every water pixel from several crossing wave fields. This creates
- // continuous moving light and dark faces instead of drawn wave outlines.
+ sky.addColorStop(0,'#8eb9c8');sky.addColorStop(.7,'#d2e2df');sky.addColorStop(1,'#9bbfc4');
+ ctx.fillStyle=sky;ctx.fillRect(0,0,w,horizon+1);
+ const haze=ctx.createRadialGradient(w*.68,horizon*.15,1,w*.68,horizon*.15,w*.43);
+ haze.addColorStop(0,'rgba(255,245,218,.42)');haze.addColorStop(1,'rgba(255,245,218,0)');
+ ctx.fillStyle=haze;ctx.fillRect(0,0,w,horizon);
+ const sunX=w*.68;
  for(let py=0;py<wh;py++){
-  const depth=py/(wh-1),y=horizon+depth*(h-horizon);
-  const row=py*ww*4;
+  const depth=py/(wh-1),z=depth*170;
   for(let px=0;px<ww;px++){
-   const x=px/ww*w;
-   const fade=.28+depth*.95;
-   const a1=x*.014+y*.021+t*1.05;
-   const a2=x*.008-y*.032-t*.78;
-   const a3=x*.027+y*.009-t*1.42;
-   const a4=x*.043-y*.018+t*1.9;
-   const heightWave=Math.sin(a1)*(1+depth*9)+Math.sin(a2)*(1+depth*6)*.62+Math.sin(a3)*(1+depth*3)*.22+Math.sin(a4)*(1+depth*1.5)*.1;
-   const dx=Math.cos(a1)*.014*(1+depth*9)+Math.cos(a2)*.008*(1+depth*6)*.62+Math.cos(a3)*.027*(1+depth*3)*.22+Math.cos(a4)*.043*(1+depth*1.5)*.1;
-   const dy=Math.cos(a1)*.021*(1+depth*9)-Math.cos(a2)*.032*(1+depth*6)*.62+Math.cos(a3)*.009*(1+depth*3)*.22-Math.cos(a4)*.018*(1+depth*1.5)*.1;
-   const nx=-dx*2.4,ny=-dy*2.4,nz=1;
+   const x=(px/ww-.5)*w*1.55;
+   const scale=.38+depth*1.85;
+   const xx=x*scale;
+   const v=wave(xx,z,t);
+   const dx=(wave(xx+2,z,t)-wave(xx-2,z,t))*.25;
+   const dz=(wave(xx,z+2,t)-wave(xx,z-2,t))*.25;
+   const nx=-dx*1.45,ny=-dz*1.8,nz=1;
    const inv=1/Math.sqrt(nx*nx+ny*ny+nz*nz);
-   const ndl=Math.max(0,(nx*.22+ny*-.48+nz*.85)*inv);
-   const spec=Math.pow(Math.max(0,(nx*.34+ny*-.56+nz*.76)*inv),30);
-   const crest=Math.max(0,heightWave-(2.8+depth*3.5));
-   const foam=Math.min(.24,crest*.018)*depth;
-   const reflection=Math.exp(-Math.pow((x-lightX)/(w*(.018+depth*.19)),2))*(.08+depth*.32)*(0.35+spec*1.8);
-   const texture=(Math.sin(px*12.31+py*7.17+t*2.1)*Math.sin(px*3.7-py*9.1-t))*.012*depth;
-   const baseR=12+depth*2,baseG=82-depth*38,baseB=103-depth*35;
-   const light=(ndl-.45)*17+spec*125+reflection*105+texture*255;
-   const idx=row+px*4;
-   pixels[idx]=Math.max(0,Math.min(255,baseR+light*.24+foam*190));
-   pixels[idx+1]=Math.max(0,Math.min(255,baseG+light*.72+foam*210));
-   pixels[idx+2]=Math.max(0,Math.min(255,baseB+light+foam*205));
+   const diffuse=Math.max(0,(nx*.22+ny*-.55+nz*.81)*inv);
+   const spec=Math.pow(Math.max(0,(nx*.34+ny*-.66+nz*.67)*inv),42);
+   const crest=Math.max(0,v-(1.45+depth*.22));
+   const foam=Math.min(.7,crest*.22)*Math.min(1,depth*1.7);
+   const worldX=px/ww*w;
+   const sunSpread=w*(.012+depth*.17);
+   const sunTrack=Math.exp(-Math.pow((worldX-sunX)/(sunSpread||1),2));
+   const broken=(.35+.65*Math.max(0,Math.sin(xx*.085+z*.11+t*2.3)));
+   const reflection=sunTrack*broken*(.08+depth*.32)*(spec*2.2+.15);
+   const rough=(Math.sin(px*17.3+py*8.1+t*2.4)*Math.sin(px*4.7-py*13.2-t*1.7))*.025*depth;
+   const shade=(diffuse-.42)*23+spec*145+reflection*125+rough*255;
+   const deep=depth;
+   const idx=(py*ww+px)*4;
+   pixels[idx]=Math.max(0,Math.min(255,7+deep*5+shade*.22+foam*178));
+   pixels[idx+1]=Math.max(0,Math.min(255,47-deep*14+shade*.68+foam*205));
+   pixels[idx+2]=Math.max(0,Math.min(255,68-deep*13+shade+foam*215));
    pixels[idx+3]=255;
   }
  }
  wctx.putImageData(frame,0,0);
- ctx.imageSmoothingEnabled=true;
- ctx.drawImage(water,0,horizon,w,h-horizon);
- // Fine, broken glints ride on the moving wave field, not on fixed lines.
- for(let i=0;i<95;i++){
-  const depth=(i%19)/18,y=horizon+18+depth*depth*(h-horizon-18);
-  const spread=5+depth*depth*w*.18;
-  const x=lightX+Math.sin(i*13.7+t*(.7+depth))*spread+Math.sin(i*4.3-t*.8)*8;
-  const length=(1+depth*9)*(.25+Math.abs(Math.sin(i*2.3+t*2))*.8);
-  const alpha=(.035+depth*.13)*(.3+Math.abs(Math.sin(i*5.1+t))*.7);
-  ctx.beginPath();ctx.moveTo(x-length,y);
-  ctx.quadraticCurveTo(x,y-1-depth,x+length,y);
-  ctx.strokeStyle='rgba(255,242,211,'+alpha+')';ctx.lineWidth=.5+depth*.7;ctx.stroke();
+ ctx.imageSmoothingEnabled=true;ctx.drawImage(water,0,horizon,w,h-horizon);
+ // Small irregular whitecaps appear only on the highest moving crests.
+ for(let i=0;i<150;i++){
+  const depth=(i%25)/24,y=horizon+14+depth*depth*(h-horizon-14);
+  const drift=t*(12+depth*24),x=((i*79.7+drift*4)%(w+50))-25;
+  const local=wave((x-w*.5)*(.38+depth*1.85),depth*170,t);
+  if(local<1.35+depth*.2)continue;
+  const len=1+depth*7+(local-1.35)*2;
+  ctx.beginPath();ctx.moveTo(x-len,y);
+  ctx.quadraticCurveTo(x,y-1-depth*2,x+len,y+.2);
+  ctx.strokeStyle='rgba(230,249,246,'+(.07+depth*.18)+')';
+  ctx.lineWidth=.5+depth*.8;ctx.stroke();
  }
 }
-raf=requestAnimationFrame(draw);
+requestAnimationFrame(draw);
 })();
 </script>
 </body></html>
