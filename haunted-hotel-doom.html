@@ -289,89 +289,23 @@ try{
  // Marble floor inlay.
  for(let x=-9;x<=9;x+=3)box(.055,.02,30,gold,x,.22,-18,false);
  for(let z=-4;z>=-32;z-=3)box(20,.02,.055,gold,0,.22,z,false);
- // GRAND STAIRCASE — rebuilt as one grounded, continuous Victorian flight.
- const beamBetween=(a,b,radius,material)=>{const av=new THREE.Vector3(...a),bv=new THREE.Vector3(...b),delta=new THREE.Vector3().subVectors(bv,av);const mesh=new THREE.Mesh(new THREE.CylinderGeometry(radius,radius,delta.length(),12),material);mesh.position.copy(av).add(bv).multiplyScalar(.5);mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),delta.normalize());mesh.castShadow=true;mesh.receiveShadow=true;scene.add(mesh);return mesh;};
- const stairStone=mat(0x393238,.98),stairNose=mat(0x77666a,.92),runner=mat(0x54202a,.98),runnerDark=mat(0x35151e,.98),iron=mat(0x17171b,.68,.65),oakRail=mat(0x38231e,.84),panelMat=mat(0x24191b,.94);
- // One solid triangular masonry core connects the lobby floor to the upper landing.
- const xl=-9.35,xr=-3.65,zFront=-6.65,zBack=-14.05,yBase=.20,yTop=3.42;
- const verts=[
-  xl,yBase,zFront, xr,yBase,zFront, xl,yBase,zBack, xr,yBase,zBack,
-  xl,yTop,zBack, xr,yTop,zBack
- ];
- const faces=[
-  0,3,1, 0,2,3,       // underside
-  0,4,2, 2,4,5, 2,5,3, // left cheek
-  1,3,5, 1,5,4, 1,4,0, // right cheek
-  2,5,4,               // rear face
-  0,1,5, 0,5,4         // sloped top
- ];
- const coreGeo=new THREE.BufferGeometry();
- coreGeo.setAttribute("position",new THREE.Float32BufferAttribute(verts,3));
- coreGeo.setIndex(faces);coreGeo.computeVertexNormals();
- const core=new THREE.Mesh(coreGeo,panelMat);core.castShadow=true;core.receiveShadow=true;scene.add(core);
- // Broad, evenly spaced stone steps sit directly on the solid core.
- const stepCount=10,stepRun=.70,stepRise=.34,stepStartZ=-7.0;
- for(let i=0;i<stepCount;i++){
-  const z=stepStartZ-i*stepRun,top=.32+i*stepRise;
-  box(5.72,.34,.82,stairStone,-6.5,top-.17,z);
-  box(5.82,.075,.86,stairNose,-6.5,top-.025,z-.015);
-  box(2.30,.035,.68,runner,-6.5,top+.018,z-.035);
-  box(2.22,.012,.56,runnerDark,-6.5,top+.039,z-.035);
-  // Thin brass runner studs at the outer edges.
-  for(const side of [-1,1])box(.045,.018,.12,gold,-6.5+side*1.12,top+.045,z-.30,false);
- }
- // Carved side cheek panels follow the stair slope and hide every gap.
- for(const side of [-1,1]){
-  const x=-6.5+side*2.92;
-  const cheek=box(.42,1.18,7.55,oakRail,x,1.95,-10.35);cheek.rotation.x=.40;
-  for(let i=0;i<5;i++){
-   const z=-7.8-i*1.18,y=.62+i*.45;
-   box(.045,.48,.58,panelMat,x+side*.23,y,z);
-   box(.025,.32,.38,gold,x+side*.255,y,z);
-  }
-  // Thick continuous handrails, square balusters and substantial newel posts.
-  const railX=-6.5+side*2.55;
-  const rail=beamBetween;
-  rail([railX,1.35,-6.85],[railX,4.42,-13.85],.14,oakRail);
-  rail([railX,1.29,-6.85],[railX,4.36,-13.85],.055,iron);
-  for(let i=0;i<6;i++){
-   const z=-7.45-i*1.12,y=.70+i*.50;
-   beamBetween([railX,y,z],[railX,y+.76,z],.055,iron);
-  }
-  box(.38,1.55,.38,oakRail,railX,1.05,-6.92);
-  cyl(.24,.19,.24,gold,railX,1.88,-6.92,10);
-  const finial=new THREE.Mesh(new THREE.SphereGeometry(.18,12,10),oakRail);finial.position.set(railX,2.06,-6.92);scene.add(finial);
-  box(.38,1.2,.38,oakRail,railX,4.02,-13.85);
-  cyl(.22,.18,.20,gold,railX,4.68,-13.85,10);
- }
- // Upper landing meets the final tread with no floating second flight.
- box(6.0,.42,1.65,stairStone,-6.5,3.17,-14.55);
- box(5.95,.075,1.62,stairNose,-6.5,3.42,-14.55);
- box(2.4,.035,1.30,runner,-6.5,3.48,-14.55);
- // Finish the upper landing with matching Victorian gallery rails and corner posts.
- for(const side of [-1,1]){
-  const gx=-6.5+side*2.72;
-  beamBetween([gx,4.18,-14.05],[gx,4.18,-15.28],.105,oakRail);
-  beamBetween([gx,4.12,-14.05],[gx,4.12,-15.28],.045,iron);
-  for(let k=0;k<4;k++){
-   const gz=-14.18-k*.32;
-   beamBetween([gx,3.52,gz],[gx,4.08,gz],.045,iron);
-  }
-  box(.32,1.12,.32,oakRail,gx,4.00,-15.25);
-  cyl(.19,.16,.20,gold,gx,4.62,-15.25,10);
-  const cap=new THREE.Mesh(new THREE.SphereGeometry(.14,12,10),oakRail);cap.position.set(gx,4.78,-15.25);scene.add(cap);
- }
- // Broad stone apron gives the bottom of the flight a finished, grounded entrance.
- box(6.45,.16,.58,stairStone,-6.5,.22,-6.25);
- box(6.50,.055,.62,stairNose,-6.5,.325,-6.25);
- box(2.55,.025,.48,runner,-6.5,.365,-6.25);
- // Old wall lanterns light the stairwell with warm, eerie pools of light.
- for(const p of [[-9.65,2.2,-9.0],[-3.35,3.8,-12.2],[-9.65,4.1,-14.6]]){
-  box(.16,.22,.52,iron,p[0],p[1],p[2]);
-  const cage=new THREE.Mesh(new THREE.BoxGeometry(.27,.43,.25),gold);cage.position.set(p[0],p[1]+.16,p[2]-.18);scene.add(cage);
-  const flame=new THREE.Mesh(new THREE.SphereGeometry(.09,12,10),mat(0xffb75f,.2));flame.position.set(p[0],p[1]+.16,p[2]-.2);scene.add(flame);
-  point(p[0],p[1]+.12,p[2]-.3,0xffa85c,1.35,7);
- }
+ // GRAND STAIRCASE — clean rebuild: broad Victorian flight and complete upper gallery.
+ const beamBetween=(a,b,r,m)=>{const v=new THREE.Vector3(...a),w=new THREE.Vector3(...b),d=w.clone().sub(v),o=new THREE.Mesh(new THREE.CylinderGeometry(r,r,d.length(),12),m);o.position.copy(v).add(w).multiplyScalar(.5);o.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),d.normalize());o.castShadow=true;o.receiveShadow=true;scene.add(o);return o;};
+ const sx=-6.5,stone=mat(0x40383b,.96),edge=mat(0x897779,.88),carpet=mat(0x54202b,.98),woodRail=mat(0x38231e,.82),iron=mat(0x17171b,.62,.72),brass=mat(0xb18a4b,.48,.62),dark=mat(0x281b1c,.9);
+ // Solid sloping masonry core.
+ const geo=new THREE.BufferGeometry();geo.setAttribute("position",new THREE.Float32BufferAttribute([-9.6,.18,-6.55,-3.4,.18,-6.55,-9.6,.18,-13.55,-3.4,.18,-13.55,-9.6,3.42,-13.55,-3.4,3.42,-13.55],3));geo.setIndex([0,3,1,0,2,3,0,4,2,2,4,5,2,5,3,1,3,5,1,5,4,1,4,0,2,5,4,0,1,5,0,5,4]);geo.computeVertexNormals();const core=new THREE.Mesh(geo,dark);core.castShadow=true;core.receiveShadow=true;scene.add(core);
+ // Twelve individually finished treads, brass nosings and a burgundy runner.
+ for(let i=0;i<12;i++){const z=-7-i*.56,y=.27+i*.27;box(6.2,.27,.68,stone,sx,y-.135,z);box(6.3,.055,.72,edge,sx,y-.018,z-.015);box(2.48,.028,.57,carpet,sx,y+.012,z-.045);box(2.38,.012,.48,dark,sx,y+.032,z-.045);for(const side of [-1,1])box(.045,.018,.1,brass,sx+side*1.18,y+.04,z-.29,false);}
+ // Side stringers, continuous handrails, closely spaced balusters and carved newels.
+ for(const side of [-1,1]){const x=sx+side*3.12;const cheek=box(.34,.72,7.35,woodRail,x,1.78,-10.25);cheek.rotation.x=.39;const cap=box(.4,.12,7.35,brass,x,2.17,-10.25);cap.rotation.x=.39;const rx=sx+side*2.78;beamBetween([rx,1.05,-6.78],[rx,4.2,-13.42],.115,woodRail);beamBetween([rx,1.12,-6.78],[rx,4.27,-13.42],.026,brass);for(let i=0;i<12;i++){const t=i/11,z=-7.05-t*6.05,y=1.25+t*2.83;beamBetween([rx,y,z],[rx,y+.58,z],.038,iron);const bead=new THREE.Mesh(new THREE.SphereGeometry(.07,8,6),brass);bead.position.set(rx,y+.49,z);scene.add(bead);}box(.44,1.28,.44,woodRail,rx,.8,-6.82);cyl(.25,.2,.22,brass,rx,1.52,-6.82,10);const fin=new THREE.Mesh(new THREE.SphereGeometry(.18,14,10),woodRail);fin.position.set(rx,1.69,-6.82);scene.add(fin);box(.44,1.15,.44,woodRail,rx,4.02,-13.42);cyl(.24,.19,.2,brass,rx,4.66,-13.42,10);}
+ // Deep upper landing and gallery railings.
+ box(6.45,.32,2,stone,sx,3.28,-14.15);box(6.52,.06,2.04,edge,sx,3.47,-14.15);box(2.55,.025,1.55,carpet,sx,3.515,-14.15);
+ for(const side of [-1,1]){const x=sx+side*3.05;beamBetween([x,4.12,-14.05],[x,4.12,-15.05],.095,woodRail);for(let k=0;k<6;k++){const z=-14.1-k*.18;beamBetween([x,3.54,z],[x,4.05,z],.034,iron);}box(.42,1.08,.42,woodRail,x,4,-15.02);cyl(.2,.16,.18,brass,x,4.61,-15.02,10);}
+ beamBetween([-9.42,4.08,-15.08],[-3.58,4.08,-15.08],.1,woodRail);for(let k=0;k<=18;k++){const x=-9.35+k*.317;beamBetween([x,3.54,-15.08],[x,4.02,-15.08],.032,iron);}
+ // Finished entrance platform and matching monumental newel posts.
+ box(6.8,.18,.82,stone,sx,.12,-6.35);box(6.86,.055,.86,edge,sx,.235,-6.35);box(2.65,.025,.62,carpet,sx,.275,-6.35);for(const side of [-1,1]){const x=sx+side*3.05;box(.48,1.32,.48,woodRail,x,.83,-6.3);cyl(.26,.21,.22,brass,x,1.58,-6.3,10);const fin=new THREE.Mesh(new THREE.SphereGeometry(.18,12,10),woodRail);fin.position.set(x,1.76,-6.3);scene.add(fin);}
+ // Warm sconces along the complete flight.
+ for(const p of [[-9.72,2,-9.2],[-3.28,3,-11.8],[-9.72,4,-14.5]]){box(.16,.22,.52,iron,p[0],p[1],p[2]);const cage=new THREE.Mesh(new THREE.BoxGeometry(.27,.43,.25),brass);cage.position.set(p[0],p[1]+.16,p[2]-.18);scene.add(cage);const flame=new THREE.Mesh(new THREE.SphereGeometry(.09,12,10),mat(0xffb75f,.2));flame.position.set(p[0],p[1]+.16,p[2]-.2);scene.add(flame);point(p[0],p[1]+.12,p[2]-.3,0xffa85c,1.35,7);}
  // Reception desk and brass bell.
  box(6,1.45,1.5,wood,3,1,-8);box(6.2,.18,1.7,gold,3,1.8,-8);box(5.5,.12,1.3,mat(0x171015),3,1.9,-8);
  const bellGroup=new THREE.Group();bellGroup.position.set(3.2,2.02,-8);scene.add(bellGroup);
@@ -409,12 +343,8 @@ try{
  function setInside(v){inside=v;locationLabel.textContent=v?(camera.position.z<-16?"PORTRAIT HALL · HOTEL INTERIOR":"INSIDE · GRAND LOBBY"):"OUTSIDE · HOTEL GROUNDS";hint.textContent=v?"EXPLORE THE LOBBY · FIND THE PORTRAIT HALL":"WASD / ARROWS · APPROACH THE OPEN DOORS";}
  function resetPlayer(){camera.position.set(0,1.7,18);yaw=0;pitch=0;autoEntering=false;doorL.rotation.y=0;doorR.rotation.y=0;setInside(false);}
  function getStairHeight(x,z){
-  // Match the rebuilt straight flight: ten broad steps from the lobby floor to the landing.
-  if(x>-9.45&&x<-3.55&&z<=-6.55&&z>=-14.15){
-   const index=THREE.MathUtils.clamp(Math.floor((-z-6.55)/.70),0,9);
-   return .32+index*.34;
-  }
-  if(x>-9.55&&x<-3.45&&z>-15.35&&z<-13.75)return 3.497;
+  if(x>-9.55&&x<-3.45&&z<=-6.62&&z>=-13.95){const i=THREE.MathUtils.clamp(Math.floor((-z-6.62)/.56),0,11);return .27+i*.27;}
+  if(x>-9.7&&x<-3.3&&z>-15.35&&z<-13.15)return 3.51;
   return 0;
  }
  function update(dt){if(!started)return;if(autoEntering){camera.position.z-=dt*3.2;if(camera.position.z<=-3.5){camera.position.z=-3.5;autoEntering=false;}}bellFlash=Math.max(0,bellFlash-dt);bellGroup.rotation.z=Math.sin(clock.elapsedTime*24)*bellFlash*.16;const bellDistance=camera.position.distanceTo(new THREE.Vector3(3.2,1.7,-8));const bookDistance=camera.position.distanceTo(new THREE.Vector3(1.65,1.7,-8));const nearDesk=Math.min(bellDistance,bookDistance)<3.2&&camera.position.z<-4;const interact=document.getElementById("doom-interact");interact.disabled=!nearDesk;interact.textContent=nearDesk?(bellDistance<bookDistance?"RING THE BELL · E":"OPEN GUESTBOOK · E"):"INTERACT · E";if(bookOpen)bookCover.rotation.x=THREE.MathUtils.damp(bookCover.rotation.x,-1.55,5,dt);else bookCover.rotation.x=THREE.MathUtils.damp(bookCover.rotation.x,0,5,dt);let forward=(keys.KeyW||keys.ArrowUp||touch.forward?1:0)-(keys.KeyS||keys.ArrowDown||touch.back?1:0);let side=(keys.KeyD||keys.ArrowRight||touch.right?1:0)-(keys.KeyA||keys.ArrowLeft||touch.left?1:0);const len=Math.hypot(forward,side)||1;forward/=len;side/=len;const speed=player.speed*dt;camera.position.x+=(-Math.sin(yaw)*forward+Math.cos(yaw)*side)*speed;camera.position.z+=(-Math.cos(yaw)*forward-Math.sin(yaw)*side)*speed;camera.position.x=THREE.MathUtils.clamp(camera.position.x,-9.4,9.4);camera.position.z=THREE.MathUtils.clamp(camera.position.z,-37,22);camera.position.y=1.7+getStairHeight(camera.position.x,camera.position.z);camera.rotation.order="YXZ";camera.rotation.y=yaw;camera.rotation.x=pitch;
