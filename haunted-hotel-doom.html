@@ -374,6 +374,8 @@ try{
  document.getElementById("doom-reset").addEventListener("click",resetPlayer);
  document.getElementById("doom-fullscreen").addEventListener("click",()=>{const el=document.getElementById("doom-game");if(!document.fullscreenElement)el.requestFullscreen?.();else document.exitFullscreen?.();});
  loading.classList.add("hidden");
+ // Open directly into the playable 3D hotel instead of the legacy landing page.
+ launchGame(true);
 }catch(err){console.error("Haunted Hotel 3D failed",err);loading.textContent="THE HOTEL COULD NOT LOAD · CHECK YOUR CONNECTION AND RELOAD";}
 })();
 }
