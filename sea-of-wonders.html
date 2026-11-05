@@ -26,11 +26,15 @@
  <linearGradient id="dockPile" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#211915"/><stop offset=".3" stop-color="#805331"/><stop offset=".7" stop-color="#4a2e1d"/><stop offset="1" stop-color="#171413"/></linearGradient>
  <linearGradient id="shoreSoil" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#6c5034"/><stop offset="1" stop-color="#29251f"/></linearGradient>
 </defs>
-<!-- solid shoreline beneath the landward pair -->
-<path d="M0 285 Q135 258 280 286 Q385 304 505 340 L505 470 L0 470Z" fill="#253b32"/>
-<path d="M0 321 Q150 288 290 319 Q400 342 505 370 L505 470 L0 470Z" fill="url(#shoreSoil)"/>
-<path d="M0 319 Q150 286 290 317 Q400 340 505 368" fill="none" stroke="#9a8960" stroke-width="10"/>
-<!-- four visible support legs: two planted on land, two standing in the sea -->
+<!-- The pier deck is drawn first so all four support legs visibly connect beneath it. -->
+<path d="M80 184 L1020 226 L1110 302 L45 258Z" fill="url(#dockWood)" stroke="#2a1b13" stroke-width="13"/>
+<path d="M95 190 L1014 232 L1075 278 L62 238Z" fill="#bd8a54" stroke="#4a2e1c" stroke-width="5"/>
+<g fill="none" stroke="#684326" stroke-width="5">
+ <path d="M110 202 L1085 288 M105 215 L1070 300 M92 228 L1040 312"/>
+ <path d="M180 194 L160 244 M300 199 L282 250 M420 205 L405 255 M540 210 L525 260 M660 215 L645 265 M780 220 L765 270 M900 225 L885 275"/>
+</g>
+<path d="M45 258 L1110 302 L1095 322 L50 279Z" fill="#39251a" stroke="#211712" stroke-width="6"/>
+<!-- Four substantial legs: the left pair is embedded in the shore; the right pair stands in the sea. -->
 <g fill="url(#dockPile)" stroke="#201712" stroke-width="7">
  <path d="M230 235 L278 235 L292 425 L214 425Z"/>
  <path d="M410 242 L456 242 L470 450 L392 450Z"/>
@@ -41,22 +45,18 @@
  <ellipse cx="254" cy="237" rx="26" ry="9"/><ellipse cx="433" cy="244" rx="25" ry="9"/>
  <ellipse cx="754" cy="255" rx="26" ry="9"/><ellipse cx="954" cy="262" rx="25" ry="9"/>
 </g>
-<!-- one continuous pier from shore out over the water -->
-<path d="M80 184 L1020 226 L1110 302 L45 258Z" fill="url(#dockWood)" stroke="#2a1b13" stroke-width="13"/>
-<path d="M95 190 L1014 232 L1075 278 L62 238Z" fill="#bd8a54" stroke="#4a2e1c" stroke-width="5"/>
-<g fill="none" stroke="#684326" stroke-width="5">
- <path d="M110 202 L1085 288 M105 215 L1070 300 M92 228 L1040 312"/>
- <path d="M180 194 L160 244 M300 199 L282 250 M420 205 L405 255 M540 210 L525 260 M660 215 L645 265 M780 220 L765 270 M900 225 L885 275"/>
-</g>
-<path d="M45 258 L1110 302 L1095 322 L50 279Z" fill="#39251a" stroke="#211712" stroke-width="6"/>
-<g fill="none" stroke-linecap="round">
- <path d="M80 181 Q530 195 1020 224" stroke="#2b2019" stroke-width="12"/>
- <path d="M80 175 Q530 189 1020 218" stroke="#c29a69" stroke-width="5"/>
-</g>
-<!-- wavelets clearly cross the two seaward legs -->
+<!-- Shoreline foreground covers the landward feet, making those legs visibly planted on land. -->
+<path d="M0 285 Q135 258 280 286 Q385 304 505 340 L505 470 L0 470Z" fill="#253b32"/>
+<path d="M0 321 Q150 288 290 319 Q400 342 505 370 L505 470 L0 470Z" fill="url(#shoreSoil)"/>
+<path d="M0 319 Q150 286 290 317 Q400 340 505 368" fill="none" stroke="#9a8960" stroke-width="10"/>
+<!-- Small wavelets pass in front of the two seaward legs at the waterline. -->
 <g fill="none" stroke="#c8f0ef" stroke-width="5" opacity=".78">
  <path d="M690 389 Q745 376 808 390 M700 407 Q754 395 815 408"/>
  <path d="M890 391 Q950 378 1010 392 M900 410 Q955 399 1018 411"/>
+</g>
+<g fill="none" stroke-linecap="round">
+ <path d="M80 181 Q530 195 1020 224" stroke="#2b2019" stroke-width="12"/>
+ <path d="M80 175 Q530 189 1020 218" stroke="#c29a69" stroke-width="5"/>
 </g>
 </svg></div><div class="foot">KAEVORYN STUDIOS · <a href="kingdoms.html">RETURN TO THE PARK</a></div></section></main>
 <script>
