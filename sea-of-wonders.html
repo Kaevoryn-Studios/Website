@@ -35,17 +35,16 @@
  const float PI=3.14159265;
  float wave(vec2 p,vec2 d,float f,float a,float s,float t){
   float q=dot(p,d)*f+t*s;
-  return a*sin(q);
+  return a*(sin(q)+.20*sin(2.0*q));
  }
  float ocean(vec2 p,float t){
   float h=0.;
-  h+=wave(p,normalize(vec2(1.,.28)),.34,.82,1.02,t);
-  h+=wave(p,normalize(vec2(.62,-.78)),.48,.62,.86,t);
-  h+=wave(p,normalize(vec2(-.34,-1.)),.25,.48,.68,t);
-  h+=wave(p,normalize(vec2(.92,.66)),.72,.18,1.24,t);
-  h+=wave(p,normalize(vec2(-.8,.3)),1.02,.075,1.72,t);
-  h+=wave(p,normalize(vec2(.18,-1.)),1.55,.026,2.25,t);
-  h+=wave(p,normalize(vec2(-.92,-.18)),2.05,.012,2.85,t);
+  h+=wave(p,normalize(vec2(1.,.28)),.24,.52,.88,t);
+  h+=wave(p,normalize(vec2(.62,-.78)),.31,.37,.73,t);
+  h+=wave(p,normalize(vec2(-.34,-1.)),.18,.29,.58,t);
+  h+=wave(p,normalize(vec2(.92,.66)),.48,.12,1.12,t);
+  h+=wave(p,normalize(vec2(-.8,.3)),.72,.055,1.48,t);
+  h+=wave(p,normalize(vec2(.18,-1.)),1.12,.022,1.95,t);
   return h;
  }
  vec3 skyColor(vec3 rd){
@@ -65,9 +64,13 @@
   float t=ro.y/(-rd.y);
   t=clamp(t,0.,180.);
   vec3 pos=ro+rd*t;
-  for(int i=0;i<6;i++){
+  for(int i=0;i<9;i++){
    float f=pos.y-ocean(pos.xz,time);
-   t+=f/max(-rd.y,.018);
+   float ex=.012;
+   float gx=(ocean(pos.xz+vec2(ex,0.),time)-ocean(pos.xz-vec2(ex,0.),time))/(2.*ex);
+   float gz=(ocean(pos.xz+vec2(0.,ex),time)-ocean(pos.xz-vec2(0.,ex),time))/(2.*ex);
+   float derivative=rd.y-gx*rd.x-gz*rd.z;
+   t-=f/(abs(derivative)<.08?(derivative<0.?-.08:.08):derivative);
    t=clamp(t,0.,180.);
    pos=ro+rd*t;
   }
@@ -76,7 +79,7 @@
   float h=ocean(pos.xz,time);
   float hx=ocean(pos.xz+vec2(e,0.),time)-ocean(pos.xz-vec2(e,0.),time);
   float hz=ocean(pos.xz+vec2(0.,e),time)-ocean(pos.xz-vec2(0.,e),time);
-  vec3 n=normalize(vec3(-hx/(2.*e),1.,-hz/(2.*e)));
+  vec3 n=normalize(vec3(-hx/(2.*e)*1.7,1.,-hz/(2.*e)*1.7));
   vec3 light=normalize(vec3(-.42,.72,.55));
   vec3 view=normalize(ro-pos);
   float diffuse=max(dot(n,light),0.);
@@ -86,7 +89,9 @@
   vec3 deep=vec3(.012,.105,.16);
   vec3 shallow=vec3(.025,.30,.36);
   vec3 water=mix(shallow,deep,distanceFade*.82);
-  water*=.52+diffuse*.58;
+  water*=.34+diffuse*.92;
+  float rollingFace=smoothstep(-.18,.34,h);
+  water=mix(water,water*vec3(.62,.79,.84),rollingFace*.42);
   water+=vec3(.12,.28,.31)*spec*1.6;
   water=mix(water,skyColor(reflect(-view,n)),fresnel*.62);
   float slope=length(vec2(hx,hz));
