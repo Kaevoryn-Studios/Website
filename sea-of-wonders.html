@@ -10,67 +10,11 @@
 *{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#07354a;color:#f4fbff;font:15px/1.5 Arial,sans-serif}body{overflow-x:hidden}.top{position:absolute;z-index:3;top:0;left:0;right:0;padding:18px clamp(16px,4vw,48px);display:flex;justify-content:space-between;align-items:center;background:linear-gradient(#03283acc,transparent)}.brand{font-size:11px;letter-spacing:.2em;font-weight:900;color:white;text-decoration:none}.brand small{display:block;color:#a9efff;font-size:9px}.top a:last-child{color:#e4faff;text-decoration:none;font-size:12px}.stage{height:100svh;min-height:560px;position:relative;overflow:hidden;background:linear-gradient(#8bc8dc 0%,#c3e3e7 36%,#398da5 62%,#07506b 100%)}canvas{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:0}
 .heading{position:absolute;z-index:2;top:17%;left:0;right:0;text-align:center;padding:0 18px;pointer-events:none;text-shadow:0 3px 18px #07354a88}.eyebrow{font-size:10px;font-weight:800;letter-spacing:.25em;color:#e4fbff}.heading h1{font-size:clamp(38px,7vw,76px);line-height:.98;letter-spacing:-.045em;margin:12px 0;color:#fff}.heading p{max-width:520px;margin:12px auto;color:#f0fcff;font-size:clamp(14px,2vw,17px)}.foot{position:absolute;z-index:2;bottom:14px;left:0;right:0;text-align:center;color:#e1f8ff;font-size:10px;letter-spacing:.12em;text-shadow:0 2px 8px #001d2b}.foot a{color:#fff}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
 
-/* Passenger vessel and ride controls */
-.voyage-boat{position:absolute;z-index:1;width:min(94vw,920px);height:auto;left:50%;bottom:7%;transform:translateX(-50%);filter:drop-shadow(0 24px 20px #001c2b88);animation:boatBob 5.8s ease-in-out infinite;pointer-events:none}
-.voyage-boat svg{display:block;width:100%;height:auto;overflow:visible}
-@keyframes boatBob{0%,100%{translate:0 0;rotate:-.35deg}50%{translate:0 -9px;rotate:.35deg}}
-.stage.is-voyaging .voyage-boat{animation:cruise 18s ease-in-out infinite,boatBob 5.8s ease-in-out infinite}
-@keyframes cruise{0%,100%{left:50%}50%{left:54%}}
-.voyage-actions{position:absolute;z-index:4;left:0;right:0;bottom:22px;display:flex;justify-content:center;pointer-events:none}
-.voyage-button{pointer-events:auto;border:1px solid #d8f7ff99;border-radius:999px;padding:13px 25px;background:linear-gradient(135deg,#e6fbff,#8bd8e9);color:#07354a;font-weight:900;letter-spacing:.13em;font-size:11px;box-shadow:0 8px 28px #001e2b66;cursor:pointer}
-.voyage-button:focus-visible{outline:3px solid white;outline-offset:4px}
-.voyage-status{position:absolute;z-index:3;bottom:82px;left:0;right:0;text-align:center;color:#e8fbff;font-size:10px;letter-spacing:.22em;text-shadow:0 2px 8px #001d2b;opacity:0;transition:opacity .4s}
-.stage.is-voyaging .voyage-status{opacity:1}
-@media(max-width:600px){.heading{top:13%}.heading h1{font-size:clamp(34px,10vw,48px)}.heading p{font-size:13px;max-width:300px}.voyage-boat{width:112vw;max-width:none;bottom:13%;left:50%}.stage.is-voyaging .voyage-boat{animation:boatBob 5.8s ease-in-out infinite,cruiseMobile 18s ease-in-out infinite}@keyframes cruiseMobile{0%,100%{left:50%}50%{left:55%}}.voyage-actions{bottom:18px}.voyage-status{bottom:74px}}
-@media(prefers-reduced-motion:reduce){.voyage-boat,.stage.is-voyaging .voyage-boat{animation:none!important}}
 </style>
 </head>
 <body>
 <header class="top"><a class="brand" href="kingdoms.html">KAEVORYN STUDIOS<small>CREATE THE IMPOSSIBLE</small></a><a href="kingdoms.html">← The Kingdoms of Wonder</a></header>
-<main><section class="stage" aria-label="Open ocean"><canvas id="ocean" aria-hidden="true"></canvas><div class="heading"><div class="eyebrow">THE KINGDOMS OF WONDER · WATER ADVENTURE</div><h1>THE SEA OF WONDERS</h1><p>Step aboard and set sail across a vast, living ocean.</p></div><div class="voyage-boat" aria-hidden="true">
-<svg viewBox="0 0 1000 470" xmlns="http://www.w3.org/2000/svg">
-<defs>
- <linearGradient id="hull" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#9a5c32"/><stop offset=".24" stop-color="#5b321f"/><stop offset=".72" stop-color="#241b19"/><stop offset="1" stop-color="#10191c"/></linearGradient>
- <linearGradient id="deck" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#c58b50"/><stop offset="1" stop-color="#754326"/></linearGradient>
- <linearGradient id="sail" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff8df"/><stop offset="1" stop-color="#b8c8c2"/></linearGradient>
- <linearGradient id="glass" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#9bd5dd"/><stop offset="1" stop-color="#254f5b"/></linearGradient>
-</defs>
-<!-- mast and sail -->
-<path d="M505 72 L505 340" stroke="#3a281d" stroke-width="13" stroke-linecap="round"/><path d="M505 88 L505 304 L685 285 Q614 155 505 88Z" fill="url(#sail)" stroke="#6f7166" stroke-width="4"/><path d="M505 112 Q590 190 650 274" fill="none" stroke="#a5a89c" stroke-width="3" opacity=".65"/><path d="M505 88 L685 285" stroke="#5c4938" stroke-width="3"/>
-<!-- rear cabin -->
-<path d="M625 235 L765 235 L806 302 L608 302Z" fill="#513321" stroke="#1c1b19" stroke-width="7"/><path d="M642 190 L755 190 L781 240 L620 240Z" fill="#70472c" stroke="#291d17" stroke-width="6"/><path d="M658 198 L694 198 L694 231 L652 231Z M709 198 L745 198 L757 231 L709 231Z" fill="url(#glass)" stroke="#241e1a" stroke-width="5"/><path d="M632 188 L767 188" stroke="#d4a66d" stroke-width="9"/>
-<!-- deck -->
-<!-- hull profile -->
-<path d="M112 306 Q440 267 878 309 Q838 391 704 421 Q450 456 258 408 Q164 378 112 306Z" fill="url(#hull)" stroke="#17191a" stroke-width="11"/>
-<path d="M130 319 Q472 286 861 321" fill="none" stroke="#d39a5d" stroke-width="12"/><path d="M160 344 Q470 315 835 346 M196 370 Q475 345 800 372 M259 397 Q500 377 739 399" fill="none" stroke="#9a6239" stroke-width="5" opacity=".85"/>
-<g fill="#d2a36c" stroke="#2a1b14" stroke-width="4"><circle cx="310" cy="365" r="8"/><circle cx="400" cy="373" r="8"/><circle cx="490" cy="376" r="8"/><circle cx="580" cy="373" r="8"/><circle cx="670" cy="366" r="8"/></g>
-<path d="M112 307 L75 294 L100 329 L146 335Z" fill="#6e4228" stroke="#211914" stroke-width="7"/>
-<path d="M145 258 Q470 224 820 256 L878 309 Q836 358 732 373 L300 373 Q195 350 112 307Z" fill="url(#deck)" stroke="#211a16" stroke-width="10"/>
-<path d="M170 270 Q475 239 823 268 M158 287 Q475 257 850 286 M145 306 Q480 279 865 307 M175 328 Q500 304 835 330 M225 348 Q500 331 790 350" fill="none" stroke="#f0c184" stroke-width="7" opacity=".95"/>
-<path d="M205 260 L235 355 M295 250 L320 365 M390 240 L410 369 M490 235 L505 371 M590 239 L600 370 M690 245 L690 365 M780 253 L775 357" fill="none" stroke="#8c552f" stroke-width="3" opacity=".8"/>
-<path d="M145 258 Q470 224 820 256" fill="none" stroke="#f4d09b" stroke-width="11" stroke-linecap="round"/>
-<!-- passenger benches, three rows -->
-<g fill="#50301e" stroke="#211914" stroke-width="7"><path d="M280 250 L430 239 L449 272 L273 286Z"/><path d="M452 244 L594 239 L612 272 L444 281Z"/><path d="M280 295 L438 284 L456 318 L274 330Z"/><path d="M465 289 L628 282 L647 316 L456 326Z"/></g>
-<g fill="#b77a43" opacity=".9"><path d="M285 253 L425 244 L430 254 L282 266Z"/><path d="M459 249 L590 245 L596 255 L455 263Z"/><path d="M285 299 L433 290 L439 301 L281 312Z"/><path d="M472 294 L625 288 L631 299 L466 309Z"/></g>
-<!-- clearly exposed passenger deck: broad foreground walking surface -->
-<path d="M224 316 Q493 294 776 316 L748 383 Q492 405 267 383Z" fill="#b77a43" stroke="#2b1b13" stroke-width="9"/>
-<path d="M238 322 Q493 302 762 322 L739 374 Q492 394 278 374Z" fill="#d9a36a" stroke="#754526" stroke-width="4"/>
-<g fill="none" stroke="#8a542f" stroke-width="4" opacity=".95">
- <path d="M252 333 Q495 313 755 333"/>
- <path d="M261 348 Q495 329 750 348"/>
- <path d="M270 363 Q495 345 744 363"/>
- <path d="M345 316 L351 382 M430 309 L435 391 M520 307 L520 394 M610 309 L605 391 M695 313 L686 384"/>
-</g>
-<g fill="none" stroke="#f5d19b" stroke-width="2" opacity=".85">
- <path d="M253 325 Q495 305 756 325"/>
- <path d="M278 378 Q495 398 738 378"/>
-</g>
-<!-- railings -->
-<g fill="none" stroke="#33231b" stroke-width="8" stroke-linecap="round"><path d="M145 257 Q475 217 821 255"/><path d="M112 307 Q470 260 878 309"/><path d="M166 260 L158 304 M218 253 L213 298 M760 248 L770 296 M815 258 L831 306 M330 235 L330 280 M555 230 L557 276 M675 236 L679 280"/></g>
-<g stroke="#d6a36b" stroke-width="3" opacity=".85"><path d="M145 251 Q475 211 821 249"/><path d="M112 301 Q470 254 878 303"/></g>
-<!-- wake -->
-<path d="M78 353 Q20 369 0 399 M125 389 Q62 413 30 443 M850 392 Q920 404 970 438" fill="none" stroke="#e4f7f7" stroke-width="8" stroke-linecap="round" opacity=".48"/>
-</svg></div><div class="voyage-status" id="voyageStatus" aria-live="polite">THE VOYAGE IS UNDERWAY</div><div class="voyage-actions"><button class="voyage-button" id="beginVoyage" type="button">BEGIN THE VOYAGE</button></div><div class="foot">KAEVORYN STUDIOS · <a href="kingdoms.html">RETURN TO THE PARK</a></div></section></main>
+<main><section class="stage" aria-label="Open ocean"><canvas id="ocean" aria-hidden="true"></canvas><div class="heading"><div class="eyebrow">THE KINGDOMS OF WONDER · WATER ADVENTURE</div><h1>THE SEA OF WONDERS</h1><p>Step aboard and set sail across a vast, living ocean.</p></div><div class="foot">KAEVORYN STUDIOS · <a href="kingdoms.html">RETURN TO THE PARK</a></div></section></main>
 <script>
 (()=>{
  const canvas=document.getElementById('ocean');
@@ -196,7 +140,5 @@
  requestAnimationFrame(draw);
 })();
 </script>
-<script>
-(()=>{const stage=document.querySelector(".stage");const button=document.getElementById("beginVoyage");if(!stage||!button)return;button.addEventListener("click",()=>{const started=stage.classList.toggle("is-voyaging");button.textContent=started?"PAUSE THE VOYAGE":"RESUME THE VOYAGE";document.getElementById("voyageStatus").textContent=started?"THE VOYAGE IS UNDERWAY":"VOYAGE PAUSED";});})();
-</script>
+
 </body></html>
