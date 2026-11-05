@@ -30,11 +30,11 @@ function resize(){
 }
 new ResizeObserver(resize).observe(canvas);resize();
 function wave(x,z,t){
- const a=Math.sin(x*.010+z*.020+t*.78)*1.15;
- const b=Math.sin(x*.017-z*.014-t*.58)*.58;
- const c=Math.sin(x*.006+z*.038+t*.46)*.72;
- const d=Math.sin(x*.032+z*.011-t*1.12)*.20;
- const e=Math.sin(x*.052-z*.027+t*1.5)*.09;
+ const a=Math.sin(x*.010+z*.020+t*.92)*1.62;
+ const b=Math.sin(x*.017-z*.014-t*.72)*.88;
+ const c=Math.sin(x*.006+z*.038+t*.57)*.98;
+ const d=Math.sin(x*.032+z*.011-t*1.32)*.34;
+ const e=Math.sin(x*.052-z*.027+t*1.75)*.16;
  return a+b+c+d+e;
 }
 function draw(ms){
@@ -56,19 +56,19 @@ function draw(ms){
    const v=wave(xx,z,t);
    const dx=(wave(xx+2,z,t)-wave(xx-2,z,t))*.25;
    const dz=(wave(xx,z+2,t)-wave(xx,z-2,t))*.25;
-   const nx=-dx*1.45,ny=-dz*1.8,nz=1;
+   const nx=-dx*2.15,ny=-dz*2.35,nz=1;
    const inv=1/Math.sqrt(nx*nx+ny*ny+nz*nz);
    const diffuse=Math.max(0,(nx*.22+ny*-.55+nz*.81)*inv);
    const spec=Math.pow(Math.max(0,(nx*.34+ny*-.66+nz*.67)*inv),42);
-   const crest=Math.max(0,v-(1.45+depth*.22));
-   const foam=Math.min(.7,crest*.22)*Math.min(1,depth*1.7);
+   const crest=Math.max(0,v-(1.25+depth*.12));
+   const foam=Math.min(.9,crest*.34)*Math.min(1,depth*1.8);
    const worldX=px/ww*w;
    const sunSpread=w*(.012+depth*.17);
    const sunTrack=Math.exp(-Math.pow((worldX-sunX)/(sunSpread||1),2));
    const broken=(.35+.65*Math.max(0,Math.sin(xx*.085+z*.11+t*2.3)));
    const reflection=sunTrack*broken*(.08+depth*.32)*(spec*2.2+.15);
    const rough=(Math.sin(px*17.3+py*8.1+t*2.4)*Math.sin(px*4.7-py*13.2-t*1.7))*.025*depth;
-   const shade=(diffuse-.42)*23+spec*145+reflection*125+rough*255;
+   const shade=(diffuse-.40)*34+spec*190+reflection*145+rough*255;
    const deep=depth;
    const idx=(py*ww+px)*4;
    pixels[idx]=Math.max(0,Math.min(255,7+deep*5+shade*.22+foam*178));
@@ -80,16 +80,16 @@ function draw(ms){
  wctx.putImageData(frame,0,0);
  ctx.imageSmoothingEnabled=true;ctx.drawImage(water,0,horizon,w,h-horizon);
  // Small irregular whitecaps appear only on the highest moving crests.
- for(let i=0;i<150;i++){
-  const depth=(i%25)/24,y=horizon+14+depth*depth*(h-horizon-14);
-  const drift=t*(12+depth*24),x=((i*79.7+drift*4)%(w+50))-25;
+ for(let i=0;i<310;i++){
+  const depth=(i%31)/30,y=horizon+10+depth*depth*(h-horizon-10);
+  const drift=t*(16+depth*34),x=((i*47.9+drift*4)%(w+50))-25;
   const local=wave((x-w*.5)*(.38+depth*1.85),depth*170,t);
-  if(local<1.35+depth*.2)continue;
-  const len=1+depth*7+(local-1.35)*2;
+  if(local<1.18+depth*.12)continue;
+  const len=1.5+depth*10+(local-1.18)*3.2;
   ctx.beginPath();ctx.moveTo(x-len,y);
-  ctx.quadraticCurveTo(x,y-1-depth*2,x+len,y+.2);
-  ctx.strokeStyle='rgba(230,249,246,'+(.07+depth*.18)+')';
-  ctx.lineWidth=.5+depth*.8;ctx.stroke();
+  ctx.quadraticCurveTo(x,y-1.5-depth*3,x+len,y+.2);
+  ctx.strokeStyle='rgba(238,252,249,'+(.10+depth*.24)+')';
+  ctx.lineWidth=.7+depth*1.1;ctx.stroke();
  }
 }
 requestAnimationFrame(draw);
