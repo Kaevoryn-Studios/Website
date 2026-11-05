@@ -18,89 +18,116 @@
 <main>
 <section class="hero" aria-label="Haunted Victorian hotel at night">
 <div class="moon"></div>
-<div class="hotel" aria-label="Haunted Hotel Doom exterior"><svg class="hotel-art" viewBox="0 0 1200 760" role="img" aria-label="A monumental, realistic Gothic Victorian hotel seen from a low, dramatic angle, with deep stone wings, a towering central keep, steep roofs, chimneys, carved stonework, a grand entrance and iron gates. Windows will be added later." xmlns="http://www.w3.org/2000/svg">
+<div class="hotel" aria-label="Haunted Hotel Doom exterior"><svg class="hotel-art" viewBox="0 0 1200 760" role="img" aria-label="A vast abandoned Victorian grand hotel with broad connected wings, a tall central hotel block, a mansard roof, deep stone architecture, a monumental covered entrance and iron gates. Windows will be added later." xmlns="http://www.w3.org/2000/svg">
 <defs>
- <linearGradient id="frontStone" x1="0" y1="0" x2="1" y2=".2"><stop stop-color="#17141a"/><stop offset=".22" stop-color="#51464a"/><stop offset=".5" stop-color="#76615a"/><stop offset=".78" stop-color="#40343a"/><stop offset="1" stop-color="#100e14"/></linearGradient>
- <linearGradient id="sideStone" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#09090e"/><stop offset=".55" stop-color="#29232a"/><stop offset="1" stop-color="#51434a"/></linearGradient>
- <linearGradient id="roofStone" x1="0" y1="0" x2=".25" y2="1"><stop stop-color="#76605b"/><stop offset=".24" stop-color="#30272d"/><stop offset="1" stop-color="#09090e"/></linearGradient>
- <linearGradient id="brass" x2="0" y2="1"><stop stop-color="#e1c18b"/><stop offset=".45" stop-color="#70553b"/><stop offset="1" stop-color="#21191b"/></linearGradient>
- <linearGradient id="doorGlow" x2="1"><stop stop-color="#27130f"/><stop offset=".5" stop-color="#d17a3b"/><stop offset="1" stop-color="#24120f"/></linearGradient>
- <radialGradient id="groundGlow"><stop stop-color="#d78b4d" stop-opacity=".62"/><stop offset="1" stop-color="#d78b4d" stop-opacity="0"/></radialGradient>
- <filter id="stoneTexture"><feTurbulence type="fractalNoise" baseFrequency=".72" numOctaves="3" seed="9"/><feColorMatrix values=".25 0 0 0 .15 .25 0 0 0 .13 .25 0 0 0 .12 0 0 0 .18 0"/><feBlend in="SourceGraphic" mode="soft-light"/></filter>
- <filter id="softShadow"><feGaussianBlur stdDeviation="16"/></filter>
- <filter id="doorLight"><feGaussianBlur stdDeviation="22"/></filter>
- <pattern id="blocks" width="88" height="48" patternUnits="userSpaceOnUse"><path d="M0 1H88M0 47H88M44 1V24M0 24H88M22 24V47" fill="none" stroke="#d4b99b" stroke-opacity=".12" stroke-width="2"/></pattern>
+ <linearGradient id="hotelFront" x1="0" y1="0" x2="1" y2=".2"><stop stop-color="#17141a"/><stop offset=".2" stop-color="#55464a"/><stop offset=".48" stop-color="#806b61"/><stop offset=".78" stop-color="#49383d"/><stop offset="1" stop-color="#151118"/></linearGradient>
+ <linearGradient id="hotelSide" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#08080d"/><stop offset=".55" stop-color="#29232a"/><stop offset="1" stop-color="#51434a"/></linearGradient>
+ <linearGradient id="hotelRoof" x1="0" y1="0" x2=".2" y2="1"><stop stop-color="#877064"/><stop offset=".22" stop-color="#41333a"/><stop offset="1" stop-color="#0c0b11"/></linearGradient>
+ <linearGradient id="hotelMetal" x2="0" y2="1"><stop stop-color="#d4b98b"/><stop offset=".45" stop-color="#70553b"/><stop offset="1" stop-color="#21191b"/></linearGradient>
+ <linearGradient id="hotelDoor" x2="1"><stop stop-color="#1c100e"/><stop offset=".5" stop-color="#bd7140"/><stop offset="1" stop-color="#1b100e"/></linearGradient>
+ <radialGradient id="hotelGlow"><stop stop-color="#d98b4d" stop-opacity=".6"/><stop offset="1" stop-color="#d98b4d" stop-opacity="0"/></radialGradient>
+ <filter id="hotelTexture"><feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="3" seed="12"/><feColorMatrix values=".24 0 0 0 .16 .24 0 0 0 .13 .24 0 0 0 .12 0 0 0 .17 0"/><feBlend in="SourceGraphic" mode="soft-light"/></filter>
+ <filter id="hotelBlur"><feGaussianBlur stdDeviation="19"/></filter>
+ <pattern id="hotelMasonry" width="100" height="54" patternUnits="userSpaceOnUse"><path d="M0 1H100M0 53H100M50 1V27M0 27H100M25 27V53" fill="none" stroke="#e1c8a8" stroke-opacity=".12" stroke-width="2"/></pattern>
 </defs>
-<!-- night ground and cast shadow -->
-<ellipse cx="600" cy="706" rx="570" ry="37" fill="#000" opacity=".88"/><ellipse cx="600" cy="674" rx="240" ry="90" fill="url(#groundGlow)" filter="url(#doorLight)"/>
-<!-- far rear roofline and chimneys -->
-<path d="M95 388L150 315L245 315L305 354L895 354L955 315L1050 315L1110 388Z" fill="#0d0b11" stroke="#8e7966" stroke-width="5"/>
-<g fill="url(#sideStone)" stroke="#171218" stroke-width="8"><path d="M188 328V210H235V328Z M965 328V205H1015V328Z M345 340V235H382V340Z M818 340V230H855V340Z"/></g>
-<g fill="url(#roofStone)" stroke="#9d8468" stroke-width="5"><path d="M174 218L211 155L249 218Z M950 213L990 145L1030 213Z M330 242L364 187L399 242Z M804 237L837 180L871 237Z"/></g>
-<!-- broad left wing, deep side return -->
-<path d="M45 654L45 438L112 377L150 359L150 650Z" fill="url(#sideStone)" stroke="#0a090e" stroke-width="10"/>
-<path d="M150 650V365L210 321L425 344V668Z" fill="url(#frontStone)" stroke="#171218" stroke-width="12"/>
-<path d="M150 365L210 279L425 306L465 365L425 389L210 365Z" fill="url(#roofStone)" stroke="#b39a78" stroke-width="6"/>
-<path d="M190 314L210 245L255 314Z M340 328L365 249L390 328Z" fill="#151119" stroke="#9f876a" stroke-width="5"/>
-<!-- broad right wing -->
-<path d="M775 668L775 344L990 321L1050 359V650Z" fill="url(#frontStone)" stroke="#171218" stroke-width="12"/>
-<path d="M1050 650V359L1088 377L1155 438V654Z" fill="url(#sideStone)" stroke="#0a090e" stroke-width="10"/>
-<path d="M735 365L775 306L990 279L1050 365L990 365L775 389Z" fill="url(#roofStone)" stroke="#b39a78" stroke-width="6"/>
-<path d="M810 328L835 249L860 328Z M945 314L990 245L1035 314Z" fill="#151119" stroke="#9f876a" stroke-width="5"/>
-<!-- central monumental keep with visible side depth -->
-<path d="M390 675V228L440 180L460 143L740 143L760 180L810 228V675Z" fill="url(#sideStone)" stroke="#0b0a0f" stroke-width="14"/>
-<path d="M410 675V225L470 175H730L790 225V675Z" fill="url(#frontStone)" stroke="#171218" stroke-width="12"/>
-<!-- massive roof planes -->
-<path d="M370 235L425 125L500 82L700 82L775 125L830 235L760 216L700 182H500L440 216Z" fill="url(#roofStone)" stroke="#c0a17a" stroke-width="7"/>
-<path d="M475 112L600 10L725 112L694 143H506Z" fill="#17131a" stroke="#b69a73" stroke-width="7"/>
-<path d="M600 14V-10M600 20L585 46H615Z" stroke="#d0b487" stroke-width="5" fill="#30252a"/>
-<!-- central roof ridges and dormer-like stone gables (no windows) -->
-<path d="M470 155L510 98L550 155M650 155L690 98L730 155" fill="#241d23" stroke="#9e8467" stroke-width="6"/>
-<path d="M520 169H680M455 222H745" stroke="#c0a17a" stroke-width="6" opacity=".72"/>
-<!-- tall corner towers -->
+<!-- ground shadow and reflected entrance light -->
+<ellipse cx="600" cy="713" rx="580" ry="35" fill="#000" opacity=".9"/>
+<ellipse cx="600" cy="685" rx="260" ry="85" fill="url(#hotelGlow)" filter="url(#hotelBlur)"/>
+<!-- rear roofline and chimneys: hotel, not a fantasy castle -->
+<path d="M80 390L135 342H1065L1120 390V650H80Z" fill="#0c0a10" stroke="#08070b" stroke-width="12"/>
+<g fill="url(#hotelSide)" stroke="#0c0a10" stroke-width="8">
+ <path d="M170 347V255H218V347ZM980 347V245H1028V347ZM350 340V280H388V340ZM812 340V280H850V340Z"/>
+</g>
+<g fill="url(#hotelMetal)" stroke="#171218" stroke-width="5">
+ <path d="M163 260H225V277H163ZM973 250H1035V267H973ZM344 284H394V300H344ZM806 284H856V300H806Z"/>
+</g>
+<!-- left hotel wing, deep return wall -->
+<path d="M38 665V434L110 378L150 366V652Z" fill="url(#hotelSide)" stroke="#08070b" stroke-width="10"/>
+<path d="M150 652V355L205 321H435V675H150Z" fill="url(#hotelFront)" stroke="#151118" stroke-width="12"/>
+<path d="M150 355L205 295H435L470 355L435 379H205Z" fill="url(#hotelRoof)" stroke="#b49a78" stroke-width="5"/>
+<!-- right hotel wing, deep return wall -->
+<path d="M765 675V355H995L1050 366V652H765Z" fill="url(#hotelFront)" stroke="#151118" stroke-width="12"/>
+<path d="M1050 652V366L1090 378L1162 434V665Z" fill="url(#hotelSide)" stroke="#08070b" stroke-width="10"/>
+<path d="M730 355L765 295H995L1050 355L995 379H765Z" fill="url(#hotelRoof)" stroke="#b49a78" stroke-width="5"/>
+<!-- central tall hotel block -->
+<path d="M380 676V222L425 185H775L820 222V676Z" fill="url(#hotelSide)" stroke="#08070b" stroke-width="14"/>
+<path d="M410 676V226L458 190H742L790 226V676Z" fill="url(#hotelFront)" stroke="#171218" stroke-width="12"/>
+<!-- broad mansard roof, layered slate and copper edges -->
+<path d="M365 235L405 142L470 104H730L795 142L835 235L785 221L740 185H460L415 221Z" fill="url(#hotelRoof)" stroke="#c0a17a" stroke-width="7"/>
+<path d="M420 147L470 104H730L780 147L745 174H455Z" fill="#1b171d" stroke="#8e7864" stroke-width="5"/>
+<path d="M455 111H745M430 160H770" stroke="#b39a78" stroke-width="4" opacity=".65"/>
+<!-- restrained corner pavilions and rooftop cupola: grand hotel silhouette -->
 <g>
- <path d="M390 266V115L425 70L460 115V266Z M740 266V115L775 70L810 115V266Z" fill="url(#frontStone)" stroke="#0c0a10" stroke-width="9"/>
- <path d="M380 120L425 28L470 120Z M730 120L775 28L820 120Z" fill="url(#roofStone)" stroke="#c0a17a" stroke-width="6"/>
- <path d="M425 30V-8M775 30V-8" stroke="#d1b58c" stroke-width="5"/>
+ <path d="M365 270V125L405 86L445 125V270Z M755 270V125L795 86L835 125V270Z" fill="url(#hotelFront)" stroke="#0d0b11" stroke-width="9"/>
+ <path d="M354 130L405 57L456 130Z M744 130L795 57L846 130Z" fill="url(#hotelRoof)" stroke="#b49a78" stroke-width="6"/>
+ <path d="M405 58V24M795 58V24" stroke="#c4a77d" stroke-width="4"/>
+ <path d="M510 112V57L600 15L690 57V112Z" fill="url(#hotelFront)" stroke="#151118" stroke-width="8"/>
+ <path d="M495 61L600 0L705 61Z" fill="url(#hotelRoof)" stroke="#bca17b" stroke-width="6"/>
+ <path d="M600 1V-18" stroke="#cdb58d" stroke-width="4"/>
 </g>
-<!-- central facade masonry and monumental pilasters -->
-<path d="M410 225H790V675H410Z" fill="url(#blocks)" opacity=".85"/>
-<g fill="#292229" stroke="#a58c70" stroke-width="4">
- <path d="M420 235H450V675H420Z M485 190H515V675H485Z M685 190H715V675H685Z M750 235H780V675H750Z"/>
- <path d="M410 285H790V302H410Z M410 410H790V427H410Z M410 545H790V562H410Z"/>
+<!-- heavy cornices and belt courses across connected wings -->
+<g fill="none" stroke="#c0a17a" stroke-width="7" opacity=".82">
+ <path d="M140 350H445M755 350H1060M400 220H800"/>
+ <path d="M150 405H435M765 405H1050M410 285H790"/>
+ <path d="M150 535H435M765 535H1050M410 545H790"/>
+ <path d="M150 645H435M765 645H1050M410 655H790"/>
 </g>
-<!-- heavy corner quoins and wing stone courses -->
-<g fill="none" stroke="#c0a17a" stroke-opacity=".45" stroke-width="5">
- <path d="M160 405H420M160 475H420M160 545H420M160 615H420M780 405H1040M780 475H1040M780 545H1040M780 615H1040"/>
- <path d="M175 385V650M395 385V650M805 385V650M1025 385V650"/>
- <path d="M430 245H770M430 330H770M430 465H770M430 600H770"/>
+<g fill="#2a2228" stroke="#aa9071" stroke-width="3">
+ <path d="M150 368H435V385H150ZM765 368H1050V385H765ZM410 238H790V256H410Z"/>
+ <path d="M165 390H190V652H165ZM395 390H420V652H395ZM780 390H805V652H780ZM1010 390H1035V652H1010Z"/>
 </g>
-<!-- carved stone crest and relief above entrance -->
-<path d="M480 390L520 350L600 326L680 350L720 390L690 414H510Z" fill="#211920" stroke="url(#brass)" stroke-width="6"/>
-<path d="M560 370L600 342L640 370L625 392H575Z" fill="#49383a" stroke="#c6a77b" stroke-width="3"/>
-<path d="M600 348V386M577 368H623" stroke="#d4b98b" stroke-width="3"/>
-<!-- grand recessed portico, layered columns -->
-<path d="M450 675V520Q450 415 600 385Q750 415 750 520V675Z" fill="#0c0a10" stroke="#c5a779" stroke-width="12"/>
-<path d="M477 675V520Q477 442 600 412Q723 442 723 520V675Z" fill="#21171a" stroke="#71543c" stroke-width="6"/>
-<g fill="url(#frontStone)" stroke="#b69a73" stroke-width="4"><path d="M470 675V475L495 453L520 475V675Z M680 675V475L705 453L730 475V675Z"/></g>
-<path d="M530 675V528Q530 462 600 442Q670 462 670 528V675Z" fill="#100b0d" stroke="#d0ad78" stroke-width="8"/>
-<path d="M548 675V530Q548 478 600 460Q652 478 652 530V675Z" fill="url(#doorGlow)" stroke="#5d3c2c" stroke-width="5"/>
-<path d="M600 462V675M555 535V675M645 535V675" stroke="#d4b17b" stroke-width="4"/>
-<circle cx="585" cy="575" r="5" fill="#f7d9a1"/><circle cx="615" cy="575" r="5" fill="#f7d9a1"/>
-<ellipse cx="600" cy="580" rx="95" ry="130" fill="#f6a75b" opacity=".16" filter="url(#doorLight)"/>
-<!-- stone steps and approach -->
-<path d="M420 675H780L805 700H395Z M390 700H810L840 728H360Z M350 728H850L875 752H325Z" fill="#393039" stroke="#a78c6a" stroke-width="5"/>
-<!-- weathered stone details: cracks, rain staining, ivy -->
-<g fill="none" stroke="#0a090e" stroke-width="5" opacity=".85"><path d="M245 395L230 425L244 447L224 477L238 503M950 400L968 432L950 454L970 488L955 515M470 255L458 280L474 305L462 327M730 265L745 290L730 315L744 339"/></g>
-<g fill="none" stroke="#1c2a20" stroke-width="7" opacity=".9"><path d="M160 650Q205 610 188 565Q230 585 246 535M1040 650Q995 610 1012 565Q970 585 954 535M425 650Q450 620 438 590Q475 605 480 570M775 650Q750 620 762 590Q725 605 720 570"/></g>
-<!-- wrought iron gates in foreground -->
-<g stroke="#09080d" stroke-width="8" fill="none"><path d="M15 650H350M850 650H1185M30 600V695M80 600V695M130 600V695M180 600V695M230 600V695M280 600V695M920 600V695M970 600V695M1020 600V695M1070 600V695M1120 600V695M1170 600V695"/></g>
-<g fill="url(#brass)"><path d="M18 606L30 570L42 606ZM68 606L80 570L92 606ZM118 606L130 570L142 606ZM168 606L180 570L192 606ZM218 606L230 570L242 606ZM268 606L280 570L292 606ZM908 606L920 570L932 606ZM958 606L970 570L982 606ZM1008 606L1020 570L1032 606ZM1058 606L1070 570L1082 606ZM1108 606L1120 570L1132 606ZM1158 606L1170 570L1182 606Z"/></g>
-<!-- hotel sign -->
-<path d="M445 305H755L740 340H460Z" fill="#120e13" stroke="#c7a878" stroke-width="4"/>
-<text x="600" y="329" text-anchor="middle" fill="#ead1a2" font-family="Georgia,serif" font-size="18" letter-spacing="5">THE DOOM HOTEL</text>
-<!-- foreground mist -->
-<path d="M0 670Q150 620 300 675T600 665T900 672T1200 650V760H0Z" fill="#b6a6a2" opacity=".08"/>
+<!-- stone block courses and surface relief -->
+<path d="M150 385H435V675H150ZM765 385H1050V675H765ZM410 255H790V675H410Z" fill="url(#hotelMasonry)" opacity=".95"/>
+<g fill="none" stroke="#d0b38c" stroke-opacity=".35" stroke-width="4">
+ <path d="M180 420V640M235 390V650M350 390V650M865 390V650M965 390V650M445 275V650M755 275V650"/>
+ <path d="M175 455H420M175 585H420M780 455H1025M780 585H1025M440 335H760M440 465H760"/>
+</g>
+<!-- deep vertical pilasters, making the facade read as a real hotel -->
+<g fill="url(#hotelSide)" stroke="#b59a76" stroke-width="4">
+ <path d="M435 270H463V675H435ZM487 260H512V675H487ZM688 260H713V675H688ZM737 270H765V675H737Z"/>
+ <path d="M170 397H195V675H170ZM390 397H415V675H390ZM785 397H810V675H785ZM1005 397H1030V675H1005Z"/>
+</g>
+<g fill="#9d8468" opacity=".75">
+ <path d="M430 270H468V284H430ZM482 260H517V274H482ZM683 260H718V274H683ZM732 270H770V284H732Z"/>
+</g>
+<!-- ornate hotel crest and sign, no windows yet -->
+<path d="M455 306H745L730 346H470Z" fill="#100d12" stroke="url(#hotelMetal)" stroke-width="5"/>
+<text x="600" y="333" text-anchor="middle" fill="#ead1a2" font-family="Georgia,serif" font-size="18" letter-spacing="5">THE DOOM HOTEL</text>
+<path d="M520 385L550 355H650L680 385L650 414H550Z" fill="#241b21" stroke="#bd9e72" stroke-width="5"/>
+<path d="M570 385L600 365L630 385L600 405Z" fill="#58413d" stroke="#d0b38b" stroke-width="3"/>
+<path d="M600 368V402M578 385H622" stroke="#d9bf91" stroke-width="3"/>
+<!-- grand porte-cochere: broad, recessed, unmistakably hotel entrance -->
+<path d="M425 675V532Q425 420 600 390Q775 420 775 532V675Z" fill="#0b090e" stroke="#c1a477" stroke-width="13"/>
+<path d="M454 675V535Q454 451 600 420Q746 451 746 535V675Z" fill="#21171b" stroke="#73583f" stroke-width="6"/>
+<path d="M480 675V535Q480 475 600 450Q720 475 720 535V675Z" fill="#100c10" stroke="#a88b65" stroke-width="6"/>
+<g fill="url(#hotelFront)" stroke="#b79a70" stroke-width="4">
+ <path d="M444 675V492L466 465L488 492V675Z M712 675V492L734 465L756 492V675Z"/>
+</g>
+<path d="M525 675V550Q525 475 600 455Q675 475 675 550V675Z" fill="#0b080a" stroke="#d1ae7b" stroke-width="8"/>
+<path d="M545 675V552Q545 495 600 477Q655 495 655 552V675Z" fill="url(#hotelDoor)" stroke="#62432f" stroke-width="5"/>
+<path d="M600 478V675M552 552V675M648 552V675" stroke="#d1b17e" stroke-width="4"/>
+<circle cx="584" cy="588" r="5" fill="#f6dba6"/><circle cx="616" cy="588" r="5" fill="#f6dba6"/>
+<ellipse cx="600" cy="590" rx="115" ry="145" fill="#f6a75b" opacity=".18" filter="url(#hotelBlur)"/>
+<!-- grand approach steps and broad arrival forecourt -->
+<path d="M395 675H805L830 700H370Z M365 700H835L865 728H335Z M325 728H875L900 754H300Z" fill="#393039" stroke="#a78c6a" stroke-width="5"/>
+<path d="M390 700H810M350 728H850" stroke="#d4bb98" stroke-opacity=".35" stroke-width="3"/>
+<!-- weathering, rain streaks and dead ivy -->
+<g fill="none" stroke="#09080d" stroke-width="5" opacity=".9">
+ <path d="M245 398L230 427L246 450L225 481L239 510M950 398L968 430L950 454L971 489L955 518M475 290L460 316L477 340L463 365M725 290L740 316L723 340L737 365"/>
+ <path d="M300 400L292 448L302 466M900 405L908 450L898 470"/>
+</g>
+<g fill="none" stroke="#1c2b20" stroke-width="7" opacity=".9">
+ <path d="M150 660Q195 620 180 574Q220 594 240 540M1050 660Q1005 620 1020 574Q980 594 960 540M435 660Q460 625 448 592Q480 610 490 572M765 660Q740 625 752 592Q720 610 710 572"/>
+</g>
+<!-- iron entrance gates and spear finials -->
+<g stroke="#09080d" stroke-width="8" fill="none">
+ <path d="M12 650H350M850 650H1188M30 598V700M80 598V700M130 598V700M180 598V700M230 598V700M280 598V700M920 598V700M970 598V700M1020 598V700M1070 598V700M1120 598V700M1170 598V700"/>
+</g>
+<g fill="url(#hotelMetal)">
+ <path d="M18 605L30 565L42 605ZM68 605L80 565L92 605ZM118 605L130 565L142 605ZM168 605L180 565L192 605ZM218 605L230 565L242 605ZM268 605L280 565L292 605ZM908 605L920 565L932 605ZM958 605L970 565L982 605ZM1008 605L1020 565L1032 605ZM1058 605L1070 565L1082 605ZM1108 605L1120 565L1132 605ZM1158 605L1170 565L1182 605Z"/>
+</g>
+<!-- low drifting fog -->
+<path d="M0 675Q150 625 300 680T600 668T900 675T1200 650V760H0Z" fill="#b6a6a2" opacity=".08"/>
 </svg></div><div class="mist"></div>
 <div class="hero-copy"><div class="eyebrow">A VICTORIAN NIGHTMARE · THE KINGDOMS OF WONDER</div><h1>HAUNTED<br>HOTEL DOOM</h1><p>Once the grandest address in the county. Now the doors are open — and the hotel has been expecting you.</p><span class="stamp">8 FLOORS ABOVE · NO PROMISE OF A SAFE RETURN</span></div>
 <div class="scroll">THE HOTEL IS AWAKE · ENTER BELOW</div>
