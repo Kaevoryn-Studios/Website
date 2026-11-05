@@ -19,69 +19,114 @@
 <body>
 <header class="top"><a class="brand" href="kingdoms.html">KAEVORYN STUDIOS<small>CREATE THE IMPOSSIBLE</small></a><a href="kingdoms.html">← The Kingdoms of Wonder</a></header>
 <main><section class="stage" aria-label="Open ocean water preview"><canvas id="ocean" aria-hidden="true"></canvas><div class="deep-world" aria-hidden="true"><svg viewBox="0 0 1200 360" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg">
-<defs><linearGradient id="reef" x2="0" y2="1"><stop stop-color="#247d83"/><stop offset="1" stop-color="#092c43"/></linearGradient><radialGradient id="glow"><stop stop-color="#7df4e8" stop-opacity=".42"/><stop offset="1" stop-color="#37d9e9" stop-opacity="0"/></radialGradient></defs>
-<ellipse cx="610" cy="210" rx="430" ry="150" fill="url(#glow)"/>
-<!-- distant schools of fish -->
-<g fill="#a9e7e7" opacity=".52" class="fish"><path d="M160 112q20-13 40 0l-13 9 13 9q-20 13-40 0l-12-9z"/><path d="M212 132q15-10 30 0l-10 7 10 7q-15 10-30 0l-9-7z"/><path d="M255 105q13-9 26 0l-9 6 9 6q-13 9-26 0l-8-6z"/></g>
-<g fill="#d0f4ed" opacity=".42" class="fish f2"><path d="M850 145q18-12 36 0l-12 8 12 8q-18 12-36 0l-11-8z"/><path d="M900 126q14-9 28 0l-9 6 9 6q-14 9-28 0l-8-6z"/></g>
-<g fill="#c2f5ee" opacity=".34" class="fish f3"><path d="M560 172q14-9 28 0l-9 6 9 6q-14 9-28 0l-8-6z"/><path d="M600 158q11-7 22 0l-7 5 7 5q-11 7-22 0l-7-5z"/></g>
-<!-- drifting jellyfish -->
-<g class="jelly" transform="translate(375 112)" opacity=".7"><path d="M-25 0a25 18 0 0 1 50 0q-25 18-50 0" fill="#9ce8ee" fill-opacity=".34" stroke="#b8f9f1" stroke-opacity=".6"/><path d="M-15 10q-8 18 0 29m0-29q4 17 7 28m8-28q-2 18 4 29m6-29q8 16 3 27" fill="none" stroke="#9ce8ee" stroke-width="2" stroke-linecap="round"/></g>
-<g class="jelly j2" transform="translate(770 82) scale(.75)" opacity=".55"><path d="M-25 0a25 18 0 0 1 50 0q-25 18-50 0" fill="#a4e7ff" fill-opacity=".32" stroke="#c6faff" stroke-opacity=".6"/><path d="M-15 10q-8 18 0 29m0-29q4 17 7 28m8-28q-2 18 4 29m6-29q8 16 3 27" fill="none" stroke="#b7f3ff" stroke-width="2" stroke-linecap="round"/></g>
-<!-- kelp forest -->
-<g fill="none" stroke-linecap="round"><g class="kelp" stroke="#1b8179" stroke-width="13"><path d="M80 360Q48 285 89 220T68 95"/><path d="M110 360Q145 290 119 235T151 140"/><path d="M1030 360Q1000 280 1038 220T1018 105"/><path d="M1080 360Q1115 300 1087 240T1125 155"/></g><g class="kelp k2" stroke="#42a58b" stroke-width="7"><path d="M150 360Q185 290 164 230T190 160"/><path d="M970 360Q945 285 970 230T950 150"/><path d="M1140 360Q1160 300 1145 250T1170 185"/></g></g>
-<!-- coral reef and rock shelf -->
-<path d="M0 322Q95 290 170 316T330 306Q405 276 470 312T610 302Q690 272 760 308T920 300Q1030 270 1100 310T1200 292V360H0Z" fill="url(#reef)"/>
-<g fill="none" stroke-linecap="round" stroke-linejoin="round"><g stroke="#e58b83" stroke-width="9"><path d="M230 330v-48m0 20-20-20m20 8 22-24m-22 12-4-25"/><path d="M870 326v-45m0 20-18-20m18 9 20-24m-20 13-2-22"/></g><g stroke="#e5b56f" stroke-width="7"><path d="M315 329v-37m0 15-17-18m17 8 17-18"/><path d="M760 325v-35m0 16-15-16m15 9 18-19"/></g></g>
-<g fill="#4bc8bd" opacity=".9"><circle cx="195" cy="320" r="12"/><circle cx="205" cy="308" r="8"/><circle cx="1000" cy="318" r="13"/><circle cx="1010" cy="304" r="8"/><circle cx="530" cy="327" r="9"/><circle cx="545" cy="316" r="7"/></g>
-<!-- rising air bubbles -->
-<g fill="none" stroke="#c4faff" stroke-width="2" opacity=".6"><circle class="bubble" cx="285" cy="290" r="5"/><circle class="bubble b2" cx="690" cy="270" r="4"/><circle class="bubble b3" cx="930" cy="300" r="6"/><circle cx="470" cy="255" r="3"/></g>
-
-<!-- ancient underwater cave and sunken treasure -->
 <defs>
- <linearGradient id="wreckWood" x2="0" y2="1"><stop stop-color="#916b45"/><stop offset=".55" stop-color="#493d35"/><stop offset="1" stop-color="#182e38"/></linearGradient>
- <linearGradient id="gold" x2="0" y2="1"><stop stop-color="#fff0a0"/><stop offset=".48" stop-color="#d9a83d"/><stop offset="1" stop-color="#80501d"/></linearGradient>
- <radialGradient id="caveGlow"><stop stop-color="#20c6c5" stop-opacity=".28"/><stop offset="1" stop-color="#062a43" stop-opacity="0"/></radialGradient>
+ <linearGradient id="reef" x2="0" y2="1"><stop stop-color="#315e60"/><stop offset=".35" stop-color="#173d49"/><stop offset="1" stop-color="#071d2d"/></linearGradient>
+ <linearGradient id="oldTimber" x2=".15" y2="1"><stop stop-color="#8b7758"/><stop offset=".28" stop-color="#574a3b"/><stop offset=".7" stop-color="#302f2b"/><stop offset="1" stop-color="#142b35"/></linearGradient>
+ <linearGradient id="woodEdge" x2="0" y2="1"><stop stop-color="#b39a70"/><stop offset=".4" stop-color="#6e5b43"/><stop offset="1" stop-color="#28323a"/></linearGradient>
+ <linearGradient id="brass" x2="0" y2="1"><stop stop-color="#f1d58b"/><stop offset=".4" stop-color="#a78343"/><stop offset="1" stop-color="#51452e"/></linearGradient>
+ <radialGradient id="caveGlow"><stop stop-color="#27c7bb" stop-opacity=".2"/><stop offset="1" stop-color="#062a43" stop-opacity="0"/></radialGradient>
+ <radialGradient id="treasureGlow"><stop stop-color="#ffd779" stop-opacity=".45"/><stop offset="1" stop-color="#f3b949" stop-opacity="0"/></radialGradient>
+ <linearGradient id="rayBody" x2="0" y2="1"><stop stop-color="#47727a"/><stop offset="1" stop-color="#102e40"/></linearGradient>
+ <linearGradient id="shell" x2="0" y2="1"><stop stop-color="#8a9368"/><stop offset=".45" stop-color="#485a48"/><stop offset="1" stop-color="#1d3438"/></linearGradient>
+ <filter id="softGlow"><feGaussianBlur stdDeviation="8"/></filter>
+ <filter id="rockTexture"><feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="3" seed="8"/><feColorMatrix values=".25 0 0 0 .05 .25 0 0 0 .08 .25 0 0 0 .09 0 0 0 .22 0"/></filter>
 </defs>
-<!-- shafts of filtered sunlight -->
-<g opacity=".14" fill="#a8f7ef"><path d="M410 0h38l-95 290h-65z"/><path d="M830 0h24l-8 270h-48z"/></g>
-<!-- giant manta ray gliding through the deeper water -->
-<g class="manta" transform="translate(220 205)" opacity=".72"><path d="M-105 0Q-76-25-38-17Q-10-12 0-28Q10-12 38-17Q76-25 105 0Q64-7 45 22Q25 38 8 12L0 6-8 12Q-25 38-45 22Q-64-7-105 0Z" fill="#183f51" stroke="#7ac8c3" stroke-width="3"/><path d="M-6 4Q-8 25 0 42Q8 25 6 4" fill="#204f5a"/><circle cx="-9" cy="-5" r="2.4" fill="#d5f4e8"/><circle cx="9" cy="-5" r="2.4" fill="#d5f4e8"/></g>
-<!-- graceful sea turtle with a patterned shell -->
-<g class="turtle" transform="translate(875 193)" opacity=".86"><path d="M-38-3Q-57-29-76-24Q-84-17-61 1L-43 12M38-3Q57-29 76-24Q84-17 61 1L43 12M-25 17Q-43 38-58 34Q-64 26-42 10M25 17Q43 38 58 34Q64 26 42 10" fill="#397f6d" stroke="#8dc8a0" stroke-width="3"/><ellipse cx="0" cy="0" rx="43" ry="27" fill="#386d55" stroke="#a6c98a" stroke-width="4"/><path d="M-24-15L0-23 24-15 33 4 16 20-16 20-33 4Z" fill="none" stroke="#b8d59b" stroke-width="2"/><path d="M-24-15L0 0 24-15M-33 4L0 0 33 4M-16 20L0 0 16 20" fill="none" stroke="#b8d59b" stroke-width="2"/><path d="M37-5Q53-20 66-8Q76 4 62 14Q47 21 37 8Z" fill="#679c72" stroke="#b6d7a0" stroke-width="3"/><circle cx="61" cy="-4" r="2.5" fill="#102b36"/></g>
-<!-- a shy octopus peeking from the cave -->
-<g transform="translate(1090 288)" opacity=".8"><path d="M-27 7Q-35-19-10-29Q17-38 29-14Q38 4 20 13Q-1 24-27 7Z" fill="#a45c83" stroke="#e0a2b4" stroke-width="3"/><circle cx="-9" cy="-5" r="3" fill="#fff0dc"/><circle cx="12" cy="-5" r="3" fill="#fff0dc"/><circle cx="-8" cy="-5" r="1.5" fill="#142b3b"/><circle cx="13" cy="-5" r="1.5" fill="#142b3b"/><path class="octopus-arm" d="M-20 8Q-42 25-54 8Q-59-1-51-8" fill="none" stroke="#c77a9c" stroke-width="7" stroke-linecap="round"/><path class="octopus-arm a2" d="M-8 14Q-18 37-37 31Q-47 26-40 18" fill="none" stroke="#c77a9c" stroke-width="7" stroke-linecap="round"/><path class="octopus-arm a3" d="M10 13Q26 34 42 22Q50 15 42 8" fill="none" stroke="#c77a9c" stroke-width="7" stroke-linecap="round"/><path class="octopus-arm" d="M24 7Q49 17 57-1Q59-11 49-14" fill="none" stroke="#c77a9c" stroke-width="7" stroke-linecap="round"/></g>
-<!-- dark cave opening tucked into the reef -->
-<ellipse cx="1030" cy="294" rx="145" ry="86" fill="url(#caveGlow)"/>
-<path d="M900 325Q900 270 938 239Q977 204 1020 220Q1060 188 1105 230Q1152 258 1150 325Z" fill="#102e3b" stroke="#397d78" stroke-width="12"/>
-<path d="M944 325Q946 278 977 257Q1010 231 1041 253Q1080 245 1100 280Q1114 302 1110 325Z" fill="#031725"/>
-<path d="M923 282l29-24 12 30m104-49 23 34-10 20" fill="none" stroke="#548d7d" stroke-width="8" stroke-linecap="round"/>
-<g fill="#58b9a3" opacity=".78"><circle cx="946" cy="313" r="7"/><circle cx="1117" cy="305" r="9"/><circle cx="1080" cy="328" r="6"/></g>
-<!-- broken wooden shipwreck resting on the seabed -->
-<g transform="translate(0 0)">
- <path d="M385 255Q440 269 501 265L694 247Q728 245 760 263L722 309Q691 326 622 323L459 314Q415 304 385 255Z" fill="url(#wreckWood)" stroke="#b08a58" stroke-width="5"/>
- <path d="M407 269l45 40m-4-39 45 43m-1-43 46 44m-2-44 48 44m-2-44 49 42m-1-43 48 38m-1-40 42 30" stroke="#c39a66" stroke-width="5" opacity=".7" fill="none"/>
- <path d="M570 257L562 105l12-9 15 157" fill="#634c39" stroke="#b08a58" stroke-width="5"/>
- <path d="M579 116l-91 91 84-19 91 28-84-99Z" fill="#6d8b83" fill-opacity=".5" stroke="#b7c9b1" stroke-width="4"/>
- <path d="M585 130l-5 63m-65 12 65-12 68 21" stroke="#d3d9c3" stroke-width="3" opacity=".6" fill="none"/>
- <path d="M674 250l82-63 8 7-62 75" fill="#604936" stroke="#a9875c" stroke-width="5"/>
- <path d="M450 260l-40-37m40 37-12-53m12 53 38-33" stroke="#9d7952" stroke-width="8" stroke-linecap="round" fill="none"/>
- <circle cx="468" cy="290" r="8" fill="#172c35" stroke="#d1b27a" stroke-width="3"/><circle cx="698" cy="286" r="8" fill="#172c35" stroke="#d1b27a" stroke-width="3"/>
+<ellipse cx="600" cy="205" rx="440" ry="175" fill="#63d8d1" opacity=".09" filter="url(#softGlow)"/>
+<!-- distant fish schools, small against the scale of the wreck -->
+<g fill="#c2e1dc" opacity=".43" class="fish"><path d="M150 105q16-8 31 0l-9 6 9 6q-15 8-31 0l-9-6z"/><path d="M193 122q12-7 24 0l-7 5 7 5q-12 7-24 0l-7-5z"/><path d="M230 91q11-6 22 0l-7 4 7 4q-11 6-22 0l-6-4z"/></g>
+<g fill="#c2e1dc" opacity=".32" class="fish f2"><path d="M820 118q15-8 30 0l-9 6 9 6q-15 8-30 0l-9-6z"/><path d="M864 96q11-6 22 0l-7 4 7 4q-11 6-22 0l-6-4z"/></g>
+<!-- suspended jellyfish with translucent bells -->
+<g class="jelly" transform="translate(350 104)" opacity=".55"><path d="M-22 1C-21-25 20-28 23 0Q2 16-22 1Z" fill="#a6d9d7" fill-opacity=".23" stroke="#c5f5eb" stroke-opacity=".6" stroke-width="1.5"/><path d="M-15 8q-7 18-1 32m8-31q-2 18 4 31m8-33q5 17 2 29m9-34q9 16 4 29" fill="none" stroke="#b8e9e5" stroke-opacity=".65" stroke-width="1.5" stroke-linecap="round"/></g>
+<g class="jelly j2" transform="translate(775 76) scale(.7)" opacity=".48"><path d="M-22 1C-21-25 20-28 23 0Q2 16-22 1Z" fill="#a6d9d7" fill-opacity=".22" stroke="#c5f5eb" stroke-opacity=".6" stroke-width="1.5"/><path d="M-15 8q-7 18-1 32m8-31q-2 18 4 31m8-33q5 17 2 29m9-34q9 16 4 29" fill="none" stroke="#b8e9e5" stroke-width="1.5" stroke-linecap="round"/></g>
+<!-- deep kelp silhouettes -->
+<g fill="none" stroke-linecap="round"><g class="kelp" stroke="#225c53" stroke-width="17"><path d="M62 360Q38 296 76 245T57 110"/><path d="M103 360Q142 297 113 235T150 135"/><path d="M1050 360Q1018 295 1051 233T1033 108"/><path d="M1110 360Q1140 298 1105 235T1142 145"/></g><g class="kelp k2" stroke="#39796a" stroke-width="8"><path d="M145 360Q180 300 157 236T189 160"/><path d="M980 360Q949 298 979 232T960 154"/><path d="M1160 360Q1175 305 1150 250T1177 183"/></g></g>
+<!-- broad eroded seabed and layered rock shelf -->
+<path d="M0 307Q70 286 128 305L194 296Q250 278 310 305L375 296Q430 277 480 304L540 291Q600 278 656 304L723 291Q786 270 846 301L918 289Q980 269 1038 300L1110 287Q1165 278 1200 293V360H0Z" fill="url(#reef)"/>
+<path d="M0 325Q150 300 275 324T530 319T785 318T1040 316T1200 313" fill="none" stroke="#78908a" stroke-opacity=".18" stroke-width="3"/>
+<path d="M0 341Q180 321 350 342T710 337T1030 334T1200 330" fill="none" stroke="#a6b2a0" stroke-opacity=".12" stroke-width="2"/>
+<path d="M0 300Q130 277 205 302T370 291Q450 271 505 299T660 288Q735 265 802 297T965 288Q1070 260 1200 286V360H0Z" fill="#071f30" opacity=".24"/>
+<!-- weathered reef outcrops, encrusted with sponge and coral -->
+<g fill="#294d50" stroke="#52716a" stroke-width="3">
+ <path d="M24 324l8-32 22-18 18 10 17-19 25 12 13 48Z"/><path d="M108 330l17-34 26-12 22 15 17 31Z"/>
+ <path d="M910 326l13-34 25-17 22 13 21-18 26 14 15 42Z"/><path d="M1080 326l14-27 29-13 22 17 25 23Z"/>
 </g>
-<!-- open treasure chest with a soft golden glimmer -->
-<g transform="translate(760 276)">
- <ellipse cx="28" cy="48" rx="65" ry="18" fill="#f6c75c" opacity=".17"/>
- <path d="M-5 13Q-2-16 29-18Q59-17 64 13L58 26H1Z" fill="#8b5c25" stroke="#e6c16d" stroke-width="4"/>
- <path d="M-3 13Q29 27 62 13L58 49Q27 65 1 48Z" fill="url(#wreckWood)" stroke="#d5aa58" stroke-width="4"/>
- <path d="M-1 29h60M28 19v37" stroke="#d9b15c" stroke-width="5"/>
- <rect x="20" y="29" width="17" height="17" rx="3" fill="url(#gold)" stroke="#ffe9a1" stroke-width="2"/>
- <path d="M8 7Q27-4 48 7" stroke="#ffe7a0" stroke-width="3" fill="none"/>
- <g fill="url(#gold)"><circle cx="3" cy="3" r="5"/><circle cx="55" cy="2" r="5"/><path d="M27-25l5-13 5 13-5 9z"/></g>
+<g fill="none" stroke-linecap="round" stroke-linejoin="round" opacity=".78">
+ <g stroke="#a16f62" stroke-width="5"><path d="M72 324q-10-21 2-35m-2 18-14-13m14 5 15-17m-15 7-2-18"/><path d="M950 323q-9-20 3-33m-3 17-13-12m13 6 16-17m-16 7-1-17"/><path d="M1125 326q-7-17 4-29m-4 14-11-10m11 5 13-15"/></g>
+ <g stroke="#b28d68" stroke-width="4"><path d="M143 330q-6-17 3-27m-3 14-10-9m10 4 11-13"/><path d="M1010 330q-7-16 2-26m-2 14-10-8m10 4 12-13"/></g>
 </g>
-<!-- tiny fish investigate the wreck -->
-<g fill="#e4d08b" opacity=".8" class="fish f2"><path d="M810 228q13-9 26 0l-9 6 9 6q-13 9-26 0l-8-6z"/><path d="M844 244q10-7 20 0l-7 5 7 5q-10 7-20 0l-6-5z"/></g>
-<!-- a few bubbles escaping the wreck -->
-<g fill="none" stroke="#c9fbff" stroke-width="2" opacity=".72"><circle class="bubble b2" cx="630" cy="224" r="5"/><circle class="bubble b3" cx="650" cy="202" r="3"/><circle class="bubble" cx="614" cy="188" r="4"/></g>
+<g fill="#718d77" opacity=".65"><ellipse cx="51" cy="315" rx="15" ry="7"/><ellipse cx="186" cy="326" rx="22" ry="6"/><ellipse cx="886" cy="324" rx="20" ry="7"/><ellipse cx="1065" cy="326" rx="17" ry="6"/></g>
+<!-- ruined stone arch and dark cavern, partly buried in sediment -->
+<ellipse cx="1050" cy="286" rx="170" ry="105" fill="url(#caveGlow)"/>
+<path d="M888 331Q892 285 914 254L938 233 951 245 970 216Q1007 190 1033 221L1052 202Q1090 205 1114 240L1147 274 1158 332Z" fill="#233d45" stroke="#526b63" stroke-width="7"/>
+<path d="M936 332Q937 283 967 257Q1002 224 1034 246Q1075 228 1101 266Q1122 293 1118 332Z" fill="#031622"/>
+<path d="M914 274l25-29 15 24m126-38 24 32-9 23" fill="none" stroke="#819087" stroke-opacity=".4" stroke-width="7"/>
+<path d="M957 330Q967 288 1000 276Q1030 265 1060 279Q1091 290 1097 330" fill="none" stroke="#1c3942" stroke-width="8"/>
+<!-- sunken galleon: broken, heavy hull with visible ribs and splintered planking -->
+<g class="wreck" transform="translate(0 0)">
+ <path d="M335 244Q385 251 435 248L681 222Q733 215 791 247L756 289Q728 316 671 322L443 326Q375 312 335 244Z" fill="#101f29" opacity=".72"/>
+ <path d="M344 238Q414 252 477 245L682 220Q737 218 786 246L752 283Q718 305 668 312L450 316Q386 301 344 238Z" fill="url(#oldTimber)" stroke="#9b8969" stroke-width="4"/>
+ <!-- exposed ribs along the broken hull -->
+ <g fill="none" stroke="#b19a70" stroke-width="7" stroke-linecap="round" opacity=".76"><path d="M381 249Q394 286 430 311"/><path d="M414 250Q426 286 461 314"/><path d="M450 248Q465 284 493 315"/><path d="M489 245Q500 281 528 315"/><path d="M530 240Q541 277 565 315"/><path d="M572 236Q582 273 602 313"/><path d="M615 231Q626 269 640 310"/><path d="M658 226Q671 264 681 304"/><path d="M701 226Q716 261 721 293"/></g>
+ <!-- individual broken planks and seams -->
+ <path d="M355 250Q440 263 515 252L695 231M365 266Q449 280 525 268L746 241M390 286Q478 299 552 285L729 260M426 305L581 303 701 282" fill="none" stroke="#c0a77a" stroke-opacity=".48" stroke-width="4"/>
+ <path d="M358 239l-22-24 29 12 12-20 7 29m311-17 24-29 4 33 26-12-10 27" fill="none" stroke="#806b4f" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+ <!-- snapped mast and rigging, no intact toy-like sail -->
+ <path d="M570 239L548 72 558 64 581 236" fill="url(#woodEdge)" stroke="#b09a75" stroke-width="4"/>
+ <path d="M556 115L491 177M559 145L640 205M552 95L615 62" fill="none" stroke="#b7a889" stroke-opacity=".58" stroke-width="2"/>
+ <path d="M548 72l-32-24 18 31m24-11 21-29-10 35" fill="none" stroke="#5b4d3d" stroke-width="7" stroke-linecap="round"/>
+ <path d="M489 177l-15 17 22-7m144 18 22 11-12-25" fill="none" stroke="#827057" stroke-width="6"/>
+ <!-- sea growth and sediment on the timbers -->
+ <path d="M385 246q16-13 28-2m68-4q12-12 24-4m117-12q12-12 26-4m78 2q14-10 27-2" fill="none" stroke="#71917b" stroke-width="5" opacity=".7"/>
+ <g fill="#a9b49a" opacity=".48"><circle cx="421" cy="271" r="3"/><circle cx="475" cy="288" r="4"/><circle cx="548" cy="270" r="3"/><circle cx="625" cy="251" r="4"/><circle cx="706" cy="272" r="3"/></g>
+</g>
+<!-- heavy iron-bound treasure coffer, half buried in silt -->
+<g class="coffer" transform="translate(777 287)">
+ <ellipse cx="4" cy="45" rx="76" ry="17" fill="#020e19" opacity=".65"/>
+ <ellipse cx="0" cy="17" rx="78" ry="54" fill="url(#treasureGlow)" filter="url(#softGlow)"/>
+ <path d="M-47 1Q-45-35-17-43Q16-52 43-34Q57-20 49 3L39 17H-39Z" fill="#433b30" stroke="#9c8358" stroke-width="5"/>
+ <path d="M-45 1Q0 17 47 1L43 45Q2 63-42 43Z" fill="url(#oldTimber)" stroke="#8d784e" stroke-width="5"/>
+ <path d="M-43 12Q0 26 45 12M-41 36Q0 49 42 36" fill="none" stroke="#b5a078" stroke-width="5"/>
+ <path d="M-28-36L-33 48M26-39L31 48M-3-45L-2 55" stroke="url(#brass)" stroke-width="7"/>
+ <path d="M-8 17h17v20H-8Z" fill="url(#brass)" stroke="#d5c18a" stroke-width="2"/>
+ <circle cx="0" cy="26" r="3" fill="#17242a"/>
+ <path d="M-38-4Q0 10 41-4" fill="none" stroke="#c2a56c" stroke-width="3"/>
+ <g fill="#d5b66e"><circle cx="-54" cy="43" r="3"/><circle cx="55" cy="42" r="3"/></g>
+</g>
+<!-- manta ray, distant silhouette with natural swept wings -->
+<g class="manta" transform="translate(210 202)" opacity=".74"><path d="M-125-4Q-94-30-59-23Q-25-17-5-31Q0-38 5-31Q25-17 59-23Q94-30 125-4Q87-10 60 20Q35 45 9 12L0 5-9 12Q-35 45-60 20Q-87-10-125-4Z" fill="url(#rayBody)" stroke="#729a9a" stroke-width="2"/><path d="M-8 5Q-12 32 0 52Q12 32 8 5" fill="#173d4c"/><path d="M-35-15Q0-5 35-15" fill="none" stroke="#a5c2b5" stroke-opacity=".35" stroke-width="2"/><circle cx="-12" cy="-8" r="2" fill="#d8e5d6"/><circle cx="12" cy="-8" r="2" fill="#d8e5d6"/></g>
+<!-- sea turtle with anatomically proportioned flippers and scute shell -->
+<g class="turtle" transform="translate(873 188)" opacity=".9">
+ <path d="M-25-8Q-61-49-83-36Q-94-26-65 1L-40 17Q-60 44-49 51Q-31 56-15 22M25-8Q61-49 83-36Q94-26 65 1L40 17Q60 44 49 51Q31 56 15 22" fill="#456c58" stroke="#8a9c72" stroke-width="3"/>
+ <path d="M-31 11Q-50 26-58 19M31 11Q50 26 58 19" fill="none" stroke="#9aa77c" stroke-width="2"/>
+ <ellipse cx="0" cy="0" rx="43" ry="29" fill="url(#shell)" stroke="#9b9b70" stroke-width="4"/>
+ <path d="M0-26L-18-17-28 0-18 18 0 26 18 18 28 0 18-17Z" fill="none" stroke="#b2b18a" stroke-width="2.5"/>
+ <path d="M-18-17L0-5 18-17M-28 0L0-5 28 0M-18 18L0-5 18 18" fill="none" stroke="#b2b18a" stroke-width="2"/>
+ <path d="M34-7Q47-20 61-12Q75-2 64 12Q52 24 36 11Z" fill="#637e60" stroke="#a6ad80" stroke-width="3"/>
+ <circle cx="61" cy="-5" r="2.6" fill="#101f2b"/>
+</g>
+<!-- octopus emerging from shadow: mantle, eyes, tapered curling arms and suckers -->
+<g class="octopus" transform="translate(1080 286)" opacity=".86">
+ <path d="M-22 6Q-39-14-24-35Q-8-53 15-40Q36-25 26 0Q17 18-7 17Z" fill="#78506b" stroke="#b17b8d" stroke-width="3"/>
+ <path d="M-21-23Q-4-42 18-26" fill="none" stroke="#d0a0a0" stroke-opacity=".45" stroke-width="4"/>
+ <ellipse cx="-9" cy="-4" rx="5" ry="7" fill="#f0d7b9"/><ellipse cx="12" cy="-5" rx="5" ry="7" fill="#f0d7b9"/>
+ <ellipse cx="-8" cy="-4" rx="2" ry="4" fill="#182631"/><ellipse cx="13" cy="-5" rx="2" ry="4" fill="#182631"/>
+ <path class="octopus-arm" d="M-20 9Q-42 25-56 11Q-64 0-51-10Q-42-16-37-8" fill="none" stroke="#98647d" stroke-width="8" stroke-linecap="round"/>
+ <path class="octopus-arm a2" d="M-8 14Q-22 42-43 37Q-57 32-48 20Q-42 14-36 19" fill="none" stroke="#98647d" stroke-width="8" stroke-linecap="round"/>
+ <path class="octopus-arm a3" d="M9 14Q28 38 48 26Q61 18 52 8Q46 1 39 8" fill="none" stroke="#98647d" stroke-width="8" stroke-linecap="round"/>
+ <path class="octopus-arm" d="M22 8Q48 13 60-5Q67-19 54-24" fill="none" stroke="#98647d" stroke-width="8" stroke-linecap="round"/>
+ <g fill="#d6a4a8" opacity=".8"><circle cx="-49" cy="7" r="2.2"/><circle cx="-45" cy="27" r="2.2"/><circle cx="45" cy="21" r="2.2"/><circle cx="57" cy="-8" r="2.2"/></g>
+</g>
+<!-- small bioluminescent life in the shadows -->
+<g class="glow-life">
+ <g transform="translate(690 166)"><circle r="23" fill="#4ce7d7" opacity=".13" filter="url(#softGlow)"/><path d="M-12 1Q-10-17 0-17Q11-16 13 1Q0 10-12 1Z" fill="#8be9d8" fill-opacity=".3" stroke="#b2fff0" stroke-opacity=".7"/><path d="M-7 5q-5 14 0 20m7-20q-1 13 3 19m5-20q7 13 3 18" fill="none" stroke="#83e8dc" stroke-width="1.5"/></g>
+ <g transform="translate(940 185)"><circle r="28" fill="#56e8d9" opacity=".1" filter="url(#softGlow)"/><path d="M-11 0Q-7-16 7-12Q20-6 12 7Q2 17-11 0Z" fill="#86d8d0" fill-opacity=".24" stroke="#a8fff1" stroke-opacity=".55"/><path d="M-4 8l-8 15m12-13-1 17m7-18 7 13" stroke="#80e7d8" stroke-width="1.5" fill="none"/></g>
+ <g transform="translate(590 283)" class="angler"><ellipse cx="0" cy="0" rx="22" ry="12" fill="#1a3944" stroke="#668b83" stroke-width="2"/><path d="M-19 0l-13-10 2 20Z" fill="#294b50"/><path d="M10-7Q20-25 12-32Q28-36 29-21" fill="none" stroke="#779a8a" stroke-width="2"/><circle cx="29" cy="-21" r="5" fill="#b9fff0"/><circle cx="29" cy="-21" r="13" fill="#8bfff0" opacity=".22" filter="url(#softGlow)"/><circle cx="7" cy="-3" r="2" fill="#e7f1d7"/></g>
+</g>
+<!-- suspended silt, tiny bubbles and particles -->
+<g fill="#b6d9ce" opacity=".28"><circle cx="286" cy="240" r="1.5"/><circle cx="322" cy="276" r="2"/><circle cx="535" cy="218" r="1.5"/><circle cx="720" cy="248" r="2"/><circle cx="840" cy="263" r="1.4"/><circle cx="1005" cy="231" r="1.7"/><circle cx="1150" cy="257" r="1.4"/></g>
+<g fill="none" stroke="#c4faff" stroke-width="1.6" opacity=".5"><circle class="bubble" cx="286" cy="285" r="4"/><circle class="bubble b2" cx="690" cy="266" r="3"/><circle class="bubble b3" cx="930" cy="294" r="4"/><circle class="bubble" cx="630" cy="214" r="3"/></g>
+<!-- soft filtered light shafts -->
+<g opacity=".09" fill="#c9fff1"><path d="M420 0h24l-94 286h-58Z"/><path d="M830 0h18l-6 260h-38Z"/></g>
 </svg></div><div class="heading"><div class="eyebrow">THE KINGDOMS OF WONDER · WATER ADVENTURE</div><h1>THE SEA OF WONDERS</h1><p>First, we build the ocean. Nothing else — just open water, natural waves, and a distant horizon.</p></div><div class="foot">KAEVORYN STUDIOS · <a href="kingdoms.html">RETURN TO THE PARK</a></div></section></main>
 <script>
 (()=>{
