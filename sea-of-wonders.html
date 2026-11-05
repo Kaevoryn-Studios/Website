@@ -28,25 +28,26 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.6));
 renderer.outputColorSpace=THREE.SRGBColorSpace;
 scene.add(new THREE.HemisphereLight(0xe8faff,0x17465a,1.35));
 const sunlight=new THREE.DirectionalLight(0xfff4df,2.0);sunlight.position.set(-35,45,20);scene.add(sunlight);
-const geometry=new THREE.PlaneGeometry(420,520,260,320);geometry.rotateX(-Math.PI/2);
+const geometry=new THREE.PlaneGeometry(420,520,320,380);geometry.rotateX(-Math.PI/2);
 const base=geometry.attributes.position.array.slice();
 const colors=new Float32Array(geometry.attributes.position.count*3);
 geometry.setAttribute('color',new THREE.BufferAttribute(colors,3));
-const deep=new THREE.Color(0x06445f),blue=new THREE.Color(0x087c9c),aqua=new THREE.Color(0x35a8b8),foam=new THREE.Color(0xc9e9e5);
-const material=new THREE.MeshPhysicalMaterial({color:0xffffff,vertexColors:true,roughness:.22,metalness:.04,clearcoat:.85,clearcoatRoughness:.12,reflectivity:.8});
+const deep=new THREE.Color(0x032f4b),blue=new THREE.Color(0x05658a),aqua=new THREE.Color(0x20a0b2),foam=new THREE.Color(0xe5f4ed),sunGlint=new THREE.Color(0xfff4d8);
+const material=new THREE.MeshPhysicalMaterial({color:0xffffff,vertexColors:true,roughness:.115,metalness:.09,clearcoat:1,clearcoatRoughness:.035,reflectivity:1});
 const water=new THREE.Mesh(geometry,material);water.position.set(0,-.5,-105);scene.add(water);
 function waveAt(x,z,t){
- return Math.sin(x*.035+t*.52)*.19+
- Math.sin((x*.72+z)*.027-t*.43)*.22+
- Math.cos(z*.052+t*.38)*.12+
- Math.sin((x+z)*.095+t*.8)*.035+
- Math.sin(x*.19-z*.16+t*1.15)*.012;
+ const swell=Math.sin(x*.025+t*.34)*.30+
+ Math.sin((x*.62+z)*.019-t*.29)*.36+
+ Math.cos(z*.033+t*.25)*.19;
+ const cross=Math.sin((x*.8-z)*.075+t*.72)*.065+
+ Math.sin((x+z)*.14-t*.94)*.025;
+ return swell+cross;
 }
 function resize(){const w=canvas.clientWidth,h=canvas.clientHeight;if(!w||!h)return;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();}
 if(window.ResizeObserver)new ResizeObserver(resize).observe(canvas);else window.addEventListener('resize',resize);resize();
 const clock=new THREE.Clock();
 function animate(){requestAnimationFrame(animate);const t=clock.getElapsedTime(),p=geometry.attributes.position,c=geometry.attributes.color;
-for(let i=0;i<p.count;i++){const x=base[i*3],z=base[i*3+2];const wave=waveAt(x,z,t);p.setY(i,base[i*3+1]+wave);const shallow=THREE.MathUtils.smoothstep(z,-255,-5);const crest=THREE.MathUtils.smoothstep(wave,.27,.48);const col=deep.clone().lerp(blue,shallow*.78).lerp(aqua,shallow*.28).lerp(foam,crest*.42);c.setXYZ(i,col.r,col.g,col.b);}
+for(let i=0;i<p.count;i++){const x=base[i*3],z=base[i*3+2];const wave=waveAt(x,z,t);p.setY(i,base[i*3+1]+wave);const distance=THREE.MathUtils.smoothstep(z,-255,-8);const crest=THREE.MathUtils.smoothstep(wave,.49,.72);const chop=Math.abs(Math.sin((x*.8-z)*.075+t*.72));const foamMask=Math.max(crest*.62,THREE.MathUtils.smoothstep(chop,.985,1)*.16);const bandCenter=-22+Math.sin(z*.022+t*.35)*5;const band=Math.exp(-Math.pow((x-bandCenter)/5.2,2));const glimmer=(.35+.65*Math.sin(z*.31+t*2.1)**8)*band*.58;const col=deep.clone().lerp(blue,distance*.86).lerp(aqua,distance*.24).lerp(sunGlint,glimmer).lerp(foam,foamMask);c.setXYZ(i,col.r,col.g,col.b);}
 p.needsUpdate=true;c.needsUpdate=true;geometry.computeVertexNormals();
 renderer.render(scene,camera);}
 animate();
