@@ -94,8 +94,8 @@
  }
  void main(){
    vec2 screen=(gl_FragCoord.xy-0.5*resolution)/resolution.y;
-   vec3 ro=vec3(0.0,1.55,6.8);
-   vec3 rd=normalize(vec3(screen.x*1.55,screen.y*1.08-0.10,-1.62));
+   vec3 ro=vec3(0.0,2.35,13.5);
+   vec3 rd=normalize(vec3(screen.x*2.45,screen.y*1.72-0.08,-1.42));
    if(rd.y>=-0.006){gl_FragColor=vec4(skyColor(rd),1.0);return;}
 
    float lo=0.0,hi=180.0;
