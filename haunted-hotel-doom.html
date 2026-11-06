@@ -130,12 +130,12 @@ mc.restore();
 // subtle luminous rim around the lunar disc
 mc.restore();
 const moonTexture=new T.CanvasTexture(moonCanvas);moonTexture.colorSpace=T.SRGBColorSpace;moonTexture.anisotropy=8;
-const moonFace=new T.Mesh(new T.PlaneGeometry(14.1,14.1),new T.MeshBasicMaterial({map:moonTexture,transparent:true,depthWrite:false,fog:false}));
-moonFace.position.z=7.18;moonGroup.add(moonFace);
+const moonFace=new T.Mesh(new T.PlaneGeometry(14.1,14.1),new T.MeshBasicMaterial({map:moonTexture,transparent:true,depthWrite:false,depthTest:false,fog:false}));
+moonFace.position.z=7.5;moonFace.renderOrder=20;moonGroup.add(moonFace);
 const moonAura=new T.Mesh(new T.SphereGeometry(10.8,48,32),new T.MeshBasicMaterial({color:0xffbd50,transparent:true,opacity:.13,depthWrite:false,fog:false}));
 moonAura.position.set(moonX,moonY,moonZ);scene.add(moonAura);
 const moonHalo=new T.Mesh(new T.SphereGeometry(8.9,48,32),new T.MeshBasicMaterial({color:0xffd77a,transparent:true,opacity:.16,depthWrite:false,fog:false}));
-moonHalo.position.set(moonX,moonY,moonZ);scene.add(moonHalo);scene.add(moonHalo);
+moonHalo.position.set(moonX,moonY,moonZ);scene.add(moonHalo);
 const moonGlow=new T.PointLight(0xffc45e,100,175);moonGlow.position.set(moonX,moonY,moonZ+3);scene.add(moonGlow);
 // lanterns
 const lanterns=[];for(const x of [-5.5,5.5,-13,13]){const z=x===-5.5||x===5.5?-5:-24;box(.18,3,.18,iron,x,1.5,z);box(.65,.1,.65,gold,x,3,z);const l=new T.PointLight(0xffa64b,7,13);l.position.set(x,2.7,z);scene.add(l);lanterns.push(l);sphere(.22,warm,x,2.7,z);}
