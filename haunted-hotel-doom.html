@@ -65,9 +65,19 @@ function box(w,h,d,m,x,y,z){const o=new T.Mesh(new T.BoxGeometry(w,h,d),m);o.pos
 function sphere(r,m,x,y,z){const o=new T.Mesh(new T.SphereGeometry(r,12,10),m);o.position.set(x,y,z);o.castShadow=true;scene.add(o);return o}
 function cylinder(rt,rb,h,m,x,y,z,n=8){const o=new T.Mesh(new T.CylinderGeometry(rt,rb,h,n),m);o.position.set(x,y,z);o.castShadow=true;o.receiveShadow=true;scene.add(o);return o}
 function tree(x,z,s=1){const trunk=cylinder(.22*s,.48*s,5*s,wood,x,2.5*s,z,7);trunk.rotation.z=(Math.random()-.5)*.35;for(let i=0;i<5;i++){const b=cylinder(.07*s,.18*s,2.4*s,wood,x+(Math.random()-.5)*2*s,4*s+Math.random()*2*s,z+(Math.random()-.5)*1.5*s,6);b.rotation.z=(Math.random()-.5)*1.8;}for(let i=0;i<4;i++){const b=cylinder(.035*s,.12*s,1.6*s,wood,x+(Math.random()-.5)*2.8*s,5.4*s+Math.random()*1.8*s,z+(Math.random()-.5)*2*s,5);b.rotation.z=(Math.random()-.5)*2.3;}}
+// Procedural granite texture: fine mineral grain, rain streaks and age mottling.
+const graveTextureCanvas=document.createElement('canvas');graveTextureCanvas.width=256;graveTextureCanvas.height=512;
+const graveTextureCtx=graveTextureCanvas.getContext('2d');
+graveTextureCtx.fillStyle='#777780';graveTextureCtx.fillRect(0,0,256,512);
+const grain=graveTextureCtx.createImageData(256,512);
+for(let p=0;p<grain.data.length;p+=4){const n=(Math.random()-.5)*34;grain.data[p]=124+n;grain.data[p+1]=124+n;grain.data[p+2]=132+n;grain.data[p+3]=255;}
+graveTextureCtx.putImageData(grain,0,0);
+for(let i=0;i<95;i++){const x=Math.random()*256,y=Math.random()*512,w=2+Math.random()*17,h=12+Math.random()*105;graveTextureCtx.fillStyle=Math.random()>.5?'rgba(32,35,43,.055)':'rgba(220,216,207,.045)';graveTextureCtx.fillRect(x,y,w,h);}
+for(let i=0;i<420;i++){const x=Math.random()*256,y=Math.random()*512,r=.3+Math.random()*1.4;graveTextureCtx.fillStyle=Math.random()>.5?'rgba(25,28,36,.13)':'rgba(225,221,212,.12)';graveTextureCtx.beginPath();graveTextureCtx.arc(x,y,r,0,Math.PI*2);graveTextureCtx.fill();}
+const graveStoneTexture=new T.CanvasTexture(graveTextureCanvas);graveStoneTexture.colorSpace=T.SRGBColorSpace;graveStoneTexture.wrapS=T.RepeatWrapping;graveStoneTexture.wrapT=T.RepeatWrapping;graveStoneTexture.anisotropy=4;
 function tomb(x,z,kind=0){
   const palette=[0x777681,0x686a76,0x858087,0x555965,0x77736f,0x626775];
-  const m=mat(palette[(kind+Math.floor(Math.random()*3))%palette.length],.98);
+  const m=new T.MeshStandardMaterial({color:palette[(kind+Math.floor(Math.random()*3))%palette.length],roughness:.98,metalness:0,map:graveStoneTexture});
   const w=.72+Math.random()*.38,h=1.25+Math.random()*.85,depth=.22;
   const base=box(w+.3,.2,.48,darkStone,x,.02,z);
   const plinth=box(w+.12,.16,.38,m,x,.19,z);
@@ -93,20 +103,27 @@ function tomb(x,z,kind=0){
     box(.27,.055,.025,letterMat,x,.69+h*.43,faceZ+.025);
   }
   // Deep age cracks, branching fractures, chipped edges and damp lichen.
-  const crackMat=mat(0x292b35,.99),crackZ=faceZ+.045;
-  const addCrack=(cx,cy,length,angle,width=.022)=>{
-    const mark=new T.Mesh(new T.BoxGeometry(width,length,.014),crackMat);
-    mark.position.set(cx,cy,crackZ);mark.rotation.z=angle;scene.add(mark);
+  const crackMat=new T.MeshStandardMaterial({color:0x252831,roughness:1});
+  const crackEdgeMat=new T.MeshStandardMaterial({color:0xaaa5a0,roughness:1});
+  const crackZ=faceZ+.052;
+  const fracture=(points,radius,material)=>{
+    const curve=new T.CatmullRomCurve3(points.map(([px,py])=>new T.Vector3(px,py,crackZ)));
+    const mesh=new T.Mesh(new T.TubeGeometry(curve,18,radius,5,false),material);
+    mesh.castShadow=true;scene.add(mesh);
   };
-  const crackX=x+(Math.random()-.5)*w*.42,crackY=.55+h*(.56+Math.random()*.2);
-  addCrack(crackX,crackY,.32+Math.random()*.28,(Math.random()-.5)*.18,.026);
-  addCrack(crackX-.055,crackY+.13,.18,-.62,.018);
-  addCrack(crackX+.035,crackY-.09,.16,.58,.016);
+  const crackX=x+(Math.random()-.5)*w*.34,crackY=.55+h*(.53+Math.random()*.18);
+  const drift=(Math.random()-.5)*.16;
+  fracture([[crackX-.07,crackY+.38],[crackX-.025,crackY+.24],[crackX+drift,crackY+.09],[crackX-.035,crackY-.06],[crackX+.035,crackY-.22],[crackX+.01,crackY-.36]],.012,crackMat);
+  fracture([[crackX-.025,crackY+.24],[crackX-.16,crackY+.17],[crackX-.23,crackY+.05]],.007,crackMat);
+  fracture([[crackX+.005,crackY+.02],[crackX+.16,crackY-.04],[crackX+.22,crackY-.16]],.007,crackMat);
+  fracture([[crackX-.085,crackY+.36],[crackX-.04,crackY+.22],[crackX-.015,crackY+.1]],.004,crackEdgeMat);
   if(kind%2===0){
-    const secondX=x+(Math.random()-.5)*w*.42;
-    addCrack(secondX,.48+h*.28,.2+Math.random()*.16,(Math.random()-.5)*.25,.018);
-    addCrack(secondX+.045,.54+h*.28,.13,.72,.014);
+    const sx=x+(Math.random()-.5)*w*.42,sy=.48+h*.28;
+    fracture([[sx-.06,sy+.12],[sx+.015,sy+.03],[sx-.025,sy-.08],[sx+.055,sy-.17]],.008,crackMat);
   }
+  // Small pitted erosion marks and dark mineral pores on the exposed face.
+  const pitMat=mat(0x444650,1);
+  for(let p=0;p<9;p++){const pit=sphere(.012+Math.random()*.014,pitMat,x+(Math.random()-.5)*w*.72,.38+Math.random()*h*.48,faceZ+.052);pit.scale.set(1.5,.65,.35);}
   // Small dark chips along the silhouette make the old stone look broken by weather.
   const chipMat=mat(0x3c3d47,.98);
   for(let k=0;k<3;k++){
@@ -248,34 +265,17 @@ const signText=document.createElement('div');signText.textContent='HAUNTED HOTEL
 // lanterns
 const lanterns=[];for(const x of [-5.5,5.5,-13,13]){const z=x===-5.5||x===5.5?-5:-24;box(.18,3,.18,iron,x,1.5,z);box(.65,.1,.65,gold,x,3,z);box(.42,.62,.42,warm,x,2.62,z);for(const dx of [-.25,.25])for(const dz of [-.25,.25])box(.045,.72,.045,iron,x+dx,2.62,z+dz);box(.58,.12,.58,gold,x,3.02,z);const cap=new T.Mesh(new T.ConeGeometry(.43,.28,4),gold);cap.position.set(x,3.22,z);cap.rotation.y=Math.PI/4;scene.add(cap);const l=new T.PointLight(0xffb45e,11,17,1.7);l.position.set(x,2.65,z);scene.add(l);lanterns.push(l);const groundGlow=new T.PointLight(0xffa64b,2.2,7,2);groundGlow.position.set(x,.42,z);scene.add(groundGlow);sphere(.12,warm,x,2.62,z);}
 // The fountain has been removed for now; this area remains open cemetery ground.
- // A sparse veil of very thin mist, kept almost flush with the cemetery path.
- const lowFogCanvas=document.createElement('canvas');lowFogCanvas.width=512;lowFogCanvas.height=128;
+  // Thin, visible ground mist with layered wisps that travel slowly along the path.
+ const lowFogCanvas=document.createElement('canvas');lowFogCanvas.width=512;lowFogCanvas.height=160;
  const fogCtx=lowFogCanvas.getContext('2d');
- const fogGradient=fogCtx.createLinearGradient(0,0,512,0);
- fogGradient.addColorStop(0,'rgba(210,225,244,0)');
- fogGradient.addColorStop(.25,'rgba(210,225,244,.025)');
- fogGradient.addColorStop(.5,'rgba(224,234,248,.12)');
- fogGradient.addColorStop(.75,'rgba(210,225,244,.025)');
- fogGradient.addColorStop(1,'rgba(210,225,244,0)');
- fogCtx.fillStyle=fogGradient;fogCtx.fillRect(0,0,512,128);
- for(let j=0;j<4;j++){
-  fogCtx.beginPath();fogCtx.moveTo(0,22+j*25);
-  for(let x=0;x<=512;x+=32)fogCtx.lineTo(x,22+j*25+Math.sin(x*.018+j*1.7)*4);
-  fogCtx.strokeStyle='rgba(225,235,248,'+(0.018+j*.004)+')';fogCtx.lineWidth=3;fogCtx.stroke();
- }
+ const fogGlow=fogCtx.createRadialGradient(256,80,12,256,80,250);
+ fogGlow.addColorStop(0,'rgba(224,235,250,.34)');fogGlow.addColorStop(.38,'rgba(211,226,245,.23)');fogGlow.addColorStop(.72,'rgba(191,210,235,.075)');fogGlow.addColorStop(1,'rgba(180,200,228,0)');
+ fogCtx.fillStyle=fogGlow;fogCtx.fillRect(0,0,512,160);
+ for(let j=0;j<9;j++){fogCtx.beginPath();const y=22+j*15;fogCtx.moveTo(0,y);for(let x=0;x<=512;x+=16)fogCtx.lineTo(x,y+Math.sin(x*.022+j*1.35)*5+Math.sin(x*.009+j)*3);fogCtx.strokeStyle='rgba(229,238,250,'+(0.045+(j%3)*.012)+')';fogCtx.lineWidth=2+((j+1)%3);fogCtx.stroke();}
  const lowFogTexture=new T.CanvasTexture(lowFogCanvas);lowFogTexture.colorSpace=T.SRGBColorSpace;
  const lowFogLayers=[];
- for(let i=0;i<8;i++){
-  const material=new T.MeshBasicMaterial({map:lowFogTexture,color:0xe4edfa,transparent:true,opacity:.22,depthWrite:false,side:T.DoubleSide});
-  const mist=new T.Mesh(new T.PlaneGeometry(5.2,.82),material);
-  mist.rotation.x=-Math.PI/2;
-  const lane=i%2,row=Math.floor(i/2);
-  mist.position.set((lane===0?-1:1)*1.65+(Math.random()-.5)*.22,.018,-7.8-row*7.2+(Math.random()-.5)*.45);
-  mist.renderOrder=1;scene.add(mist);
-  lowFogLayers.push({mesh:mist,baseX:mist.position.x,baseZ:mist.position.z,phase:i*.83});
- }
- // 
-// Remove the floating ghost/fog figures from both sides of the graveyard.
+ for(let i=0;i<14;i++){const material=new T.MeshBasicMaterial({map:lowFogTexture,color:0xe5eefb,transparent:true,opacity:.66,depthWrite:false,side:T.DoubleSide});const mist=new T.Mesh(new T.PlaneGeometry(6.8,1.35),material);mist.rotation.x=-Math.PI/2;const lane=i%3,row=Math.floor(i/3);const laneX=lane===0?-1.9:lane===1?0:1.9;mist.position.set(laneX+(Math.random()-.5)*.35,.055,-6.5-row*4.35+(Math.random()-.5)*.65);mist.renderOrder=1;scene.add(mist);lowFogLayers.push({mesh:mist,baseX:mist.position.x,baseZ:mist.position.z,phase:i*.71,speed:.34+(i%4)*.045});}
+ Remove the floating ghost/fog figures from both sides of the graveyard.
 const starsGeo=new T.BufferGeometry(),starPts=[];for(let i=0;i<420;i++)starPts.push((Math.random()-.5)*130,8+Math.random()*65,-Math.random()*100);starsGeo.setAttribute('position',new T.Float32BufferAttribute(starPts,3));scene.add(new T.Points(starsGeo,new T.PointsMaterial({color:0xb8c8ff,size:.16,transparent:true,opacity:.8})));
 const keys={};let yaw=0,pitch=0,velocity=new T.Vector3(),soundOn=false,audio=null,last=performance.now(),lightning=0;
 addEventListener('keydown',e=>{keys[e.key.toLowerCase()]=true;if(e.key.toLowerCase()==='e')inspect();});addEventListener('keyup',e=>keys[e.key.toLowerCase()]=false);
@@ -305,7 +305,7 @@ document.getElementById('interact').onclick=inspect;
 document.getElementById('reset').onclick=()=>{camera.position.set(0,2.1,16);yaw=0;pitch=0;msg.textContent='THE GATES ARE OPEN… THE HOTEL IS WAITING.';};
 document.getElementById('sound').onclick=()=>{soundOn=!soundOn;document.getElementById('sound').textContent='SOUND: '+(soundOn?'ON':'OFF');if(soundOn){try{audio=audio||new (window.AudioContext||window.webkitAudioContext)();const osc=audio.createOscillator(),gain=audio.createGain();osc.type='sine';osc.frequency.value=48;gain.gain.value=.025;osc.connect(gain);gain.connect(audio.destination);osc.start();window._doomDrone={osc,gain};}catch(e){}}else if(window._doomDrone){window._doomDrone.gain.gain.value=0;}};
 function animate(now){requestAnimationFrame(animate);const dt=Math.min(.04,(now-last)/1000);last=now;const t=now*.001;
-lowFogLayers.forEach((layer,i)=>{const drift=(t*.16+layer.phase*.18)%1.6;layer.mesh.position.x=layer.baseX+Math.sin(t*.22+layer.phase)*.12;layer.mesh.position.z=layer.baseZ-drift;layer.mesh.material.opacity=.16+.035*Math.sin(t*.3+layer.phase);});
+lowFogLayers.forEach((layer,i)=>{const drift=(t*layer.speed+layer.phase)%5.2;layer.mesh.position.x=layer.baseX+Math.sin(t*.32+layer.phase)*.24;layer.mesh.position.z=layer.baseZ-drift;layer.mesh.position.y=.052+Math.sin(t*.7+layer.phase)*.008;layer.mesh.material.opacity=.56+.09*Math.sin(t*.55+layer.phase);});
 lanterns.forEach((l,i)=>{l.intensity=10+Math.sin(t*2.4+i*1.7)*1.15+Math.sin(t*7+i)*.25;});hotelWindows.forEach((w,i)=>{const pulse=.82+Math.sin(t*w.speed+w.phase)*.12+Math.sin(t*.37+w.phase*2)*.06;const rareFlicker=Math.sin(t*2.3+i*8.1)> .985?.28:1;w.material.emissiveIntensity=w.base*pulse*rareFlicker;});
 if(Math.random()<.0015){lightning=.13;flash.style.opacity='.45';moonLight.intensity=5;}if(lightning>0){lightning-=dt;if(lightning<=0){flash.style.opacity='0';moonLight.intensity=2.1;}}
 if(started){const gateOpenTarget=camera.position.z<5?1:0;const gateOpen=Math.min(1,Math.max(0,(5-camera.position.z)/2));gateLeaves.forEach(({hinge,side})=>{const target=gateOpenTarget?-side*1.18:0;hinge.rotation.y+=(target-hinge.rotation.y)*Math.min(1,dt*2.8);});const forward=(keys.w||keys.arrowup?-1:0)+(keys.s||keys.arrowdown?1:0)-touch.y;const strafe=(keys.d||keys.arrowright?1:0)+(keys.a||keys.arrowleft?-1:0)+touch.x;const dir=new T.Vector3(strafe,0,forward);if(dir.length()>1)dir.normalize();const speed=keys.shift?9:4.4;const nextX=T.MathUtils.clamp(camera.position.x+(Math.cos(yaw)*dir.x+Math.sin(yaw)*dir.z)*speed*dt,-4.02,4.02);const nextZ=T.MathUtils.clamp(camera.position.z+(-Math.sin(yaw)*dir.x+Math.cos(yaw)*dir.z)*speed*dt,-40,19);if(!blockedAt(nextX,camera.position.z))camera.position.x=nextX;if(!blockedAt(camera.position.x,nextZ))camera.position.z=nextZ;camera.position.y=2.1+stairHeightAt(camera.position.z);
