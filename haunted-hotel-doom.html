@@ -255,6 +255,99 @@ box(7,10,5,mat(0x242230),-12,5,-38);box(7,10,5,mat(0x242230),12,5,-38);
 box(3.45,.12,4.65,mat(0x111019),0,.02,-38.05);
 box(3.55,4.6,.18,mat(0x08070d),0,2.25,-40.35);
 const foyerGlow=new T.PointLight(0x8e102c,2.8,8,2);foyerGlow.position.set(0,2.1,-38.7);scene.add(foyerGlow);
+// GRAND VICTORIAN HOTEL LOBBY — fully walkable beyond the entrance.
+const lobbyFloor=mat(0x241a25,.92),wallpaper=mat(0x302332,.96),darkWood=mat(0x24131a,.72),polishedWood=mat(0x49303a,.48),marble=mat(0x625761,.55),brass=mat(0xb18a55,.36,.72),carpet=mat(0x541525,.96),carpetGold=mat(0xb58a55,.7),portraitDark=mat(0x100d15,.9);
+box(18,.24,22,lobbyFloor,0,-.13,-46);
+box(18,11,.35,wallpaper,0,5.35,-57.1);
+for(const side of [-1,1])box(.35,11,22,wallpaper,side*8.9,5.35,-46);
+for(const side of [-1,1]){
+ box(.5,10.8,.5,darkWood,side*8.55,5.35,-46);
+ for(let z=-38.5;z>=-55;z-=4.2){
+  box(.16,9.8,.2,brass,side*8.67,5.25,z);
+  box(.42,.25,.35,brass,side*8.55,1.0,z);
+  box(.42,.25,.35,brass,side*8.55,9.45,z);
+ }
+}
+// Rich red runner and gold edging lead from the doors to the staircase.
+box(4.6,.035,17,carpet,0,.015,-47);
+for(const x of [-2.22,2.22])box(.09,.045,17,carpetGold,x,.035,-47);
+for(let z=-39;z>=-55;z-=1.45)box(4.42,.025,.035,carpetGold,0,.04,z);
+// Tall panelled wainscoting and decorative wall rails.
+for(const side of [-1,1]){
+ box(.12,1.45,20,brass,side*8.67,.82,-46);
+ box(.12,.12,20,brass,side*8.67,1.58,-46);
+ for(let z=-39;z>=-54;z-=2.5){
+  box(.13,1.12,.09,darkWood,side*8.58,.78,z);
+ }
+}
+// Reception counter to the left, with brass trim, bell and a dim green ledger lamp.
+box(3.15,1.35,1.15,darkWood,-5.55,.72,-43.2);
+box(3.35,.16,1.3,polishedWood,-5.55,1.48,-43.2);
+box(3.05,.08,1.2,brass,-5.55,1.38,-43.2);
+for(const x of [-6.75,-4.35])box(.12,1.25,.16,brass,x,.72,-42.58);
+const deskBell=new T.Mesh(new T.SphereGeometry(.13,12,10),brass);deskBell.position.set(-5.45,1.67,-43.12);scene.add(deskBell);
+const ledgerLamp=new T.PointLight(0x9ecb9a,2.2,5);ledgerLamp.position.set(-5.6,2.35,-43.2);scene.add(ledgerLamp);
+const lampStem=cylinder(.045,.06,.5,brass,-5.6,1.95,-43.2,8);
+const lampShade=new T.Mesh(new T.ConeGeometry(.42,.38,8),mat(0x8c744f,.6));lampShade.position.set(-5.6,2.35,-43.2);scene.add(lampShade);
+// Grand staircase at the far end, with split flights, landings and ornate banisters.
+const stairStone=mat(0x655965,.78);
+for(let i=0;i<11;i++){
+ const y=.18+i*.32,z=-52.5-i*.47;
+ box(5.4,.32,.58,stairStone,0,y,z);
+ box(5.48,.07,.62,brass,0,y+.17,z+.02);
+}
+box(6.4,.35,2.1,stairStone,0,3.65,-56.2);
+for(const side of [-1,1]){
+ const rail=cylinder(.075,.075,6.1,brass,side*2.72,2.25,-53.2,8);rail.rotation.x=Math.PI/2.15;
+ for(let i=0;i<12;i++)cylinder(.035,.045,.55,brass,side*2.72,.42+i*.29,-50.3-i*.47,6);
+ box(.2,3.8,.2,darkWood,side*2.72,1.9,-50.3);
+}
+// A dramatic upper landing and shadowed gallery.
+box(7.2,.35,2.6,darkWood,0,4.05,-55.5);
+box(7.2,.18,.18,brass,0,4.3,-54.25);
+for(let x=-3.2;x<=3.2;x+=.64)cylinder(.045,.055,.9,brass,x,4.75,-54.25,6);
+// Huge chandelier: brass frame, candle bulbs and a warm pool of light.
+const chandelier=new T.Group();chandelier.position.set(0,8.65,-44.2);scene.add(chandelier);
+const ring=new T.Mesh(new T.TorusGeometry(2.05,.085,10,48),brass);ring.rotation.x=Math.PI/2;chandelier.add(ring);
+for(let i=0;i<10;i++){
+ const a=i*Math.PI*2/10,x=Math.cos(a)*2.05,z=Math.sin(a)*2.05;
+ const arm=cylinder(.045,.065,1.05,brass,x,0,z,7);arm.rotation.z=-Math.cos(a)*.7;arm.rotation.x=Math.sin(a)*.7;chandelier.add(arm);
+ const candle=cylinder(.09,.11,.42,mat(0xd9c49a),x,.45,z,8);chandelier.add(candle);
+ const flame=new T.Mesh(new T.SphereGeometry(.085,8,8),warm);flame.position.set(x,.72,z);chandelier.add(flame);
+ const bulb=new T.PointLight(0xffc77d,1.5,4);bulb.position.set(x,.78,z);chandelier.add(bulb);
+}
+const chain=cylinder(.035,.035,1.45,brass,0,.95,0,8);chandelier.add(chain);
+const lobbyGlow=new T.PointLight(0xffc17b,16,24,2);lobbyGlow.position.set(0,7.2,-44.2);scene.add(lobbyGlow);
+// Antique portraits on both walls; their eyes catch the chandelier light.
+const portraitFrames=[];
+for(const side of [-1,1])for(let i=0;i<3;i++){
+ const z=-40.2-i*5.1,y=4.4+(i%2)*.5;
+ box(.16,2.25,1.55,brass,side*8.64,y,z);
+ box(.09,1.92,1.25,portraitDark,side*8.53,y,z);
+ const canvas=box(.035,1.72,1.05,mat(i===1?0x30252d:0x211b28),side*8.47,y,z);
+ const face=sphere(.24,mat(0x887b79),side*8.43,y+.28,z);
+ const eyes=mat(0xffd08b,.25,.1);
+ for(const dz of [-.09,.09])sphere(.025,eyes,side*8.39,y+.31,z+dz);
+ portraitFrames.push({face,eyes,phase:i*1.8+(side+1)});
+}
+// Tall grandfather clock in the right alcove, with a slow swinging pendulum.
+box(1.35,4.2,.72,darkWood,6.65,2.1,-52.8);
+box(1.55,.18,.86,brass,6.65,4.25,-52.8);
+box(.95,1.25,.12,mat(0x15131b),6.65,3.12,-52.38);
+const clockFace=new T.Mesh(new T.CircleGeometry(.42,32),mat(0xd4c39b));clockFace.position.set(6.65,3.15,-52.29);scene.add(clockFace);
+for(let i=0;i<12;i++){const a=i*Math.PI/6;sphere(.035,mat(0x3b2830),6.65+Math.sin(a)*.33,3.15+Math.cos(a)*.33,-52.27);}
+const clockHand=box(.035,.3,.025,mat(0x2b1d20),6.65,3.23,-52.25);
+const pendulum=new T.Group();pendulum.position.set(6.65,2.45,-52.25);scene.add(pendulum);
+cylinder(.035,.035,.8,brass,0,-.35,0,8);sphere(.19,brass,0,-.78,0);
+// Wall sconces and low, amber pools along the lobby.
+const lobbySconces=[];
+for(const side of [-1,1])for(let i=0;i<3;i++){
+ const z=-39.8-i*5.1,x=side*8.2;
+ box(.18,.55,.28,brass,x,5.15,z);
+ sphere(.13,warm,x,5.52,z);
+ const light=new T.PointLight(0xffb76b,3.4,8,2);light.position.set(x-side*.3,5.45,z);scene.add(light);lobbySconces.push(light);
+}
+
 for(const x of [-12,12,-6,6]){cylinder(.35,.48,16,oldStone,x,8,-35.35,10);cylinder(.5,.5,.4,gold,x,15.8,-35.35,10);}
 const hotelWindows=[],windowFigures=[];for(let floor=0;floor<4;floor++)for(let x=-7;x<=7;x+=2.8){if(floor===0&&Math.abs(x)<2)continue;const glow=glass.clone();const tone=(floor+Math.round(x))%4;glow.color.setHex(tone===0?0xffb36b: tone===1?0xff536b:0xff344e);glow.emissive.setHex(tone===0?0x9a3b12:0x8d071f);glow.emissiveIntensity=tone===0?1.15:1.65;const pane=box(1.15,1.8,.12,glow,x,3+floor*3.25,-35.36);hotelWindows.push({material:glow,base:glow.emissiveIntensity,phase:floor*1.7+x*.43,speed:1.1+(floor%3)*.45});box(1.5,.12,.18,gold,x,2.05+floor*3.25,-35.3);
  if((floor===1&&Math.abs(x+4.2)<.15)||(floor===2&&Math.abs(x-4.2)<.15)||(floor===3&&Math.abs(x+1.4)<.15)){
@@ -339,9 +432,12 @@ function blockedAt(x,z){
  // Hotel front wall; preserve the central doorway as an approach, but do not allow entry through the locked door.
  if(z< -35.12 && z> -36.1 && Math.abs(x)>1.82 && Math.abs(x)<8.6)return true;
  if(z< -35.12 && z> -36.1 && Math.abs(x)<=1.82 && hotelDoorOpen<.68)return true;
+ // Lobby side walls and rear wall keep the player inside the designed interior.
+ if(z< -36.1 && z> -56.1 && Math.abs(x)>8.25)return true;
+ if(z<=-56.1)return true;
  return false;
 }
-function inspect(){if(camera.position.z>-7){msg.textContent='THE GATE CREAKS. SOMETHING HAS BEEN HERE BEFORE YOU.';}else if(camera.position.z>-24){msg.textContent='THE TOMBSTONES ARE OLDER THAN THE HOTEL. ONE NAME IS STILL WARM.';}else{msg.textContent='THE HOTEL DOOR IS LOCKED. A BELL RINGS SOMEWHERE INSIDE.';}flash.style.opacity='.12';setTimeout(()=>flash.style.opacity='0',120);}
+function inspect(){if(camera.position.z>-7){msg.textContent='THE GATE CREAKS. SOMETHING HAS BEEN HERE BEFORE YOU.';}else if(camera.position.z>-24){msg.textContent='THE TOMBSTONES ARE OLDER THAN THE HOTEL. ONE NAME IS STILL WARM.';}else if(camera.position.z>-36){msg.textContent='THE HOTEL DOORS YAWN OPEN. WARM LIGHT SPILLS INTO THE NIGHT.';}else if(camera.position.z>-48){msg.textContent='THE RECEPTION BELL IS COLD. SOMEONE HAS JUST LEFT THE DESK.';}else{msg.textContent='THE GRANDFATHER CLOCK HAS STOPPED. THE PORTRAITS ARE WATCHING.';}flash.style.opacity='.12';setTimeout(()=>flash.style.opacity='0',120);}
 document.getElementById('interact').onclick=inspect;
 document.getElementById('reset').onclick=()=>{camera.position.set(0,2.1,16);yaw=0;pitch=0;msg.textContent='THE GATES ARE OPEN… THE HOTEL IS WAITING.';};
 document.getElementById('sound').onclick=()=>{soundOn=!soundOn;document.getElementById('sound').textContent='SOUND: '+(soundOn?'ON':'OFF');if(soundOn){try{audio=audio||new (window.AudioContext||window.webkitAudioContext)();const osc=audio.createOscillator(),gain=audio.createGain();osc.type='sine';osc.frequency.value=48;gain.gain.value=.025;osc.connect(gain);gain.connect(audio.destination);osc.start();window._doomDrone={osc,gain};}catch(e){}}else if(window._doomDrone){window._doomDrone.gain.gain.value=0;}};
@@ -351,8 +447,12 @@ windowFigures.forEach((f,i)=>{const presence=.12+.78*(.5+.5*Math.sin(t*.31+f.pha
 const doorTarget=camera.position.z<-22?1:0;hotelDoorOpen+=(doorTarget-hotelDoorOpen)*Math.min(1,dt*.95);
 hotelDoors.forEach(({hinge,side})=>{const target=(side<0?1:-1)*1.38*hotelDoorOpen;hinge.rotation.y+=(target-hinge.rotation.y)*Math.min(1,dt*2.4);});
 foyerGlow.intensity=2.1+Math.sin(t*1.8)*.65;
+lobbyGlow.intensity=14+Math.sin(t*1.3)*1.4;ledgerLamp.intensity=1.8+Math.sin(t*2.2)*.35;
+lobbySconces.forEach((l,i)=>{l.intensity=3.1+Math.sin(t*1.7+i*1.4)*.45;});
+pendulum.rotation.z=Math.sin(t*.9)*.24;clockHand.rotation.z=-t*.035;
+portraitFrames.forEach((p)=>{const glint=Math.sin(t*.38+p.phase)> .96?1.8:.25;p.eyes.emissive?.setHex?.(0xffa85c);});
 if(Math.random()<.0015){lightning=.13;flash.style.opacity='.45';moonLight.intensity=5;}if(lightning>0){lightning-=dt;if(lightning<=0){flash.style.opacity='0';moonLight.intensity=2.1;}}
-if(started){const gateOpenTarget=camera.position.z<5?1:0;const gateOpen=Math.min(1,Math.max(0,(5-camera.position.z)/2));gateLeaves.forEach(({hinge,side})=>{const target=gateOpenTarget?-side*1.18:0;hinge.rotation.y+=(target-hinge.rotation.y)*Math.min(1,dt*2.8);});const forward=(keys.w||keys.arrowup?-1:0)+(keys.s||keys.arrowdown?1:0)+touch.y;const strafe=(keys.d||keys.arrowright?1:0)+(keys.a||keys.arrowleft?-1:0)+touch.x;const dir=new T.Vector3(strafe,0,forward);if(dir.length()>1)dir.normalize();const speed=keys.shift?9:4.4;const nextX=T.MathUtils.clamp(camera.position.x+(Math.cos(yaw)*dir.x+Math.sin(yaw)*dir.z)*speed*dt,-4.02,4.02);const nextZ=T.MathUtils.clamp(camera.position.z+(-Math.sin(yaw)*dir.x+Math.cos(yaw)*dir.z)*speed*dt,-40,19);if(!blockedAt(nextX,camera.position.z))camera.position.x=nextX;if(!blockedAt(camera.position.x,nextZ))camera.position.z=nextZ;camera.position.y=2.1+stairHeightAt(camera.position.z);
+if(started){const gateOpenTarget=camera.position.z<5?1:0;const gateOpen=Math.min(1,Math.max(0,(5-camera.position.z)/2));gateLeaves.forEach(({hinge,side})=>{const target=gateOpenTarget?-side*1.18:0;hinge.rotation.y+=(target-hinge.rotation.y)*Math.min(1,dt*2.8);});const forward=(keys.w||keys.arrowup?-1:0)+(keys.s||keys.arrowdown?1:0)+touch.y;const strafe=(keys.d||keys.arrowright?1:0)+(keys.a||keys.arrowleft?-1:0)+touch.x;const dir=new T.Vector3(strafe,0,forward);if(dir.length()>1)dir.normalize();const speed=keys.shift?9:4.4;const nextX=T.MathUtils.clamp(camera.position.x+(Math.cos(yaw)*dir.x+Math.sin(yaw)*dir.z)*speed*dt,-4.02,4.02);const nextZ=T.MathUtils.clamp(camera.position.z+(-Math.sin(yaw)*dir.x+Math.cos(yaw)*dir.z)*speed*dt,-55.8,19);if(!blockedAt(nextX,camera.position.z))camera.position.x=nextX;if(!blockedAt(camera.position.x,nextZ))camera.position.z=nextZ;camera.position.y=2.1+stairHeightAt(camera.position.z);
 camera.rotation.order='YXZ';camera.rotation.y=yaw;camera.rotation.x=pitch;document.getElementById('interact').style.display='block';}
 renderer.render(scene,camera);}
 requestAnimationFrame(animate);
