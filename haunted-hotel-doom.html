@@ -275,7 +275,7 @@ const lanterns=[];for(const x of [-5.5,5.5,-13,13]){const z=x===-5.5||x===5.5?-5
  const lowFogTexture=new T.CanvasTexture(lowFogCanvas);lowFogTexture.colorSpace=T.SRGBColorSpace;
  const lowFogLayers=[];
  for(let i=0;i<14;i++){const material=new T.MeshBasicMaterial({map:lowFogTexture,color:0xe5eefb,transparent:true,opacity:.66,depthWrite:false,side:T.DoubleSide});const mist=new T.Mesh(new T.PlaneGeometry(6.8,1.35),material);mist.rotation.x=-Math.PI/2;const lane=i%3,row=Math.floor(i/3);const laneX=lane===0?-1.9:lane===1?0:1.9;mist.position.set(laneX+(Math.random()-.5)*.35,.055,-6.5-row*4.35+(Math.random()-.5)*.65);mist.renderOrder=1;scene.add(mist);lowFogLayers.push({mesh:mist,baseX:mist.position.x,baseZ:mist.position.z,phase:i*.71,speed:.34+(i%4)*.045});}
- Remove the floating ghost/fog figures from both sides of the graveyard.
+ // Remove the floating ghost/fog figures from both sides of the graveyard.
 const starsGeo=new T.BufferGeometry(),starPts=[];for(let i=0;i<420;i++)starPts.push((Math.random()-.5)*130,8+Math.random()*65,-Math.random()*100);starsGeo.setAttribute('position',new T.Float32BufferAttribute(starPts,3));scene.add(new T.Points(starsGeo,new T.PointsMaterial({color:0xb8c8ff,size:.16,transparent:true,opacity:.8})));
 const keys={};let yaw=0,pitch=0,velocity=new T.Vector3(),soundOn=false,audio=null,last=performance.now(),lightning=0;
 addEventListener('keydown',e=>{keys[e.key.toLowerCase()]=true;if(e.key.toLowerCase()==='e')inspect();});addEventListener('keyup',e=>keys[e.key.toLowerCase()]=false);
