@@ -43,14 +43,26 @@ h1{font-size:clamp(34px,7vw,76px);line-height:.95;margin:18px 0;text-shadow:0 0 
  <button id="interact">INSPECT</button>
  <div id="touchpad"><div id="nub"></div></div>
 </div>
-<div id="intro"><div class="panel"><div class="eyebrow">AN INVITATION FROM THE OTHER SIDE</div><h1>THE HOTEL<br>NEVER SLEEPS</h1><p>A forgotten graveyard guards the road to a Victorian hotel. Wander among weathered tombstones, iron gates and twisted trees. Watch the fog. Something moves when the lightning fades.</p><p><small>Explore at your own pace. Head toward the red-lit entrance.</small></p><button id="enter">ENTER THE GRAVEYARD</button></div></div>
+<div id="intro"><div class="panel"><div class="eyebrow">AN INVITATION FROM THE OTHER SIDE</div><h1>THE HOTEL<br>NEVER SLEEPS</h1><p>A forgotten graveyard guards the road to a Victorian hotel. Wander among weathered tombstones, iron gates and twisted trees. Watch the fog. Something moves when the lightning fades.</p><p><small>Explore at your own pace. Head toward the red-lit entrance.</small></p><button id="enter" type="button" onclick="window.__enterHauntedHotel && window.__enterHauntedHotel(event)">ENTER THE GRAVEYARD</button></div></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js"></script>
 <script>
 (()=>{
 const world=document.getElementById('world'),msg=document.getElementById('message'),intro=document.getElementById('intro'),flash=document.getElementById('flash');
 const enterButton=document.getElementById('enter');
 let started=false;
-enterButton.addEventListener('click',()=>{started=true;intro.style.display='none';msg.textContent='FOLLOW THE LANTERNS. DO NOT TRUST THE FOG.';});
+function enterHotel(e){
+ if(e){e.preventDefault();e.stopPropagation();}
+ started=true;
+ intro.style.display='none';
+ intro.style.pointerEvents='none';
+ msg.textContent='FOLLOW THE LANTERNS. DO NOT TRUST THE FOG.';
+}
+window.__enterHauntedHotel=enterHotel;
+enterButton.type='button';
+enterButton.addEventListener('pointerup',enterHotel,{passive:false});
+enterButton.addEventListener('click',enterHotel);
+enterButton.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){enterHotel(e);}});
+
 if(!window.THREE){msg.textContent='3D ENGINE COULD NOT LOAD. CHECK YOUR CONNECTION AND RELOAD.';return;}
 const T=window.THREE,scene=new T.Scene();scene.background=new T.Color(0x080b1c);scene.fog=new T.FogExp2(0x18213b,.018);
 const camera=new T.PerspectiveCamera(68,innerWidth/innerHeight,.1,240);camera.position.set(0,2.1,16);
