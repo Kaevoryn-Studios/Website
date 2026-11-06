@@ -246,31 +246,20 @@ for(const side of [-1,1]){
     }
   }
 }
-// Hotel masonry must render from both sides: the player can now see its interior faces from inside the lobby.
-const hotelStone=mat(0x292633);hotelStone.side=T.DoubleSide;
-const hotelLowerStone=mat(0x242230);hotelLowerStone.side=T.DoubleSide;
-// hotel main structure and wings
-// Fill both upper wings above their lower side blocks so the hotel facade is enclosed symmetrically.
-box(7,5,5,hotelStone,-12,12.5,-38);
-box(7,5,5,hotelStone,12,12.5,-38);
-// Split front structure leaves a real, walkable central entrance.
-box(6.5,15,5,hotelStone,-5.25,7.4,-38);
-box(6.5,15,5,hotelStone,5.25,7.4,-38);
-box(7,10,5,hotelLowerStone,-12,5,-38);box(7,10,5,hotelLowerStone,12,5,-38);
-// Continuous reinforced front-side facade panels: close both side openings while preserving the central doorway.
-const frontSideStone=mat(0x292633);frontSideStone.side=T.DoubleSide;
-box(13.5,15,.48,frontSideStone,-8.75,7.5,-35.28);
-box(13.5,15,.48,frontSideStone,8.75,7.5,-35.28);
-// Close the missing upper centre of the hotel facade, preserving its one upper window opening.
-const facadeStone=mat(0x292633,.92);facadeStone.side=T.DoubleSide;
-box(2.82,7.15,.28,facadeStone,.587,8.275,-35.49);
-box(4,1.35,.28,facadeStone,0,14.325,-35.49);
-box(.10,10.3,.28,facadeStone,-1.95,9.85,-35.49);
-// Complete the hotel's exterior shell: deep side walls and rear wall close both outside gaps.
-const hotelShell=mat(0x292633);hotelShell.side=T.DoubleSide;
-box(.42,15,22.5,hotelShell,-15.5,7.5,-46.25);
-box(.42,15,22.5,hotelShell,15.5,7.5,-46.25);
-box(31.4,15,.42,hotelShell,0,7.5,-57.25);
+// REBUILT HOTEL SHELL — one continuous, sealed structure with a single ground-floor entrance.
+const hotelShell=mat(0x292633,.94);hotelShell.side=T.DoubleSide;
+const hotelLowerStone=mat(0x242230,.96);hotelLowerStone.side=T.DoubleSide;
+// Solid front wings meet the side walls at both corners. The only opening is the central doorway.
+box(13.5,15,.8,hotelShell,-8.95,7.5,-35.75);
+box(13.5,15,.8,hotelShell,8.95,7.5,-35.75);
+// Solid upper bridge closes the facade above the entrance; doorway remains clear below.
+box(3.8,10.5,.8,hotelLowerStone,0,9.75,-35.75);
+// Continuous full-height side walls, joined flush to the front and rear walls.
+box(.8,15,22.5,hotelShell,-15.5,7.5,-46.25);
+box(.8,15,22.5,hotelShell,15.5,7.5,-46.25);
+// One uninterrupted rear wall and a solid roof deck prevent any see-through gaps.
+box(31.8,15,.8,hotelShell,0,7.5,-57.0);
+box(31.8,.55,23.3,hotelShell,0,15.15,-46.25);
 // The lobby now has a proper interior ceiling, hiding the open roofline from inside.
 // A dark foyer is visible beyond the entrance, with a faint, unsettling red glow.
 box(3.45,.12,4.65,mat(0x111019),0,.02,-38.05);
