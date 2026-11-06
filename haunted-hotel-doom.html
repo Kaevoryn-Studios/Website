@@ -43,7 +43,7 @@ h1{font-size:clamp(34px,7vw,76px);line-height:.95;margin:18px 0;text-shadow:0 0 
  <button id="interact">INSPECT</button>
  <div id="touchpad"><div id="nub"></div></div>
 </div>
-<input id="enter-toggle" type="checkbox" aria-label="Enter the graveyard"><div id="intro"><div class="panel"><div class="eyebrow">AN INVITATION FROM THE OTHER SIDE</div><h1>THE HOTEL<br>NEVER SLEEPS</h1><p>A forgotten graveyard guards the road to a Victorian hotel. Wander among weathered tombstones, iron gates and twisted trees. Watch the fog. Something moves when the lightning fades.</p><p><small>Explore at your own pace. Head toward the red-lit entrance.</small></p><label id="enter" for="enter-toggle" role="button" tabindex="0" onclick="window.__enterHauntedHotel && window.__enterHauntedHotel(event)">ENTER THE GRAVEYARD</label></div></div>
+<input id="enter-toggle" type="checkbox" aria-label="Enter the graveyard"><div id="intro"><div class="panel"><div class="eyebrow">AN INVITATION FROM THE OTHER SIDE</div><h1>THE HOTEL<br>NEVER SLEEPS</h1><p>A forgotten graveyard guards the road to a Victorian hotel. Wander among weathered tombstones, iron gates and twisted trees. Watch the fog. Something moves when the lightning fades.</p><p><small>Explore at your own pace. Head toward the red-lit entrance.</small></p><label id="enter" for="enter-toggle" role="button" tabindex="0">ENTER THE GRAVEYARD</label></div></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js"></script>
 <script>
 (()=>{
@@ -51,24 +51,20 @@ const world=document.getElementById('world'),msg=document.getElementById('messag
 const enterButton=document.getElementById('enter');
 let started=false;
 const enterToggle=document.getElementById('enter-toggle');
-function enterHotel(e){
- if(e){e.stopPropagation();}
- enterToggle.checked=true;
- started=true;
- intro.style.display='none';
- intro.style.pointerEvents='none';
- msg.textContent='FOLLOW THE LANTERNS. DO NOT TRUST THE FOG.';
-}
-window.__enterHauntedHotel=enterHotel;
 enterToggle.addEventListener('change',()=>{
  if(enterToggle.checked){
   started=true;
   intro.style.display='none';
+  intro.style.pointerEvents='none';
   msg.textContent='FOLLOW THE LANTERNS. DO NOT TRUST THE FOG.';
  }
 });
 enterButton.addEventListener('keydown',e=>{
- if(e.key==='Enter'||e.key===' '){e.preventDefault();enterToggle.checked=true;enterToggle.dispatchEvent(new Event('change'));}
+ if(e.key==='Enter'||e.key===' '){
+  e.preventDefault();
+  enterToggle.checked=true;
+  enterToggle.dispatchEvent(new Event('change'));
+ }
 });
 
 if(!window.THREE){msg.textContent='3D ENGINE COULD NOT LOAD. CHECK YOUR CONNECTION AND RELOAD.';return;}
