@@ -116,6 +116,33 @@ for(const side of [-1,1]){
     gateMesh(new T.BoxGeometry(.11,.65,.12),gateBronze,x,2.05,-.08);
   }
 }
+// Long cemetery perimeter fences: connected to the entrance pillars and running toward the hotel.
+for(const side of [-1,1]){
+  const fenceX=side*5.35;
+  const startZ=-.15,endZ=-29.2,postSpacing=4.15;
+  const postZ=[];
+  for(let z=startZ;z>=endZ;z-=postSpacing)postZ.push(z);
+  if(postZ[postZ.length-1]>endZ+.5)postZ.push(endZ);
+  // Heavy end posts and grounded stone feet.
+  for(const z of postZ){
+    gateMesh(new T.BoxGeometry(.62,.22,.72),gateStone,fenceX,.0,z);
+    gateMesh(new T.BoxGeometry(.28,2.05,.28),gateIron,fenceX,1.0,z);
+    gateMesh(new T.BoxGeometry(.42,.16,.42),gateTrim,fenceX,2.08,z);
+    gateMesh(new T.ConeGeometry(.23,.42,4),gateIron,fenceX,2.36,z);
+  }
+  // Wrought-iron panels between posts, with continuous top and bottom rails.
+  for(let p=0;p<postZ.length-1;p++){
+    const z1=postZ[p],z2=postZ[p+1],mid=(z1+z2)/2,len=Math.abs(z2-z1)-.12;
+    gateMesh(new T.BoxGeometry(.16,.16,len),gateIron,fenceX,.02,mid);
+    gateMesh(new T.BoxGeometry(.16,.16,len),gateIron,fenceX,1.88,mid);
+    const count=Math.max(4,Math.floor(len/.48));
+    for(let j=0;j<=count;j++){
+      const z=z1-(Math.abs(z2-z1)*j/count);
+      gateMesh(new T.BoxGeometry(.09,1.72,.09),gateIron,fenceX,.88,z);
+      gateMesh(new T.ConeGeometry(.075,.24,4),gateIron,fenceX,1.86,z);
+    }
+  }
+}
 // hotel main structure and wings
 box(17,15,5,mat(0x292633),0,7.4,-38);box(8,5,5,mat(0x1e1d2b),0,17.2,-38);box(7,10,5,mat(0x242230),-12,5,-38);box(7,10,5,mat(0x242230),12,5,-38);
 for(const x of [-12,12,-6,6,0]){cylinder(.35,.48,16,oldStone,x,8,-35.35,10);cylinder(.5,.5,.4,gold,x,15.8,-35.35,10);}
