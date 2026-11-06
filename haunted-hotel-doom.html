@@ -69,9 +69,53 @@ function tomb(x,z,kind=0){const m=[stone,oldStone,darkStone][kind%3],w=.8+Math.r
 for(let i=0;i<65;i++){const side=Math.random()<.5?-1:1,x=side*(4+Math.random()*27),z=5-Math.random()*66;tomb(x,z,i);if(i%3===0){const cross=cylinder(.055,.055,.85,iron,x+1.1,.5,z,6);box(.65,.09,.1,iron,x+1.1,.72,z);}}
 for(let i=0;i<15;i++){const side=i%2?-1:1;tree(side*(10+Math.random()*18),-5-Math.random()*65,.8+Math.random()*.8);}
 for(let i=0;i<18;i++){const z=8-i*4;box(.15,2.4,.15,iron,-9,1.2,z);box(.15,2.4,.15,iron,9,1.2,z);box(18,.13,.14,iron,0,2.25,z);}
-// open iron gate
-for(const x of [-4.7,4.7]){box(.65,5,.65,darkStone,x,2.38,-4);for(let k=0;k<3;k++)cylinder(.12,.2,.25,gold,x,4.78+k*.2,-4,8);const fin=new T.Mesh(new T.ConeGeometry(.3,.8,4),iron);fin.position.set(x,5.28,-4);scene.add(fin);}
-for(const side of [-1,1]){for(let i=0;i<13;i++){const x=side*(.6+i*.34);cylinder(.035,.035,3.1,iron,x,1.43,-4,6);const tip=new T.Mesh(new T.ConeGeometry(.09,.32,4),iron);tip.position.set(x,3.13,-4);scene.add(tip);}box(4.5,.13,.15,iron,side*2.6,2.73,-4);}
+// rebuilt, fully static wrought-iron entrance gates
+const entranceGate=new T.Group();
+entranceGate.position.set(0,0,-4);
+scene.add(entranceGate);
+function gateMesh(geometry,material,x,y,z){
+  const mesh=new T.Mesh(geometry,material);
+  mesh.position.set(x,y,z);
+  mesh.castShadow=true;
+  mesh.receiveShadow=true;
+  entranceGate.add(mesh);
+  return mesh;
+}
+const gateStone=mat(0x454451,.94),gateTrim=mat(0x77717a,.82),gateIron=mat(0x111725,.34,.82),gateBronze=mat(0x806044,.38,.72);
+// broad stone footings and substantial square pillars
+for(const x of [-4.7,4.7]){
+  gateMesh(new T.BoxGeometry(1.35,.34,1.25),gateStone,x,.05,0);
+  gateMesh(new T.BoxGeometry(1.08,4.55,1.02),darkStone,x,2.48,0);
+  gateMesh(new T.BoxGeometry(1.2,.2,1.14),gateTrim,x,4.78,0);
+  gateMesh(new T.BoxGeometry(1.42,.22,1.3),gateStone,x,4.94,0);
+  gateMesh(new T.CylinderGeometry(.34,.48,.48,8),gateStone,x,5.27,0);
+  gateMesh(new T.ConeGeometry(.34,.72,4),gateIron,x,5.86,0);
+  gateMesh(new T.SphereGeometry(.12,12,10),gateBronze,x,5.48,0);
+  for(const z of [-.54,.54])gateMesh(new T.BoxGeometry(.08,4.25,.08),gateTrim,x,2.42,z);
+}
+// two heavy leaves meet at the centre; every piece is anchored to the same fixed group
+for(const side of [-1,1]){
+  const left=side<0,inner=left?-.18:.18,outer=side*4.12;
+  const center=(inner+outer)/2,width=Math.abs(outer-inner);
+  gateMesh(new T.BoxGeometry(width,.2,.2),gateIron,center,.38,.02);
+  gateMesh(new T.BoxGeometry(width,.2,.2),gateIron,center,1.02,.02);
+  gateMesh(new T.BoxGeometry(width,.24,.2),gateIron,center,3.05,.02);
+  gateMesh(new T.BoxGeometry(width,.12,.2),gateBronze,center,1.12,.02);
+  for(let i=0;i<=12;i++){
+    const x=inner+(outer-inner)*i/12;
+    const h=2.55+(i===0||i===12?.18:0);
+    gateMesh(new T.BoxGeometry(.075,h,.13),gateIron,x,.42+h/2,.02);
+    gateMesh(new T.ConeGeometry(.095,.34,4),gateIron,x,.42+h+.16,.02);
+    gateMesh(new T.SphereGeometry(.075,8,8),gateBronze,x,.5,.02);
+  }
+  // restrained gothic scrollwork and a central medallion on each leaf
+  const ring=gateMesh(new T.TorusGeometry(.48,.055,8,28),gateBronze,center,2.05,-.11);
+  ring.rotation.z=Math.PI/2;
+  gateMesh(new T.BoxGeometry(.13,1.05,.13),gateIron,center,2.05,-.08);
+  for(const x of [center-width*.34,center+width*.34]){
+    gateMesh(new T.BoxGeometry(.11,.65,.12),gateBronze,x,2.05,-.08);
+  }
+}
 // hotel main structure and wings
 box(17,15,5,mat(0x292633),0,7.4,-38);box(8,5,5,mat(0x1e1d2b),0,17.2,-38);box(7,10,5,mat(0x242230),-12,5,-38);box(7,10,5,mat(0x242230),12,5,-38);
 for(const x of [-12,12,-6,6,0]){cylinder(.35,.48,16,oldStone,x,8,-35.35,10);cylinder(.5,.5,.4,gold,x,15.8,-35.35,10);}
