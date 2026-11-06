@@ -23,7 +23,7 @@ button:hover{border-color:var(--cyan);box-shadow:0 0 18px #76dfff55}
 .eyebrow{font:11px system-ui;letter-spacing:.35em;color:var(--cyan)}
 h1{font-size:clamp(34px,7vw,76px);line-height:.95;margin:18px 0;text-shadow:0 0 25px #9b5cff88}
 .panel p{color:#d1c9df;line-height:1.7}
-#enter{margin-top:14px;padding:14px 26px;border-color:#8deaffaa;color:#dffaff}
+#enter{display:inline-block;margin-top:14px;padding:14px 26px;border:1px solid #8deaffaa;border-radius:999px;background:#0a0b1bd9;color:#dffaff;font:12px system-ui;letter-spacing:.08em;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}#enter-toggle{position:fixed;width:1px;height:1px;opacity:0;pointer-events:none}#enter-toggle:checked~#intro{display:none!important}
 #message{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);font:12px system-ui;letter-spacing:.12em;color:#e9e1ff;text-align:center;text-shadow:0 2px 10px #000;white-space:nowrap}
 #help{position:absolute;left:20px;bottom:18px;font:11px system-ui;color:#d0c8dfaa}
 #touchpad{position:absolute;right:22px;bottom:25px;width:116px;height:116px;border:1px solid #b6a8dc66;border-radius:50%;background:#12122677;pointer-events:auto;touch-action:none;display:none}
@@ -43,25 +43,33 @@ h1{font-size:clamp(34px,7vw,76px);line-height:.95;margin:18px 0;text-shadow:0 0 
  <button id="interact">INSPECT</button>
  <div id="touchpad"><div id="nub"></div></div>
 </div>
-<div id="intro"><div class="panel"><div class="eyebrow">AN INVITATION FROM THE OTHER SIDE</div><h1>THE HOTEL<br>NEVER SLEEPS</h1><p>A forgotten graveyard guards the road to a Victorian hotel. Wander among weathered tombstones, iron gates and twisted trees. Watch the fog. Something moves when the lightning fades.</p><p><small>Explore at your own pace. Head toward the red-lit entrance.</small></p><button id="enter" type="button" onclick="window.__enterHauntedHotel && window.__enterHauntedHotel(event)">ENTER THE GRAVEYARD</button></div></div>
+<input id="enter-toggle" type="checkbox" aria-label="Enter the graveyard"><div id="intro"><div class="panel"><div class="eyebrow">AN INVITATION FROM THE OTHER SIDE</div><h1>THE HOTEL<br>NEVER SLEEPS</h1><p>A forgotten graveyard guards the road to a Victorian hotel. Wander among weathered tombstones, iron gates and twisted trees. Watch the fog. Something moves when the lightning fades.</p><p><small>Explore at your own pace. Head toward the red-lit entrance.</small></p><label id="enter" for="enter-toggle" role="button" tabindex="0" onclick="window.__enterHauntedHotel && window.__enterHauntedHotel(event)">ENTER THE GRAVEYARD</label></div></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js"></script>
 <script>
 (()=>{
 const world=document.getElementById('world'),msg=document.getElementById('message'),intro=document.getElementById('intro'),flash=document.getElementById('flash');
 const enterButton=document.getElementById('enter');
 let started=false;
+const enterToggle=document.getElementById('enter-toggle');
 function enterHotel(e){
- if(e){e.preventDefault();e.stopPropagation();}
+ if(e){e.stopPropagation();}
+ enterToggle.checked=true;
  started=true;
  intro.style.display='none';
  intro.style.pointerEvents='none';
  msg.textContent='FOLLOW THE LANTERNS. DO NOT TRUST THE FOG.';
 }
 window.__enterHauntedHotel=enterHotel;
-enterButton.type='button';
-enterButton.addEventListener('pointerup',enterHotel,{passive:false});
-enterButton.addEventListener('click',enterHotel);
-enterButton.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){enterHotel(e);}});
+enterToggle.addEventListener('change',()=>{
+ if(enterToggle.checked){
+  started=true;
+  intro.style.display='none';
+  msg.textContent='FOLLOW THE LANTERNS. DO NOT TRUST THE FOG.';
+ }
+});
+enterButton.addEventListener('keydown',e=>{
+ if(e.key==='Enter'||e.key===' '){e.preventDefault();enterToggle.checked=true;enterToggle.dispatchEvent(new Event('change'));}
+});
 
 if(!window.THREE){msg.textContent='3D ENGINE COULD NOT LOAD. CHECK YOUR CONNECTION AND RELOAD.';return;}
 const T=window.THREE,scene=new T.Scene();scene.background=new T.Color(0x080b1c);scene.fog=new T.FogExp2(0x18213b,.018);
