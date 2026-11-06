@@ -68,7 +68,7 @@ function tree(x,z,s=1){const trunk=cylinder(.22*s,.48*s,5*s,wood,x,2.5*s,z,7);tr
 function tomb(x,z,kind=0){const m=[stone,oldStone,darkStone][kind%3],w=.8+Math.random()*.35,h=1.1+Math.random()*.8;const base=box(w+.18,.18,.3,m,x,.05,z);const body=box(w,h,.24,m,x,.18+h/2,z);if(kind%3===0){const cap=sphere(w*.5,m,x,.18+h,z);cap.scale.set(1,.5,.25);}else if(kind%3===1){box(.2,h+.45,.2,m,x,.18+h/2,z);box(.78,.18,.2,m,x,.18+h*.72,z);}else{const cap=new T.Mesh(new T.ConeGeometry(w*.7,.35,4),m);cap.position.set(x,.18+h+.12,z);scene.add(cap);}const plaque=box(w*.55,.24,.025,darkStone,x,.35+h*.55,z-.14);return body;}
 for(let i=0;i<65;i++){const side=Math.random()<.5?-1:1,x=side*(4+Math.random()*27),z=5-Math.random()*66;tomb(x,z,i);if(i%3===0){const cross=cylinder(.055,.055,.85,iron,x+1.1,.5,z,6);box(.65,.09,.1,iron,x+1.1,.72,z);}}
 for(let i=0;i<15;i++){const side=i%2?-1:1;tree(side*(10+Math.random()*18),-5-Math.random()*65,.8+Math.random()*.8);}
-for(let i=0;i<18;i++){const z=8-i*4;box(.15,2.4,.15,iron,-9,1.2,z);box(.15,2.4,.15,iron,9,1.2,z);box(18,.13,.14,iron,0,2.25,z);}
+// Removed the old elevated cemetery fence row; it created floating black bars.
 // rebuilt, fully static wrought-iron entrance gates
 const entranceGate=new T.Group();
 entranceGate.position.set(0,0,-4);
