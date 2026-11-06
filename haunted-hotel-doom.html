@@ -251,6 +251,12 @@ for(const side of [-1,1]){
 box(6.5,15,5,mat(0x292633),-5.25,7.4,-38);
 box(6.5,15,5,mat(0x292633),5.25,7.4,-38);
 box(7,10,5,mat(0x242230),-12,5,-38);box(7,10,5,mat(0x242230),12,5,-38);
+// Close the missing upper centre of the hotel facade, preserving its one upper window opening.
+const facadeStone=mat(0x292633,.92);
+box(2.82,7.15,.28,facadeStone,.587,8.275,-35.49);
+box(4,1.35,.28,facadeStone,0,14.325,-35.49);
+box(.10,10.3,.28,facadeStone,-1.95,9.85,-35.49);
+// The lobby now has a proper interior ceiling, hiding the open roofline from inside.
 // A dark foyer is visible beyond the entrance, with a faint, unsettling red glow.
 box(3.45,.12,4.65,mat(0x111019),0,.02,-38.05);
 box(3.55,4.6,.18,mat(0x08070d),0,2.25,-40.35);
@@ -268,6 +274,8 @@ for(const side of [-1,1]){
   box(.42,.25,.35,brass,side*8.55,9.45,z);
  }
 }
+// Enclose the lobby overhead while leaving clearance for the chandelier.
+box(17.8,.32,21.7,wallpaper,0,10.92,-46);
 // Rich red runner and gold edging lead from the doors to the staircase.
 box(4.6,.035,17,carpet,0,.015,-47);
 for(const x of [-2.22,2.22])box(.09,.045,17,carpetGold,x,.035,-47);
