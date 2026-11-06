@@ -44,9 +44,10 @@ h1{font-size:clamp(34px,7vw,76px);line-height:.95;margin:18px 0;text-shadow:0 0 
  <div id="touchpad"><div id="nub"></div></div>
 </div>
 <input id="enter-toggle" type="checkbox" aria-label="Enter the graveyard"><div id="intro"><div class="panel"><div class="eyebrow">AN INVITATION FROM THE OTHER SIDE</div><h1>THE HOTEL<br>NEVER SLEEPS</h1><p>A forgotten graveyard guards the road to a Victorian hotel. Wander among weathered tombstones, iron gates and twisted trees. Watch the fog. Something moves when the lightning fades.</p><p><small>Explore at your own pace. Head toward the red-lit entrance.</small></p><label id="enter" for="enter-toggle" role="button" tabindex="0">ENTER THE GRAVEYARD</label></div></div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js"></script>
 <script>
 (()=>{
+window.addEventListener("load",()=>{
 const world=document.getElementById('world'),msg=document.getElementById('message'),intro=document.getElementById('intro'),flash=document.getElementById('flash');
 const enterButton=document.getElementById('enter');
 let started=false;
@@ -540,6 +541,7 @@ camera.rotation.order='YXZ';camera.rotation.y=yaw;camera.rotation.x=pitch;docume
 renderer.render(scene,camera);}
 requestAnimationFrame(animate);
 addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio,1.7));});
+});
 })();
 </script>
 </body></html>
