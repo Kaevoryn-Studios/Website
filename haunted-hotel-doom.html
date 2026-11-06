@@ -79,64 +79,7 @@ const roof=new T.Mesh(new T.ConeGeometry(6,5,4),mat(0x151725));roof.position.set
 for(const x of [-12,12]){const r=new T.Mesh(new T.ConeGeometry(3.8,5,4),mat(0x171a2a));r.position.set(x,11,-38);r.rotation.y=Math.PI/4;scene.add(r);}
 const sign=box(7,1.2,.18,mat(0x160d1c),0,12.7,-35.2);const signLight=new T.PointLight(0xff174d,16,15);signLight.position.set(0,12.5,-33);scene.add(signLight);
 const signText=document.createElement('div');signText.textContent='HAUNTED HOTEL';signText.style.cssText='position:fixed;z-index:1;top:31%;left:50%;transform:translate(-50%,-50%);font:bold clamp(16px,3vw,30px) Georgia;color:#ff3d66;text-shadow:0 0 8px #ff174d,0 0 25px #ff174d;letter-spacing:.14em;pointer-events:none';document.body.appendChild(signText);
-// rebuilt moon: a front-facing, dimensional golden lunar disc with a clean central skull engraving
-const moonX=-12,moonY=26,moonZ=-29;
-const moonGroup=new T.Group();moonGroup.position.set(moonX,moonY,moonZ);scene.add(moonGroup);
-// softly shaded spherical body gives the moon real volume
-const moonCore=new T.Mesh(new T.SphereGeometry(7.05,96,64),new T.MeshStandardMaterial({color:0xd9a94f,roughness:1,metalness:0}));
-moonCore.position.z=-.12;moonGroup.add(moonCore);
-// front-facing artwork guarantees the carving faces the visitor, not the side of the sphere
-const moonCanvas=document.createElement('canvas');moonCanvas.width=1024;moonCanvas.height=1024;
-const mc=moonCanvas.getContext('2d');mc.clearRect(0,0,1024,1024);
-mc.save();mc.beginPath();mc.arc(512,512,500,0,Math.PI*2);mc.clip();
-const lunar=mc.createRadialGradient(350,300,35,520,520,560);
-lunar.addColorStop(0,'#fff5cf');lunar.addColorStop(.32,'#f5d98e');lunar.addColorStop(.68,'#d5a957');lunar.addColorStop(1,'#76502b');
-mc.fillStyle=lunar;mc.fillRect(0,0,1024,1024);
-// restrained lunar maria: broad, soft variations instead of hundreds of raised-looking dots
-for(let n=0;n<13;n++){
- const x=100+Math.random()*824,y=100+Math.random()*824,rx=35+Math.random()*95,ry=24+Math.random()*72;
- mc.save();mc.translate(x,y);mc.rotate(Math.random()*Math.PI);
- const stain=mc.createRadialGradient(0,0,rx*.12,0,0,rx);
- stain.addColorStop(0,'rgba(105,75,39,.12)');stain.addColorStop(.72,'rgba(119,83,43,.08)');stain.addColorStop(1,'rgba(119,83,43,0)');
- mc.fillStyle=stain;mc.beginPath();mc.ellipse(0,0,rx,ry,0,0,Math.PI*2);mc.fill();mc.restore();
-}
-// a small number of shallow, irregular crater impressions with very soft rims
-for(let n=0;n<24;n++){
- const x=55+Math.random()*914,y=55+Math.random()*914,r=7+Math.random()*17;
- mc.save();mc.translate(x,y);mc.scale(1,.72);
- const bowl=mc.createRadialGradient(-r*.2,-r*.22,1,0,0,r);
- bowl.addColorStop(0,'rgba(105,75,39,.16)');bowl.addColorStop(.62,'rgba(122,88,48,.09)');bowl.addColorStop(.88,'rgba(255,238,190,.13)');bowl.addColorStop(1,'rgba(105,75,39,0)');
- mc.fillStyle=bowl;mc.beginPath();mc.arc(0,0,r,0,Math.PI*2);mc.fill();mc.restore();
-}
-// extremely subtle fine mineral grain
-for(let n=0;n<2400;n++){const x=Math.random()*1024,y=Math.random()*1024;mc.fillStyle=Math.random()>.5?'rgba(255,246,218,.025)':'rgba(53,35,19,.025)';mc.fillRect(x,y,1,1);}
-// centered engraved skull, deliberately simple and unmistakable
-mc.save();mc.translate(512,510);
-// broad skull outline and jaw carved into the lunar stone
-mc.shadowColor='rgba(45,25,11,.8)';mc.shadowBlur=22;mc.fillStyle='rgba(91,55,25,.78)';
-mc.beginPath();mc.moveTo(512,275);mc.bezierCurveTo(665,275,740,390,724,520);mc.bezierCurveTo(716,600,666,650,620,682);mc.lineTo(612,754);mc.quadraticCurveTo(512,800,412,754);mc.lineTo(404,682);mc.bezierCurveTo(358,650,308,600,300,520);mc.bezierCurveTo(284,390,359,275,512,275);mc.closePath();mc.fill();
-// raised golden edge catches light like an old carving
-mc.shadowBlur=0;mc.strokeStyle='rgba(255,232,177,.8)';mc.lineWidth=12;mc.stroke();
-// two deep eye sockets
-mc.fillStyle='rgba(34,21,13,.96)';mc.beginPath();mc.ellipse(440,485,48,66,-.08,0,Math.PI*2);mc.ellipse(584,485,48,66,.08,0,Math.PI*2);mc.fill();
-// triangular nose cavity
-mc.beginPath();mc.moveTo(512,548);mc.lineTo(485,610);mc.quadraticCurveTo(512,627,539,610);mc.closePath();mc.fill();
-// cheekbone and jaw grooves
-mc.strokeStyle='rgba(57,34,17,.9)';mc.lineWidth=15;mc.beginPath();mc.moveTo(335,585);mc.quadraticCurveTo(390,605,415,660);mc.moveTo(689,585);mc.quadraticCurveTo(634,605,609,660);mc.stroke();
-mc.strokeStyle='rgba(255,228,167,.68)';mc.lineWidth=8;mc.beginPath();mc.moveTo(420,690);mc.quadraticCurveTo(512,724,604,690);mc.stroke();
-// distinct teeth divisions
-mc.strokeStyle='rgba(37,23,13,.95)';mc.lineWidth=9;mc.beginPath();mc.moveTo(430,696);mc.lineTo(594,696);for(let x=462;x<=562;x+=33){mc.moveTo(x,694);mc.lineTo(x,738);}mc.stroke();
-mc.restore();
-// subtle luminous rim around the lunar disc
-mc.restore();
-const moonTexture=new T.CanvasTexture(moonCanvas);moonTexture.colorSpace=T.SRGBColorSpace;moonTexture.anisotropy=8;
-const moonFace=new T.Mesh(new T.PlaneGeometry(14.1,14.1),new T.MeshBasicMaterial({map:moonTexture,transparent:true,depthWrite:false,depthTest:false,fog:false}));
-moonFace.position.z=7.5;moonFace.renderOrder=20;moonGroup.add(moonFace);
-const moonAura=new T.Mesh(new T.SphereGeometry(10.8,48,32),new T.MeshBasicMaterial({color:0xffbd50,transparent:true,opacity:.13,depthWrite:false,fog:false}));
-moonAura.position.set(moonX,moonY,moonZ);scene.add(moonAura);
-const moonHalo=new T.Mesh(new T.SphereGeometry(8.9,48,32),new T.MeshBasicMaterial({color:0xffd77a,transparent:true,opacity:.16,depthWrite:false,fog:false}));
-moonHalo.position.set(moonX,moonY,moonZ);scene.add(moonHalo);
-const moonGlow=new T.PointLight(0xffc45e,100,175);moonGlow.position.set(moonX,moonY,moonZ+3);scene.add(moonGlow);
+// Moon artwork removed as requested; retain cool directional night lighting.
 // lanterns
 const lanterns=[];for(const x of [-5.5,5.5,-13,13]){const z=x===-5.5||x===5.5?-5:-24;box(.18,3,.18,iron,x,1.5,z);box(.65,.1,.65,gold,x,3,z);const l=new T.PointLight(0xffa64b,7,13);l.position.set(x,2.7,z);scene.add(l);lanterns.push(l);sphere(.22,warm,x,2.7,z);}
 const fountain=cylinder(1.5,2,.45,oldStone,0,.2,-18,12);cylinder(.12,.2,2,oldStone,0,1.2,-18,10);cylinder(.8,1,.2,oldStone,0,2.2,-18,12);
