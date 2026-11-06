@@ -270,6 +270,8 @@ const foyerGlow=new T.PointLight(0x8e102c,2.8,8,2);foyerGlow.position.set(0,2.1,
 const lobbyFloor=mat(0x241a25,.92),wallpaper=mat(0x302332,.96),darkWood=mat(0x24131a,.72),polishedWood=mat(0x49303a,.48),marble=mat(0x625761,.55),brass=mat(0xb18a55,.36,.72),carpet=mat(0x541525,.96),carpetGold=mat(0xb58a55,.7),portraitDark=mat(0x100d15,.9);
 box(18,.24,22,lobbyFloor,0,-.13,-46);
 box(18,11,.35,wallpaper,0,5.35,-57.1);
+// Interior-facing side-wall surfaces must remain visible from inside the lobby.
+wallpaper.side=T.DoubleSide;
 for(const side of [-1,1])box(.35,11,22,wallpaper,side*8.9,5.35,-46);
 for(const side of [-1,1]){
  box(.5,10.8,.5,darkWood,side*8.55,5.35,-46);
