@@ -79,32 +79,37 @@ const roof=new T.Mesh(new T.ConeGeometry(6,5,4),mat(0x151725));roof.position.set
 for(const x of [-12,12]){const r=new T.Mesh(new T.ConeGeometry(3.8,5,4),mat(0x171a2a));r.position.set(x,11,-38);r.rotation.y=Math.PI/4;scene.add(r);}
 const sign=box(7,1.2,.18,mat(0x160d1c),0,12.7,-35.2);const signLight=new T.PointLight(0xff174d,16,15);signLight.position.set(0,12.5,-33);scene.add(signLight);
 const signText=document.createElement('div');signText.textContent='HAUNTED HOTEL';signText.style.cssText='position:fixed;z-index:1;top:31%;left:50%;transform:translate(-50%,-50%);font:bold clamp(16px,3vw,30px) Georgia;color:#ff3d66;text-shadow:0 0 8px #ff174d,0 0 25px #ff174d;letter-spacing:.14em;pointer-events:none';document.body.appendChild(signText);
-// moon: bright golden disk with a separate, camera-facing skull projection
-const moonX=-8,moonY=19,moonZ=-39;
-const moonAura=new T.Mesh(new T.SphereGeometry(9,48,32),new T.MeshBasicMaterial({color:0xffa928,transparent:true,opacity:.24,depthWrite:false,fog:false}));
-moonAura.position.set(moonX,moonY,moonZ);scene.add(moonAura);
-const moonHalo=new T.Mesh(new T.SphereGeometry(7.4,48,32),new T.MeshBasicMaterial({color:0xffd36b,transparent:true,opacity:.32,depthWrite:false,fog:false}));
-moonHalo.position.set(moonX,moonY,moonZ);scene.add(moonHalo);
-const moon=new T.Mesh(new T.SphereGeometry(5.8,64,48),new T.MeshBasicMaterial({color:0xffc642,fog:false}));
+// moon: prominent textured golden moon with a bold skull projection on its face
+const moonX=-3.5,moonY=11.5,moonZ=-30;
+const moonCanvas=document.createElement('canvas');moonCanvas.width=1024;moonCanvas.height=1024;
+const mc=moonCanvas.getContext('2d');
+const goldGrad=mc.createRadialGradient(365,330,45,512,512,570);
+goldGrad.addColorStop(0,'#fff6c9');goldGrad.addColorStop(.35,'#ffe27a');goldGrad.addColorStop(.72,'#f5ae32');goldGrad.addColorStop(1,'#a94f17');
+mc.fillStyle=goldGrad;mc.fillRect(0,0,1024,1024);
+for(let n=0;n<180;n++){const x=Math.random()*1024,y=Math.random()*1024,r=7+Math.random()*38;mc.fillStyle='rgba(117,62,15,'+(0.035+Math.random()*.07)+')';mc.beginPath();mc.ellipse(x,y,r,r*(.45+Math.random()*.5),Math.random(),0,Math.PI*2);mc.fill();}
+const moonTexture=new T.CanvasTexture(moonCanvas);moonTexture.colorSpace=T.SRGBColorSpace;
+const moon=new T.Mesh(new T.SphereGeometry(7.5,64,48),new T.MeshBasicMaterial({map:moonTexture,fog:false}));
 moon.position.set(moonX,moonY,moonZ);scene.add(moon);
-// Transparent projection plane sits just in front of the moon, facing the player.
+const moonAura=new T.Mesh(new T.SphereGeometry(11,48,32),new T.MeshBasicMaterial({color:0xffa51f,transparent:true,opacity:.22,depthWrite:false,fog:false}));
+moonAura.position.set(moonX,moonY,moonZ);scene.add(moonAura);
+const moonHalo=new T.Mesh(new T.SphereGeometry(9,48,32),new T.MeshBasicMaterial({color:0xffd45d,transparent:true,opacity:.28,depthWrite:false,fog:false}));
+moonHalo.position.set(moonX,moonY,moonZ);scene.add(moonHalo);
+// Skull decal: transparent, high-contrast shadow projection just above the moon's front surface.
 const skullCanvas=document.createElement('canvas');skullCanvas.width=512;skullCanvas.height=512;
-const sc=skullCanvas.getContext('2d');
-sc.clearRect(0,0,512,512);
-sc.save();sc.translate(256,248);
-sc.shadowColor='#180b08';sc.shadowBlur=24;sc.fillStyle='#32130d';
-sc.beginPath();sc.ellipse(0,-24,132,155,0,0,Math.PI*2);sc.fill();
-sc.beginPath();sc.moveTo(-94,58);sc.quadraticCurveTo(-85,130,-55,145);sc.lineTo(55,145);sc.quadraticCurveTo(85,130,94,58);sc.closePath();sc.fill();
-sc.shadowBlur=8;sc.fillStyle='#100807';
-sc.beginPath();sc.ellipse(-54,-8,39,52,-.12,0,Math.PI*2);sc.ellipse(54,-8,39,52,.12,0,Math.PI*2);sc.fill();
-sc.beginPath();sc.moveTo(0,25);sc.lineTo(-19,65);sc.lineTo(19,65);sc.closePath();sc.fill();
-sc.fillStyle='#f4bf54';sc.shadowColor='#ffd36b';sc.shadowBlur=9;
-for(let x=-60;x<=60;x+=30)sc.fillRect(x-7,91,14,43);
+const sc=skullCanvas.getContext('2d');sc.clearRect(0,0,512,512);sc.save();sc.translate(256,250);
+sc.shadowColor='#241006';sc.shadowBlur=28;sc.fillStyle='rgba(54,20,8,.94)';
+sc.beginPath();sc.ellipse(0,-28,137,158,0,0,Math.PI*2);sc.fill();
+sc.beginPath();sc.moveTo(-96,52);sc.quadraticCurveTo(-88,128,-54,150);sc.lineTo(54,150);sc.quadraticCurveTo(88,128,96,52);sc.closePath();sc.fill();
+sc.shadowBlur=10;sc.fillStyle='#160906';
+sc.beginPath();sc.ellipse(-57,-12,43,58,-.12,0,Math.PI*2);sc.ellipse(57,-12,43,58,.12,0,Math.PI*2);sc.fill();
+sc.beginPath();sc.moveTo(0,20);sc.lineTo(-22,68);sc.lineTo(22,68);sc.closePath();sc.fill();
+sc.fillStyle='#ffdf91';sc.shadowColor='#ffcc52';sc.shadowBlur=12;
+for(let x=-66;x<=66;x+=33)sc.fillRect(x-8,91,16,48);
 sc.restore();
 const skullTexture=new T.CanvasTexture(skullCanvas);skullTexture.colorSpace=T.SRGBColorSpace;
-const skullProjection=new T.Mesh(new T.PlaneGeometry(5.2,5.2),new T.MeshBasicMaterial({map:skullTexture,transparent:true,depthWrite:false,side:T.DoubleSide,fog:false}));
-skullProjection.position.set(moonX,moonY,moonZ+5.86);scene.add(skullProjection);
-const moonGlow=new T.PointLight(0xffbd48,95,150);moonGlow.position.set(moonX,moonY,moonZ+3);scene.add(moonGlow);
+const skullProjection=new T.Mesh(new T.PlaneGeometry(6.7,6.7),new T.MeshBasicMaterial({map:skullTexture,transparent:true,opacity:1,depthWrite:false,side:T.DoubleSide,fog:false,toneMapped:false}));
+skullProjection.position.set(moonX,moonY,moonZ+7.53);scene.add(skullProjection);
+const moonGlow=new T.PointLight(0xffbd48,110,165);moonGlow.position.set(moonX,moonY,moonZ+4);scene.add(moonGlow);
 // lanterns
 const lanterns=[];for(const x of [-5.5,5.5,-13,13]){const z=x===-5.5||x===5.5?-5:-24;box(.18,3,.18,iron,x,1.5,z);box(.65,.1,.65,gold,x,3,z);const l=new T.PointLight(0xffa64b,7,13);l.position.set(x,2.7,z);scene.add(l);lanterns.push(l);sphere(.22,warm,x,2.7,z);}
 const fountain=cylinder(1.5,2,.45,oldStone,0,.2,-18,12);cylinder(.12,.2,2,oldStone,0,1.2,-18,10);cylinder(.8,1,.2,oldStone,0,2.2,-18,12);
