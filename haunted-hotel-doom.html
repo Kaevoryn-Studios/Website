@@ -250,7 +250,6 @@ for(const side of [-1,1]){
 // Split front structure leaves a real, walkable central entrance.
 box(6.5,15,5,mat(0x292633),-5.25,7.4,-38);
 box(6.5,15,5,mat(0x292633),5.25,7.4,-38);
-box(4.2,10.2,5,mat(0x1e1d2b),0,9.9,-38);
 box(7,10,5,mat(0x242230),-12,5,-38);box(7,10,5,mat(0x242230),12,5,-38);
 // A dark foyer is visible beyond the entrance, with a faint, unsettling red glow.
 box(3.45,.12,4.65,mat(0x111019),0,.02,-38.05);
@@ -259,12 +258,12 @@ const foyerGlow=new T.PointLight(0x8e102c,2.8,8,2);foyerGlow.position.set(0,2.1,
 for(const x of [-12,12,-6,6]){cylinder(.35,.48,16,oldStone,x,8,-35.35,10);cylinder(.5,.5,.4,gold,x,15.8,-35.35,10);}
 const hotelWindows=[],windowFigures=[];for(let floor=0;floor<4;floor++)for(let x=-7;x<=7;x+=2.8){if(floor===0&&Math.abs(x)<2)continue;const glow=glass.clone();const tone=(floor+Math.round(x))%4;glow.color.setHex(tone===0?0xffb36b: tone===1?0xff536b:0xff344e);glow.emissive.setHex(tone===0?0x9a3b12:0x8d071f);glow.emissiveIntensity=tone===0?1.15:1.65;const pane=box(1.15,1.8,.12,glow,x,3+floor*3.25,-35.36);hotelWindows.push({material:glow,base:glow.emissiveIntensity,phase:floor*1.7+x*.43,speed:1.1+(floor%3)*.45});box(1.5,.12,.18,gold,x,2.05+floor*3.25,-35.3);
  if((floor===1&&Math.abs(x+4.2)<.15)||(floor===2&&Math.abs(x-4.2)<.15)||(floor===3&&Math.abs(x+1.4)<.15)){
-  const shadowMat=new T.MeshBasicMaterial({color:0x05050a,transparent:true,opacity:.72,depthWrite:false});
+  const shadowMat=new T.MeshBasicMaterial({color:0x020207,transparent:true,opacity:.96,depthWrite:false});
   const figure=new T.Group();
   const head=new T.Mesh(new T.SphereGeometry(.17,12,10),shadowMat);head.position.set(0,.52,0);figure.add(head);
   const body=new T.Mesh(new T.CylinderGeometry(.13,.28,.82,8),shadowMat);body.position.set(0,-.02,0);figure.add(body);
   for(const side of [-1,1]){const arm=new T.Mesh(new T.CylinderGeometry(.055,.085,.68,7),shadowMat);arm.position.set(side*.23,.02,0);arm.rotation.z=side*.22;figure.add(arm);}
-  figure.position.set(x,3+floor*3.25-.05,-35.455);scene.add(figure);
+  figure.scale.set(1.28,1.12,1);figure.position.set(x,3+floor*3.25-.05,-35.16);scene.add(figure);
   const watcherLight=new T.PointLight(floor===2?0xff263e:0xffa34c,.85,4,2);watcherLight.position.set(x,3+floor*3.25,-34.75);scene.add(watcherLight);
   windowFigures.push({figure,material:shadowMat,light:watcherLight,baseY:figure.position.y,phase:floor*1.9+x*.31});
  }
@@ -339,7 +338,7 @@ function blockedAt(x,z){
  for(const o of solidObstacles)if(x+radius>o.minX&&x-radius<o.maxX&&z+radius>o.minZ&&z-radius<o.maxZ)return true;
  // Hotel front wall; preserve the central doorway as an approach, but do not allow entry through the locked door.
  if(z< -35.12 && z> -36.1 && Math.abs(x)>1.82 && Math.abs(x)<8.6)return true;
- if(z< -35.12 && z> -36.1 && Math.abs(x)<=1.82 && hotelDoorOpen<.82)return true;
+ if(z< -35.12 && z> -36.1 && Math.abs(x)<=1.82 && hotelDoorOpen<.68)return true;
  return false;
 }
 function inspect(){if(camera.position.z>-7){msg.textContent='THE GATE CREAKS. SOMETHING HAS BEEN HERE BEFORE YOU.';}else if(camera.position.z>-24){msg.textContent='THE TOMBSTONES ARE OLDER THAN THE HOTEL. ONE NAME IS STILL WARM.';}else{msg.textContent='THE HOTEL DOOR IS LOCKED. A BELL RINGS SOMEWHERE INSIDE.';}flash.style.opacity='.12';setTimeout(()=>flash.style.opacity='0',120);}
@@ -349,8 +348,8 @@ document.getElementById('sound').onclick=()=>{soundOn=!soundOn;document.getEleme
 function animate(now){requestAnimationFrame(animate);const dt=Math.min(.04,(now-last)/1000);last=now;const t=now*.001;
 fogPuffs.forEach((layer)=>{const drift=(t*layer.speed+layer.phase)%4.8;layer.mesh.position.x=layer.baseX+Math.sin(t*.22+layer.phase)*.32;layer.mesh.position.z=layer.baseZ-drift;layer.mesh.position.y=layer.baseY+Math.sin(t*.48+layer.phase)*.035;layer.mesh.lookAt(camera.position.x,layer.mesh.position.y,camera.position.z);layer.mesh.material.opacity=.34+.12*(.5+.5*Math.sin(t*.31+layer.phase));});groundFog.forEach((layer)=>{const drift=(t*layer.speed+layer.phase)%3.8;layer.mesh.position.x=layer.baseX+Math.sin(t*.19+layer.phase)*.22;layer.mesh.position.z=layer.baseZ-drift;});lanterns.forEach((l,i)=>{l.intensity=10+Math.sin(t*2.4+i*1.7)*1.15+Math.sin(t*7+i)*.25;});hotelWindows.forEach((w,i)=>{const pulse=.82+Math.sin(t*w.speed+w.phase)*.12+Math.sin(t*.37+w.phase*2)*.06;const rareFlicker=Math.sin(t*2.3+i*8.1)> .985?.28:1;w.material.emissiveIntensity=w.base*pulse*rareFlicker;});
 windowFigures.forEach((f,i)=>{const presence=.12+.78*(.5+.5*Math.sin(t*.31+f.phase))**2;f.material.opacity=presence;f.figure.position.y=f.baseY+Math.sin(t*.22+f.phase)*.045;f.light.intensity=.25+presence*1.25;});
-const doorTarget=camera.position.z<-27.2?1:0;hotelDoorOpen+=(doorTarget-hotelDoorOpen)*Math.min(1,dt*.42);
-hotelDoors.forEach(({hinge,side})=>{const target=(side<0?1:-1)*1.22*hotelDoorOpen;hinge.rotation.y+=(target-hinge.rotation.y)*Math.min(1,dt*1.35);});
+const doorTarget=camera.position.z<-22?1:0;hotelDoorOpen+=(doorTarget-hotelDoorOpen)*Math.min(1,dt*.95);
+hotelDoors.forEach(({hinge,side})=>{const target=(side<0?1:-1)*1.38*hotelDoorOpen;hinge.rotation.y+=(target-hinge.rotation.y)*Math.min(1,dt*2.4);});
 foyerGlow.intensity=2.1+Math.sin(t*1.8)*.65;
 if(Math.random()<.0015){lightning=.13;flash.style.opacity='.45';moonLight.intensity=5;}if(lightning>0){lightning-=dt;if(lightning<=0){flash.style.opacity='0';moonLight.intensity=2.1;}}
 if(started){const gateOpenTarget=camera.position.z<5?1:0;const gateOpen=Math.min(1,Math.max(0,(5-camera.position.z)/2));gateLeaves.forEach(({hinge,side})=>{const target=gateOpenTarget?-side*1.18:0;hinge.rotation.y+=(target-hinge.rotation.y)*Math.min(1,dt*2.8);});const forward=(keys.w||keys.arrowup?-1:0)+(keys.s||keys.arrowdown?1:0)+touch.y;const strafe=(keys.d||keys.arrowright?1:0)+(keys.a||keys.arrowleft?-1:0)+touch.x;const dir=new T.Vector3(strafe,0,forward);if(dir.length()>1)dir.normalize();const speed=keys.shift?9:4.4;const nextX=T.MathUtils.clamp(camera.position.x+(Math.cos(yaw)*dir.x+Math.sin(yaw)*dir.z)*speed*dt,-4.02,4.02);const nextZ=T.MathUtils.clamp(camera.position.z+(-Math.sin(yaw)*dir.x+Math.cos(yaw)*dir.z)*speed*dt,-40,19);if(!blockedAt(nextX,camera.position.z))camera.position.x=nextX;if(!blockedAt(camera.position.x,nextZ))camera.position.z=nextZ;camera.position.y=2.1+stairHeightAt(camera.position.z);
