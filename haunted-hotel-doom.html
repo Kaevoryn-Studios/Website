@@ -96,26 +96,40 @@ for(let n=0;n<260;n++){
 }
 // fine lunar grain
 for(let n=0;n<22000;n++){const x=Math.random()*2048,y=Math.random()*1024;mc.fillStyle=Math.random()>.5?'rgba(255,244,206,.045)':'rgba(55,35,20,.055)';mc.fillRect(x,y,1+Math.random()*2,1+Math.random()*2);}
-// carve a skull into the lunar rock: recessed sockets, nose cavity, cheek cuts and teeth grooves
+// unmistakable skull relief carved into the moon: rounded cranium, deep sockets, nasal cavity and jaw
 mc.save();mc.translate(1024,512);
-mc.shadowColor='rgba(35,18,8,.85)';mc.shadowBlur=34;mc.fillStyle='rgba(55,31,17,.78)';
-mc.beginPath();mc.ellipse(0,-42,220,245,0,0,Math.PI*2);mc.fill();
-mc.beginPath();mc.moveTo(-160,95);mc.quadraticCurveTo(-145,205,-88,220);mc.lineTo(88,220);mc.quadraticCurveTo(145,205,160,95);mc.closePath();mc.fill();
-// raised worn rims around recessed eye sockets
-mc.shadowBlur=0;mc.strokeStyle='rgba(255,224,157,.62)';mc.lineWidth=18;
-mc.beginPath();mc.ellipse(-91,-20,78,101,-.13,0,Math.PI*2);mc.ellipse(91,-20,78,101,.13,0,Math.PI*2);mc.stroke();
-mc.fillStyle='rgba(29,18,13,.94)';mc.shadowColor='#20140d';mc.shadowBlur=20;
-mc.beginPath();mc.ellipse(-91,-20,62,83,-.13,0,Math.PI*2);mc.ellipse(91,-20,62,83,.13,0,Math.PI*2);mc.fill();
-mc.beginPath();mc.moveTo(0,35);mc.lineTo(-34,112);mc.lineTo(34,112);mc.closePath();mc.fill();
-// cheek and jaw shadows
-mc.shadowBlur=0;mc.strokeStyle='rgba(48,28,17,.72)';mc.lineWidth=22;
-mc.beginPath();mc.moveTo(-178,88);mc.quadraticCurveTo(-112,132,-90,175);mc.moveTo(178,88);mc.quadraticCurveTo(112,132,90,175);mc.stroke();
-// worn tooth grooves carved into lower jaw
-mc.strokeStyle='rgba(34,21,14,.9)';mc.lineWidth=13;
-mc.beginPath();mc.moveTo(-100,168);mc.lineTo(100,168);mc.moveTo(-52,157);mc.lineTo(-52,213);mc.moveTo(0,158);mc.lineTo(0,220);mc.moveTo(52,157);mc.lineTo(52,213);mc.stroke();
-// highlights along the carved ridges catch moonlight
-mc.strokeStyle='rgba(255,225,166,.5)';mc.lineWidth=7;
-mc.beginPath();mc.ellipse(-91,-20,79,102,-.13,Math.PI*1.08,Math.PI*1.92);mc.ellipse(91,-20,79,102,.13,Math.PI*1.08,Math.PI*1.92);mc.stroke();
+// recessed outer skull silhouette with tapered cheekbones and jaw
+mc.shadowColor='rgba(28,15,8,.9)';mc.shadowBlur=30;mc.fillStyle='rgba(55,29,14,.88)';
+mc.beginPath();
+mc.moveTo(0,-275);
+mc.bezierCurveTo(178,-275,245,-150,232,-18);
+mc.bezierCurveTo(224,64,177,112,137,151);
+mc.lineTo(112,237);mc.quadraticCurveTo(0,282,-112,237);
+mc.lineTo(-137,151);
+mc.bezierCurveTo(-177,112,-224,64,-232,-18);
+mc.bezierCurveTo(-245,-150,-178,-275,0,-275);mc.closePath();mc.fill();
+// worn golden raised rim defines the skull outline
+mc.shadowBlur=0;mc.strokeStyle='rgba(255,225,166,.78)';mc.lineWidth=15;mc.stroke();
+// brow ridge
+mc.strokeStyle='rgba(255,230,177,.72)';mc.lineWidth=22;mc.lineCap='round';
+mc.beginPath();mc.moveTo(-190,-88);mc.quadraticCurveTo(-92,-145,0,-105);mc.quadraticCurveTo(92,-145,190,-88);mc.stroke();
+// two deep, unmistakable eye sockets
+mc.fillStyle='rgba(20,12,9,.98)';mc.shadowColor='#160d08';mc.shadowBlur=22;
+mc.beginPath();mc.ellipse(-91,-35,67,86,-.12,0,Math.PI*2);mc.ellipse(91,-35,67,86,.12,0,Math.PI*2);mc.fill();
+// subtle lit rims around sockets
+mc.shadowBlur=0;mc.strokeStyle='rgba(255,219,148,.82)';mc.lineWidth=10;
+mc.beginPath();mc.ellipse(-91,-35,73,92,-.12,Math.PI*1.08,Math.PI*1.92);mc.ellipse(91,-35,73,92,.12,Math.PI*1.08,Math.PI*1.92);mc.stroke();
+// triangular nasal cavity
+mc.fillStyle='rgba(18,10,7,.98)';mc.beginPath();
+mc.moveTo(0,45);mc.lineTo(-34,112);mc.quadraticCurveTo(0,130,34,112);mc.closePath();mc.fill();
+// cheekbone grooves
+mc.strokeStyle='rgba(34,18,10,.92)';mc.lineWidth=20;
+mc.beginPath();mc.moveTo(-205,65);mc.quadraticCurveTo(-137,85,-113,145);mc.moveTo(205,65);mc.quadraticCurveTo(137,85,113,145);mc.stroke();
+// clear jaw line and teeth
+mc.strokeStyle='rgba(255,221,157,.68)';mc.lineWidth=12;
+mc.beginPath();mc.moveTo(-118,166);mc.quadraticCurveTo(0,207,118,166);mc.stroke();
+mc.strokeStyle='rgba(20,11,7,.98)';mc.lineWidth=13;
+mc.beginPath();mc.moveTo(-104,169);mc.lineTo(104,169);mc.moveTo(-70,166);mc.lineTo(-70,220);mc.moveTo(-24,174);mc.lineTo(-24,229);mc.moveTo(24,174);mc.lineTo(24,229);mc.moveTo(70,166);mc.lineTo(70,220);mc.stroke();
 mc.restore();
 const moonTexture=new T.CanvasTexture(moonCanvas);moonTexture.colorSpace=T.SRGBColorSpace;moonTexture.anisotropy=8;
 const moon=new T.Mesh(new T.SphereGeometry(7.2,96,64),new T.MeshBasicMaterial({map:moonTexture,fog:false}));
