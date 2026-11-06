@@ -246,15 +246,18 @@ for(const side of [-1,1]){
     }
   }
 }
+// Hotel masonry must render from both sides: the player can now see its interior faces from inside the lobby.
+const hotelStone=mat(0x292633);hotelStone.side=T.DoubleSide;
+const hotelLowerStone=mat(0x242230);hotelLowerStone.side=T.DoubleSide;
 // hotel main structure and wings
 // Fill the upper-left wing above its lower side block so the hotel silhouette is fully enclosed.
-box(7,5,5,mat(0x292633),-12,12.5,-38);
+box(7,5,5,hotelStone,-12,12.5,-38);
 // Split front structure leaves a real, walkable central entrance.
-box(6.5,15,5,mat(0x292633),-5.25,7.4,-38);
-box(6.5,15,5,mat(0x292633),5.25,7.4,-38);
-box(7,10,5,mat(0x242230),-12,5,-38);box(7,10,5,mat(0x242230),12,5,-38);
+box(6.5,15,5,hotelStone,-5.25,7.4,-38);
+box(6.5,15,5,hotelStone,5.25,7.4,-38);
+box(7,10,5,hotelLowerStone,-12,5,-38);box(7,10,5,hotelLowerStone,12,5,-38);
 // Close the missing upper centre of the hotel facade, preserving its one upper window opening.
-const facadeStone=mat(0x292633,.92);
+const facadeStone=mat(0x292633,.92);facadeStone.side=T.DoubleSide;
 box(2.82,7.15,.28,facadeStone,.587,8.275,-35.49);
 box(4,1.35,.28,facadeStone,0,14.325,-35.49);
 box(.10,10.3,.28,facadeStone,-1.95,9.85,-35.49);
