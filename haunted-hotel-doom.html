@@ -262,6 +262,11 @@ const facadeStone=mat(0x292633,.92);facadeStone.side=T.DoubleSide;
 box(2.82,7.15,.28,facadeStone,.587,8.275,-35.49);
 box(4,1.35,.28,facadeStone,0,14.325,-35.49);
 box(.10,10.3,.28,facadeStone,-1.95,9.85,-35.49);
+// Complete the hotel's exterior shell: deep side walls and rear wall close both outside gaps.
+const hotelShell=mat(0x292633);hotelShell.side=T.DoubleSide;
+box(.42,15,22.5,hotelShell,-15.5,7.5,-46.25);
+box(.42,15,22.5,hotelShell,15.5,7.5,-46.25);
+box(31.4,15,.42,hotelShell,0,7.5,-57.25);
 // The lobby now has a proper interior ceiling, hiding the open roofline from inside.
 // A dark foyer is visible beyond the entrance, with a faint, unsettling red glow.
 box(3.45,.12,4.65,mat(0x111019),0,.02,-38.05);
