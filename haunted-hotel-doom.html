@@ -224,32 +224,33 @@ const signText=document.createElement('div');signText.textContent='HAUNTED HOTEL
 // lanterns
 const lanterns=[];for(const x of [-5.5,5.5,-13,13]){const z=x===-5.5||x===5.5?-5:-24;box(.18,3,.18,iron,x,1.5,z);box(.65,.1,.65,gold,x,3,z);box(.42,.62,.42,warm,x,2.62,z);for(const dx of [-.25,.25])for(const dz of [-.25,.25])box(.045,.72,.045,iron,x+dx,2.62,z+dz);box(.58,.12,.58,gold,x,3.02,z);const cap=new T.Mesh(new T.ConeGeometry(.43,.28,4),gold);cap.position.set(x,3.22,z);cap.rotation.y=Math.PI/4;scene.add(cap);const l=new T.PointLight(0xffb45e,11,17,1.7);l.position.set(x,2.65,z);scene.add(l);lanterns.push(l);const groundGlow=new T.PointLight(0xffa64b,2.2,7,2);groundGlow.position.set(x,.42,z);scene.add(groundGlow);sphere(.12,warm,x,2.62,z);}
 // The fountain has been removed for now; this area remains open cemetery ground.
- // Thin ground-level mist ribbons that visibly stream along the cemetery path.
- const lowFogCanvas=document.createElement('canvas');lowFogCanvas.width=512;lowFogCanvas.height=160;
+ // A sparse veil of very thin mist, kept almost flush with the cemetery path.
+ const lowFogCanvas=document.createElement('canvas');lowFogCanvas.width=512;lowFogCanvas.height=128;
  const fogCtx=lowFogCanvas.getContext('2d');
  const fogGradient=fogCtx.createLinearGradient(0,0,512,0);
  fogGradient.addColorStop(0,'rgba(210,225,244,0)');
- fogGradient.addColorStop(.18,'rgba(210,225,244,.08)');
- fogGradient.addColorStop(.5,'rgba(224,234,248,.34)');
- fogGradient.addColorStop(.82,'rgba(210,225,244,.08)');
+ fogGradient.addColorStop(.25,'rgba(210,225,244,.025)');
+ fogGradient.addColorStop(.5,'rgba(224,234,248,.12)');
+ fogGradient.addColorStop(.75,'rgba(210,225,244,.025)');
  fogGradient.addColorStop(1,'rgba(210,225,244,0)');
- fogCtx.fillStyle=fogGradient;fogCtx.fillRect(0,0,512,160);
- for(let j=0;j<7;j++){
-  fogCtx.beginPath();fogCtx.moveTo(0,18+j*19);
-  for(let x=0;x<=512;x+=32)fogCtx.lineTo(x,18+j*19+Math.sin(x*.018+j*1.7)*7);
-  fogCtx.strokeStyle='rgba(225,235,248,'+(0.035+j*.006)+')';fogCtx.lineWidth=5+j%3*2;fogCtx.stroke();
+ fogCtx.fillStyle=fogGradient;fogCtx.fillRect(0,0,512,128);
+ for(let j=0;j<4;j++){
+  fogCtx.beginPath();fogCtx.moveTo(0,22+j*25);
+  for(let x=0;x<=512;x+=32)fogCtx.lineTo(x,22+j*25+Math.sin(x*.018+j*1.7)*4);
+  fogCtx.strokeStyle='rgba(225,235,248,'+(0.018+j*.004)+')';fogCtx.lineWidth=3;fogCtx.stroke();
  }
  const lowFogTexture=new T.CanvasTexture(lowFogCanvas);lowFogTexture.colorSpace=T.SRGBColorSpace;
  const lowFogLayers=[];
- for(let i=0;i<16;i++){
-  const material=new T.MeshBasicMaterial({map:lowFogTexture,color:0xe4edfa,transparent:true,opacity:.56,depthWrite:false,side:T.DoubleSide});
-  const mist=new T.Mesh(new T.PlaneGeometry(7.4,1.65),material);
+ for(let i=0;i<8;i++){
+  const material=new T.MeshBasicMaterial({map:lowFogTexture,color:0xe4edfa,transparent:true,opacity:.22,depthWrite:false,side:T.DoubleSide});
+  const mist=new T.Mesh(new T.PlaneGeometry(5.2,.82),material);
   mist.rotation.x=-Math.PI/2;
-  const lane=i%4,row=Math.floor(i/4);
-  mist.position.set((lane-1.5)*1.75+(Math.random()-.5)*.35,.055,-6.6-row*4.25+(Math.random()-.5)*.7);
+  const lane=i%2,row=Math.floor(i/2);
+  mist.position.set((lane===0?-1:1)*1.65+(Math.random()-.5)*.22,.018,-7.8-row*7.2+(Math.random()-.5)*.45);
   mist.renderOrder=1;scene.add(mist);
   lowFogLayers.push({mesh:mist,baseX:mist.position.x,baseZ:mist.position.z,phase:i*.83});
  }
+ // 
 // Remove the floating ghost/fog figures from both sides of the graveyard.
 const starsGeo=new T.BufferGeometry(),starPts=[];for(let i=0;i<420;i++)starPts.push((Math.random()-.5)*130,8+Math.random()*65,-Math.random()*100);starsGeo.setAttribute('position',new T.Float32BufferAttribute(starPts,3));scene.add(new T.Points(starsGeo,new T.PointsMaterial({color:0xb8c8ff,size:.16,transparent:true,opacity:.8})));
 const keys={};let yaw=0,pitch=0,velocity=new T.Vector3(),soundOn=false,audio=null,last=performance.now(),lightning=0;
@@ -280,7 +281,7 @@ document.getElementById('interact').onclick=inspect;
 document.getElementById('reset').onclick=()=>{camera.position.set(0,2.1,16);yaw=0;pitch=0;msg.textContent='THE GATES ARE OPEN… THE HOTEL IS WAITING.';};
 document.getElementById('sound').onclick=()=>{soundOn=!soundOn;document.getElementById('sound').textContent='SOUND: '+(soundOn?'ON':'OFF');if(soundOn){try{audio=audio||new (window.AudioContext||window.webkitAudioContext)();const osc=audio.createOscillator(),gain=audio.createGain();osc.type='sine';osc.frequency.value=48;gain.gain.value=.025;osc.connect(gain);gain.connect(audio.destination);osc.start();window._doomDrone={osc,gain};}catch(e){}}else if(window._doomDrone){window._doomDrone.gain.gain.value=0;}};
 function animate(now){requestAnimationFrame(animate);const dt=Math.min(.04,(now-last)/1000);last=now;const t=now*.001;
-lowFogLayers.forEach((layer,i)=>{const drift=(t*.52+layer.phase)%4.1;layer.mesh.position.x=layer.baseX+Math.sin(t*.7+layer.phase)*.48;layer.mesh.position.z=layer.baseZ-drift;layer.mesh.material.opacity=.43+.12*Math.sin(t*.8+layer.phase);});
+lowFogLayers.forEach((layer,i)=>{const drift=(t*.16+layer.phase*.18)%1.6;layer.mesh.position.x=layer.baseX+Math.sin(t*.22+layer.phase)*.12;layer.mesh.position.z=layer.baseZ-drift;layer.mesh.material.opacity=.16+.035*Math.sin(t*.3+layer.phase);});
 lanterns.forEach((l,i)=>{l.intensity=10+Math.sin(t*2.4+i*1.7)*1.15+Math.sin(t*7+i)*.25;});hotelWindows.forEach((w,i)=>{const pulse=.82+Math.sin(t*w.speed+w.phase)*.12+Math.sin(t*.37+w.phase*2)*.06;const rareFlicker=Math.sin(t*2.3+i*8.1)> .985?.28:1;w.material.emissiveIntensity=w.base*pulse*rareFlicker;});
 if(Math.random()<.0015){lightning=.13;flash.style.opacity='.45';moonLight.intensity=5;}if(lightning>0){lightning-=dt;if(lightning<=0){flash.style.opacity='0';moonLight.intensity=2.1;}}
 if(started){const gateOpenTarget=camera.position.z<5?1:0;const gateOpen=Math.min(1,Math.max(0,(5-camera.position.z)/2));gateLeaves.forEach(({hinge,side})=>{const target=gateOpenTarget?-side*1.18:0;hinge.rotation.y+=(target-hinge.rotation.y)*Math.min(1,dt*2.8);});const forward=(keys.w||keys.arrowup?-1:0)+(keys.s||keys.arrowdown?1:0)-touch.y;const strafe=(keys.d||keys.arrowright?1:0)+(keys.a||keys.arrowleft?-1:0)+touch.x;const dir=new T.Vector3(strafe,0,forward);if(dir.length()>1)dir.normalize();const speed=keys.shift?9:4.4;const nextX=T.MathUtils.clamp(camera.position.x+(Math.cos(yaw)*dir.x+Math.sin(yaw)*dir.z)*speed*dt,-4.02,4.02);const nextZ=T.MathUtils.clamp(camera.position.z+(-Math.sin(yaw)*dir.x+Math.cos(yaw)*dir.z)*speed*dt,-40,19);if(!blockedAt(nextX,camera.position.z))camera.position.x=nextX;if(!blockedAt(camera.position.x,nextZ))camera.position.z=nextZ;camera.position.y=2.1+stairHeightAt(camera.position.z);
