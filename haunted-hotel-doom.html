@@ -218,45 +218,67 @@ const signText=document.createElement('div');signText.textContent='HAUNTED HOTEL
 // Moon artwork removed as requested; retain cool directional night lighting.
 // lanterns
 const lanterns=[];for(const x of [-5.5,5.5,-13,13]){const z=x===-5.5||x===5.5?-5:-24;box(.18,3,.18,iron,x,1.5,z);box(.65,.1,.65,gold,x,3,z);box(.42,.62,.42,warm,x,2.62,z);for(const dx of [-.25,.25])for(const dz of [-.25,.25])box(.045,.72,.045,iron,x+dx,2.62,z+dz);box(.58,.12,.58,gold,x,3.02,z);const cap=new T.Mesh(new T.ConeGeometry(.43,.28,4),gold);cap.position.set(x,3.22,z);cap.rotation.y=Math.PI/4;scene.add(cap);const l=new T.PointLight(0xffb45e,11,17,1.7);l.position.set(x,2.65,z);scene.add(l);lanterns.push(l);const groundGlow=new T.PointLight(0xffa64b,2.2,7,2);groundGlow.position.set(x,.42,z);scene.add(groundGlow);sphere(.12,warm,x,2.62,z);}
-// Rebuilt tiered stone fountain: broad basin, raised bowl, and a visible animated water plume.
+// Victorian cemetery fountain: carved granite tiers, restrained natural water, and fine stone detailing.
 const fountainStone=oldStone;
-cylinder(1.62,1.78,.52,fountainStone,0,.22,-18,40);
-const basinRim=new T.Mesh(new T.TorusGeometry(1.49,.14,12,48),fountainStone);
+const fountainDark=new T.MeshStandardMaterial({color:0x343a40,roughness:.92,metalness:.04});
+const fountainTrim=new T.MeshStandardMaterial({color:0x62686a,roughness:.82,metalness:.06});
+const fountainWaterMat=new T.MeshStandardMaterial({color:0x397f91,roughness:.12,metalness:.18,transparent:true,opacity:.72});
+const fountainFlowMat=new T.MeshStandardMaterial({color:0x9bd9e3,roughness:.08,metalness:.04,transparent:true,opacity:.62,depthWrite:false});
+const basinBase=new T.Mesh(new T.CylinderGeometry(1.76,1.88,.48,64),fountainDark);
+basinBase.position.set(0,.24,-18);basinBase.castShadow=true;basinBase.receiveShadow=true;scene.add(basinBase);
+const basinFoot=new T.Mesh(new T.CylinderGeometry(1.9,1.9,.12,64),fountainTrim);
+basinFoot.position.set(0,.055,-18);scene.add(basinFoot);
+const basinRim=new T.Mesh(new T.TorusGeometry(1.69,.13,14,64),fountainTrim);
 basinRim.rotation.x=Math.PI/2;basinRim.position.set(0,.51,-18);basinRim.castShadow=true;scene.add(basinRim);
-const basinWaterMat=new T.MeshStandardMaterial({color:0x14536b,emissive:0x06354a,emissiveIntensity:.42,metalness:.28,roughness:.16,transparent:true,opacity:.96});
-const basinWater=new T.Mesh(new T.CircleGeometry(1.36,48),basinWaterMat);
-basinWater.rotation.x=-Math.PI/2;basinWater.position.set(0,.515,-18);scene.add(basinWater);
-// Carved central pedestal and upper catching bowl.
-cylinder(.24,.34,1.45,fountainStone,0,1.18,-18,24);
-const upperBowl=new T.Mesh(new T.CylinderGeometry(.94,.48,.34,40,1,true),fountainStone);
+const basinWater=new T.Mesh(new T.CircleGeometry(1.57,64),fountainWaterMat);
+basinWater.rotation.x=-Math.PI/2;basinWater.position.set(0,.49,-18);scene.add(basinWater);
+// Eight stone panels and small carved bosses around the outside of the lower basin.
+for(let i=0;i<8;i++){
+  const a=i*Math.PI/4;
+  const panel=new T.Mesh(new T.BoxGeometry(.34,.27,.075),fountainTrim);
+  panel.position.set(Math.sin(a)*1.79,.28,-18+Math.cos(a)*1.79);
+  panel.rotation.y=a;panel.castShadow=true;scene.add(panel);
+  const boss=new T.Mesh(new T.SphereGeometry(.075,12,10),fountainDark);
+  boss.position.set(Math.sin(a)*1.84,.3,-18+Math.cos(a)*1.84);scene.add(boss);
+}
+// Fluted central column and a broad, genuinely bowl-shaped upper tier.
+const pedestal=new T.Mesh(new T.CylinderGeometry(.28,.42,1.28,32),fountainDark);
+pedestal.position.set(0,1.17,-18);pedestal.castShadow=true;scene.add(pedestal);
+for(let i=0;i<12;i++){
+  const a=i*Math.PI/6;
+  const rib=new T.Mesh(new T.CylinderGeometry(.025,.035,1.08,8),fountainTrim);
+  rib.position.set(Math.cos(a)*.32,1.17,-18+Math.sin(a)*.32);scene.add(rib);
+}
+const upperBowl=new T.Mesh(new T.CylinderGeometry(.91,.43,.38,64,1,true),fountainDark);
 upperBowl.position.set(0,2.02,-18);upperBowl.castShadow=true;scene.add(upperBowl);
-const upperRim=new T.Mesh(new T.TorusGeometry(.91,.105,10,40),fountainStone);
-upperRim.rotation.x=Math.PI/2;upperRim.position.set(0,2.2,-18);scene.add(upperRim);
-const upperWater=new T.Mesh(new T.CircleGeometry(.78,40),basinWaterMat.clone());
+const upperBowlFoot=new T.Mesh(new T.CylinderGeometry(.48,.36,.16,48),fountainTrim);
+upperBowlFoot.position.set(0,1.78,-18);scene.add(upperBowlFoot);
+const upperRim=new T.Mesh(new T.TorusGeometry(.88,.105,14,64),fountainTrim);
+upperRim.rotation.x=Math.PI/2;upperRim.position.set(0,2.22,-18);upperRim.castShadow=true;scene.add(upperRim);
+const upperWater=new T.Mesh(new T.CircleGeometry(.77,64),fountainWaterMat.clone());
 upperWater.rotation.x=-Math.PI/2;upperWater.position.set(0,2.205,-18);scene.add(upperWater);
-// Strong central jet with a soft pulse, plus four continuous streams returning to the lower basin.
-const fountainFlowMat=new T.MeshStandardMaterial({color:0x9cecff,emissive:0x287f9d,emissiveIntensity:1.05,metalness:.08,roughness:.08,transparent:true,opacity:.96});
-const fountainJet=new T.Mesh(new T.CylinderGeometry(.045,.105,1.42,16),fountainFlowMat);
-fountainJet.position.set(0,2.99,-18);scene.add(fountainJet);
-const fountainJetTip=new T.Mesh(new T.SphereGeometry(.085,16,10),fountainFlowMat);
-fountainJetTip.position.set(0,3.72,-18);scene.add(fountainJetTip);
+// Narrow rising jet and four fine overflow streams; no glowing solid-looking blue rods.
+const fountainJet=new T.Mesh(new T.CylinderGeometry(.018,.035,1.22,12),fountainFlowMat);
+fountainJet.position.set(0,2.92,-18);scene.add(fountainJet);
+const fountainJetTip=new T.Mesh(new T.SphereGeometry(.045,12,8),fountainFlowMat);
+fountainJetTip.position.set(0,3.55,-18);scene.add(fountainJetTip);
 const fountainStreams=[];
 for(let i=0;i<4;i++){
   const a=i*Math.PI/2+.35;
   const curve=new T.CatmullRomCurve3([
-    new T.Vector3(0,2.32,-18),
-    new T.Vector3(Math.cos(a)*.34,2.12,-18+Math.sin(a)*.34),
-    new T.Vector3(Math.cos(a)*.82,1.45,-18+Math.sin(a)*.82),
-    new T.Vector3(Math.cos(a)*1.22,.55,-18+Math.sin(a)*1.22)
+    new T.Vector3(Math.cos(a)*.5,2.25,-18+Math.sin(a)*.5),
+    new T.Vector3(Math.cos(a)*.67,2.0,-18+Math.sin(a)*.67),
+    new T.Vector3(Math.cos(a)*1.02,1.25,-18+Math.sin(a)*1.02),
+    new T.Vector3(Math.cos(a)*1.34,.52,-18+Math.sin(a)*1.34)
   ]);
-  const stream=new T.Mesh(new T.TubeGeometry(curve,36,.038,10,false),fountainFlowMat);
+  const stream=new T.Mesh(new T.TubeGeometry(curve,40,.018,8,false),fountainFlowMat);
   scene.add(stream);fountainStreams.push(stream);
 }
-const fountainRippleMat=new T.MeshBasicMaterial({color:0x8de9ff,transparent:true,opacity:.48,side:T.DoubleSide,depthWrite:false});
+const fountainRippleMat=new T.MeshBasicMaterial({color:0x9acbd1,transparent:true,opacity:.28,side:T.DoubleSide,depthWrite:false});
 const waterRipples=[];
 for(let i=0;i<4;i++){
-  const ring=new T.Mesh(new T.TorusGeometry(.2,.018,6,36),fountainRippleMat.clone());
-  ring.rotation.x=Math.PI/2;ring.position.set(0,.535+i*.006,-18);scene.add(ring);
+  const ring=new T.Mesh(new T.TorusGeometry(.2,.012,6,40),fountainRippleMat.clone());
+  ring.rotation.x=Math.PI/2;ring.position.set(0,.505+i*.003,-18);scene.add(ring);
   waterRipples.push({mesh:ring,phase:i*1.55});
 }
 // Remove the floating ghost/fog figures from both sides of the graveyard.
