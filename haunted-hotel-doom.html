@@ -257,6 +257,10 @@ box(7,5,5,hotelStone,12,12.5,-38);
 box(6.5,15,5,hotelStone,-5.25,7.4,-38);
 box(6.5,15,5,hotelStone,5.25,7.4,-38);
 box(7,10,5,hotelLowerStone,-12,5,-38);box(7,10,5,hotelLowerStone,12,5,-38);
+// Continuous reinforced front-side facade panels: close both side openings while preserving the central doorway.
+const frontSideStone=mat(0x292633);frontSideStone.side=T.DoubleSide;
+box(13.5,15,.48,frontSideStone,-8.75,7.5,-35.28);
+box(13.5,15,.48,frontSideStone,8.75,7.5,-35.28);
 // Close the missing upper centre of the hotel facade, preserving its one upper window opening.
 const facadeStone=mat(0x292633,.92);facadeStone.side=T.DoubleSide;
 box(2.82,7.15,.28,facadeStone,.587,8.275,-35.49);
