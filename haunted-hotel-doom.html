@@ -218,32 +218,47 @@ const signText=document.createElement('div');signText.textContent='HAUNTED HOTEL
 // Moon artwork removed as requested; retain cool directional night lighting.
 // lanterns
 const lanterns=[];for(const x of [-5.5,5.5,-13,13]){const z=x===-5.5||x===5.5?-5:-24;box(.18,3,.18,iron,x,1.5,z);box(.65,.1,.65,gold,x,3,z);box(.42,.62,.42,warm,x,2.62,z);for(const dx of [-.25,.25])for(const dz of [-.25,.25])box(.045,.72,.045,iron,x+dx,2.62,z+dz);box(.58,.12,.58,gold,x,3.02,z);const cap=new T.Mesh(new T.ConeGeometry(.43,.28,4),gold);cap.position.set(x,3.22,z);cap.rotation.y=Math.PI/4;scene.add(cap);const l=new T.PointLight(0xffb45e,11,17,1.7);l.position.set(x,2.65,z);scene.add(l);lanterns.push(l);const groundGlow=new T.PointLight(0xffa64b,2.2,7,2);groundGlow.position.set(x,.42,z);scene.add(groundGlow);sphere(.12,warm,x,2.62,z);}
-// Working stone fountain with a visible pool, upper bowl, animated droplets and ripples.
-cylinder(1.58,1.82,.48,oldStone,0,.2,-18,32);
-const fountainRim=new T.Mesh(new T.TorusGeometry(1.48,.13,10,40),oldStone);fountainRim.rotation.x=Math.PI/2;fountainRim.position.set(0,.46,-18);fountainRim.castShadow=true;scene.add(fountainRim);
-const waterMat=new T.MeshStandardMaterial({color:0x164c68,emissive:0x062b43,emissiveIntensity:.65,metalness:.55,roughness:.2,transparent:true,opacity:.92});
-const poolWater=new T.Mesh(new T.CircleGeometry(1.37,40),waterMat);poolWater.rotation.x=-Math.PI/2;poolWater.position.set(0,.455,-18);scene.add(poolWater);
-cylinder(.14,.2,1.75,oldStone,0,1.28,-18,16);
-cylinder(.82,1,.22,oldStone,0,2.18,-18,24);
-const upperWater=new T.Mesh(new T.CircleGeometry(.72,32),waterMat.clone());upperWater.rotation.x=-Math.PI/2;upperWater.position.set(0,2.305,-18);scene.add(upperWater);
-// A clear vertical fountain jet shoots upward, with four arcing streams returning to the basin.
-const streamMat=new T.MeshStandardMaterial({color:0x8be7ff,emissive:0x246b88,emissiveIntensity:.72,metalness:.12,roughness:.1,transparent:true,opacity:.94});
-const jet=new T.Mesh(new T.CylinderGeometry(.035,.075,1.35,12),streamMat);
-jet.position.set(0,3.02,-18);scene.add(jet);
-const jetTip=new T.Mesh(new T.SphereGeometry(.075,12,8),streamMat);
-jetTip.position.set(0,3.72,-18);scene.add(jetTip);
+// Rebuilt tiered stone fountain: broad basin, raised bowl, and a visible animated water plume.
+const fountainStone=oldStone;
+cylinder(1.62,1.78,.52,fountainStone,0,.22,-18,40);
+const basinRim=new T.Mesh(new T.TorusGeometry(1.49,.14,12,48),fountainStone);
+basinRim.rotation.x=Math.PI/2;basinRim.position.set(0,.51,-18);basinRim.castShadow=true;scene.add(basinRim);
+const basinWaterMat=new T.MeshStandardMaterial({color:0x14536b,emissive:0x06354a,emissiveIntensity:.42,metalness:.28,roughness:.16,transparent:true,opacity:.96});
+const basinWater=new T.Mesh(new T.CircleGeometry(1.36,48),basinWaterMat);
+basinWater.rotation.x=-Math.PI/2;basinWater.position.set(0,.515,-18);scene.add(basinWater);
+// Carved central pedestal and upper catching bowl.
+cylinder(.24,.34,1.45,fountainStone,0,1.18,-18,24);
+const upperBowl=new T.Mesh(new T.CylinderGeometry(.94,.48,.34,40,1,true),fountainStone);
+upperBowl.position.set(0,2.02,-18);upperBowl.castShadow=true;scene.add(upperBowl);
+const upperRim=new T.Mesh(new T.TorusGeometry(.91,.105,10,40),fountainStone);
+upperRim.rotation.x=Math.PI/2;upperRim.position.set(0,2.2,-18);scene.add(upperRim);
+const upperWater=new T.Mesh(new T.CircleGeometry(.78,40),basinWaterMat.clone());
+upperWater.rotation.x=-Math.PI/2;upperWater.position.set(0,2.205,-18);scene.add(upperWater);
+// Strong central jet with a soft pulse, plus four continuous streams returning to the lower basin.
+const fountainFlowMat=new T.MeshStandardMaterial({color:0x9cecff,emissive:0x287f9d,emissiveIntensity:1.05,metalness:.08,roughness:.08,transparent:true,opacity:.96});
+const fountainJet=new T.Mesh(new T.CylinderGeometry(.045,.105,1.42,16),fountainFlowMat);
+fountainJet.position.set(0,2.99,-18);scene.add(fountainJet);
+const fountainJetTip=new T.Mesh(new T.SphereGeometry(.085,16,10),fountainFlowMat);
+fountainJetTip.position.set(0,3.72,-18);scene.add(fountainJetTip);
+const fountainStreams=[];
 for(let i=0;i<4;i++){
   const a=i*Math.PI/2+.35;
   const curve=new T.CatmullRomCurve3([
-    new T.Vector3(0,3.55,-18),
-    new T.Vector3(Math.cos(a)*.38,3.2,-18+Math.sin(a)*.38),
-    new T.Vector3(Math.cos(a)*.78,2.45,-18+Math.sin(a)*.78),
-    new T.Vector3(Math.cos(a)*1.12,.49,-18+Math.sin(a)*1.12)
+    new T.Vector3(0,2.32,-18),
+    new T.Vector3(Math.cos(a)*.34,2.12,-18+Math.sin(a)*.34),
+    new T.Vector3(Math.cos(a)*.82,1.45,-18+Math.sin(a)*.82),
+    new T.Vector3(Math.cos(a)*1.22,.55,-18+Math.sin(a)*1.22)
   ]);
-  scene.add(new T.Mesh(new T.TubeGeometry(curve,32,.032,8,false),streamMat));
+  const stream=new T.Mesh(new T.TubeGeometry(curve,36,.038,10,false),fountainFlowMat);
+  scene.add(stream);fountainStreams.push(stream);
 }
-const rippleMat=new T.MeshBasicMaterial({color:0x70dfff,transparent:true,opacity:.5,side:T.DoubleSide,depthWrite:false});
-const waterRipples=[];for(let i=0;i<3;i++){const ring=new T.Mesh(new T.TorusGeometry(.2,.018,6,32),rippleMat.clone());ring.rotation.x=Math.PI/2;ring.position.set(0,.48+i*.008,-18);scene.add(ring);waterRipples.push({mesh:ring,phase:i*2.1});}
+const fountainRippleMat=new T.MeshBasicMaterial({color:0x8de9ff,transparent:true,opacity:.48,side:T.DoubleSide,depthWrite:false});
+const waterRipples=[];
+for(let i=0;i<4;i++){
+  const ring=new T.Mesh(new T.TorusGeometry(.2,.018,6,36),fountainRippleMat.clone());
+  ring.rotation.x=Math.PI/2;ring.position.set(0,.535+i*.006,-18);scene.add(ring);
+  waterRipples.push({mesh:ring,phase:i*1.55});
+}
 // Remove the floating ghost/fog figures from both sides of the graveyard.
 const starsGeo=new T.BufferGeometry(),starPts=[];for(let i=0;i<420;i++)starPts.push((Math.random()-.5)*130,8+Math.random()*65,-Math.random()*100);starsGeo.setAttribute('position',new T.Float32BufferAttribute(starPts,3));scene.add(new T.Points(starsGeo,new T.PointsMaterial({color:0xb8c8ff,size:.16,transparent:true,opacity:.8})));
 const keys={};let yaw=0,pitch=0,velocity=new T.Vector3(),soundOn=false,audio=null,last=performance.now(),lightning=0;
@@ -256,7 +271,7 @@ document.getElementById('interact').onclick=inspect;
 document.getElementById('reset').onclick=()=>{camera.position.set(0,2.1,16);yaw=0;pitch=0;msg.textContent='THE GATES ARE OPEN… THE HOTEL IS WAITING.';};
 document.getElementById('sound').onclick=()=>{soundOn=!soundOn;document.getElementById('sound').textContent='SOUND: '+(soundOn?'ON':'OFF');if(soundOn){try{audio=audio||new (window.AudioContext||window.webkitAudioContext)();const osc=audio.createOscillator(),gain=audio.createGain();osc.type='sine';osc.frequency.value=48;gain.gain.value=.025;osc.connect(gain);gain.connect(audio.destination);osc.start();window._doomDrone={osc,gain};}catch(e){}}else if(window._doomDrone){window._doomDrone.gain.gain.value=0;}};
 function animate(now){requestAnimationFrame(animate);const dt=Math.min(.04,(now-last)/1000);last=now;const t=now*.001;
-waterRipples.forEach(r=>{const p=(t*.42+r.phase/(Math.PI*2))%1;r.mesh.scale.setScalar(.35+p*2.6);r.mesh.material.opacity=.48*(1-p);});
+const jetPulse=1+Math.sin(t*3.2)*.055;fountainJet.scale.y=jetPulse;fountainJet.position.y=2.99+(jetPulse-1)*.71;fountainJetTip.position.y=3.72+(jetPulse-1)*1.42;waterRipples.forEach(r=>{const p=(t*.38+r.phase/(Math.PI*2))%1;r.mesh.scale.setScalar(.35+p*2.35);r.mesh.material.opacity=.48*(1-p);});
 lanterns.forEach((l,i)=>{l.intensity=10+Math.sin(t*2.4+i*1.7)*1.15+Math.sin(t*7+i)*.25;});hotelWindows.forEach((w,i)=>{const pulse=.82+Math.sin(t*w.speed+w.phase)*.12+Math.sin(t*.37+w.phase*2)*.06;const rareFlicker=Math.sin(t*2.3+i*8.1)> .985?.28:1;w.material.emissiveIntensity=w.base*pulse*rareFlicker;});
 if(Math.random()<.0015){lightning=.13;flash.style.opacity='.45';moonLight.intensity=5;}if(lightning>0){lightning-=dt;if(lightning<=0){flash.style.opacity='0';moonLight.intensity=2.1;}}
 if(started){const gateOpenTarget=camera.position.z<5?1:0;const gateOpen=Math.min(1,Math.max(0,(5-camera.position.z)/2));gateLeaves.forEach(({hinge,side})=>{const target=gateOpenTarget?side*1.18:0;hinge.rotation.y+=(target-hinge.rotation.y)*Math.min(1,dt*2.8);});const forward=(keys.w||keys.arrowup?-1:0)+(keys.s||keys.arrowdown?1:0)-touch.y;const strafe=(keys.d||keys.arrowright?1:0)+(keys.a||keys.arrowleft?-1:0)+touch.x;const dir=new T.Vector3(strafe,0,forward);if(dir.length()>1)dir.normalize();const speed=keys.shift?9:4.4;camera.position.x+= (Math.cos(yaw)*dir.x+Math.sin(yaw)*dir.z)*speed*dt;camera.position.z+=(-Math.sin(yaw)*dir.x+Math.cos(yaw)*dir.z)*speed*dt;camera.position.x=T.MathUtils.clamp(camera.position.x,-8.2,8.2);camera.position.z=T.MathUtils.clamp(camera.position.z,-40,19);camera.position.y=2.1;
