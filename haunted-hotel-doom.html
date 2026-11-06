@@ -65,7 +65,42 @@ function box(w,h,d,m,x,y,z){const o=new T.Mesh(new T.BoxGeometry(w,h,d),m);o.pos
 function sphere(r,m,x,y,z){const o=new T.Mesh(new T.SphereGeometry(r,12,10),m);o.position.set(x,y,z);o.castShadow=true;scene.add(o);return o}
 function cylinder(rt,rb,h,m,x,y,z,n=8){const o=new T.Mesh(new T.CylinderGeometry(rt,rb,h,n),m);o.position.set(x,y,z);o.castShadow=true;o.receiveShadow=true;scene.add(o);return o}
 function tree(x,z,s=1){const trunk=cylinder(.22*s,.48*s,5*s,wood,x,2.5*s,z,7);trunk.rotation.z=(Math.random()-.5)*.35;for(let i=0;i<5;i++){const b=cylinder(.07*s,.18*s,2.4*s,wood,x+(Math.random()-.5)*2*s,4*s+Math.random()*2*s,z+(Math.random()-.5)*1.5*s,6);b.rotation.z=(Math.random()-.5)*1.8;}for(let i=0;i<4;i++){const b=cylinder(.035*s,.12*s,1.6*s,wood,x+(Math.random()-.5)*2.8*s,5.4*s+Math.random()*1.8*s,z+(Math.random()-.5)*2*s,5);b.rotation.z=(Math.random()-.5)*2.3;}}
-function tomb(x,z,kind=0){const m=[stone,oldStone,darkStone][kind%3],w=.8+Math.random()*.35,h=1.1+Math.random()*.8;const base=box(w+.18,.18,.3,m,x,.05,z);const body=box(w,h,.24,m,x,.18+h/2,z);if(kind%3===0){const cap=sphere(w*.5,m,x,.18+h,z);cap.scale.set(1,.5,.25);}else if(kind%3===1){box(.2,h+.45,.2,m,x,.18+h/2,z);box(.78,.18,.2,m,x,.18+h*.72,z);}else{const cap=new T.Mesh(new T.ConeGeometry(w*.7,.35,4),m);cap.position.set(x,.18+h+.12,z);scene.add(cap);}const plaque=box(w*.55,.24,.025,darkStone,x,.35+h*.55,z-.14);return body;}
+function tomb(x,z,kind=0){
+  const palette=[0x777681,0x686a76,0x858087,0x555965,0x77736f,0x626775];
+  const m=mat(palette[(kind+Math.floor(Math.random()*3))%palette.length],.98);
+  const w=.72+Math.random()*.38,h=1.25+Math.random()*.85,depth=.22;
+  const base=box(w+.3,.2,.48,darkStone,x,.02,z);
+  const plinth=box(w+.12,.16,.38,m,x,.19,z);
+  const shape=new T.Shape();
+  const half=w/2;
+  shape.moveTo(-half,0);shape.lineTo(-half,h*.68);
+  if(kind%4===0){shape.quadraticCurveTo(-half,h*.91,0,h);shape.quadraticCurveTo(half,h*.91,half,h*.68);}
+  else if(kind%4===1){shape.lineTo(-half,h*.82);shape.lineTo(-half*.55,h*.91);shape.lineTo(half*.55,h*.91);shape.lineTo(half,h*.82);}
+  else if(kind%4===2){shape.lineTo(-half,h*.83);shape.lineTo(-half*.72,h*.94);shape.lineTo(0,h*.86);shape.lineTo(half*.72,h*.94);shape.lineTo(half,h*.83);}
+  else{shape.lineTo(-half,h*.72);shape.quadraticCurveTo(0,h*1.12,half,h*.72);}
+  shape.lineTo(half,0);shape.closePath();
+  const geo=new T.ExtrudeGeometry(shape,{depth,bevelEnabled:true,bevelSegments:3,steps:1,bevelSize:.045,bevelThickness:.045,curveSegments:8});
+  geo.computeVertexNormals();
+  const body=new T.Mesh(geo,m);body.position.set(x,.27,z-depth/2);body.castShadow=true;body.receiveShadow=true;scene.add(body);
+  const faceZ=z+depth/2+.055;
+  // Worn inset name panel and shallow engraved inscription strokes facing the visitor.
+  const plaqueMat=mat(0x3d3d49,.96);
+  const plaque=box(w*.62,.29,.025,plaqueMat,x,.55+h*.43,faceZ);
+  const letterMat=mat(0xa6a0a0,.95);
+  for(let j=0;j<3;j++)box(w*(.24+(j%2)*.08),.018,.012,letterMat,x+(j===1?.035:-.015),.55+h*.43-.055-j*.065,faceZ+.022);
+  if(kind%3===0){
+    box(.055,.42,.025,letterMat,x,.63+h*.43,faceZ+.025);
+    box(.27,.055,.025,letterMat,x,.69+h*.43,faceZ+.025);
+  }
+  // Fine cracks and weather stains break up the clean stone silhouette.
+  const crackMat=mat(0x343641,.99);
+  const crack=new T.Mesh(new T.BoxGeometry(.018,.2+Math.random()*.22,.012),crackMat);
+  crack.position.set(x+(Math.random()-.5)*w*.48,.48+h*.72,faceZ+.02);crack.rotation.z=(Math.random()-.5)*.22;scene.add(crack);
+  const mossMat=mat(0x344139,1);
+  for(let k=0;k<3;k++){const stain=new T.Mesh(new T.BoxGeometry(.12+Math.random()*.18,.035,.012),mossMat);stain.position.set(x+(Math.random()-.5)*w*.45,.34+Math.random()*.16,z+depth/2+.03);stain.rotation.z=(Math.random()-.5)*.2;scene.add(stain);}
+  body.rotation.z=(Math.random()-.5)*.035;
+  return body;
+}
 // Keep the entrance gate and approach completely clear; grave plots line both sides deeper inside the yard.
 let graveIndex=0;
 for(const side of [-1,1]){
