@@ -250,8 +250,9 @@ for(const side of [-1,1]){
 const hotelStone=mat(0x292633);hotelStone.side=T.DoubleSide;
 const hotelLowerStone=mat(0x242230);hotelLowerStone.side=T.DoubleSide;
 // hotel main structure and wings
-// Fill the upper-left wing above its lower side block so the hotel silhouette is fully enclosed.
+// Fill both upper wings above their lower side blocks so the hotel facade is enclosed symmetrically.
 box(7,5,5,hotelStone,-12,12.5,-38);
+box(7,5,5,hotelStone,12,12.5,-38);
 // Split front structure leaves a real, walkable central entrance.
 box(6.5,15,5,hotelStone,-5.25,7.4,-38);
 box(6.5,15,5,hotelStone,5.25,7.4,-38);
