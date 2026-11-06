@@ -210,7 +210,12 @@ box(17,15,5,mat(0x292633),0,7.4,-38);box(8,5,5,mat(0x1e1d2b),0,17.2,-38);box(7,1
 for(const x of [-12,12,-6,6,0]){cylinder(.35,.48,16,oldStone,x,8,-35.35,10);cylinder(.5,.5,.4,gold,x,15.8,-35.35,10);}
 const hotelWindows=[];for(let floor=0;floor<4;floor++)for(let x=-7;x<=7;x+=2.8){const glow=glass.clone();const tone=(floor+Math.round(x))%4;glow.color.setHex(tone===0?0xffb36b: tone===1?0xff536b:0xff344e);glow.emissive.setHex(tone===0?0x9a3b12:0x8d071f);glow.emissiveIntensity=tone===0?1.15:1.65;const pane=box(1.15,1.8,.12,glow,x,3+floor*3.25,-35.36);hotelWindows.push({material:glow,base:glow.emissiveIntensity,phase:floor*1.7+x*.43,speed:1.1+(floor%3)*.45});box(1.5,.12,.18,gold,x,2.05+floor*3.25,-35.3);}
 box(3.2,4.6,.5,wood,0,2.25,-35.15);box(3.5,.18,.65,gold,0,4.6,-35.05);
-for(let i=0;i<8;i++){box(7-i*.55,.28,2.5,oldStone,0,.15+i*.27,-31.8-i*.32);}
+// Broad, evenly spaced stone steps with a matching landing at the hotel entrance.
+for(let i=0;i<8;i++){
+ const stepWidth=7.6-i*.24;
+ box(stepWidth,.28,.68,oldStone,0,.14+i*.27,-29.56-i*.62);
+}
+box(5.9,.24,.72,oldStone,0,2.04,-34.58);
 const roof=new T.Mesh(new T.ConeGeometry(6,5,4),mat(0x151725));roof.position.set(0,19.5,-38);roof.rotation.y=Math.PI/4;roof.scale.z=.8;scene.add(roof);
 for(const x of [-12,12]){const r=new T.Mesh(new T.ConeGeometry(3.8,5,4),mat(0x171a2a));r.position.set(x,11,-38);r.rotation.y=Math.PI/4;scene.add(r);}
 const sign=box(7,1.2,.18,mat(0x160d1c),0,12.7,-35.2);const signLight=new T.PointLight(0xff174d,16,15);signLight.position.set(0,12.5,-33);scene.add(signLight);
@@ -218,73 +223,28 @@ const signText=document.createElement('div');signText.textContent='HAUNTED HOTEL
 // Moon artwork removed as requested; retain cool directional night lighting.
 // lanterns
 const lanterns=[];for(const x of [-5.5,5.5,-13,13]){const z=x===-5.5||x===5.5?-5:-24;box(.18,3,.18,iron,x,1.5,z);box(.65,.1,.65,gold,x,3,z);box(.42,.62,.42,warm,x,2.62,z);for(const dx of [-.25,.25])for(const dz of [-.25,.25])box(.045,.72,.045,iron,x+dx,2.62,z+dz);box(.58,.12,.58,gold,x,3.02,z);const cap=new T.Mesh(new T.ConeGeometry(.43,.28,4),gold);cap.position.set(x,3.22,z);cap.rotation.y=Math.PI/4;scene.add(cap);const l=new T.PointLight(0xffb45e,11,17,1.7);l.position.set(x,2.65,z);scene.add(l);lanterns.push(l);const groundGlow=new T.PointLight(0xffa64b,2.2,7,2);groundGlow.position.set(x,.42,z);scene.add(groundGlow);sphere(.12,warm,x,2.62,z);}
-// Victorian cemetery fountain: three carved tiers with clearly visible flowing water.
-// The crown is a sculpted stone acanthus finial, not a ball on a thin pole.
-const fountainStone=new T.MeshStandardMaterial({color:0x77736e,roughness:.96,metalness:.015});
-const fountainShadow=new T.MeshStandardMaterial({color:0x45484a,roughness:.94});
-const fountainEdge=new T.MeshStandardMaterial({color:0x999087,roughness:.88});
-const fountainWaterMat=new T.MeshStandardMaterial({color:0x6baeb8,roughness:.12,metalness:.08,transparent:true,opacity:.82,side:T.DoubleSide});
-const fountainFlowMat=new T.MeshStandardMaterial({color:0xd1f5f5,roughness:.08,metalness:.02,transparent:true,opacity:.92,depthWrite:false,side:T.DoubleSide});
-const fountainCenterZ=-18;
-function fountainPart(geo,material,x,y,z){const o=new T.Mesh(geo,material);o.position.set(x,y,z);o.castShadow=true;o.receiveShadow=true;scene.add(o);return o;}
-function fountainBand(radius,tube,y,material){const o=fountainPart(new T.TorusGeometry(radius,tube,12,72),material,0,y,fountainCenterZ);o.rotation.x=Math.PI/2;return o;}
-function carvedBowl(profile,y,scale=1){const pts=profile.map(p=>new T.Vector2(p[0]*scale,p[1]*scale));return fountainPart(new T.LatheGeometry(pts,72),fountainStone,0,y,fountainCenterZ);}
-function fountainArc(points,radius){const curve=new T.CatmullRomCurve3(points.map(p=>new T.Vector3(p[0],p[1],p[2]+fountainCenterZ)));const mesh=fountainPart(new T.TubeGeometry(curve,48,radius,10,false),fountainFlowMat,0,0,0);fountainStreams.push(mesh);return mesh;}
-const fountainStreams=[];
-// Broad lower catch basin, layered rim and carved stone apron.
-fountainPart(new T.CylinderGeometry(1.98,2.12,.28,72),fountainShadow,0,.14,fountainCenterZ);
-fountainPart(new T.CylinderGeometry(2.08,2.08,.12,72),fountainEdge,0,.32,fountainCenterZ);
-carvedBowl([[0,0],[.72,.04],[1.2,.14],[1.62,.32],[1.91,.58],[2.02,.72],[1.94,.78],[1.82,.65],[1.52,.43],[1.12,.27],[.55,.2],[0,.2]],.35);
-fountainBand(1.99,.075,.99,fountainEdge);fountainBand(1.78,.035,.91,fountainShadow);
-const basinWater=fountainPart(new T.CircleGeometry(1.73,72),fountainWaterMat,0,.91,fountainCenterZ);basinWater.rotation.x=-Math.PI/2;
-for(let i=0;i<12;i++){const a=i*Math.PI/6,c=Math.cos(a),q=Math.sin(a);const panel=fountainPart(new T.BoxGeometry(.28,.34,.065),fountainShadow,c*1.91,.68,fountainCenterZ+q*1.91);panel.rotation.y=a;const med=fountainPart(new T.TorusGeometry(.085,.018,8,20),fountainEdge,c*1.96,.68,fountainCenterZ+q*1.96);med.rotation.y=a;}
-// Lower support and broad first bowl.
-fountainPart(new T.CylinderGeometry(.48,.62,.34,48),fountainShadow,0,1.18,fountainCenterZ);
-fountainPart(new T.CylinderGeometry(.37,.49,.92,32),fountainStone,0,1.78,fountainCenterZ);
-for(let i=0;i<16;i++){const a=i*Math.PI/8;const rib=fountainPart(new T.CylinderGeometry(.018,.03,.78,7),fountainEdge,Math.cos(a)*.405,1.78,fountainCenterZ+Math.sin(a)*.405);rib.rotation.z=.02;}
-carvedBowl([[0,0],[.32,.04],[.58,.13],[.88,.34],[1.13,.62],[1.19,.72],[1.11,.76],[1.02,.61],[.82,.43],[.52,.28],[0,.25]],2.18);
-fountainBand(1.17,.065,2.9,fountainEdge);
-const lowerWater=fountainPart(new T.CircleGeometry(1.0,64),fountainWaterMat.clone(),0,2.88,fountainCenterZ);lowerWater.rotation.x=-Math.PI/2;
-// Second support and smaller upper bowl.
-fountainPart(new T.CylinderGeometry(.29,.4,.58,32),fountainShadow,0,3.14,fountainCenterZ);
-fountainPart(new T.CylinderGeometry(.22,.31,.66,32),fountainStone,0,3.72,fountainCenterZ);
-for(let i=0;i<12;i++){const a=i*Math.PI/6;fountainPart(new T.CylinderGeometry(.025,.045,.48,8),fountainEdge,Math.cos(a)*.25,3.72,fountainCenterZ+Math.sin(a)*.25);}
-carvedBowl([[0,0],[.22,.035],[.42,.12],[.61,.29],[.76,.48],[.79,.55],[.72,.59],[.66,.46],[.48,.31],[.25,.2],[0,.18]],4.02,.94);
-fountainBand(.74,.052,4.54,fountainEdge);
-const upperWater=fountainPart(new T.CircleGeometry(.64,56),fountainWaterMat.clone(),0,4.52,fountainCenterZ);upperWater.rotation.x=-Math.PI/2;
-// Ornate carved crown: layered stone collar, fluted bud and eight leaf-like petals.
-fountainPart(new T.CylinderGeometry(.2,.28,.18,32),fountainShadow,0,4.69,fountainCenterZ);
-fountainPart(new T.CylinderGeometry(.16,.2,.16,32),fountainEdge,0,4.84,fountainCenterZ);
-fountainPart(new T.ConeGeometry(.22,.42,12),fountainStone,0,5.12,fountainCenterZ);
-for(let i=0;i<8;i++){const a=i*Math.PI/4;const leaf=fountainPart(new T.ConeGeometry(.075,.34,8),fountainEdge,Math.cos(a)*.14,5.14,fountainCenterZ+Math.sin(a)*.14);leaf.rotation.z=Math.cos(a)*-.48;leaf.rotation.x=Math.sin(a)*.48;}
-fountainPart(new T.CylinderGeometry(.075,.12,.14,20),fountainShadow,0,5.34,fountainCenterZ);
-// Narrow, bright vertical water plume emerging above the sculpted crown; no spherical tip.
-const fountainJet=fountainPart(new T.CylinderGeometry(.012,.045,.82,16),fountainFlowMat,0,5.82,fountainCenterZ);
-fountainJet.rotation.z=.015;
-// Visible water curtains from upper bowl to middle bowl, then from middle bowl into basin.
-for(let i=0;i<12;i++){const a=i*Math.PI/6,c=Math.cos(a),q=Math.sin(a);
- fountainArc([[c*.58,4.53,q*.58],[c*.73,4.38,q*.73],[c*.88,4.05,q*.88],[c*1.02,3.52,q*1.02],[c*1.08,2.98,q*1.08]],.032);
- fountainArc([[c*1.02,2.88,q*1.02],[c*1.2,2.62,q*1.2],[c*1.43,2.12,q*1.43],[c*1.61,1.5,q*1.61],[c*1.72,1.0,q*1.72]],.038);
-}
-// Fine secondary jets around the top lip make the water visibly spill outward, not sit still.
-for(let i=0;i<8;i++){const a=i*Math.PI/4,c=Math.cos(a),q=Math.sin(a);fountainArc([[0,5.38,0],[c*.16,5.58,q*.16],[c*.31,5.28,q*.31],[c*.48,4.88,q*.48],[c*.61,4.55,q*.61]],.018);}
-const fountainRippleMat=new T.MeshBasicMaterial({color:0xd4f5f5,transparent:true,opacity:.34,side:T.DoubleSide,depthWrite:false});
-const waterRipples=[];
-for(let i=0;i<7;i++){const ring=fountainPart(new T.TorusGeometry(.2,.012,6,48),fountainRippleMat.clone(),0,.925,fountainCenterZ);ring.rotation.x=Math.PI/2;waterRipples.push({mesh:ring,phase:i*1.25});}
-// Subtle ground-hugging cemetery mist: soft, thin layers that never rise into floating clouds.
-const lowFogCanvas=document.createElement('canvas');lowFogCanvas.width=128;lowFogCanvas.height=64;
-const fogCtx=lowFogCanvas.getContext('2d');const fogGradient=fogCtx.createRadialGradient(64,32,3,64,32,62);
-fogGradient.addColorStop(0,'rgba(205,218,235,.34)');fogGradient.addColorStop(.42,'rgba(177,194,216,.19)');fogGradient.addColorStop(1,'rgba(155,174,202,0)');
-fogCtx.fillStyle=fogGradient;fogCtx.fillRect(0,0,128,64);
-const lowFogTexture=new T.CanvasTexture(lowFogCanvas);lowFogTexture.colorSpace=T.SRGBColorSpace;
-const lowFogMaterial=new T.MeshBasicMaterial({map:lowFogTexture,color:0xe1e9f5,transparent:true,opacity:.92,depthWrite:false,side:T.DoubleSide});
-const lowFogLayers=[];
-for(const side of [-1,1])for(let i=0;i<6;i++){
- const fogMesh=new T.Mesh(new T.PlaneGeometry(8.4,5.2),lowFogMaterial.clone());
- fogMesh.rotation.x=-Math.PI/2;fogMesh.position.set(side*(2.75+(i%2)*.22),.015,-6.2-i*4.15);
- fogMesh.material.opacity=.88+(i%2)*.04;scene.add(fogMesh);
- lowFogLayers.push({mesh:fogMesh,baseX:fogMesh.position.x,baseZ:fogMesh.position.z,phase:i*1.4+(side>0?1.1:0)});
-}
+// The fountain has been removed for now; this area remains open cemetery ground.
+ // Clearly visible, very low mist: soft elongated sprites whose lower edges meet the ground.
+ const lowFogCanvas=document.createElement('canvas');lowFogCanvas.width=256;lowFogCanvas.height=96;
+ const fogCtx=lowFogCanvas.getContext('2d');
+ const fogGradient=fogCtx.createRadialGradient(128,48,5,128,48,116);
+ fogGradient.addColorStop(0,'rgba(218,229,244,.78)');
+ fogGradient.addColorStop(.42,'rgba(194,210,233,.48)');
+ fogGradient.addColorStop(.78,'rgba(166,187,218,.16)');
+ fogGradient.addColorStop(1,'rgba(150,174,208,0)');
+ fogCtx.fillStyle=fogGradient;fogCtx.fillRect(0,0,256,96);
+ const lowFogTexture=new T.CanvasTexture(lowFogCanvas);lowFogTexture.colorSpace=T.SRGBColorSpace;
+ const lowFogLayers=[];
+ for(let i=0;i<18;i++){
+  const material=new T.SpriteMaterial({map:lowFogTexture,color:0xdce8fa,transparent:true,opacity:.68,depthWrite:false,blending:T.NormalBlending});
+  const mist=new T.Sprite(material);
+  const side=i%3-1;
+  const row=Math.floor(i/3);
+  mist.position.set(side*2.5+(Math.random()-.5)*.55,.28,-6.5-row*3.55+(Math.random()-.5)*.8);
+  mist.scale.set(7.4,1.35,1);
+  scene.add(mist);
+  lowFogLayers.push({mesh:mist,baseX:mist.position.x,baseZ:mist.position.z,phase:i*1.37});
+ }
 // Remove the floating ghost/fog figures from both sides of the graveyard.
 const starsGeo=new T.BufferGeometry(),starPts=[];for(let i=0;i<420;i++)starPts.push((Math.random()-.5)*130,8+Math.random()*65,-Math.random()*100);starsGeo.setAttribute('position',new T.Float32BufferAttribute(starPts,3));scene.add(new T.Points(starsGeo,new T.PointsMaterial({color:0xb8c8ff,size:.16,transparent:true,opacity:.8})));
 const keys={};let yaw=0,pitch=0,velocity=new T.Vector3(),soundOn=false,audio=null,last=performance.now(),lightning=0;
@@ -297,6 +257,10 @@ const solidObstacles=[];
 for(const side of [-1,1])for(let row=0;row<6;row++){
  const x=side*(3.55);const z=-10.0-row*4.15;
  solidObstacles.push({minX:x-.78,maxX:x+.78,minZ:z-.42,maxZ:z+.42});
+}
+function stairHeightAt(z){
+ const progress=T.MathUtils.clamp((-29.25-z)/4.96,0,1);
+ return progress*2.16;
 }
 function blockedAt(x,z){
  const radius=.34;
@@ -311,10 +275,10 @@ document.getElementById('interact').onclick=inspect;
 document.getElementById('reset').onclick=()=>{camera.position.set(0,2.1,16);yaw=0;pitch=0;msg.textContent='THE GATES ARE OPEN… THE HOTEL IS WAITING.';};
 document.getElementById('sound').onclick=()=>{soundOn=!soundOn;document.getElementById('sound').textContent='SOUND: '+(soundOn?'ON':'OFF');if(soundOn){try{audio=audio||new (window.AudioContext||window.webkitAudioContext)();const osc=audio.createOscillator(),gain=audio.createGain();osc.type='sine';osc.frequency.value=48;gain.gain.value=.025;osc.connect(gain);gain.connect(audio.destination);osc.start();window._doomDrone={osc,gain};}catch(e){}}else if(window._doomDrone){window._doomDrone.gain.gain.value=0;}};
 function animate(now){requestAnimationFrame(animate);const dt=Math.min(.04,(now-last)/1000);last=now;const t=now*.001;
-lowFogLayers.forEach((layer,i)=>{layer.mesh.position.x=layer.baseX+Math.sin(t*.12+layer.phase)*.18;layer.mesh.position.z=layer.baseZ+Math.cos(t*.1+layer.phase)*.12;layer.mesh.material.opacity=.66+.12*Math.sin(t*.24+layer.phase);});const jetPulse=1+Math.sin(t*4.1)*.075;fountainJet.scale.y=jetPulse;fountainJet.position.y=5.82+(jetPulse-1)*.38;fountainStreams.forEach((stream,i)=>{stream.material.opacity=.72+.18*Math.sin(t*5+i*.9);});waterRipples.forEach(r=>{const p=(t*.48+r.phase/(Math.PI*2))%1;r.mesh.scale.setScalar(.35+p*2.35);r.mesh.material.opacity=.48*(1-p);});
+lowFogLayers.forEach((layer,i)=>{layer.mesh.position.x=layer.baseX+Math.sin(t*.16+layer.phase)*.24;layer.mesh.position.z=layer.baseZ+Math.cos(t*.13+layer.phase)*.16;layer.mesh.material.opacity=.58+.16*Math.sin(t*.32+layer.phase);});
 lanterns.forEach((l,i)=>{l.intensity=10+Math.sin(t*2.4+i*1.7)*1.15+Math.sin(t*7+i)*.25;});hotelWindows.forEach((w,i)=>{const pulse=.82+Math.sin(t*w.speed+w.phase)*.12+Math.sin(t*.37+w.phase*2)*.06;const rareFlicker=Math.sin(t*2.3+i*8.1)> .985?.28:1;w.material.emissiveIntensity=w.base*pulse*rareFlicker;});
 if(Math.random()<.0015){lightning=.13;flash.style.opacity='.45';moonLight.intensity=5;}if(lightning>0){lightning-=dt;if(lightning<=0){flash.style.opacity='0';moonLight.intensity=2.1;}}
-if(started){const gateOpenTarget=camera.position.z<5?1:0;const gateOpen=Math.min(1,Math.max(0,(5-camera.position.z)/2));gateLeaves.forEach(({hinge,side})=>{const target=gateOpenTarget?side*1.18:0;hinge.rotation.y+=(target-hinge.rotation.y)*Math.min(1,dt*2.8);});const forward=(keys.w||keys.arrowup?-1:0)+(keys.s||keys.arrowdown?1:0)-touch.y;const strafe=(keys.d||keys.arrowright?1:0)+(keys.a||keys.arrowleft?-1:0)+touch.x;const dir=new T.Vector3(strafe,0,forward);if(dir.length()>1)dir.normalize();const speed=keys.shift?9:4.4;const nextX=T.MathUtils.clamp(camera.position.x+(Math.cos(yaw)*dir.x+Math.sin(yaw)*dir.z)*speed*dt,-4.02,4.02);const nextZ=T.MathUtils.clamp(camera.position.z+(-Math.sin(yaw)*dir.x+Math.cos(yaw)*dir.z)*speed*dt,-40,19);if(!blockedAt(nextX,camera.position.z))camera.position.x=nextX;if(!blockedAt(camera.position.x,nextZ))camera.position.z=nextZ;camera.position.y=2.1;
+if(started){const gateOpenTarget=camera.position.z<5?1:0;const gateOpen=Math.min(1,Math.max(0,(5-camera.position.z)/2));gateLeaves.forEach(({hinge,side})=>{const target=gateOpenTarget?side*1.18:0;hinge.rotation.y+=(target-hinge.rotation.y)*Math.min(1,dt*2.8);});const forward=(keys.w||keys.arrowup?-1:0)+(keys.s||keys.arrowdown?1:0)-touch.y;const strafe=(keys.d||keys.arrowright?1:0)+(keys.a||keys.arrowleft?-1:0)+touch.x;const dir=new T.Vector3(strafe,0,forward);if(dir.length()>1)dir.normalize();const speed=keys.shift?9:4.4;const nextX=T.MathUtils.clamp(camera.position.x+(Math.cos(yaw)*dir.x+Math.sin(yaw)*dir.z)*speed*dt,-4.02,4.02);const nextZ=T.MathUtils.clamp(camera.position.z+(-Math.sin(yaw)*dir.x+Math.cos(yaw)*dir.z)*speed*dt,-40,19);if(!blockedAt(nextX,camera.position.z))camera.position.x=nextX;if(!blockedAt(camera.position.x,nextZ))camera.position.z=nextZ;camera.position.y=2.1+stairHeightAt(camera.position.z);
 camera.rotation.order='YXZ';camera.rotation.y=yaw;camera.rotation.x=pitch;document.getElementById('interact').style.display='block';}
 renderer.render(scene,camera);}
 requestAnimationFrame(animate);
