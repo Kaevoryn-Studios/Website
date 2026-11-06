@@ -92,12 +92,36 @@ function tomb(x,z,kind=0){
     box(.055,.42,.025,letterMat,x,.63+h*.43,faceZ+.025);
     box(.27,.055,.025,letterMat,x,.69+h*.43,faceZ+.025);
   }
-  // Fine cracks and weather stains break up the clean stone silhouette.
-  const crackMat=mat(0x343641,.99);
-  const crack=new T.Mesh(new T.BoxGeometry(.018,.2+Math.random()*.22,.012),crackMat);
-  crack.position.set(x+(Math.random()-.5)*w*.48,.48+h*.72,faceZ+.02);crack.rotation.z=(Math.random()-.5)*.22;scene.add(crack);
+  // Deep age cracks, branching fractures, chipped edges and damp lichen.
+  const crackMat=mat(0x292b35,.99),crackZ=faceZ+.045;
+  const addCrack=(cx,cy,length,angle,width=.022)=>{
+    const mark=new T.Mesh(new T.BoxGeometry(width,length,.014),crackMat);
+    mark.position.set(cx,cy,crackZ);mark.rotation.z=angle;scene.add(mark);
+  };
+  const crackX=x+(Math.random()-.5)*w*.42,crackY=.55+h*(.56+Math.random()*.2);
+  addCrack(crackX,crackY,.32+Math.random()*.28,(Math.random()-.5)*.18,.026);
+  addCrack(crackX-.055,crackY+.13,.18,-.62,.018);
+  addCrack(crackX+.035,crackY-.09,.16,.58,.016);
+  if(kind%2===0){
+    const secondX=x+(Math.random()-.5)*w*.42;
+    addCrack(secondX,.48+h*.28,.2+Math.random()*.16,(Math.random()-.5)*.25,.018);
+    addCrack(secondX+.045,.54+h*.28,.13,.72,.014);
+  }
+  // Small dark chips along the silhouette make the old stone look broken by weather.
+  const chipMat=mat(0x3c3d47,.98);
+  for(let k=0;k<3;k++){
+    const chip=new T.Mesh(new T.BoxGeometry(.07+Math.random()*.08,.035+Math.random()*.04,.025),chipMat);
+    chip.position.set(x+(Math.random()-.5)*w*.82,.32+h*(.72+Math.random()*.24),faceZ+.035);
+    chip.rotation.z=(Math.random()-.5)*.8;scene.add(chip);
+  }
   const mossMat=mat(0x344139,1);
-  for(let k=0;k<3;k++){const stain=new T.Mesh(new T.BoxGeometry(.12+Math.random()*.18,.035,.012),mossMat);stain.position.set(x+(Math.random()-.5)*w*.45,.34+Math.random()*.16,z+depth/2+.03);stain.rotation.z=(Math.random()-.5)*.2;scene.add(stain);}
+  for(let k=0;k<5;k++){
+    const stain=new T.Mesh(new T.BoxGeometry(.1+Math.random()*.2,.025+Math.random()*.035,.014),mossMat);
+    stain.position.set(x+(Math.random()-.5)*w*.72,.32+Math.random()*.2,z+depth/2+.04);
+    stain.rotation.z=(Math.random()-.5)*.24;scene.add(stain);
+  }
+  // Slightly sunken, uneven footing and subtle age lean.
+  plinth.rotation.z=(Math.random()-.5)*.018;
   body.rotation.z=(Math.random()-.5)*.035;
   return body;
 }
