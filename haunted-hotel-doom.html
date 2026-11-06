@@ -79,65 +79,55 @@ const roof=new T.Mesh(new T.ConeGeometry(6,5,4),mat(0x151725));roof.position.set
 for(const x of [-12,12]){const r=new T.Mesh(new T.ConeGeometry(3.8,5,4),mat(0x171a2a));r.position.set(x,11,-38);r.rotation.y=Math.PI/4;scene.add(r);}
 const sign=box(7,1.2,.18,mat(0x160d1c),0,12.7,-35.2);const signLight=new T.PointLight(0xff174d,16,15);signLight.position.set(0,12.5,-33);scene.add(signLight);
 const signText=document.createElement('div');signText.textContent='HAUNTED HOTEL';signText.style.cssText='position:fixed;z-index:1;top:31%;left:50%;transform:translate(-50%,-50%);font:bold clamp(16px,3vw,30px) Georgia;color:#ff3d66;text-shadow:0 0 8px #ff174d,0 0 25px #ff174d;letter-spacing:.14em;pointer-events:none';document.body.appendChild(signText);
-// realistic golden full moon with an ancient skull carved into its lunar surface
+// rebuilt moon: a front-facing, dimensional golden lunar disc with a clean central skull engraving
 const moonX=-12,moonY=26,moonZ=-49;
-const moonCanvas=document.createElement('canvas');moonCanvas.width=2048;moonCanvas.height=1024;
-const mc=moonCanvas.getContext('2d');
-const base=mc.createRadialGradient(790,320,60,1024,512,1120);
-base.addColorStop(0,'#fff4c4');base.addColorStop(.28,'#f4d17b');base.addColorStop(.58,'#c99445');base.addColorStop(.82,'#92602e');base.addColorStop(1,'#3f2b22');
-mc.fillStyle=base;mc.fillRect(0,0,2048,1024);
-// lunar maria and crater basins
-for(let n=0;n<260;n++){
- const x=Math.random()*2048,y=Math.random()*1024,r=8+Math.random()*65;
- const g=mc.createRadialGradient(x-r*.22,y-r*.25,2,x,y,r);
- g.addColorStop(0,'rgba(255,241,190,.12)');g.addColorStop(.68,'rgba(99,65,31,.12)');g.addColorStop(1,'rgba(42,27,17,.34)');
+const moonGroup=new T.Group();moonGroup.position.set(moonX,moonY,moonZ);scene.add(moonGroup);
+// softly shaded spherical body gives the moon real volume
+const moonCore=new T.Mesh(new T.SphereGeometry(7.05,96,64),new T.MeshStandardMaterial({color:0xd9a94f,roughness:1,metalness:0}));
+moonCore.position.z=-.12;moonGroup.add(moonCore);
+// front-facing artwork guarantees the carving faces the visitor, not the side of the sphere
+const moonCanvas=document.createElement('canvas');moonCanvas.width=1024;moonCanvas.height=1024;
+const mc=moonCanvas.getContext('2d');mc.clearRect(0,0,1024,1024);
+mc.save();mc.beginPath();mc.arc(512,512,500,0,Math.PI*2);mc.clip();
+const lunar=mc.createRadialGradient(350,300,35,520,520,560);
+lunar.addColorStop(0,'#fff5cf');lunar.addColorStop(.32,'#f5d98e');lunar.addColorStop(.68,'#d5a957');lunar.addColorStop(1,'#76502b');
+mc.fillStyle=lunar;mc.fillRect(0,0,1024,1024);
+// irregular maria and crater basins
+for(let n=0;n<190;n++){
+ const x=18+Math.random()*988,y=18+Math.random()*988,r=5+Math.random()*38;
+ const g=mc.createRadialGradient(x-r*.28,y-r*.3,1,x,y,r);
+ g.addColorStop(0,'rgba(255,248,216,.42)');g.addColorStop(.55,'rgba(130,87,39,.13)');g.addColorStop(1,'rgba(48,31,18,.36)');
  mc.fillStyle=g;mc.beginPath();mc.arc(x,y,r,0,Math.PI*2);mc.fill();
- mc.strokeStyle='rgba(255,232,169,.12)';mc.lineWidth=2;mc.beginPath();mc.arc(x-r*.12,y-r*.12,r*.82,.15,Math.PI*1.7);mc.stroke();
+ mc.strokeStyle='rgba(255,237,187,.2)';mc.lineWidth=2;mc.beginPath();mc.arc(x-r*.12,y-r*.12,r*.76,.2,Math.PI*1.8);mc.stroke();
 }
-// fine lunar grain
-for(let n=0;n<22000;n++){const x=Math.random()*2048,y=Math.random()*1024;mc.fillStyle=Math.random()>.5?'rgba(255,244,206,.045)':'rgba(55,35,20,.055)';mc.fillRect(x,y,1+Math.random()*2,1+Math.random()*2);}
-// unmistakable skull relief carved into the moon: rounded cranium, deep sockets, nasal cavity and jaw
-mc.save();mc.translate(1024,512);
-// recessed outer skull silhouette with tapered cheekbones and jaw
-mc.shadowColor='rgba(28,15,8,.9)';mc.shadowBlur=30;mc.fillStyle='rgba(55,29,14,.88)';
-mc.beginPath();
-mc.moveTo(0,-275);
-mc.bezierCurveTo(178,-275,245,-150,232,-18);
-mc.bezierCurveTo(224,64,177,112,137,151);
-mc.lineTo(112,237);mc.quadraticCurveTo(0,282,-112,237);
-mc.lineTo(-137,151);
-mc.bezierCurveTo(-177,112,-224,64,-232,-18);
-mc.bezierCurveTo(-245,-150,-178,-275,0,-275);mc.closePath();mc.fill();
-// worn golden raised rim defines the skull outline
-mc.shadowBlur=0;mc.strokeStyle='rgba(255,225,166,.78)';mc.lineWidth=15;mc.stroke();
-// brow ridge
-mc.strokeStyle='rgba(255,230,177,.72)';mc.lineWidth=22;mc.lineCap='round';
-mc.beginPath();mc.moveTo(-190,-88);mc.quadraticCurveTo(-92,-145,0,-105);mc.quadraticCurveTo(92,-145,190,-88);mc.stroke();
-// two deep, unmistakable eye sockets
-mc.fillStyle='rgba(20,12,9,.98)';mc.shadowColor='#160d08';mc.shadowBlur=22;
-mc.beginPath();mc.ellipse(-91,-35,67,86,-.12,0,Math.PI*2);mc.ellipse(91,-35,67,86,.12,0,Math.PI*2);mc.fill();
-// subtle lit rims around sockets
-mc.shadowBlur=0;mc.strokeStyle='rgba(255,219,148,.82)';mc.lineWidth=10;
-mc.beginPath();mc.ellipse(-91,-35,73,92,-.12,Math.PI*1.08,Math.PI*1.92);mc.ellipse(91,-35,73,92,.12,Math.PI*1.08,Math.PI*1.92);mc.stroke();
-// triangular nasal cavity
-mc.fillStyle='rgba(18,10,7,.98)';mc.beginPath();
-mc.moveTo(0,45);mc.lineTo(-34,112);mc.quadraticCurveTo(0,130,34,112);mc.closePath();mc.fill();
-// cheekbone grooves
-mc.strokeStyle='rgba(34,18,10,.92)';mc.lineWidth=20;
-mc.beginPath();mc.moveTo(-205,65);mc.quadraticCurveTo(-137,85,-113,145);mc.moveTo(205,65);mc.quadraticCurveTo(137,85,113,145);mc.stroke();
-// clear jaw line and teeth
-mc.strokeStyle='rgba(255,221,157,.68)';mc.lineWidth=12;
-mc.beginPath();mc.moveTo(-118,166);mc.quadraticCurveTo(0,207,118,166);mc.stroke();
-mc.strokeStyle='rgba(20,11,7,.98)';mc.lineWidth=13;
-mc.beginPath();mc.moveTo(-104,169);mc.lineTo(104,169);mc.moveTo(-70,166);mc.lineTo(-70,220);mc.moveTo(-24,174);mc.lineTo(-24,229);mc.moveTo(24,174);mc.lineTo(24,229);mc.moveTo(70,166);mc.lineTo(70,220);mc.stroke();
+// fine stone grain
+for(let n=0;n<12000;n++){const x=Math.random()*1024,y=Math.random()*1024;mc.fillStyle=Math.random()>.5?'rgba(255,246,218,.07)':'rgba(53,35,19,.07)';mc.fillRect(x,y,1+Math.random()*2,1+Math.random()*2);}
+// centered engraved skull, deliberately simple and unmistakable
+mc.save();mc.translate(512,510);
+// broad skull outline and jaw carved into the lunar stone
+mc.shadowColor='rgba(45,25,11,.8)';mc.shadowBlur=22;mc.fillStyle='rgba(91,55,25,.78)';
+mc.beginPath();mc.moveTo(512,275);mc.bezierCurveTo(665,275,740,390,724,520);mc.bezierCurveTo(716,600,666,650,620,682);mc.lineTo(612,754);mc.quadraticCurveTo(512,800,412,754);mc.lineTo(404,682);mc.bezierCurveTo(358,650,308,600,300,520);mc.bezierCurveTo(284,390,359,275,512,275);mc.closePath();mc.fill();
+// raised golden edge catches light like an old carving
+mc.shadowBlur=0;mc.strokeStyle='rgba(255,232,177,.8)';mc.lineWidth=12;mc.stroke();
+// two deep eye sockets
+mc.fillStyle='rgba(34,21,13,.96)';mc.beginPath();mc.ellipse(440,485,48,66,-.08,0,Math.PI*2);mc.ellipse(584,485,48,66,.08,0,Math.PI*2);mc.fill();
+// triangular nose cavity
+mc.beginPath();mc.moveTo(512,548);mc.lineTo(485,610);mc.quadraticCurveTo(512,627,539,610);mc.closePath();mc.fill();
+// cheekbone and jaw grooves
+mc.strokeStyle='rgba(57,34,17,.9)';mc.lineWidth=15;mc.beginPath();mc.moveTo(335,585);mc.quadraticCurveTo(390,605,415,660);mc.moveTo(689,585);mc.quadraticCurveTo(634,605,609,660);mc.stroke();
+mc.strokeStyle='rgba(255,228,167,.68)';mc.lineWidth=8;mc.beginPath();mc.moveTo(420,690);mc.quadraticCurveTo(512,724,604,690);mc.stroke();
+// distinct teeth divisions
+mc.strokeStyle='rgba(37,23,13,.95)';mc.lineWidth=9;mc.beginPath();mc.moveTo(430,696);mc.lineTo(594,696);for(let x=462;x<=562;x+=33){mc.moveTo(x,694);mc.lineTo(x,738);}mc.stroke();
+mc.restore();
+// subtle luminous rim around the lunar disc
 mc.restore();
 const moonTexture=new T.CanvasTexture(moonCanvas);moonTexture.colorSpace=T.SRGBColorSpace;moonTexture.anisotropy=8;
-const moon=new T.Mesh(new T.SphereGeometry(7.2,96,64),new T.MeshBasicMaterial({map:moonTexture,fog:false}));
-moon.position.set(moonX,moonY,moonZ);moon.rotation.y=-Math.PI/2;scene.add(moon);
-const moonAura=new T.Mesh(new T.SphereGeometry(11.5,48,32),new T.MeshBasicMaterial({color:0xffb83c,transparent:true,opacity:.16,depthWrite:false,fog:false}));
+const moonFace=new T.Mesh(new T.PlaneGeometry(14.1,14.1),new T.MeshBasicMaterial({map:moonTexture,transparent:true,depthWrite:false,fog:false}));
+moonFace.position.z=7.0;moonGroup.add(moonFace);
+const moonAura=new T.Mesh(new T.SphereGeometry(10.8,48,32),new T.MeshBasicMaterial({color:0xffbd50,transparent:true,opacity:.13,depthWrite:false,fog:false}));
 moonAura.position.set(moonX,moonY,moonZ);scene.add(moonAura);
-const moonHalo=new T.Mesh(new T.SphereGeometry(9.2,48,32),new T.MeshBasicMaterial({color:0xffd77a,transparent:true,opacity:.2,depthWrite:false,fog:false}));
-moonHalo.position.set(moonX,moonY,moonZ);scene.add(moonHalo);
+const moonHalo=new T.Mesh(new T.SphereGeometry(8.9,48,32),new T.MeshBasicMaterial({color:0xffd77a,transparent:true,opacity:.16,depthWrite:false,fog:false}));
+moonHalo.position.set(moonX,moonY,moonZ);scene.add(moonHalo);scene.add(moonHalo);
 const moonGlow=new T.PointLight(0xffc45e,100,175);moonGlow.position.set(moonX,moonY,moonZ+3);scene.add(moonGlow);
 // lanterns
 const lanterns=[];for(const x of [-5.5,5.5,-13,13]){const z=x===-5.5||x===5.5?-5:-24;box(.18,3,.18,iron,x,1.5,z);box(.65,.1,.65,gold,x,3,z);const l=new T.PointLight(0xffa64b,7,13);l.position.set(x,2.7,z);scene.add(l);lanterns.push(l);sphere(.22,warm,x,2.7,z);}
