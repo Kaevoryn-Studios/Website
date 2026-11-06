@@ -226,21 +226,25 @@ const poolWater=new T.Mesh(new T.CircleGeometry(1.37,40),waterMat);poolWater.rot
 cylinder(.14,.2,1.75,oldStone,0,1.28,-18,16);
 cylinder(.82,1,.22,oldStone,0,2.18,-18,24);
 const upperWater=new T.Mesh(new T.CircleGeometry(.72,32),waterMat.clone());upperWater.rotation.x=-Math.PI/2;upperWater.position.set(0,2.305,-18);scene.add(upperWater);
-// Continuous narrow water streams spill from the upper bowl into the basin (no spherical droplets).
-const streamMat=new T.MeshStandardMaterial({color:0x70cde8,emissive:0x124d68,emissiveIntensity:.38,metalness:.18,roughness:.12,transparent:true,opacity:.78});
+// A clear vertical fountain jet shoots upward, with four arcing streams returning to the basin.
+const streamMat=new T.MeshStandardMaterial({color:0x8be7ff,emissive:0x246b88,emissiveIntensity:.72,metalness:.12,roughness:.1,transparent:true,opacity:.94});
+const jet=new T.Mesh(new T.CylinderGeometry(.035,.075,1.35,12),streamMat);
+jet.position.set(0,3.02,-18);scene.add(jet);
+const jetTip=new T.Mesh(new T.SphereGeometry(.075,12,8),streamMat);
+jetTip.position.set(0,3.72,-18);scene.add(jetTip);
 for(let i=0;i<4;i++){
   const a=i*Math.PI/2+.35;
   const curve=new T.CatmullRomCurve3([
-    new T.Vector3(Math.cos(a)*.34,2.29,-18+Math.sin(a)*.34),
-    new T.Vector3(Math.cos(a)*.57,1.35,-18+Math.sin(a)*.57),
-    new T.Vector3(Math.cos(a)*1.02,.49,-18+Math.sin(a)*1.02)
+    new T.Vector3(0,3.55,-18),
+    new T.Vector3(Math.cos(a)*.38,3.2,-18+Math.sin(a)*.38),
+    new T.Vector3(Math.cos(a)*.78,2.45,-18+Math.sin(a)*.78),
+    new T.Vector3(Math.cos(a)*1.12,.49,-18+Math.sin(a)*1.12)
   ]);
-  scene.add(new T.Mesh(new T.TubeGeometry(curve,24,.027,6,false),streamMat));
+  scene.add(new T.Mesh(new T.TubeGeometry(curve,32,.032,8,false),streamMat));
 }
 const rippleMat=new T.MeshBasicMaterial({color:0x70dfff,transparent:true,opacity:.5,side:T.DoubleSide,depthWrite:false});
 const waterRipples=[];for(let i=0;i<3;i++){const ring=new T.Mesh(new T.TorusGeometry(.2,.018,6,32),rippleMat.clone());ring.rotation.x=Math.PI/2;ring.position.set(0,.48+i*.008,-18);scene.add(ring);waterRipples.push({mesh:ring,phase:i*2.1});}
-// Floating fog wisps removed; retain only distant atmospheric haze.
-const ghosts=[];const ghostMat=new T.MeshBasicMaterial({color:0xc7efff,transparent:true,opacity:.32});for(let i=0;i<5;i++){const g=sphere(.45,ghostMat,(Math.random()-.5)*20,1.7,-15-Math.random()*35);g.scale.y=1.7;ghosts.push({g,baseY:g.position.y,phase:Math.random()*6});}
+// Remove the floating ghost/fog figures from both sides of the graveyard.
 const starsGeo=new T.BufferGeometry(),starPts=[];for(let i=0;i<420;i++)starPts.push((Math.random()-.5)*130,8+Math.random()*65,-Math.random()*100);starsGeo.setAttribute('position',new T.Float32BufferAttribute(starPts,3));scene.add(new T.Points(starsGeo,new T.PointsMaterial({color:0xb8c8ff,size:.16,transparent:true,opacity:.8})));
 const keys={};let yaw=0,pitch=0,velocity=new T.Vector3(),soundOn=false,audio=null,last=performance.now(),lightning=0;
 addEventListener('keydown',e=>{keys[e.key.toLowerCase()]=true;if(e.key.toLowerCase()==='e')inspect();});addEventListener('keyup',e=>keys[e.key.toLowerCase()]=false);
@@ -253,7 +257,6 @@ document.getElementById('reset').onclick=()=>{camera.position.set(0,2.1,16);yaw=
 document.getElementById('sound').onclick=()=>{soundOn=!soundOn;document.getElementById('sound').textContent='SOUND: '+(soundOn?'ON':'OFF');if(soundOn){try{audio=audio||new (window.AudioContext||window.webkitAudioContext)();const osc=audio.createOscillator(),gain=audio.createGain();osc.type='sine';osc.frequency.value=48;gain.gain.value=.025;osc.connect(gain);gain.connect(audio.destination);osc.start();window._doomDrone={osc,gain};}catch(e){}}else if(window._doomDrone){window._doomDrone.gain.gain.value=0;}};
 function animate(now){requestAnimationFrame(animate);const dt=Math.min(.04,(now-last)/1000);last=now;const t=now*.001;
 waterRipples.forEach(r=>{const p=(t*.42+r.phase/(Math.PI*2))%1;r.mesh.scale.setScalar(.35+p*2.6);r.mesh.material.opacity=.48*(1-p);});
-ghosts.forEach(g=>{g.g.position.y=g.baseY+Math.sin(t*1.2+g.phase)*.7;g.g.position.x+=Math.sin(t*.5+g.phase)*dt*.18;});
 lanterns.forEach((l,i)=>{l.intensity=10+Math.sin(t*2.4+i*1.7)*1.15+Math.sin(t*7+i)*.25;});hotelWindows.forEach((w,i)=>{const pulse=.82+Math.sin(t*w.speed+w.phase)*.12+Math.sin(t*.37+w.phase*2)*.06;const rareFlicker=Math.sin(t*2.3+i*8.1)> .985?.28:1;w.material.emissiveIntensity=w.base*pulse*rareFlicker;});
 if(Math.random()<.0015){lightning=.13;flash.style.opacity='.45';moonLight.intensity=5;}if(lightning>0){lightning-=dt;if(lightning<=0){flash.style.opacity='0';moonLight.intensity=2.1;}}
 if(started){const gateOpenTarget=camera.position.z<5?1:0;const gateOpen=Math.min(1,Math.max(0,(5-camera.position.z)/2));gateLeaves.forEach(({hinge,side})=>{const target=gateOpenTarget?side*1.18:0;hinge.rotation.y+=(target-hinge.rotation.y)*Math.min(1,dt*2.8);});const forward=(keys.w||keys.arrowup?-1:0)+(keys.s||keys.arrowdown?1:0)-touch.y;const strafe=(keys.d||keys.arrowright?1:0)+(keys.a||keys.arrowleft?-1:0)+touch.x;const dir=new T.Vector3(strafe,0,forward);if(dir.length()>1)dir.normalize();const speed=keys.shift?9:4.4;camera.position.x+= (Math.cos(yaw)*dir.x+Math.sin(yaw)*dir.z)*speed*dt;camera.position.z+=(-Math.sin(yaw)*dir.x+Math.cos(yaw)*dir.z)*speed*dt;camera.position.x=T.MathUtils.clamp(camera.position.x,-8.2,8.2);camera.position.z=T.MathUtils.clamp(camera.position.z,-40,19);camera.position.y=2.1;
