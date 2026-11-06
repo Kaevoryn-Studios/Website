@@ -54,7 +54,7 @@ let started=false;
 const enterToggle=document.getElementById('enter-toggle');
 let worldReady=false;
 function beginExploration(){
- if(!worldReady){enterToggle.checked=false;msg.textContent='THE WORLD IS STILL LOADING. PLEASE WAIT…';return;}
+ if(!worldReady){msg.textContent='THE WORLD IS LOADING — THE GATES WILL OPEN AUTOMATICALLY.';enterButton.textContent='OPENING THE GATES…';return;}
  started=true;
  intro.style.display='none';
  intro.style.pointerEvents='none';
