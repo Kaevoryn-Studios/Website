@@ -92,16 +92,24 @@ mc.save();mc.beginPath();mc.arc(512,512,500,0,Math.PI*2);mc.clip();
 const lunar=mc.createRadialGradient(350,300,35,520,520,560);
 lunar.addColorStop(0,'#fff5cf');lunar.addColorStop(.32,'#f5d98e');lunar.addColorStop(.68,'#d5a957');lunar.addColorStop(1,'#76502b');
 mc.fillStyle=lunar;mc.fillRect(0,0,1024,1024);
-// irregular maria and crater basins
-for(let n=0;n<190;n++){
- const x=18+Math.random()*988,y=18+Math.random()*988,r=5+Math.random()*38;
- const g=mc.createRadialGradient(x-r*.28,y-r*.3,1,x,y,r);
- g.addColorStop(0,'rgba(255,248,216,.42)');g.addColorStop(.55,'rgba(130,87,39,.13)');g.addColorStop(1,'rgba(48,31,18,.36)');
- mc.fillStyle=g;mc.beginPath();mc.arc(x,y,r,0,Math.PI*2);mc.fill();
- mc.strokeStyle='rgba(255,237,187,.2)';mc.lineWidth=2;mc.beginPath();mc.arc(x-r*.12,y-r*.12,r*.76,.2,Math.PI*1.8);mc.stroke();
+// restrained lunar maria: broad, soft variations instead of hundreds of raised-looking dots
+for(let n=0;n<13;n++){
+ const x=100+Math.random()*824,y=100+Math.random()*824,rx=35+Math.random()*95,ry=24+Math.random()*72;
+ mc.save();mc.translate(x,y);mc.rotate(Math.random()*Math.PI);
+ const stain=mc.createRadialGradient(0,0,rx*.12,0,0,rx);
+ stain.addColorStop(0,'rgba(105,75,39,.12)');stain.addColorStop(.72,'rgba(119,83,43,.08)');stain.addColorStop(1,'rgba(119,83,43,0)');
+ mc.fillStyle=stain;mc.beginPath();mc.ellipse(0,0,rx,ry,0,0,Math.PI*2);mc.fill();mc.restore();
 }
-// fine stone grain
-for(let n=0;n<12000;n++){const x=Math.random()*1024,y=Math.random()*1024;mc.fillStyle=Math.random()>.5?'rgba(255,246,218,.07)':'rgba(53,35,19,.07)';mc.fillRect(x,y,1+Math.random()*2,1+Math.random()*2);}
+// a small number of shallow, irregular crater impressions with very soft rims
+for(let n=0;n<24;n++){
+ const x=55+Math.random()*914,y=55+Math.random()*914,r=7+Math.random()*17;
+ mc.save();mc.translate(x,y);mc.scale(1,.72);
+ const bowl=mc.createRadialGradient(-r*.2,-r*.22,1,0,0,r);
+ bowl.addColorStop(0,'rgba(105,75,39,.16)');bowl.addColorStop(.62,'rgba(122,88,48,.09)');bowl.addColorStop(.88,'rgba(255,238,190,.13)');bowl.addColorStop(1,'rgba(105,75,39,0)');
+ mc.fillStyle=bowl;mc.beginPath();mc.arc(0,0,r,0,Math.PI*2);mc.fill();mc.restore();
+}
+// extremely subtle fine mineral grain
+for(let n=0;n<2400;n++){const x=Math.random()*1024,y=Math.random()*1024;mc.fillStyle=Math.random()>.5?'rgba(255,246,218,.025)':'rgba(53,35,19,.025)';mc.fillRect(x,y,1,1);}
 // centered engraved skull, deliberately simple and unmistakable
 mc.save();mc.translate(512,510);
 // broad skull outline and jaw carved into the lunar stone
