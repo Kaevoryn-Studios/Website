@@ -247,6 +247,8 @@ for(const side of [-1,1]){
   }
 }
 // hotel main structure and wings
+// Fill the upper-left wing above its lower side block so the hotel silhouette is fully enclosed.
+box(7,5,5,mat(0x292633),-12,12.5,-38);
 // Split front structure leaves a real, walkable central entrance.
 box(6.5,15,5,mat(0x292633),-5.25,7.4,-38);
 box(6.5,15,5,mat(0x292633),5.25,7.4,-38);
