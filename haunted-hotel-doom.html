@@ -80,7 +80,7 @@ for(const x of [-12,12]){const r=new T.Mesh(new T.ConeGeometry(3.8,5,4),mat(0x17
 const sign=box(7,1.2,.18,mat(0x160d1c),0,12.7,-35.2);const signLight=new T.PointLight(0xff174d,16,15);signLight.position.set(0,12.5,-33);scene.add(signLight);
 const signText=document.createElement('div');signText.textContent='HAUNTED HOTEL';signText.style.cssText='position:fixed;z-index:1;top:31%;left:50%;transform:translate(-50%,-50%);font:bold clamp(16px,3vw,30px) Georgia;color:#ff3d66;text-shadow:0 0 8px #ff174d,0 0 25px #ff174d;letter-spacing:.14em;pointer-events:none';document.body.appendChild(signText);
 // rebuilt moon: a front-facing, dimensional golden lunar disc with a clean central skull engraving
-const moonX=-12,moonY=26,moonZ=-49;
+const moonX=-12,moonY=26,moonZ=-29;
 const moonGroup=new T.Group();moonGroup.position.set(moonX,moonY,moonZ);scene.add(moonGroup);
 // softly shaded spherical body gives the moon real volume
 const moonCore=new T.Mesh(new T.SphereGeometry(7.05,96,64),new T.MeshStandardMaterial({color:0xd9a94f,roughness:1,metalness:0}));
