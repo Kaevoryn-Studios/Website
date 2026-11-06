@@ -246,24 +246,31 @@ for(const side of [-1,1]){
     }
   }
 }
-// REBUILT HOTEL SHELL — one continuous, sealed structure with a single ground-floor entrance.
-const hotelShell=mat(0x292633,.94);hotelShell.side=T.DoubleSide;
-const hotelLowerStone=mat(0x242230,.96);hotelLowerStone.side=T.DoubleSide;
-// Solid front wings meet the side walls at both corners. The only opening is the central doorway.
-box(13.5,15,.8,hotelShell,-8.95,7.5,-35.75);
-box(13.5,15,.8,hotelShell,8.95,7.5,-35.75);
-// Solid upper bridge closes the facade above the entrance; doorway remains clear below.
-box(4.6,10.5,.8,hotelLowerStone,0,9.75,-35.75);
-// Continuous full-height side walls, joined flush to the front and rear walls.
-box(.8,15,22.5,hotelShell,-15.5,7.5,-46.25);
-box(.8,15,22.5,hotelShell,15.5,7.5,-46.25);
-// One uninterrupted rear wall and a solid roof deck prevent any see-through gaps.
-box(31.8,15,.8,hotelShell,0,7.5,-57.0);
-box(31.8,.55,23.3,hotelShell,0,15.15,-46.25);
-// The lobby now has a proper interior ceiling, hiding the open roofline from inside.
-// A dark foyer is visible beyond the entrance, with a faint, unsettling red glow.
-box(3.45,.12,4.65,mat(0x111019),0,.02,-38.05);
-box(3.55,4.6,.18,mat(0x08070d),0,2.25,-40.35);
+// NEW HOTEL DESIGN — one continuous extruded facade with a single real doorway cut-out.
+const hotelShell=mat(0x252633,.94);hotelShell.side=T.DoubleSide;
+const hotelTrim=mat(0x55505f,.82),hotelEdge=mat(0x171a29,.7),hotelStone=mat(0x393541,.96);
+// The entire front wall is one solid shape. The doorway is the only cut-out.
+const facadeShape=new T.Shape();
+facadeShape.moveTo(-15.5,0);facadeShape.lineTo(15.5,0);facadeShape.lineTo(15.5,18);facadeShape.lineTo(-15.5,18);facadeShape.closePath();
+const doorwayHole=new T.Path();
+doorwayHole.moveTo(-1.85,.05);doorwayHole.lineTo(-1.85,4.75);doorwayHole.lineTo(1.85,4.75);doorwayHole.lineTo(1.85,.05);doorwayHole.closePath();
+facadeShape.holes.push(doorwayHole);
+const facadeGeometry=new T.ExtrudeGeometry(facadeShape,{depth:.9,bevelEnabled:false,curveSegments:1});
+facadeGeometry.computeVertexNormals();
+const facade=new T.Mesh(facadeGeometry,hotelShell);facade.position.set(0,0,-36.65);facade.castShadow=true;facade.receiveShadow=true;scene.add(facade);
+// Deep side walls meet the front corners exactly; the rear and roof fully enclose the building.
+box(.9,18,21.0,hotelShell,-15.05,9,-46.25);
+box(.9,18,21.0,hotelShell,15.05,9,-46.25);
+box(31.0,18,.9,hotelShell,0,9,-56.75);
+box(31.8,.8,22.0,hotelShell,0,18.05,-46.25);
+// A new, heavier entrance surround frames the cut-out without covering it.
+for(const x of [-2.05,2.05]){
+ box(.42,5.25,.5,hotelStone,x,2.6,-35.55);
+ box(.62,.32,.62,hotelTrim,x,5.22,-35.55);
+ box(.62,.32,.62,hotelTrim,x,.18,-35.55);
+}
+box(4.5,.48,.62,hotelTrim,0,5.12,-35.55);
+box(4.2,.18,.72,hotelEdge,0,.12,-35.55);
 const foyerGlow=new T.PointLight(0x8e102c,2.8,8,2);foyerGlow.position.set(0,2.1,-38.7);scene.add(foyerGlow);
 // GRAND VICTORIAN HOTEL LOBBY — fully walkable beyond the entrance.
 const lobbyFloor=mat(0x241a25,.92),wallpaper=mat(0x302332,.96),darkWood=mat(0x24131a,.72),polishedWood=mat(0x49303a,.48),marble=mat(0x625761,.55),brass=mat(0xb18a55,.36,.72),carpet=mat(0x541525,.96),carpetGold=mat(0xb58a55,.7),portraitDark=mat(0x100d15,.9);
@@ -362,20 +369,37 @@ for(const side of [-1,1])for(let i=0;i<3;i++){
  const light=new T.PointLight(0xffb76b,3.4,8,2);light.position.set(x-side*.3,5.45,z);scene.add(light);lobbySconces.push(light);
 }
 
-for(const x of [-12,12,-6,6]){cylinder(.35,.48,16,oldStone,x,8,-35.35,10);cylinder(.5,.5,.4,gold,x,15.8,-35.35,10);}
-const hotelWindows=[],windowFigures=[];for(let floor=0;floor<4;floor++)for(let x=-7;x<=7;x+=2.8){if(floor===0&&Math.abs(x)<2)continue;const glow=glass.clone();const tone=(floor+Math.round(x))%4;glow.color.setHex(tone===0?0xffb36b: tone===1?0xff536b:0xff344e);glow.emissive.setHex(tone===0?0x9a3b12:0x8d071f);glow.emissiveIntensity=tone===0?1.15:1.65;const pane=box(1.15,1.8,.12,glow,x,3+floor*3.25,-35.36);hotelWindows.push({material:glow,base:glow.emissiveIntensity,phase:floor*1.7+x*.43,speed:1.1+(floor%3)*.45});box(1.5,.12,.18,gold,x,2.05+floor*3.25,-35.3);
- if((floor===1&&Math.abs(x+4.2)<.15)||(floor===2&&Math.abs(x-4.2)<.15)||(floor===3&&Math.abs(x+1.4)<.15)){
+// DISTINCT GOTHIC HOTEL FACADE — tall narrow windows, stone ribs and a steep mansard roof.
+const hotelWindows=[],windowFigures=[];
+for(let floor=0;floor<4;floor++)for(const x of [-10.5,-7,-3.5,3.5,7,10.5]){
+ const glow=glass.clone(),tone=(floor+Math.round(x))%4;
+ glow.color.setHex(tone===0?0xffb36b:tone===1?0xff536b:0xff344e);
+ glow.emissive.setHex(tone===0?0x9a3b12:0x8d071f);glow.emissiveIntensity=tone===0?1.15:1.65;
+ box(1.42,2.05,.16,hotelEdge,x,3.25+floor*3.65,-35.68);
+ box(1.18,1.8,.09,glow,x,3.25+floor*3.65,-35.57);
+ box(1.5,.13,.2,hotelTrim,x,2.18+floor*3.65,-35.55);
+ box(.1,2.0,.12,hotelTrim,x,3.25+floor*3.65,-35.53);
+ hotelWindows.push({material:glow,base:glow.emissiveIntensity,phase:floor*1.7+x*.43,speed:1.1+(floor%3)*.45});
+ if((floor===1&&x===-3.5)||(floor===2&&x===3.5)||(floor===3&&x===-7)){
   const shadowMat=new T.MeshBasicMaterial({color:0x020207,transparent:true,opacity:.96,depthWrite:false});
-  const figure=new T.Group();
-  const head=new T.Mesh(new T.SphereGeometry(.17,12,10),shadowMat);head.position.set(0,.52,0);figure.add(head);
+  const figure=new T.Group(),head=new T.Mesh(new T.SphereGeometry(.17,12,10),shadowMat);head.position.set(0,.52,0);figure.add(head);
   const body=new T.Mesh(new T.CylinderGeometry(.13,.28,.82,8),shadowMat);body.position.set(0,-.02,0);figure.add(body);
   for(const side of [-1,1]){const arm=new T.Mesh(new T.CylinderGeometry(.055,.085,.68,7),shadowMat);arm.position.set(side*.23,.02,0);arm.rotation.z=side*.22;figure.add(arm);}
-  figure.scale.set(1.28,1.12,1);figure.position.set(x,3+floor*3.25-.05,-35.16);scene.add(figure);
-  const watcherLight=new T.PointLight(floor===2?0xff263e:0xffa34c,.85,4,2);watcherLight.position.set(x,3+floor*3.25,-34.75);scene.add(watcherLight);
+  figure.scale.set(1.28,1.12,1);figure.position.set(x,3.25+floor*3.65,-35.43);scene.add(figure);
+  const watcherLight=new T.PointLight(floor===2?0xff263e:0xffa34c,.85,4,2);watcherLight.position.set(x,3.25+floor*3.65,-35.0);scene.add(watcherLight);
   windowFigures.push({figure,material:shadowMat,light:watcherLight,baseY:figure.position.y,phase:floor*1.9+x*.31});
  }
 }
-// Heavy double entrance doors, hinged at the outer edges so they swing inward.
+// Vertical stone ribs and corner turrets give the building a new, taller silhouette.
+for(const x of [-14.1,-11.8,11.8,14.1]){
+ box(.38,18.4,.48,hotelStone,x,9,-35.48);
+ box(.62,.5,.72,hotelTrim,x,18.15,-35.48);
+}
+for(const x of [-12.5,12.5]){
+ cylinder(.72,.9,18.5,hotelStone,x,9,-35.55,10);
+ cylinder(1.02,1.02,.42,hotelTrim,x,18.35,-35.55,10);
+ const turret=new T.Mesh(new T.ConeGeometry(2.0,4.8,4),hotelEdge);turret.position.set(x,20.9,-37.2);turret.rotation.y=Math.PI/4;scene.add(turret);
+}
 const hotelDoors=[];
 for(const side of [-1,1]){
  const hinge=new T.Group();hinge.position.set(side*1.65,0,-35.42);scene.add(hinge);
@@ -389,20 +413,14 @@ for(const side of [-1,1]){
  const knob=sphere(.075,gold,0,0,0);knob.position.set(leafX+(side<0?1.23:-1.23),2.05,.23);hinge.add(knob);
  hotelDoors.push({hinge,side});
 }
-for(const side of [-1,1])box(.24,4.55,.42,gateStone,side*1.78,2.25,-35.28);
-box(3.8,.28,.48,gateStone,0,4.55,-35.28);
-box(3.8,.2,.8,oldStone,0,.08,-35.05);
-// Broad, evenly spaced stone steps with a matching landing at the hotel entrance.
-for(let i=0;i<8;i++){
- const stepWidth=7.6-i*.24;
- box(stepWidth,.28,.68,oldStone,0,.14+i*.27,-29.56-i*.62);
-}
-box(5.9,.24,.72,oldStone,0,2.04,-34.58);
-const roof=new T.Mesh(new T.ConeGeometry(6,5,4),mat(0x151725));roof.position.set(0,19.5,-38);roof.rotation.y=Math.PI/4;roof.scale.z=.8;scene.add(roof);
-for(const x of [-12,12]){const r=new T.Mesh(new T.ConeGeometry(3.8,5,4),mat(0x171a2a));r.position.set(x,11,-38);r.rotation.y=Math.PI/4;scene.add(r);}
-const sign=box(7,1.2,.18,mat(0x160d1c),0,12.7,-35.2);const signLight=new T.PointLight(0xff174d,16,15);signLight.position.set(0,12.5,-33);scene.add(signLight);
+box(4.0,.25,.75,hotelStone,0,.12,-35.05);
+for(let i=0;i<9;i++)box(8.0-i*.22,.3,.72,oldStone,0,.15+i*.28,-29.45-i*.62);
+const mansardA=box(32,.72,11,hotelEdge,0,20.15,-40.5);mansardA.rotation.x=-.48;
+const mansardB=box(32,.72,11,hotelEdge,0,20.15,-51.5);mansardB.rotation.x=.48;
+for(const z of [-41,-51])box(32,.28,.42,hotelTrim,0,18.55,z);
+const sign=box(8,1.35,.28,mat(0x160d1c),0,13.2,-35.45);
+const signLight=new T.PointLight(0xff174d,16,15);signLight.position.set(0,13,-33);scene.add(signLight);
 const signText=document.createElement('div');signText.textContent='HAUNTED HOTEL';signText.style.cssText='position:fixed;z-index:1;top:31%;left:50%;transform:translate(-50%,-50%);font:bold clamp(16px,3vw,30px) Georgia;color:#ff3d66;text-shadow:0 0 8px #ff174d,0 0 25px #ff174d;letter-spacing:.14em;pointer-events:none';document.body.appendChild(signText);
-// Moon artwork removed as requested; retain cool directional night lighting.
 // lanterns
 const lanterns=[];for(const x of [-5.5,5.5,-13,13]){const z=x===-5.5||x===5.5?-5:-24;box(.18,3,.18,iron,x,1.5,z);box(.65,.1,.65,gold,x,3,z);box(.42,.62,.42,warm,x,2.62,z);for(const dx of [-.25,.25])for(const dz of [-.25,.25])box(.045,.72,.045,iron,x+dx,2.62,z+dz);box(.58,.12,.58,gold,x,3.02,z);const cap=new T.Mesh(new T.ConeGeometry(.43,.28,4),gold);cap.position.set(x,3.22,z);cap.rotation.y=Math.PI/4;scene.add(cap);const l=new T.PointLight(0xffb45e,11,17,1.7);l.position.set(x,2.65,z);scene.add(l);lanterns.push(l);const groundGlow=new T.PointLight(0xffa64b,2.2,7,2);groundGlow.position.set(x,.42,z);scene.add(groundGlow);sphere(.12,warm,x,2.62,z);}
 // The fountain has been removed for now; this area remains open cemetery ground.
