@@ -253,7 +253,7 @@ const hotelTrim=mat(0x55505f,.82),hotelEdge=mat(0x171a29,.7),hotelStone=mat(0x39
 const facadeShape=new T.Shape();
 facadeShape.moveTo(-15.5,0);facadeShape.lineTo(15.5,0);facadeShape.lineTo(15.5,18);facadeShape.lineTo(-15.5,18);facadeShape.closePath();
 const doorwayHole=new T.Path();
-doorwayHole.moveTo(-1.85,.05);doorwayHole.lineTo(-1.85,4.75);doorwayHole.lineTo(1.85,4.75);doorwayHole.lineTo(1.85,.05);doorwayHole.closePath();
+doorwayHole.moveTo(-2.7,.05);doorwayHole.lineTo(-2.7,5.55);doorwayHole.lineTo(2.7,5.55);doorwayHole.lineTo(2.7,.05);doorwayHole.closePath();
 facadeShape.holes.push(doorwayHole);
 const facadeGeometry=new T.ExtrudeGeometry(facadeShape,{depth:.9,bevelEnabled:false,curveSegments:1});
 facadeGeometry.computeVertexNormals();
@@ -264,13 +264,13 @@ box(.9,18,21.0,hotelShell,15.05,9,-46.25);
 box(31.0,18,.9,hotelShell,0,9,-56.75);
 box(31.8,.8,22.0,hotelShell,0,18.05,-46.25);
 // A new, heavier entrance surround frames the cut-out without covering it.
-for(const x of [-2.05,2.05]){
- box(.42,5.25,.5,hotelStone,x,2.6,-35.55);
- box(.62,.32,.62,hotelTrim,x,5.22,-35.55);
- box(.62,.32,.62,hotelTrim,x,.18,-35.55);
+for(const x of [-2.9,2.9]){
+ box(.48,6.05,.62,hotelStone,x,3.0,-35.55);
+ box(.72,.36,.72,hotelTrim,x,5.98,-35.55);
+ box(.72,.36,.72,hotelTrim,x,.18,-35.55);
 }
-box(4.5,.48,.62,hotelTrim,0,5.12,-35.55);
-box(4.2,.18,.72,hotelEdge,0,.12,-35.55);
+box(6.35,.58,.72,hotelTrim,0,5.82,-35.55);
+box(5.9,.2,.78,hotelEdge,0,.12,-35.55);
 const foyerGlow=new T.PointLight(0x8e102c,2.8,8,2);foyerGlow.position.set(0,2.1,-38.7);scene.add(foyerGlow);
 // GRAND VICTORIAN HOTEL LOBBY — fully walkable beyond the entrance.
 const lobbyFloor=mat(0x241a25,.92),wallpaper=mat(0x302332,.96),darkWood=mat(0x24131a,.72),polishedWood=mat(0x49303a,.48),marble=mat(0x625761,.55),brass=mat(0xb18a55,.36,.72),carpet=mat(0x541525,.96),carpetGold=mat(0xb58a55,.7),portraitDark=mat(0x100d15,.9);
@@ -402,15 +402,15 @@ for(const x of [-12.5,12.5]){
 }
 const hotelDoors=[];
 for(const side of [-1,1]){
- const hinge=new T.Group();hinge.position.set(side*1.65,0,-35.42);scene.add(hinge);
- const leafX=side<0?.775:-.775;
- const panel=new T.Mesh(new T.BoxGeometry(1.55,4.18,.2),wood);panel.position.set(leafX,2.15,.05);panel.castShadow=true;hinge.add(panel);
- for(const offset of [-.48,.48]){
-  const inset=new T.Mesh(new T.BoxGeometry(.48,2.75,.035),mat(0x30202a));inset.position.set(leafX+offset,2.2,.17);hinge.add(inset);
-  const trim=new T.Mesh(new T.BoxGeometry(.055,2.9,.045),gold);trim.position.set(leafX+offset-.27,2.2,.19);hinge.add(trim);
+ const hinge=new T.Group();hinge.position.set(side*2.65,0,-35.42);scene.add(hinge);
+ const leafX=side<0?1.325:-1.325;
+ const panel=new T.Mesh(new T.BoxGeometry(2.62,5.05,.24),wood);panel.position.set(leafX,2.58,.05);panel.castShadow=true;hinge.add(panel);
+ for(const offset of [-.82,0,.82]){
+  const inset=new T.Mesh(new T.BoxGeometry(.62,3.45,.04),mat(0x30202a));inset.position.set(leafX+offset,2.62,.19);hinge.add(inset);
+  const trim=new T.Mesh(new T.BoxGeometry(.065,3.62,.05),gold);trim.position.set(leafX+offset-.34,2.62,.22);hinge.add(trim);
  }
- const cross=new T.Mesh(new T.BoxGeometry(1.5,.12,.05),gold);cross.position.set(leafX,3.55,.19);hinge.add(cross);
- const knob=sphere(.075,gold,0,0,0);knob.position.set(leafX+(side<0?1.23:-1.23),2.05,.23);hinge.add(knob);
+ const cross=new T.Mesh(new T.BoxGeometry(2.55,.15,.06),gold);cross.position.set(leafX,4.45,.22);hinge.add(cross);
+ const knob=sphere(.09,gold,0,0,0);knob.position.set(leafX+(side<0?2.12:-2.12),2.5,.28);hinge.add(knob);
  hotelDoors.push({hinge,side});
 }
 box(4.0,.25,.75,hotelStone,0,.12,-35.05);
@@ -462,8 +462,8 @@ function blockedAt(x,z){
  const radius=.34;
  for(const o of solidObstacles)if(x+radius>o.minX&&x-radius<o.maxX&&z+radius>o.minZ&&z-radius<o.maxZ)return true;
  // Hotel front wall; preserve the central doorway as an approach, but do not allow entry through the locked door.
- if(z< -35.12 && z> -36.1 && Math.abs(x)>1.82 && Math.abs(x)<8.6)return true;
- if(z< -35.12 && z> -36.1 && Math.abs(x)<=1.82 && hotelDoorOpen<.68)return true;
+ if(z< -35.12 && z> -36.1 && Math.abs(x)>2.68 && Math.abs(x)<8.6)return true;
+ if(z< -35.12 && z> -36.1 && Math.abs(x)<=2.68 && hotelDoorOpen<.68)return true;
  // Lobby side walls and rear wall keep the player inside the designed interior.
  if(z< -36.1 && z> -56.1 && Math.abs(x)>8.25)return true;
  if(z<=-56.1)return true;
