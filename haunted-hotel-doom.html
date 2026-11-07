@@ -402,18 +402,18 @@ function buildWorld(){
  stormLight=new THREE.PointLight(0xc8dfff,0,260,1.2);stormLight.position.set(0,40,10);scene.add(stormLight);addDust();
 }
 const places={
- grounds:{pos:[0,8,53],yaw:0,pitch:.2,title:'THE GROUNDS',line:'THE GATES ARE OPEN · THE HOTEL IS WATCHING'},
- lobby:{pos:[100,5,10],yaw:0,pitch:0,title:'GRAND LOBBY',line:'PLEASE SIGN THE GUEST BOOK · THE INK IS STILL WET'},
- ballroom:{pos:[145,5,10],yaw:0,pitch:0,title:'WEST WING BALLROOM',line:'THE MUSIC STOPPED · THE DANCERS DID NOT'},
- guest:{pos:[190,4,7],yaw:0,pitch:0,title:'GUEST CORRIDOR',line:'ROOMS 201–218 · ONE DOOR IS NEVER LOCKED'},
- basement:{pos:[235,-4,9],yaw:0,pitch:0,title:'THE BASEMENT',line:'BOILER ROOM · ELECTRICAL · STAFF ACCESS ONLY'},
- attic:{pos:[280,4,8],yaw:0,pitch:0,title:'THE ATTIC',line:'STORAGE SEALED · DO NOT ANSWER THE KNOCKING'}
+ grounds:{pos:[0,1.65,53],yaw:0,pitch:.04,title:'THE GROUNDS',line:'THE GATES ARE OPEN · THE HOTEL IS WATCHING'},
+ lobby:{pos:[100,1.65,10],yaw:0,pitch:0,title:'GRAND LOBBY',line:'PLEASE SIGN THE GUEST BOOK · THE INK IS STILL WET'},
+ ballroom:{pos:[145,1.65,10],yaw:0,pitch:0,title:'WEST WING BALLROOM',line:'THE MUSIC STOPPED · THE DANCERS DID NOT'},
+ guest:{pos:[190,1.65,7],yaw:0,pitch:0,title:'GUEST CORRIDOR',line:'ROOMS 201–218 · ONE DOOR IS NEVER LOCKED'},
+ basement:{pos:[235,-6.35,9],yaw:0,pitch:0,title:'THE BASEMENT',line:'BOILER ROOM · ELECTRICAL · STAFF ACCESS ONLY'},
+ attic:{pos:[280,1.65,8],yaw:0,pitch:0,title:'THE ATTIC',line:'STORAGE SEALED · DO NOT ANSWER THE KNOCKING'}
 };
 function goPlace(name){const p=places[name];if(!p)return;current=name;camera.position.set(...p.pos);yaw=p.yaw;pitch=p.pitch;camera.rotation.order='YXZ';camera.rotation.y=yaw;camera.rotation.x=pitch;document.getElementById('nav').classList.remove('open');caption.textContent=p.line;toast.style.display='none';}
 function showToast(msg){toast.textContent=msg;toast.style.display='block';setTimeout(()=>toast.style.display='none',2400)}
 function start(){started=true;document.getElementById('intro').style.display='none';goPlace('grounds');caption.textContent='THE HOLLOW CROWN HOTEL · THE FRONT DOORS AWAIT'}
 function frame(t){requestAnimationFrame(frame);const dt=Math.min(.05,(t-(clock||t))/1000||.016);clock=t;
- if(started){const f=(keys.w||keys.arrowup?1:0)-(keys.s||keys.arrowdown?1:0)+padY,s=(keys.d||keys.arrowright?1:0)-(keys.a||keys.arrowleft?1:0)+padX;camera.position.x+=(Math.cos(yaw)*s+Math.sin(yaw)*f)*5*dt;camera.position.z+=(Math.sin(yaw)*s-Math.cos(yaw)*f)*5*dt;camera.position.x=Math.max(-35,Math.min(310,camera.position.x));camera.position.z=Math.max(-25,Math.min(65,camera.position.z));camera.rotation.order='YXZ';camera.rotation.y=yaw;camera.rotation.x=pitch}
+ if(started){const f=(keys.w||keys.arrowup?1:0)-(keys.s||keys.arrowdown?1:0)+padY,s=(keys.d||keys.arrowright?1:0)-(keys.a||keys.arrowleft?1:0)+padX;const moving=Math.abs(f)+Math.abs(s)>.08;const moveScale=moving?5*dt/Math.max(1,Math.hypot(f,s)):0;camera.position.x+=(Math.cos(yaw)*s+Math.sin(yaw)*f)*moveScale;camera.position.z+=(Math.sin(yaw)*s-Math.cos(yaw)*f)*moveScale;camera.position.x=Math.max(-35,Math.min(310,camera.position.x));camera.position.z=Math.max(-25,Math.min(65,camera.position.z));camera.position.y=places[current].pos[1]+(moving?Math.abs(Math.sin(t*.009))*.045:0);camera.rotation.order='YXZ';camera.rotation.y=yaw;camera.rotation.x=pitch}
  const gateDistance=Math.hypot(camera.position.x,camera.position.z-27);const shouldOpen=started&&current==='grounds'&&gateDistance<9;if(shouldOpen!==gateOpen){gateOpen=shouldOpen;showToast(gateOpen?'THE IRON GATES GROAN OPEN…':'THE IRON GATES SWING SHUT…')}cemeteryGateLeaves.forEach(({leaf,side})=>{const target=gateOpen?-side*1.02:0;leaf.rotation.y+=(target-leaf.rotation.y)*Math.min(1,dt*1.7)});
  lamps.forEach(({l,intensity},i)=>l.intensity=intensity+Math.sin(t*.0013+i*1.7)*.09);
  if(dust){dust.rotation.y=t*.000012;dust.position.y=Math.sin(t*.0003)*.12}
