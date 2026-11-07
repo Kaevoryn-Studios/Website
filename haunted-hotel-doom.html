@@ -3,123 +3,99 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<meta name="theme-color" content="#08090b">
+<meta name="theme-color" content="#090b12">
 <title>The Hollow Crown Hotel | Kaevoryn Studios</title>
 <style>
-*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#080b10;color:#eee;font-family:Georgia,serif}#world{position:fixed;inset:0}#world canvas{display:block;width:100%;height:100%;touch-action:none}#shade{position:fixed;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 45%,transparent 58%,#02030644 100%);z-index:2}#brand{position:fixed;z-index:4;top:16px;left:18px;text-shadow:0 2px 12px #000;pointer-events:none}#brand small{display:block;font:9px system-ui;letter-spacing:.3em;color:#c7b38e}#brand strong{font-size:clamp(14px,2.5vw,22px);font-weight:normal;letter-spacing:.12em}#tools{position:fixed;z-index:7;right:12px;top:12px;display:flex;gap:7px}.tool{border:1px solid #b9a98a88;background:#080a0ddd;color:#eee;padding:10px 12px;font:10px system-ui;letter-spacing:.1em;touch-action:manipulation}.tool:active,#enter:active{background:#54432d}#status{position:fixed;z-index:4;bottom:18px;left:50%;transform:translateX(-50%);width:90%;text-align:center;font:10px system-ui;letter-spacing:.16em;color:#d0c7b8;text-shadow:0 2px 8px #000}#intro{position:fixed;inset:0;z-index:20;display:grid;place-items:center;padding:20px;background:#05070bc9}#card{width:min(550px,100%);padding:38px 25px;text-align:center;background:#090b0eeF;border:1px solid #b9a98a66;box-shadow:0 25px 90px #000}#card small{font:9px system-ui;letter-spacing:.38em;color:#c7b38e}h1{font-size:clamp(36px,8vw,66px);font-weight:normal;line-height:.95;margin:20px 0 14px}#card p{font-size:14px;line-height:1.7;color:#c9c2b8;max-width:420px;margin:0 auto 22px}#enter{min-height:52px;padding:0 28px;border:1px solid #c4b18e;background:#28231d;color:#f5ecdf;font:11px system-ui;letter-spacing:.2em;touch-action:manipulation}#enter:disabled{opacity:.5}#message{min-height:16px;margin-top:13px;font:10px system-ui;letter-spacing:.1em;color:#b9b0a2}#map{position:fixed;z-index:10;right:12px;top:58px;width:min(260px,calc(100vw - 24px));padding:14px;background:#080a0ef2;border:1px solid #b9a98a66;display:none}#map.open{display:block}#map h2{font-size:17px;font-weight:normal;margin:0 0 7px;letter-spacing:.1em}#map p{font:10px/1.5 system-ui;color:#bcb4a8;margin:0 0 12px}#map button{width:100%;margin:3px 0;text-align:left;background:#191916;border:1px solid #655b4d;color:#eee;padding:10px;font:10px system-ui;touch-action:manipulation}#pad{position:fixed;z-index:5;right:18px;bottom:28px;width:106px;height:106px;border:1px solid #d3c49b66;border-radius:50%;background:#090b0a66;display:none;touch-action:none}#nub{position:absolute;left:33px;top:33px;width:38px;height:38px;border-radius:50%;background:#c5b18b66;border:1px solid #d4c49b}#help{position:fixed;z-index:4;left:14px;bottom:16px;font:9px system-ui;letter-spacing:.1em;color:#c9c0b2aa;pointer-events:none}@media(max-width:700px){#pad{display:block}#status{bottom:145px}#brand{top:10px;left:10px}#tools{top:9px;right:8px}.tool{padding:9px 10px;font-size:9px}#help{max-width:42%;line-height:1.6}#card{padding:30px 18px}}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#090b12;color:#eee;font-family:Georgia,serif}#world{position:fixed;inset:0}canvas{display:block;width:100%;height:100%;touch-action:none}#vignette{position:fixed;inset:0;pointer-events:none;background:linear-gradient(180deg,#06091222 0%,transparent 45%,#03050a77 100%);z-index:2}#brand{position:fixed;z-index:4;top:15px;left:17px;text-shadow:0 2px 12px #000;pointer-events:none}#brand small{display:block;font:9px system-ui;letter-spacing:.3em;color:#d0b98f}#brand strong{font-size:clamp(13px,2.4vw,21px);font-weight:normal;letter-spacing:.12em}#tools{position:fixed;z-index:7;right:12px;top:12px;display:flex;gap:7px}.tool{border:1px solid #b9a98a88;background:#090b10e8;color:#eee;padding:10px 12px;font:10px system-ui;letter-spacing:.1em;touch-action:manipulation}#status{position:fixed;z-index:4;bottom:18px;left:50%;transform:translateX(-50%);width:90%;text-align:center;font:10px system-ui;letter-spacing:.16em;color:#e0d4bf;text-shadow:0 2px 8px #000}#intro{position:fixed;inset:0;z-index:20;display:grid;place-items:center;padding:20px;background:#05070bc9}#card{width:min(560px,100%);padding:36px 25px;text-align:center;background:#090b0ef2;border:1px solid #b9a98a66;box-shadow:0 25px 90px #000}#card small{font:9px system-ui;letter-spacing:.38em;color:#d0b98f}h1{font-size:clamp(36px,8vw,66px);font-weight:normal;line-height:.95;margin:20px 0 14px}#card p{font-size:14px;line-height:1.7;color:#c9c2b8;max-width:430px;margin:0 auto 22px}#enter{min-height:52px;padding:0 28px;border:1px solid #c4b18e;background:#28231d;color:#f5ecdf;font:11px system-ui;letter-spacing:.2em;touch-action:manipulation}#enter:disabled{opacity:.5}#message{min-height:16px;margin-top:13px;font:10px system-ui;letter-spacing:.1em;color:#b9b0a2}#map{position:fixed;z-index:10;right:12px;top:58px;width:min(260px,calc(100vw - 24px));padding:14px;background:#080a0ef2;border:1px solid #b9a98a66;display:none}#map.open{display:block}#map h2{font-size:17px;font-weight:normal;margin:0 0 7px;letter-spacing:.1em}#map p{font:10px/1.5 system-ui;color:#bcb4a8;margin:0 0 12px}#map button{width:100%;margin:3px 0;text-align:left;background:#191916;border:1px solid #655b4d;color:#eee;padding:10px;font:10px system-ui;touch-action:manipulation}#pad{position:fixed;z-index:5;right:18px;bottom:28px;width:106px;height:106px;border:1px solid #d3c49b66;border-radius:50%;background:#090b0a66;display:none;touch-action:none}#nub{position:absolute;left:33px;top:33px;width:38px;height:38px;border-radius:50%;background:#c5b18b66;border:1px solid #d4c49b}#help{position:fixed;z-index:4;left:14px;bottom:16px;font:9px system-ui;letter-spacing:.1em;color:#d4c8b2aa;pointer-events:none}@media(max-width:700px){#pad{display:block}#status{bottom:145px}#brand{top:10px;left:10px}#tools{top:9px;right:8px}.tool{padding:9px 10px;font-size:9px}#help{max-width:42%;line-height:1.6}#card{padding:30px 18px}}
 </style>
 </head>
 <body>
-<div id="world"></div><div id="shade"></div>
+<div id="world"></div><div id="vignette"></div>
 <div id="brand"><small>KAEVORYN STUDIOS · INTERACTIVE NIGHTMARE</small><strong>THE HOLLOW CROWN HOTEL</strong></div>
 <div id="tools"><button class="tool" id="mapBtn" type="button">GROUNDS MAP</button><button class="tool" id="resetBtn" type="button">RESET VIEW</button></div>
-<div id="map"><h2>THE GROUNDS</h2><p>For now, explore the entrance grounds. The hotel interior comes next.</p><button data-spot="approach">Front Approach</button><button data-spot="gate">Iron Gate</button><button data-spot="hotel">Hotel Entrance</button><button data-spot="graveyard">Old Graveyard</button></div>
-<div id="status">SOME PLACES SHOULD HAVE BEEN LEFT FORGOTTEN.</div><div id="help">DRAG TO LOOK · MOVE WITH THE PAD</div>
+<div id="map"><h2>THE GROUNDS</h2><p>A first look at the hotel and its grounds.</p><button data-spot="approach">Front Approach</button><button data-spot="gate">Iron Gate</button><button data-spot="hotel">Grand Entrance</button><button data-spot="graveyard">Old Graveyard</button></div>
+<div id="status">VACANCY · EST. 1891 · NO GUESTS SINCE 1963</div><div id="help">DRAG TO LOOK · MOVE WITH THE PAD</div>
 <div id="pad"><div id="nub"></div></div>
-<div id="intro"><div id="card"><small>VACANCY · EST. 1891 · NO GUESTS SINCE 1963</small><h1>THE HOLLOW<br>CROWN HOTEL</h1><p>At the end of a broken road stands a hotel the town tried to erase. Its windows are dark. Its doors are open. And something inside is waiting.</p><button id="enter" type="button" disabled>BUILDING THE GROUNDS…</button><div id="message" aria-live="polite">The night is settling in.</div></div></div>
+<div id="intro"><div id="card"><small>THE TOWN FORGOT · THE HOTEL DID NOT</small><h1>THE HOLLOW<br>CROWN HOTEL</h1><p>Beyond the iron gates, a forgotten landmark rises above the trees. No lights should be burning. No doors should be open. Yet someone has prepared a room for you.</p><button id="enter" type="button" disabled>PREPARING THE HOTEL…</button><div id="message" aria-live="polite">The grounds are taking shape.</div></div></div>
 <script>
-(function(){
-"use strict";
+(()=>{'use strict';
 const world=document.getElementById('world'),enter=document.getElementById('enter'),message=document.getElementById('message'),status=document.getElementById('status');
-let THREE,scene,camera,renderer,started=false,yaw=0,pitch=0,drag=false,lastX=0,lastY=0,keys={},padX=0,padY=0,clock=0,lights=[];
-const material=(color,roughness=.9,metalness=0)=>new THREE.MeshStandardMaterial({color,roughness,metalness});
-function block(parent,w,h,d,x,y,z,mat,rx=0,ry=0,rz=0){const mesh=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat);mesh.position.set(x,y,z);mesh.rotation.set(rx,ry,rz);mesh.castShadow=true;mesh.receiveShadow=true;parent.add(mesh);return mesh}
-function cylinder(parent,r1,r2,h,x,y,z,mat,segments=12){const mesh=new THREE.Mesh(new THREE.CylinderGeometry(r1,r2,h,segments),mat);mesh.position.set(x,y,z);mesh.castShadow=true;mesh.receiveShadow=true;parent.add(mesh);return mesh}
-function pointLight(color,intensity,distance,x,y,z){const l=new THREE.PointLight(color,intensity,distance,2);l.position.set(x,y,z);scene.add(l);lights.push({light:l,base:intensity});return l}
-function makeTree(x,z,scale=1){const g=new THREE.Group();g.position.set(x,0,z);g.scale.setScalar(scale);scene.add(g);const bark=material(0x211e1d);cylinder(g,.22,.38,4.8,0,2.4,0,bark,8);for(let i=0;i<8;i++){const b=cylinder(g,.055,.13,2.8,(i%2?-.55:.55),2.8+i*.22,0,bark,7);b.rotation.z=i%2?-.85:.85;b.rotation.x=(i-3)*.1}}
-function makeGrave(x,z,i){const stone=material(i%2?0x55524e:0x444443);const h=.8+(i%4)*.16,w=.48+(i%3)*.12;block(scene,w,h,.22,x,h/2,z,stone,0,(i%3-1)*.08,0);if(i%3===0)cylinder(scene,w*.48,w*.48,.16,x,h,z,stone,8).rotation.z=Math.PI/2}
-function makeHotel(){
- const wall=material(0x777064),trim=material(0xaaa08e),foundation=material(0x514c45),roof=material(0x24272b,.78),darkRoof=material(0x171a1e),wood=material(0x30221b),iron=material(0x292b2b,.48,.45);
- const glass=new THREE.MeshStandardMaterial({color:0x354452,emissive:0x8a5427,emissiveIntensity:.32,roughness:.28,metalness:.12});
- // Broad, connected three-storey hotel wings and a taller central entrance block
- block(scene,36,1.1,11,0,.55,-35,foundation);
- block(scene,12,13,10,-12,7.05,-35,wall);
- block(scene,12,13,10,12,7.05,-35,wall);
- block(scene,13,17,11,0,9.05,-35,wall);
- // Raised central crown tower
- block(scene,8,5,8,0,19.8,-35,wall);
- // Grand steep roofs: broad wing gables and a taller central roof
- block(scene,7.4,.48,11,-14.3,14.3,-35,roof,0,0,-.62);
- block(scene,7.4,.48,11,-9.7,14.3,-35,roof,0,0,.62);
- block(scene,7.4,.48,11,9.7,14.3,-35,roof,0,0,-.62);
- block(scene,7.4,.48,11,14.3,14.3,-35,roof,0,0,.62);
- block(scene,7.8,.55,12,-3.8,18.1,-35,roof,0,0,-.62);
- block(scene,7.8,.55,12,3.8,18.1,-35,roof,0,0,.62);
- // Central tower crown and corner turrets
- const crown=new THREE.Mesh(new THREE.ConeGeometry(5.7,5.8,4),darkRoof);crown.position.set(0,25.1,-35);crown.rotation.y=Math.PI/4;crown.castShadow=true;scene.add(crown);
- for(const x of [-16,16]){cylinder(scene,1.05,1.25,15,x,7.5,-35,wall,12);const cap=new THREE.Mesh(new THREE.ConeGeometry(1.55,3.8,12),darkRoof);cap.position.set(x,17,-35);cap.castShadow=true;scene.add(cap);cylinder(scene,1.25,1.25,.3,x,14.8,-35,trim,12)}
- // Chimneys rising above the roofline
- for(const x of [-13,-5,6,14]){block(scene,1.25,4.4,1.4,x,17.1,-38,foundation);block(scene,1.55,.25,1.7,x,19.35,-38,trim)}
- // Front façade pilasters and horizontal stone courses
- for(const x of [-17,-6.8,6.8,17]){block(scene,.42,13,.5,x,7.2,-29.65,trim)}
- for(const y of [1.5,5.7,10,14.3])block(scene,35,.22,.48,0,y,-29.68,trim);
- // Tall, regularly spaced sash windows with contrasting surrounds and sills
- for(const floor of [3.5,7.7,11.9])for(let col=0;col<9;col++){
-  const x=-16+col*4,y=floor,z=-29.55,w=1.72,h=2.65;
-  block(scene,w+.42,h+.42,.24,x,y,z,trim);
-  block(scene,w,h,.18,x,y,z+.16,iron);
-  block(scene,w-.2,h-.25,.1,x,y,z+.27,glass);
-  block(scene,.1,h-.2,.1,x,y,z+.34,trim);
-  block(scene,w-.12,.1,.1,x,y,z+.34,trim);
-  block(scene,w+.5,.2,.42,x,y-h/2-.2,z+.12,trim);
-  block(scene,w+.35,.16,.38,x,y+h/2+.18,z+.12,trim);
-  block(scene,w-.15,.08,.12,x,y,z+.4,wood);
- }
- // Attic dormers punctuating the two long roof slopes
- for(const side of [-1,1])for(let i=0;i<3;i++){
-  const x=side*(10+i*2.1),z=-30.8;
-  block(scene,1.75,2.5,1.25,x,15.1,z,wall);
-  block(scene,1.25,1.55,.12,x,15.15,z+.68,glass);
-  const cap=new THREE.Mesh(new THREE.ConeGeometry(1.35,1.45,4),darkRoof);cap.position.set(x,17,z);cap.rotation.y=Math.PI/4;cap.castShadow=true;scene.add(cap);
- }
- // Monumental central entrance, recessed double doors and stone arch surround
- block(scene,7.2,8.3,.75,0,4.15,-29.35,foundation);
- block(scene,5.7,7.1,.24,0,3.65,-28.88,trim);
- block(scene,4.8,6.25,.18,0,3.25,-28.68,wood);
- block(scene,.12,6.1,.12,0,3.25,-28.55,iron);
- for(const x of [-2.15,2.15]){block(scene,.16,5.7,.1,x,3.3,-28.52,trim);cylinder(scene,.1,.1,.12,x,3.2,-28.43,trim,10)}
- // Deep projecting portico with six classical columns and a triangular pediment
- block(scene,10,.55,4.5,0,8.55,-27.9,roof);
- for(const x of [-4.2,-2.5,0,2.5,4.2]){cylinder(scene,.25,.34,7.6,x,4.75,-27.3,trim,14);cylinder(scene,.43,.43,.32,x,8.65,-27.3,trim,14);cylinder(scene,.4,.4,.28,x,.9,-27.3,trim,14)}
- const pedGeo=new THREE.BufferGeometry();pedGeo.setAttribute('position',new THREE.Float32BufferAttribute([-5,8.85,-27.8,5,8.85,-27.8,0,12.1,-27.8],3));pedGeo.setIndex([0,1,2]);pedGeo.computeVertexNormals();const ped=new THREE.Mesh(pedGeo,new THREE.MeshStandardMaterial({color:0x817868,side:THREE.DoubleSide,roughness:.9}));ped.castShadow=true;scene.add(ped);
- block(scene,10.5,.28,.35,0,8.85,-27.75,trim);
- // Broad ceremonial stairs and stone balustrades
- for(let i=0;i<7;i++)block(scene,9.5+i*.65,.25,1.05,0,.125+i*.25,-26.4+i*.9,trim);
- for(const side of [-1,1]){block(scene,.25,1.25,5,side*5.1,1.2,-25.2,trim);for(let z=-27;z<-22;z+=.7)cylinder(scene,.12,.12,.9,side*5.1,1.85,z,trim,8)}
- // Balcony above the entrance with iron balustrade
- block(scene,9,.3,1.7,0,13.4,-29.15,roof);
- block(scene,9,.18,.16,0,14.25,-28.55,iron);
- for(let x=-4.2;x<=4.2;x+=.42)block(scene,.07,.85,.07,x,13.82,-28.55,trim);
- // Warm light at the doors and in selected windows
- for(const x of [-3.8,0,3.8])pointLight(0xffc98c,1.7,12,x,5,-27.5);
- for(const x of [-12,-4,4,12])pointLight(0xffbd7c,.65,7,x,11.5,-29);
+let THREE,scene,camera,renderer,started=false,yaw=0,pitch=0,drag=false,lastX=0,lastY=0,keys={},padX=0,padY=0,clock=0,lamps=[];
+const mat=(c,r=.88,m=0)=>new THREE.MeshStandardMaterial({color:c,roughness:r,metalness:m});
+function box(parent,w,h,d,x,y,z,m,rx=0,ry=0,rz=0){const o=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m);o.position.set(x,y,z);o.rotation.set(rx,ry,rz);o.castShadow=true;o.receiveShadow=true;parent.add(o);return o}
+function light(c,i,dist,x,y,z){const l=new THREE.PointLight(c,i,dist,2);l.position.set(x,y,z);scene.add(l);lamps.push({l,i});return l}
+function roof(parent,w,d,x,y,z,rise,m){const g=new THREE.BufferGeometry(),v=[-w/2,0,-d/2,w/2,0,-d/2,0,rise,-d/2,-w/2,0,d/2,w/2,0,d/2,0,rise,d/2,-w/2,0,-d/2,-w/2,0,d/2,0,rise,d/2,w/2,0,-d/2,w/2,0,d/2,0,rise,-d/2];g.setAttribute('position',new THREE.Float32BufferAttribute(v,3));g.setIndex([0,1,2,3,5,4,6,7,8,9,11,10]);g.computeVertexNormals();const o=new THREE.Mesh(g,new THREE.MeshStandardMaterial({color:m,roughness:.82,side:THREE.DoubleSide}));o.position.set(x,y,z);o.castShadow=true;o.receiveShadow=true;parent.add(o);return o}
+function column(x,z,h=8){const stone=mat(0x9a8c75);const c=new THREE.Mesh(new THREE.CylinderGeometry(.34,.43,h,16),stone);c.position.set(x,h/2,z);c.castShadow=true;c.receiveShadow=true;scene.add(c);for(const y of [.22,h-.2]){const cap=new THREE.Mesh(new THREE.CylinderGeometry(.55,.55,.25,16),mat(0xb4a58b));cap.position.set(x,y,z);scene.add(cap)}}
+function windowUnit(x,y,z,w=1.65,h=2.8,glow=false){const frame=mat(0xb6a58b),sash=mat(0x282a2b,.5,.35),glass=new THREE.MeshStandardMaterial({color:0x172330,emissive:glow?0xffa34c:0x101a25,emissiveIntensity:glow?.85:.12,roughness:.2,metalness:.2});box(scene,w+.35,h+.38,.22,x,y,z,frame);box(scene,w,h,.16,x,y,z+.15,sash);box(scene,w-.18,h-.2,.08,x,y,z+.25,glass);box(scene,.09,h-.16,.1,x,y,z+.32,frame);box(scene,w-.12,.09,.1,x,y,z+.32,frame);box(scene,w+.45,.18,.48,x,y-h/2-.18,z+.12,frame);box(scene,w+.3,.14,.35,x,y+h/2+.16,z+.12,frame)}
+function hotel(){
+ const stone=mat(0x777064),pale=mat(0xb3a58d),base=mat(0x3e3a35),roofMat=mat(0x20252b,.76,.16),wood=mat(0x251a17),iron=mat(0x262a2c,.45,.55);
+ // Monumental footprint: broad wings, projecting central hall, rear tower
+ box(scene,48,1.5,18,0,.75,-17,base);
+ box(scene,17,19,13,-16,10,-17,stone);
+ box(scene,17,19,13,16,10,-17,stone);
+ box(scene,20,24,15,0,12.5,-17,stone);
+ box(scene,12,8,12,0,28,-17,stone);
+ // Distinct steep roof silhouettes, with deep eaves and visible gable ends
+ roof(scene,20,15,-16,19.5,-17,8,0x24282d);
+ roof(scene,20,15,16,19.5,-17,8,0x24282d);
+ roof(scene,23,17,0,24.5,-17,10,0x1c2228);
+ roof(scene,14,14,0,36,-17,8,0x171c22);
+ // Gable fascia and decorative cornices
+ for(const y of [2,7,13,19,24])box(scene,48,.32,.5,0,y,-10.25,pale);
+ for(const x of [-23,-8,8,23])box(scene,.48,19,.48,x,10,-10.2,pale);
+ // Rows of deep-set windows: clear, repeated hotel rhythm
+ for(const y of [4.5,10.5,16.2])for(let i=0;i<12;i++){const x=-21+i*3.82;if(Math.abs(x)<5)continue;windowUnit(x,y,-10.05,1.55,2.75,(i+y)%4===0)}
+ for(const y of [5,11,17,22])for(const x of [-6.8,6.8])windowUnit(x,y,-9.35,2,3.1,y===11||y===17);
+ // Corner towers and roof lanterns
+ for(const x of [-23,23]){const tower=new THREE.Mesh(new THREE.CylinderGeometry(2.2,2.6,21,12),stone);tower.position.set(x,10.5,-17);tower.castShadow=true;tower.receiveShadow=true;scene.add(tower);for(const y of [5,10,15])windowUnit(x,y,-14.72,1.1,2.3,y===10);const cap=new THREE.Mesh(new THREE.ConeGeometry(3.1,6,12),roofMat);cap.position.set(x,24,-17);cap.castShadow=true;scene.add(cap)}
+ // Central crown tower and clock face
+ const tower=new THREE.Mesh(new THREE.CylinderGeometry(3.7,4.2,11,8),stone);tower.position.set(0,32,-17);tower.castShadow=true;scene.add(tower);
+ const clockFace=new THREE.Mesh(new THREE.CircleGeometry(1.55,48),mat(0xd8c9a9));clockFace.position.set(0,33,-13.1);scene.add(clockFace);
+ const clockRim=new THREE.Mesh(new THREE.TorusGeometry(1.7,.13,10,48),iron);clockRim.position.set(0,33,-13.0);scene.add(clockRim);
+ box(scene,.09,1.1,.08,0,33.2,-12.9,iron);box(scene,.85,.09,.08,.38,33,-12.9,iron);
+ const crown=new THREE.Mesh(new THREE.ConeGeometry(5.8,8,8),roofMat);crown.position.set(0,42,-17);crown.castShadow=true;scene.add(crown);
+ // Grand entrance pavilion projects forward from the main facade
+ box(scene,13,12,3,0,6,-8.7,base);box(scene,11,10.5,.5,0,5.7,-6.95,pale);box(scene,9.2,9.2,.28,0,5.1,-6.55,wood);
+ box(scene,.16,9,.12,0,5,-6.35,iron);for(const x of [-4.1,4.1])box(scene,.18,8.8,.12,x,5,-6.35,pale);
+ box(scene,16,.65,7,0,11.8,-7.6,roofMat);for(const x of [-6,-3,0,3,6])column(x,-5.3,10.8);
+ // Triangular stone pediment with a deep shadow line
+ const pg=new THREE.BufferGeometry();pg.setAttribute('position',new THREE.Float32BufferAttribute([-8,12.1,-8,8,12.1,-8,0,17.4,-8],3));pg.setIndex([0,1,2]);pg.computeVertexNormals();scene.add(new THREE.Mesh(pg,new THREE.MeshStandardMaterial({color:0x93866f,side:THREE.DoubleSide,roughness:.9})));
+ box(scene,17,.28,.4,0,12.05,-7.8,pale);
+ // Lanterns, steps and iron rails
+ for(const x of [-5.2,5.2]){box(scene,.35,3,.35,x,1.5,-2,iron);const glow=new THREE.Mesh(new THREE.SphereGeometry(.35,12,10),new THREE.MeshBasicMaterial({color:0xffbd72}));glow.position.set(x,3.3,-2);scene.add(glow);light(0xffa84d,2.8,12,x,3.4,-2)}
+ for(let i=0;i<9;i++)box(scene,12+i*.7,.28,1.05,0,.14+i*.27,-4.5+i*.78,pale);
+ for(const x of [-7,7]){box(scene,.3,1.5,6,x,1.1,-2.5,pale);for(let z=-5;z<0;z+=.55){const b=new THREE.Mesh(new THREE.SphereGeometry(.12,8,8),pale);b.position.set(x,2,z);scene.add(b)}}
+ // A few warmly lit windows, not every window
+ for(const x of [-18,-10,10,18])light(0xffa75b,.9,8,x,10,-9.4);
 }
-function buildGrounds(){
- scene=new THREE.Scene();scene.background=new THREE.Color(0x111821);scene.fog=new THREE.FogExp2(0x202831,.014);
- camera=new THREE.PerspectiveCamera(62,innerWidth/innerHeight,.1,180);camera.position.set(0,2.2,13);
- renderer=new THREE.WebGLRenderer({antialias:false,powerPreference:'low-power',alpha:false});renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.5));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.48;world.appendChild(renderer.domElement);
- scene.add(new THREE.HemisphereLight(0xd9e5f2,0x51483e,1.9));const moon=new THREE.DirectionalLight(0xd7e4f5,3.1);moon.position.set(-18,25,12);moon.castShadow=true;moon.shadow.mapSize.set(1024,1024);scene.add(moon);
- const ground=new THREE.Mesh(new THREE.PlaneGeometry(150,150),material(0x403d37));ground.rotation.x=-Math.PI/2;ground.position.y=-.08;ground.receiveShadow=true;scene.add(ground);
- const road=new THREE.Mesh(new THREE.PlaneGeometry(8,80),material(0x353331));road.rotation.x=-Math.PI/2;road.position.set(0,-.03,-17);scene.add(road);
- // Gravel, broken fence, graves and bare trees
- const gravel=material(0x4a463f);for(let i=0;i<140;i++){const x=(Math.random()-.5)*30,z=Math.random()*36-32;const r=.04+Math.random()*.09;const pebble=new THREE.Mesh(new THREE.DodecahedronGeometry(r,0),gravel);pebble.position.set(x,r,z);pebble.rotation.set(Math.random(),Math.random(),Math.random());scene.add(pebble)}
- for(const s of [-1,1]){for(let z=-29;z<8;z+=3.2){block(scene,.1,1,.1,s*5,.5,z,material(0x202225));block(scene,.1,1,.1,s*8.5,.5,z,material(0x202225))}for(let i=0;i<15;i++)makeGrave(s*(3.5+(i%4)*1.2),-27+i*2, i);makeTree(s*11,-17,1.2);makeTree(s*9,-3,.9)}
- // Iron entrance gate
- const iron=material(0x17191b,.4,.65),stone=material(0x4b4947);for(const s of [-1,1]){block(scene,.85,3.2,.9,s*4,1.6,-4.5,stone);block(scene,1,.28,1,s*4,3.3,-4.5,iron)}
- for(let x=-3.5;x<=3.5;x+=.35)block(scene,.055,2.6,.06,x,1.3,-4.5,iron);block(scene,8,.18,.22,0,2.65,-4.5,iron);
- makeHotel();for(const x of [-4.5,4.5]){const post=block(scene,.16,2.4,.16,x,1.2,-9,iron);block(scene,.34,.16,.34,x,2.4,-9,iron);pointLight(0xffa75f,2.4,8,x,2.1,-9)}
- // Drifting ground mist as soft, low transparent planes
- const mistMat=new THREE.MeshBasicMaterial({color:0xabb1b9,transparent:true,opacity:.035,depthWrite:false,side:THREE.DoubleSide});for(let i=0;i<9;i++){const mist=new THREE.Mesh(new THREE.PlaneGeometry(7+Math.random()*7,1.5),mistMat);mist.rotation.x=-Math.PI/2;mist.position.set((Math.random()-.5)*16,.16,-25+Math.random()*25);scene.add(mist)}
+function tree(x,z,s=1){const bark=mat(0x211c1b);const trunk=new THREE.Mesh(new THREE.CylinderGeometry(.16,.42,7*s,7),bark);trunk.position.set(x,3.5*s,z);trunk.castShadow=true;scene.add(trunk);for(let i=0;i<7;i++){const b=new THREE.Mesh(new THREE.CylinderGeometry(.035,.13,3.5*s,6),bark);b.position.set(x+(i%2?1:-1)*(.6+i*.1)*s,(3.8+i*.24)*s,z);b.rotation.z=i%2?.9:-.9;b.castShadow=true;scene.add(b)}}
+function grounds(){
+ scene=new THREE.Scene();scene.background=new THREE.Color(0x101925);scene.fog=new THREE.FogExp2(0x18212a,.009);
+ camera=new THREE.PerspectiveCamera(57,innerWidth/innerHeight,.1,240);camera.position.set(0,3.4,39);camera.lookAt(0,12,-14);
+ renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:'high-performance'});renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.7));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.22;world.appendChild(renderer.domElement);
+ scene.add(new THREE.HemisphereLight(0xdbe5f4,0x423b35,1.55));const moon=new THREE.DirectionalLight(0xc9d9ef,2.5);moon.position.set(-25,42,25);moon.castShadow=true;moon.shadow.mapSize.set(1536,1536);scene.add(moon);
+ const ground=new THREE.Mesh(new THREE.PlaneGeometry(220,220),mat(0x34332f));ground.rotation.x=-Math.PI/2;ground.position.y=-.12;ground.receiveShadow=true;scene.add(ground);
+ const road=new THREE.Mesh(new THREE.PlaneGeometry(12,100),mat(0x242729));road.rotation.x=-Math.PI/2;road.position.set(0,-.04,22);scene.add(road);
+ hotel();
+ // Long approach path and a monumental iron gate in the foreground
+ for(let x=-6;x<=6;x+=.4)box(scene,.055,2.8,.08,x,1.4,25,mat(0x171a1d,.4,.5));
+ for(const x of [-6.5,6.5]){box(scene,1,4,1,x,2,25,mat(0x504a42));const cap=new THREE.Mesh(new THREE.ConeGeometry(.8,1.3,4),mat(0x26292b));cap.position.set(x,4.7,25);scene.add(cap)}
+ box(scene,14,.18,.22,0,2.9,25,mat(0x26292b,.4,.5));
+ for(const s of [-1,1]){tree(s*17,7,1.5);tree(s*22,20,1.8);tree(s*13,-2,1.1)}
+ // Graveyard sits off the approach, with individually shaped headstones
+ for(let i=0;i<22;i++){const x=(i%2?1:-1)*(8+Math.random()*10),z=4+Math.random()*27,h=.7+Math.random()*1.1;const g=new THREE.Mesh(new THREE.BoxGeometry(.75,h,.25),mat(0x55534e));g.position.set(x,h/2,z);g.rotation.y=(Math.random()-.5)*.2;g.castShadow=true;scene.add(g);const cross=mat(0x393a3a);if(i%3===0){box(scene,.12,h*.8,.12,x,h+.2,z,cross);box(scene,.65,.12,.12,x,h+.35,z,cross)}}
+ for(const x of [-5,5]){box(scene,.18,2.7,.18,x,1.35,13,mat(0x282b2d,.4,.5));const bulb=new THREE.Mesh(new THREE.SphereGeometry(.28,12,12),new THREE.MeshBasicMaterial({color:0xffb66a}));bulb.position.set(x,2.9,13);scene.add(bulb);light(0xffad5c,2,10,x,3,13)}
+ // Ground-level haze, softly blended and never blocking the building
+ const fogMat=new THREE.MeshBasicMaterial({color:0xb9c1ca,transparent:true,opacity:.045,depthWrite:false});for(let i=0;i<8;i++){const p=new THREE.Mesh(new THREE.PlaneGeometry(12,2),fogMat);p.rotation.x=-Math.PI/2;p.position.set((Math.random()-.5)*28,.06,8+Math.random()*25);scene.add(p)}
 }
-function frame(t){requestAnimationFrame(frame);const dt=Math.min(.05,(t-(clock||t))/1000||.016);clock=t;if(started){const forward=(keys.w||keys.arrowup?1:0)-(keys.s||keys.arrowdown?1:0)+padY,side=(keys.d||keys.arrowright?1:0)-(keys.a||keys.arrowleft?1:0)+padX;camera.position.x+=(Math.cos(yaw)*side+Math.sin(yaw)*forward)*3.1*dt;camera.position.z+=(Math.sin(yaw)*side-Math.cos(yaw)*forward)*3.1*dt;camera.position.x=Math.max(-24,Math.min(24,camera.position.x));camera.position.z=Math.max(-60,Math.min(18,camera.position.z));}camera.rotation.order='YXZ';camera.rotation.y=yaw;camera.rotation.x=pitch;lights.forEach(({light,base},i)=>light.intensity=base+Math.sin(t*.0018+i*2.7)*Math.min(.16,base*.08));renderer.render(scene,camera)}
-function start(){started=true;document.getElementById('intro').style.display='none';status.textContent='THE FRONT DOORS ARE OPEN. THE HOTEL IS NOT EMPTY.'}
-function setSpot(name){const spots={approach:[0,2.2,13],gate:[0,2.2,-1],hotel:[0,2.2,-17],graveyard:[9,2.2,-19]};const p=spots[name];camera.position.set(...p);yaw=0;pitch=0;document.getElementById('map').classList.remove('open');status.textContent='EXPLORING THE GROUNDS · '+name.toUpperCase()}
-function setup(){enter.addEventListener('click',start);document.getElementById('mapBtn').addEventListener('click',()=>document.getElementById('map').classList.toggle('open'));document.getElementById('map').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>setSpot(b.dataset.spot)));document.getElementById('resetBtn').addEventListener('click',()=>{camera.position.set(0,2.2,13);yaw=0;pitch=0;status.textContent='BACK AT THE FRONT APPROACH.';document.getElementById('map').classList.remove('open')});window.addEventListener('keydown',e=>keys[e.key.toLowerCase()]=true);window.addEventListener('keyup',e=>keys[e.key.toLowerCase()]=false);world.addEventListener('pointerdown',e=>{if(!started)return;drag=true;lastX=e.clientX;lastY=e.clientY;world.setPointerCapture(e.pointerId)});world.addEventListener('pointermove',e=>{if(!drag)return;const dx=e.clientX-lastX,dy=e.clientY-lastY;lastX=e.clientX;lastY=e.clientY;yaw-=dx*.004;pitch=Math.max(-.6,Math.min(.6,pitch-dy*.003))});world.addEventListener('pointerup',()=>drag=false);world.addEventListener('pointercancel',()=>drag=false);const pad=document.getElementById('pad'),nub=document.getElementById('nub');function move(e){const r=pad.getBoundingClientRect(),dx=e.clientX-r.left-r.width/2,dy=e.clientY-r.top-r.height/2,len=Math.max(1,Math.hypot(dx,dy)),scale=Math.min(1,36/len);padX=dx/r.width*2*scale;padY=-dy/r.height*2*scale;nub.style.transform='translate('+dx*scale+'px,'+dy*scale+'px)'}function stop(){padX=0;padY=0;nub.style.transform=''}pad.addEventListener('pointerdown',e=>{pad.setPointerCapture(e.pointerId);move(e)});pad.addEventListener('pointermove',e=>{if(e.buttons)move(e)});pad.addEventListener('pointerup',stop);pad.addEventListener('pointercancel',stop);window.addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.5))})}
-function fail(err){console.error('Hollow Crown startup:',err);enter.disabled=false;enter.textContent='RETRY THE GROUNDS';message.textContent='The 3D scene could not start: '+(err&&err.message?err.message:String(err));status.textContent='THE GROUNDS NEED ATTENTION.'}
-function load(){enter.disabled=true;enter.textContent='BUILDING THE GROUNDS…';message.textContent='Connecting to the 3D engine…';if(window.THREE){initialize();return}const urls=['https://cdnjs.cloudflare.com/ajax/libs/three.js/0.159.0/three.min.js','https://cdn.jsdelivr.net/npm/three@0.159.0/build/three.min.js'];let i=0;function next(){if(window.THREE){initialize();return}if(i>=urls.length){fail(new Error('Could not download the 3D engine. Check your connection and retry.'));return}const s=document.createElement('script');s.src=urls[i++];s.onload=()=>window.THREE?initialize():next();s.onerror=next;document.head.appendChild(s)}next()}
-function initialize(){try{THREE=window.THREE;buildGrounds();setup();enter.disabled=false;enter.textContent='APPROACH THE HOTEL';message.textContent='The grounds are ready. Take your first steps.';requestAnimationFrame(frame)}catch(err){fail(err)}}
-enter.addEventListener('click',()=>{if(!renderer)load()});
-load();
+function frame(t){requestAnimationFrame(frame);const dt=Math.min(.05,(t-(clock||t))/1000||.016);clock=t;if(started){const f=(keys.w||keys.arrowup?1:0)-(keys.s||keys.arrowdown?1:0)+padY,s=(keys.d||keys.arrowright?1:0)-(keys.a||keys.arrowleft?1:0)+padX;camera.position.x+=(Math.cos(yaw)*s+Math.sin(yaw)*f)*4*dt;camera.position.z+=(Math.sin(yaw)*s-Math.cos(yaw)*f)*4*dt;camera.position.x=Math.max(-32,Math.min(32,camera.position.x));camera.position.z=Math.max(-25,Math.min(52,camera.position.z))}camera.rotation.order='YXZ';camera.rotation.y=yaw;camera.rotation.x=pitch;lamps.forEach(({l,i},n)=>l.intensity=i+Math.sin(t*.0015+n*2)*.12);renderer.render(scene,camera)}
+function start(){started=true;document.getElementById('intro').style.display='none';status.textContent='THE HOLLOW CROWN HOTEL · THE FRONT DOORS AWAIT'}
+function spot(n){const p={approach:[0,3.4,39],gate:[0,3,28],hotel:[0,3.2,4],graveyard:[13,2.5,17]}[n];camera.position.set(...p);yaw=0;pitch=0;document.getElementById('map').classList.remove('open');status.textContent='GROUNDS · '+n.toUpperCase()}
+function setup(){document.getElementById('enter').addEventListener('click',start);document.getElementById('mapBtn').addEventListener('click',()=>document.getElementById('map').classList.toggle('open'));document.querySelectorAll('#map button').forEach(b=>b.addEventListener('click',()=>spot(b.dataset.spot)));document.getElementById('resetBtn').addEventListener('click',()=>spot('approach'));window.addEventListener('keydown',e=>keys[e.key.toLowerCase()]=true);window.addEventListener('keyup',e=>keys[e.key.toLowerCase()]=false);world.addEventListener('pointerdown',e=>{if(!started)return;drag=true;lastX=e.clientX;lastY=e.clientY;world.setPointerCapture(e.pointerId)});world.addEventListener('pointermove',e=>{if(!drag)return;const dx=e.clientX-lastX,dy=e.clientY-lastY;lastX=e.clientX;lastY=e.clientY;yaw-=dx*.004;pitch=Math.max(-.65,Math.min(.65,pitch-dy*.003))});world.addEventListener('pointerup',()=>drag=false);world.addEventListener('pointercancel',()=>drag=false);const pad=document.getElementById('pad'),nub=document.getElementById('nub');function move(e){const r=pad.getBoundingClientRect(),dx=e.clientX-r.left-r.width/2,dy=e.clientY-r.top-r.height/2,len=Math.max(1,Math.hypot(dx,dy)),k=Math.min(1,36/len);padX=dx/r.width*2*k;padY=-dy/r.height*2*k;nub.style.transform='translate('+dx*k+'px,'+dy*k+'px)'}function stop(){padX=padY=0;nub.style.transform=''}pad.addEventListener('pointerdown',e=>{pad.setPointerCapture(e.pointerId);move(e)});pad.addEventListener('pointermove',e=>{if(e.buttons)move(e)});pad.addEventListener('pointerup',stop);pad.addEventListener('pointercancel',stop);window.addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.7))})}
+function fail(e){console.error(e);enter.disabled=false;enter.textContent='RETRY';message.textContent='The 3D scene could not start. Check your connection and retry.'}
+function initialize(){try{THREE=window.THREE;grounds();setup();enter.disabled=false;enter.textContent='ENTER THE GROUNDS';message.textContent='The hotel is waiting. Take a closer look.';requestAnimationFrame(frame)}catch(e){fail(e)}}
+function load(){enter.disabled=true;enter.textContent='PREPARING THE HOTEL…';const urls=['https://cdnjs.cloudflare.com/ajax/libs/three.js/0.159.0/three.min.js','https://cdn.jsdelivr.net/npm/three@0.159.0/build/three.min.js'];let i=0;function next(){if(window.THREE){initialize();return}if(i===urls.length){fail(new Error('3D engine unavailable'));return}const s=document.createElement('script');s.src=urls[i++];s.onload=()=>window.THREE?initialize():next();s.onerror=next;document.head.appendChild(s)}next()}
+enter.addEventListener('click',()=>{if(!renderer)load()});load();
 })();
 </script>
 </body>
