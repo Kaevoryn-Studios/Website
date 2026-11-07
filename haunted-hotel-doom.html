@@ -32,7 +32,7 @@
 <script>
 (()=>{'use strict';
 const world=document.getElementById('world'),enter=document.getElementById('enter'),message=document.getElementById('message'),caption=document.getElementById('caption'),toast=document.getElementById('toast');
-let THREE,scene,camera,renderer,started=false,yaw=0,pitch=0,drag=false,lastX=0,lastY=0,keys={},padX=0,padY=0,clock=0,lamps=[],dust,stormLight,cemeteryMist,bats=[],current='grounds',cemeteryGateLeaves=[],gateOpen=false,hotelDoorLeaves=[],hotelDoorOpen=false;
+let THREE,scene,camera,renderer,started=false,yaw=0,pitch=0,drag=false,lastX=0,lastY=0,keys={},padX=0,padY=0,clock=0,lamps=[],dust,stormLight,cemeteryMist,bats=[],current='grounds',cemeteryGateLeaves=[],gateOpen=false,hotelDoorLeaves=[],hotelDoorOpen=false,doorAudio=null;
 const mats={};
 function mat(c,r=.82,m=0){const k=[c,r,m].join(':');return mats[k]||(mats[k]=new THREE.MeshStandardMaterial({color:c,roughness:r,metalness:m}))}
 function box(parent,w,h,d,x,y,z,m,rx=0,ry=0,rz=0){const o=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m);o.position.set(x,y,z);o.rotation.set(rx,ry,rz);o.castShadow=true;o.receiveShadow=true;parent.add(o);return o}
@@ -70,10 +70,12 @@ function lantern(x,y,z){const iron=mat(0x292b2b,.4,.6);cyl(scene,.08,.12,2.3,x,y
 function buildExterior(){
  const stone=mat(0x494b49,.98),trim=mat(0x716b5e,.92),roofMat=mat(0x111619,.96),base=mat(0x292a28,.98),wood=mat(0x171311,.98),rust=mat(0x39302a,.9);
  // The hotel has settled unevenly: a high central block, two decaying wings and a broken crown roof.
- box(scene,54,1.7,23,0,.85,-17,base);
+ // Split the foundation so the entrance is a real, unobstructed passage.
+ box(scene,20,1.7,23,-17,.85,-17,base);box(scene,20,1.7,23,17,.85,-17,base);
  box(scene,20,23,16,-17,11.5,-17,stone);
  box(scene,19,21,16,17,10.5,-17,stone);
- box(scene,24,29,18,0,14.5,-17,stone);
+ // The central facade is built around a full-height doorway opening, not a solid wall.
+ box(scene,6.5,29,18,-8.75,14.5,-17,stone);box(scene,6.5,29,18,8.75,14.5,-17,stone);box(scene,11,18.7,18,0,19.65,-17,stone);
  box(scene,13,12,14,0,34,-17,stone);
  // Uneven rooflines and the central clock tower.
  roof(scene,23,18,-17,23,-17,9,0x171b1e);
@@ -114,11 +116,12 @@ function buildExterior(){
   box(scene,.14,18,.14,x*2,9,-7.45,rust);
  }
  // Rebuilt entrance: monumental, weather-beaten Gothic oak doors beneath a pointed stone arch.
- box(scene,14,13,3.6,0,6.5,-8.4,base);
- box(scene,12,11,.5,0,6,-6.55,trim);
+ // Open-sided stone jambs and lintel frame the walk-through instead of blocking it.
+ box(scene,1.5,13,3.6,-6.25,6.5,-8.4,base);box(scene,1.5,13,3.6,6.25,6.5,-8.4,base);box(scene,14,2,3.6,0,12,-8.4,base);
+ box(scene,.55,11,.5,-5.75,6,-6.55,trim);box(scene,.55,11,.5,5.75,6,-6.55,trim);box(scene,12,.55,.5,0,11.25,-6.55,trim);
  const doorOak=mat(0x17110d,.94),doorOakLight=mat(0x302016,.9),doorRecess=mat(0x0b0908,.98);
  const doorIron=mat(0x202323,.62,.82),doorIronEdge=mat(0x514d43,.62,.78);
- box(scene,10.9,10.1,.18,0,5.25,-6.22,doorRecess);
+ // No solid backing panel: the doorway remains visibly and physically clear when the leaves swing inward.
  for(const side of [-1,1]){
   const leaf=new THREE.Group();leaf.position.set(side*5.35,0,-6.02);scene.add(leaf);
   hotelDoorLeaves.push({leaf,side});
@@ -719,7 +722,19 @@ const places={
 };
 function goPlace(name){const p=places[name];if(!p)return;current=name;camera.position.set(...p.pos);yaw=p.yaw;pitch=p.pitch;camera.rotation.order='YXZ';camera.rotation.y=yaw;camera.rotation.x=pitch;document.getElementById('nav').classList.remove('open');caption.textContent=p.line;toast.style.display='none';}
 function showToast(msg){toast.textContent=msg;toast.style.display='block';setTimeout(()=>toast.style.display='none',2400)}
-function start(){started=true;document.getElementById('intro').style.display='none';goPlace('grounds');caption.textContent='THE HOLLOW CROWN HOTEL · THE FRONT DOORS AWAIT'}
+function playDoorSound(opening){
+ if(!doorAudio)return;
+ const ctx=doorAudio,now=ctx.currentTime;
+ const noiseBuffer=ctx.createBuffer(1,Math.floor(ctx.sampleRate*2.8),ctx.sampleRate),data=noiseBuffer.getChannelData(0);
+ for(let i=0;i<data.length;i++)data[i]=(Math.random()*2-1)*(.7+Math.sin(i*.00013)*.3);
+ const noise=ctx.createBufferSource();noise.buffer=noiseBuffer;
+ const filter=ctx.createBiquadFilter();filter.type='bandpass';filter.frequency.setValueAtTime(opening?390:170,now);filter.frequency.exponentialRampToValueAtTime(opening?720:95,now+2.1);filter.Q.value=opening?0.7:1.1;
+ const gain=ctx.createGain();gain.gain.setValueAtTime(.0001,now);gain.gain.linearRampToValueAtTime(opening?.19:.25,now+.22);gain.gain.exponentialRampToValueAtTime(.0001,now+2.65);
+ noise.connect(filter);filter.connect(gain);gain.connect(ctx.destination);noise.start(now);noise.stop(now+2.7);
+ const osc=ctx.createOscillator(),og=ctx.createGain();osc.type='sawtooth';osc.frequency.setValueAtTime(opening?78:54,now);osc.frequency.exponentialRampToValueAtTime(opening?43:31,now+2.25);og.gain.setValueAtTime(.0001,now);og.gain.linearRampToValueAtTime(opening?.075:.12,now+.12);og.gain.exponentialRampToValueAtTime(.0001,now+2.4);osc.connect(og);og.connect(ctx.destination);osc.start(now);osc.stop(now+2.45);
+ if(!opening){const thump=ctx.createOscillator(),tg=ctx.createGain();thump.type='sine';thump.frequency.setValueAtTime(72,now);thump.frequency.exponentialRampToValueAtTime(34,now+.32);tg.gain.setValueAtTime(.22,now);tg.gain.exponentialRampToValueAtTime(.0001,now+.42);thump.connect(tg);tg.connect(ctx.destination);thump.start(now);thump.stop(now+.44)}
+}
+function start(){try{const AC=window.AudioContext||window.webkitAudioContext;if(AC){doorAudio=doorAudio||new AC();if(doorAudio.state==='suspended')doorAudio.resume()}}catch(e){doorAudio=null}started=true;document.getElementById('intro').style.display='none';goPlace('grounds');caption.textContent='THE HOLLOW CROWN HOTEL · THE FRONT DOORS AWAIT'}
 function frame(t){requestAnimationFrame(frame);const dt=Math.min(.05,(t-(clock||t))/1000||.016);clock=t;
  if(started){const f=(keys.w||keys.arrowup?1:0)-(keys.s||keys.arrowdown?1:0)+padY,s=(keys.d||keys.arrowright?1:0)-(keys.a||keys.arrowleft?1:0)+padX;const moving=Math.abs(f)+Math.abs(s)>.08;const moveScale=moving?5*dt/Math.max(1,Math.hypot(f,s)):0;camera.position.x+=(-Math.sin(yaw)*f+Math.cos(yaw)*s)*moveScale;camera.position.z+=(-Math.cos(yaw)*f-Math.sin(yaw)*s)*moveScale;camera.position.x=Math.max(-35,Math.min(310,camera.position.x));camera.position.z=Math.max(-25,Math.min(65,camera.position.z));// Follow the actual stair treads in the Grand Lobby so the player climbs instead of hovering at ground-floor height.
  let floorEye=places[current].pos[1];
@@ -734,9 +749,10 @@ function frame(t){requestAnimationFrame(frame);const dt=Math.min(.05,(t-(clock||
  }
  camera.position.y=floorEye+(moving?Math.abs(Math.sin(t*.009))*.045:0);camera.rotation.order='YXZ';camera.rotation.y=yaw;camera.rotation.x=pitch}
  const gateDistance=Math.hypot(camera.position.x,camera.position.z-27);const shouldOpen=started&&current==='grounds'&&gateDistance<9;if(shouldOpen!==gateOpen){gateOpen=shouldOpen;showToast(gateOpen?'THE IRON GATES GROAN OPEN…':'THE IRON GATES SWING SHUT…')}cemeteryGateLeaves.forEach(({leaf,side})=>{const target=gateOpen?-side*1.02:0;leaf.rotation.y+=(target-leaf.rotation.y)*Math.min(1,dt*1.7)});
- const doorDistance=Math.hypot(camera.position.x,camera.position.z+2.8);const shouldOpenDoors=started&&current==='grounds'&&doorDistance<9;
- if(shouldOpenDoors!==hotelDoorOpen){hotelDoorOpen=shouldOpenDoors;showToast(hotelDoorOpen?'THE HOTEL DOORS BEGIN TO CREAK OPEN…':'THE HOTEL DOORS SLOWLY CLOSE…')}
- hotelDoorLeaves.forEach(({leaf,side})=>{const target=hotelDoorOpen?-side*1.12:side*.025;leaf.rotation.y+=(target-leaf.rotation.y)*Math.min(1,dt*.42)});
+ const doorDistance=Math.hypot(camera.position.x,camera.position.z+5.5);const shouldOpenDoors=started&&current==='grounds'&&doorDistance<15;
+ if(shouldOpenDoors!==hotelDoorOpen){hotelDoorOpen=shouldOpenDoors;showToast(hotelDoorOpen?'THE HOTEL DOORS GROAN OPEN…':'THE HOTEL DOORS THUD SHUT…');playDoorSound(hotelDoorOpen)}
+ hotelDoorLeaves.forEach(({leaf,side})=>{const target=hotelDoorOpen?-side*1.48:side*.025;leaf.rotation.y+=(target-leaf.rotation.y)*Math.min(1,dt*1.15)});
+ if(current==='grounds'&&camera.position.z<-7.45&&Math.abs(camera.position.x)<2.65){const clear=hotelDoorLeaves.every(({leaf})=>Math.abs(leaf.rotation.y)>1.25);if(clear){goPlace('lobby');showToast('WELCOME TO THE HOLLOW CROWN…')}else camera.position.z=-7.45;}
  lamps.forEach(({l,intensity},i)=>l.intensity=intensity+Math.sin(t*.0013+i*1.7)*.09);
  if(dust){dust.rotation.y=t*.000012;dust.position.y=Math.sin(t*.0003)*.12}if(cemeteryMist){cemeteryMist.rotation.y=Math.sin(t*.00012)*.018;cemeteryMist.position.y=Math.sin(t*.00025)*.09}
  const phase=t%19000;stormLight.intensity=phase<110?8*Math.sin(phase/110*Math.PI):0;
