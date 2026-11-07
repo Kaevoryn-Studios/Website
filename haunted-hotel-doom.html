@@ -34,6 +34,8 @@
 const world=document.getElementById('world'),enter=document.getElementById('enter'),message=document.getElementById('message'),caption=document.getElementById('caption'),toast=document.getElementById('toast');
 let THREE,scene,camera,renderer,started=false,yaw=0,pitch=0,drag=false,lastX=0,lastY=0,keys={},padX=0,padY=0,clock=0,lamps=[],dust,stormLight,cemeteryMist,bats=[],current='grounds',cemeteryGateLeaves=[],gateOpen=false,hotelDoorLeaves=[],hotelDoorOpen=false;
 const cemeteryGateAudio=new Audio('https://www.orangefreesounds.com/wp-content/uploads/2014/08/Metal-gate-opening-sound-effect.mp3');cemeteryGateAudio.preload='auto';cemeteryGateAudio.volume=.72;
+const hotelDoorOpenAudio=new Audio('https://sfxmint.com/dl/door-open-51.mp3');hotelDoorOpenAudio.preload='auto';hotelDoorOpenAudio.volume=.58;
+const hotelDoorCloseAudio=new Audio('https://sfxmint.com/dl/door-close-02.mp3');hotelDoorCloseAudio.preload='auto';hotelDoorCloseAudio.volume=.34;
 const mats={};
 function mat(c,r=.82,m=0){const k=[c,r,m].join(':');return mats[k]||(mats[k]=new THREE.MeshStandardMaterial({color:c,roughness:r,metalness:m}))}
 function box(parent,w,h,d,x,y,z,m,rx=0,ry=0,rz=0){const o=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m);o.position.set(x,y,z);o.rotation.set(rx,ry,rz);o.castShadow=true;o.receiveShadow=true;parent.add(o);return o}
@@ -739,7 +741,7 @@ function frame(t){requestAnimationFrame(frame);const dt=Math.min(.05,(t-(clock||
  camera.position.y=floorEye+(moving?Math.abs(Math.sin(t*.009))*.045:0);camera.rotation.order='YXZ';camera.rotation.y=yaw;camera.rotation.x=pitch}
  const gateDistance=Math.hypot(camera.position.x,camera.position.z-27);const shouldOpen=started&&current==='grounds'&&gateDistance<9;if(shouldOpen!==gateOpen){gateOpen=shouldOpen;if(gateOpen){cemeteryGateAudio.currentTime=0;cemeteryGateAudio.play().catch(()=>{});showToast('THE IRON GATES OPEN…')}else{showToast('THE IRON GATES CLOSE…')}}cemeteryGateLeaves.forEach(({leaf,side})=>{const target=gateOpen?-side*1.02:0;leaf.rotation.y+=(target-leaf.rotation.y)*Math.min(1,dt*1.7)});
  const doorDistance=Math.hypot(camera.position.x,camera.position.z+5.5);const shouldOpenDoors=started&&current==='grounds'&&doorDistance<15;
- if(shouldOpenDoors!==hotelDoorOpen){hotelDoorOpen=shouldOpenDoors;showToast(hotelDoorOpen?'THE HOTEL DOORS GROAN OPEN…':'THE HOTEL DOORS THUD SHUT…')}
+ if(shouldOpenDoors!==hotelDoorOpen){hotelDoorOpen=shouldOpenDoors;if(hotelDoorOpen){hotelDoorOpenAudio.currentTime=0;hotelDoorOpenAudio.play().catch(()=>{});showToast('THE HOTEL DOORS GROAN OPEN…')}else{hotelDoorCloseAudio.currentTime=0;hotelDoorCloseAudio.play().catch(()=>{});showToast('THE HOTEL DOORS CLOSE…')}}
  hotelDoorLeaves.forEach(({leaf,side})=>{const target=hotelDoorOpen?-side*1.48:0;leaf.rotation.y+=(target-leaf.rotation.y)*Math.min(1,dt*1.15)});
  if(current==='grounds'&&camera.position.z<-7.45&&Math.abs(camera.position.x)<2.65){const clear=hotelDoorLeaves.every(({leaf})=>Math.abs(leaf.rotation.y)>1.25);if(clear){goPlace('lobby');showToast('WELCOME TO THE HOLLOW CROWN…')}else camera.position.z=-7.45;}
  lamps.forEach(({l,intensity},i)=>l.intensity=intensity+Math.sin(t*.0013+i*1.7)*.09);
