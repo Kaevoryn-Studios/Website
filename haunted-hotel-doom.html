@@ -113,15 +113,30 @@ function buildExterior(){
   for(let i=0;i<9;i++)box(scene,.07,.9,.08,x-2+i*.5,14.45,-6.95,rust);
   box(scene,.14,18,.14,x*2,9,-7.45,rust);
  }
- // Recessed entrance: doors stand slightly ajar beneath a cracked portico.
+ // Recessed entrance with a clearly visible pair of heavy, paneled oak doors.
  box(scene,14,13,3.6,0,6.5,-8.4,base);
  box(scene,12,11,.5,0,6,-6.55,trim);
- box(scene,9.5,9.5,.2,-2.35,5.3,-6.18,wood);
- box(scene,9.5,9.5,.2,2.35,5.3,-6.05,wood,0,.045,0);
- box(scene,.12,9,.12,0,5.1,-5.9,mat(0x796b53));
- for(const x of [-4.8,4.8])box(scene,.18,10,.18,x,5.2,-6.05,trim);
+ const doorWood=mat(0x241710,.88),doorPanel=mat(0x38251a,.86),doorGold=mat(0x8c744d,.48,.68);
+ for(const side of [-1,1]){
+  const hinge=new THREE.Group();hinge.position.set(side*5.55,0,-6.18);scene.add(hinge);
+  const center=-side*2.68;
+  box(hinge,5.32,9.45,.34,center,5.28,0,doorWood);
+  box(hinge,4.96,9.08,.12,center,5.28,.22,doorPanel);
+  for(const yy of [1.15,4.95,8.65])box(hinge,4.55,.13,.12,center,yy,.31,doorGold);
+  for(const xx of [center-2.18,center+2.18])box(hinge,.13,8.7,.12,xx,5.28,.31,doorGold);
+  for(const yy of [2.9,6.9]){
+   box(hinge,1.72,1.35,.13,center,yy,.34,doorWood);
+   box(hinge,1.42,1.05,.06,center,yy,.43,doorGold);
+   box(hinge,1.18,.07,.04,center,yy,.48,doorPanel);
+  }
+  const handleX=center+side*2.12;
+  box(hinge,.13,.72,.14,handleX,5.1,.48,doorGold);
+  sphere(hinge,.13,handleX,5.1,.57,doorGold);
+  for(const yy of [1.1,5.1,9.1])box(hinge,.2,.55,.42,side*-2.45,yy,-.12,doorGold);
+  hinge.rotation.y=side*.13;
+ }
  box(scene,16,.7,7,0,12.8,-7.6,roofMat);
- for(const x of [-6,-3,0,3,6]){cyl(scene,.34,.43,11.2,x,5.6,-5.25,trim,12);cyl(scene,.58,.58,.25,x,.25,-5.25,trim,12)}
+ for(const x of [-6,6]){cyl(scene,.34,.43,11.2,x,5.6,-5.25,trim,12);cyl(scene,.58,.58,.25,x,.25,-5.25,trim,12)}
  // Grand exterior entrance staircase: broad, individually modeled stone treads
  // rise from the forecourt to a level landing directly before the front doors.
  const stairStone=mat(0x625e55,.96),stairEdge=mat(0x81796a,.92),stairShadow=mat(0x343431,.98);
@@ -237,7 +252,7 @@ function buildExterior(){
  // Two side runs, rear run, and front returns all meet at the gate piers: no disconnected fence ends.
  cemeteryFenceRun(-26.5,gateZ,-26.5,-1.5);
  cemeteryFenceRun(26.5,gateZ,26.5,-1.5);
- cemeteryFenceRun(-26.5,-1.5,26.5,-1.5);
+ // Rear cemetery fence removed to leave the hotel forecourt and staircase open.
  cemeteryFenceRun(-26.5,gateZ,-11.25,gateZ);
  cemeteryFenceRun(11.25,gateZ,26.5,gateZ);
  // Separate burial plots: naturally mixed generations of graves, not matching rows.
