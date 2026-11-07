@@ -29,27 +29,70 @@ function pointLight(color,intensity,distance,x,y,z){const l=new THREE.PointLight
 function makeTree(x,z,scale=1){const g=new THREE.Group();g.position.set(x,0,z);g.scale.setScalar(scale);scene.add(g);const bark=material(0x211e1d);cylinder(g,.22,.38,4.8,0,2.4,0,bark,8);for(let i=0;i<8;i++){const b=cylinder(g,.055,.13,2.8,(i%2?-.55:.55),2.8+i*.22,0,bark,7);b.rotation.z=i%2?-.85:.85;b.rotation.x=(i-3)*.1}}
 function makeGrave(x,z,i){const stone=material(i%2?0x55524e:0x444443);const h=.8+(i%4)*.16,w=.48+(i%3)*.12;block(scene,w,h,.22,x,h/2,z,stone,0,(i%3-1)*.08,0);if(i%3===0)cylinder(scene,w*.48,w*.48,.16,x,h,z,stone,8).rotation.z=Math.PI/2}
 function makeHotel(){
- const masonry=material(0x71695f),stone=material(0x706d68),roof=material(0x17191c),wood=material(0x241b18),iron=material(0x1a1c1e,.42,.65),glass=new THREE.MeshStandardMaterial({color:0x293747,emissive:0x30200f,emissiveIntensity:.22,roughness:.2,metalness:.18});
- // Foundation and connected Victorian wings
- block(scene,19,.8,7,0,.4,-35,stone);
- block(scene,7,10,6,-6,5.4,-35,masonry);block(scene,7,10,6,6,5.4,-35,masonry);
- block(scene,6,5,6,0,8.1,-35,masonry);block(scene,7,7,5,-13,3.9,-32,stone);block(scene,7,7,5,13,3.9,-32,masonry);
- // roof slopes and central gable
- block(scene,10,.42,7,-2.7,10.8,-35,roof,0,0,-.48);block(scene,10,.42,7,2.7,10.8,-35,roof,0,0,.48);
- block(scene,5,.38,6,-13,7.7,-32,roof,0,0,-.55);block(scene,5,.38,6,-13,7.7,-32,roof,0,0,.55);
- const gable=new THREE.Mesh(new THREE.ConeGeometry(5.8,4.5,4),masonry);gable.position.set(0,12.1,-35);gable.rotation.y=Math.PI/4;gable.scale.set(1,.9,.6);gable.castShadow=true;scene.add(gable);
- for(const x of [-7,6]){block(scene,.9,2.8,1,x,12,-36,stone);block(scene,1.1,.2,1.2,x,13.5,-36,iron)}
- // Deep-set windows with stone lintels and sills
- for(let floor=0;floor<3;floor++)for(let col=0;col<5;col++){const x=-7.2+col*3.6,y=2.5+floor*3.25,z=-31.45;block(scene,1.72,2.3,.24,x,y,z,iron);block(scene,1.4,1.95,.1,x,y,z+.15,glass);block(scene,.1,2.1,.12,x-.73,y,z+.23,stone);block(scene,.1,2.1,.12,x+.73,y,z+.23,stone);block(scene,1.55,.12,.14,x,y-1.08,z+.23,stone);if((floor+col)%4===1)block(scene,1.48,.18,.16,x,y-.4,z+.32,wood,0,0,-.12)}
- // Main porch, heavy columns, double doors, broad steps
- block(scene,4.8,5.6,.8,0,2.8,-31,stone);block(scene,3.5,4.8,.2,0,2.5,-30.55,iron);block(scene,1.65,4.3,.18,-.86,2.25,-30.35,wood);block(scene,1.65,4.3,.18,.86,2.25,-30.35,wood);
- for(const s of [-1,1])cylinder(scene,.22,.31,5.5,s*2.15,2.75,-30.1,stone,10);
- block(scene,5.4,.35,2.5,0,5.65,-30,roof);for(let i=0;i<5;i++)block(scene,5.8,.26,1.15,0,.13+i*.26,-28.6+i*.95,stone);
- // Porch rail and broken balcony
- block(scene,13,.22,.7,1,6.5,-30.4,iron);for(let x=-5;x<=7;x+=.55)block(scene,.06,.7,.07,x,6.95,-30.05,stone);
- block(scene,7,.22,2,-13,5.7,-29,roof);for(let x=-15;x<=-11;x+=2)cylinder(scene,.12,.2,5.5,x,2.75,-29,stone,8);
- // A few warm windows, never over-bright
- for(const x of [-7.2,3.6,7.2])pointLight(0xffc98c,1.5,9,x,3,-30);
+ const wall=material(0x777064),trim=material(0xaaa08e),foundation=material(0x514c45),roof=material(0x24272b,.78),darkRoof=material(0x171a1e),wood=material(0x30221b),iron=material(0x292b2b,.48,.45);
+ const glass=new THREE.MeshStandardMaterial({color:0x354452,emissive:0x8a5427,emissiveIntensity:.32,roughness:.28,metalness:.12});
+ // Broad, connected three-storey hotel wings and a taller central entrance block
+ block(scene,36,1.1,11,0,.55,-35,foundation);
+ block(scene,12,13,10,-12,7.05,-35,wall);
+ block(scene,12,13,10,12,7.05,-35,wall);
+ block(scene,13,17,11,0,9.05,-35,wall);
+ // Raised central crown tower
+ block(scene,8,5,8,0,19.8,-35,wall);
+ // Grand steep roofs: broad wing gables and a taller central roof
+ block(scene,7.4,.48,11,-14.3,14.3,-35,roof,0,0,-.62);
+ block(scene,7.4,.48,11,-9.7,14.3,-35,roof,0,0,.62);
+ block(scene,7.4,.48,11,9.7,14.3,-35,roof,0,0,-.62);
+ block(scene,7.4,.48,11,14.3,14.3,-35,roof,0,0,.62);
+ block(scene,7.8,.55,12,-3.8,18.1,-35,roof,0,0,-.62);
+ block(scene,7.8,.55,12,3.8,18.1,-35,roof,0,0,.62);
+ // Central tower crown and corner turrets
+ const crown=new THREE.Mesh(new THREE.ConeGeometry(5.7,5.8,4),darkRoof);crown.position.set(0,25.1,-35);crown.rotation.y=Math.PI/4;crown.castShadow=true;scene.add(crown);
+ for(const x of [-16,16]){cylinder(scene,1.05,1.25,15,x,7.5,-35,wall,12);const cap=new THREE.Mesh(new THREE.ConeGeometry(1.55,3.8,12),darkRoof);cap.position.set(x,17,-35);cap.castShadow=true;scene.add(cap);cylinder(scene,1.25,1.25,.3,x,14.8,-35,trim,12)}
+ // Chimneys rising above the roofline
+ for(const x of [-13,-5,6,14]){block(scene,1.25,4.4,1.4,x,17.1,-38,foundation);block(scene,1.55,.25,1.7,x,19.35,-38,trim)}
+ // Front façade pilasters and horizontal stone courses
+ for(const x of [-17,-6.8,6.8,17]){block(scene,.42,13,.5,x,7.2,-29.65,trim)}
+ for(const y of [1.5,5.7,10,14.3])block(scene,35,.22,.48,0,y,-29.68,trim);
+ // Tall, regularly spaced sash windows with contrasting surrounds and sills
+ for(const floor of [3.5,7.7,11.9])for(let col=0;col<9;col++){
+  const x=-16+col*4,y=floor,z=-29.55,w=1.72,h=2.65;
+  block(scene,w+.42,h+.42,.24,x,y,z,trim);
+  block(scene,w,h,.18,x,y,z+.16,iron);
+  block(scene,w-.2,h-.25,.1,x,y,z+.27,glass);
+  block(scene,.1,h-.2,.1,x,y,z+.34,trim);
+  block(scene,w-.12,.1,.1,x,y,z+.34,trim);
+  block(scene,w+.5,.2,.42,x,y-h/2-.2,z+.12,trim);
+  block(scene,w+.35,.16,.38,x,y+h/2+.18,z+.12,trim);
+  block(scene,w-.15,.08,.12,x,y,z+.4,wood);
+ }
+ // Attic dormers punctuating the two long roof slopes
+ for(const side of [-1,1])for(let i=0;i<3;i++){
+  const x=side*(10+i*2.1),z=-30.8;
+  block(scene,1.75,2.5,1.25,x,15.1,z,wall);
+  block(scene,1.25,1.55,.12,x,15.15,z+.68,glass);
+  const cap=new THREE.Mesh(new THREE.ConeGeometry(1.35,1.45,4),darkRoof);cap.position.set(x,17,z);cap.rotation.y=Math.PI/4;cap.castShadow=true;scene.add(cap);
+ }
+ // Monumental central entrance, recessed double doors and stone arch surround
+ block(scene,7.2,8.3,.75,0,4.15,-29.35,foundation);
+ block(scene,5.7,7.1,.24,0,3.65,-28.88,trim);
+ block(scene,4.8,6.25,.18,0,3.25,-28.68,wood);
+ block(scene,.12,6.1,.12,0,3.25,-28.55,iron);
+ for(const x of [-2.15,2.15]){block(scene,.16,5.7,.1,x,3.3,-28.52,trim);cylinder(scene,.1,.1,.12,x,3.2,-28.43,trim,10)}
+ // Deep projecting portico with six classical columns and a triangular pediment
+ block(scene,10,.55,4.5,0,8.55,-27.9,roof);
+ for(const x of [-4.2,-2.5,0,2.5,4.2]){cylinder(scene,.25,.34,7.6,x,4.75,-27.3,trim,14);cylinder(scene,.43,.43,.32,x,8.65,-27.3,trim,14);cylinder(scene,.4,.4,.28,x,.9,-27.3,trim,14)}
+ const pedGeo=new THREE.BufferGeometry();pedGeo.setAttribute('position',new THREE.Float32BufferAttribute([-5,8.85,-27.8,5,8.85,-27.8,0,12.1,-27.8],3));pedGeo.setIndex([0,1,2]);pedGeo.computeVertexNormals();const ped=new THREE.Mesh(pedGeo,new THREE.MeshStandardMaterial({color:0x817868,side:THREE.DoubleSide,roughness:.9}));ped.castShadow=true;scene.add(ped);
+ block(scene,10.5,.28,.35,0,8.85,-27.75,trim);
+ // Broad ceremonial stairs and stone balustrades
+ for(let i=0;i<7;i++)block(scene,9.5+i*.65,.25,1.05,0,.125+i*.25,-26.4+i*.9,trim);
+ for(const side of [-1,1]){block(scene,.25,1.25,5,side*5.1,1.2,-25.2,trim);for(let z=-27;z<-22;z+=.7)cylinder(scene,.12,.12,.9,side*5.1,1.85,z,trim,8)}
+ // Balcony above the entrance with iron balustrade
+ block(scene,9,.3,1.7,0,13.4,-29.15,roof);
+ block(scene,9,.18,.16,0,14.25,-28.55,iron);
+ for(let x=-4.2;x<=4.2;x+=.42)block(scene,.07,.85,.07,x,13.82,-28.55,trim);
+ // Warm light at the doors and in selected windows
+ for(const x of [-3.8,0,3.8])pointLight(0xffc98c,1.7,12,x,5,-27.5);
+ for(const x of [-12,-4,4,12])pointLight(0xffbd7c,.65,7,x,11.5,-29);
 }
 function buildGrounds(){
  scene=new THREE.Scene();scene.background=new THREE.Color(0x111821);scene.fog=new THREE.FogExp2(0x202831,.014);
@@ -70,7 +113,7 @@ function buildGrounds(){
 }
 function frame(t){requestAnimationFrame(frame);const dt=Math.min(.05,(t-(clock||t))/1000||.016);clock=t;if(started){const forward=(keys.w||keys.arrowup?1:0)-(keys.s||keys.arrowdown?1:0)+padY,side=(keys.d||keys.arrowright?1:0)-(keys.a||keys.arrowleft?1:0)+padX;camera.position.x+=(Math.cos(yaw)*side+Math.sin(yaw)*forward)*3.1*dt;camera.position.z+=(Math.sin(yaw)*side-Math.cos(yaw)*forward)*3.1*dt;camera.position.x=Math.max(-24,Math.min(24,camera.position.x));camera.position.z=Math.max(-60,Math.min(18,camera.position.z));}camera.rotation.order='YXZ';camera.rotation.y=yaw;camera.rotation.x=pitch;lights.forEach(({light,base},i)=>light.intensity=base+Math.sin(t*.0018+i*2.7)*Math.min(.16,base*.08));renderer.render(scene,camera)}
 function start(){started=true;document.getElementById('intro').style.display='none';status.textContent='THE FRONT DOORS ARE OPEN. THE HOTEL IS NOT EMPTY.'}
-function setSpot(name){const spots={approach:[0,2.2,13],gate:[0,2.2,-1],hotel:[0,2.2,-23],graveyard:[9,2.2,-19]};const p=spots[name];camera.position.set(...p);yaw=0;pitch=0;document.getElementById('map').classList.remove('open');status.textContent='EXPLORING THE GROUNDS · '+name.toUpperCase()}
+function setSpot(name){const spots={approach:[0,2.2,13],gate:[0,2.2,-1],hotel:[0,2.2,-17],graveyard:[9,2.2,-19]};const p=spots[name];camera.position.set(...p);yaw=0;pitch=0;document.getElementById('map').classList.remove('open');status.textContent='EXPLORING THE GROUNDS · '+name.toUpperCase()}
 function setup(){enter.addEventListener('click',start);document.getElementById('mapBtn').addEventListener('click',()=>document.getElementById('map').classList.toggle('open'));document.getElementById('map').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>setSpot(b.dataset.spot)));document.getElementById('resetBtn').addEventListener('click',()=>{camera.position.set(0,2.2,13);yaw=0;pitch=0;status.textContent='BACK AT THE FRONT APPROACH.';document.getElementById('map').classList.remove('open')});window.addEventListener('keydown',e=>keys[e.key.toLowerCase()]=true);window.addEventListener('keyup',e=>keys[e.key.toLowerCase()]=false);world.addEventListener('pointerdown',e=>{if(!started)return;drag=true;lastX=e.clientX;lastY=e.clientY;world.setPointerCapture(e.pointerId)});world.addEventListener('pointermove',e=>{if(!drag)return;const dx=e.clientX-lastX,dy=e.clientY-lastY;lastX=e.clientX;lastY=e.clientY;yaw-=dx*.004;pitch=Math.max(-.6,Math.min(.6,pitch-dy*.003))});world.addEventListener('pointerup',()=>drag=false);world.addEventListener('pointercancel',()=>drag=false);const pad=document.getElementById('pad'),nub=document.getElementById('nub');function move(e){const r=pad.getBoundingClientRect(),dx=e.clientX-r.left-r.width/2,dy=e.clientY-r.top-r.height/2,len=Math.max(1,Math.hypot(dx,dy)),scale=Math.min(1,36/len);padX=dx/r.width*2*scale;padY=-dy/r.height*2*scale;nub.style.transform='translate('+dx*scale+'px,'+dy*scale+'px)'}function stop(){padX=0;padY=0;nub.style.transform=''}pad.addEventListener('pointerdown',e=>{pad.setPointerCapture(e.pointerId);move(e)});pad.addEventListener('pointermove',e=>{if(e.buttons)move(e)});pad.addEventListener('pointerup',stop);pad.addEventListener('pointercancel',stop);window.addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.5))})}
 function fail(err){console.error('Hollow Crown startup:',err);enter.disabled=false;enter.textContent='RETRY THE GROUNDS';message.textContent='The 3D scene could not start: '+(err&&err.message?err.message:String(err));status.textContent='THE GROUNDS NEED ATTENTION.'}
 function load(){enter.disabled=true;enter.textContent='BUILDING THE GROUNDS…';message.textContent='Connecting to the 3D engine…';if(window.THREE){initialize();return}const urls=['https://cdnjs.cloudflare.com/ajax/libs/three.js/0.159.0/three.min.js','https://cdn.jsdelivr.net/npm/three@0.159.0/build/three.min.js'];let i=0;function next(){if(window.THREE){initialize();return}if(i>=urls.length){fail(new Error('Could not download the 3D engine. Check your connection and retry.'));return}const s=document.createElement('script');s.src=urls[i++];s.onload=()=>window.THREE?initialize():next();s.onerror=next;document.head.appendChild(s)}next()}
