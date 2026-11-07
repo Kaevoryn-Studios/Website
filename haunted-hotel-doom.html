@@ -122,7 +122,23 @@ function buildExterior(){
  for(const x of [-4.8,4.8])box(scene,.18,10,.18,x,5.2,-6.05,trim);
  box(scene,16,.7,7,0,12.8,-7.6,roofMat);
  for(const x of [-6,-3,0,3,6]){cyl(scene,.34,.43,11.2,x,5.6,-5.25,trim,12);cyl(scene,.58,.58,.25,x,.25,-5.25,trim,12)}
- for(let i=0;i<10;i++)box(scene,12+i*.55,.25,1.05,0,.13+i*.25,-3.8+i*.72,mat(0x514b42));
+ // Grand exterior entrance staircase: broad, individually modeled stone treads
+ // rise from the forecourt to a level landing directly before the front doors.
+ const stairStone=mat(0x625e55,.96),stairEdge=mat(0x81796a,.92),stairShadow=mat(0x343431,.98);
+ for(let i=0;i<4;i++){
+  const z=1.75-i*1.08,top=.28*(i+1),depth=1.18;
+  box(scene,15.2,.28,depth,0,top-.14,z,stairStone);
+  box(scene,15.45,.10,.16,0,top-.035,z+depth*.43,stairEdge);
+  box(scene,14.9,.28,.09,0,top-.14,z+depth*.5,stairShadow);
+ }
+ // Broad upper landing connects the top tread to the entrance threshold.
+ box(scene,15.5,.30,3.25,0,1.12,-3.65,stairStone);
+ box(scene,15.7,.12,.18,0,1.30,-2.12,stairEdge);
+ // Heavy low stone cheek walls frame both sides of the flight.
+ for(const side of [-1,1]){
+  box(scene,.72,.62,5.25,side*7.45,.48,-.15,stairStone);
+  box(scene,.88,.14,5.35,side*7.45,.87,-.15,stairEdge);
+ }
  // Stonework cracks: narrow dark fissures under the upper windows.
  for(const x of [-20,-13,13,20])for(let j=0;j<3;j++){
   const crack=box(scene,.055,2.2,.035,x+(j-1)*.16,8+j*5,-7.42,mat(0x202321),0,0,(j%2?.18:-.12));
