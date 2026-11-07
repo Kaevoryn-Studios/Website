@@ -494,6 +494,48 @@ function buildExterior(){
  lantern(lx-6.3,1.1,lz-10.8);point(0x9bb8d5,.85,20,lx,4,lz-10);
  for(let i=0;i<12;i++){const rubble=box(scene,.25+Math.random()*.65,.12,.2+Math.random()*.5,lx-7+Math.random()*15,.08,lz-10+Math.random()*5,lodgeStone);rubble.rotation.y=Math.random()*2.5}
  const signPost=cyl(scene,.08,.12,2.4,lx-8.4,1.2,lz-9.2,lodgeWood,8);signPost.rotation.z=-.08;box(scene,1.8,.72,.12,lx-8.4,2.35,lz-9.2,lodgeWood,.02,0,-.04);for(let i=0;i<3;i++)box(scene,.95,.035,.025,lx-8.4,2.5-i*.17,lz-9.11,lodgeTrim);
+ // The hotel sits within a neglected estate: four outbuildings surround it at a distance,
+ // leaving the front approach open and giving the grounds a lived-in Victorian layout.
+ const estateStone=mat(0x4a4a45,.98),estateTrim=mat(0x706b60,.94),estateRoof=mat(0x15191b,.98),estateWood=mat(0x211813,.98),estateGlass=new THREE.MeshStandardMaterial({color:0x172027,roughness:.28,metalness:.12,transparent:true,opacity:.48});
+ // The old chapel: a narrow nave, buttresses, pointed gable and a small bell tower.
+ const cx=-43,cz=-16;
+ box(scene,15,.7,22,cx,.35,cz,estateTrim);box(scene,14,8.8,21,cx,4.8,cz,estateStone);
+ roof(scene,15,22,cx,9.2,cz,5.8,0x171a1c);
+ for(const x of [cx-6.7,cx+6.7])for(const z of [cz-8,cz+8]){box(scene,1.15,7.5,1.2,x,4.1,z,estateTrim);const butt=new THREE.Mesh(new THREE.ConeGeometry(.82,1.8,4),estateRoof);butt.position.set(x,8.7,z);butt.rotation.y=Math.PI/4;scene.add(butt)}
+ box(scene,4.8,11,5,cx,13,cz-7.2,estateStone);roof(scene,5.2,5.4,cx,18.6,cz-7.2,3.1,0x111619);
+ const bell=cyl(scene,.42,.55,1.2,cx,17.6,cz-7.2,estateWood,10);bell.rotation.z=.08;
+ box(scene,.22,2.2,.22,cx,21.3,cz-7.2,estateTrim);box(scene,1.35,.2,.22,cx,21.8,cz-7.2,estateTrim);
+ for(const x of [cx-4.5,cx+4.5]){box(scene,2.4,4.4,.32,x,4.9,cz-10.65,estateTrim);box(scene,1.95,3.95,.16,x,4.9,cz-10.86,estateGlass);box(scene,.12,4.0,.12,x,4.9,cz-10.98,estateTrim);box(scene,2.0,.12,.12,x,4.9,cz-10.98,estateTrim)}
+ box(scene,2.8,5,.3,cx,2.8,cz-10.8,estateWood);box(scene,.12,4.8,.12,cx,2.8,cz-11,estateTrim);cyl(scene,.07,.1,3,cx,1.5,cz-13,estateTrim,8);
+ // The carriage house and stable: broad double doors, loft hatch and weathered timber framing.
+ const sx=63,sz=-14;
+ box(scene,17,.75,17,sx,.38,sz,estateTrim);box(scene,16,9.5,16,sx,5.5,sz,estateStone);roof(scene,18,18,sx,10.2,sz,6.3,0x171a1c);
+ box(scene,7.2,6.3,.4,sx,3.45,sz-8.15,estateWood);for(let x=-3;x<=3;x+=1.5)box(scene,.16,6.1,.15,sx+x,3.45,sz-8.42,estateTrim);
+ box(scene,7.5,.22,.2,sx,6.6,sz-8.45,estateTrim);box(scene,3.2,2.1,.22,sx,8.0,sz-8.2,estateWood);for(let x=-1.3;x<=1.3;x+=.65)box(scene,.1,2,.1,sx+x,8,sz-8.35,estateTrim);
+ for(const x of [sx-6.3,sx+6.3]){box(scene,.32,9,.35,x,5.1,sz-8.18,estateTrim);box(scene,.32,9,.35,x,5.1,sz+8.18,estateTrim)}
+ for(let x=-5;x<=5;x+=2.5){box(scene,1.55,2.25,.25,sx+x,5.6,sz-8.18,estateTrim);box(scene,1.25,1.95,.12,sx+x,5.6,sz-8.35,estateGlass)}
+ // Servants' quarters: a smaller two-storey house with a sagging roof and boarded windows.
+ const qx=-43,qz=9;
+ box(scene,14,.65,14,qx,.33,qz,estateTrim);box(scene,13,10.2,13,qx,5.45,qz,estateStone);roof(scene,14.5,14.5,qx,10.7,qz,5.6,0x171a1c);
+ for(const y of [3.5,7.8])for(const x of [qx-4,qx,qx+4]){box(scene,1.8,2.65,.3,x,y,qz-6.7,estateTrim);box(scene,1.48,2.32,.12,x,y,qz-6.9,estateGlass);box(scene,.1,2.3,.1,x,y,qz-7.02,estateTrim);box(scene,1.9,.14,.15,x,y-1.42,qz-6.95,estateTrim)}
+ for(const x of [qx-4,qx+4])for(let b=-1;b<=1;b++)box(scene,2.1,.16,.15,x+b*.12,3.4+b*.48,qz-7.15,estateWood,0,0,b*.04);
+ box(scene,2.1,4.1,.25,qx,2.45,qz-6.8,estateWood);box(scene,.12,4,.12,qx,2.45,qz-7,estateTrim);
+ box(scene,1.1,5,.25,qx-6.6,2.7,qz-4,estateTrim);box(scene,1.1,5,.25,qx+6.6,2.7,qz-4,estateTrim);
+ // A neglected conservatory: iron ribs, cloudy panes, broken roof glass and climbing ivy.
+ const gx=43,gz=17,gw=15,gd=12,gh=6.2;
+ box(scene,gw,.5,gd,gx,.25,gz,estateTrim);
+ const frame=mat(0x292d2b,.62,.72);
+ for(const x of [gx-gw/2,gx+gw/2])for(const z of [gz-gd/2,gz+gd/2])box(scene,.22,gh,.22,x,gh/2,z,frame);
+ for(let x=-6;x<=6;x+=3){box(scene,.13,gh,.13,gx+x,gh/2,gz-gd/2,frame);box(scene,.13,gh,.13,gx+x,gh/2,gz+gd/2,frame)}
+ for(let z=-4;z<=4;z+=2){box(scene,gw,.12,.12,gx,3.2,gz+z,frame)}
+ // translucent wall panes, with a few missing sections to break up the silhouette.
+ for(const x of [-5.7,-2.85,0,2.85,5.7])for(const y of [1.65,4.55]){if((x===2.85&&y===4.55)||(x===-5.7&&y===1.65))continue;box(scene,2.65,2.55,.045,gx+x,y,gz-gd/2+.04,estateGlass);box(scene,.045,2.55,.045,gx+x-1.32,y,gz-gd/2,frame)}
+ for(let x=-6;x<=6;x+=3){const rib=cyl(scene,.075,.1,Math.hypot(gh,gd/2),gx+x,gh+1.1,gz,frame,8);rib.rotation.x=Math.PI/2.45}
+ box(scene,2.3,4.3,.22,gx,2.3,gz-gd/2-.1,estateWood);
+ for(const [x,z] of [[gx-6.8,gz-5.5],[gx+6.5,gz+4.5],[gx-5.8,gz+5.2]]){for(let k=0;k<4;k++){const vine=cyl(scene,.045,.07,1.2,x+k*.18,1.2+k*.8,z,mat(0x29352c,.98),6);vine.rotation.z=-.18}}
+ // Worn paths and isolated lamps link the outbuildings back to the hotel.
+ for(const [x,z] of [[cx,-4],[sx,-4],[qx,1],[gx,10]]){for(let i=0;i<7;i++){const slab=box(scene,1.35,.09,1.05,x+(Math.random()-.5)*1.4,.055,z+i*1.45,mat(0x55554f,.98));slab.rotation.y=(Math.random()-.5)*.18}}
+ point(0x9bb8d5,.8,18,cx,4,cz-12);point(0x9bb8d5,.9,20,sx,4,sz-11);point(0x9bb8d5,.75,18,qx,3,qz-9);point(0x9bb8d5,.8,20,gx,3,gz-9);
  const rainCount=650,arr=new Float32Array(rainCount*3);
  for(let i=0;i<rainCount;i++){arr[i*3]=(Math.random()-.5)*100;arr[i*3+1]=Math.random()*35;arr[i*3+2]=(Math.random()-.5)*90}
  const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.BufferAttribute(arr,3));
