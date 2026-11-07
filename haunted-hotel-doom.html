@@ -123,12 +123,12 @@ function buildExterior(){
  }
  for(let i=0;i<28;i++){const x=(Math.random()-.5)*26,z=5+Math.random()*23;const stoneChip=box(scene,.35+Math.random()*.7,.18,.3+Math.random()*.8,x,.08,z,mat(0x343431));stoneChip.rotation.y=Math.random()*2}
  // A weak light survives in the entrance lanterns.
- lantern(-5,1.2,14);lantern(5,1.2,14);
+ lantern(-5,1.2,14);lantern(5,1.2,14);point(0x9dbde0,1.1,38,0,16,-3);point(0x829fbe,.75,55,-18,18,1);
  // Rain in the forecourt.
  const rainCount=650,arr=new Float32Array(rainCount*3);
  for(let i=0;i<rainCount;i++){arr[i*3]=(Math.random()-.5)*100;arr[i*3+1]=Math.random()*35;arr[i*3+2]=(Math.random()-.5)*90}
  const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.BufferAttribute(arr,3));
- const rain=new THREE.Points(geo,new THREE.PointsMaterial({color:0x778794,size:.045,transparent:true,opacity:.22}));scene.add(rain);rain.userData.rain=true;
+ const rain=new THREE.Points(geo,new THREE.PointsMaterial({color:0xa8bbd0,size:.055,transparent:true,opacity:.30}));scene.add(rain);rain.userData.rain=true;
 }
 function roomShell(cx,cy,cz,w,d,h,wallColor=0x403a33){
  const g=new THREE.Group();g.position.set(cx,cy,cz);scene.add(g);
@@ -200,11 +200,19 @@ function makeAttic(){
 }
 function addDust(){const n=900,a=new Float32Array(n*3);for(let i=0;i<n;i++){a[i*3]=(Math.random()-.5)*100;a[i*3+1]=Math.random()*35;a[i*3+2]=(Math.random()-.5)*100}const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.BufferAttribute(a,3));dust=new THREE.Points(geo,new THREE.PointsMaterial({color:0xc9c2b1,size:.035,transparent:true,opacity:.25}));scene.add(dust)}
 function buildWorld(){
- scene=new THREE.Scene();scene.background=new THREE.Color(0x080c10);scene.fog=new THREE.FogExp2(0x10171a,.009);
+ scene=new THREE.Scene();scene.background=new THREE.Color(0x111b29);scene.fog=new THREE.FogExp2(0x263342,.0048);
  camera=new THREE.PerspectiveCamera(72,innerWidth/innerHeight,.1,500);
- renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:'high-performance'});renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.6));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=.82;world.appendChild(renderer.domElement);
- scene.add(new THREE.HemisphereLight(0x87939a,0x171613,.48));const moon=new THREE.DirectionalLight(0x9aadc0,1.05);moon.position.set(-25,42,25);moon.castShadow=true;moon.shadow.mapSize.set(1024,1024);scene.add(moon);
- const ground=new THREE.Mesh(new THREE.PlaneGeometry(500,500),mat(0x1b201e));ground.rotation.x=-Math.PI/2;ground.position.y=-.1;ground.receiveShadow=true;scene.add(ground);
+ renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:'high-performance'});renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.6));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.08;world.appendChild(renderer.domElement);
+ scene.add(new THREE.HemisphereLight(0xc5d4e6,0x34312e,.88));const moon=new THREE.DirectionalLight(0xc4d9f2,1.85);moon.position.set(-42,68,28);moon.castShadow=true;moon.shadow.mapSize.set(1024,1024);scene.add(moon);
+ // Full moon and soft halo, visible above the left roofline from the front approach.
+ const moonGlow=new THREE.Mesh(new THREE.SphereGeometry(13,24,18),new THREE.MeshBasicMaterial({color:0x9eb8d5,transparent:true,opacity:.10,depthWrite:false}));
+ moonGlow.position.set(-49,58,-112);scene.add(moonGlow);
+ const moonDisc=new THREE.Mesh(new THREE.SphereGeometry(8.2,32,24),new THREE.MeshBasicMaterial({color:0xe2eaf2}));
+ moonDisc.position.set(-49,58,-115);scene.add(moonDisc);
+ const moonHalo=new THREE.Mesh(new THREE.SphereGeometry(10.2,32,24),new THREE.MeshBasicMaterial({color:0xb8cce0,transparent:true,opacity:.13,depthWrite:false}));
+ moonHalo.position.copy(moonDisc.position);scene.add(moonHalo);
+
+ const ground=new THREE.Mesh(new THREE.PlaneGeometry(500,500),mat(0x343a39));ground.rotation.x=-Math.PI/2;ground.position.y=-.1;ground.receiveShadow=true;scene.add(ground);
  buildExterior();makeLobby();makeBallroom();makeGuestWing();makeBasement();makeAttic();
  stormLight=new THREE.PointLight(0xc8dfff,0,260,1.2);stormLight.position.set(0,40,10);scene.add(stormLight);addDust();
 }
