@@ -187,24 +187,34 @@ function buildExterior(){
     const mound=new THREE.Mesh(new THREE.SphereGeometry(1,12,8),new THREE.MeshStandardMaterial({color:0x242b25,roughness:1}));mound.scale.set(1.2,.19,1.85);mound.position.set(x,.06,z-1.1);mound.receiveShadow=true;scene.add(mound);
     box(scene,1.55,.16,2.55,x,.12,z-.9,moss);
     const marker=new THREE.Group();marker.position.set(x,.2,z);marker.rotation.z=((row*3+col)%2?-.045:.035);scene.add(marker);
+    // Individually shaped Victorian headstones: thick stone, softened shoulders and a true arched crown.
+    const silhouette=new THREE.Shape();
+    const half=.53,bodyH=h*.78,shoulder=bodyH-.18,top=bodyH+.42;
+    silhouette.moveTo(-half,0);silhouette.lineTo(half,0);silhouette.lineTo(half,shoulder);
+    silhouette.quadraticCurveTo(half,top,.22,top);
+    silhouette.quadraticCurveTo(0,top+.12,-.22,top);
+    silhouette.quadraticCurveTo(-half,top,-half,shoulder);silhouette.closePath();
+    const carved=new THREE.Mesh(new THREE.ExtrudeGeometry(silhouette,{depth:.34,steps:1,bevelEnabled:true,bevelSegments:3,bevelSize:.045,bevelThickness:.055,curveSegments:12}),stoneMat);
+    carved.position.set(0,.18,0);carved.castShadow=true;carved.receiveShadow=true;marker.add(carved);
+    // A few graves have a broken crown or a small stone cross instead of a perfect arch.
     if((row+col)%5===0){
-     // A worn cross headstone with a broad foot and softened edges.
-     box(marker,.92,.2,.28,0,.12,0,stoneMat);
-     box(marker,.28,h+.65,.3,0,(h+.65)/2+.12,0,stoneMat);
-     box(marker,1.05,.24,.32,0,h*.67+.15,0,stoneMat);
-    }else if((row+col)%7===0){
-     box(marker,1.0,.2,.32,0,.1,0,stoneMat);
-     box(marker,.88,h,.32,0,h/2+.2,0,stoneMat);
-     const top=new THREE.Mesh(new THREE.SphereGeometry(.45,12,8,0,Math.PI*2,0,Math.PI/2),stoneMat);top.position.set(0,h+.2,0);top.scale.set(1,.75,.7);marker.add(top);
-    }else{
-     box(marker,1.12,.2,.35,0,.1,0,stoneMat);
-     box(marker,.98,h*.72,.32,0,h*.36+.2,0,stoneMat);
-     const arch=new THREE.Mesh(new THREE.CylinderGeometry(.49,.49,.32,16,1,false,0,Math.PI),stoneMat);arch.rotation.x=Math.PI/2;arch.position.set(0,h*.72+.2,0);marker.add(arch);
+     box(marker,.18,.72,.20,0,bodyH+.38,.13,stoneMat);
+     box(marker,.78,.17,.22,0,bodyH+.48,.13,stoneMat);
+    }else if((row+col)%6===0){
+     const chip=box(marker,.23,.42,.24,.36,top+.02,.12,darkStone);chip.rotation.z=-.28;
     }
-    // Recessed inscription panel and weather streaks.
-    box(marker,.56,.38,.025,0,h*.43+.22,.18,mat(0x343a37,.98));
-    for(let k=0;k<3;k++)box(marker,.28+(k%2)*.1,.018,.03,0,h*.4+.18+k*.09,.205,oldStone);
-    if((row+col)%4===0){const crack=box(marker,.035,h*.48,.035,.28,h*.45+.2,.21,darkStone);crack.rotation.z=.16}
+    // Recessed dark inscription tablet, raised border and fine engraved rules.
+    box(marker,.66,.62,.025,0,bodyH*.48+.2,.365,mat(0x343a37,.99));
+    box(marker,.73,.045,.055,0,bodyH*.48+.53,.37,oldStone);
+    box(marker,.73,.045,.055,0,bodyH*.48-.13,.37,oldStone);
+    box(marker,.045,.66,.055,-.36,bodyH*.48+.2,.37,oldStone);
+    box(marker,.045,.66,.055,.36,bodyH*.48+.2,.37,oldStone);
+    for(let k=0;k<3;k++)box(marker,.32+(k%2)*.08,.018,.018,0,bodyH*.42+.18+k*.105,.405,oldStone);
+    // Water stains and hairline fractures run down the face of the older stones.
+    if((row+col)%3===0){const crack=box(marker,.025,bodyH*.52,.025,.25,bodyH*.46+.2,.39,darkStone);crack.rotation.z=.12}
+    if((row+col)%4===0){const stain=box(marker,.09,.32,.018,-.29,bodyH*.72+.18,.37,moss);stain.rotation.z=-.08}
+    // Some markers have settled at an angle over decades.
+    if((row*3+col)%8===0)marker.rotation.z+=.13;
    }
   }
  }
