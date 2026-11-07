@@ -385,19 +385,21 @@ function makeAttic(){
 }
 function addDust(){const n=900,a=new Float32Array(n*3);for(let i=0;i<n;i++){a[i*3]=(Math.random()-.5)*100;a[i*3+1]=Math.random()*35;a[i*3+2]=(Math.random()-.5)*100}const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.BufferAttribute(a,3));dust=new THREE.Points(geo,new THREE.PointsMaterial({color:0xc9c2b1,size:.035,transparent:true,opacity:.25}));scene.add(dust)}
 function addCemeteryMist(){
- const size=64,data=new Uint8Array(size*size*4);
+ const size=96,data=new Uint8Array(size*size*4);
  for(let y=0;y<size;y++)for(let x=0;x<size;x++){
   const dx=(x-size/2)/(size/2),dy=(y-size/2)/(size/2),r=dx*dx+dy*dy;
-  const alpha=Math.max(0,Math.exp(-r*4.8)-Math.exp(-4.8))*105;
-  const i=(y*size+x)*4;data[i]=190;data[i+1]=202;data[i+2]=211;data[i+3]=Math.round(alpha);
+  const alpha=Math.max(0,Math.exp(-r*3.7)-Math.exp(-3.7))*220;
+  const i=(y*size+x)*4;data[i]=190;data[i+1]=204;data[i+2]=218;data[i+3]=Math.round(alpha);
  }
  const tex=new THREE.DataTexture(data,size,size,THREE.RGBAFormat);tex.needsUpdate=true;
- cemeteryMist=new THREE.Group();cemeteryMist.position.set(0,0,13);scene.add(cemeteryMist);
- for(let i=0;i<24;i++){
-  const sprite=new THREE.Sprite(new THREE.SpriteMaterial({map:tex,color:0xb9c8d2,transparent:true,opacity:.17,depthWrite:false}));
-  sprite.position.set((Math.random()-.5)*43,.38+Math.random()*.85,(Math.random()-.5)*23);
-  const w=7+Math.random()*8;sprite.scale.set(w,1.5+Math.random()*1.8,1);
-  cemeteryMist.add(sprite);
+ cemeteryMist=new THREE.Group();cemeteryMist.position.set(0,.12,17);scene.add(cemeteryMist);
+ const fogMat=new THREE.MeshBasicMaterial({map:tex,color:0xc6d4df,transparent:true,opacity:.52,depthWrite:false,side:THREE.DoubleSide});
+ for(let i=0;i<22;i++){
+  const patch=new THREE.Mesh(new THREE.PlaneGeometry(1,1),fogMat);
+  patch.rotation.x=-Math.PI/2;
+  patch.position.set((Math.random()-.5)*39,.015+Math.random()*.025,(Math.random()-.5)*28);
+  const w=8+Math.random()*9;patch.scale.set(w,5+Math.random()*5,1);
+  patch.renderOrder=2;cemeteryMist.add(patch);
  }
 }
 function buildWorld(){
