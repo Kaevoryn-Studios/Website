@@ -725,14 +725,34 @@ function showToast(msg){toast.textContent=msg;toast.style.display='block';setTim
 function playDoorSound(opening){
  if(!doorAudio)return;
  const ctx=doorAudio,now=ctx.currentTime;
- const noiseBuffer=ctx.createBuffer(1,Math.floor(ctx.sampleRate*2.8),ctx.sampleRate),data=noiseBuffer.getChannelData(0);
- for(let i=0;i<data.length;i++)data[i]=(Math.random()*2-1)*(.7+Math.sin(i*.00013)*.3);
- const noise=ctx.createBufferSource();noise.buffer=noiseBuffer;
- const filter=ctx.createBiquadFilter();filter.type='bandpass';filter.frequency.setValueAtTime(opening?390:170,now);filter.frequency.exponentialRampToValueAtTime(opening?720:95,now+2.1);filter.Q.value=opening?0.7:1.1;
- const gain=ctx.createGain();gain.gain.setValueAtTime(.0001,now);gain.gain.linearRampToValueAtTime(opening?.19:.25,now+.22);gain.gain.exponentialRampToValueAtTime(.0001,now+2.65);
- noise.connect(filter);filter.connect(gain);gain.connect(ctx.destination);noise.start(now);noise.stop(now+2.7);
- const osc=ctx.createOscillator(),og=ctx.createGain();osc.type='sawtooth';osc.frequency.setValueAtTime(opening?78:54,now);osc.frequency.exponentialRampToValueAtTime(opening?43:31,now+2.25);og.gain.setValueAtTime(.0001,now);og.gain.linearRampToValueAtTime(opening?.075:.12,now+.12);og.gain.exponentialRampToValueAtTime(.0001,now+2.4);osc.connect(og);og.connect(ctx.destination);osc.start(now);osc.stop(now+2.45);
- if(!opening){const thump=ctx.createOscillator(),tg=ctx.createGain();thump.type='sine';thump.frequency.setValueAtTime(72,now);thump.frequency.exponentialRampToValueAtTime(34,now+.32);tg.gain.setValueAtTime(.22,now);tg.gain.exponentialRampToValueAtTime(.0001,now+.42);thump.connect(tg);tg.connect(ctx.destination);thump.start(now);thump.stop(now+.44)}
+ // Use irregular, filtered wood-and-hinge friction rather than pitched electronic oscillators.
+ const length=Math.floor(ctx.sampleRate*3.1),buffer=ctx.createBuffer(1,length,ctx.sampleRate),samples=buffer.getChannelData(0);
+ let seed=Date.now()|0;
+ for(let i=0;i<length;i++){seed=(seed*1664525+1013904223)|0;samples[i]=((seed>>>8)/8388608-1)*(.72+Math.sin(i*.000071)*.12);}
+ function friction(at,duration,startHz,endHz,level,q){
+  const src=ctx.createBufferSource();src.buffer=buffer;
+  const band=ctx.createBiquadFilter();band.type='bandpass';band.Q.value=q;
+  band.frequency.setValueAtTime(startHz,at);band.frequency.exponentialRampToValueAtTime(endHz,at+duration*.82);
+  const body=ctx.createBiquadFilter();body.type='lowpass';body.frequency.setValueAtTime(1250,at);body.frequency.exponentialRampToValueAtTime(520,at+duration);
+  const env=ctx.createGain();env.gain.setValueAtTime(.0001,at);env.gain.linearRampToValueAtTime(level,at+.09);env.gain.setValueAtTime(level*.72,at+duration*.38);env.gain.exponentialRampToValueAtTime(.0001,at+duration);
+  src.connect(band);band.connect(body);body.connect(env);env.connect(ctx.destination);
+  src.start(at,Math.random()*.3,duration);src.stop(at+duration+.02);
+ }
+ if(opening){
+  friction(now,.92,185,390,.22,2.2);
+  friction(now+.48,1.08,260,510,.19,2.8);
+  friction(now+1.16,.88,145,315,.24,2.0);
+  friction(now+1.72,.62,220,430,.16,2.4);
+ }else{
+  friction(now,.72,300,190,.18,2.4);
+  friction(now+.42,.86,210,125,.2,2.1);
+  // A short, dense low wooden impact: filtered broadband energy, not a synthetic beep.
+  const at=now+1.28,impact=ctx.createBufferSource();impact.buffer=buffer;
+  const low=ctx.createBiquadFilter();low.type='lowpass';low.frequency.setValueAtTime(190,at);low.frequency.exponentialRampToValueAtTime(75,at+.34);
+  const knock=ctx.createBiquadFilter();knock.type='peaking';knock.frequency.value=118;knock.Q.value=1.1;knock.gain.value=5;
+  const env=ctx.createGain();env.gain.setValueAtTime(.0001,at);env.gain.linearRampToValueAtTime(.42,at+.012);env.gain.exponentialRampToValueAtTime(.0001,at+.48);
+  impact.connect(low);low.connect(knock);knock.connect(env);env.connect(ctx.destination);impact.start(at,.72,.5);impact.stop(at+.52);
+ }
 }
 function start(){try{const AC=window.AudioContext||window.webkitAudioContext;if(AC){doorAudio=doorAudio||new AC();if(doorAudio.state==='suspended')doorAudio.resume()}}catch(e){doorAudio=null}started=true;document.getElementById('intro').style.display='none';goPlace('grounds');caption.textContent='THE HOLLOW CROWN HOTEL · THE FRONT DOORS AWAIT'}
 function frame(t){requestAnimationFrame(frame);const dt=Math.min(.05,(t-(clock||t))/1000||.016);clock=t;
