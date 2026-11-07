@@ -32,7 +32,7 @@
 <script>
 (()=>{'use strict';
 const world=document.getElementById('world'),enter=document.getElementById('enter'),message=document.getElementById('message'),caption=document.getElementById('caption'),toast=document.getElementById('toast');
-let THREE,scene,camera,renderer,started=false,yaw=0,pitch=0,drag=false,lastX=0,lastY=0,keys={},padX=0,padY=0,clock=0,lamps=[],dust,stormLight,cemeteryMist,bats=[],current='grounds',cemeteryGateLeaves=[],gateOpen=false,hotelDoorLeaves=[],hotelDoorOpen=false,doorAudio=null;
+let THREE,scene,camera,renderer,started=false,yaw=0,pitch=0,drag=false,lastX=0,lastY=0,keys={},padX=0,padY=0,clock=0,lamps=[],dust,stormLight,cemeteryMist,bats=[],current='grounds',cemeteryGateLeaves=[],gateOpen=false,hotelDoorLeaves=[],hotelDoorOpen=false;
 const mats={};
 function mat(c,r=.82,m=0){const k=[c,r,m].join(':');return mats[k]||(mats[k]=new THREE.MeshStandardMaterial({color:c,roughness:r,metalness:m}))}
 function box(parent,w,h,d,x,y,z,m,rx=0,ry=0,rz=0){const o=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m);o.position.set(x,y,z);o.rotation.set(rx,ry,rz);o.castShadow=true;o.receiveShadow=true;parent.add(o);return o}
@@ -722,58 +722,7 @@ const places={
 };
 function goPlace(name){const p=places[name];if(!p)return;current=name;camera.position.set(...p.pos);yaw=p.yaw;pitch=p.pitch;camera.rotation.order='YXZ';camera.rotation.y=yaw;camera.rotation.x=pitch;document.getElementById('nav').classList.remove('open');caption.textContent=p.line;toast.style.display='none';}
 function showToast(msg){toast.textContent=msg;toast.style.display='block';setTimeout(()=>toast.style.display='none',2400)}
-function playDoorSound(opening,gate=false){
- if(!doorAudio)return;
- const ctx=doorAudio;
- const schedule=()=>{
- const now=ctx.currentTime;
- // Filtered friction layers; gates use brighter iron resonance, doors use heavier wood.
- const length=Math.floor(ctx.sampleRate*3.2),buffer=ctx.createBuffer(1,length,ctx.sampleRate),samples=buffer.getChannelData(0);
- let seed=(Date.now()+(gate?9137:0))|0;
- for(let i=0;i<length;i++){seed=(seed*1664525+1013904223)|0;samples[i]=((seed>>>8)/8388608-1)*(.72+Math.sin(i*.000071)*.12);}
- function friction(at,duration,startHz,endHz,level,q){
-  const src=ctx.createBufferSource();src.buffer=buffer;
-  const band=ctx.createBiquadFilter();band.type='bandpass';band.Q.value=q;
-  band.frequency.setValueAtTime(startHz,at);band.frequency.exponentialRampToValueAtTime(endHz,at+duration*.82);
-  const body=ctx.createBiquadFilter();body.type='lowpass';body.frequency.setValueAtTime(gate?2600:1500,at);body.frequency.exponentialRampToValueAtTime(gate?1250:650,at+duration);
-  const env=ctx.createGain(),loud=level*(gate?1.65:2.0);
-  env.gain.setValueAtTime(.0001,at);env.gain.linearRampToValueAtTime(loud,at+.09);env.gain.setValueAtTime(loud*.72,at+duration*.38);env.gain.exponentialRampToValueAtTime(.0001,at+duration);
-  src.connect(band);band.connect(body);body.connect(env);env.connect(ctx.destination);
-  src.start(at,Math.random()*.3,duration);src.stop(at+duration+.02);
- }
- if(gate){
-  if(opening){
-   friction(now,.85,680,1120,.24,3.2);
-   friction(now+.34,1.12,920,1450,.22,3.8);
-   friction(now+1.05,.92,520,980,.27,3.0);
-   friction(now+1.58,.72,780,1280,.2,3.4);
-   friction(now+.18,.22,1450,850,.13,5.0);
-  }else{
-   friction(now,.72,1150,760,.24,3.5);
-   friction(now+.38,.82,850,510,.27,3.1);
-   friction(now+1.02,.56,1200,690,.2,4.2);
-   // Heavy iron latch and gate meeting its stop.
-   friction(now+1.34,.34,980,420,.34,4.8);
-  }
- }else if(opening){
-  friction(now,.92,185,390,.44,2.2);
-  friction(now+.48,1.08,260,510,.38,2.8);
-  friction(now+1.16,.88,145,315,.48,2.0);
-  friction(now+1.72,.62,220,430,.32,2.4);
- }else{
-  friction(now,.72,300,190,.36,2.4);
-  friction(now+.42,.86,210,125,.4,2.1);
-  // Dense low-frequency wooden impact, with no pitched electronic tone.
-  const at=now+1.28,impact=ctx.createBufferSource();impact.buffer=buffer;
-  const low=ctx.createBiquadFilter();low.type='lowpass';low.frequency.setValueAtTime(190,at);low.frequency.exponentialRampToValueAtTime(75,at+.34);
-  const knock=ctx.createBiquadFilter();knock.type='peaking';knock.frequency.value=118;knock.Q.value=1.1;knock.gain.value=5;
-  const env=ctx.createGain();env.gain.setValueAtTime(.0001,at);env.gain.linearRampToValueAtTime(.68,at+.012);env.gain.exponentialRampToValueAtTime(.0001,at+.48);
-  impact.connect(low);low.connect(knock);knock.connect(env);env.connect(ctx.destination);impact.start(at,.72,.5);impact.stop(at+.52);
- }
- };
- if(ctx.state==='running')schedule();else ctx.resume().then(()=>{if(ctx.state==='running')schedule()}).catch(()=>{});
-}
-function start(){try{const AC=window.AudioContext||window.webkitAudioContext;if(AC){doorAudio=doorAudio||new AC();if(doorAudio.state==='suspended')doorAudio.resume().catch(()=>{})}}catch(e){doorAudio=null}started=true;document.getElementById('intro').style.display='none';goPlace('grounds');caption.textContent='THE HOLLOW CROWN HOTEL · THE FRONT DOORS AWAIT'}
+function start(){started=true;document.getElementById('intro').style.display='none';goPlace('grounds');caption.textContent='THE HOLLOW CROWN HOTEL · THE FRONT DOORS AWAIT'}
 function frame(t){requestAnimationFrame(frame);const dt=Math.min(.05,(t-(clock||t))/1000||.016);clock=t;
  if(started){const f=(keys.w||keys.arrowup?1:0)-(keys.s||keys.arrowdown?1:0)+padY,s=(keys.d||keys.arrowright?1:0)-(keys.a||keys.arrowleft?1:0)+padX;const moving=Math.abs(f)+Math.abs(s)>.08;const moveScale=moving?5*dt/Math.max(1,Math.hypot(f,s)):0;camera.position.x+=(-Math.sin(yaw)*f+Math.cos(yaw)*s)*moveScale;camera.position.z+=(-Math.cos(yaw)*f-Math.sin(yaw)*s)*moveScale;camera.position.x=Math.max(-35,Math.min(310,camera.position.x));camera.position.z=Math.max(-25,Math.min(65,camera.position.z));// Follow the actual stair treads in the Grand Lobby so the player climbs instead of hovering at ground-floor height.
  let floorEye=places[current].pos[1];
@@ -787,9 +736,9 @@ function frame(t){requestAnimationFrame(frame);const dt=Math.min(.05,(t-(clock||
   }
  }
  camera.position.y=floorEye+(moving?Math.abs(Math.sin(t*.009))*.045:0);camera.rotation.order='YXZ';camera.rotation.y=yaw;camera.rotation.x=pitch}
- const gateDistance=Math.hypot(camera.position.x,camera.position.z-27);const shouldOpen=started&&current==='grounds'&&gateDistance<9;if(shouldOpen!==gateOpen){gateOpen=shouldOpen;showToast(gateOpen?'THE IRON GATES GROAN OPEN…':'THE IRON GATES SWING SHUT…');playDoorSound(gateOpen,true)}cemeteryGateLeaves.forEach(({leaf,side})=>{const target=gateOpen?-side*1.02:0;leaf.rotation.y+=(target-leaf.rotation.y)*Math.min(1,dt*1.7)});
+ const gateDistance=Math.hypot(camera.position.x,camera.position.z-27);const shouldOpen=started&&current==='grounds'&&gateDistance<9;if(shouldOpen!==gateOpen){gateOpen=shouldOpen;showToast(gateOpen?'THE IRON GATES GROAN OPEN…':'THE IRON GATES SWING SHUT…')}cemeteryGateLeaves.forEach(({leaf,side})=>{const target=gateOpen?-side*1.02:0;leaf.rotation.y+=(target-leaf.rotation.y)*Math.min(1,dt*1.7)});
  const doorDistance=Math.hypot(camera.position.x,camera.position.z+5.5);const shouldOpenDoors=started&&current==='grounds'&&doorDistance<15;
- if(shouldOpenDoors!==hotelDoorOpen){hotelDoorOpen=shouldOpenDoors;showToast(hotelDoorOpen?'THE HOTEL DOORS GROAN OPEN…':'THE HOTEL DOORS THUD SHUT…');playDoorSound(hotelDoorOpen)}
+ if(shouldOpenDoors!==hotelDoorOpen){hotelDoorOpen=shouldOpenDoors;showToast(hotelDoorOpen?'THE HOTEL DOORS GROAN OPEN…':'THE HOTEL DOORS THUD SHUT…')}
  hotelDoorLeaves.forEach(({leaf,side})=>{const target=hotelDoorOpen?-side*1.48:0;leaf.rotation.y+=(target-leaf.rotation.y)*Math.min(1,dt*1.15)});
  if(current==='grounds'&&camera.position.z<-7.45&&Math.abs(camera.position.x)<2.65){const clear=hotelDoorLeaves.every(({leaf})=>Math.abs(leaf.rotation.y)>1.25);if(clear){goPlace('lobby');showToast('WELCOME TO THE HOLLOW CROWN…')}else camera.position.z=-7.45;}
  lamps.forEach(({l,intensity},i)=>l.intensity=intensity+Math.sin(t*.0013+i*1.7)*.09);
