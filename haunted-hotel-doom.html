@@ -722,37 +722,52 @@ const places={
 };
 function goPlace(name){const p=places[name];if(!p)return;current=name;camera.position.set(...p.pos);yaw=p.yaw;pitch=p.pitch;camera.rotation.order='YXZ';camera.rotation.y=yaw;camera.rotation.x=pitch;document.getElementById('nav').classList.remove('open');caption.textContent=p.line;toast.style.display='none';}
 function showToast(msg){toast.textContent=msg;toast.style.display='block';setTimeout(()=>toast.style.display='none',2400)}
-function playDoorSound(opening){
+function playDoorSound(opening,gate=false){
  if(!doorAudio)return;
  const ctx=doorAudio;
  const schedule=()=>{
  const now=ctx.currentTime;
- // Use irregular, filtered wood-and-hinge friction rather than pitched electronic oscillators.
- const length=Math.floor(ctx.sampleRate*3.1),buffer=ctx.createBuffer(1,length,ctx.sampleRate),samples=buffer.getChannelData(0);
- let seed=Date.now()|0;
+ // Filtered friction layers; gates use brighter iron resonance, doors use heavier wood.
+ const length=Math.floor(ctx.sampleRate*3.2),buffer=ctx.createBuffer(1,length,ctx.sampleRate),samples=buffer.getChannelData(0);
+ let seed=(Date.now()+(gate?9137:0))|0;
  for(let i=0;i<length;i++){seed=(seed*1664525+1013904223)|0;samples[i]=((seed>>>8)/8388608-1)*(.72+Math.sin(i*.000071)*.12);}
  function friction(at,duration,startHz,endHz,level,q){
   const src=ctx.createBufferSource();src.buffer=buffer;
   const band=ctx.createBiquadFilter();band.type='bandpass';band.Q.value=q;
   band.frequency.setValueAtTime(startHz,at);band.frequency.exponentialRampToValueAtTime(endHz,at+duration*.82);
-  const body=ctx.createBiquadFilter();body.type='lowpass';body.frequency.setValueAtTime(1250,at);body.frequency.exponentialRampToValueAtTime(520,at+duration);
-  const env=ctx.createGain();env.gain.setValueAtTime(.0001,at);env.gain.linearRampToValueAtTime(level,at+.09);env.gain.setValueAtTime(level*.72,at+duration*.38);env.gain.exponentialRampToValueAtTime(.0001,at+duration);
+  const body=ctx.createBiquadFilter();body.type='lowpass';body.frequency.setValueAtTime(gate?2600:1500,at);body.frequency.exponentialRampToValueAtTime(gate?1250:650,at+duration);
+  const env=ctx.createGain(),loud=level*(gate?1.65:2.0);
+  env.gain.setValueAtTime(.0001,at);env.gain.linearRampToValueAtTime(loud,at+.09);env.gain.setValueAtTime(loud*.72,at+duration*.38);env.gain.exponentialRampToValueAtTime(.0001,at+duration);
   src.connect(band);band.connect(body);body.connect(env);env.connect(ctx.destination);
   src.start(at,Math.random()*.3,duration);src.stop(at+duration+.02);
  }
- if(opening){
-  friction(now,.92,185,390,.22,2.2);
-  friction(now+.48,1.08,260,510,.19,2.8);
-  friction(now+1.16,.88,145,315,.24,2.0);
-  friction(now+1.72,.62,220,430,.16,2.4);
+ if(gate){
+  if(opening){
+   friction(now,.85,680,1120,.24,3.2);
+   friction(now+.34,1.12,920,1450,.22,3.8);
+   friction(now+1.05,.92,520,980,.27,3.0);
+   friction(now+1.58,.72,780,1280,.2,3.4);
+   friction(now+.18,.22,1450,850,.13,5.0);
+  }else{
+   friction(now,.72,1150,760,.24,3.5);
+   friction(now+.38,.82,850,510,.27,3.1);
+   friction(now+1.02,.56,1200,690,.2,4.2);
+   // Heavy iron latch and gate meeting its stop.
+   friction(now+1.34,.34,980,420,.34,4.8);
+  }
+ }else if(opening){
+  friction(now,.92,185,390,.44,2.2);
+  friction(now+.48,1.08,260,510,.38,2.8);
+  friction(now+1.16,.88,145,315,.48,2.0);
+  friction(now+1.72,.62,220,430,.32,2.4);
  }else{
-  friction(now,.72,300,190,.18,2.4);
-  friction(now+.42,.86,210,125,.2,2.1);
-  // A short, dense low wooden impact: filtered broadband energy, not a synthetic beep.
+  friction(now,.72,300,190,.36,2.4);
+  friction(now+.42,.86,210,125,.4,2.1);
+  // Dense low-frequency wooden impact, with no pitched electronic tone.
   const at=now+1.28,impact=ctx.createBufferSource();impact.buffer=buffer;
   const low=ctx.createBiquadFilter();low.type='lowpass';low.frequency.setValueAtTime(190,at);low.frequency.exponentialRampToValueAtTime(75,at+.34);
   const knock=ctx.createBiquadFilter();knock.type='peaking';knock.frequency.value=118;knock.Q.value=1.1;knock.gain.value=5;
-  const env=ctx.createGain();env.gain.setValueAtTime(.0001,at);env.gain.linearRampToValueAtTime(.42,at+.012);env.gain.exponentialRampToValueAtTime(.0001,at+.48);
+  const env=ctx.createGain();env.gain.setValueAtTime(.0001,at);env.gain.linearRampToValueAtTime(.68,at+.012);env.gain.exponentialRampToValueAtTime(.0001,at+.48);
   impact.connect(low);low.connect(knock);knock.connect(env);env.connect(ctx.destination);impact.start(at,.72,.5);impact.stop(at+.52);
  }
  };
@@ -772,7 +787,7 @@ function frame(t){requestAnimationFrame(frame);const dt=Math.min(.05,(t-(clock||
   }
  }
  camera.position.y=floorEye+(moving?Math.abs(Math.sin(t*.009))*.045:0);camera.rotation.order='YXZ';camera.rotation.y=yaw;camera.rotation.x=pitch}
- const gateDistance=Math.hypot(camera.position.x,camera.position.z-27);const shouldOpen=started&&current==='grounds'&&gateDistance<9;if(shouldOpen!==gateOpen){gateOpen=shouldOpen;showToast(gateOpen?'THE IRON GATES GROAN OPEN…':'THE IRON GATES SWING SHUT…')}cemeteryGateLeaves.forEach(({leaf,side})=>{const target=gateOpen?-side*1.02:0;leaf.rotation.y+=(target-leaf.rotation.y)*Math.min(1,dt*1.7)});
+ const gateDistance=Math.hypot(camera.position.x,camera.position.z-27);const shouldOpen=started&&current==='grounds'&&gateDistance<9;if(shouldOpen!==gateOpen){gateOpen=shouldOpen;showToast(gateOpen?'THE IRON GATES GROAN OPEN…':'THE IRON GATES SWING SHUT…');playDoorSound(gateOpen,true)}cemeteryGateLeaves.forEach(({leaf,side})=>{const target=gateOpen?-side*1.02:0;leaf.rotation.y+=(target-leaf.rotation.y)*Math.min(1,dt*1.7)});
  const doorDistance=Math.hypot(camera.position.x,camera.position.z+5.5);const shouldOpenDoors=started&&current==='grounds'&&doorDistance<15;
  if(shouldOpenDoors!==hotelDoorOpen){hotelDoorOpen=shouldOpenDoors;showToast(hotelDoorOpen?'THE HOTEL DOORS GROAN OPEN…':'THE HOTEL DOORS THUD SHUT…');playDoorSound(hotelDoorOpen)}
  hotelDoorLeaves.forEach(({leaf,side})=>{const target=hotelDoorOpen?-side*1.48:0;leaf.rotation.y+=(target-leaf.rotation.y)*Math.min(1,dt*1.15)});
