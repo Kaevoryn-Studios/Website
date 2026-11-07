@@ -135,101 +135,96 @@ function buildExterior(){
  }
  // A proper neglected Victorian burial ground, divided from the approach by a heavy iron entrance.
  const iron=mat(0x171b1c,.38,.82),ironEdge=mat(0x514337,.58,.72),pierStone=mat(0x625e54,.96),oldStone=mat(0x77766d,.96),darkStone=mat(0x444741,.98),moss=mat(0x303b32,.98);
- // Massive Victorian cemetery entrance: carved stone piers and an ornate, partly open iron gate.
- for(const x of [-9.2,9.2]){
-  box(scene,2.5,.62,2.35,x,.31,27,pierStone);
-  box(scene,2.12,.22,2.05,x,.72,27,oldStone);
-  box(scene,1.82,4.65,1.72,x,3.05,27,pierStone);
-  // Recessed front panel with a raised stone surround.
-  box(scene,1.28,2.95,.09,x,3.05,26.1,darkStone);
-  box(scene,1.43,.13,.16,x,4.62,26.02,oldStone);
-  box(scene,1.43,.13,.16,x,1.48,26.02,oldStone);
-  box(scene,.13,3.18,.16,x-.72,3.05,26.02,oldStone);
-  box(scene,.13,3.18,.16,x+.72,3.05,26.02,oldStone);
-  // Heavy cap, stepped cornice and weathered pointed finial.
-  box(scene,2.25,.3,2.12,x,5.52,27,oldStone);
-  box(scene,1.9,.18,1.85,x,5.77,27,pierStone);
-  const cap=new THREE.Mesh(new THREE.ConeGeometry(1.25,1.55,4),pierStone);cap.position.set(x,6.58,27);cap.rotation.y=Math.PI/4;cap.castShadow=true;scene.add(cap);
-  const fin=new THREE.Mesh(new THREE.SphereGeometry(.2,12,10),ironEdge);fin.position.set(x,7.39,27);fin.castShadow=true;scene.add(fin);
-  // Weathering streaks and small iron wall lanterns.
-  for(let k=0;k<3;k++){const streak=box(scene,.035,.8,.025,x-.43+k*.42,3.9,26.0,moss);streak.rotation.z=(k-1)*.08}
-  box(scene,.42,.5,.38,x+(x<0?1.22:-1.22),3.45,26.0,iron);
-  const lamp=new THREE.Mesh(new THREE.OctahedronGeometry(.22,0),mat(0x9b9871,.4,.3,{emissive:0x554326,emissiveIntensity:.45}));lamp.position.set(x+(x<0?1.22:-1.22),3.85,26);scene.add(lamp);
+ // Rebuilt cemetery entrance: two substantial stone piers, a clearly visible double gate,
+ // and one continuous perimeter fence with front returns that physically meet the gate piers.
+ const iron=mat(0x171b1c,.38,.82),ironEdge=mat(0x665541,.58,.72),pierStone=mat(0x625e54,.96),oldStone=mat(0x77766d,.96),darkStone=mat(0x444741,.98),moss=mat(0x303b32,.98);
+ const gateZ=26.5,hingeX=9.25,openingHalf=9.25;
+ function gatePier(x){
+  box(scene,2.55,.62,2.35,x,.31,gateZ,pierStone);
+  box(scene,2.18,.22,2.05,x,.72,gateZ,oldStone);
+  box(scene,1.86,4.8,1.78,x,3.12,gateZ,pierStone);
+  box(scene,1.34,3.0,.12,x,3.12,gateZ-.94,darkStone);
+  for(const yy of [1.55,4.69])box(scene,1.52,.14,.18,x,yy,gateZ-.99,oldStone);
+  for(const xx of [-.76,.76])box(scene,.14,3.2,.18,x+xx,3.12,gateZ-.99,oldStone);
+  box(scene,2.35,.32,2.18,x,5.62,gateZ,oldStone);
+  box(scene,2.02,.18,1.92,x,5.86,gateZ,pierStone);
+  const cap=new THREE.Mesh(new THREE.ConeGeometry(1.28,1.55,4),pierStone);
+  cap.position.set(x,6.72,gateZ);cap.rotation.y=Math.PI/4;cap.castShadow=true;scene.add(cap);
+  sphere(scene,.2,x,7.52,gateZ,ironEdge);
+  // Deep-set lantern bracket and warm glass make each pier legible at night.
+  box(scene,.38,.48,.36,x+(x<0?1.32:-1.32),3.35,gateZ-.98,iron);
+  const glass=new THREE.Mesh(new THREE.OctahedronGeometry(.22,0),new THREE.MeshBasicMaterial({color:0xffc47b}));
+  glass.position.set(x+(x<0?1.32:-1.32),3.82,gateZ-1);scene.add(glass);
+  point(0xffb66d,.65,9,x+(x<0?1.32:-1.32),3.8,gateZ-1);
  }
- // A forged arched crown joins the entrance visually above the gate.
- const archPath=new THREE.CatmullRomCurve3([
-  new THREE.Vector3(-8.15,7.35,26.82),new THREE.Vector3(-6.8,8.35,26.82),
-  new THREE.Vector3(-4.4,8.85,26.82),new THREE.Vector3(0,9.05,26.82),
-  new THREE.Vector3(4.4,8.85,26.82),new THREE.Vector3(6.8,8.35,26.82),
-  new THREE.Vector3(8.15,7.35,26.82)
- ]);
- const arch=new THREE.Mesh(new THREE.TubeGeometry(archPath,64,.105,10,false),iron);arch.castShadow=true;scene.add(arch);
- const archInner=new THREE.Mesh(new THREE.TubeGeometry(archPath,64,.045,8,false),ironEdge);archInner.position.z=-.12;scene.add(archInner);
- // Small forged fleur points along the crown.
- for(const x of [-6,-3,0,3,6]){
-  const fin=new THREE.Mesh(new THREE.ConeGeometry(.16,.48,4),ironEdge);fin.position.set(x,8.55+(.5*(1-Math.abs(x)/6)),26.8);fin.rotation.z=Math.PI;fin.castShadow=true;scene.add(fin);
- }
- function scroll(curve,group,r=.045,material=ironEdge){
-  const path=new THREE.CatmullRomCurve3(curve.map(p=>new THREE.Vector3(p[0],p[1],p[2])));
-  const o=new THREE.Mesh(new THREE.TubeGeometry(path,32,r,8,false),material);o.castShadow=true;group.add(o);
+ gatePier(-10.05);gatePier(10.05);
+ function scrollGate(group,pts,r=.05,material=ironEdge){
+  const curve=new THREE.CatmullRomCurve3(pts.map(p=>new THREE.Vector3(p[0],p[1],p[2])));
+  const tube=new THREE.Mesh(new THREE.TubeGeometry(curve,28,r,8,false),material);
+  tube.castShadow=true;group.add(tube);
  }
  function gateLeaf(pivotX,side){
-  const leaf=new THREE.Group();leaf.position.set(pivotX,0,27);leaf.rotation.y=0;scene.add(leaf);cemeteryGateLeaves.push({leaf,side});
-  const w=8.15,mid=-side*w/2;
-  // Forged perimeter frame, doubled lower rail and curved upper rail.
-  for(const y of [.92,1.18,3.38])box(leaf,w,.14,.22,mid,y,0,iron);
-  scroll([[0,3.38,0],[side*1.8,3.55,0],[side*4.2,3.9,0],[side*w,4.18,0]],leaf,.105,iron);
-  scroll([[0,3.16,.04],[side*2.5,3.28,.04],[side*5.4,3.63,.04],[side*w,3.92,.04]],leaf,.045,ironEdge);
-  for(let i=0;i<=18;i++){
-   const x=-side*i*w/18,top=3.18+.94*i/18;
-   const bar=box(leaf,.09,top-1.15,.13,x,(top+1.15)/2,0,iron);
-   if(i%3===0){const collar=cyl(leaf,.09,.09,.1,x,2.55,0,ironEdge,8);collar.rotation.z=Math.PI/2}
-   const spear=new THREE.Mesh(new THREE.ConeGeometry(.115,.42,4),ironEdge);spear.position.set(x,top+.19,0);spear.rotation.y=Math.PI/4;spear.castShadow=true;leaf.add(spear);
+  const leaf=new THREE.Group();leaf.position.set(pivotX,0,gateZ);scene.add(leaf);
+  cemeteryGateLeaves.push({leaf,side});
+  const width=9.1,inner=-side*width;
+  // Rails and curved crown are all attached to the hinge group, so the complete leaf swings inward.
+  for(const yy of [.72,1.02,3.22])box(leaf,width,.16,.24,-side*width/2,yy,0,iron);
+  scrollGate(leaf,[[0,3.22,0],[-side*2.1,3.48,0],[-side*5.4,3.82,0],[inner,4.08,0]],.11,iron);
+  scrollGate(leaf,[[0,3.02,.05],[-side*3,3.22,.05],[-side*6.2,3.57,.05],[inner,3.82,.05]],.045,ironEdge);
+  for(let i=0;i<=20;i++){
+   const x=-side*i*width/20,top=3.05+.98*i/20;
+   box(leaf,.095,top-1.12,.14,x,(top+1.12)/2,0,iron);
+   const spear=new THREE.Mesh(new THREE.ConeGeometry(.13,.46,4),ironEdge);
+   spear.position.set(x,top+.19,0);spear.rotation.y=Math.PI/4;spear.castShadow=true;leaf.add(spear);
    if(i%2===0){
-    const ring=new THREE.Mesh(new THREE.TorusGeometry(.19,.038,8,20),ironEdge);ring.position.set(x,2.05,.08);ring.rotation.y=Math.PI/2;leaf.add(ring);
+    const ring=new THREE.Mesh(new THREE.TorusGeometry(.2,.04,8,20),ironEdge);
+    ring.position.set(x,2.04,.1);ring.rotation.y=Math.PI/2;leaf.add(ring);
    }
   }
-  // Paired C-scrolls and curled terminals create real depth across the ironwork.
   for(let i=0;i<4;i++){
-   const x=-side*(.9+i*1.75);
-   scroll([[x,1.28,.14],[x-side*.48,1.48,.14],[x-side*.62,1.92,.14],[x,2.28,.14],[x+side*.52,2.62,.14],[x+side*.45,2.96,.14],[x,3.12,.14]],leaf,.062);
-   scroll([[x,1.42,.17],[x+side*.25,1.7,.17],[x+side*.28,2.0,.17],[x,2.12,.17]],leaf,.035);
+   const x=-side*(1+i*2.0);
+   scrollGate(leaf,[[x,1.28,.15],[x-side*.48,1.5,.15],[x-side*.62,1.94,.15],[x,2.28,.15],[x+side*.5,2.6,.15],[x+side*.42,2.94,.15],[x,3.08,.15]],.06);
   }
-  // Central diamond medallion with a forged rosette.
-  const med=new THREE.Mesh(new THREE.OctahedronGeometry(.48,0),ironEdge);med.position.set(-side*3.95,2.28,.12);med.rotation.z=Math.PI/4;leaf.add(med);
-  const rosette=new THREE.Mesh(new THREE.TorusGeometry(.28,.045,8,24),ironEdge);rosette.position.set(-side*3.95,2.28,.25);leaf.add(rosette);
-  // Heavy hinge straps and visible hinge barrels.
-  for(const y of [.95,3.25]){
-   box(leaf,.7,.16,.25,-side*.22,y,0,ironEdge);
-   const hinge=cyl(leaf,.14,.14,.62,0,y,0,ironEdge,12);hinge.rotation.z=Math.PI/2;
+  const med=new THREE.Mesh(new THREE.OctahedronGeometry(.48,0),ironEdge);
+  med.position.set(-side*4.55,2.2,.16);med.rotation.z=Math.PI/4;leaf.add(med);
+  // Thick hinge barrel and hinge straps stay attached to the stone pier.
+  for(const yy of [.9,3.15]){
+   box(leaf,.8,.18,.28,-side*.35,yy,0,ironEdge);
+   const barrel=cyl(leaf,.16,.16,.66,0,yy,0,ironEdge,12);barrel.rotation.z=Math.PI/2;
   }
  }
- gateLeaf(-8.3,-1);gateLeaf(8.3,1);
- // Continuous iron perimeter: the entrance opens into the burial ground, while fencing encloses both sides and the far boundary.
+ gateLeaf(-hingeX,-1);gateLeaf(hingeX,1);
+ // Fence sections use the same posts, rails and spear pickets on every side.
  function cemeteryFenceRun(x1,z1,x2,z2){
-  const dx=x2-x1,dz=z2-z1,len=Math.hypot(dx,dz),angle=-Math.atan2(dz,dx),count=Math.ceil(len/2.35),section=len/count;
+  const dx=x2-x1,dz=z2-z1,len=Math.hypot(dx,dz),angle=-Math.atan2(dz,dx);
+  const count=Math.max(1,Math.ceil(len/2.35)),section=len/count;
   const run=new THREE.Group();run.position.set((x1+x2)/2,0,(z1+z2)/2);run.rotation.y=angle;scene.add(run);
   for(let j=0;j<count;j++){
    const x=-len/2+(j+.5)*section;
-   box(run,section+.06,.13,.16,x,.88,0,iron);
-   box(run,section+.06,.13,.16,x,2.12,0,iron);
+   box(run,section+.08,.16,.18,x,.86,0,iron);
+   box(run,section+.08,.16,.18,x,2.12,0,iron);
    for(let k=0;k<=2;k++){
     const px=x-section/2+section*k/2;
-    box(run,.075,1.24,.1,px,1.5,0,iron);
-    const tip=new THREE.Mesh(new THREE.ConeGeometry(.09,.28,4),ironEdge);tip.position.set(px,2.87,0);tip.rotation.y=Math.PI/4;tip.castShadow=true;run.add(tip);
+    box(run,.085,1.26,.12,px,1.5,0,iron);
+    const tip=new THREE.Mesh(new THREE.ConeGeometry(.105,.3,4),ironEdge);
+    tip.position.set(px,2.9,0);tip.rotation.y=Math.PI/4;tip.castShadow=true;run.add(tip);
    }
    if(j%2===0){
-    box(run,.22,2.55,.22,x-section/2,.0+1.28,0,pierStone);
-    const cap=box(run,.34,.16,.3,x-section/2,2.58,0,oldStone);
+    box(run,.24,2.55,.24,x-section/2,1.28,0,pierStone);
+    box(run,.38,.18,.34,x-section/2,2.62,0,oldStone);
    }
-   // Small forged diamond details break up the long, repeating rails.
-   if(j%2===1){const ring=new THREE.Mesh(new THREE.TorusGeometry(.16,.035,7,16),ironEdge);ring.position.set(x,1.52,.1);run.add(ring)}
+   if(j%2===1){
+    const ring=new THREE.Mesh(new THREE.TorusGeometry(.16,.035,7,16),ironEdge);
+    ring.position.set(x,1.52,.12);run.add(ring);
+   }
   }
  }
- // The two long sides and rear boundary wrap the cemetery; the front remains open only at the double gate.
- cemeteryFenceRun(-26.5,25.8,-26.5,-1.5);
- cemeteryFenceRun(26.5,25.8,26.5,-1.5);
+ // Two side runs, rear run, and front returns all meet at the gate piers: no disconnected fence ends.
+ cemeteryFenceRun(-26.5,gateZ,-26.5,-1.5);
+ cemeteryFenceRun(26.5,gateZ,26.5,-1.5);
  cemeteryFenceRun(-26.5,-1.5,26.5,-1.5);
+ cemeteryFenceRun(-26.5,gateZ,-11.25,gateZ);
+ cemeteryFenceRun(11.25,gateZ,26.5,gateZ);
  // Separate burial plots: naturally mixed generations of graves, not matching rows.
  const graveStoneMats=[oldStone,darkStone,mat(0x77766d,.98),mat(0x555b59,.99),mat(0x68645b,.98)];
  for(const side of [-1,1]){
