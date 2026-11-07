@@ -392,21 +392,145 @@ function chandelier(g,x,y,z){const gold=mat(0x8d7044,.4,.65);cyl(g,.12,.18,1.4,x
 function portrait(g,x,y,z){const frame=mat(0x9a7947,.5,.5),canvas=mat(0x161717);box(g,1.55,2.2,.16,x,y,z,frame);box(g,1.28,1.92,.08,x,y,z+.1,canvas);sphere(g,.28,x,y+.35,z+.18,mat(0x34302c));box(g,.55,.85,.12,x,y-.45,z+.18,mat(0x282523))}
 function makeLobby(){
  const g=roomShell(100,0,0,28,24,13,0x51483e);
- // Tall old windows admit a restrained wash of cold moonlight.
- for(const x of [-9,9]){windowUnitLocal(g,x,7,-11.72,2.5,5.1);const beam=new THREE.PointLight(0x9dbfe4,1.35,15,2);beam.position.set(x,6,-9.6);g.add(beam);}
- // checker-like marble floor tiles
- for(let x=-12;x<13;x+=3)for(let z=-10;z<11;z+=3)box(g,2.92,.025,2.92,x,-.0,z,mat(((x+z)/3)%2===0?0x6d6253:0x292b2b));
- // reception desk
- box(g,7,1.5,1.6,0,1.1,-8,mat(0x291a14));box(g,7.2,.22,1.8,0,1.95,-8,mat(0x8b704a,.4,.4));box(g,6.5,.12,.12,0,1.2,-7.15,mat(0xc0a06b));
- for(const x of [-9,9]){box(g,1.1,5,1.1,x,2.5,-9,mat(0x30251d));sphere(g,.35,x,5.2,-9,mat(0x88734f))}
- // double staircase rising along back wall
- for(let i=0;i<12;i++){const y=.22+i*.34,z=-3-i*.48;box(g,4,.24,.75,-7,y,z,mat(0x5a4939));box(g,4,.24,.75,7,y,z,mat(0x5a4939))}
- for(const x of [-9,9]){box(g,.18,5,.18,x,2.8,-5,mat(0x92774d));box(g,3.7,.16,.16,x/2,5.1,-5,mat(0x92774d))}
+ const mahogany=mat(0x24150f,.78),panel=mat(0x38241a,.76),gold=mat(0x9a7948,.48,.58),agedGold=mat(0x665238,.62,.48),marble=mat(0x756d60,.82),darkMarble=mat(0x302f2c,.88),velvet=mat(0x542629,.96),leather=mat(0x302019,.9);
+ // Deep mahogany wainscoting, raised wall panels and aged brass picture rails.
+ box(g,27.5,3.25,.22,0,1.72,-11.68,mahogany);
+ box(g,27.5,.16,.3,0,3.42,-11.48,gold);
+ box(g,27.5,.12,.28,0,.18,-11.48,agedGold);
+ for(let x=-12.7;x<=12.71;x+=2.12){
+  box(g,1.78,2.65,.12,x,1.85,-11.48,panel);
+  box(g,1.56,2.38,.08,x,1.85,-11.38,mahogany);
+  for(const dx of [-.84,.84])box(g,.055,2.48,.08,x+dx,1.85,-11.31,gold);
+  for(const yy of [.62,3.08])box(g,1.72,.055,.08,x,yy,-11.31,gold);
+ }
+ // Matching wall panels and substantial skirting along both long sides.
+ for(const side of [-1,1]){
+  const x=side*13.72;
+  box(g,.22,3.25,23.4,x,1.72,0,mahogany);
+  box(g,.12,2.65,2.05,x-side*.08,1.85,-8.9,panel);
+  for(let z=-9;z<=9;z+=3){
+   box(g,.09,2.5,2.35,x-side*.09,1.8,z,gold);
+   box(g,.07,2.28,2.12,x-side*.15,1.8,z,mahogany);
+  }
+  box(g,.28,.2,23.5,x-side*.08,.2,0,gold);
+  box(g,.28,.16,23.5,x-side*.08,3.38,0,gold);
+ }
+ // A broad, worn red runner anchors the approach to reception and staircase.
+ box(g,7.2,.055,18,0,.025,1.1,velvet);
+ box(g,7.35,.035,18.15,0,.035,1.1,gold);
+ for(const z of [-7.5,9.5])box(g,7.15,.045,.22,0,.07,z,gold);
+ for(const x of [-3.35,3.35])box(g,.055,.04,17.7,x,.065,1.1,agedGold);
+ // Alternating marble slabs, hairline cracks and brass floor inlays.
+ for(let x=-12;x<13;x+=3)for(let z=-10;z<11;z+=3){
+  box(g,2.92,.035,2.92,x,-.005,z,mat(((x+z)/3)%2===0?0x71695d:0x343433,.8));
+ }
+ for(let x=-12;x<=12;x+=6)box(g,.045,.025,21,x,.025,0,gold);
+ // Reception desk: paneled front, carved pilasters, stone counter and brass bell.
+ box(g,8.4,1.65,1.85,0,1.12,-8.55,mahogany);
+ box(g,8.55,.2,1.98,0,2.02,-8.55,gold);
+ box(g,8.25,.16,1.82,0,2.15,-8.55,mat(0x71665a,.32,.18));
+ box(g,7.8,1.02,.12,0,1.18,-7.59,panel);
+ for(let x=-3.65;x<=3.66;x+=1.22){
+  box(g,.09,1.16,.16,x,1.2,-7.48,gold);
+  box(g,.72,.08,.18,x,.72,-7.47,agedGold);
+  box(g,.72,.08,.18,x,1.72,-7.47,agedGold);
+ }
+ box(g,1.1,.12,.8,-2.4,2.25,-8.35,mat(0x332c25,.35,.35));
+ cyl(g,.09,.12,.12,2.25,2.29,-8.35,gold,12);
+ sphere(g,.075,2.25,2.39,-8.35,new THREE.MeshBasicMaterial({color:0xd6b778}));
+ // Guest ledger and a small brass desk lamp.
+ box(g,1.05,.09,.72,-.85,2.27,-8.2,mat(0x211914));
+ box(g,.7,.04,.48,-.85,2.34,-8.2,mat(0x6e5940));
+ cyl(g,.045,.07,.7,-3.2,2.48,-8.3,gold,10);
+ sphere(g,.2,-3.2,2.85,-8.3,new THREE.MeshBasicMaterial({color:0xffc477}));
+ point(0xffb967,.45,5,-3.2,2.8,-8.3);
+ // Grand twin staircase, each flight with solid risers, broad treads and continuous handrails.
+ for(const side of [-1,1]){
+  for(let i=0;i<14;i++){
+   const y=.2+i*.32,z=3.2-i*.66,x=side*7.15;
+   box(g,4.7,.32,.78,x,y,z,mat(0x594638));
+   box(g,4.82,.09,.86,x,y+.17,z-.02,gold);
+   box(g,4.65,.08,.72,x,y+.22,z-.04,mat(0x6a5745));
+  }
+  const railPts=[];
+  for(let i=0;i<=14;i++)railPts.push(new THREE.Vector3(side*9.55,.72+i*.32,3.55-i*.66));
+  const railCurve=new THREE.CatmullRomCurve3(railPts);
+  const handrail=new THREE.Mesh(new THREE.TubeGeometry(railCurve,70,.105,10,false),gold);g.add(handrail);
+  const lowerPts=railPts.map(p=>new THREE.Vector3(p.x,p.y-.48,p.z));
+  const lowerRail=new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(lowerPts),70,.055,8,false),agedGold);g.add(lowerRail);
+  for(let i=0;i<14;i++){
+   const y=.72+i*.32,z=3.55-i*.66;
+   const baluster=cyl(g,.035,.05,.48,side*9.55,y-.24,z,gold,8);
+   baluster.rotation.z=0;
+  }
+ }
+ // Upper landing, carved newel posts and a balustrade overlooking the entrance.
+ box(g,13,.28,3.2,0,4.55,-6.9,mat(0x554537));
+ box(g,13.2,.12,3.35,0,4.73,-6.9,gold);
+ for(const x of [-6,-4,-2,0,2,4,6]){
+  cyl(g,.075,.1,1.35,x,4.0,-5.15,gold,10);
+  sphere(g,.14,x,4.72,-5.15,gold);
+ }
+ for(const x of [-9.6,9.6]){
+  box(g,.28,5.2,.28,x,2.6,-4.9,mahogany);
+  cyl(g,.28,.38,.3,x,5.25,-4.9,gold,12);
+  sphere(g,.22,x,5.5,-4.9,gold);
+ }
+ // Tall windows, deep frames, mullions and cold moonlight from outside.
+ for(const x of [-10.4,10.4]){
+  windowUnitLocal(g,x,7,-11.72,2.55,5.25);
+  for(const dx of [-.72,0,.72])box(g,.075,5.05,.12,x+dx,7,-11.47,gold);
+  box(g,2.35,.08,.12,x,7,-11.43,gold);
+  const beam=new THREE.PointLight(0x9dbfe4,1.25,17,2);beam.position.set(x,6,-9.5);g.add(beam);
+ }
+ // Heavy columns and capitals frame the room without blocking the central view.
+ for(const x of [-12,12]){
+  for(const z of [-5,3]){
+   box(g,.82,10,.82,x,5,z,mahogany);
+   box(g,1.2,.28,1.2,x,9.95,z,gold);
+   box(g,1.12,.22,1.12,x,.35,z,gold);
+   box(g,.98,.3,.98,x,10.22,z,agedGold);
+  }
+ }
+ // Three aged brass chandeliers with warm, restrained candlelight.
  chandelier(g,0,11,0);chandelier(g,-8,9,2);chandelier(g,8,9,2);
- for(const x of [-11,-6,6,11])portrait(g,x,6,-11.7);
- // old grandfather clock
- box(g,1.5,5,.7,11,2.5,-7,mat(0x241812));sphere(g,.45,11,4.2,-6.55,mat(0xb89a60));
- for(const x of [-12,12])point(0xffb967,1.5,12,x,4,-5);
+ // Portrait gallery: ornate frames, tarnished nameplates and shadowed faces.
+ for(const x of [-11,-6,0,6,11]){
+  portrait(g,x,6,-11.55);
+  box(g,1.15,.12,.08,x,4.78,-11.36,gold);
+ }
+ // Grandfather clock with a deep timber case and visible pendulum window.
+ box(g,1.65,5.6,.85,11.7,2.8,-7.2,mahogany);
+ box(g,1.25,3.1,.12,11.7,2.25,-6.72,mat(0x171614,.35,.45));
+ box(g,1.5,.18,.95,11.7,5.65,-7.2,gold);
+ sphere(g,.53,11.7,4.65,-6.7,mat(0xb89a60,.45,.35));
+ sphere(g,.09,11.7,1.7,-6.62,gold);
+ // Waiting area: worn leather settees, side tables, abandoned luggage and plants.
+ for(const side of [-1,1]){
+  const x=side*10.1;
+  box(g,3.5,.55,1.25,x,.62,1.5,leather);
+  box(g,3.5,.22,1.35,x,.98,1.5,mahogany);
+  for(const dx of [-1.45,1.45]){
+   box(g,.28,1.05,1.3,x+dx,1.1,1.5,leather);
+   box(g,.18,.48,.18,x+dx,.25,1.5,gold);
+  }
+  box(g,1.25,.42,1.05,x,1.1,3.25,mahogany);
+  cyl(g,.055,.07,.42,x,1.48,3.25,gold,10);
+  sphere(g,.09,x,1.73,3.25,new THREE.MeshBasicMaterial({color:0xffbd78}));
+  const trunk=box(g,1.35,.9,.8,side*6.3,.48,7.1,mat(0x30241b,.88,.2));
+  box(g,1.4,.12,.84,side*6.3,.96,7.1,gold);
+  for(const dx of [-.5,.5])box(g,.08,.68,.1,side*6.3+dx,.5,6.67,gold);
+  cyl(g,.45,.52,1.3,side*12.1,.65,7.8,mat(0x344033,.98),10);
+  for(let i=0;i<5;i++){const leaf=box(g,.16,.95,.14,side*12.1+(i-2)*.2,1.5,7.8,mat(0x293629));leaf.rotation.z=(i-2)*.16}
+ }
+ // Wall sconces, dim pools of warm light and subtle flicker from the old wiring.
+ for(const side of [-1,1])for(const z of [-8,-2,5,9]){
+  const x=side*13.15;
+  box(g,.2,.65,.22,x,5,z,gold);
+  box(g,.48,.12,.35,x-side*.12,5.35,z,agedGold);
+  sphere(g,.12,x-side*.18,5.68,z,new THREE.MeshBasicMaterial({color:0xffc47d}));
+  const sconce=new THREE.PointLight(0xffb66d,.72,8,2);sconce.position.set(x-side*.35,5.7,z);g.add(sconce);
+ }
  return g;
 }
 function makeBallroom(){
