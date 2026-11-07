@@ -41,7 +41,27 @@ function sphere(parent,r,x,y,z,m){const o=new THREE.Mesh(new THREE.SphereGeometr
 function point(c,intensity,dist,x,y,z){const l=new THREE.PointLight(c,intensity,dist,2);l.position.set(x,y,z);scene.add(l);lamps.push({l,intensity});return l}
 function roof(parent,w,d,x,y,z,rise,m){const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute([-w/2,0,-d/2,w/2,0,-d/2,0,rise,-d/2,-w/2,0,d/2,w/2,0,d/2,0,rise,d/2],3));g.setIndex([0,1,2,3,5,4,0,3,5,0,5,2,1,4,3,1,5,4]);g.computeVertexNormals();const o=new THREE.Mesh(g,new THREE.MeshStandardMaterial({color:m,roughness:.85,side:THREE.DoubleSide}));o.position.set(x,y,z);o.castShadow=true;o.receiveShadow=true;parent.add(o)}
 function windowUnit(x,y,z,w=1.5,h=2.5,lit=false){const stone=mat(0x8b806d),glass=new THREE.MeshStandardMaterial({color:0x17212a,roughness:.25,metalness:.2,emissive:lit?0xffa14b:0x0b1420,emissiveIntensity:lit?.65:.12});box(scene,w+.28,h+.3,.25,x,y,z,stone);box(scene,w,h,.12,x,y,z+.15,mat(0x242729,.5,.4));box(scene,w-.16,h-.18,.06,x,y,z+.24,glass);box(scene,.09,h-.1,.08,x,y,z+.3,stone);box(scene,w-.1,.09,.08,x,y,z+.3,stone);box(scene,w+.35,.18,.4,x,y-h/2-.16,z+.12,stone)}
-function tree(x,z,s=1){cyl(scene,.12*s,.34*s,6*s,x,3*s,z,mat(0x211c19),8);for(let i=0;i<6;i++){const b=cyl(scene,.04*s,.12*s,3*s,x+(i%2?1:-1)*(.6+i*.12)*s,(3.8+i*.22)*s,z,mat(0x211c19),7);b.rotation.z=i%2?.85:-.85}}
+function tree(x,z,s=1){
+ const bark=mat(0x211b18,.98),barkLight=mat(0x302720,.96);
+ // A twisted, tapering trunk built from overlapping segments rather than a straight pole.
+ const pts=[{x:0,y:0,z:0},{x:-.18,y:1.5,z:.04},{x:.22,y:3.1,z:-.08},{x:.05,y:4.7,z:.04},{x:.42,y:6.2,z:.12}];
+ for(let i=0;i<pts.length-1;i++){
+  const a=pts[i],b=pts[i+1],dx=(b.x-a.x)*s,dy=(b.y-a.y)*s,dz=(b.z-a.z)*s;
+  const seg=cyl(scene,(.29-i*.045)*s,(.39-i*.045)*s,Math.hypot(dx,dy,dz),x+(a.x+b.x)*.5*s,(a.y+b.y)*.5*s,z+(a.z+b.z)*.5*s,i%2?barkLight:bark,9);
+  seg.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),new THREE.Vector3(dx,dy,dz).normalize());
+ }
+ // Heavy roots claw out across the wet ground.
+ for(let i=0;i<5;i++){const a=i*Math.PI*2/5,ex=Math.cos(a)*1.25*s,ez=Math.sin(a)*.8*s;const root=cyl(scene,.035*s,.2*s,Math.hypot(ex,ez,.18*s),x+ex*.5,.12*s,z+ez*.5,bark,7);root.rotation.z=Math.atan2(ex,.18*s);root.rotation.x=Math.atan2(ez,.18*s)}
+ // Long, uneven limbs split into smaller hooked twigs; every tree has a different silhouette.
+ const limbs=[[-1,1.0,4.1,2.6], [1,1.15,4.8,2.9],[-1,1.75,5.35,2.35],[1,1.9,5.8,2.5],[-1,.55,3.25,1.8],[1,.45,3.65,1.7]];
+ for(let i=0;i<limbs.length;i++){
+  const [side,spread,baseY,len]=limbs[i],bx=x+(i%2?.15:-.08)*s,by=baseY*s,bz=z+(i%3-.8)*.16*s;
+  const endX=bx+side*spread*s,endY=by+len*s,endZ=bz+(i%2?.35:-.28)*s;
+  const dx=endX-bx,dy=endY-by,dz=endZ-bz,branch=cyl(scene,.035*s,.16*s,Math.hypot(dx,dy,dz), (bx+endX)/2,(by+endY)/2,(bz+endZ)/2,bark,7);
+  branch.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),new THREE.Vector3(dx,dy,dz).normalize());
+  for(let j=0;j<2;j++){const tx=endX+side*(j?.48:.35)*s,ty=endY+(.65-j*.18)*s,tz=endZ+(j?-.24:.2)*s,twig=cyl(scene,.012*s,.055*s,Math.hypot(tx-endX,ty-endY,tz-endZ), (tx+endX)/2,(ty+endY)/2,(tz+endZ)/2,barkLight,6);twig.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),new THREE.Vector3(tx-endX,ty-endY,tz-endZ).normalize())}
+ }
+}
 function lantern(x,y,z){const iron=mat(0x292b2b,.4,.6);cyl(scene,.08,.12,2.3,x,y,z,iron,10);box(scene,.45,.5,.45,x,y+1.35,z,iron);const glow=sphere(scene,.19,x,y+1.35,z,new THREE.MeshBasicMaterial({color:0xffbd78}));point(0xffad63,2.1,10,x,y+1.4,z)}
 function buildExterior(){
  const stone=mat(0x494b49,.98),trim=mat(0x716b5e,.92),roofMat=mat(0x111619,.96),base=mat(0x292a28,.98),wood=mat(0x171311,.98),rust=mat(0x39302a,.9);
@@ -110,10 +130,39 @@ function buildExterior(){
   for(let j=0;j<9;j++){const nx=px+Math.sin(j*1.7+x)*.55,ny=1.5+j*2.15;const dx=nx-px,dy=2.15;const v=cyl(scene,.045,.065,Math.hypot(dx,dy), (px+nx)/2,ny-1.05,pz,vineMat,6);v.rotation.z=-Math.atan2(dx,dy);px=nx;}
  }
  // Iron gates, leaning fence bars, dead trees and the neglected forecourt.
- const iron=mat(0x171c1e,.42,.7);
- for(let x=-9;x<=9;x+=.42){const h=2.5+(Math.sin(x*2)*.45);box(scene,.055,h,.08,x,h/2,27,iron,0,0,Math.sin(x)*.025)}
- for(const x of [-9.3,9.3]){box(scene,.9,4.5,.9,x,2.25,27,trim);const cap=new THREE.Mesh(new THREE.ConeGeometry(.75,1.3,4),iron);cap.position.set(x,5.1,27);scene.add(cap)}
- box(scene,19,.16,.2,0,3.1,27,iron);
+ const iron=mat(0x171c1e,.42,.78),rustIron=mat(0x40342b,.72,.62),stonePost=mat(0x55534d,.96);
+ // Massive weathered gate piers with chipped caps and iron hinge plates.
+ for(const x of [-9.5,9.5]){
+  box(scene,1.45,5.7,1.55,x,2.85,27,stonePost);
+  box(scene,1.72,.38,1.82,x,5.72,27,trim);
+  const cap=new THREE.Mesh(new THREE.ConeGeometry(1.05,1.35,4),iron);cap.position.set(x,6.55,27);cap.rotation.y=Math.PI/4;scene.add(cap);
+  box(scene,.18,2.4,.22,x+(x<0?.78:-.78),2.9,26.12,rustIron);
+  for(let y=1;y<5;y+=1.15)box(scene,1.5,.07,.08,x,y,26.18,rustIron);
+ }
+ // Each gate leaf is a rigid group, swung back from the centre to leave the path invitingly open.
+ function gateLeaf(pivotX,side){
+  const leaf=new THREE.Group();leaf.position.set(pivotX,0,27);leaf.rotation.y=side*.34;scene.add(leaf);
+  const width=8.35,mid=side*width/2;
+  box(leaf,width,.22,.22,mid,1.05,0,rustIron);
+  box(leaf,width,.22,.22,mid,3.55,0,rustIron);
+  box(leaf,width,.16,.18,mid,2.28,0,iron);
+  for(let i=0;i<=14;i++){
+   const x=side*i*(width/14),h=(i===0||i===14)?3.95:2.9;
+   box(leaf,.075,h,.09,x,h/2+1.1,0,iron);
+   const tip=new THREE.Mesh(new THREE.ConeGeometry(.105,.42,4),iron);tip.position.set(x,h+1.12,0);tip.rotation.y=Math.PI/4;leaf.add(tip);
+   if(i%2===1){const ring=new THREE.Mesh(new THREE.TorusGeometry(.17,.035,6,12),rustIron);ring.position.set(x,2.32,.1);leaf.add(ring)}
+  }
+  // Cast scrollwork and a small central crown motif on each half.
+  for(let i=0;i<5;i++){
+   const x=side*(.85+i*1.35),loop=new THREE.Mesh(new THREE.TorusGeometry(.34,.045,6,18),rustIron);loop.position.set(x,2.78,.12);loop.rotation.z=side*.35;leaf.add(loop);
+  }
+  for(const y of [1.05,3.55])box(leaf,.16, y===1.05?.55:.45,.3,0,y,0,rustIron);
+ }
+ gateLeaf(-8.72,-1);gateLeaf(8.72,1);
+ // A broken overhead iron crown ties the entrance together without blocking the moonlit approach.
+ box(scene,12,.16,.18,0,6.95,27,iron);
+ const crest=new THREE.Mesh(new THREE.TorusGeometry(1.15,.075,8,24,Math.PI),iron);crest.position.set(0,6.8,27);scene.add(crest);
+ for(const x of [-6.8,-3.4,0,3.4,6.8]){const spike=new THREE.Mesh(new THREE.ConeGeometry(.13,.55,4),iron);spike.position.set(x,7.22,27);scene.add(spike)}
  // Uneven wet flagstones lead from the open gates to the hotel steps.
  for(let i=0;i<17;i++){const z=24-i*1.55,x=Math.sin(i*.72)*.8;const slab=box(scene,2.7+(i%3)*.35,.13,1.18,x,.015,z,mat(i%2?0x454b4b:0x555653,.42,.12));slab.rotation.y=Math.sin(i*1.3)*.08;}
  // Cold pools of moonlight pick out the path and forgotten graves.
