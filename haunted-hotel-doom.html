@@ -287,6 +287,77 @@ function buildExterior(){
  roof(scene,6.5,5.5,24,4,-0.0,1.6,0x292d2d);
  box(scene,1.45,2.45,.12,24,1.45,1.62,mausDark);
  for(const x of [22.2,25.8])box(scene,.2,3.7,.2,x,1.85,1.55,oldStone);
+ // A worn flagstone walk leads visitors from the open gates toward the old family tomb.
+ const pathStone=mat(0x555650,.98),pathEdge=mat(0x343a35,.99);
+ for(let i=0;i<24;i++){
+  const z=26-i*1.02,x=Math.sin(i*1.73)*.42+(Math.random()-.5)*.32;
+  const slab=box(scene,.95+Math.random()*.45,.12,.78+Math.random()*.32,x,.035,z,pathStone,0,(Math.random()-.5)*.12,0);
+  slab.rotation.y=(Math.random()-.5)*.16;
+  if(i%3===0)box(scene,.24,.07,.2,x+.62,.025,z-.18,pathEdge,0,Math.random()*1.4,0);
+ }
+ // Weather-beaten Victorian benches give the cemetery a place to pause.
+ function cemeteryBench(x,z,angle=0){
+  const bench=new THREE.Group();bench.position.set(x,0,z);bench.rotation.y=angle;scene.add(bench);
+  const benchIron=mat(0x242827,.55,.62),benchWood=mat(0x30251e,.96);
+  for(const xx of [-.82,.82]){
+   for(const zz of [-.34,.34])cyl(bench,.055,.075,.78,xx,.42,zz,benchIron,8);
+   box(bench,.13,.16,.82,xx,.76,0,benchIron);
+   const curl=new THREE.Mesh(new THREE.TorusGeometry(.19,.035,6,12,Math.PI*1.5),benchIron);curl.position.set(xx,.92,-.31);curl.rotation.x=Math.PI/2;bench.add(curl);
+  }
+  for(let i=0;i<4;i++)box(bench,1.95,.12,.19,0,.88,-.29+i*.19,benchWood);
+  for(let i=0;i<3;i++)box(bench,1.95,.13,.16,0,1.43,-.27+i*.2,benchWood);
+  box(bench,2.05,.14,.18,0,1.18,-.28,benchIron);
+ }
+ cemeteryBench(-8.1,12,.12);cemeteryBench(8.1,19,-.14);
+ // Two old memorial angels stand watch over the family plots.
+ function memorialAngel(x,z,turn=0){
+  const angel=new THREE.Group();angel.position.set(x,0,z);angel.rotation.y=turn;scene.add(angel);
+  const marble=mat(0x77766d,.99),shadowStone=mat(0x555950,.99);
+  box(angel,1.55,.28,1.35,0,.14,0,shadowStone);
+  box(angel,1.18,.22,1.02,0,.39,0,marble);
+  const robe=new THREE.Mesh(new THREE.CylinderGeometry(.22,.62,1.75,9),marble);robe.position.set(0,1.42,0);robe.castShadow=true;angel.add(robe);
+  sphere(angel,.28,0,2.48,.02,marble);
+  cyl(angel,.12,.14,.22,0,2.68,0,marble,8);
+  for(const side of [-1,1]){
+   const wing=new THREE.Mesh(new THREE.SphereGeometry(1,12,10),marble);
+   wing.scale.set(.22,1.02,.48);wing.position.set(side*.48,1.9,-.02);wing.rotation.z=side*-.38;wing.rotation.y=side*.16;wing.castShadow=true;angel.add(wing);
+   for(let j=0;j<4;j++){
+    const feather=new THREE.Mesh(new THREE.SphereGeometry(.12,8,7),shadowStone);
+    feather.scale.set(.7,1.7,.65);feather.position.set(side*(.55+j*.08),1.45+j*.22,.22);feather.rotation.z=side*-.42;angel.add(feather);
+   }
+  }
+  const arm=cyl(angel,.09,.12,.78,0,1.95,.28,marble,8);arm.rotation.z=-.35;
+ }
+ memorialAngel(-22,13,-.18);memorialAngel(22,13,.18);
+ // Small offerings: faded flowers, spent votive candles and a few fresh stems.
+ function graveOffering(x,z,seed){
+  const potMat=mat(seed%2?0x51463b:0x696052,.98),stemMat=mat(0x303b2e,.99);
+  cyl(scene,.16,.22,.25,x,.14,z,potMat,9);
+  for(let i=0;i<3;i++){
+   const a=i*2.094+seed*.7,dx=Math.cos(a)*.12,dz=Math.sin(a)*.12;
+   const stem=cyl(scene,.018,.025,.42,x+dx*.35,.42,z+dz*.35,stemMat,6);stem.rotation.z=dx*.8;
+   const bloomColor=mat(seed%2?0x78605c:0x8b8069,.98);
+   sphere(scene,.075,x+dx,.65,z+dz,bloomColor);
+   for(let p=0;p<4;p++)sphere(scene,.045,x+dx+Math.cos(p*Math.PI/2)*.07,.65,z+dz+Math.sin(p*Math.PI/2)*.07,bloomColor);
+  }
+  if(seed%2===0){
+   cyl(scene,.065,.075,.22,x+.28,.17,z+.12,mat(0x8a806d,.95),8);
+   const flame=new THREE.Mesh(new THREE.SphereGeometry(.045,8,8),new THREE.MeshBasicMaterial({color:0xffc27c}));flame.position.set(x+.28,.32,z+.12);scene.add(flame);
+  }
+ }
+ [[-19,5],[-16,17],[-22,23],[17,10],[20,22],[14,5],[24,8]].forEach((p,i)=>graveOffering(p[0],p[1],i));
+ // Fallen limbs and damp leaf litter collect against the grave borders.
+ const leafMat=[mat(0x34382d,.99),mat(0x514334,.99),mat(0x292e29,.99)];
+ for(let i=0;i<95;i++){
+  const x=(Math.random()-.5)*46,z=2+Math.random()*30;if(Math.abs(x)<5.2)continue;
+  const leaf=new THREE.Mesh(new THREE.PlaneGeometry(.18+Math.random()*.22,.32+Math.random()*.34),leafMat[i%leafMat.length]);
+  leaf.rotation.x=-Math.PI/2;leaf.rotation.z=Math.random()*Math.PI;leaf.position.set(x,.018,z);leaf.receiveShadow=true;scene.add(leaf);
+ }
+ for(let i=0;i<9;i++){
+  const x=(Math.random()-.5)*38,z=3+Math.random()*28;if(Math.abs(x)<11)continue;
+  const branch=cyl(scene,.035,.09,1.2+Math.random()*1.6,x,.12,z,mat(0x302720,.99),7);
+  branch.rotation.z=(Math.random()-.5)*.7;branch.rotation.y=Math.random()*Math.PI;
+ }
  // Broken slabs, weeds and scattered stones soften the plot edges.
  for(let i=0;i<42;i++){
   const x=(Math.random()-.5)*45,z=1+Math.random()*31;
