@@ -736,7 +736,7 @@ function frame(t){requestAnimationFrame(frame);const dt=Math.min(.05,(t-(clock||
   }
  }
  camera.position.y=floorEye+(moving?Math.abs(Math.sin(t*.009))*.045:0);camera.rotation.order='YXZ';camera.rotation.y=yaw;camera.rotation.x=pitch}
- const gateDistance=Math.hypot(camera.position.x,camera.position.z-27);const shouldOpen=started&&current==='grounds'&&gateDistance<9;if(shouldOpen!==gateOpen){gateOpen=shouldOpen;showToast(gateOpen?'THE IRON GATES GROAN OPEN…':'THE IRON GATES SWING SHUT…')}cemeteryGateLeaves.forEach(({leaf,side})=>{const target=gateOpen?-side*1.02:0;leaf.rotation.y+=(target-leaf.rotation.y)*Math.min(1,dt*1.7)});
+ const gateDistance=Math.hypot(camera.position.x,camera.position.z-27);const shouldOpen=started&&current==='grounds'&&gateDistance<9;if(shouldOpen!==gateOpen){gateOpen=shouldOpen;showToast(gateOpen?'THE IRON GATES OPEN…':'THE IRON GATES CLOSE…')}cemeteryGateLeaves.forEach(({leaf,side})=>{const target=gateOpen?-side*1.02:0;leaf.rotation.y+=(target-leaf.rotation.y)*Math.min(1,dt*1.7)});
  const doorDistance=Math.hypot(camera.position.x,camera.position.z+5.5);const shouldOpenDoors=started&&current==='grounds'&&doorDistance<15;
  if(shouldOpenDoors!==hotelDoorOpen){hotelDoorOpen=shouldOpenDoors;showToast(hotelDoorOpen?'THE HOTEL DOORS GROAN OPEN…':'THE HOTEL DOORS THUD SHUT…')}
  hotelDoorLeaves.forEach(({leaf,side})=>{const target=hotelDoorOpen?-side*1.48:0;leaf.rotation.y+=(target-leaf.rotation.y)*Math.min(1,dt*1.15)});
