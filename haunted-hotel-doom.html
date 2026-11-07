@@ -113,28 +113,58 @@ function buildExterior(){
   for(let i=0;i<9;i++)box(scene,.07,.9,.08,x-2+i*.5,14.45,-6.95,rust);
   box(scene,.14,18,.14,x*2,9,-7.45,rust);
  }
- // Recessed entrance with a clearly visible pair of heavy, paneled oak doors.
+ // Rebuilt entrance: monumental, weather-beaten Gothic oak doors beneath a pointed stone arch.
  box(scene,14,13,3.6,0,6.5,-8.4,base);
  box(scene,12,11,.5,0,6,-6.55,trim);
- const doorWood=mat(0x241710,.88),doorPanel=mat(0x38251a,.86),doorGold=mat(0x8c744d,.48,.68);
+ const doorOak=mat(0x17110d,.94),doorOakLight=mat(0x302016,.9),doorRecess=mat(0x0b0908,.98);
+ const doorIron=mat(0x202323,.62,.82),doorIronEdge=mat(0x514d43,.62,.78);
+ box(scene,10.9,10.1,.18,0,5.25,-6.22,doorRecess);
  for(const side of [-1,1]){
-  const hinge=new THREE.Group();hinge.position.set(side*5.55,0,-6.18);scene.add(hinge);
-  const center=-side*2.68;
-  box(hinge,5.32,9.45,.34,center,5.28,0,doorWood);
-  box(hinge,4.96,9.08,.12,center,5.28,.22,doorPanel);
-  for(const yy of [1.15,4.95,8.65])box(hinge,4.55,.13,.12,center,yy,.31,doorGold);
-  for(const xx of [center-2.18,center+2.18])box(hinge,.13,8.7,.12,xx,5.28,.31,doorGold);
-  for(const yy of [2.9,6.9]){
-   box(hinge,1.72,1.35,.13,center,yy,.34,doorWood);
-   box(hinge,1.42,1.05,.06,center,yy,.43,doorGold);
-   box(hinge,1.18,.07,.04,center,yy,.48,doorPanel);
+  const leaf=new THREE.Group();leaf.position.set(side*5.35,0,-6.02);scene.add(leaf);
+  const cx=-side*2.57;
+  box(leaf,5.12,9.72,.48,cx,5.12,0,doorOak);
+  for(let i=0;i<7;i++){
+   const x=cx-2.18+i*.725;
+   box(leaf,.66,9.28,.035,x,5.12,.258,i%2?doorOakLight:doorOak);
+   for(const yy of [1.05,3.15,5.2,7.25,9.15])sphere(leaf,.055,x,yy,.31,doorIron);
   }
-  const handleX=center+side*2.12;
-  box(hinge,.13,.72,.14,handleX,5.1,.48,doorGold);
-  sphere(hinge,.13,handleX,5.1,.57,doorGold);
-  for(const yy of [1.1,5.1,9.1])box(hinge,.2,.55,.42,side*-2.45,yy,-.12,doorGold);
-  hinge.rotation.y=side*.13;
+  for(const yy of [2.75,7.25]){
+   box(leaf,4.35,3.45,.075,cx,yy,.29,doorRecess);
+   box(leaf,4.12,3.22,.055,cx,yy,.34,doorOakLight);
+   for(const xx of [cx-2.12,cx+2.12])box(leaf,.11,3.42,.09,xx,yy,.39,doorIronEdge);
+   for(const y of [yy-1.67,yy+1.67])box(leaf,4.28,.11,.09,cx,y,.39,doorIronEdge);
+   box(leaf,.12,2.95,.07,cx,yy,.42,doorOak);
+  }
+  for(const yy of [.72,4.92,9.48]){
+   box(leaf,5.05,.2,.16,cx,yy,.39,doorIron);
+   for(let k=0;k<9;k++)sphere(leaf,.075,cx-2.25+k*.56,yy,.5,doorIronEdge);
+  }
+  for(const yy of [1.05,5.0,9.0])box(leaf,.32,.72,.52,-side*2.42,yy,-.08,doorIron);
+  const knocker=new THREE.Mesh(new THREE.TorusGeometry(.31,.085,10,24),doorIronEdge);
+  knocker.position.set(cx+side*2.12,5.55,.55);leaf.add(knocker);
+  sphere(leaf,.15,cx+side*2.12,5.18,.55,doorIron);
+  leaf.rotation.y=side*.025;
  }
+ for(const x of [-5.62,5.62]){
+  box(scene,.72,10.25,.82,x,5.15,-6.0,oldStone);
+  box(scene,.94,.42,1.02,x,.38,-5.96,stairEdge);
+  box(scene,.94,.42,1.02,x,10.0,-5.96,stairEdge);
+ }
+ const archCurve=new THREE.CatmullRomCurve3([
+  new THREE.Vector3(-5.62,9.85,-5.96),new THREE.Vector3(-4.95,11.05,-5.96),
+  new THREE.Vector3(-3.7,12.05,-5.96),new THREE.Vector3(-2.15,12.85,-5.96),
+  new THREE.Vector3(0,13.25,-5.96),new THREE.Vector3(2.15,12.85,-5.96),
+  new THREE.Vector3(3.7,12.05,-5.96),new THREE.Vector3(4.95,11.05,-5.96),
+  new THREE.Vector3(5.62,9.85,-5.96)
+ ]);
+ scene.add(new THREE.Mesh(new THREE.TubeGeometry(archCurve,48,.42,10,false),oldStone));
+ const archInner=new THREE.CatmullRomCurve3([
+  new THREE.Vector3(-5.05,9.75,-5.88),new THREE.Vector3(-4.35,10.9,-5.88),
+  new THREE.Vector3(-2.8,12.0,-5.88),new THREE.Vector3(0,12.72,-5.88),
+  new THREE.Vector3(2.8,12.0,-5.88),new THREE.Vector3(4.35,10.9,-5.88),
+  new THREE.Vector3(5.05,9.75,-5.88)
+ ]);
+ scene.add(new THREE.Mesh(new THREE.TubeGeometry(archInner,40,.09,8,false),doorIronEdge));
  box(scene,16,.7,7,0,12.8,-7.6,roofMat);
  for(const x of [-6,6]){cyl(scene,.34,.43,11.2,x,5.6,-5.25,trim,12);cyl(scene,.58,.58,.25,x,.25,-5.25,trim,12)}
  // Grand exterior entrance staircase: broad, individually modeled stone treads
