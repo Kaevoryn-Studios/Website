@@ -146,9 +146,9 @@ function buildExterior(){
   leaf.rotation.y=side*.025;
  }
  for(const x of [-5.62,5.62]){
-  box(scene,.72,10.25,.82,x,5.15,-6.0,oldStone);
-  box(scene,.94,.42,1.02,x,.38,-5.96,stairEdge);
-  box(scene,.94,.42,1.02,x,10.0,-5.96,stairEdge);
+  box(scene,.72,10.25,.82,x,5.15,-6.0,trim);
+  box(scene,.94,.42,1.02,x,.38,-5.96,trim);
+  box(scene,.94,.42,1.02,x,10.0,-5.96,trim);
  }
  const archCurve=new THREE.CatmullRomCurve3([
   new THREE.Vector3(-5.62,9.85,-5.96),new THREE.Vector3(-4.95,11.05,-5.96),
@@ -157,7 +157,7 @@ function buildExterior(){
   new THREE.Vector3(3.7,12.05,-5.96),new THREE.Vector3(4.95,11.05,-5.96),
   new THREE.Vector3(5.62,9.85,-5.96)
  ]);
- scene.add(new THREE.Mesh(new THREE.TubeGeometry(archCurve,48,.42,10,false),oldStone));
+ scene.add(new THREE.Mesh(new THREE.TubeGeometry(archCurve,48,.42,10,false),trim));
  const archInner=new THREE.CatmullRomCurve3([
   new THREE.Vector3(-5.05,9.75,-5.88),new THREE.Vector3(-4.35,10.9,-5.88),
   new THREE.Vector3(-2.8,12.0,-5.88),new THREE.Vector3(0,12.72,-5.88),
