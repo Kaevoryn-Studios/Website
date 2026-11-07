@@ -205,16 +205,31 @@ function buildExterior(){
   }
  }
  gateLeaf(-8.3,-1);gateLeaf(8.3,1);
- // Low, broken perimeter railings extend from the piers around the cemetery plots.
- for(const side of [-1,1]){
-  for(let j=0;j<8;j++){
-   const x=side*(11+j*2.15),z=27;
-   box(scene,2.15,.12,.14,x,.85,z,iron);
-   box(scene,2.15,.12,.14,x,2.15,z,iron);
-   for(let k=0;k<4;k++){const bar=box(scene,.075,1.25,.09,x-.8+k*.53,1.5,z,iron);if((j+k)%7===0)bar.rotation.z=.14}
-   if(j%2===0)box(scene,.24,2.4,.24,x,1.2,z,pierStone);
+ // Continuous iron perimeter: the entrance opens into the burial ground, while fencing encloses both sides and the far boundary.
+ function cemeteryFenceRun(x1,z1,x2,z2){
+  const dx=x2-x1,dz=z2-z1,len=Math.hypot(dx,dz),angle=-Math.atan2(dz,dx),count=Math.ceil(len/2.35),section=len/count;
+  const run=new THREE.Group();run.position.set((x1+x2)/2,0,(z1+z2)/2);run.rotation.y=angle;scene.add(run);
+  for(let j=0;j<count;j++){
+   const x=-len/2+(j+.5)*section;
+   box(run,section+.06,.13,.16,x,.88,0,iron);
+   box(run,section+.06,.13,.16,x,2.12,0,iron);
+   for(let k=0;k<=2;k++){
+    const px=x-section/2+section*k/2;
+    box(run,.075,1.24,.1,px,1.5,0,iron);
+    const tip=new THREE.Mesh(new THREE.ConeGeometry(.09,.28,4),ironEdge);tip.position.set(px,2.87,0);tip.rotation.y=Math.PI/4;tip.castShadow=true;run.add(tip);
+   }
+   if(j%2===0){
+    box(run,.22,2.55,.22,x-section/2,.0+1.28,0,pierStone);
+    const cap=box(run,.34,.16,.3,x-section/2,2.58,0,oldStone);
+   }
+   // Small forged diamond details break up the long, repeating rails.
+   if(j%2===1){const ring=new THREE.Mesh(new THREE.TorusGeometry(.16,.035,7,16),ironEdge);ring.position.set(x,1.52,.1);run.add(ring)}
   }
  }
+ // The two long sides and rear boundary wrap the cemetery; the front remains open only at the double gate.
+ cemeteryFenceRun(-26.5,25.8,-26.5,-1.5);
+ cemeteryFenceRun(26.5,25.8,26.5,-1.5);
+ cemeteryFenceRun(-26.5,-1.5,26.5,-1.5);
  // Separate burial plots: naturally mixed generations of graves, not matching rows.
  const graveStoneMats=[oldStone,darkStone,mat(0x77766d,.98),mat(0x555b59,.99),mat(0x68645b,.98)];
  for(const side of [-1,1]){
@@ -405,7 +420,7 @@ function showToast(msg){toast.textContent=msg;toast.style.display='block';setTim
 function start(){started=true;document.getElementById('intro').style.display='none';goPlace('grounds');caption.textContent='THE HOLLOW CROWN HOTEL · THE FRONT DOORS AWAIT'}
 function frame(t){requestAnimationFrame(frame);const dt=Math.min(.05,(t-(clock||t))/1000||.016);clock=t;
  if(started){const f=(keys.w||keys.arrowup?1:0)-(keys.s||keys.arrowdown?1:0)+padY,s=(keys.d||keys.arrowright?1:0)-(keys.a||keys.arrowleft?1:0)+padX;camera.position.x+=(Math.cos(yaw)*s+Math.sin(yaw)*f)*5*dt;camera.position.z+=(Math.sin(yaw)*s-Math.cos(yaw)*f)*5*dt;camera.position.x=Math.max(-35,Math.min(310,camera.position.x));camera.position.z=Math.max(-25,Math.min(65,camera.position.z));camera.rotation.order='YXZ';camera.rotation.y=yaw;camera.rotation.x=pitch}
- const gateDistance=Math.hypot(camera.position.x,camera.position.z-27);const shouldOpen=started&&current==='grounds'&&gateDistance<17;if(shouldOpen!==gateOpen){gateOpen=shouldOpen;showToast(gateOpen?'THE IRON GATES GROAN OPEN…':'THE IRON GATES SWING SHUT…')}cemeteryGateLeaves.forEach(({leaf,side})=>{const target=gateOpen?side*1.18:0;leaf.rotation.y+=(target-leaf.rotation.y)*Math.min(1,dt*1.7)});
+ const gateDistance=Math.hypot(camera.position.x,camera.position.z-27);const shouldOpen=started&&current==='grounds'&&gateDistance<17;if(shouldOpen!==gateOpen){gateOpen=shouldOpen;showToast(gateOpen?'THE IRON GATES GROAN OPEN…':'THE IRON GATES SWING SHUT…')}cemeteryGateLeaves.forEach(({leaf,side})=>{const target=gateOpen?-side*1.18:0;leaf.rotation.y+=(target-leaf.rotation.y)*Math.min(1,dt*1.7)});
  lamps.forEach(({l,intensity},i)=>l.intensity=intensity+Math.sin(t*.0013+i*1.7)*.09);
  if(dust){dust.rotation.y=t*.000012;dust.position.y=Math.sin(t*.0003)*.12}
  const phase=t%19000;stormLight.intensity=phase<110?8*Math.sin(phase/110*Math.PI):0;
