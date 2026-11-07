@@ -176,7 +176,7 @@ function setup(){
  window.addEventListener('keydown',e=>{keys[e.key.toLowerCase()]=true;if(e.key==='Escape')document.getElementById('nav').classList.remove('open')});
  window.addEventListener('keyup',e=>keys[e.key.toLowerCase()]=false);
  world.addEventListener('pointerdown',e=>{if(!started)return;drag=true;lastX=e.clientX;lastY=e.clientY;world.setPointerCapture(e.pointerId)});
- world.addEventListener('pointermove',e=>{if(!drag)return;const dx=e.clientX-lastX,dy=e.clientY-lastY;lastX=e.clientX;lastY=e.clientY;yaw-=dx*.004;pitch=Math.max(-.7,Math.min(.7,pitch-dy*.003));}
+ world.addEventListener('pointermove',e=>{if(!drag)return;const dx=e.clientX-lastX,dy=e.clientY-lastY;lastX=e.clientX;lastY=e.clientY;yaw-=dx*.004;pitch=Math.max(-.7,Math.min(.7,pitch-dy*.003));});
  world.addEventListener('pointerup',()=>drag=false);world.addEventListener('pointercancel',()=>drag=false);
  const pad=document.getElementById('pad'),nub=document.getElementById('nub');
  function move(e){const r=pad.getBoundingClientRect(),dx=e.clientX-r.left-r.width/2,dy=e.clientY-r.top-r.height/2,len=Math.max(1,Math.hypot(dx,dy)),k=Math.min(1,36/len);padX=dx/r.width*2*k;padY=-dy/r.height*2*k;nub.style.transform='translate('+dx*k+'px,'+dy*k+'px)'}
