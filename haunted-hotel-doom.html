@@ -134,7 +134,6 @@ function buildExterior(){
   for(let j=0;j<9;j++){const nx=px+Math.sin(j*1.7+x)*.55,ny=1.5+j*2.15;const dx=nx-px,dy=2.15;const v=cyl(scene,.045,.065,Math.hypot(dx,dy), (px+nx)/2,ny-1.05,pz,vineMat,6);v.rotation.z=-Math.atan2(dx,dy);px=nx;}
  }
  // A proper neglected Victorian burial ground, divided from the approach by a heavy iron entrance.
- const iron=mat(0x171b1c,.38,.82),ironEdge=mat(0x514337,.58,.72),pierStone=mat(0x625e54,.96),oldStone=mat(0x77766d,.96),darkStone=mat(0x444741,.98),moss=mat(0x303b32,.98);
  // Rebuilt cemetery entrance: two substantial stone piers, a clearly visible double gate,
  // and one continuous perimeter fence with front returns that physically meet the gate piers.
  const iron=mat(0x171b1c,.38,.82),ironEdge=mat(0x665541,.58,.72),pierStone=mat(0x625e54,.96),oldStone=mat(0x77766d,.96),darkStone=mat(0x444741,.98),moss=mat(0x303b32,.98);
