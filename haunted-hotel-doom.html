@@ -32,7 +32,7 @@
 <script>
 (()=>{'use strict';
 const world=document.getElementById('world'),enter=document.getElementById('enter'),message=document.getElementById('message'),caption=document.getElementById('caption'),toast=document.getElementById('toast');
-let THREE,scene,camera,renderer,started=false,yaw=0,pitch=0,drag=false,lastX=0,lastY=0,keys={},padX=0,padY=0,clock=0,lamps=[],dust,stormLight,bats=[],current='grounds';
+let THREE,scene,camera,renderer,started=false,yaw=0,pitch=0,drag=false,lastX=0,lastY=0,keys={},padX=0,padY=0,clock=0,lamps=[],dust,stormLight,bats=[],current='grounds',cemeteryGateLeaves=[],gateOpen=false;
 const mats={};
 function mat(c,r=.82,m=0){const k=[c,r,m].join(':');return mats[k]||(mats[k]=new THREE.MeshStandardMaterial({color:c,roughness:r,metalness:m}))}
 function box(parent,w,h,d,x,y,z,m,rx=0,ry=0,rz=0){const o=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m);o.position.set(x,y,z);o.rotation.set(rx,ry,rz);o.castShadow=true;o.receiveShadow=true;parent.add(o);return o}
@@ -174,14 +174,14 @@ function buildExterior(){
   const o=new THREE.Mesh(new THREE.TubeGeometry(path,32,r,8,false),material);o.castShadow=true;group.add(o);
  }
  function gateLeaf(pivotX,side){
-  const leaf=new THREE.Group();leaf.position.set(pivotX,0,27);leaf.rotation.y=side*.28;scene.add(leaf);
-  const w=8.15,mid=side*w/2;
+  const leaf=new THREE.Group();leaf.position.set(pivotX,0,27);leaf.rotation.y=0;scene.add(leaf);cemeteryGateLeaves.push({leaf,side});
+  const w=8.15,mid=-side*w/2;
   // Forged perimeter frame, doubled lower rail and curved upper rail.
   for(const y of [.92,1.18,3.38])box(leaf,w,.14,.22,mid,y,0,iron);
   scroll([[0,3.38,0],[side*1.8,3.55,0],[side*4.2,3.9,0],[side*w,4.18,0]],leaf,.105,iron);
   scroll([[0,3.16,.04],[side*2.5,3.28,.04],[side*5.4,3.63,.04],[side*w,3.92,.04]],leaf,.045,ironEdge);
   for(let i=0;i<=18;i++){
-   const x=side*i*w/18,top=3.18+.94*i/18;
+   const x=-side*i*w/18,top=3.18+.94*i/18;
    const bar=box(leaf,.09,top-1.15,.13,x,(top+1.15)/2,0,iron);
    if(i%3===0){const collar=cyl(leaf,.09,.09,.1,x,2.55,0,ironEdge,8);collar.rotation.z=Math.PI/2}
    const spear=new THREE.Mesh(new THREE.ConeGeometry(.115,.42,4),ironEdge);spear.position.set(x,top+.19,0);spear.rotation.y=Math.PI/4;spear.castShadow=true;leaf.add(spear);
@@ -191,16 +191,16 @@ function buildExterior(){
   }
   // Paired C-scrolls and curled terminals create real depth across the ironwork.
   for(let i=0;i<4;i++){
-   const x=side*(.9+i*1.75);
+   const x=-side*(.9+i*1.75);
    scroll([[x,1.28,.14],[x-side*.48,1.48,.14],[x-side*.62,1.92,.14],[x,2.28,.14],[x+side*.52,2.62,.14],[x+side*.45,2.96,.14],[x,3.12,.14]],leaf,.062);
    scroll([[x,1.42,.17],[x+side*.25,1.7,.17],[x+side*.28,2.0,.17],[x,2.12,.17]],leaf,.035);
   }
   // Central diamond medallion with a forged rosette.
-  const med=new THREE.Mesh(new THREE.OctahedronGeometry(.48,0),ironEdge);med.position.set(side*3.95,2.28,.12);med.rotation.z=Math.PI/4;leaf.add(med);
-  const rosette=new THREE.Mesh(new THREE.TorusGeometry(.28,.045,8,24),ironEdge);rosette.position.set(side*3.95,2.28,.25);leaf.add(rosette);
+  const med=new THREE.Mesh(new THREE.OctahedronGeometry(.48,0),ironEdge);med.position.set(-side*3.95,2.28,.12);med.rotation.z=Math.PI/4;leaf.add(med);
+  const rosette=new THREE.Mesh(new THREE.TorusGeometry(.28,.045,8,24),ironEdge);rosette.position.set(-side*3.95,2.28,.25);leaf.add(rosette);
   // Heavy hinge straps and visible hinge barrels.
   for(const y of [.95,3.25]){
-   box(leaf,.7,.16,.25,side*.22,y,0,ironEdge);
+   box(leaf,.7,.16,.25,-side*.22,y,0,ironEdge);
    const hinge=cyl(leaf,.14,.14,.62,0,y,0,ironEdge,12);hinge.rotation.z=Math.PI/2;
   }
  }
@@ -405,6 +405,7 @@ function showToast(msg){toast.textContent=msg;toast.style.display='block';setTim
 function start(){started=true;document.getElementById('intro').style.display='none';goPlace('grounds');caption.textContent='THE HOLLOW CROWN HOTEL · THE FRONT DOORS AWAIT'}
 function frame(t){requestAnimationFrame(frame);const dt=Math.min(.05,(t-(clock||t))/1000||.016);clock=t;
  if(started){const f=(keys.w||keys.arrowup?1:0)-(keys.s||keys.arrowdown?1:0)+padY,s=(keys.d||keys.arrowright?1:0)-(keys.a||keys.arrowleft?1:0)+padX;camera.position.x+=(Math.cos(yaw)*s+Math.sin(yaw)*f)*5*dt;camera.position.z+=(Math.sin(yaw)*s-Math.cos(yaw)*f)*5*dt;camera.position.x=Math.max(-35,Math.min(310,camera.position.x));camera.position.z=Math.max(-25,Math.min(65,camera.position.z));camera.rotation.order='YXZ';camera.rotation.y=yaw;camera.rotation.x=pitch}
+ const gateDistance=Math.hypot(camera.position.x,camera.position.z-27);const shouldOpen=started&&current==='grounds'&&gateDistance<17;if(shouldOpen!==gateOpen){gateOpen=shouldOpen;showToast(gateOpen?'THE IRON GATES GROAN OPEN…':'THE IRON GATES SWING SHUT…')}cemeteryGateLeaves.forEach(({leaf,side})=>{const target=gateOpen?side*1.18:0;leaf.rotation.y+=(target-leaf.rotation.y)*Math.min(1,dt*1.7)});
  lamps.forEach(({l,intensity},i)=>l.intensity=intensity+Math.sin(t*.0013+i*1.7)*.09);
  if(dust){dust.rotation.y=t*.000012;dust.position.y=Math.sin(t*.0003)*.12}
  const phase=t%19000;stormLight.intensity=phase<110?8*Math.sin(phase/110*Math.PI):0;
