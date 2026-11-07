@@ -474,6 +474,26 @@ function buildExterior(){
  // A weak light survives in the entrance lanterns.
  lantern(-5,1.2,14);lantern(5,1.2,14);point(0x9dbde0,1.1,38,0,16,-3);point(0x829fbe,.75,55,-18,18,1);
  // Rain in the forecourt.
+ // Neighboring Victorian caretaker's lodge: part manor, part chapel, visibly abandoned.
+ const lodgeStone=mat(0x514f49,.98),lodgeTrim=mat(0x777064,.94),lodgeWood=mat(0x211813,.98),lodgeIron=mat(0x242827,.68,.62),lodgeGlass=new THREE.MeshStandardMaterial({color:0x111a20,roughness:.3,metalness:.18,emissive:0x0a1218,emissiveIntensity:.22});
+ const lx=38.5,lz=-15.5;
+ box(scene,14,.9,15,lx,.45,lz,lodgeTrim);box(scene,13.2,10.8,14,lx,5.9,lz,lodgeStone);box(scene,13.8,.34,14.6,lx,11.25,lz,lodgeTrim);
+ box(scene,6.2,7.2,9,lx+8.8,4.1,lz+1.6,mat(0x454640,.99));roof(scene,14.8,15.8,lx,11.25,lz,5.7,0x171b1d);roof(scene,7.1,10,lx+8.8,7.6,lz+1.6,3.1,0x1b1e1f);
+ const gable=new THREE.Shape();gable.moveTo(-4.2,0);gable.lineTo(4.2,0);gable.lineTo(0,5.7);gable.closePath();const gm=new THREE.Mesh(new THREE.ExtrudeGeometry(gable,{depth:.42,bevelEnabled:false}),lodgeStone);gm.position.set(lx-4.2,11.2,lz-7.22);gm.castShadow=true;scene.add(gm);
+ const inset=new THREE.Shape();inset.moveTo(-3.35,.38);inset.lineTo(3.35,.38);inset.lineTo(0,4.82);inset.closePath();const im=new THREE.Mesh(new THREE.ShapeGeometry(inset),lodgeWood);im.position.set(lx,11.55,lz-6.77);scene.add(im);
+ for(const [cx,cy,cz] of [[lx-4.3,14.2,lz+2.4],[lx+4.4,13.6,lz-1.8]]){box(scene,1.45,5.5,1.55,cx,cy,cz,lodgeStone);box(scene,1.9,.32,1.95,cx,cy+2.82,cz,lodgeTrim);for(let k=0;k<3;k++)box(scene,.16,.48,.08,cx-.42+k*.42,cy+1.1+(k%2)*.5,cz-.81,lodgeIron)}
+ // Recessed sash windows, stone sills, dark glass and a few nailed boards.
+ for(const yy of [4.2,8.6])for(const dx of [-4.25,0,4.25]){const wx=lx+dx,w=1.55,h=2.45,z=lz-7.16;box(scene,w+.42,h+.42,.34,wx,yy,z,lodgeTrim);box(scene,w,h,.12,wx,yy,z-.19,lodgeIron);box(scene,w-.18,h-.18,.07,wx,yy,z-.27,lodgeGlass);box(scene,.11,h-.1,.09,wx,yy,z-.34,lodgeTrim);box(scene,w-.1,.11,.09,wx,yy,z-.34,lodgeTrim);box(scene,w+.62,.2,.62,wx,yy-h/2-.2,z-.1,lodgeTrim);if((dx===0&&yy===4.2)||(dx===4.25&&yy===8.6))for(let b=-1;b<=1;b++)box(scene,1.9,.16,.16,wx+b*.14,yy+b*.62,z-.43,lodgeWood,0,0,b*.035)}
+ box(scene,1.55,3.15,.18,lx,13.15,lz-7.55,lodgeIron);box(scene,1.22,2.82,.08,lx,13.15,lz-7.68,lodgeGlass);box(scene,.1,2.75,.1,lx,13.15,lz-7.76,lodgeTrim);box(scene,1.2,.1,.1,lx,13.15,lz-7.76,lodgeTrim);
+ // Deep-set oak entrance, porch roof, square stone columns and railing.
+ box(scene,2.25,4.25,.28,lx,2.55,lz-7.2,lodgeIron);box(scene,1.9,3.95,.12,lx,2.55,lz-7.42,lodgeWood);for(let k=0;k<5;k++)box(scene,.19,3.7,.08,lx-.72+k*.36,2.55,lz-7.51,k%2?lodgeTrim:lodgeWood);
+ box(scene,3.1,.32,.55,lx,4.78,lz-7.43,lodgeTrim);box(scene,5.6,.28,3.5,lx,1.0,lz-9.0,lodgeTrim);for(const dx of [-2.25,2.25]){box(scene,.42,4.3,.48,lx+dx,2.95,lz-9.1,lodgeStone);box(scene,.72,.28,.78,lx+dx,5.15,lz-9.1,lodgeTrim)}
+ for(let i=0;i<11;i++)box(scene,.075,.82,.075,lx-2.7+i*.54,1.58,lz-10.35,lodgeIron);box(scene,5.8,.12,.14,lx,2.0,lz-10.35,lodgeIron);
+ box(scene,.2,9,.2,lx+6.35,5.1,lz-7.25,lodgeIron);const lv=mat(0x20271f,.99);for(let v=0;v<5;v++){let px=lx-6.1+v*3;for(let j=0;j<8;j++){const nx=px+Math.sin(j*1.35+v)*.42,ny=1.1+j*1.35,stem=cyl(scene,.035,.055,Math.hypot(nx-px,1.35),(px+nx)/2,ny-.65,lz-7.32,lv,6);stem.rotation.z=-Math.atan2(nx-px,1.35);px=nx}}
+ for(const side of [-1,1]){box(scene,.55,1.25,10,lx+side*8.1,.62,lz-2.5,lodgeTrim);for(let i=0;i<8;i++){const px=lx+side*8.1+(i-3.5)*.28;box(scene,.07,1.55,.07,px,1.42,lz-7.3,lodgeIron);const tip=new THREE.Mesh(new THREE.ConeGeometry(.09,.24,4),lodgeTrim);tip.position.set(px,2.3,lz-7.3);scene.add(tip)}}
+ lantern(lx-6.3,1.1,lz-10.8);point(0x9bb8d5,.85,20,lx,4,lz-10);
+ for(let i=0;i<12;i++){const rubble=box(scene,.25+Math.random()*.65,.12,.2+Math.random()*.5,lx-7+Math.random()*15,.08,lz-10+Math.random()*5,lodgeStone);rubble.rotation.y=Math.random()*2.5}
+ const signPost=cyl(scene,.08,.12,2.4,lx-8.4,1.2,lz-9.2,lodgeWood,8);signPost.rotation.z=-.08;box(scene,1.8,.72,.12,lx-8.4,2.35,lz-9.2,lodgeWood,.02,0,-.04);for(let i=0;i<3;i++)box(scene,.95,.035,.025,lx-8.4,2.5-i*.17,lz-9.11,lodgeTrim);
  const rainCount=650,arr=new Float32Array(rainCount*3);
  for(let i=0;i<rainCount;i++){arr[i*3]=(Math.random()-.5)*100;arr[i*3+1]=Math.random()*35;arr[i*3+2]=(Math.random()-.5)*90}
  const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.BufferAttribute(arr,3));
