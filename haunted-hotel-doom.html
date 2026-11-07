@@ -28,11 +28,11 @@
 <button data-place="grounds">01 · THE GROUNDS</button><button data-place="lobby">02 · GRAND LOBBY</button><button data-place="ballroom">03 · WEST WING BALLROOM</button><button data-place="guest">04 · GUEST CORRIDOR</button><button data-place="basement">05 · THE BASEMENT</button><button data-place="attic">06 · THE ATTIC</button></div>
 <div id="caption">ABANDONED · EST. 1891 · LAST GUEST 1963</div><div id="hint">DRAG TO LOOK · MOVE WITH WASD / ARROWS</div>
 <div id="pad"><div id="nub"></div></div><div id="toast"></div>
-<div id="intro"><div id="card"><small>THE TOWN LEFT IT TO ROT · SOMETHING NEVER LEFT</small><h1>THE HOLLOW<br>CROWN HOTEL</h1><p>Abandoned since 1963. The windows are dark, the grounds have swallowed the path, and the front doors hang open. No one has checked out. Something inside still expects a guest.</p><button id="enter" type="button" disabled>LOADING 3D ENGINE…</button><div id="message" aria-live="polite">Connecting to the hotel. If loading fails, a retry option will appear.</div></div></div>
+<div id="intro"><div id="card"><small>THE TOWN LEFT IT TO ROT · SOMETHING NEVER LEFT</small><h1>THE HOLLOW<br>CROWN HOTEL</h1><p>Abandoned since 1963. The windows are dark, the grounds have swallowed the path, and the front doors are sealed beneath a pointed stone arch. No one has checked out. Something inside still expects a guest.</p><button id="enter" type="button" disabled>LOADING 3D ENGINE…</button><div id="message" aria-live="polite">Connecting to the hotel. If loading fails, a retry option will appear.</div></div></div>
 <script>
 (()=>{'use strict';
 const world=document.getElementById('world'),enter=document.getElementById('enter'),message=document.getElementById('message'),caption=document.getElementById('caption'),toast=document.getElementById('toast');
-let THREE,scene,camera,renderer,started=false,yaw=0,pitch=0,drag=false,lastX=0,lastY=0,keys={},padX=0,padY=0,clock=0,lamps=[],dust,stormLight,cemeteryMist,bats=[],current='grounds',cemeteryGateLeaves=[],gateOpen=false;
+let THREE,scene,camera,renderer,started=false,yaw=0,pitch=0,drag=false,lastX=0,lastY=0,keys={},padX=0,padY=0,clock=0,lamps=[],dust,stormLight,cemeteryMist,bats=[],current='grounds',cemeteryGateLeaves=[],gateOpen=false,hotelDoorLeaves=[],hotelDoorOpen=false;
 const mats={};
 function mat(c,r=.82,m=0){const k=[c,r,m].join(':');return mats[k]||(mats[k]=new THREE.MeshStandardMaterial({color:c,roughness:r,metalness:m}))}
 function box(parent,w,h,d,x,y,z,m,rx=0,ry=0,rz=0){const o=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m);o.position.set(x,y,z);o.rotation.set(rx,ry,rz);o.castShadow=true;o.receiveShadow=true;parent.add(o);return o}
@@ -121,6 +121,7 @@ function buildExterior(){
  box(scene,10.9,10.1,.18,0,5.25,-6.22,doorRecess);
  for(const side of [-1,1]){
   const leaf=new THREE.Group();leaf.position.set(side*5.35,0,-6.02);scene.add(leaf);
+  hotelDoorLeaves.push({leaf,side});
   const cx=-side*2.57;
   box(leaf,5.12,9.72,.48,cx,5.12,0,doorOak);
   for(let i=0;i<7;i++){
@@ -143,6 +144,38 @@ function buildExterior(){
   const knocker=new THREE.Mesh(new THREE.TorusGeometry(.31,.085,10,24),doorIronEdge);
   knocker.position.set(cx+side*2.12,5.55,.55);leaf.add(knocker);
   sphere(leaf,.15,cx+side*2.12,5.18,.55,doorIron);
+  // Three deep claw gouges cut through the lower oak panels.
+  const gouge=mat(0x080706,.99),scarEdge=mat(0x40352b,.98);
+  for(let g=0;g<3;g++){
+   const gx=cx-1.25+g*.72;
+   const curve=new THREE.CatmullRomCurve3([
+    new THREE.Vector3(gx-.22,1.25,.49),
+    new THREE.Vector3(gx-.08,1.85,.50),
+    new THREE.Vector3(gx+.12,2.45,.49),
+    new THREE.Vector3(gx+.31,2.85,.48)
+   ]);
+   leaf.add(new THREE.Mesh(new THREE.TubeGeometry(curve,16,.045,7,false),gouge));
+   const edgeCurve=new THREE.CatmullRomCurve3([
+    new THREE.Vector3(gx-.29,1.27,.485),
+    new THREE.Vector3(gx-.15,1.86,.49),
+    new THREE.Vector3(gx+.05,2.46,.485),
+    new THREE.Vector3(gx+.24,2.84,.48)
+   ]);
+   leaf.add(new THREE.Mesh(new THREE.TubeGeometry(edgeCurve,16,.018,6,false),scarEdge));
+  }
+  // A blackened, thorn-like iron brace makes the doors feel hostile and old.
+  const braceCurve=new THREE.CatmullRomCurve3([
+   new THREE.Vector3(cx-1.9,3.0,.48),
+   new THREE.Vector3(cx-.8,3.55,.49),
+   new THREE.Vector3(cx+.4,4.05,.49),
+   new THREE.Vector3(cx+1.8,4.7,.48)
+  ]);
+  leaf.add(new THREE.Mesh(new THREE.TubeGeometry(braceCurve,24,.075,8,false),doorIron));
+  for(let thorn=0;thorn<4;thorn++){
+   const tx=cx-1.2+thorn*.8;
+   const spike=new THREE.Mesh(new THREE.ConeGeometry(.09,.38,5),doorIronEdge);
+   spike.position.set(tx,3.68+thorn*.28,.5);spike.rotation.z=-.45;leaf.add(spike);
+  }
   leaf.rotation.y=side*.025;
  }
  for(const x of [-5.62,5.62]){
@@ -701,6 +734,9 @@ function frame(t){requestAnimationFrame(frame);const dt=Math.min(.05,(t-(clock||
  }
  camera.position.y=floorEye+(moving?Math.abs(Math.sin(t*.009))*.045:0);camera.rotation.order='YXZ';camera.rotation.y=yaw;camera.rotation.x=pitch}
  const gateDistance=Math.hypot(camera.position.x,camera.position.z-27);const shouldOpen=started&&current==='grounds'&&gateDistance<9;if(shouldOpen!==gateOpen){gateOpen=shouldOpen;showToast(gateOpen?'THE IRON GATES GROAN OPEN…':'THE IRON GATES SWING SHUT…')}cemeteryGateLeaves.forEach(({leaf,side})=>{const target=gateOpen?-side*1.02:0;leaf.rotation.y+=(target-leaf.rotation.y)*Math.min(1,dt*1.7)});
+ const doorDistance=Math.hypot(camera.position.x,camera.position.z+2.8);const shouldOpenDoors=started&&current==='grounds'&&doorDistance<9;
+ if(shouldOpenDoors!==hotelDoorOpen){hotelDoorOpen=shouldOpenDoors;showToast(hotelDoorOpen?'THE HOTEL DOORS BEGIN TO CREAK OPEN…':'THE HOTEL DOORS SLOWLY CLOSE…')}
+ hotelDoorLeaves.forEach(({leaf,side})=>{const target=hotelDoorOpen?-side*1.12:side*.025;leaf.rotation.y+=(target-leaf.rotation.y)*Math.min(1,dt*.42)});
  lamps.forEach(({l,intensity},i)=>l.intensity=intensity+Math.sin(t*.0013+i*1.7)*.09);
  if(dust){dust.rotation.y=t*.000012;dust.position.y=Math.sin(t*.0003)*.12}if(cemeteryMist){cemeteryMist.rotation.y=Math.sin(t*.00012)*.018;cemeteryMist.position.y=Math.sin(t*.00025)*.09}
  const phase=t%19000;stormLight.intensity=phase<110?8*Math.sin(phase/110*Math.PI):0;
@@ -723,7 +759,7 @@ function setup(){
 }
 let loadStarted=false,loadFinished=false;
 function fail(e){console.error('Hollow Crown startup:',e);loadStarted=false;enter.disabled=false;enter.textContent='RETRY 3D ENGINE';message.textContent='The 3D engine did not respond. Tap RETRY 3D ENGINE.';enter.onclick=()=>{enter.onclick=null;load()}}
-function initialize(){if(loadFinished)return;try{THREE=window.THREE;if(!THREE)throw new Error('Three.js did not initialize');buildWorld();setup();loadFinished=true;enter.disabled=false;enter.textContent='ENTER THE HOTEL';message.textContent='The doors are open. We have been expecting you.';requestAnimationFrame(frame)}catch(e){fail(e)}}
+function initialize(){if(loadFinished)return;try{THREE=window.THREE;if(!THREE)throw new Error('Three.js did not initialize');buildWorld();setup();loadFinished=true;enter.disabled=false;enter.textContent='ENTER THE HOTEL';message.textContent='The doors will open when you come closer. We have been expecting you.';requestAnimationFrame(frame)}catch(e){fail(e)}}
 function load(){if(loadStarted||loadFinished)return;loadStarted=true;enter.disabled=true;enter.textContent='LOADING 3D ENGINE…';message.textContent='Connecting to the 3D engine. This should only take a few seconds.';const classic=['https://cdnjs.cloudflare.com/ajax/libs/three.js/0.159.0/three.min.js','https://cdn.jsdelivr.net/npm/three@0.159.0/build/three.min.js'];let i=0;function moduleFallback(){if(loadFinished)return;message.textContent='Trying the alternate 3D engine connection…';import('https://cdn.jsdelivr.net/npm/three@0.159.0/build/three.module.js').then(mod=>{if(loadFinished)return;window.THREE=mod;initialize()}).catch(()=>{import('https://unpkg.com/three@0.159.0/build/three.module.js').then(mod=>{if(loadFinished)return;window.THREE=mod;initialize()}).catch(e=>fail(e))})}function next(){if(window.THREE){initialize();return}if(i>=classic.length){moduleFallback();return}const tag=document.createElement('script'),url=classic[i++];let settled=false;const finish=()=>{if(settled)return;settled=true;clearTimeout(timer);tag.onload=null;tag.onerror=null;if(window.THREE)initialize();else next()};const timer=setTimeout(()=>{tag.remove();finish()},7000);tag.src=url;tag.onload=finish;tag.onerror=finish;document.head.appendChild(tag)}next()}
 load();
 })();
