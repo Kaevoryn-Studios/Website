@@ -114,6 +114,7 @@ function build(){
  const grass=mat(0x34372b);for(let i=0;i<240;i++){const x=(Math.random()-.5)*34,z=Math.random()*38-32;if(Math.abs(x)<4&&z>-27)continue;for(let k=0;k<3;k++){const blade=box(scene,.035,.3+Math.random()*.45,.035,x+(Math.random()-.5)*.35,.15,z+(Math.random()-.5)*.35,grass,0,0,(Math.random()-.5)*.5)}}
  for(let side of [-1,1]){for(let z=-28;z<8;z+=3.3){box(scene,.12,.9,.12,side*5,.45,z,mat(0x202225));box(scene,.12,.9,.12,side*8.5,.45,z,mat(0x202225))}for(let i=0;i<18;i++)grave(side*(3.5+Math.random()*5),-27+i*1.9,i);tree(side*11,-17,1.25);tree(side*9,-3,.95);lantern(side*4.5,-8);lantern(side*4.5,-21)}
  // gate piers and iron gate
+ const stone=mat(0x4b4947),trim=mat(0x282522);
  for(let s of [-1,1]){box(scene,.8,3.2,.9,s*4,1.6,-4.5,stone);box(scene,1,.3,1,s*4,3.3,-4.5,trim)}
  for(let x=-3.5;x<=3.5;x+=.35)box(scene,.055,2.6,.06,x,1.3,-4.5,mat(0x17191b,.4,.65));
  box(scene,8,.18,.22,0,2.65,-4.5,mat(0x17191b,.4,.65));
