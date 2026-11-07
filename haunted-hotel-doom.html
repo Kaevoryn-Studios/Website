@@ -3,539 +3,239 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<meta name="theme-color" content="#080914">
-<meta name="description" content="Enter the Haunted Hotel Doom: a moonlit graveyard, haunted Victorian hotel, drifting fog and supernatural secrets.">
-<title>Haunted Hotel Doom · Kaevoryn Studios</title>
+<meta name="theme-color" content="#080a12">
+<title>Haunted Hotel Doom | Kaevoryn Studios</title>
 <style>
-:root{color-scheme:dark;--cyan:#8deaff;--violet:#a58cff;--gold:#d6b47a}
-*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#080914;color:#f5efff;font-family:Georgia,serif}
-#world{position:fixed;inset:0}canvas{display:block;width:100%;height:100%;touch-action:none}
-.vignette{position:fixed;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 46%,transparent 52%,#03040b80 100%);z-index:2}
-.hud{position:fixed;z-index:5;inset:0;pointer-events:none}
-.brand{position:absolute;top:18px;left:20px;text-shadow:0 2px 18px #000}
-.brand small{display:block;color:var(--cyan);font:10px/1.5 system-ui;letter-spacing:.3em}
-.brand strong{font-size:clamp(17px,3vw,25px);letter-spacing:.12em}
-.top-actions{position:absolute;right:16px;top:16px;display:flex;gap:8px;pointer-events:auto}
-button{border:1px solid #8c82bb88;background:#0a0b1bd9;color:#f5efff;border-radius:999px;padding:10px 15px;font:12px system-ui;letter-spacing:.08em;cursor:pointer;backdrop-filter:blur(12px)}
-button:hover{border-color:var(--cyan);box-shadow:0 0 18px #76dfff55}
-#intro{position:fixed;z-index:8;inset:0;display:grid;place-items:center;background:linear-gradient(#07081755,#070817c9);padding:22px;text-align:center}
-.panel{max-width:650px;padding:clamp(24px,5vw,48px);border:1px solid #9a8bd866;background:#090a18d9;box-shadow:0 0 70px #5b37a944;backdrop-filter:blur(12px)}
-.eyebrow{font:11px system-ui;letter-spacing:.35em;color:var(--cyan)}
-h1{font-size:clamp(34px,7vw,76px);line-height:.95;margin:18px 0;text-shadow:0 0 25px #9b5cff88}
-.panel p{color:#d1c9df;line-height:1.7}
-#enter{display:inline-block;margin-top:14px;padding:14px 26px;border:1px solid #8deaffaa;border-radius:999px;background:#0a0b1bd9;color:#dffaff;font:12px system-ui;letter-spacing:.08em;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
-#message{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);font:12px system-ui;letter-spacing:.12em;color:#e9e1ff;text-align:center;text-shadow:0 2px 10px #000;white-space:nowrap}
-#help{position:absolute;left:20px;bottom:18px;font:11px system-ui;color:#d0c8dfaa}
-#touchpad{position:absolute;right:22px;bottom:25px;width:116px;height:116px;border:1px solid #b6a8dc66;border-radius:50%;background:#12122677;pointer-events:auto;touch-action:none;display:none}
-#nub{position:absolute;width:42px;height:42px;left:36px;top:36px;border-radius:50%;background:#9eeaff55;border:1px solid #a9edff}
-#interact{position:absolute;right:155px;bottom:48px;pointer-events:auto;display:none}
-#flash{position:fixed;inset:0;background:#dceaff;opacity:0;pointer-events:none;z-index:6}
-@media(max-width:700px){#touchpad{display:block}#help{max-width:48%;line-height:1.5}#message{bottom:154px;font-size:10px}.brand{top:12px;left:13px}.top-actions{top:10px;right:10px}button{padding:9px 11px}}
+:root{color-scheme:dark;--cyan:#a6eaff;--gold:#c6a477}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#080a12;color:#f3edf5;font-family:Georgia,serif}
+#world{position:fixed;inset:0;z-index:0}
+#world canvas{display:block;width:100%;height:100%;touch-action:none}
+#shade{position:fixed;inset:0;z-index:2;pointer-events:none;background:radial-gradient(ellipse at center,transparent 38%,#02030a9c 100%)}
+#hud{position:fixed;inset:0;z-index:5;pointer-events:none}
+#brand{position:absolute;top:17px;left:18px;text-shadow:0 2px 12px #000}
+#brand small{display:block;color:var(--cyan);font:10px system-ui;letter-spacing:.28em}
+#brand strong{font-size:clamp(16px,3vw,24px);letter-spacing:.09em}
+#actions{position:absolute;right:14px;top:14px;display:flex;gap:8px;pointer-events:auto}
+.ui-button{border:1px solid #a9a0bc77;background:#0b0d18e8;color:#f7f2ff;border-radius:30px;padding:10px 14px;font:11px system-ui;letter-spacing:.08em;cursor:pointer;touch-action:manipulation}
+.ui-button:active,#enter:active{transform:scale(.97);background:#263447}
+#message{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);width:max-content;max-width:90%;text-align:center;color:#e7e1ee;font:11px system-ui;letter-spacing:.1em;text-shadow:0 2px 8px #000}
+#help{position:absolute;left:18px;bottom:17px;color:#d4ccdcaa;font:10px system-ui;letter-spacing:.05em}
+#joystick{display:none;position:absolute;right:20px;bottom:25px;width:112px;height:112px;border:1px solid #d5d4e066;border-radius:50%;background:#10152177;pointer-events:auto;touch-action:none}
+#stick{position:absolute;left:35px;top:35px;width:40px;height:40px;border-radius:50%;background:#b5eaff55;border:1px solid #b5eaffaa}
+#intro{position:fixed;inset:0;z-index:30;display:grid;place-items:center;padding:22px;background:linear-gradient(180deg,#050711a8,#070913ed);text-align:center;pointer-events:auto}
+#panel{width:min(650px,100%);padding:clamp(24px,5vw,48px);border:1px solid #b7a7c65c;background:linear-gradient(145deg,#10121feF,#080a14f5);box-shadow:0 18px 80px #000b;pointer-events:auto}
+#eyebrow{font:10px system-ui;letter-spacing:.32em;color:var(--cyan)}
+h1{margin:18px 0 12px;font-size:clamp(38px,8vw,76px);line-height:.93;font-weight:normal;letter-spacing:.025em;text-shadow:0 3px 24px #000}
+#panel p{max-width:520px;margin:12px auto;color:#d2cbd7;line-height:1.65;font-size:15px}
+#enter{display:inline-flex;align-items:center;justify-content:center;min-height:54px;margin-top:18px;padding:0 30px;border:1px solid #b4edff;background:#10202b;color:#e6faff;border-radius:3px;font: bold 12px system-ui;letter-spacing:.18em;cursor:pointer;touch-action:manipulation;pointer-events:auto;position:relative;z-index:31}
+#enter:focus-visible,.ui-button:focus-visible{outline:3px solid #fff;outline-offset:4px}
+#loading{min-height:18px;margin-top:14px;color:#c4bbd0;font:11px system-ui;letter-spacing:.08em}
+#storm{position:fixed;inset:0;z-index:4;background:#e5efff;opacity:0;pointer-events:none}
+@media(max-width:700px){#joystick{display:block}#help{max-width:43%;line-height:1.5}#message{bottom:150px;font-size:10px}#brand{top:12px;left:12px}#actions{top:10px;right:9px}.ui-button{padding:9px 10px;font-size:10px}#panel p{font-size:14px}}
 </style>
 </head>
 <body>
-<div id="world"></div><div class="vignette"></div><div id="flash"></div>
-<div class="hud">
- <div class="brand"><small>KAEVORYN STUDIOS PRESENTS</small><strong>HAUNTED HOTEL DOOM</strong></div>
- <div class="top-actions"><button id="sound">SOUND: OFF</button><button id="reset">RESTART</button></div>
- <div id="help">WASD / ARROWS TO WALK · DRAG TO LOOK · E TO INTERACT</div>
- <div id="message">THE GATES ARE OPEN… THE HOTEL IS WAITING.</div>
- <button id="interact">INSPECT</button>
- <div id="touchpad"><div id="nub"></div></div>
+<div id="world"></div><div id="shade"></div><div id="storm"></div>
+<div id="hud">
+ <div id="brand"><small>KAEVORYN STUDIOS PRESENTS</small><strong>HAUNTED HOTEL DOOM</strong></div>
+ <div id="actions"><button class="ui-button" id="sound" type="button">SOUND: OFF</button><button class="ui-button" id="reset" type="button">RESET VIEW</button></div>
+ <div id="help">DRAG TO LOOK · WASD / ARROWS TO WALK</div>
+ <div id="message">A storm gathers over the forgotten grounds.</div>
+ <div id="joystick"><div id="stick"></div></div>
 </div>
-<div id="intro"><div class="panel"><div class="eyebrow">AN INVITATION FROM THE OTHER SIDE</div><h1>THE HOTEL<br>NEVER SLEEPS</h1><p>A forgotten graveyard guards the road to a Victorian hotel. Wander among weathered tombstones, iron gates and twisted trees. Watch the fog. Something moves when the lightning fades.</p><p><small>Explore at your own pace. Head toward the red-lit entrance.</small></p><button id="enter" type="button">ENTER THE GRAVEYARD</button></div></div>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js"></script>
+<div id="intro">
+ <div id="panel">
+  <div id="eyebrow">AN INVITATION FROM THE OTHER SIDE</div>
+  <h1>THE HOTEL<br>NEVER SLEEPS</h1>
+  <p>A neglected graveyard guards the road to an old Victorian hotel. Weathered stone, iron railings and dark windows wait beyond the gates.</p>
+  <p>Walk toward the entrance. Keep your lantern close.</p>
+  <button id="enter" type="button">ENTER THE GRAVEYARD</button>
+  <div id="loading" aria-live="polite">Preparing the grounds…</div>
+ </div>
+</div>
 <script>
-(()=>{
-window.addEventListener("load",()=>{
-const world=document.getElementById('world'),msg=document.getElementById('message'),intro=document.getElementById('intro'),flash=document.getElementById('flash');
-const enterButton=document.getElementById('enter');
-let started=false,worldReady=false,enterRequested=false;
-function beginExploration(){
+(function(){
+"use strict";
+var world=document.getElementById("world");
+var intro=document.getElementById("intro");
+var enterButton=document.getElementById("enter");
+var loading=document.getElementById("loading");
+var message=document.getElementById("message");
+var storm=document.getElementById("storm");
+var scene,camera,renderer,THREE,ready=false,enterRequested=false,started=false;
+var yaw=0,pitch=0,lastTime=0,flashTimer=0;
+var keys={},moveX=0,moveY=0,dragging=false,lastX=0,lastY=0;
+var soundOn=false,wind=null,thunder=[],thunderTimer=null;
+function enterWorld(){
  enterRequested=true;
- if(!worldReady){msg.textContent='THE WORLD IS LOADING — THE GATES WILL OPEN AUTOMATICALLY.';enterButton.textContent='OPENING THE GATES…';return;}
- started=true;
- intro.style.display='none';
- intro.style.pointerEvents='none';
- msg.textContent='FOLLOW THE LANTERNS. DO NOT TRUST THE FOG.';
+ if(!ready){loading.textContent="The gates are waiting for the world to finish loading…";enterButton.textContent="OPENING THE GATES…";return;}
+ started=true;intro.style.display="none";message.textContent="FOLLOW THE LANTERNS. DO NOT TRUST THE FOG.";
 }
-enterButton.addEventListener('click',beginExploration);
-enterButton.addEventListener('pointerup',e=>{if(e.pointerType==='touch')beginExploration();});
-
-if(!window.THREE){msg.textContent='3D ENGINE COULD NOT LOAD. CHECK YOUR CONNECTION AND RELOAD.';return;}
-const T=window.THREE,scene=new T.Scene();scene.background=new T.Color(0x080b1c);scene.fog=new T.FogExp2(0x18213b,.018);
-const camera=new T.PerspectiveCamera(68,innerWidth/innerHeight,.1,240);camera.position.set(0,2.1,16);
-const renderer=new T.WebGLRenderer({antialias:true,powerPreference:'high-performance'});renderer.setPixelRatio(Math.min(devicePixelRatio,1.7));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=T.PCFSoftShadowMap;renderer.outputColorSpace=T.SRGBColorSpace;renderer.toneMapping=T.ACESFilmicToneMapping;renderer.toneMappingExposure=1.38;world.appendChild(renderer.domElement);
-const mat=(color,roughness=.85,metalness=0)=>new T.MeshStandardMaterial({color,roughness,metalness});
-const stone=mat(0x666574),darkStone=mat(0x343746),oldStone=mat(0x77717a),iron=mat(0x171b2a,.42,.72),wood=mat(0x211923),gold=mat(0x9c7042,.35,.65),glass=new T.MeshStandardMaterial({color:0xff344e,emissive:0x8d071f,emissiveIntensity:2}),warm=new T.MeshStandardMaterial({color:0xffc36b,emissive:0xff8b28,emissiveIntensity:2.3});
-scene.add(new T.HemisphereLight(0xb9c9ff,0x282235,1.85));
-const moonLight=new T.DirectionalLight(0xb5caff,2.7);moonLight.position.set(-22,35,14);moonLight.castShadow=true;moonLight.shadow.mapSize.set(1024,1024);scene.add(moonLight);
-const redLight=new T.PointLight(0xff183c,35,38);redLight.position.set(0,7,-27);scene.add(redLight);
-const ground=new T.Mesh(new T.PlaneGeometry(220,220),mat(0x171923));ground.rotation.x=-Math.PI/2;ground.position.y=-.12;ground.receiveShadow=true;scene.add(ground);
-function box(w,h,d,m,x,y,z){const o=new T.Mesh(new T.BoxGeometry(w,h,d),m);o.position.set(x,y,z);o.castShadow=true;o.receiveShadow=true;scene.add(o);return o}
-function sphere(r,m,x,y,z){const o=new T.Mesh(new T.SphereGeometry(r,12,10),m);o.position.set(x,y,z);o.castShadow=true;scene.add(o);return o}
-function cylinder(rt,rb,h,m,x,y,z,n=8){const o=new T.Mesh(new T.CylinderGeometry(rt,rb,h,n),m);o.position.set(x,y,z);o.castShadow=true;o.receiveShadow=true;scene.add(o);return o}
-function tree(x,z,s=1){const trunk=cylinder(.22*s,.48*s,5*s,wood,x,2.5*s,z,7);trunk.rotation.z=(Math.random()-.5)*.35;for(let i=0;i<5;i++){const b=cylinder(.07*s,.18*s,2.4*s,wood,x+(Math.random()-.5)*2*s,4*s+Math.random()*2*s,z+(Math.random()-.5)*1.5*s,6);b.rotation.z=(Math.random()-.5)*1.8;}for(let i=0;i<4;i++){const b=cylinder(.035*s,.12*s,1.6*s,wood,x+(Math.random()-.5)*2.8*s,5.4*s+Math.random()*1.8*s,z+(Math.random()-.5)*2*s,5);b.rotation.z=(Math.random()-.5)*2.3;}}
-// Procedural granite texture: fine mineral grain, rain streaks and age mottling.
-const graveTextureCanvas=document.createElement('canvas');graveTextureCanvas.width=256;graveTextureCanvas.height=512;
-const graveTextureCtx=graveTextureCanvas.getContext('2d');
-graveTextureCtx.fillStyle='#777780';graveTextureCtx.fillRect(0,0,256,512);
-const grain=graveTextureCtx.createImageData(256,512);
-for(let p=0;p<grain.data.length;p+=4){const n=(Math.random()-.5)*34;grain.data[p]=124+n;grain.data[p+1]=124+n;grain.data[p+2]=132+n;grain.data[p+3]=255;}
-graveTextureCtx.putImageData(grain,0,0);
-for(let i=0;i<95;i++){const x=Math.random()*256,y=Math.random()*512,w=2+Math.random()*17,h=12+Math.random()*105;graveTextureCtx.fillStyle=Math.random()>.5?'rgba(32,35,43,.055)':'rgba(220,216,207,.045)';graveTextureCtx.fillRect(x,y,w,h);}
-for(let i=0;i<420;i++){const x=Math.random()*256,y=Math.random()*512,r=.3+Math.random()*1.4;graveTextureCtx.fillStyle=Math.random()>.5?'rgba(25,28,36,.13)':'rgba(225,221,212,.12)';graveTextureCtx.beginPath();graveTextureCtx.arc(x,y,r,0,Math.PI*2);graveTextureCtx.fill();}
-const graveStoneTexture=new T.CanvasTexture(graveTextureCanvas);graveStoneTexture.colorSpace=T.SRGBColorSpace;graveStoneTexture.wrapS=T.RepeatWrapping;graveStoneTexture.wrapT=T.RepeatWrapping;graveStoneTexture.anisotropy=4;
-function tomb(x,z,kind=0){
-  const palette=[0x777681,0x686a76,0x858087,0x555965,0x77736f,0x626775];
-  const m=new T.MeshStandardMaterial({color:palette[(kind+Math.floor(Math.random()*3))%palette.length],roughness:.98,metalness:0,map:graveStoneTexture});
-  const w=.72+Math.random()*.38,h=1.25+Math.random()*.85,depth=.22;
-  const base=box(w+.3,.2,.48,darkStone,x,.02,z);
-  const plinth=box(w+.12,.16,.38,m,x,.19,z);
-  const shape=new T.Shape();
-  const half=w/2;
-  shape.moveTo(-half,0);shape.lineTo(-half,h*.68);
-  if(kind%4===0){shape.quadraticCurveTo(-half,h*.91,0,h);shape.quadraticCurveTo(half,h*.91,half,h*.68);}
-  else if(kind%4===1){shape.lineTo(-half,h*.82);shape.lineTo(-half*.55,h*.91);shape.lineTo(half*.55,h*.91);shape.lineTo(half,h*.82);}
-  else if(kind%4===2){shape.lineTo(-half,h*.83);shape.lineTo(-half*.72,h*.94);shape.lineTo(0,h*.86);shape.lineTo(half*.72,h*.94);shape.lineTo(half,h*.83);}
-  else{shape.lineTo(-half,h*.72);shape.quadraticCurveTo(0,h*1.12,half,h*.72);}
-  shape.lineTo(half,0);shape.closePath();
-  const geo=new T.ExtrudeGeometry(shape,{depth,bevelEnabled:true,bevelSegments:3,steps:1,bevelSize:.045,bevelThickness:.045,curveSegments:8});
-  geo.computeVertexNormals();
-  const body=new T.Mesh(geo,m);body.position.set(x,.27,z-depth/2);body.castShadow=true;body.receiveShadow=true;scene.add(body);
-  const faceZ=z+depth/2+.055;
-  // Worn inset name panel and shallow engraved inscription strokes facing the visitor.
-  const plaqueMat=mat(0x3d3d49,.96);
-  const plaque=box(w*.62,.29,.025,plaqueMat,x,.55+h*.43,faceZ);
-  const letterMat=mat(0xa6a0a0,.95);
-  for(let j=0;j<3;j++)box(w*(.24+(j%2)*.08),.018,.012,letterMat,x+(j===1?.035:-.015),.55+h*.43-.055-j*.065,faceZ+.022);
-  if(kind%3===0){
-    box(.055,.42,.025,letterMat,x,.63+h*.43,faceZ+.025);
-    box(.27,.055,.025,letterMat,x,.69+h*.43,faceZ+.025);
+enterButton.addEventListener("click",enterWorld);
+enterButton.addEventListener("pointerup",function(e){if(e.pointerType==="touch")enterWorld();});
+function loadThree(){
+ return new Promise(function(resolve,reject){
+  if(window.THREE){resolve(window.THREE);return;}
+  var sources=["https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js","https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"],n=0;
+  function next(){
+   if(n>=sources.length){reject(new Error("The 3D engine could not be reached. Check your connection and reload."));return;}
+   var script=document.createElement("script");script.src=sources[n++];script.onload=function(){if(window.THREE)resolve(window.THREE);else next();};script.onerror=next;document.head.appendChild(script);
   }
-  // Deep age cracks, branching fractures, chipped edges and damp lichen.
-  const crackMat=new T.MeshStandardMaterial({color:0x252831,roughness:1});
-  const crackEdgeMat=new T.MeshStandardMaterial({color:0xaaa5a0,roughness:1});
-  const crackZ=faceZ+.052;
-  const fracture=(points,radius,material)=>{
-    const curve=new T.CatmullRomCurve3(points.map(([px,py])=>new T.Vector3(px,py,crackZ)));
-    const mesh=new T.Mesh(new T.TubeGeometry(curve,18,radius,5,false),material);
-    mesh.castShadow=true;scene.add(mesh);
-  };
-  const crackX=x+(Math.random()-.5)*w*.34,crackY=.55+h*(.53+Math.random()*.18);
-  const drift=(Math.random()-.5)*.16;
-  fracture([[crackX-.07,crackY+.38],[crackX-.025,crackY+.24],[crackX+drift,crackY+.09],[crackX-.035,crackY-.06],[crackX+.035,crackY-.22],[crackX+.01,crackY-.36]],.012,crackMat);
-  fracture([[crackX-.025,crackY+.24],[crackX-.16,crackY+.17],[crackX-.23,crackY+.05]],.007,crackMat);
-  fracture([[crackX+.005,crackY+.02],[crackX+.16,crackY-.04],[crackX+.22,crackY-.16]],.007,crackMat);
-  fracture([[crackX-.085,crackY+.36],[crackX-.04,crackY+.22],[crackX-.015,crackY+.1]],.004,crackEdgeMat);
-  if(kind%2===0){
-    const sx=x+(Math.random()-.5)*w*.42,sy=.48+h*.28;
-    fracture([[sx-.06,sy+.12],[sx+.015,sy+.03],[sx-.025,sy-.08],[sx+.055,sy-.17]],.008,crackMat);
-  }
-  // Small pitted erosion marks and dark mineral pores on the exposed face.
-  const pitMat=mat(0x444650,1);
-  for(let p=0;p<9;p++){const pit=sphere(.012+Math.random()*.014,pitMat,x+(Math.random()-.5)*w*.72,.38+Math.random()*h*.48,faceZ+.052);pit.scale.set(1.5,.65,.35);}
-  // Small dark chips along the silhouette make the old stone look broken by weather.
-  const chipMat=mat(0x3c3d47,.98);
-  for(let k=0;k<3;k++){
-    const chip=new T.Mesh(new T.BoxGeometry(.07+Math.random()*.08,.035+Math.random()*.04,.025),chipMat);
-    chip.position.set(x+(Math.random()-.5)*w*.82,.32+h*(.72+Math.random()*.24),faceZ+.035);
-    chip.rotation.z=(Math.random()-.5)*.8;scene.add(chip);
-  }
-  const mossMat=mat(0x344139,1);
-  for(let k=0;k<5;k++){
-    const stain=new T.Mesh(new T.BoxGeometry(.1+Math.random()*.2,.025+Math.random()*.035,.014),mossMat);
-    stain.position.set(x+(Math.random()-.5)*w*.72,.32+Math.random()*.2,z+depth/2+.04);
-    stain.rotation.z=(Math.random()-.5)*.24;scene.add(stain);
-  }
-  // Slightly sunken, uneven footing and subtle age lean.
-  plinth.rotation.z=(Math.random()-.5)*.018;
-  body.rotation.z=(Math.random()-.5)*.035;
-  return body;
+  next();
+ });
 }
-// A quieter graveyard: six weathered plots on each side, leaving generous open space.
-let graveIndex=0;
-for(const side of [-1,1]){
-  for(let row=0;row<6;row++){
-    const x=side*(3.55+(Math.random()-.5)*.18);
-    const z=-10.0-row*4.15+(Math.random()-.5)*.3;
-    tomb(x,z,graveIndex);
-    if(row===1||row===4){
-      const cx=x+side*.78;
-      cylinder(.05,.05,.72,iron,cx,.43,z,6);
-      box(.55,.08,.09,iron,cx,.67,z);
-    }
-    graveIndex++;
-  }
+function material(color,roughness,metalness){return new THREE.MeshStandardMaterial({color:color,roughness:roughness===undefined?.86:roughness,metalness:metalness||0});}
+function box(parent,w,h,d,x,y,z,mat){var mesh=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat);mesh.position.set(x,y,z);mesh.castShadow=true;mesh.receiveShadow=true;parent.add(mesh);return mesh;}
+function cylinder(parent,rt,rb,h,x,y,z,mat,segments){var mesh=new THREE.Mesh(new THREE.CylinderGeometry(rt,rb,h,segments||12),mat);mesh.position.set(x,y,z);mesh.castShadow=true;mesh.receiveShadow=true;parent.add(mesh);return mesh;}
+function makeTree(x,z,scale){
+ var group=new THREE.Group();group.position.set(x,0,z);group.scale.setScalar(scale);scene.add(group);
+ var bark=material(0x28252a),limb=material(0x302a30);
+ cylinder(group,.28,.48,5.2,0,2.6,0,bark,9);
+ for(var i=0;i<5;i++){var branch=cylinder(group,.09,.19,2.7,(i%2?-.55:.55),3.5+i*.25,0,limb,7);branch.rotation.z=(i%2?-.65:.65);branch.rotation.x=(i-2)*.12;}
 }
-// Uneven old flagstones guide visitors through the open centre of the graveyard.
-const pathStone=mat(0x41414b,.98),moss=mat(0x26312e,1);
-for(let i=0;i<34;i++){
-  const z=5-i*1.02;
-  const slab=box(.95+Math.random()*.35,.09,1.05+Math.random()*.25,pathStone,(Math.random()-.5)*.34,-.035,z);
-  slab.rotation.y=(Math.random()-.5)*.12;
-  if(i%4===0){
-    const patch=new T.Mesh(new T.CircleGeometry(.28+Math.random()*.22,7),moss);
-    patch.rotation.x=-Math.PI/2;
-    patch.position.set((Math.random()-.5)*2.8,-.065,z+.35);
-    scene.add(patch);
-  }
+function makeGrave(x,z,variant){
+ var stone=material(variant?0x77747b:0x57545d),dark=material(0x292a31);
+ var h=1.05+Math.random()*.45,w=.62+Math.random()*.18;
+ var body=box(scene,w,h,.22,x,h/2,z,stone);
+ if(variant%2===0){var top=cylinder(scene,w*.48,w*.48,.2,x,h,z,stone,8);top.rotation.z=Math.PI/2;}
+ box(scene,w*.55,.045,.245,x,h*.58,z-.02,dark);
 }
-for(let i=0;i<15;i++){const side=i%2?-1:1;tree(side*(10+Math.random()*18),-5-Math.random()*65,.8+Math.random()*.8);}
-// Removed the old elevated cemetery fence row; it created floating black bars.
-// rebuilt, fully static wrought-iron entrance gates
-const entranceGate=new T.Group();
-entranceGate.position.set(0,0,-4);
-scene.add(entranceGate);
-function gateMesh(geometry,material,x,y,z){
-  const mesh=new T.Mesh(geometry,material);
-  mesh.position.set(x,y,z);
-  mesh.castShadow=true;
-  mesh.receiveShadow=true;
-  entranceGate.add(mesh);
-  return mesh;
+function makeLantern(x,z){
+ var metal=material(0x171a20,.4,.65),glass=new THREE.MeshStandardMaterial({color:0xffbd72,emissive:0xff8a32,emissiveIntensity:1.8,roughness:.25});
+ cylinder(scene,.09,.12,.13,x,2.35,z,metal,8);
+ box(scene,.36,.48,.34,x,2.68,z,metal);
+ box(scene,.23,.34,.22,x,2.68,z-.01,glass);
+ cylinder(scene,.2,.12,.1,x,2.94,z,metal,8);
+ var light=new THREE.PointLight(0xffa85a,7,11,2);light.position.set(x,2.65,z);scene.add(light);return light;
 }
-const gateStone=mat(0x454451,.94),gateTrim=mat(0x77717a,.82),gateIron=mat(0x111725,.34,.82),gateBronze=mat(0x806044,.38,.72);
-// broad stone footings and substantial square pillars
-for(const x of [-4.7,4.7]){
-  gateMesh(new T.BoxGeometry(1.35,.34,1.25),gateStone,x,.05,0);
-  gateMesh(new T.BoxGeometry(1.08,4.55,1.02),darkStone,x,2.48,0);
-  gateMesh(new T.BoxGeometry(1.2,.2,1.14),gateTrim,x,4.78,0);
-  gateMesh(new T.BoxGeometry(1.42,.22,1.3),gateStone,x,4.94,0);
-  gateMesh(new T.CylinderGeometry(.34,.48,.48,8),gateStone,x,5.27,0);
-  gateMesh(new T.ConeGeometry(.34,.72,4),gateIron,x,5.86,0);
-  gateMesh(new T.SphereGeometry(.12,12,10),gateBronze,x,5.48,0);
-  for(const z of [-.54,.54])gateMesh(new T.BoxGeometry(.08,4.25,.08),gateTrim,x,2.42,z);
-}
-// Two separate hinged leaves swing open automatically as the visitor approaches.
-const gateLeaves=[];
-for(const side of [-1,1]){
-  const inner=side<0?-.18:.18,outer=side*4.12;
-  const center=(inner+outer)/2,width=Math.abs(outer-inner);
-  const hinge=new T.Group();hinge.position.set(outer,0,0);entranceGate.add(hinge);
-  const leafMesh=(geometry,material,x,y,z)=>{const m=new T.Mesh(geometry,material);m.position.set(x-outer,y,z);m.castShadow=true;m.receiveShadow=true;hinge.add(m);return m;};
-  leafMesh(new T.BoxGeometry(width,.2,.2),gateIron,center,-.02,.02);
-  leafMesh(new T.BoxGeometry(width,.2,.2),gateIron,center,1.02,.02);
-  leafMesh(new T.BoxGeometry(width,.24,.2),gateIron,center,3.05,.02);
-  leafMesh(new T.BoxGeometry(width,.12,.2),gateBronze,center,1.12,.02);
-  for(let i=0;i<=12;i++){
-    const x=inner+(outer-inner)*i/12;
-    const bottom=-.12,top=2.97,h=top-bottom+(i===0||i===12?.18:0);
-    leafMesh(new T.BoxGeometry(.075,h,.13),gateIron,x,bottom+h/2,.02);
-    leafMesh(new T.ConeGeometry(.095,.34,4),gateIron,x,top+.16+(i===0||i===12?.18:0),.02);
-    leafMesh(new T.SphereGeometry(.075,8,8),gateBronze,x,.02,.02);
-  }
-  const ring=leafMesh(new T.TorusGeometry(.48,.055,8,28),gateBronze,center,2.05,-.11);ring.rotation.z=Math.PI/2;
-  leafMesh(new T.BoxGeometry(.13,1.05,.13),gateIron,center,2.05,-.08);
-  for(const x of [center-width*.34,center+width*.34])leafMesh(new T.BoxGeometry(.11,.65,.12),gateBronze,x,2.05,-.08);
-  gateLeaves.push({hinge,side});
-}
-// Long cemetery perimeter fences: connected to the entrance pillars and running toward the hotel.
-for(const side of [-1,1]){
-  const fenceX=side*5.35;
-  const startZ=-.15,endZ=-29.2,postSpacing=4.15;
-  const postZ=[];
-  for(let z=startZ;z>=endZ;z-=postSpacing)postZ.push(z);
-  if(postZ[postZ.length-1]>endZ+.5)postZ.push(endZ);
-  // Heavy end posts and grounded stone feet.
-  for(const z of postZ){
-    gateMesh(new T.BoxGeometry(.62,.22,.72),gateStone,fenceX,.0,z);
-    gateMesh(new T.BoxGeometry(.28,2.05,.28),gateIron,fenceX,1.0,z);
-    gateMesh(new T.BoxGeometry(.42,.16,.42),gateTrim,fenceX,2.08,z);
-    gateMesh(new T.ConeGeometry(.23,.42,4),gateIron,fenceX,2.36,z);
-  }
-  // Wrought-iron panels between posts, with continuous top and bottom rails.
-  for(let p=0;p<postZ.length-1;p++){
-    const z1=postZ[p],z2=postZ[p+1],mid=(z1+z2)/2,len=Math.abs(z2-z1)-.12;
-    gateMesh(new T.BoxGeometry(.16,.16,len),gateIron,fenceX,.02,mid);
-    gateMesh(new T.BoxGeometry(.16,.16,len),gateIron,fenceX,1.88,mid);
-    const count=Math.max(4,Math.floor(len/.48));
-    for(let j=0;j<=count;j++){
-      const z=z1-(Math.abs(z2-z1)*j/count);
-      gateMesh(new T.BoxGeometry(.09,1.72,.09),gateIron,fenceX,.88,z);
-      gateMesh(new T.ConeGeometry(.075,.24,4),gateIron,fenceX,1.86,z);
-    }
-  }
-}
-// NEW HOTEL DESIGN — one continuous extruded facade with a single real doorway cut-out.
-const hotelShell=mat(0x252633,.94);hotelShell.side=T.DoubleSide;
-const hotelTrim=mat(0x55505f,.82),hotelEdge=mat(0x171a29,.7),hotelStone=mat(0x393541,.96);
-// The entire front wall is one solid shape. The doorway is the only cut-out.
-const facadeShape=new T.Shape();
-facadeShape.moveTo(-15.5,0);facadeShape.lineTo(15.5,0);facadeShape.lineTo(15.5,18);facadeShape.lineTo(-15.5,18);facadeShape.closePath();
-const doorwayHole=new T.Path();
-doorwayHole.moveTo(-2.7,.05);doorwayHole.lineTo(-2.7,5.55);doorwayHole.lineTo(2.7,5.55);doorwayHole.lineTo(2.7,.05);doorwayHole.closePath();
-facadeShape.holes.push(doorwayHole);
-const facadeGeometry=new T.ExtrudeGeometry(facadeShape,{depth:.9,bevelEnabled:false,curveSegments:1});
-facadeGeometry.computeVertexNormals();
-const facade=new T.Mesh(facadeGeometry,hotelShell);facade.position.set(0,0,-36.65);facade.castShadow=true;facade.receiveShadow=true;scene.add(facade);
-// Deep side walls meet the front corners exactly; the rear and roof fully enclose the building.
-box(.9,18,21.0,hotelShell,-15.05,9,-46.25);
-box(.9,18,21.0,hotelShell,15.05,9,-46.25);
-box(31.0,18,.9,hotelShell,0,9,-56.75);
-box(31.8,.8,22.0,hotelShell,0,18.05,-46.25);
-// A new, heavier entrance surround frames the cut-out without covering it.
-for(const x of [-2.9,2.9]){
- box(.48,6.05,.62,hotelStone,x,3.0,-35.55);
- box(.72,.36,.72,hotelTrim,x,5.98,-35.55);
- box(.72,.36,.72,hotelTrim,x,.18,-35.55);
-}
-box(6.35,.58,.72,hotelTrim,0,5.82,-35.55);
-box(5.9,.2,.78,hotelEdge,0,.12,-35.55);
-const foyerGlow=new T.PointLight(0x8e102c,2.8,8,2);foyerGlow.position.set(0,2.1,-38.7);scene.add(foyerGlow);
-// GRAND VICTORIAN HOTEL LOBBY — fully walkable beyond the entrance.
-const lobbyFloor=mat(0x241a25,.92),wallpaper=mat(0x302332,.96),darkWood=mat(0x24131a,.72),polishedWood=mat(0x49303a,.48),marble=mat(0x625761,.55),brass=mat(0xb18a55,.36,.72),carpet=mat(0x541525,.96),carpetGold=mat(0xb58a55,.7),portraitDark=mat(0x100d15,.9);
-box(18,.24,22,lobbyFloor,0,-.13,-46);
-box(18,11,.35,wallpaper,0,5.35,-57.1);
-// Interior-facing side-wall surfaces must remain visible from inside the lobby.
-wallpaper.side=T.DoubleSide;
-for(const side of [-1,1])box(.35,11,22,wallpaper,side*8.9,5.35,-46);
-for(const side of [-1,1]){
- box(.5,10.8,.5,darkWood,side*8.55,5.35,-46);
- for(let z=-38.5;z>=-55;z-=4.2){
-  box(.16,9.8,.2,brass,side*8.67,5.25,z);
-  box(.42,.25,.35,brass,side*8.55,1.0,z);
-  box(.42,.25,.35,brass,side*8.55,9.45,z);
+function buildHotel(){
+ var wall=material(0x45414a),trim=material(0x24232b),roof=material(0x171a23),stone=material(0x77716d),wood=material(0x251a1b),glass=new THREE.MeshStandardMaterial({color:0x471d27,emissive:0x6d1725,emissiveIntensity:.7,roughness:.25});
+ box(scene,17,10,5,0,5,-30,wall);
+ box(scene,17.5,.45,5.5,0,10.1,-30,trim);
+ box(scene,18,.35,5.8,0,.18,-30,stone);
+ // roof slopes and central gable
+ var left=box(scene,9,.42,6.3,-4.1,11.15,-30,roof);left.rotation.z=-.42;
+ var right=box(scene,9,.42,6.3,4.1,11.15,-30,roof);right.rotation.z=.42;
+ var gable=new THREE.Mesh(new THREE.ConeGeometry(5.4,4.3,4),wall);gable.position.set(0,12.3,-30);gable.rotation.y=Math.PI/4;gable.scale.set(1,.85,.55);gable.castShadow=true;scene.add(gable);
+ for(var floor=0;floor<2;floor++)for(var col=0;col<5;col++){
+  var x=-6.2+col*3.1,y=3.1+floor*4.2;
+  box(scene,1.45,2.25,.14,x,y,-27.42,trim);
+  box(scene,1.13,1.9,.08,x,y,-27.32,glass);
+  box(scene,.09,2.1,.08,x,y,-27.25,stone);box(scene,1.3,.09,.08,x,y,-27.25,stone);
+  box(scene,.08,2.05,.08,x,y,-27.22,stone);box(scene,.08,2.05,.08,x,y,-27.22,stone);
+  box(scene,1.5,.12,.22,x,y-1.18,-27.28,trim);
  }
-}
-// Enclose the lobby overhead while leaving clearance for the chandelier.
-box(17.8,.32,21.7,wallpaper,0,10.92,-46);
-// Rich red runner and gold edging lead from the doors to the staircase.
-box(4.6,.035,17,carpet,0,.015,-47);
-for(const x of [-2.22,2.22])box(.09,.045,17,carpetGold,x,.035,-47);
-for(let z=-39;z>=-55;z-=1.45)box(4.42,.025,.035,carpetGold,0,.04,z);
-// Tall panelled wainscoting and decorative wall rails.
-for(const side of [-1,1]){
- box(.12,1.45,20,brass,side*8.67,.82,-46);
- box(.12,.12,20,brass,side*8.67,1.58,-46);
- for(let z=-39;z>=-54;z-=2.5){
-  box(.13,1.12,.09,darkWood,side*8.58,.78,z);
+ // entrance surround and double doors
+ box(scene,4.2,5.4,.5,0,2.7,-27.22,stone);
+ box(scene,3.3,4.7,.55,0,2.45,-26.88,trim);
+ box(scene,1.55,4.25,.18,-.8,2.3,-26.53,wood);
+ box(scene,1.55,4.25,.18,.8,2.3,-26.53,wood);
+ for(var side=-1;side<=1;side+=2){
+  box(scene,.09,3.9,.07,side*.8,2.35,-26.4,stone);
+  cylinder(scene,.045,.045,.12,side*.48,2.25,-26.35,stone,8);
  }
+ box(scene,4.8,.28,1.5,0,.3,-25.9,stone);
+ for(var step=0;step<4;step++)box(scene,5.5+step*.45,.28,1.1,0,.14+step*.28,-24.9+step*.95,stone);
+ for(var x=-7.7;x<=7.7;x+=15.4){box(scene,.5,8,.6,x,4,-27.1,trim);cylinder(scene,.55,.55,.2,x,8.1,-27.1,stone,8);}
+ // front balcony and rail
+ box(scene,16,.22,.8,0,6.25,-26.7,trim);
+ for(var bx=-7.4;bx<=7.4;bx+=.55)box(scene,.055,.72,.07,bx,6.7,-26.45,stone);
 }
-// Reception counter to the left, with brass trim, bell and a dim green ledger lamp.
-box(3.15,1.35,1.15,darkWood,-5.55,.72,-43.2);
-box(3.35,.16,1.3,polishedWood,-5.55,1.48,-43.2);
-box(3.05,.08,1.2,brass,-5.55,1.38,-43.2);
-for(const x of [-6.75,-4.35])box(.12,1.25,.16,brass,x,.72,-42.58);
-const deskBell=new T.Mesh(new T.SphereGeometry(.13,12,10),brass);deskBell.position.set(-5.45,1.67,-43.12);scene.add(deskBell);
-const ledgerLamp=new T.PointLight(0x9ecb9a,2.2,5);ledgerLamp.position.set(-5.6,2.35,-43.2);scene.add(ledgerLamp);
-const lampStem=cylinder(.045,.06,.5,brass,-5.6,1.95,-43.2,8);
-const lampShade=new T.Mesh(new T.ConeGeometry(.42,.38,8),mat(0x8c744f,.6));lampShade.position.set(-5.6,2.35,-43.2);scene.add(lampShade);
-// Grand staircase at the far end, with split flights, landings and ornate banisters.
-const stairStone=mat(0x655965,.78);
-for(let i=0;i<11;i++){
- const y=.18+i*.32,z=-52.5-i*.47;
- box(5.4,.32,.58,stairStone,0,y,z);
- box(5.48,.07,.62,brass,0,y+.17,z+.02);
-}
-box(6.4,.35,2.1,stairStone,0,3.65,-56.2);
-for(const side of [-1,1]){
- const rail=cylinder(.075,.075,6.1,brass,side*2.72,2.25,-53.2,8);rail.rotation.x=Math.PI/2.15;
- for(let i=0;i<12;i++)cylinder(.035,.045,.55,brass,side*2.72,.42+i*.29,-50.3-i*.47,6);
- box(.2,3.8,.2,darkWood,side*2.72,1.9,-50.3);
-}
-// A dramatic upper landing and shadowed gallery.
-box(7.2,.35,2.6,darkWood,0,4.05,-55.5);
-box(7.2,.18,.18,brass,0,4.3,-54.25);
-for(let x=-3.2;x<=3.2;x+=.64)cylinder(.045,.055,.9,brass,x,4.75,-54.25,6);
-// Huge chandelier: brass frame, candle bulbs and a warm pool of light.
-const chandelier=new T.Group();chandelier.position.set(0,8.65,-44.2);scene.add(chandelier);
-const ring=new T.Mesh(new T.TorusGeometry(2.05,.085,10,48),brass);ring.rotation.x=Math.PI/2;chandelier.add(ring);
-for(let i=0;i<10;i++){
- const a=i*Math.PI*2/10,x=Math.cos(a)*2.05,z=Math.sin(a)*2.05;
- const arm=cylinder(.045,.065,1.05,brass,x,0,z,7);arm.rotation.z=-Math.cos(a)*.7;arm.rotation.x=Math.sin(a)*.7;chandelier.add(arm);
- const candle=cylinder(.09,.11,.42,mat(0xd9c49a),x,.45,z,8);chandelier.add(candle);
- const flame=new T.Mesh(new T.SphereGeometry(.085,8,8),warm);flame.position.set(x,.72,z);chandelier.add(flame);
- const bulb=new T.PointLight(0xffc77d,1.5,4);bulb.position.set(x,.78,z);chandelier.add(bulb);
-}
-const chain=cylinder(.035,.035,1.45,brass,0,.95,0,8);chandelier.add(chain);
-const lobbyGlow=new T.PointLight(0xffc17b,16,24,2);lobbyGlow.position.set(0,7.2,-44.2);scene.add(lobbyGlow);
-// Antique portraits on both walls; their eyes catch the chandelier light.
-const portraitFrames=[];
-for(const side of [-1,1])for(let i=0;i<3;i++){
- const z=-40.2-i*5.1,y=4.4+(i%2)*.5;
- box(.16,2.25,1.55,brass,side*8.64,y,z);
- box(.09,1.92,1.25,portraitDark,side*8.53,y,z);
- const canvas=box(.035,1.72,1.05,mat(i===1?0x30252d:0x211b28),side*8.47,y,z);
- const face=sphere(.24,mat(0x887b79),side*8.43,y+.28,z);
- const eyes=mat(0xffd08b,.25,.1);
- for(const dz of [-.09,.09])sphere(.025,eyes,side*8.39,y+.31,z+dz);
- portraitFrames.push({face,eyes,phase:i*1.8+(side+1)});
-}
-// Tall grandfather clock in the right alcove, with a slow swinging pendulum.
-box(1.35,4.2,.72,darkWood,6.65,2.1,-52.8);
-box(1.55,.18,.86,brass,6.65,4.25,-52.8);
-box(.95,1.25,.12,mat(0x15131b),6.65,3.12,-52.38);
-const clockFace=new T.Mesh(new T.CircleGeometry(.42,32),mat(0xd4c39b));clockFace.position.set(6.65,3.15,-52.29);scene.add(clockFace);
-for(let i=0;i<12;i++){const a=i*Math.PI/6;sphere(.035,mat(0x3b2830),6.65+Math.sin(a)*.33,3.15+Math.cos(a)*.33,-52.27);}
-const clockHand=box(.035,.3,.025,mat(0x2b1d20),6.65,3.23,-52.25);
-const pendulum=new T.Group();pendulum.position.set(6.65,2.45,-52.25);scene.add(pendulum);
-cylinder(.035,.035,.8,brass,0,-.35,0,8);sphere(.19,brass,0,-.78,0);
-// Wall sconces and low, amber pools along the lobby.
-const lobbySconces=[];
-for(const side of [-1,1])for(let i=0;i<3;i++){
- const z=-39.8-i*5.1,x=side*8.2;
- box(.18,.55,.28,brass,x,5.15,z);
- sphere(.13,warm,x,5.52,z);
- const light=new T.PointLight(0xffb76b,3.4,8,2);light.position.set(x-side*.3,5.45,z);scene.add(light);lobbySconces.push(light);
-}
-
-// DISTINCT GOTHIC HOTEL FACADE — tall narrow windows, stone ribs and a steep mansard roof.
-const hotelWindows=[],windowFigures=[];
-for(let floor=0;floor<4;floor++)for(const x of [-10.5,-7,-3.5,3.5,7,10.5]){
- const glow=glass.clone(),tone=(floor+Math.round(x))%4;
- glow.color.setHex(tone===0?0xffb36b:tone===1?0xff536b:0xff344e);
- glow.emissive.setHex(tone===0?0x9a3b12:0x8d071f);glow.emissiveIntensity=tone===0?1.15:1.65;
- box(1.42,2.05,.16,hotelEdge,x,3.25+floor*3.65,-35.68);
- box(1.18,1.8,.09,glow,x,3.25+floor*3.65,-35.57);
- box(1.5,.13,.2,hotelTrim,x,2.18+floor*3.65,-35.55);
- box(.1,2.0,.12,hotelTrim,x,3.25+floor*3.65,-35.53);
- hotelWindows.push({material:glow,base:glow.emissiveIntensity,phase:floor*1.7+x*.43,speed:1.1+(floor%3)*.45});
- if((floor===1&&x===-3.5)||(floor===2&&x===3.5)||(floor===3&&x===-7)){
-  const shadowMat=new T.MeshBasicMaterial({color:0x020207,transparent:true,opacity:.96,depthWrite:false});
-  const figure=new T.Group(),head=new T.Mesh(new T.SphereGeometry(.17,12,10),shadowMat);head.position.set(0,.52,0);figure.add(head);
-  const body=new T.Mesh(new T.CylinderGeometry(.13,.28,.82,8),shadowMat);body.position.set(0,-.02,0);figure.add(body);
-  for(const side of [-1,1]){const arm=new T.Mesh(new T.CylinderGeometry(.055,.085,.68,7),shadowMat);arm.position.set(side*.23,.02,0);arm.rotation.z=side*.22;figure.add(arm);}
-  figure.scale.set(1.28,1.12,1);figure.position.set(x,3.25+floor*3.65,-35.43);scene.add(figure);
-  const watcherLight=new T.PointLight(floor===2?0xff263e:0xffa34c,.85,4,2);watcherLight.position.set(x,3.25+floor*3.65,-35.0);scene.add(watcherLight);
-  windowFigures.push({figure,material:shadowMat,light:watcherLight,baseY:figure.position.y,phase:floor*1.9+x*.31});
+function buildWorld(){
+ scene=new THREE.Scene();scene.background=new THREE.Color(0x090d19);scene.fog=new THREE.FogExp2(0x171d2b,.023);
+ camera=new THREE.PerspectiveCamera(66,innerWidth/innerHeight,.1,180);camera.position.set(0,2,13);
+ renderer=new THREE.WebGLRenderer({antialias:true,alpha:false,powerPreference:"high-performance"});
+ renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.5));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.15;world.appendChild(renderer.domElement);
+ scene.add(new THREE.HemisphereLight(0x9baacb,0x24202a,1.25));
+ var moon=new THREE.DirectionalLight(0x9eafd0,2.1);moon.position.set(-18,28,12);moon.castShadow=true;moon.shadow.mapSize.set(1024,1024);scene.add(moon);
+ var groundMat=material(0x22232a);var ground=new THREE.Mesh(new THREE.PlaneGeometry(150,150),groundMat);ground.rotation.x=-Math.PI/2;ground.position.y=-.08;ground.receiveShadow=true;scene.add(ground);
+ var road=material(0x29272a);var path=new THREE.Mesh(new THREE.PlaneGeometry(7,65),road);path.rotation.x=-Math.PI/2;path.position.set(0,-.035,-13);scene.add(path);
+ // roadside earth and graveyard edging
+ var stone=material(0x49464b),iron=material(0x171a20,.42,.65);
+ for(var side=-1;side<=1;side+=2){
+  for(var z=-28;z<=8;z+=3.2){
+   box(scene,.14,.85,.14,side*5.3,.42,z,iron);
+   box(scene,.14,.85,.14,side*8.4,.42,z,iron);
+  }
+  box(scene,3.1,.13,.13,side*6.85,.78,-10,iron);
+  for(var zf=-24;zf<7;zf+=2.2)makeGrave(side*(3.5+Math.random()*4.5),zf,Math.floor(Math.random()*4));
+  makeTree(side*10,-16,.9+Math.random()*.4);makeTree(side*8,-4,.75+Math.random()*.35);
+  makeLantern(side*4.6,-7);makeLantern(side*4.6,-19);
  }
+ // gate piers, iron gate bars and arch
+ for(var side=-1;side<=1;side+=2){box(scene,.7,3,.7,side*3.9,1.5,-5,stone);box(scene,.9,.35,.9,side*3.9,3.15,-5,iron);}
+ for(var gx=-3.3;gx<=3.3;gx+=.42)box(scene,.07,2.5,.08,gx,1.25,-5,iron);
+ var arch=box(scene,8,.22,.22,0,2.8,-5,iron);arch.rotation.z=0;
+ buildHotel();
+ var red=new THREE.PointLight(0xff303e,23,28,2);red.position.set(0,4,-25);scene.add(red);
+ var windows=[];
+ for(var i=0;i<12;i++){var light=new THREE.PointLight(i%3===0?0xffa45f:0x9c2334,1.2,5);light.position.set(-6+(i%5)*3,2.8+Math.floor(i/5)*4.1,-26.5);scene.add(light);windows.push(light);}
+ var particles=new THREE.BufferGeometry(),positions=[],speeds=[];
+ for(var p=0;p<500;p++){positions.push((Math.random()-.5)*28,Math.random()*5,Math.random()*58-34);speeds.push(.15+Math.random()*.35);}
+ particles.setAttribute("position",new THREE.Float32BufferAttribute(positions,3));
+ var dust=new THREE.Points(particles,new THREE.PointsMaterial({color:0xb5c1d2,size:.055,transparent:true,opacity:.27,depthWrite:false}));scene.add(dust);
+ return {moon:moon,windows:windows,dust:dust,speeds:speeds};
 }
-// Vertical stone ribs and corner turrets give the building a new, taller silhouette.
-for(const x of [-14.1,-11.8,11.8,14.1]){
- box(.38,18.4,.48,hotelStone,x,9,-35.48);
- box(.62,.5,.72,hotelTrim,x,18.15,-35.48);
-}
-for(const x of [-12.5,12.5]){
- cylinder(.72,.9,18.5,hotelStone,x,9,-35.55,10);
- cylinder(1.02,1.02,.42,hotelTrim,x,18.35,-35.55,10);
- const turret=new T.Mesh(new T.ConeGeometry(2.0,4.8,4),hotelEdge);turret.position.set(x,20.9,-37.2);turret.rotation.y=Math.PI/4;scene.add(turret);
-}
-const hotelDoors=[];
-for(const side of [-1,1]){
- const hinge=new T.Group();hinge.position.set(side*2.65,0,-35.42);scene.add(hinge);
- const leafX=side<0?1.325:-1.325;
- const panel=new T.Mesh(new T.BoxGeometry(2.62,5.05,.24),wood);panel.position.set(leafX,2.58,.05);panel.castShadow=true;hinge.add(panel);
- for(const offset of [-.82,0,.82]){
-  const inset=new T.Mesh(new T.BoxGeometry(.62,3.45,.04),mat(0x30202a));inset.position.set(leafX+offset,2.62,.19);hinge.add(inset);
-  const trim=new T.Mesh(new T.BoxGeometry(.065,3.62,.05),gold);trim.position.set(leafX+offset-.34,2.62,.22);hinge.add(trim);
+var worldBits;
+function animate(now){
+ requestAnimationFrame(animate);
+ var dt=Math.min(.05,(now-lastTime)/1000||.016);lastTime=now;
+ if(started){
+  var forward=(keys.w||keys.arrowup?1:0)-(keys.s||keys.arrowdown?1:0)+moveY;
+  var side=(keys.d||keys.arrowright?1:0)-(keys.a||keys.arrowleft?1:0)+moveX;
+  var speed=keys.shift?8:4;
+  camera.position.x+= (Math.cos(yaw)*side+Math.sin(yaw)*forward)*speed*dt;
+  camera.position.z+= (Math.sin(yaw)*side-Math.cos(yaw)*forward)*speed*dt;
+  camera.position.x=Math.max(-13,Math.min(13,camera.position.x));camera.position.z=Math.max(-34,Math.min(17,camera.position.z));
  }
- const cross=new T.Mesh(new T.BoxGeometry(2.55,.15,.06),gold);cross.position.set(leafX,4.45,.22);hinge.add(cross);
- const knob=sphere(.09,gold,0,0,0);knob.position.set(leafX+(side<0?2.12:-2.12),2.5,.28);hinge.add(knob);
- hotelDoors.push({hinge,side});
+ camera.rotation.order="YXZ";camera.rotation.y=yaw;camera.rotation.x=pitch;
+ var pos=worldBits.dust.geometry.attributes.position;
+ for(var i=0;i<pos.count;i++){var y=pos.getY(i)+worldBits.speeds[i]*dt*.22;if(y>5)y=0;pos.setY(i,y);}
+ pos.needsUpdate=true;
+ worldBits.windows.forEach(function(l,i){l.intensity=1.1+Math.sin(now*.001*(1.2+i*.07)+i)*.45;});
+ if(Math.random()<.0009){storm.style.opacity=".42";worldBits.moon.intensity=4.2;flashTimer=.13;}
+ if(flashTimer>0){flashTimer-=dt;if(flashTimer<=0){storm.style.opacity="0";worldBits.moon.intensity=2.1;}}
+ renderer.render(scene,camera);
+ if(!ready){ready=true;loading.textContent="The grounds are ready.";if(enterRequested)enterWorld();}
 }
-box(4.0,.25,.75,hotelStone,0,.12,-35.05);
-for(let i=0;i<9;i++)box(8.0-i*.22,.3,.72,oldStone,0,.15+i*.28,-29.45-i*.62);
-const mansardA=box(32,.72,11,hotelEdge,0,20.15,-40.5);mansardA.rotation.x=-.48;
-const mansardB=box(32,.72,11,hotelEdge,0,20.15,-51.5);mansardB.rotation.x=.48;
-for(const z of [-41,-51])box(32,.28,.42,hotelTrim,0,18.55,z);
-const sign=box(8,1.35,.28,mat(0x160d1c),0,13.2,-35.45);
-const signLight=new T.PointLight(0xff174d,16,15);signLight.position.set(0,13,-33);scene.add(signLight);
-const signText=document.createElement('div');signText.textContent='HAUNTED HOTEL';signText.style.cssText='position:fixed;z-index:1;top:31%;left:50%;transform:translate(-50%,-50%);font:bold clamp(16px,3vw,30px) Georgia;color:#ff3d66;text-shadow:0 0 8px #ff174d,0 0 25px #ff174d;letter-spacing:.14em;pointer-events:none';document.body.appendChild(signText);
-// lanterns
-const lanterns=[];for(const x of [-5.5,5.5,-13,13]){const z=x===-5.5||x===5.5?-5:-24;box(.18,3,.18,iron,x,1.5,z);box(.65,.1,.65,gold,x,3,z);box(.42,.62,.42,warm,x,2.62,z);for(const dx of [-.25,.25])for(const dz of [-.25,.25])box(.045,.72,.045,iron,x+dx,2.62,z+dz);box(.58,.12,.58,gold,x,3.02,z);const cap=new T.Mesh(new T.ConeGeometry(.43,.28,4),gold);cap.position.set(x,3.22,z);cap.rotation.y=Math.PI/4;scene.add(cap);const l=new T.PointLight(0xffb45e,11,17,1.7);l.position.set(x,2.65,z);scene.add(l);lanterns.push(l);const groundGlow=new T.PointLight(0xffa64b,2.2,7,2);groundGlow.position.set(x,.42,z);scene.add(groundGlow);sphere(.12,warm,x,2.62,z);}
-// The fountain has been removed for now; this area remains open cemetery ground.
-  // Natural cemetery fog: soft turbulent ground banks with broken edges, not flat ribbons.
-  const fogCanvas=document.createElement('canvas');fogCanvas.width=256;fogCanvas.height=256;
-  const fogCtx=fogCanvas.getContext('2d');
-  const fogGradient=fogCtx.createRadialGradient(128,128,8,128,128,122);
-  fogGradient.addColorStop(0,'rgba(226,235,247,.28)');fogGradient.addColorStop(.28,'rgba(213,226,242,.20)');fogGradient.addColorStop(.58,'rgba(197,214,236,.10)');fogGradient.addColorStop(1,'rgba(184,205,230,0)');
-  fogCtx.fillStyle=fogGradient;fogCtx.fillRect(0,0,256,256);
-  for(let i=0;i<1900;i++){const x=Math.random()*256,y=Math.random()*256;fogCtx.fillStyle='rgba(236,242,250,'+(Math.random()*.075)+')';fogCtx.beginPath();fogCtx.ellipse(x,y,2+Math.random()*13,.7+Math.random()*3,Math.random()*Math.PI,0,Math.PI*2);fogCtx.fill();}
-  const fogTexture=new T.CanvasTexture(fogCanvas);fogTexture.colorSpace=T.SRGBColorSpace;
-  const fogPuffs=[];
-  for(let i=0;i<34;i++){const material=new T.MeshBasicMaterial({map:fogTexture,color:0xdce7f5,transparent:true,opacity:.48,depthWrite:false,side:T.DoubleSide});const puff=new T.Mesh(new T.PlaneGeometry(2.4+Math.random()*3.8,.55+Math.random()*.72),material);puff.position.set((Math.random()-.5)*7.2,.13+Math.random()*.25,-4.5-Math.random()*31);puff.rotation.y=(Math.random()-.5)*.8;puff.renderOrder=1;scene.add(puff);fogPuffs.push({mesh:puff,baseX:puff.position.x,baseY:puff.position.y,baseZ:puff.position.z,phase:Math.random()*Math.PI*2,speed:.12+Math.random()*.13});}
-  const groundFog=[];
-  for(let i=0;i<10;i++){const material=new T.MeshBasicMaterial({map:fogTexture,color:0xcbd9ed,transparent:true,opacity:.18,depthWrite:false,side:T.DoubleSide});const wash=new T.Mesh(new T.PlaneGeometry(5.5+Math.random()*3,.9+Math.random()*.7),material);wash.rotation.x=-Math.PI/2;wash.position.set((Math.random()-.5)*6.2,.035,-5-i*3.2);scene.add(wash);groundFog.push({mesh:wash,baseX:wash.position.x,baseZ:wash.position.z,phase:i*.83,speed:.1+(i%3)*.025});}
-  // Remove the floating ghost/fog figures from both sides of the graveyard.
-const starsGeo=new T.BufferGeometry(),starPts=[];for(let i=0;i<420;i++)starPts.push((Math.random()-.5)*130,8+Math.random()*65,-Math.random()*100);starsGeo.setAttribute('position',new T.Float32BufferAttribute(starPts,3));scene.add(new T.Points(starsGeo,new T.PointsMaterial({color:0xb8c8ff,size:.16,transparent:true,opacity:.8})));
-const keys={};let yaw=0,pitch=0,velocity=new T.Vector3(),soundOn=false,audio=null,last=performance.now(),lightning=0,hotelDoorOpen=0;
-addEventListener('keydown',e=>{keys[e.key.toLowerCase()]=true;if(e.key.toLowerCase()==='e')inspect();});addEventListener('keyup',e=>keys[e.key.toLowerCase()]=false);
-renderer.domElement.addEventListener('click',()=>{if(started&&innerWidth>700)renderer.domElement.requestPointerLock?.();});
-addEventListener('mousemove',e=>{if(document.pointerLockElement===renderer.domElement){yaw-=e.movementX*.0022;pitch=Math.max(-.55,Math.min(.55,pitch-e.movementY*.0018));}});
-let lookPointer=null,lastLookX=0,lastLookY=0;
-renderer.domElement.addEventListener('pointerdown',e=>{if(!started||e.pointerType!=='touch')return;lookPointer=e.pointerId;lastLookX=e.clientX;lastLookY=e.clientY;renderer.domElement.setPointerCapture(e.pointerId);});
-renderer.domElement.addEventListener('pointermove',e=>{if(e.pointerId!==lookPointer)return;const dx=e.clientX-lastLookX,dy=e.clientY-lastLookY;lastLookX=e.clientX;lastLookY=e.clientY;yaw-=dx*.004;pitch=Math.max(-.62,Math.min(.62,pitch-dy*.003));});
-const stopLook=e=>{if(e.pointerId===lookPointer)lookPointer=null;};
-renderer.domElement.addEventListener('pointerup',stopLook);renderer.domElement.addEventListener('pointercancel',stopLook);
-let touch={x:0,y:0,active:false};const pad=document.getElementById('touchpad'),nub=document.getElementById('nub');pad.addEventListener('pointerdown',e=>{touch.active=true;pad.setPointerCapture(e.pointerId);movePad(e);});pad.addEventListener('pointermove',e=>{if(touch.active)movePad(e);});pad.addEventListener('pointerup',()=>{touch.active=false;touch.x=touch.y=0;nub.style.transform='translate(0,0)';});function movePad(e){const r=pad.getBoundingClientRect(),dx=e.clientX-(r.left+r.width/2),dy=e.clientY-(r.top+r.height/2),len=Math.min(38,Math.hypot(dx,dy)),a=Math.atan2(dy,dx);touch.x=Math.cos(a)*len/38;touch.y=Math.sin(a)*len/38;nub.style.transform='translate('+touch.x*30+'px,'+touch.y*30+'px)';}
-// Simple first-person collision: solid grave markers and the locked hotel facade.
-const solidObstacles=[];
-for(const side of [-1,1])for(let row=0;row<6;row++){
- const x=side*(3.55);const z=-10.0-row*4.15;
- solidObstacles.push({minX:x-.78,maxX:x+.78,minZ:z-.42,maxZ:z+.42});
+function resize(){if(!camera||!renderer)return;camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.5));}
+function setupControls(){
+ window.addEventListener("keydown",function(e){keys[e.key.toLowerCase()]=true;});
+ window.addEventListener("keyup",function(e){keys[e.key.toLowerCase()]=false;});
+ var canvasArea=world;
+ canvasArea.addEventListener("pointerdown",function(e){if(!started)return;dragging=true;lastX=e.clientX;lastY=e.clientY;canvasArea.setPointerCapture(e.pointerId);});
+ canvasArea.addEventListener("pointermove",function(e){if(!dragging)return;var dx=e.clientX-lastX,dy=e.clientY-lastY;lastX=e.clientX;lastY=e.clientY;yaw-=dx*.004;pitch=Math.max(-.7,Math.min(.7,pitch-dy*.003));});
+ canvasArea.addEventListener("pointerup",function(){dragging=false;});canvasArea.addEventListener("pointercancel",function(){dragging=false;});
+ var pad=document.getElementById("joystick"),stick=document.getElementById("stick");
+ function padMove(e){var r=pad.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,dx=e.clientX-cx,dy=e.clientY-cy,len=Math.max(1,Math.hypot(dx,dy)),scale=Math.min(1,39/len);moveX=dx/r.width*2*scale;moveY=-dy/r.height*2*scale;stick.style.transform="translate("+dx*scale+"px,"+dy*scale+"px)";}
+ pad.addEventListener("pointerdown",function(e){pad.setPointerCapture(e.pointerId);padMove(e);});
+ pad.addEventListener("pointermove",function(e){if(e.buttons)padMove(e);});
+ function padEnd(){moveX=0;moveY=0;stick.style.transform="";}
+ pad.addEventListener("pointerup",padEnd);pad.addEventListener("pointercancel",padEnd);
+ document.getElementById("reset").addEventListener("click",function(){camera.position.set(0,2,13);yaw=0;pitch=0;message.textContent="THE STORM IS GATHERING AGAIN.";});
+ window.addEventListener("resize",resize);
 }
-function stairHeightAt(z){
- const progress=T.MathUtils.clamp((-29.25-z)/4.96,0,1);
- return progress*2.16;
-}
-function blockedAt(x,z){
- const radius=.34;
- for(const o of solidObstacles)if(x+radius>o.minX&&x-radius<o.maxX&&z+radius>o.minZ&&z-radius<o.maxZ)return true;
- // Hotel front wall; preserve the central doorway as an approach, but do not allow entry through the locked door.
- if(z< -35.12 && z> -36.1 && Math.abs(x)>2.68 && Math.abs(x)<8.6)return true;
- if(z< -35.12 && z> -36.1 && Math.abs(x)<=2.68 && hotelDoorOpen<.68)return true;
- // Lobby side walls and rear wall keep the player inside the designed interior.
- if(z< -36.1 && z> -56.1 && Math.abs(x)>8.25)return true;
- if(z<=-56.1)return true;
- return false;
-}
-function inspect(){if(camera.position.z>-7){msg.textContent='THE GATE CREAKS. SOMETHING HAS BEEN HERE BEFORE YOU.';}else if(camera.position.z>-24){msg.textContent='THE TOMBSTONES ARE OLDER THAN THE HOTEL. ONE NAME IS STILL WARM.';}else if(camera.position.z>-36){msg.textContent='THE HOTEL DOORS YAWN OPEN. WARM LIGHT SPILLS INTO THE NIGHT.';}else if(camera.position.z>-48){msg.textContent='THE RECEPTION BELL IS COLD. SOMEONE HAS JUST LEFT THE DESK.';}else{msg.textContent='THE GRANDFATHER CLOCK HAS STOPPED. THE PORTRAITS ARE WATCHING.';}flash.style.opacity='.12';setTimeout(()=>flash.style.opacity='0',120);}
-document.getElementById('interact').onclick=inspect;
-document.getElementById('reset').onclick=()=>{camera.position.set(0,2.1,16);yaw=0;pitch=0;msg.textContent='THE GATES ARE OPEN… THE HOTEL IS WAITING.';};
-const stormAudio={wind:null,thunder:[],timer:null};
 function scheduleThunder(){
  if(!soundOn)return;
- stormAudio.timer=setTimeout(()=>{
+ thunderTimer=setTimeout(function(){
   if(!soundOn)return;
-  const clip=stormAudio.thunder[Math.floor(Math.random()*stormAudio.thunder.length)];
-  if(clip){try{clip.pause();clip.currentTime=0;clip.volume=.48+Math.random()*.18;clip.play().catch(()=>{});}catch(e){}}
+  if(thunder.length){var clip=thunder[Math.floor(Math.random()*thunder.length)];try{clip.pause();clip.currentTime=0;clip.volume=.62;clip.play().catch(function(){});}catch(e){}}
   scheduleThunder();
- },26000+Math.random()*18000);
+ },22000+Math.random()*16000);
 }
-async function startDoomAudio(){
- if(!stormAudio.wind){
-  stormAudio.wind=new Audio('./assets/audio/halloween_amb.ogg');
-  stormAudio.wind.loop=true;stormAudio.wind.preload='auto';stormAudio.wind.volume=.42;
-  stormAudio.thunder=[
-   new Audio('./assets/audio/oneshot/desert_thunder_1.ogg'),
-   new Audio('./assets/audio/oneshot/desert_thunder_2.ogg')
-  ];
-  stormAudio.thunder.forEach(a=>{a.preload='auto';a.volume=.55;});
- }
- await stormAudio.wind.play();
- soundOn=true;
- scheduleThunder();
-}
-document.getElementById('sound').onclick=async()=>{
- const button=document.getElementById('sound');
+function toggleSound(){
+ var button=document.getElementById("sound");
  if(!soundOn){
-  try{await startDoomAudio();button.textContent='SOUND: ON';}
-  catch(e){soundOn=false;button.textContent='SOUND: OFF';button.title='Audio could not start: '+e.message;}
+  if(!wind){wind=new Audio("./assets/audio/halloween_amb.ogg");wind.loop=true;wind.volume=.42;thunder=[new Audio("./assets/audio/oneshot/desert_thunder_1.ogg"),new Audio("./assets/audio/oneshot/desert_thunder_2.ogg")];}
+  wind.play().then(function(){soundOn=true;button.textContent="SOUND: ON";scheduleThunder();}).catch(function(){message.textContent="Tap SOUND again to allow storm audio.";});
  }else{
-  soundOn=false;
-  if(stormAudio.timer){clearTimeout(stormAudio.timer);stormAudio.timer=null;}
-  if(stormAudio.wind){stormAudio.wind.pause();stormAudio.wind.currentTime=0;}
-  stormAudio.thunder.forEach(a=>{a.pause();a.currentTime=0;});
-  button.textContent='SOUND: OFF';
+  soundOn=false;clearTimeout(thunderTimer);if(wind){wind.pause();wind.currentTime=0;}thunder.forEach(function(a){a.pause();a.currentTime=0;});button.textContent="SOUND: OFF";
  }
-}function animate(now){requestAnimationFrame(animate);const dt=Math.min(.04,(now-last)/1000);last=now;const t=now*.001;
-fogPuffs.forEach((layer)=>{const drift=(t*layer.speed+layer.phase)%4.8;layer.mesh.position.x=layer.baseX+Math.sin(t*.22+layer.phase)*.32;layer.mesh.position.z=layer.baseZ-drift;layer.mesh.position.y=layer.baseY+Math.sin(t*.48+layer.phase)*.035;layer.mesh.lookAt(camera.position.x,layer.mesh.position.y,camera.position.z);layer.mesh.material.opacity=.34+.12*(.5+.5*Math.sin(t*.31+layer.phase));});groundFog.forEach((layer)=>{const drift=(t*layer.speed+layer.phase)%3.8;layer.mesh.position.x=layer.baseX+Math.sin(t*.19+layer.phase)*.22;layer.mesh.position.z=layer.baseZ-drift;});lanterns.forEach((l,i)=>{l.intensity=10+Math.sin(t*2.4+i*1.7)*1.15+Math.sin(t*7+i)*.25;});hotelWindows.forEach((w,i)=>{const pulse=.82+Math.sin(t*w.speed+w.phase)*.12+Math.sin(t*.37+w.phase*2)*.06;const rareFlicker=Math.sin(t*2.3+i*8.1)> .985?.28:1;w.material.emissiveIntensity=w.base*pulse*rareFlicker;});
-windowFigures.forEach((f,i)=>{const presence=.12+.78*(.5+.5*Math.sin(t*.31+f.phase))**2;f.material.opacity=presence;f.figure.position.y=f.baseY+Math.sin(t*.22+f.phase)*.045;f.light.intensity=.25+presence*1.25;});
-const doorTarget=camera.position.z<-22?1:0;hotelDoorOpen+=(doorTarget-hotelDoorOpen)*Math.min(1,dt*.95);
-hotelDoors.forEach(({hinge,side})=>{const target=(side<0?1:-1)*1.38*hotelDoorOpen;hinge.rotation.y+=(target-hinge.rotation.y)*Math.min(1,dt*2.4);});
-foyerGlow.intensity=2.1+Math.sin(t*1.8)*.65;
-lobbyGlow.intensity=14+Math.sin(t*1.3)*1.4;ledgerLamp.intensity=1.8+Math.sin(t*2.2)*.35;
-lobbySconces.forEach((l,i)=>{l.intensity=3.1+Math.sin(t*1.7+i*1.4)*.45;});
-pendulum.rotation.z=Math.sin(t*.9)*.24;clockHand.rotation.z=-t*.035;
-portraitFrames.forEach((p)=>{const glint=Math.sin(t*.38+p.phase)> .96?1.8:.25;p.eyes.emissive?.setHex?.(0xffa85c);});
-if(Math.random()<.0015){lightning=.13;flash.style.opacity='.45';moonLight.intensity=5;}if(lightning>0){lightning-=dt;if(lightning<=0){flash.style.opacity='0';moonLight.intensity=2.1;}}
-if(started){const gateOpenTarget=camera.position.z<5?1:0;const gateOpen=Math.min(1,Math.max(0,(5-camera.position.z)/2));gateLeaves.forEach(({hinge,side})=>{const target=gateOpenTarget?-side*1.18:0;hinge.rotation.y+=(target-hinge.rotation.y)*Math.min(1,dt*2.8);});const forward=(keys.w||keys.arrowup?-1:0)+(keys.s||keys.arrowdown?1:0)+touch.y;const strafe=(keys.d||keys.arrowright?1:0)+(keys.a||keys.arrowleft?-1:0)+touch.x;const dir=new T.Vector3(strafe,0,forward);if(dir.length()>1)dir.normalize();const speed=keys.shift?9:4.4;const nextX=T.MathUtils.clamp(camera.position.x+(Math.cos(yaw)*dir.x+Math.sin(yaw)*dir.z)*speed*dt,-4.02,4.02);const nextZ=T.MathUtils.clamp(camera.position.z+(-Math.sin(yaw)*dir.x+Math.cos(yaw)*dir.z)*speed*dt,-55.8,19);if(!blockedAt(nextX,camera.position.z))camera.position.x=nextX;if(!blockedAt(camera.position.x,nextZ))camera.position.z=nextZ;camera.position.y=2.1+stairHeightAt(camera.position.z);
-camera.rotation.order='YXZ';camera.rotation.y=yaw;camera.rotation.x=pitch;document.getElementById('interact').style.display='block';}
-renderer.render(scene,camera);if(!worldReady){worldReady=true;if(enterRequested)beginExploration();}}
-requestAnimationFrame(animate);
-addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio,1.7));});
-});
+}
+document.getElementById("sound").addEventListener("click",toggleSound);
+loadThree().then(function(lib){THREE=lib;worldBits=buildWorld();setupControls();requestAnimationFrame(animate);}).catch(function(err){loading.textContent=err.message;message.textContent="THE 3D WORLD COULD NOT LOAD. RELOAD WHEN CONNECTED.";});
 })();
 </script>
-</body></html>
+</body>
+</html>
