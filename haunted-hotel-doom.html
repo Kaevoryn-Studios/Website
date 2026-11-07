@@ -83,10 +83,10 @@ function buildInterior(){
   const l=new T.PointLight(level===0?0xffa56c:0xc2a47c,1.7,18);l.position.set(0,y+3,-64);scene.add(l);lights.push(l);
  }
  // Grand lobby at the entrance end of the interior
- roomShell(0,0,-42,17,12,3.8);box(scene,5,.22,7,0,.25,-42,carpet);box(scene,5,1.2,1.2,0,.8,-47,wood);box(scene,5,.12,1.2,0,1.45,-47,brass);
+ roomShell(0,0,-42,17,12,3.8,true);box(scene,5,.22,7,0,.25,-42,carpet);box(scene,5,1.2,1.2,0,.8,-47,wood);box(scene,5,.12,1.2,0,1.45,-47,brass);
  for(let s of [-1,1]){cyl(scene,.35,.45,3.4,s*6,1.7,-39,brass,12);box(scene,2,.18,5,s*5,2.8,-40,wood)}
  // Ballroom, west wing: tall room with chandeliers and dance floor
- roomShell(-17,0,-57,15,24,7.5);box(scene,10,.15,15,-17,.25,-57,mat(0x4a282d));for(let x=-22;x<=-12;x+=5){cyl(scene,.09,.09,5,x,5.5,-57,brass,8);const bulb=new T.PointLight(0xffc27c,1.8,10);bulb.position.set(x,6.8,-57);scene.add(bulb);lights.push(bulb)}
+ roomShell(-17,0,-57,15,24,7.5,true);box(scene,10,.15,15,-17,.25,-57,mat(0x4a282d));for(let x=-22;x<=-12;x+=5){cyl(scene,.09,.09,5,x,5.5,-57,brass,8);const bulb=new T.PointLight(0xffc27c,1.8,10);bulb.position.set(x,6.8,-57);scene.add(bulb);lights.push(bulb)}
  for(let x=-23;x<=-11;x+=3)for(let z=-66;z<=-48;z+=4){cyl(scene,.07,.07,2.6,x,1.55,z,brass,8)}
  // Basement: boiler, pipes, electrical room, laundry and storage
  roomShell(0,-4.5,-64,22,38,3.8);for(let x=-8;x<=8;x+=4){cyl(scene,.13,.13,34,x,-2.2,-64,mat(0x694d36,.45,.6),10)}
@@ -100,7 +100,7 @@ function buildInterior(){
  cyl(scene,2.5,3.2,.55,0,.3,-91,stone,16);cyl(scene,1.5,1.8,.7,0,.8,-91,stone,16);cyl(scene,.18,.3,1.4,0,1.7,-91,stone,12);
  for(let s of [-1,1]){tree(s*12,-91,.8);box(scene,3,.3,.7,s*8,.5,-84,wood)}
  // East wing chapel / conservatory and hidden archive
- roomShell(17,0,-57,15,24,6);for(let i=0;i<5;i++){box(scene,1.2,4,.18,11+i*3,2,-45,brass);box(scene,.8,3.5,.1,11+i*3,2,-44.8,glass)}
+ roomShell(17,0,-57,15,24,6,true);for(let i=0;i<5;i++){box(scene,1.2,4,.18,11+i*3,2,-45,brass);box(scene,.8,3.5,.1,11+i*3,2,-44.8,glass)}
  roomShell(17,8,-79,12,12,3.8);for(let i=0;i<8;i++)box(scene,.15,2.8,8,12+i%2*2,9.4,-79,wood);
 }
 function build(){
