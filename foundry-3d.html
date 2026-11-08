@@ -82,9 +82,11 @@ if(level===-1&&player.z<12){toast('The great doors stand before you. Walk closer
 if(player.z>7&&player.z<12&&Math.abs(player.x)<3){doors.forEach(function(d){d.rotation.y=Math.PI*.47});level=0;$('floor').textContent=floorNames[0];$('chapter').textContent='THE HOUSE REMEMBERS';$('objective').textContent='You have entered. Explore the foyer and find the hidden keys.';$('state').textContent='INSIDE';toast('THE GREAT DOORS SWING OPEN');return}
 if(Math.abs(player.x)<3.2&&player.z>-7&&player.z<-1){floorChange((level+1)%4);toast('You climb the grand staircase.');return}
 toast('Nothing responds. Move closer to an object or the staircase.')}
-function blocked(x,z){if(x<-11.2||x>11.2||z<-18.2||z>14.4)return true;
-if(level===-1){return false}
-if(Math.abs(x)>11.4)return true;
+function blocked(x,z){
+// The forecourt is outside the mansion's interior bounds. Keep its own generous walkable area so the player can reach the front steps.
+if(level===-1){return x<-22||x>22||z<4||z>38}
+// Once inside, use the narrower room bounds.
+if(x<-11.2||x>11.2||z<-18.2||z>14.4)return true;
 return false}
 function move(dx,dz){var nx=player.x+dx,nz=player.z+dz;if(!blocked(nx,player.z))player.x=nx;if(!blocked(player.x,nz))player.z=nz;if(fallbackCanvas)fallbackDraw()}
 function update(dt){var f=(held.KeyW||held.ArrowUp?1:0)-(held.KeyS||held.ArrowDown?1:0)-joy.y,s=(held.KeyD||held.ArrowRight?1:0)-(held.KeyA||held.ArrowLeft?1:0)+joy.x;var n=Math.hypot(f,s);if(n>.02){f/=n;s/=n;var v=player.speed*dt,fx=-Math.sin(player.yaw),fz=-Math.cos(player.yaw),rx=Math.cos(player.yaw),rz=-Math.sin(player.yaw);move((fx*f+rx*s)*v,(fz*f+rz*s)*v)}
