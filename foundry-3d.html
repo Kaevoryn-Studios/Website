@@ -54,7 +54,7 @@ for(var s of [-1,1]){cube(g,s*8,3.2,7.1,6,6.4,.7,stone,true);var r=new THREE.Mes
 cube(g,0,7.1,7,5.5,8,.9,stone,true);var tower=new THREE.Mesh(new THREE.ConeGeometry(4.2,4.5,4),roof);tower.position.set(0,13,7);tower.rotation.y=Math.PI/4;g.add(tower);
 for(var side of [-1,1])for(var wz of [-10,-3,3]){cube(g,side*8,3.1,wz,1.2,2.1,.15,M.glass,false);cube(g,side*8,3.1,wz,.12,2.2,.2,M.gold,false);point(g,side*8,3,wz,'#ffb55f',.55,5)}
 // The front entrance is deliberately open; the doors swing from the frame when entered.
-wall(g,-3.4,2.2,8,15.2,4.4,.55,stone);wall(g,3.4,2.2,8,15.2,4.4,.55,stone);wall(g,0,4.15,8,2.4,.5,.55,stone,false);
+wall(g,-7.4,2.2,8,7.2,4.4,.55,stone);wall(g,7.4,2.2,8,7.2,4.4,.55,stone);wall(g,0,4.15,8,2.4,.5,.55,stone,false);
 for(var px of [-2.6,2.6]){cyl(g,px,2.1,8.45,.2,.26,4.2,M.gold,16);cyl(g,px,4.25,8.45,.34,.34,.2,M.gold,16)}
 var entry=doorUnit(g,0,0,8.35,2.6,3.25);doors.push(entry);
 for(var i=0;i<6;i++)cube(g,0,-.02,9+i*.68,5.6+i*.45,.18,.7-i*.02,M.stone,false);
