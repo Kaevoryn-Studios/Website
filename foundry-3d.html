@@ -1,139 +1,167 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><meta name="theme-color" content="#09080b"><title>The Hollow Crown · Kaevoryn Afterdark</title>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#08080d"><title>The Hollow Crown · Kaevoryn Afterdark</title>
 <style>
-*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#08070a;color:#eee4d6;font:15px system-ui}#view{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none}.vignette{position:fixed;inset:0;pointer-events:none;background:radial-gradient(ellipse,transparent 36%,#050407a8);z-index:1}header{position:fixed;z-index:4;top:0;left:0;right:0;padding:12px;display:flex;justify-content:space-between;gap:10px;font-size:10px;letter-spacing:.14em;pointer-events:none;text-shadow:0 2px 8px #000}header a{color:#e6c18d;text-decoration:none;font-weight:900;pointer-events:auto}header span{color:#d3ad7b;text-align:right}.hud{position:fixed;z-index:4;left:10px;right:10px;top:43px;display:flex;justify-content:space-between;gap:8px;pointer-events:none}.plaque{background:#101016df;border:1px solid #b58b5b99;border-radius:8px;padding:8px 11px;backdrop-filter:blur(8px);max-width:72%}.plaque b{font-size:10px;letter-spacing:.13em;color:#e7c18b}.plaque small{display:block;color:#d5c9ba;margin-top:3px;font-size:11px}.floorTag{position:fixed;z-index:4;top:100px;left:50%;transform:translateX(-50%);padding:5px 10px;border-radius:20px;background:#090910d9;border:1px solid #a98760;color:#e7c99f;font-size:10px;letter-spacing:.12em;pointer-events:none;white-space:nowrap}.bottom{position:fixed;z-index:5;left:0;right:0;bottom:0;padding:12px;display:flex;justify-content:space-between;align-items:end;pointer-events:none}.pad,.controls{pointer-events:auto}.pad{width:104px;height:104px;border:2px solid #c9b49a88;border-radius:50%;background:#12121ddd;position:relative;touch-action:none}.pad:after{content:'MOVE';position:absolute;bottom:6px;left:0;right:0;text-align:center;font-size:9px;letter-spacing:.15em;color:#eee}.stick{position:absolute;left:50%;top:50%;width:42px;height:42px;transform:translate(-50%,-50%);border-radius:50%;background:linear-gradient(145deg,#ead7b7,#74634e);border:2px solid #fff8;pointer-events:none}.controls{display:flex;flex-direction:column;align-items:end;gap:7px}.controls button,.card button{position:relative;z-index:2;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;border:1px solid #d3a46d;border-radius:9px;background:#38271c;color:#fff;font-weight:900;min-height:46px;padding:0 15px}.controls #act{background:#674526;min-width:145px;min-height:52px}.controls #sound{min-height:36px;background:#17171d;border-color:#8c795e;font-size:10px}.screen{position:fixed;z-index:9999;inset:0;display:grid;place-items:center;padding:16px;pointer-events:auto;background:radial-gradient(ellipse at center,rgba(40,35,41,.72),rgba(5,5,8,.68) 78%)}[hidden]{display:none!important}.card{width:min(100%,600px);max-height:90vh;overflow:auto;padding:clamp(22px,5vw,38px);background:#111117f5;border:1px solid #b98d5e99;border-radius:17px;text-align:center;box-shadow:0 25px 90px #000d}.eyebrow{font-size:10px;letter-spacing:.22em;color:#e3b77f;font-weight:900}.card h1{font-size:clamp(34px,8vw,58px);line-height:.94;margin:13px 0}.card p{color:#d6cabc;line-height:1.5}.card .small{font-size:11px;color:#b6a897}.toast{position:fixed;z-index:8;left:50%;top:34%;transform:translateX(-50%);padding:12px 17px;background:#101219f5;border:1px solid #c49a6b;border-radius:8px;max-width:88vw;text-align:center;opacity:0;transition:opacity .2s;pointer-events:none}.toast.show{opacity:1}.crosshair{position:fixed;z-index:2;left:50%;top:50%;width:5px;height:5px;border:1px solid #e9d3b3aa;border-radius:50%;transform:translate(-50%,-50%);pointer-events:none}@media(max-width:390px){.pad{width:96px;height:96px}.plaque{padding:7px 8px}.controls button{min-height:42px}}@media(orientation:landscape) and (max-height:600px){header{padding:6px 12px}.hud{top:29px}.plaque{padding:5px 8px}.plaque small{font-size:10px}.floorTag{top:74px}.bottom{padding:7px 14px}.pad{width:82px;height:82px}.stick{width:34px;height:34px}.controls{flex-direction:row}.controls button{min-height:40px}.controls #act{min-height:44px}.card{max-height:94vh;padding:16px 24px}.card h1{font-size:clamp(28px,6vh,42px);margin:8px 0}.card p{margin:7px 0;font-size:13px}}
-</style></head><body>
-<canvas id="view"></canvas><div class="vignette"></div><div class="crosshair"></div>
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#08080d;color:#eee4d6;font:15px system-ui}#world{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none}.shade{position:fixed;inset:0;pointer-events:none;background:radial-gradient(ellipse,transparent 35%,#05040799);z-index:1}header{position:fixed;z-index:4;top:0;left:0;right:0;padding:12px;display:flex;justify-content:space-between;gap:10px;font-size:10px;letter-spacing:.14em;pointer-events:none;text-shadow:0 2px 8px #000}header a{color:#e6c18d;text-decoration:none;font-weight:900;pointer-events:auto}header span{color:#d3ad7b;text-align:right}.hud{position:fixed;z-index:4;left:10px;right:10px;top:43px;display:flex;justify-content:space-between;gap:8px;pointer-events:none}.plaque{background:#101016df;border:1px solid #b58b5b99;border-radius:8px;padding:8px 11px;backdrop-filter:blur(8px);max-width:72%}.plaque b{font-size:10px;letter-spacing:.13em;color:#e7c18b}.plaque small{display:block;color:#d5c9ba;margin-top:3px;font-size:11px}.floorTag{position:fixed;z-index:4;top:100px;left:50%;transform:translateX(-50%);padding:5px 10px;border-radius:20px;background:#090910d9;border:1px solid #a98760;color:#e7c99f;font-size:10px;letter-spacing:.12em;pointer-events:none;white-space:nowrap}.bottom{position:fixed;z-index:5;left:0;right:0;bottom:0;padding:12px;display:flex;justify-content:space-between;align-items:end;pointer-events:none}.pad,.controls{pointer-events:auto}.pad{width:104px;height:104px;border:2px solid #c9b49a88;border-radius:50%;background:#12121ddd;position:relative;touch-action:none}.pad:after{content:'MOVE';position:absolute;bottom:6px;left:0;right:0;text-align:center;font-size:9px;letter-spacing:.15em;color:#eee}.stick{position:absolute;left:50%;top:50%;width:42px;height:42px;transform:translate(-50%,-50%);border-radius:50%;background:linear-gradient(145deg,#ead7b7,#74634e);border:2px solid #fff8;pointer-events:none}.controls{display:flex;flex-direction:column;align-items:end;gap:7px}.controls button,.card button{cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;border:1px solid #d3a46d;border-radius:9px;background:#38271c;color:#fff;font-weight:900;min-height:46px;padding:0 15px}.controls #act{background:#674526;min-width:145px;min-height:52px}.controls #sound{min-height:36px;background:#17171d;border-color:#8c795e;font-size:10px}.screen{position:fixed;z-index:9999;inset:0;display:grid;place-items:center;padding:16px;pointer-events:auto;background:radial-gradient(ellipse at center,rgba(40,35,41,.72),rgba(5,5,8,.82) 78%)}[hidden]{display:none!important}.card{width:min(100%,620px);max-height:90vh;overflow:auto;padding:clamp(22px,5vw,38px);background:#111117f5;border:1px solid #b98d5e99;border-radius:17px;text-align:center;box-shadow:0 25px 90px #000d}.eyebrow{font-size:10px;letter-spacing:.22em;color:#e3b77f;font-weight:900}.card h1{font-size:clamp(34px,8vw,58px);line-height:.94;margin:13px 0}.card p{color:#d6cabc;line-height:1.5}.card .small{font-size:11px;color:#b6a897}.toast{position:fixed;z-index:8;left:50%;top:34%;transform:translateX(-50%);padding:12px 17px;background:#101219f5;border:1px solid #c49a6b;border-radius:8px;max-width:88vw;text-align:center;opacity:0;transition:opacity .2s;pointer-events:none}.toast.show{opacity:1}.crosshair{position:fixed;z-index:2;left:50%;top:50%;width:5px;height:5px;border:1px solid #e9d3b3aa;border-radius:50%;transform:translate(-50%,-50%);pointer-events:none}#error{color:#f1d4ad}@media(max-width:390px){.pad{width:96px;height:96px}.plaque{padding:7px 8px}.controls button{min-height:42px}}@media(orientation:landscape) and (max-height:600px){header{padding:6px 12px}.hud{top:29px}.plaque{padding:5px 8px}.plaque small{font-size:10px}.floorTag{top:74px}.bottom{padding:7px 14px}.pad{width:82px;height:82px}.stick{width:34px;height:34px}.controls{flex-direction:row}.controls button{min-height:40px}.controls #act{min-height:44px}.card{max-height:94vh;padding:16px 24px}.card h1{font-size:clamp(28px,6vh,42px);margin:8px 0}.card p{margin:7px 0;font-size:13px}}
+</style>
+</head>
+<body>
+<canvas id="world"></canvas><div class="shade"></div><div class="crosshair"></div>
 <header><a href="park-life.html?park=afterdark">KAEVORYN AFTERDARK</a><span>THE HOLLOW CROWN · HAUNTED ESTATE</span></header>
-<div class="hud"><div class="plaque"><b id="chapter">THE HOUSE REMEMBERS</b><small id="objective">A complete new estate is waiting beyond the front doors.</small></div><div class="plaque" style="text-align:right"><b id="state">DORMANT</b><small id="keys">0 / 3 keys · 0 / 3 memories</small></div></div>
-<div class="floorTag" id="floorTag">GROUND FLOOR · GRAND FOYER</div><div class="toast" id="toast"></div>
+<div class="hud"><div class="plaque"><b id="chapter">THE HOUSE REMEMBERS</b><small id="objective">A forgotten estate waits beyond the iron gates.</small></div><div class="plaque" style="text-align:right"><b id="state">DORMANT</b><small id="inventory">0 / 3 keys · 0 / 3 memories</small></div></div>
+<div class="floorTag" id="floorTag">THE FORECOURT · MIDNIGHT</div><div class="toast" id="toast"></div>
 <div class="bottom"><div class="pad" id="joy"><div class="stick" id="stick"></div></div><div class="controls"><button id="act">EXAMINE / OPEN</button><button id="sound">SOUND: OFF</button><button id="help">CONTROLS</button></div></div>
-<div class="screen" id="start"><div class="card"><p class="eyebrow">KAEVORYN AFTERDARK · COMPLETE ESTATE RECONSTRUCTION</p><h1>THE<br>HOLLOW CROWN</h1><p>You begin outside a vast, forgotten Victorian estate. Cross the forecourt, approach the towering entrance and step inside to explore its grand foyer, portrait gallery, ballroom, library, nursery, attic and the deep rooms beneath the foundations.</p><p class="small">Your journey begins at the mansion's front entrance. Move with the joystick or WASD once inside. Drag the view to look around. Supports portrait and landscape.</p><button id="enter" type="button">APPROACH THE FRONT DOORS</button></div></div>
+<div class="screen" id="start"><div class="card"><p class="eyebrow">KAEVORYN AFTERDARK · A NEW WALKABLE ESTATE</p><h1>THE<br>HOLLOW CROWN</h1><p>This time, you begin outside. Walk across the forecourt, climb the front steps, open the great doors and physically enter the mansion. Explore its grand foyer, portrait gallery, ballroom, library, nursery, attic and the rooms buried beneath the foundations.</p><p class="small">Joystick or WASD to walk · Drag the scene to look · EXAMINE to interact · Portrait and landscape supported.</p><button id="enter" type="button">ENTER THE ESTATE</button><p class="small" id="error" hidden>3D scene could not start. Check your connection and reload.</p></div></div>
 <div class="screen" id="ending" hidden><div class="card"><p class="eyebrow">THE HOUSE HAS CHOSEN TO REMEMBER YOU</p><h1>THE CROWN<br>IS YOURS.</h1><p>The Heart Below has awakened. The Hollow Crown is no longer empty.</p><button id="again">EXPLORE AGAIN</button><p><a href="park-life.html?park=afterdark" style="color:#e2b77f">RETURN TO AFTERDARK</a></p></div></div>
-<script>
-(()=>{'use strict';
-const $=s=>document.querySelector(s),canvas=$('#view'),ctx=canvas.getContext('2d',{alpha:false}),TAU=Math.PI*2,FOV=Math.PI/3,GRID=24,CAM=1.58,CEIL=3.05,down={},joy={x:0,y:0};
-let W=0,H=0,dpr=1,active=false,angle=-Math.PI/2,pitch=0,player={x:12.5,y:21.2},level=0,drag=null,toastTimer=0,keyCount=0,memoryCount=0,lastFrame=0,audio=null,hum=null;
-const floors=[
-{name:'GROUND FLOOR · GRAND FOYER',chapter:'THE HOUSE REMEMBERS',desc:'A grand entrance hall, watched by the family portraits.',wall:'#49352c',floor:'#443126',ceiling:'#332820'},
-{name:'FIRST FLOOR · GRAND BALLROOM',chapter:'THE DANCE NEVER ENDED',desc:'A ballroom of dark oak, gilt mirrors and a chandelier that still burns.',wall:'#493039',floor:'#3d292c',ceiling:'#302329'},
-{name:'SECOND FLOOR · THE ATTIC',chapter:'ABOVE THE CEILING',desc:'The nursery, servants’ rooms and the old family attic.',wall:'#494034',floor:'#40362c',ceiling:'#302a23'},
-{name:'LOWER LEVEL · THE DEEP BASEMENT',chapter:'BELOW THE FOUNDATIONS',desc:'The boiler rooms, wine cellar and the sealed Heart Chamber.',wall:'#30343a',floor:'#292b2e',ceiling:'#25272b'}
-];
-function makeMap(){
- const a=Array.from({length:GRID},(_,y)=>Array.from({length:GRID},(_,x)=>(x===0||y===0||x===GRID-1||y===GRID-1)?'#':'.'));
- // A broad central gallery forms the mansion's grand axis; the side wings open into suites and galleries.
- for(let y=2;y<22;y++){a[y][5]='#';a[y][18]='#'}
- for(let y of [4,5,6,11,12,13,18,19,20]){a[y][5]='.';a[y][18]='.'}
- // Cross-walls create separate rooms in each wing, with generous door openings.
- for(let x=1;x<5;x++){a[8][x]='#';a[16][x]='#'}
- for(let x=19;x<23;x++){a[8][x]='#';a[16][x]='#'}
- for(let x of [2,3,21,22]){a[8][x]='.';a[16][x]='.'}
- // The rear gallery and grand entrance remain open and aligned with the central hall.
- for(let x=6;x<18;x++){a[3][x]='#';a[21][x]='#'}
- for(let x=10;x<=14;x++){a[3][x]='.';a[21][x]='.'}
- // The central stairwell is a wide open architectural feature, not a blocked tile.
- for(let y=10;y<=15;y++)a[y][12]='.';
- return a
+<script type="module">
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
+(()=>{
+'use strict';
+const $=s=>document.querySelector(s),canvas=$('#world'),TAU=Math.PI*2;
+let renderer,scene,camera,clock,active=false,level=-1,keys=0,memories=0,drag=null,joyId=null,audio=null,hum=null,toastTimer=0,doorOpen=false;
+const held={},joy={x:0,y:0},colliders=[],interactables=[],floorNames=['GROUND FLOOR · GRAND FOYER','FIRST FLOOR · GRAND BALLROOM','SECOND FLOOR · THE ATTIC','LOWER LEVEL · THE DEEP BASEMENT'];
+const mats={wall:mat('#302522'),plaster:mat('#40332c'),dark:mat('#171317'),wood:mat('#4b3021'),oak:mat('#63452e'),gold:mat('#a98758',.55),stone:mat('#514b46'),floor:mat('#382a25'),velvet:mat('#43242d'),glass: new THREE.MeshStandardMaterial({color:'#d5a66b',emissive:'#a15d22',emissiveIntensity:.7}),black:mat('#09090d'),ivory:mat('#d9cbb2'),iron:mat('#292a2d',.8)};
+function mat(color,rough=.82){return new THREE.MeshStandardMaterial({color,roughness:rough,metalness:.08})}
+function box(parent,x,y,z,w,h,d,m,opts={}){const o=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m);o.position.set(x,y,z);o.castShadow=opts.shadow!==false;o.receiveShadow=true;parent.add(o);if(opts.hit)colliders.push({x,z,w,d});return o}
+function cylinder(parent,x,y,z,r1,r2,h,m,segments=12){const o=new THREE.Mesh(new THREE.CylinderGeometry(r1,r2,h,segments),m);o.position.set(x,y,z);o.castShadow=true;o.receiveShadow=true;parent.add(o);return o}
+function sphere(parent,x,y,z,r,m,scale){const o=new THREE.Mesh(new THREE.SphereGeometry(r,16,12),m);o.position.set(x,y,z);if(scale)o.scale.set(...scale);o.castShadow=true;parent.add(o);return o}
+function group(parent,x=0,y=0,z=0){const g=new THREE.Group();g.position.set(x,y,z);parent.add(g);return g}
+function light(parent,x,y,z,color,intensity,distance){const l=new THREE.PointLight(color,intensity,distance,2);l.position.set(x,y,z);l.castShadow=false;parent.add(l);return l}
+function wall(parent,x,z,w,d,y=0,h=4.4,m=mats.plaster,hit=true){box(parent,x,y+h/2,z,w,h,d,m,{hit})}
+function floor(parent,x,z,w,d,y,m){box(parent,x,y-.12,z,w,.24,d,m)}
+function trim(parent,x,z,w,d,y,color=mats.gold){box(parent,x,y,z,w,.07,d,color,{hit:false})}
+function makeChandelier(parent,x,y,z,scale=1){
+ const g=group(parent,x,y,z);cylinder(g,0,0,0,.055,.055,.24,mats.gold);cylinder(g,0,-.17,0,.5,.42,.1,mats.gold,16);cylinder(g,0,-.25,0,.36,.42,.08,mats.iron,16);
+ for(let i=0;i<6;i++){const a=i*TAU/6,ex=Math.cos(a)*.66,ez=Math.sin(a)*.66;const arm=new THREE.Mesh(new THREE.TorusGeometry(.42,.035,8,28,Math.PI/2),mats.gold);arm.rotation.x=Math.PI/2;arm.rotation.z=a;arm.position.y=-.26;g.add(arm);cylinder(g,ex,-.37,ez,.035,.035,.25,mats.gold);const flame=sphere(g,ex,-.22,ez,.095,new THREE.MeshStandardMaterial({color:'#ffdb9a',emissive:'#ff9c3b',emissiveIntensity:2}));flame.scale.set(.55,1.5,.55);light(g,ex,-.25,ez,'#ffb85c',.5,4)}
+ const chain=cylinder(g,0,.28,0,.025,.025,.62,mats.iron);chain.position.y=.2;
+ cylinder(g,0,.55,0,.16,.2,.1,mats.gold,16);const rose=sphere(g,0,.64,0,.26,mats.gold,[1,.12,1]);return g;
 }
-const maps=Array.from({length:4},makeMap);
-const objects=[
-{x:5.2,y:4.5,f:0,t:'portrait',n:'The Matriarch',d:'Her eyes follow you. The paint around her mouth is cracked.'},{x:18.8,y:4.5,f:0,t:'portrait',n:'The Patriarch',d:'His painted hand points toward the grand staircase.'},{x:5.2,y:19.2,f:0,t:'portrait',n:'The Lost Heir',d:'A child has scratched a tiny crown into the frame.'},{x:18.8,y:19.2,f:0,t:'portrait',n:'The Bride',d:'Her veil stirs although the air is still.'},
-{x:4.5,y:4.5,f:0,t:'key',n:'The Brass Foyer Key',d:'A heavy brass key, warm to the touch.'},{x:19.2,y:4.5,f:0,t:'memory',n:'The First Memory',d:'A family dinner. Four places set. Five shadows.'},{x:4.5,y:19.2,f:1,t:'key',n:'The Silver Ballroom Key',d:'A silver key lies beneath a fallen dance card.'},{x:19.2,y:19.2,f:1,t:'memory',n:'The Last Waltz',d:'The music stopped, but the dancers never did.'},{x:19.2,y:4.5,f:2,t:'key',n:'The Attic Iron Key',d:'An iron key wrapped in a child’s ribbon.'},{x:4.5,y:4.5,f:2,t:'memory',n:'The Nursery Song',d:'A lullaby you somehow remember.'},{x:12.5,y:4.5,f:3,t:'memory',n:'The Heartbeat',d:'Something below the stone is beating in time with you.'},
-{x:12.5,y:2.3,f:3,t:'door',n:'The Heart Chamber',d:'A black oak door sealed with three keyholes.',lock:3},
-{x:12.5,y:12.5,f:0,t:'stairs',n:'The Grand Staircase',d:'The staircase winds upward through the heart of the house.'},{x:12.5,y:12.5,f:1,t:'stairs',n:'The Grand Staircase',d:'The stairs continue toward the attic and the floors below.'},{x:12.5,y:12.5,f:2,t:'stairs',n:'The Attic Stair',d:'The stairwell spirals back down into the mansion.'},{x:12.5,y:12.5,f:3,t:'stairs',n:'The Stone Stair',d:'Old stone steps climb back toward the foyer.'},
-{x:9.2,y:5.2,f:0,t:'candle',n:'Wall candle',d:'The flame leans toward a passage that should not exist.'},{x:14.8,y:5.2,f:0,t:'candle',n:'Wall candle',d:'Warm wax drips upward along the iron sconce.'},{x:12.5,y:8.5,f:0,t:'chandelier',n:'The foyer chandelier',d:'An enormous iron-and-crystal chandelier hangs from a heavy ceiling rose and chain.'},{x:12.5,y:8.5,f:1,t:'chandelier',n:'The ballroom chandelier',d:'Crystal branches hang from a carved ceiling medallion, joined to the ceiling.'},
-{x:8.8,y:5.2,f:1,t:'sconce',n:'Gilt wall sconce',d:'A pair of candle flames glows against the velvet wall.'},{x:16.2,y:5.2,f:1,t:'sconce',n:'Gilt wall sconce',d:'The brass is tarnished, but the flame is bright.'},{x:8.5,y:18.5,f:1,t:'piano',n:'The widow’s grand piano',d:'One ivory key sinks by itself. A single note seems to hang in the room.'},{x:15.5,y:18.5,f:2,t:'trunk',n:'The nursery trunk',d:'Scratches cover the inside of the lid. Something tried to get out.'},{x:8.5,y:18.5,f:2,t:'rocking',n:'The rocking horse',d:'It rocks once, then stops when you look directly at it.'},{x:15.5,y:18.5,f:3,t:'boiler',n:'The old boiler',d:'A heartbeat thumps somewhere inside the cold iron furnace.'},{x:8.5,y:18.5,f:3,t:'barrels',n:'The wine cellar',d:'Dusty bottles line the stone alcoves.'}
-].map(o=>({...o,taken:false,open:false}));
-const spirits=[{x:10.2,y:10.2,f:0,phase:0,cleared:false},{x:14.4,y:10.2,f:1,phase:2,cleared:false},{x:10.2,y:14.4,f:2,phase:4,cleared:false},{x:14.4,y:14.4,f:3,phase:1,cleared:false}];
-let map=maps[0];
-function drawExterior(){
- ctx.fillStyle='#090b12';ctx.fillRect(0,0,W,H);
- const sky=ctx.createLinearGradient(0,0,0,H);sky.addColorStop(0,'#090d19');sky.addColorStop(.58,'#24202a');sky.addColorStop(1,'#08090d');ctx.fillStyle=sky;ctx.fillRect(0,0,W,H);
- // distant moon and mist
- ctx.fillStyle='rgba(220,211,190,.12)';ctx.beginPath();ctx.arc(W*.78,H*.18,Math.min(W,H)*.085,0,TAU);ctx.fill();
- for(let i=0;i<7;i++){ctx.fillStyle='rgba(180,190,202,'+(.018+i*.003)+')';ctx.beginPath();ctx.ellipse(W*(i/6),H*.78+i%2*18,W*.24,H*.055,0,0,TAU);ctx.fill()}
- // grounds and long approach
- ctx.fillStyle='#171719';ctx.beginPath();ctx.moveTo(W*.32,H);ctx.lineTo(W*.44,H*.58);ctx.lineTo(W*.56,H*.58);ctx.lineTo(W*.72,H);ctx.fill();
- // broad Victorian mansion silhouette
- const cx=W*.5,base=H*.76,scale=Math.min(W/900,H/600);
- ctx.fillStyle='#17151a';ctx.strokeStyle='#8a7159';ctx.lineWidth=Math.max(2,2*scale);
- ctx.fillRect(cx-W*.34,H*.34,W*.68,H*.42);ctx.strokeRect(cx-W*.34,H*.34,W*.68,H*.42);
- // wings and rooflines
- ctx.beginPath();ctx.moveTo(cx-W*.39,H*.35);ctx.lineTo(cx-W*.39,H*.23);ctx.lineTo(cx-W*.24,H*.13);ctx.lineTo(cx-W*.08,H*.23);ctx.lineTo(cx-W*.08,H*.35);ctx.moveTo(cx+W*.08,H*.35);ctx.lineTo(cx+W*.08,H*.23);ctx.lineTo(cx+W*.24,H*.13);ctx.lineTo(cx+W*.39,H*.23);ctx.lineTo(cx+W*.39,H*.35);ctx.stroke();
- ctx.beginPath();ctx.moveTo(cx-W*.35,H*.35);ctx.lineTo(cx,H*.08);ctx.lineTo(cx+W*.35,H*.35);ctx.closePath();ctx.fill();ctx.stroke();
- // central tower and cupola
- ctx.fillRect(cx-W*.075,H*.16,W*.15,H*.24);ctx.strokeRect(cx-W*.075,H*.16,W*.15,H*.24);ctx.beginPath();ctx.moveTo(cx-W*.09,H*.16);ctx.lineTo(cx,H*.045);ctx.lineTo(cx+W*.09,H*.16);ctx.closePath();ctx.fill();ctx.stroke();
- // rows of tall lit windows
- for(let row=0;row<2;row++)for(let col=0;col<9;col++){const x=cx-W*.3+col*W*.075,y=H*.43+row*H*.15;ctx.fillStyle=(col===4&&row===1)?'#e4b979':'#9b7950';ctx.fillRect(x,y,W*.027,H*.085);ctx.fillStyle='#f8d69b';ctx.fillRect(x+W*.003,y+H*.004,W*.021,H*.075);ctx.strokeStyle='#382b24';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(x+W*.0135,y);ctx.lineTo(x+W*.0135,y+H*.085);ctx.moveTo(x,y+H*.042);ctx.lineTo(x+W*.027,y+H*.042);ctx.stroke()}
- // monumental portico, columns, steps and double doors
- ctx.fillStyle='#211b1b';ctx.fillRect(cx-W*.12,H*.48,W*.24,H*.29);ctx.strokeStyle='#b0936d';ctx.lineWidth=Math.max(3,4*scale);ctx.strokeRect(cx-W*.12,H*.48,W*.24,H*.29);
- for(const x of [cx-W*.105,cx-W*.065,cx+W*.065,cx+W*.105]){ctx.fillStyle='#6b5848';ctx.fillRect(x-W*.009,H*.47,W*.018,H*.28);ctx.fillStyle='#b59a75';ctx.fillRect(x-W*.014,H*.465,W*.028,H*.018);ctx.fillRect(x-W*.014,H*.745,W*.028,H*.018)}
- ctx.fillStyle='#100e11';ctx.fillRect(cx-W*.055,H*.56,W*.11,H*.2);ctx.strokeStyle='#b78e5d';ctx.strokeRect(cx-W*.055,H*.56,W*.11,H*.2);ctx.beginPath();ctx.moveTo(cx,H*.56);ctx.lineTo(cx,H*.76);ctx.stroke();
- for(let i=0;i<5;i++){ctx.fillStyle='#76604c';ctx.fillRect(cx-W*(.09+i*.012),H*(.77+i*.045),W*(.18+i*.024),H*.025);ctx.strokeStyle='#b39875';ctx.strokeRect(cx-W*(.09+i*.012),H*(.77+i*.045),W*(.18+i*.024),H*.025)}
- // iron fence silhouettes
- ctx.strokeStyle='#09090c';ctx.lineWidth=3;for(let side of [-1,1]){const x=cx+side*W*.43;ctx.beginPath();ctx.moveTo(x,H*.62);ctx.lineTo(x,H*.94);for(let i=0;i<9;i++){const xx=x+side*i*W*.012;ctx.moveTo(xx,H*.64);ctx.lineTo(xx,H*.94)}ctx.stroke()}
- ctx.fillStyle='rgba(5,5,8,.2)';ctx.fillRect(0,0,W,H);
+function portrait(parent,x,y,z,side=1){
+ const g=group(parent,x,y,z);box(g,0,0,0,1.02,1.42,.14,mats.gold);box(g,0,0,.09,.84,1.22,.04,mats.dark);box(g,0,-.16,.13,.62,.62,.025,mats.velvet);
+ sphere(g,0,.28,.17,.19,mat('#b39a80'),[.8,1.15,.4]);sphere(g,-.07,.31,.2,.025,mats.black);sphere(g,.07,.31,.2,.025,mats.black);box(g,0,-.47,.18,.5,.35,.03,mats.wood);
+ const glint=sphere(g,0,.68,.13,.045,mats.gold,[1,.3,.4]);g.rotation.y=side*.05;
 }
-function resize(){dpr=Math.min(devicePixelRatio||1,1.5);W=innerWidth;H=innerHeight;canvas.width=Math.round(W*dpr);canvas.height=Math.round(H*dpr);canvas.style.width=W+'px';canvas.style.height=H+'px';ctx.setTransform(dpr,0,0,dpr,0,0)}
-addEventListener('resize',resize);addEventListener('orientationchange',()=>setTimeout(resize,100));resize();
-function solid(x,y){const c=map[Math.floor(y)]?.[Math.floor(x)];return !c||c==='#'}
-function setFloor(n){level=(n+4)%4;map=maps[level];player={x:12.5,y:18.5};angle=-Math.PI/2;pitch=0;$('#floorTag').textContent=floors[level].name;$('#chapter').textContent=floors[level].chapter;$('#objective').textContent=floors[level].desc;$('#state').textContent='EXPLORING'}
-function rgb(h,k){const c=[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)];return 'rgb('+c.map(v=>Math.max(0,Math.min(255,Math.round(v*k)))).join(',')+')'}
-function render(ts){
- const horizon=H*.49+pitch*H*.22,proj=H*.5/Math.tan(FOV*.5),fc=floors[level];ctx.fillStyle='#09090e';ctx.fillRect(0,0,W,H);
- // Floor and ceiling are cast as continuous perspective planes from the same room coordinates.
- for(let y=0;y<H;y+=4){const isCeil=y<horizon;if(Math.abs(y-horizon)<1)continue;const dist=(isCeil?(CEIL-CAM):CAM)*proj/Math.max(1,Math.abs(y-horizon));if(dist>24)continue;
-  for(let x=0;x<W;x+=4){const ray=angle+Math.atan((x-W*.5)/proj),wx=player.x+Math.cos(ray)*dist,wy=player.y+Math.sin(ray)*dist,fx=wx-Math.floor(wx),fy=wy-Math.floor(wy);let k=isCeil?.78:1;
-   if(isCeil){if(fy<.055||fy>.945)k*=.48;if(fx<.04)k*=.65;if(Math.floor(wy)%4===0)k*=.78}
-   else{if(fy<.035||fy>.965)k*=.58;if(Math.floor(wy*2)%2===0&&fx<.025)k*=.7;if(Math.floor(wx/3)%2===0)k*=.94}
-   k*=Math.max(.2,1-dist/27);ctx.fillStyle=rgb(isCeil?fc.ceiling:fc.floor,k);ctx.fillRect(x,y,4,4)
-  }
- }
- const zbuf=new Float32Array(Math.ceil(W/2));
- for(let sx=0;sx<W;sx+=2){const ray=angle-Math.atan((W*.5-sx)/proj),rx=Math.cos(ray),ry=Math.sin(ray);let mx=Math.floor(player.x),my=Math.floor(player.y),ddx=Math.abs(1/(rx||.00001)),ddy=Math.abs(1/(ry||.00001)),stx=rx<0?-1:1,sty=ry<0?-1:1,sdx=(rx<0?player.x-mx:mx+1-player.x)*ddx,sdy=(ry<0?player.y-my:my+1-player.y)*ddy,side=0,hit=false,dist=0;
-  for(let i=0;i<64&&!hit;i++){if(sdx<sdy){sdx+=ddx;mx+=stx;side=0}else{sdy+=ddy;my+=sty;side=1}if(!map[my]?.[mx]||map[my][mx]==='#'){hit=true;dist=side?sdy-ddy:sdx-ddx}}
-  dist=Math.max(.06,dist*Math.cos(ray-angle));zbuf[sx>>1]=dist;const wh=Math.min(H*2,CEIL*proj/dist),top=horizon-(CEIL-CAM)*proj/dist,bottom=horizon+CAM*proj/dist,base=fc.wall,light=Math.max(.18,1-dist/19)*(side?.72:1);
-  ctx.fillStyle=rgb(base,light);ctx.fillRect(sx,top,2,bottom-top);const trim=dist<11?'rgba(197,157,104,.34)':'rgba(197,157,104,.13)';ctx.fillStyle=trim;ctx.fillRect(sx,top+wh*.12,2,Math.max(1,wh*.012));ctx.fillRect(sx,top+wh*.69,2,Math.max(1,wh*.012));ctx.fillRect(sx,top+wh*.94,2,Math.max(1,wh*.018));if((side?my:mx)%3===0&&wh>50){ctx.fillStyle='rgba(12,8,7,.23)';ctx.fillRect(sx,top+wh*.2,2,wh*.43)}
- }
- drawObjects(ts,horizon,proj,zbuf);const pulse=.5+.5*Math.sin(ts*.0015);ctx.fillStyle='rgba(255,187,112,'+(.012+pulse*.009)+')';ctx.fillRect(0,0,W,H)
+function windowFrame(parent,x,y,z,wide=1.2){
+ box(parent,x,y,z,wide,.06,.1,mats.gold);box(parent,x,y-1.35,z,wide,.06,.1,mats.gold);box(parent,x-wide/2,y-.675,z,.07,1.4,.1,mats.gold);box(parent,x+wide/2,y-.675,z,.07,1.4,.1,mats.gold);
+ box(parent,x,y-.68,z-.01,.045,1.3,.12,mats.gold);box(parent,x,y-.68,z-.015,wide-.1,.045,.12,mats.gold);
+ box(parent,x,y-.68,z+.08,wide-.16,1.22,.025,mats.glass);
 }
-function project(o,horizon,proj){const dx=o.x-player.x,dy=o.y-player.y,d=Math.hypot(dx,dy);let rel=Math.atan2(dy,dx)-angle;while(rel>Math.PI)rel-=TAU;while(rel< -Math.PI)rel+=TAU;if(Math.abs(rel)>FOV*.72||d<.18)return null;const depth=d*Math.cos(rel);if(depth<=.1)return null;return{x:W*.5+Math.tan(rel)*proj,y:horizon-((o.z||1)-CAM)*proj/depth,scale:proj/depth,depth}}
-function drawObjects(ts,horizon,proj,zbuf){
- const all=objects.filter(o=>o.f===level&&(!o.taken||o.t==='portrait')).concat(spirits.filter(s=>s.f===level&&!s.cleared).map(s=>({...s,t:'spirit',z:1.1})));all.sort((a,b)=>Math.hypot(b.x-player.x,b.y-player.y)-Math.hypot(a.x-player.x,a.y-player.y));
- for(const o of all){if(o.z===undefined)o.z=o.t==='chandelier'?2.62:o.t==='sconce'?2.05:o.t==='candle'?1.9:o.t==='portrait'?1.65:o.t==='stairs'?.7:1;const p=project(o,horizon,proj);if(!p)continue;const col=Math.max(0,Math.min(zbuf.length-1,Math.floor(p.x/2)));if(p.depth>zbuf[col]+.3)continue;const s=Math.min(H*1.1,p.scale),x=p.x,y=p.y;ctx.save();ctx.translate(x,y);
-  if(o.t==='chandelier'){const w=s*.92;ctx.fillStyle='#211913';ctx.beginPath();ctx.ellipse(0,-s*.43,w*.8,s*.13,0,0,TAU);ctx.fill();ctx.strokeStyle='#c5a06b';ctx.lineWidth=Math.max(2,s*.035);ctx.beginPath();ctx.ellipse(0,-s*.43,w*.72,s*.105,0,0,TAU);ctx.stroke();ctx.fillStyle='#75583a';ctx.fillRect(-w*.13,-s*.55,w*.26,s*.12);ctx.strokeStyle='#d1ad78';ctx.strokeRect(-w*.13,-s*.55,w*.26,s*.12);ctx.strokeStyle='#a98758';ctx.lineWidth=Math.max(2,s*.025);ctx.beginPath();ctx.moveTo(0,-s*.43);ctx.lineTo(0,-s*.12);ctx.stroke();for(let q=0;q<4;q++){ctx.beginPath();ctx.arc(0,-s*.36+q*s*.065,s*.035,0,TAU);ctx.stroke()}ctx.fillStyle='#8c683e';ctx.fillRect(-w*.5,-s*.12,w,s*.13);ctx.fillStyle='#c29b65';ctx.fillRect(-w*.43,-s*.15,w*.86,s*.045);ctx.strokeStyle='#b18a5a';ctx.lineWidth=Math.max(2,s*.025);for(let i=-2;i<=2;i++){const bx=i*w*.19;ctx.beginPath();ctx.moveTo(bx,-s*.08);ctx.lineTo(bx*1.28,s*.22);ctx.lineTo(bx*1.45,s*.31);ctx.stroke();ctx.fillStyle='#f6d69a';ctx.shadowBlur=s*.22;ctx.shadowColor='#ffc36a';ctx.beginPath();ctx.ellipse(bx*1.28,s*.28,s*.045,s*.105,0,0,TAU);ctx.fill();ctx.fillStyle='#fff1c9';ctx.beginPath();ctx.ellipse(bx*1.28,s*.27,s*.018,s*.065,0,0,TAU);ctx.fill()} }
-  else if(o.t==='stairs'){const w=s*.9;for(let i=0;i<7;i++){const yy=s*.34-i*s*.09;ctx.fillStyle=i%2?'#55483a':'#746047';ctx.fillRect(-w*.38+i*s*.035,yy,w*.76-i*s*.07,s*.07);ctx.strokeStyle='#b18a5c';ctx.strokeRect(-w*.38+i*s*.035,yy,w*.76-i*s*.07,s*.07)}ctx.fillStyle='#211b19';ctx.fillRect(-w*.12,-s*.34,w*.24,s*.48);ctx.strokeStyle='#c09b6a';ctx.strokeRect(-w*.12,-s*.34,w*.24,s*.48)}
-  else if(o.t==='portrait'){ctx.fillStyle='#6b4c2d';ctx.fillRect(-s*.27,-s*.78,s*.54,s*.92);ctx.fillStyle='#171314';ctx.fillRect(-s*.22,-s*.73,s*.44,s*.82);ctx.fillStyle='#8a7562';ctx.beginPath();ctx.ellipse(0,-s*.51,s*.105,s*.14,0,0,TAU);ctx.fill();ctx.fillStyle='#d6c9aa';ctx.fillRect(-s*.07,-s*.54,s*.025,s*.018);ctx.fillRect(s*.045,-s*.54,s*.025,s*.018);ctx.fillStyle='#493b32';ctx.fillRect(-s*.16,-s*.35,s*.32,s*.38);ctx.strokeStyle='#c7a16d';ctx.lineWidth=Math.max(2,s*.025);ctx.strokeRect(-s*.27,-s*.78,s*.54,s*.92)}
-  else if(o.t==='key'||o.t==='memory'){ctx.shadowBlur=s*.24;ctx.shadowColor=o.t==='key'?'#f4d58a':'#87c5df';ctx.strokeStyle=o.t==='key'?'#e8c77d':'#a6d5e8';ctx.lineWidth=Math.max(2,s*.045);if(o.t==='key'){ctx.beginPath();ctx.arc(0,-s*.12,s*.14,0,TAU);ctx.stroke();ctx.beginPath();ctx.moveTo(0,s*.02);ctx.lineTo(0,s*.34);ctx.lineTo(s*.13,s*.34);ctx.moveTo(0,s*.22);ctx.lineTo(s*.1,s*.22);ctx.stroke()}else{ctx.fillStyle='#a6d5e8';ctx.beginPath();ctx.moveTo(0,-s*.36);ctx.lineTo(s*.23,-s*.08);ctx.lineTo(0,s*.24);ctx.lineTo(-s*.23,-s*.08);ctx.closePath();ctx.fill()}}
-  else if(o.t==='candle'||o.t==='sconce'){ctx.fillStyle='#d3c2a0';ctx.fillRect(-s*.035,-s*.04,s*.07,s*.23);ctx.fillStyle='#9a754c';ctx.fillRect(-s*.1,s*.12,s*.2,s*.045);const flick=Math.sin(ts*.009+o.x)*s*.025;ctx.shadowBlur=s*.28;ctx.shadowColor='#ffc66e';ctx.fillStyle='#f7d99e';ctx.beginPath();ctx.ellipse(0,-s*.12+flick,s*.055,s*.12,0,0,TAU);ctx.fill();ctx.fillStyle='#fff5d8';ctx.beginPath();ctx.ellipse(0,-s*.13+flick,s*.02,s*.07,0,0,TAU);ctx.fill()}
-  else if(o.t==='door'){ctx.fillStyle='#171116';ctx.fillRect(-s*.38,-s*.85,s*.76,s*1.05);ctx.fillStyle='#3d2821';ctx.fillRect(-s*.31,-s*.78,s*.62,s*.91);ctx.strokeStyle='#b58c5a';ctx.lineWidth=Math.max(2,s*.025);ctx.strokeRect(-s*.38,-s*.85,s*.76,s*1.05);for(let i=-1;i<=1;i++)ctx.strokeRect(i*s*.19-s*.07,-s*.68,s*.14,s*.28);ctx.fillStyle='#d3ad70';ctx.beginPath();ctx.arc(s*.2,-s*.3,s*.035,0,TAU);ctx.fill()}
-  else if(o.t==='piano'){ctx.fillStyle='#120f11';ctx.beginPath();ctx.moveTo(-s*.48,s*.15);ctx.lineTo(-s*.4,-s*.35);ctx.lineTo(s*.42,-s*.35);ctx.lineTo(s*.49,s*.15);ctx.closePath();ctx.fill();ctx.fillStyle='#b8a68d';ctx.fillRect(-s*.39,-s*.13,s*.78,s*.08);for(let i=0;i<12;i++){ctx.fillStyle='#e5d9c2';ctx.fillRect(-s*.38+i*s*.064,-s*.13,s*.06,s*.08)}}
-  else if(o.t==='trunk'){ctx.fillStyle='#4a3021';ctx.fillRect(-s*.38,-s*.27,s*.76,s*.48);ctx.fillStyle='#775331';ctx.fillRect(-s*.4,-s*.39,s*.8,s*.15);ctx.strokeStyle='#c09a64';ctx.lineWidth=2;ctx.strokeRect(-s*.38,-s*.27,s*.76,s*.48)}
-  else if(o.t==='rocking'){ctx.fillStyle='#6a482d';ctx.beginPath();ctx.ellipse(0,s*.02,s*.3,s*.14,0,0,TAU);ctx.fill();ctx.fillRect(-s*.24,-s*.22,s*.48,s*.22);ctx.beginPath();ctx.ellipse(0,-s*.23,s*.23,s*.15,0,0,TAU);ctx.fill();ctx.strokeStyle='#bd9563';ctx.beginPath();ctx.moveTo(-s*.35,s*.15);ctx.quadraticCurveTo(0,s*.32,s*.35,s*.15);ctx.stroke()}
-  else if(o.t==='boiler'){ctx.fillStyle='#252b30';ctx.beginPath();ctx.roundRect(-s*.3,-s*.55,s*.6,s*.88,s*.1);ctx.fill();ctx.strokeStyle='#95836c';ctx.lineWidth=2;ctx.stroke();ctx.fillStyle='#bd7141';ctx.shadowBlur=s*.22;ctx.shadowColor='#d27a43';ctx.beginPath();ctx.arc(0,-s*.1,s*.12,0,TAU);ctx.fill()}
-  else if(o.t==='barrels'){for(let i=-1;i<=1;i++){ctx.fillStyle='#563b27';ctx.beginPath();ctx.ellipse(i*s*.2,s*.04,s*.12,s*.24,0,0,TAU);ctx.fill();ctx.strokeStyle='#a78a5c';ctx.stroke()}}
-  else if(o.t==='spirit'){const fl=Math.sin(ts*.002+o.phase)*s*.04;ctx.shadowBlur=s*.32;ctx.shadowColor='#c7e4ed';ctx.fillStyle='rgba(190,216,225,.68)';ctx.beginPath();ctx.ellipse(0,fl,s*.19,s*.33,0,0,TAU);ctx.fill();ctx.fillStyle='#15171b';ctx.beginPath();ctx.ellipse(-s*.065,-s*.04+fl,s*.025,s*.045,0,0,TAU);ctx.ellipse(s*.065,-s*.04+fl,s*.025,s*.045,0,0,TAU);ctx.fill()}
-  ctx.restore()
- }
+function door(parent,x,y,z,w=1.5,h=2.9){
+ const g=group(parent,x,y,z);box(g,0,h/2,0,w,h,.22,mats.wood);box(g,0,h/2,.13,w+.16,h+.16,.09,mats.gold);box(g,0,h/2,.15,w-.22,h-.22,.04,mats.dark);
+ for(let s of [-1,1]){box(g,s*w*.25,h*.48,.19,w*.34,h*.36,.05,mats.oak);box(g,s*w*.25,h*.17,.19,w*.34,h*.22,.05,mats.oak)}
+ sphere(g,w*.38,h*.48,.24,.07,mats.gold);return g;
 }
-function nearest(){let best=null,bd=1.85;for(const o of objects){if(o.f!==level||o.taken)continue;const d=Math.hypot(o.x-player.x,o.y-player.y);if(d<bd){bd=d;best=o}}for(const s of spirits){if(s.f!==level||s.cleared)continue;const d=Math.hypot(s.x-player.x,s.y-player.y);if(d<bd){bd=d;best={...s,t:'spirit',source:s}}}return best}
-function toast(m){const el=$('#toast');el.textContent=m;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),2500)}
-function counts(){$('#keys').textContent=keyCount+' / 3 keys · '+memoryCount+' / 3 memories'}
-function interact(){if(!active)return;const o=nearest();if(!o){toast('Move closer to the staircase or something that catches your eye.');return}if(o.t==='stairs'){setFloor(level+1);toast('You climb the connected staircase: '+floors[level].name+'.');return}if(o.t==='key'){o.taken=true;keyCount++;counts();toast(o.n+' collected.');return}if(o.t==='memory'){o.taken=true;memoryCount++;counts();toast(o.n+' · '+o.d);return}if(o.t==='spirit'){o.source.cleared=true;toast('The spirit dissolves into the dust.');return}if(o.t==='door'){if(keyCount<3){toast('Three locks remain. Find all three keys throughout the house.');return}$('#ending').hidden=false;active=false;return}toast(o.n+': '+o.d)}
-function move(dt){let f=(down.KeyW||down.ArrowUp?1:0)-(down.KeyS||down.ArrowDown?1:0)-joy.y,s=(down.KeyD||down.ArrowRight?1:0)-(down.KeyA||down.ArrowLeft?1:0)+joy.x,n=Math.hypot(f,s);if(!n)return;f/=n;s/=n;const v=dt*2.65,dx=(Math.cos(angle)*f-Math.sin(angle)*s)*v,dy=(Math.sin(angle)*f+Math.cos(angle)*s)*v,nx=player.x+dx,ny=player.y+dy;if(!solid(nx,player.y)&&!solid(nx,player.y+.18)&&!solid(nx,player.y-.18))player.x=nx;if(!solid(player.x,ny)&&!solid(player.x+.18,ny)&&!solid(player.x-.18,ny))player.y=ny}
-function loop(ts){if(!active)return;const dt=Math.min(.045,(ts-lastFrame)/1000||0);lastFrame=ts;move(dt);render(ts);requestAnimationFrame(loop)}
-function start(){if(active)return;$('#start').hidden=true;$('#ending').hidden=true;active=true;keyCount=0;memoryCount=0;objects.forEach(o=>{o.taken=false;o.open=false});spirits.forEach(s=>s.cleared=false);counts();setFloor(0);player={x:12.5,y:19.8};angle=-Math.PI/2;$('#objective').textContent='The front doors close behind you. Find the staircase.';$('#state').textContent='EXPLORING';lastFrame=performance.now();requestAnimationFrame(loop);toast('THE FRONT DOORS CLOSE BEHIND YOU')}
-function soundOn(){try{audio=audio||new(window.AudioContext||window.webkitAudioContext)();if(audio.state==='suspended')audio.resume();if(hum)return;const osc=audio.createOscillator(),gain=audio.createGain(),filter=audio.createBiquadFilter();osc.type='sine';osc.frequency.value=48;filter.type='lowpass';filter.frequency.value=115;gain.gain.value=.03;osc.connect(filter);filter.connect(gain);gain.connect(audio.destination);osc.start();hum={osc,gain};$('#sound').textContent='SOUND: ON'}catch(e){toast('Ambient sound is unavailable on this device.')}}
+function fireplace(parent,x,z){
+ const g=group(parent,x,0,z);box(g,0,1.45,0,2.4,2.9,.55,mats.stone);box(g,0,1.4,.3,1.15,1.7,.08,mats.black);box(g,0,2.95,.12,2.7,.2,.8,mats.gold);box(g,0,.1,.22,1.2,.2,.7,mats.iron);for(let i=-1;i<=1;i++)box(g,i*.65,1.5,.31,.06,2.2,.07,mats.gold);
+ const fire=new THREE.Mesh(new THREE.ConeGeometry(.38,.9,8),new THREE.MeshStandardMaterial({color:'#ff8b38',emissive:'#a52d08',emissiveIntensity:1.5,transparent:true,opacity:.88}));fire.position.set(0,.68,.34);g.add(fire);light(g,0,1,.9,'#ff6b28',1.4,5);
+}
+function table(parent,x,z,w=2,d=1.2){
+ const g=group(parent,x,0,z);box(g,0,1.05,0,w,.18,d,mats.oak);for(const a of [-1,1])for(const b of [-1,1])box(g,a*(w/2-.13),.5,b*(d/2-.13),.16,1,.16,mats.wood);
+}
+function chandelierRoom(parent,x,z){makeChandelier(parent,x,4.05,z,1)}
+function addRoom(parent,levelId){
+ const y=levelId===3?-4.5:levelId*4.5,top=y+4.4;
+ floor(parent,0,0,22,26,y,levelId===3?mats.stone:mats.floor);
+ // Main exterior envelope, with an actual open front doorway at z=8.
+ wall(parent,-11,-3, .5,22,y,4.4,levelId===3?mats.stone:mats.wall);
+ wall(parent,11,-3,.5,22,y,4.4,levelId===3?mats.stone:mats.wall);
+ wall(parent,0,-16,22,.5,y,4.4,levelId===3?mats.stone:mats.wall);
+ wall(parent,-7.25,8,7.5,.5,y,4.4,mats.wall);wall(parent,7.25,8,7.5,.5,y,4.4,mats.wall);wall(parent,0,8,2.5,.5,y+3.25,1.9,mats.wall);
+ // side-wing partitions leave broad openings into each room
+ for(const z of [-10,-3,3]){wall(parent,-6.2,z,9.5,.22,y,4.4,mats.plaster);wall(parent,6.2,z,9.5,.22,y,4.4,mats.plaster)}
+ // Wide central gallery and door openings to side rooms
+ for(const z of [-10,-3,3])for(const s of [-1,1]){box(parent,s*6.2,y+2.2,z,3.6,4.4,.24,mats.plaster,{hit:false});}
+ // Central room pilasters, ceiling cornice, baseboard and ceiling medallions
+ for(const x of [-9.8,-6.2,6.2,9.8])for(const z of [-13,-7,0,6]){box(parent,x,y+2.1,z,.25,4.2,.25,mats.wood,{hit:false});box(parent,x,y+.22,z,.4,.22,.4,mats.gold,{hit:false});box(parent,x,y+4.2,z,.4,.2,.4,mats.gold,{hit:false})}
+ for(const z of [-15.4,7.4]){trim(parent,0,z,21,.2,y+4.15);trim(parent,0,z,21,.2,y+.2,mats.gold)}
+ // Tall windows on both outer wings
+ for(const s of [-1,1])for(const z of [-12,-7,-1,5])windowFrame(parent,s*10.72,y+3.15,z,.95);
+ // Entrance doors, doors on all other floors remain in their frames.
+ if(levelId===0){const left=door(parent,-.77,y,7.55,1.45,3.05),right=door(parent,.77,y,7.55,1.45,3.05);left.rotation.y=-.08;right.rotation.y=.08;windowFrame(parent,-2.3,y+3.1,7.6,.7);windowFrame(parent,2.3,y+3.1,7.6,.7)}
+ // Room-specific period furnishings
+ if(levelId===0){fireplace(parent,-8,-12);fireplace(parent,8,-12);portrait(parent,-10.55,y+2.6,-8,1);portrait(parent,10.55,y+2.6,-8,-1);portrait(parent,-10.55,y+2.6,1,1);portrait(parent,10.55,y+2.6,1,-1);table(parent,-8,0,2,1.1);table(parent,8,0,2,1.1);chandelierRoom(parent,0,-4);chandelierRoom(parent,0,3);for(const z of [-12,-7,0,5]){cylinder(parent,-9.5,y+.8,z,.16,.22,1.6,mats.gold);light(parent,-9.5,y+1.5,z,'#ffbb71',.25,3);cylinder(parent,9.5,y+.8,z,.16,.22,1.6,mats.gold);light(parent,9.5,y+1.5,z,'#ffbb71',.25,3)}}
+ if(levelId===1){for(const x of [-8,8]){fireplace(parent,x,-12);for(const z of [-7,1])portrait(parent,x*1.3,y+2.6,z,x>0?1:-1)}table(parent,0,-3,4,1.4);chandelierRoom(parent,0,-10);chandelierRoom(parent,0,2);table(parent,-8,1,2,1);table(parent,8,1,2,1)}
+ if(levelId===2){for(const x of [-8,8]){box(parent,x,y+.75,-11,2,.12,2,mats.wood);box(parent,x,y+1.2,-11,2,.8,.12,mats.oak);table(parent,x,-3,1.5,1);portrait(parent,x*1.3,y+2.6,3,x>0?1:-1)}chandelierRoom(parent,0,-4)}
+ if(levelId===3){for(const x of [-8,-4,4,8]){cylinder(parent,x,y+1,-11,.65,.65,1.8,mats.wood,16);cylinder(parent,x,y+1.95,-11,.68,.68,.12,mats.gold,16)}fireplace(parent,0,-14);chandelierRoom(parent,0,-4)}
+ // ceiling slab and decorative beams: chandelier mount is physically attached to this surface
+ box(parent,0,y+4.48,-4,22,.18,24,levelId===3?mats.dark:mats.wood,{hit:false});
+ for(const z of [-14,-9,-4,1,6])box(parent,0,y+4.34,z,21,.16,.24,mats.gold,{hit:false});
+}
+function exterior(){
+ const g=group(scene);const ground=mat('#17171a');box(g,0,-.22,17,90,.4,90,ground);const path=mat('#4a4540');box(g,0,-.01,17,6,.12,28,path);
+ // Estate footprint and facade wings, central tower, roof sections
+ const stone=mat('#39312e'),roof=mat('#191b22'),trimMat=mats.gold;
+ box(g,0,2.15,-4,22,4.3,24,stone,{hit:true});box(g,-8.3,2.15,-3,5.4,4.3,23,stone,{hit:true});box(g,8.3,2.15,-3,5.4,4.3,23,stone,{hit:true});
+ box(g,0,4.5,-4,22,.25,24,trimMat,{hit:false});
+ const roofShape=new THREE.ConeGeometry(8.5,3.5,4);const roofMesh=new THREE.Mesh(roofShape,roof);roofMesh.position.set(0,6.1,-4);roofMesh.rotation.y=Math.PI/4;roofMesh.scale.set(1.35,1,1.5);g.add(roofMesh);
+ box(g,0,6,-4,5,7,6,stone);const towerRoof=new THREE.Mesh(new THREE.ConeGeometry(4,3,4),roof);towerRoof.position.set(0,10.9,-4);towerRoof.rotation.y=Math.PI/4;g.add(towerRoof);
+ for(const s of [-1,1]){const wingRoof=new THREE.Mesh(new THREE.ConeGeometry(5,2.7,4),roof);wingRoof.position.set(s*8.2,5.6,-4);wingRoof.rotation.y=Math.PI/4;wingRoof.scale.set(1.5,1,2.3);g.add(wingRoof)}
+ // front facade with open door gap matching the interior threshold
+ wall(g,-7.25,8,7.5,.5,0,4.4,stone,true);wall(g,7.25,8,7.5,.5,0,4.4,stone,true);wall(g,0,8,2.5,.5,3.35,2.1,stone,true);
+ for(const x of [-2.3,2.3])windowFrame(g,x,3.1,8.27,.85);
+ for(const x of [-2.8,-1.9,1.9,2.8]){cylinder(g,x,2.1,8.55,.19,.24,4.2,trimMat,16);cylinder(g,x,4.2,8.55,.34,.34,.22,trimMat,16);cylinder(g,x,.08,8.55,.36,.36,.18,trimMat,16)}
+ box(g,0,4.45,8.4,6.8,.32,.9,trimMat);door(g,0,0,8.4,2.8,3.2);
+ for(let i=0;i<6;i++)box(g,0,-.02+i*.02,9.1+i*.72,5.8+i*.5,.18,.72-i*.02,mats.stone,{hit:false});
+ // illuminated windows on the two wings
+ for(const s of [-1,1])for(const z of [-12,-7,-2,3]){box(g,s*10.76,2.65,z,.12,1.65,1.12,mats.gold,{hit:false});box(g,s*10.68,2.65,z,.1,1.42,.86,mats.glass,{hit:false});light(g,s*10.3,2.7,z,'#ffb65e',.4,3)}
+ // iron fence, lanterns, trees and grounds
+ for(const s of [-1,1]){for(let i=0;i<12;i++){const x=s*(13+i*.95);cylinder(g,x,1.1,12,.045,.045,2.2,mats.iron);cylinder(g,x,2.25,12,.12,.12,.2,mats.gold)}box(g,s*18,1.1,12,.08,2.1,22,mats.iron);const trunk=cylinder(g,s*17,.9,1,.28,.4,1.8,mat('#30241e'));for(let j=0;j<3;j++)sphere(g,s*17,2.3+j*.65,1,.9,mat('#111820'),[1.2,1,.8]);for(const z of [-2,7,16]){const lantern=group(g,s*5,.1,z);cylinder(lantern,0,1.4,0,.07,.07,2.8,mats.iron);box(lantern,0,2.9,0,.42,.5,.42,mats.gold);box(lantern,0,2.9,0,.25,.32,.25,mats.glass);light(lantern,0,2.9,0,'#ffc16d',1.1,8)}}
+ // exterior approach lamps and moonlit forecourt
+ for(let z of [13,19,25])for(let s of [-1,1]){cylinder(g,s*4,.65,z,.09,.12,1.3,mats.iron);light(g,s*4,1.4,z,'#e8c58c',.35,4)}
+}
+function stairs(parent,y,up=true){
+ const z=-4;for(let i=0;i<12;i++){const step=box(parent,0,y+(i+.5)*.17,z+(up?i:-i)*.34,2.6,.17,.38,mats.stone,{hit:false});step.position.y=y+(i+.5)*.17}
+ for(const s of [-1,1]){box(parent,s*1.5,y+1.05,z, .12,2.2,4.5,mats.wood,{hit:false});for(let i=0;i<5;i++)cylinder(parent,s*1.5,y+1.2,z-1.7+i*.8,.07,.07,.4,mats.gold)}
+}
+function buildWorld(){
+ scene=new THREE.Scene();scene.background=new THREE.Color('#090a10');scene.fog=new THREE.FogExp2('#090a10',.018);
+ camera=new THREE.PerspectiveCamera(72,innerWidth/innerHeight,.08,110);camera.rotation.order='YXZ';
+ renderer=new THREE.WebGLRenderer({canvas,antialias:true,powerPreference:'high-performance'});renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.5));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.15;
+ scene.add(new THREE.HemisphereLight('#a8b8d0','#211712',1.05));const moon=new THREE.DirectionalLight('#b4c2dc',1.3);moon.position.set(-15,24,12);moon.castShadow=true;moon.shadow.mapSize.set(1024,1024);scene.add(moon);
+ exterior();
+ for(let i=0;i<4;i++){const f=group(scene);f.position.y=i===3?-4.5:i*4.5;addRoom(f,i);stairs(f,f.position.y-.1,true);stairs(f,f.position.y+4.3,false)}
+ buildInteractables();
+}
+function buildInteractables(){
+ // Central stair landing triggers, collectibles and haunted details are placed as 3D objects.
+ for(let l=0;l<4;l++){const y=l===3?-4.5:l*4.5;interactables.push({kind:'stairs',name:'The grand staircase',x:0,z:-4,y,desc:'The staircase carries you to another level.'})}
+ const specs=[
+ ['key','Brass foyer key',-8,-8,0],['memory','The family supper',8,-8,0],['portrait','The Matriarch',-10,-7,0],['portrait','The Patriarch',10,-7,0],
+ ['key','Silver ballroom key',-8,-8,1],['memory','The last waltz',8,-8,1],['portrait','The widow',-10,-2,1],['portrait','The lost heir',10,-2,1],
+ ['key','Iron attic key',8,-11,2],['memory','The nursery song',-8,-11,2],['memory','The heartbeat',0,-13,3],['door','The Heart Chamber',0,-14,3]
+ ];
+ for(const [kind,name,x,z,l] of specs){const y=l===3?-4.5:l*4.5;const g=group(scene,x,y,z);if(kind==='key'){const ring=new THREE.Mesh(new THREE.TorusGeometry(.22,.055,8,18),mats.gold);ring.position.y=1;g.add(ring);cylinder(g,0,.65,0,.04,.04,.45,mats.gold);sphere(g,.0,.42,0,.1,mats.gold);light(g,0,1,0,'#ffd27b',.55,3)}
+ else if(kind==='memory'){const crystal=new THREE.Mesh(new THREE.OctahedronGeometry(.32),new THREE.MeshStandardMaterial({color:'#b8e6ed',emissive:'#4c9cb0',emissiveIntensity:1.3,transparent:true,opacity:.85}));crystal.position.y=1.15;g.add(crystal);light(g,0,1.15,0,'#7dd9ee',.65,4)}
+ else if(kind==='portrait')portrait(g,0,2.55,0,0);
+ else if(kind==='door'){door(g,0,0,0,2.6,3.2);for(let i=-1;i<=1;i++)sphere(g,i*.55,1.6,.2,.09,mats.gold)}
+ interactables.push({kind,name,x,z,y,group:g,level:l,used:false,desc:kind==='door'?'A sealed black-oak door. Three keys are needed.':'Something from the house’s past.'})}
+ // Permanent room props and haunting atmosphere
+ for(let l=0;l<4;l++){const y=l===3?-4.5:l*4.5;const g=group(scene,0,y,0);if(l===0){fireplace(g,-8,-12);fireplace(g,8,-12);table(g,-8,0,2,1.1);table(g,8,0,2,1.1)}if(l===1){table(g,0,-3,4,1.4);for(const x of [-8,8])fireplace(g,x,-12)}if(l===2){for(const x of [-8,8]){box(g,x,1,-11,2,.12,2,mats.wood);box(g,x,1.5,-11,2,.8,.12,mats.oak)}}if(l===3){for(const x of [-8,-4,4,8])cylinder(g,x,.5,-11,.65,.65,1.2,mats.wood,16)}}
+}
+const player={x:0,y:1.65,z:25,yaw:0,pitch:0,speed:4.1},radius=.34;
+function isBlocked(x,z){if(x<-10.55||x>10.55||z<-15.4||z>7.6)return false;for(const c of colliders){if(Math.abs(x-c.x)<c.w/2+radius&&Math.abs(z-c.z)<c.d/2+radius)return true}return false}
+function canMove(x,z){if(z>8.1&&Math.abs(x)<1.6)return false;return !isBlocked(x,z)}
+function setFloor(l){level=(l+4)%4;player.y=level===3?-4.5+1.65:level*4.5+1.65;player.x=0;player.z=-2;$('#floorTag').textContent=floorNames[level];$('#chapter').textContent=['THE HOUSE REMEMBERS','THE DANCE NEVER ENDED','ABOVE THE CEILING','BELOW THE FOUNDATIONS'][level];$('#objective').textContent='Explore this floor. Look for objects that shimmer in the candlelight.'}
+function toast(message){const el=$('#toast');el.textContent=message;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),2600)}
+function nearest(){let best=null,dist=2.25;for(const o of interactables){if(o.used||o.level!==level)continue;const d=Math.hypot(o.x-player.x,o.z-player.z);if(d<dist){dist=d;best=o}}return best}
+function interact(){if(!active)return;const o=nearest();if(!o){toast('Move closer to the stairs, a door or something unusual.');return}if(o.kind==='stairs'){setFloor(level===3?0:level+1);toast('You follow the staircase to '+floorNames[level]+'.');return}if(o.kind==='key'){o.used=true;keys++;o.group.visible=false;$('#inventory').textContent=keys+' / 3 keys · '+memories+' / 3 memories';toast(o.name+' collected.');return}if(o.kind==='memory'){o.used=true;memories++;o.group.visible=false;$('#inventory').textContent=keys+' / 3 keys · '+memories+' / 3 memories';toast(o.name+' recovered.');return}if(o.kind==='door'){if(keys<3){toast('The Heart Chamber needs three keys. You have '+keys+'.');return}$('#ending').hidden=false;active=false;return}toast(o.name+': '+o.desc)}
+function move(dt){let forward=(held.KeyW||held.ArrowUp?1:0)-(held.KeyS||held.ArrowDown?1:0)-joy.y,side=(held.KeyD||held.ArrowRight?1:0)-(held.KeyA||held.ArrowLeft?1:0)+joy.x;const n=Math.hypot(forward,side);if(!n)return;forward/=n;side/=n;const v=player.speed*dt,fx=-Math.sin(player.yaw),fz=-Math.cos(player.yaw),rx=Math.cos(player.yaw),rz=-Math.sin(player.yaw),dx=(fx*forward+rx*side)*v,dz=(fz*forward+rz*side)*v;if(canMove(player.x+dx,player.z))player.x+=dx;if(canMove(player.x,player.z+dz))player.z+=dz;
+ // Crossing the actual front threshold changes the objective; the player stays in the same continuous 3D scene.
+ if(level===-1&&player.z<7.6){level=0;$('#floorTag').textContent=floorNames[0];$('#chapter').textContent='THE HOUSE REMEMBERS';$('#objective').textContent='You have crossed the threshold. Explore the grand foyer.';$('#state').textContent='INSIDE';toast('THE GREAT DOORS CLOSE BEHIND YOU')}
+}
+function updateCamera(){camera.position.set(player.x,player.y,player.z);camera.rotation.set(player.pitch,player.yaw,0,'YXZ')}
+function animate(){if(!renderer)return;requestAnimationFrame(animate);if(active){const dt=Math.min(clock.getDelta(),.05);move(dt);updateCamera();const t=clock.elapsedTime;scene.traverse(o=>{if(o.isMesh&&o.material&&o.material.emissive&&o.material.emissiveIntensity>1.2&&o.geometry.type==='OctahedronGeometry')o.rotation.y=t*.7});}renderer.render(scene,camera)}
+function start(){if(active)return;$('#start').hidden=true;$('#ending').hidden=true;keys=0;memories=0;interactables.forEach(o=>{o.used=false;o.group.visible=true});$('#inventory').textContent='0 / 3 keys · 0 / 3 memories';player.x=0;player.y=1.65;player.z=25;player.yaw=0;player.pitch=0;level=-1;$('#floorTag').textContent='THE FORECOURT · MIDNIGHT';$('#chapter').textContent='THE HOUSE REMEMBERS';$('#objective').textContent='Walk up the steps and pass through the great front doors.';$('#state').textContent='APPROACHING';active=true;clock.start();toast('THE ESTATE AWAITS');}
+function resize(){if(!renderer||!camera)return;camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.5))}
+function soundOn(){try{audio=audio||new(window.AudioContext||window.webkitAudioContext)();if(audio.state==='suspended')audio.resume();if(hum)return;const osc=audio.createOscillator(),gain=audio.createGain(),filter=audio.createBiquadFilter();osc.type='sine';osc.frequency.value=43;filter.type='lowpass';filter.frequency.value=105;gain.gain.value=.022;osc.connect(filter);filter.connect(gain);gain.connect(audio.destination);osc.start();hum={osc,gain};$('#sound').textContent='SOUND: ON'}catch(e){toast('Ambient sound is unavailable on this device.')}}
 function soundOff(){if(hum){hum.gain.gain.setTargetAtTime(0,audio.currentTime,.15);hum.osc.stop(audio.currentTime+.5);hum=null}$('#sound').textContent='SOUND: OFF'}
-$('#enter').addEventListener('click',e=>{e.preventDefault();start()});$('#act').addEventListener('click',interact);$('#help').addEventListener('click',()=>toast('Joystick or WASD: move · Drag the scene: look around · EXAMINE: inspect, collect and use the staircase.'));$('#sound').addEventListener('click',()=>hum?soundOff():soundOn());$('#again').addEventListener('click',start);
-document.addEventListener('keydown',e=>{down[e.code]=true;if(e.code==='KeyE'||e.code==='Space'){e.preventDefault();interact()}});document.addEventListener('keyup',e=>down[e.code]=false);
-const joyEl=$('#joy'),stick=$('#stick');let joyId=null;
-function joyMove(e){const r=joyEl.getBoundingClientRect(),dx=e.clientX-r.left-r.width/2,dy=e.clientY-r.top-r.height/2,len=Math.hypot(dx,dy)||1,scale=Math.min(1,38/len),x=dx*scale,y=dy*scale;joy.x=x/38;joy.y=y/38;stick.style.left='calc(50% + '+x+'px)';stick.style.top='calc(50% + '+y+'px)'}
-joyEl.addEventListener('pointerdown',e=>{joyId=e.pointerId;joyEl.setPointerCapture(e.pointerId);joyMove(e)});joyEl.addEventListener('pointermove',e=>{if(e.pointerId===joyId)joyMove(e)});
-function joyEnd(e){if(e.pointerId!==joyId)return;joyId=null;joy.x=0;joy.y=0;stick.style.left='50%';stick.style.top='50%'}
-joyEl.addEventListener('pointerup',joyEnd);joyEl.addEventListener('pointercancel',joyEnd);
-canvas.addEventListener('pointerdown',e=>{drag={x:e.clientX,y:e.clientY};canvas.setPointerCapture(e.pointerId)});canvas.addEventListener('pointermove',e=>{if(!drag||!active)return;angle+=(e.clientX-drag.x)*.006;pitch=Math.max(-.35,Math.min(.35,pitch+(e.clientY-drag.y)*.0012));drag={x:e.clientX,y:e.clientY}});canvas.addEventListener('pointerup',()=>drag=null);canvas.addEventListener('pointercancel',()=>drag=null);
-drawExterior();
+function bind(){addEventListener('resize',resize);addEventListener('orientationchange',()=>setTimeout(resize,100));$('#enter').addEventListener('click',start);$('#again').addEventListener('click',start);$('#act').addEventListener('click',interact);$('#help').addEventListener('click',()=>toast('Joystick or WASD: walk · Drag anywhere on the scene: look · EXAMINE: collect, inspect and use the stairs.'));$('#sound').addEventListener('click',()=>hum?soundOff():soundOn());document.addEventListener('keydown',e=>{held[e.code]=true;if(e.code==='KeyE'||e.code==='Space'){e.preventDefault();interact()}});document.addEventListener('keyup',e=>held[e.code]=false);
+ const joyEl=$('#joy'),stick=$('#stick');function joyMove(e){const r=joyEl.getBoundingClientRect(),dx=e.clientX-r.left-r.width/2,dy=e.clientY-r.top-r.height/2,len=Math.hypot(dx,dy)||1,scale=Math.min(1,38/len),x=dx*scale,y=dy*scale;joy.x=x/38;joy.y=y/38;stick.style.left='calc(50% + '+x+'px)';stick.style.top='calc(50% + '+y+'px)'}function joyEnd(e){if(e.pointerId!==joyId)return;joyId=null;joy.x=0;joy.y=0;stick.style.left='50%';stick.style.top='50%'}joyEl.addEventListener('pointerdown',e=>{joyId=e.pointerId;joyEl.setPointerCapture(e.pointerId);joyMove(e)});joyEl.addEventListener('pointermove',e=>{if(e.pointerId===joyId)joyMove(e)});joyEl.addEventListener('pointerup',joyEnd);joyEl.addEventListener('pointercancel',joyEnd);
+ canvas.addEventListener('pointerdown',e=>{drag={x:e.clientX,y:e.clientY};canvas.setPointerCapture(e.pointerId)});canvas.addEventListener('pointermove',e=>{if(!drag||!active)return;player.yaw-=(e.clientX-drag.x)*.0045;player.pitch=Math.max(-.55,Math.min(.55,player.pitch-(e.clientY-drag.y)*.003));drag={x:e.clientX,y:e.clientY}});canvas.addEventListener('pointerup',()=>drag=null);canvas.addEventListener('pointercancel',()=>drag=null);
+}
+try{buildWorld();clock=new THREE.Clock();bind();animate()}catch(e){console.error(e);$('#error').hidden=false;$('#enter').disabled=true}
 })();
-</script></body></html>
+</script>
+</body></html>
