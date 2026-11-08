@@ -27,7 +27,7 @@ var floorNames=['GROUND FLOOR · GRAND FOYER','FIRST FLOOR · PORTRAIT GALLERY',
 function material(color,rough,metal){return new THREE.MeshStandardMaterial({color:color,roughness:rough===undefined?.82:rough,metalness:metal||0})}
 var M={wall:null,plaster:null,wood:null,oak:null,gold:null,stone:null,floor:null,dark:null,velvet:null,glass:null,iron:null,ivory:null};
 function group(parent,x,y,z){var g=new THREE.Group();g.position.set(x||0,y||0,z||0);parent.add(g);return g}
-function cube(parent,x,y,z,w,h,d,m,collision){var o=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m);o.position.set(x,y,z);o.castShadow=true;o.receiveShadow=true;parent.add(o);if(collision)colliders.push({x:x,y:y,z:z,w:w,d:d,h:h});return o}
+function cube(parent,x,y,z,w,h,d,m,collision){var o=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m);o.position.set(x,y,z);o.castShadow=true;o.receiveShadow=true;parent.add(o);if(collision){var wx=x,wy=y,wz=z,p=parent;while(p){wx+=p.position.x||0;wy+=p.position.y||0;wz+=p.position.z||0;p=p.parent}colliders.push({x:wx,y:wy,z:wz,w:w,d:d,h:h})}return o}
 function cyl(parent,x,y,z,r1,r2,h,m,n){var o=new THREE.Mesh(new THREE.CylinderGeometry(r1,r2,h,n||12),m);o.position.set(x,y,z);o.castShadow=true;parent.add(o);return o}
 function ball(parent,x,y,z,r,m,sx,sy,sz){var o=new THREE.Mesh(new THREE.SphereGeometry(r,16,12),m);o.position.set(x,y,z);o.scale.set(sx||1,sy||1,sz||1);o.castShadow=true;parent.add(o);return o}
 function point(parent,x,y,z,color,power,range){var l=new THREE.PointLight(color,power,range,2);l.position.set(x,y,z);parent.add(l);return l}
@@ -36,8 +36,8 @@ function chandelier(parent,x,y,z){var g=group(parent,x,y,z);cyl(g,0,0,0,.05,.05,
 function portrait(parent,x,y,z,flip){var g=group(parent,x,y,z);cube(g,0,0,0,1.05,1.45,.13,M.gold,false);cube(g,0,0,.08,.86,1.25,.04,M.dark,false);cube(g,0,-.23,.12,.62,.65,.035,M.velvet,false);ball(g,0,.28,.16,.19,material('#b69b80'),.8,1.15,.5);ball(g,-.07,.3,.19,.025,M.iron);ball(g,.07,.3,.19,.025,M.iron);cube(g,0,-.48,.15,.48,.3,.03,M.wood,false);g.rotation.y=flip||0;return g}
 function windowUnit(parent,x,y,z,w){cube(parent,x,y,z,w,.07,.12,M.gold,false);cube(parent,x,y-1.35,z,w,.07,.12,M.gold,false);cube(parent,x-w/2,y-.675,z,.07,1.4,.12,M.gold,false);cube(parent,x+w/2,y-.675,z,.07,1.4,.12,M.gold,false);cube(parent,x,y-.675,z+.05,w-.14,1.22,.035,M.glass,false);cube(parent,x,y-.675,z+.08,.045,1.22,.04,M.gold,false)}
 function doorUnit(parent,x,y,z,w,h){var g=group(parent,x,y,z);cube(g,0,h/2,0,w,h,.2,M.wood,false);cube(g,0,h/2,.12,w+.16,h+.16,.08,M.gold,false);cube(g,0,h/2,.17,w-.24,h-.24,.04,M.dark,false);for(var s=-1;s<=1;s+=2){cube(g,s*w*.25,h*.48,.2,w*.34,h*.35,.05,M.oak,false);cube(g,s*w*.25,h*.16,.2,w*.34,h*.2,.05,M.oak,false)}ball(g,w*.37,h*.48,.25,.065,M.gold);return g}
-function fireplace(parent,x,y,z){var g=group(parent,x,y,z);cube(g,0,1.35,0,2.5,2.7,.48,M.stone,false);cube(g,0,1.25,.26,1.25,1.55,.07,M.dark,false);cube(g,0,2.75,.12,2.8,.2,.72,M.gold,false);var flame=new THREE.Mesh(new THREE.ConeGeometry(.38,.9,9),new THREE.MeshStandardMaterial({color:'#ff8b38',emissive:'#a52d08',emissiveIntensity:1.8}));flame.position.set(0,.62,.34);g.add(flame);point(g,0,.9,.8,'#ff702d',1.3,5)}
-function table(parent,x,y,z,w,d){var g=group(parent,x,y,z);cube(g,0,1.03,0,w,.17,d,M.oak,false);[-1,1].forEach(function(a){[-1,1].forEach(function(b){cube(g,a*(w/2-.12),.5,b*(d/2-.12),.15,1,.15,M.wood,false)})});return g}
+function fireplace(parent,x,y,z){var g=group(parent,x,y,z);cube(g,0,1.35,0,2.5,2.7,.48,M.stone,true);cube(g,0,1.25,.26,1.25,1.55,.07,M.dark,false);cube(g,0,2.75,.12,2.8,.2,.72,M.gold,false);var flame=new THREE.Mesh(new THREE.ConeGeometry(.38,.9,9),new THREE.MeshStandardMaterial({color:'#ff8b38',emissive:'#a52d08',emissiveIntensity:1.8}));flame.position.set(0,.62,.34);g.add(flame);point(g,0,.9,.8,'#ff702d',1.3,5)}
+function table(parent,x,y,z,w,d){var g=group(parent,x,y,z);cube(g,0,1.03,0,w,.17,d,M.oak,true);[-1,1].forEach(function(a){[-1,1].forEach(function(b){cube(g,a*(w/2-.12),.5,b*(d/2-.12),.15,1,.15,M.wood,true)})});return g}
 function room(parent,y,kind){var g=group(parent,0,y,0);cube(g,0,-.13,-2,24,.26,34,kind===3?M.stone:M.floor,false);wall(g,-12,2.2,-2,.45,4.4,34,M.wall);wall(g,12,2.2,-2,.45,4.4,34,M.wall);wall(g,0,2.2,-19,24,.45,.45,M.wall);wall(g,-9,2.2,15,6,4.4,.45,M.wall);wall(g,9,2.2,15,6,4.4,.45,M.wall);wall(g,0,4.1,15,6,0.6,.45,M.wall,false);
 for(var x of [-10,-6,6,10])for(var z of [-16,-10,-4,3,12]){cube(g,x,2.15,z,.24,4.3,.25,M.wood,false);cube(g,x,.18,z,.38,.2,.38,M.gold,false);cube(g,x,4.15,z,.4,.18,.4,M.gold,false)}
 for(var side of [-1,1])[-15,-8,0,9].forEach(function(z){windowUnit(g,side*11.72,3.15,z,1.1)});
@@ -48,10 +48,10 @@ if(kind===3){for(var cx of [-9,-5,5,9]){cyl(g,cx,.9,-12,.6,.6,1.7,M.wood,16);cyl
 cube(g,0,4.52,-2,24,.18,34,M.wood,false);for(var rz of [-17,-10,-3,4,12])cube(g,0,4.35,rz,23,.14,.22,M.gold,false);
 return g}
 function makeExterior(){var g=group(scene);cube(g,0,-.35,16,100,.5,100,material('#17191c'),false);cube(g,0,-.02,17,6,.12,32,material('#4b4641'),false);
-var stone=material('#39312e'),roof=material('#171a21');cube(g,0,3.3,7.7,22,6.6,.65,stone,true);cube(g,0,6.6,7.4,24,.35,1.4,M.gold,false);
+var stone=material('#39312e'),roof=material('#171a21');cube(g,0,3.3,7.7,22,6.6,.65,stone,false);cube(g,0,6.6,7.4,24,.35,1.4,M.gold,false);
 for(var s of [-1,1]){cube(g,s*8,3.2,7.1,6,6.4,.7,stone,true);var r=new THREE.Mesh(new THREE.ConeGeometry(5,3,4),roof);r.position.set(s*8,7.7,7);r.rotation.y=Math.PI/4;g.add(r)}
 // Tower and steep roof silhouette
-cube(g,0,7.1,7,5.5,8,.9,stone,true);var tower=new THREE.Mesh(new THREE.ConeGeometry(4.2,4.5,4),roof);tower.position.set(0,13,7);tower.rotation.y=Math.PI/4;g.add(tower);
+cube(g,0,7.1,7,5.5,8,.9,stone,false);var tower=new THREE.Mesh(new THREE.ConeGeometry(4.2,4.5,4),roof);tower.position.set(0,13,7);tower.rotation.y=Math.PI/4;g.add(tower);
 for(var side of [-1,1])for(var wz of [-10,-3,3]){cube(g,side*8,3.1,wz,1.2,2.1,.15,M.glass,false);cube(g,side*8,3.1,wz,.12,2.2,.2,M.gold,false);point(g,side*8,3,wz,'#ffb55f',.55,5)}
 // The front entrance is deliberately open; the doors swing from the frame when entered.
 wall(g,-7.4,2.2,8,7.2,4.4,.55,stone);wall(g,7.4,2.2,8,7.2,4.4,.55,stone);wall(g,0,4.15,8,2.4,.5,.55,stone,false);
@@ -83,11 +83,21 @@ if(player.z>7&&player.z<12&&Math.abs(player.x)<3){doors.forEach(function(d){d.ro
 if(Math.abs(player.x)<3.2&&player.z>-7&&player.z<-1){floorChange((level+1)%4);toast('You climb the grand staircase.');return}
 toast('Nothing responds. Move closer to an object or the staircase.')}
 function blocked(x,z){
-// The forecourt is outside the mansion's interior bounds. Keep its own generous walkable area so the player can reach the front steps.
-if(level===-1){return x<-22||x>22||z<4||z>38}
-// Once inside, use the narrower room bounds.
-if(x<-11.2||x>11.2||z<-18.2||z>14.4)return true;
-return false}
+  var radius=.38;
+  // Keep the outdoor grounds separate from the indoor room limits.
+  if(level===-1){
+    if(x<-22+radius||x>22-radius||z<4+radius||z>38-radius)return true;
+  }else{
+    if(x<-11.2+radius||x>11.2-radius||z<-18.2+radius||z>14.4-radius)return true;
+  }
+  // Test solid walls and furniture on the player's current floor only.
+  for(var i=0;i<colliders.length;i++){
+    var b=colliders[i];
+    if(Math.abs(player.y-b.y)>(b.h/2+.72))continue;
+    if(Math.abs(x-b.x)<(b.w/2+radius)&&Math.abs(z-b.z)<(b.d/2+radius))return true;
+  }
+  return false
+}
 function move(dx,dz){var nx=player.x+dx,nz=player.z+dz;if(!blocked(nx,player.z))player.x=nx;if(!blocked(player.x,nz))player.z=nz;if(fallbackCanvas)fallbackDraw()}
 function update(dt){var f=(held.KeyW||held.ArrowUp?1:0)-(held.KeyS||held.ArrowDown?1:0)-joy.y,s=(held.KeyD||held.ArrowRight?1:0)-(held.KeyA||held.ArrowLeft?1:0)+joy.x;var n=Math.hypot(f,s);if(n>.02){f/=n;s/=n;var v=player.speed*dt,fx=-Math.sin(player.yaw),fz=-Math.cos(player.yaw),rx=Math.cos(player.yaw),rz=-Math.sin(player.yaw);move((fx*f+rx*s)*v,(fz*f+rz*s)*v)}
 camera.position.set(player.x,player.y,player.z);camera.rotation.set(player.pitch,player.yaw,0,'YXZ');
