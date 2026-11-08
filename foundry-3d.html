@@ -32,6 +32,31 @@ function roomFrame(parent,x,z,w,d,h){box(parent,x,-.15,z,w,.3,d,floorMat);box(pa
 function addHallway(parent,y,variant){const h=6;box(parent,0,y-.18,0,13,.36,54,floorMat);box(parent,-6.5,y+3,0,.4,6,54,darkWall);box(parent,6.5,y+3,0,.4,6,54,darkWall);box(parent,0,y+6,0,13,.35,54,wood);for(let z=-24;z<=24;z+=6){box(parent,-6.1,y+5.2,z,.55,.55,.55,trim);box(parent,6.1,y+5.2,z,.55,.55,.55,trim);sconce(parent,-6.05,y+3.8,z);sconce(parent,6.05,y+3.8,z);portrait(parent,-6.24,y+3.4,z+2,-1,z+variant);portrait(parent,6.24,y+3.4,z-2,1,z+variant+1)}}
 function makeFloor(f){const g=new THREE.Group();g.position.y=f.y;scene.add(g);groups[f.id]=g;addHallway(g,0,f.id+4);
 for(let side of [-1,1]){for(let z of [-18,-6,6,18]){const x=side*10.5;roomFrame(g,x,z,7,8,5.5);box(g,x,.02,z,6.6,.08,7.6,wood);door(g,side*6.5,0,z, 'x',f.id+':'+side+':'+z,side<0?'EAST WING ROOM':'WEST WING ROOM',true);}}
+
+function furnishRoom(parent,x,z,side,kind){
+ const sx=side<0?-1:1, cx=x-sx*.25;
+ if(kind==='guest'){
+  box(parent,cx, .62,z,3.25,.34,3.8,velvet);
+  box(parent,cx,.92,z-1.25,3.25,.55,.28,wood);
+  for(const dx of [-1.35,1.35])for(const dz of [-1.55,1.55])box(parent,cx+dx,.28,z+dz,.18,.55,.18,trim);
+  box(parent,x+sx*2.55,1.15,z-2.6,1.25,2.3,1.05,wood);
+  box(parent,x-sx*2.35,.55,z+2.45,1.25,.9,.85,wood);
+  box(parent,x-sx*2.35,1.05,z+2.45,.9,.12,.6,gold,false);
+  box(parent,x+sx*2.45,1.15,z+1.1,.12,2.3,1.5,gold,false);
+  for(const dx of [-.48,.48])box(parent,cx+dx,1.03,z-1.55,.12,.12,.12,gold,false);
+ }else if(kind==='study'){
+  box(parent,cx,.9,z-2.3,3.1,.18,1.15,wood);
+  for(const dx of [-1.3,1.3])box(parent,cx+dx,.45,z-2.3,.16,.9,.16,trim);
+  box(parent,cx,.56,z-.85,1.05,1.05,.85,velvet);
+  for(let i=0;i<5;i++)box(parent,cx-1.05+i*.48,1.05,z-2.3,.38,.12,.72,mat(0x5a3327),false);
+  box(parent,x+sx*2.55,1.3,z+1.5,.8,2.6,1.2,wood);
+ }else if(kind==='storage'){
+  box(parent,cx,.7,z,2.6,1.3,1.2,iron);
+  for(let i=0;i<4;i++)box(parent,cx-1.2+i*.8,1.5,z-1.4,.65,.12,1.1,wood);
+  for(let i=0;i<3;i++)cyl(parent,cx-1+i*.9,.18,z+1.5,.12,.12,.35,iron);
+ }
+}
+
 if(f.id===0){ // Entrance foyer, sweeping staircase, portrait gallery
 box(g,0,0,25,25,.4,14,floorMat);box(g,0,6,25,25,.35,wood);for(let i=0;i<14;i++){box(g,0,(i+.5)*.5,20.5-i,4,.5,1,trim,false);box(g,-2.18,(i+.5)*.5,20.5-i,.18,.5,1,wood,false);box(g,2.18,(i+.5)*.5,20.5-i,.18,.5,1,wood,false)}box(g,0,7.05,7.2,4.5,.2,2,trim,false);box(g,-2.25,3.6,14,.18,7.2,15,wood);box(g,2.25,3.6,14,.18,7.2,15,wood);for(let x of [-9,9]){cyl(g,x,4,25,1.5,1.5,8,wood);cyl(g,x,8,25,1.8,1.8,.35,gold)}for(let x of [-3,3])floatingCandle(g,x,5,23)}
 if(f.id===1){ // ballroom at the end of the first floor
@@ -40,6 +65,44 @@ if(f.id===2){ // attic rafters and nursery
 for(let z=-23;z<=24;z+=4){const beam=box(g,0,5.5,z,13,.35,.4,wood);beam.rotation.z=.55;const beam2=box(g,0,5.5,z,13,.35,.4,wood);beam2.rotation.z=-.55}roomFrame(g,0,-34,23,17,5);box(g,0,1,-34,5,.7,3,wood);box(g,-4,2,-34,1,3,.3,iron);for(let x of [-7,-3,3,7])floatingCandle(g,x,4.8,-30)}
 if(f.id===-1){ // basement cross corridors and furnace rooms
 box(g,0,0,-34,26,.3,18,darkWall);for(let x of [-9,9]){for(let z of [-39,-33,-27]){cyl(g,x,2,z,.55,.7,4,iron);sconce(g,x,4,z)}}for(let x of [-8,8]){roomFrame(g,x,-34,7,9,5);door(g,x,0,-29,'z','basement:'+x,x<0?'BOILER ROOM':'MORGUE',true)}roomFrame(g,0,-50,22,10,5);box(g,0,1,-50,7,2,4,iron);point(g,0,3,-50,0xff532b,1.5,14)}
+
+ // Furnish every side chamber so the estate feels inhabited and layered.
+ for(const side of [-1,1]){
+  const zs=[-18,-6,6,18];
+  zs.forEach((z,i)=>furnishRoom(g,side*10.5,z,side,f.id===-1?(i%2?'storage':'study'):(i%2?'study':'guest')));
+ }
+ if(f.id===0){
+  // Grand foyer: reception console, runner, umbrella stands and a pair of settees.
+  box(g,0,.12,28,5,.12,7,velvet,false);
+  box(g,0,1.15,29.5,4.8,.22,.85,wood);
+  for(const x of [-2,2]){box(g,x,.58,29.5,.18,1.15,.18,trim);box(g,x,.58,27.2,2.4,1.15,.8,velvet);box(g,x,.2,27.2,2.5,.18,.9,wood)}
+  box(g,-5,.9,24,1.1,1.8,1.1,wood);box(g,5,.9,24,1.1,1.8,1.1,wood);
+  for(const x of [-5,5]){cyl(g,x,1.95,24,.42,.42,.12,gold);floatingCandle(g,x,2.1,24)}
+ }
+ if(f.id===1){
+  // Ballroom furnishings: grand piano, dance-floor border, long banquet table.
+  box(g,0,.08,-34,15,.12,11,wood,false);
+  box(g,-7,.65,-35,3.2,1.2,1.5,iron);box(g,-7,1.35,-35,3.2,.16,1.5,wood);
+  for(let i=0;i<6;i++)box(g,5,.9,-41+i*2,2.2,1.8,.18,wood);
+  box(g,7,.55,-34,3.5,.12,1.4,velvet);
+  for(const x of [-9,9])for(const z of [-39,-29]){box(g,x,.55,z,1.1,1.1,1.1,wood);box(g,x,.2,z,1.2,.15,1.2,gold,false)}
+  for(let i=0;i<8;i++)floatingCandle(g,-8+i*2,5.2,-25);
+ }
+ if(f.id===2){
+  // Attic nursery: old cot, rocking chair, toy chest and hanging mobile.
+  box(g,0,.55,-34,3.4,.22,5.2,wood);box(g,0,1.15,-36.1,3.4,1.1,.18,iron);
+  for(const x of [-1.55,1.55])box(g,x,1,-34,.15,1.3,4.8,wood);
+  box(g,-5,.55,-32,1.5,1.1,1.3,velvet);box(g,5,.55,-38,2.1,1.1,1.5,wood);
+  for(let i=0;i<4;i++)box(g,-.9+i*.6,2.4,-34,.12,.9,.12,gold,false);
+ }
+ if(f.id===-1){
+  // Basement: boiler, pipework, examination slab and storage cages.
+  cyl(g,0,1.6,-50,1.35,1.35,3.2,iron,24);cyl(g,0,3.3,-50,1.5,1.5,.22,gold,24);
+  for(const x of [-2.2,2.2]){cyl(g,x,2.5,-50,.12,.12,5,iron);cyl(g,x,4.7,-50,.12,.12,4,iron)}
+  box(g,-7,.85,-34,2.4,.18,3.6,iron);box(g,-7,1.25,-34,2.1,.55,3.2,mat(0x77716a));
+  for(const x of [6,8]){box(g,x,1.3,-34,.12,2.6,5,iron);box(g,7,2.6,-34,2.2,.12,5,iron)}
+ }
+
 // Stairwell/elevator core at z=25; floor-specific landing
 box(g,0,0,27,5,.25,6,trim);box(g,-2.4,2,27,.2,4,6,gold);box(g,2.4,2,27,.2,4,6,gold);box(g,0,2,29,4.8,4,.2,wood);const panel=box(g,0,2,25,1.2,1.8,.12,iron);box(g,0,2,24.91,.45,.65,.08,gold);
 return g}
