@@ -20,7 +20,7 @@ import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.m
 (()=>{
 'use strict';
 const $=s=>document.querySelector(s),canvas=$('#world'),TAU=Math.PI*2;
-let renderer,scene,camera,clock,active=false,level=-1,keys=0,memories=0,drag=null,joyId=null,audio=null,hum=null,toastTimer=0,doorOpen=false;
+let renderer,scene,camera,clock,active=false,level=-1,keys=0,memories=0,drag=null,joyId=null,audio=null,hum=null,toastTimer=0,doorOpen=false,frontDoors=[];
 const held={},joy={x:0,y:0},colliders=[],interactables=[],floorNames=['GROUND FLOOR · GRAND FOYER','FIRST FLOOR · GRAND BALLROOM','SECOND FLOOR · THE ATTIC','LOWER LEVEL · THE DEEP BASEMENT'];
 const mats={wall:mat('#302522'),plaster:mat('#40332c'),dark:mat('#171317'),wood:mat('#4b3021'),oak:mat('#63452e'),gold:mat('#a98758',.55),stone:mat('#514b46'),floor:mat('#382a25'),velvet:mat('#43242d'),glass: new THREE.MeshStandardMaterial({color:'#d5a66b',emissive:'#a15d22',emissiveIntensity:.7}),black:mat('#09090d'),ivory:mat('#d9cbb2'),iron:mat('#292a2d',.8)};
 function mat(color,rough=.82){return new THREE.MeshStandardMaterial({color,roughness:rough,metalness:.08})}
@@ -79,7 +79,7 @@ function addRoom(parent,levelId){
  // Tall windows on both outer wings
  for(const s of [-1,1])for(const z of [-12,-7,-1,5])windowFrame(parent,s*10.72,y+3.15,z,.95);
  // Entrance doors, doors on all other floors remain in their frames.
- if(levelId===0){const left=door(parent,-.77,y,7.55,1.45,3.05),right=door(parent,.77,y,7.55,1.45,3.05);left.rotation.y=-.08;right.rotation.y=.08;windowFrame(parent,-2.3,y+3.1,7.6,.7);windowFrame(parent,2.3,y+3.1,7.6,.7)}
+ if(levelId===0){windowFrame(parent,-2.3,y+3.1,7.6,.7);windowFrame(parent,2.3,y+3.1,7.6,.7)}
  // Room-specific period furnishings
  if(levelId===0){fireplace(parent,-8,-12);fireplace(parent,8,-12);portrait(parent,-10.55,y+2.6,-8,1);portrait(parent,10.55,y+2.6,-8,-1);portrait(parent,-10.55,y+2.6,1,1);portrait(parent,10.55,y+2.6,1,-1);table(parent,-8,0,2,1.1);table(parent,8,0,2,1.1);chandelierRoom(parent,0,-4);chandelierRoom(parent,0,3);for(const z of [-12,-7,0,5]){cylinder(parent,-9.5,y+.8,z,.16,.22,1.6,mats.gold);light(parent,-9.5,y+1.5,z,'#ffbb71',.25,3);cylinder(parent,9.5,y+.8,z,.16,.22,1.6,mats.gold);light(parent,9.5,y+1.5,z,'#ffbb71',.25,3)}}
  if(levelId===1){for(const x of [-8,8]){fireplace(parent,x,-12);for(const z of [-7,1])portrait(parent,x*1.3,y+2.6,z,x>0?1:-1)}table(parent,0,-3,4,1.4);chandelierRoom(parent,0,-10);chandelierRoom(parent,0,2);table(parent,-8,1,2,1);table(parent,8,1,2,1)}
@@ -93,16 +93,16 @@ function exterior(){
  const g=group(scene);const ground=mat('#17171a');box(g,0,-.22,17,90,.4,90,ground);const path=mat('#4a4540');box(g,0,-.01,17,6,.12,28,path);
  // Estate footprint and facade wings, central tower, roof sections
  const stone=mat('#39312e'),roof=mat('#191b22'),trimMat=mats.gold;
- box(g,0,2.15,-4,22,4.3,24,stone,{hit:true});box(g,-8.3,2.15,-3,5.4,4.3,23,stone,{hit:true});box(g,8.3,2.15,-3,5.4,4.3,23,stone,{hit:true});
+ box(g,0,2.15,-4,22,4.3,24,stone,{hit:false});box(g,-8.3,2.15,-3,5.4,4.3,23,stone,{hit:false});box(g,8.3,2.15,-3,5.4,4.3,23,stone,{hit:false});
  box(g,0,4.5,-4,22,.25,24,trimMat,{hit:false});
  const roofShape=new THREE.ConeGeometry(8.5,3.5,4);const roofMesh=new THREE.Mesh(roofShape,roof);roofMesh.position.set(0,6.1,-4);roofMesh.rotation.y=Math.PI/4;roofMesh.scale.set(1.35,1,1.5);g.add(roofMesh);
  box(g,0,6,-4,5,7,6,stone);const towerRoof=new THREE.Mesh(new THREE.ConeGeometry(4,3,4),roof);towerRoof.position.set(0,10.9,-4);towerRoof.rotation.y=Math.PI/4;g.add(towerRoof);
  for(const s of [-1,1]){const wingRoof=new THREE.Mesh(new THREE.ConeGeometry(5,2.7,4),roof);wingRoof.position.set(s*8.2,5.6,-4);wingRoof.rotation.y=Math.PI/4;wingRoof.scale.set(1.5,1,2.3);g.add(wingRoof)}
  // front facade with open door gap matching the interior threshold
- wall(g,-7.25,8,7.5,.5,0,4.4,stone,true);wall(g,7.25,8,7.5,.5,0,4.4,stone,true);wall(g,0,8,2.5,.5,3.35,2.1,stone,true);
+ wall(g,-7.25,8,7.5,.5,0,4.4,stone,true);wall(g,7.25,8,7.5,.5,0,4.4,stone,true);wall(g,0,8,2.5,.5,3.35,2.1,stone,false);
  for(const x of [-2.3,2.3])windowFrame(g,x,3.1,8.27,.85);
  for(const x of [-2.8,-1.9,1.9,2.8]){cylinder(g,x,2.1,8.55,.19,.24,4.2,trimMat,16);cylinder(g,x,4.2,8.55,.34,.34,.22,trimMat,16);cylinder(g,x,.08,8.55,.36,.36,.18,trimMat,16)}
- box(g,0,4.45,8.4,6.8,.32,.9,trimMat);door(g,0,0,8.4,2.8,3.2);
+ box(g,0,4.45,8.4,6.8,.32,.9,trimMat);const entryDoor=door(g,0,0,8.4,2.8,3.2);frontDoors.push(entryDoor);
  for(let i=0;i<6;i++)box(g,0,-.02+i*.02,9.1+i*.72,5.8+i*.5,.18,.72-i*.02,mats.stone,{hit:false});
  // illuminated windows on the two wings
  for(const s of [-1,1])for(const z of [-12,-7,-2,3]){box(g,s*10.76,2.65,z,.12,1.65,1.12,mats.gold,{hit:false});box(g,s*10.68,2.65,z,.1,1.42,.86,mats.glass,{hit:false});light(g,s*10.3,2.7,z,'#ffb65e',.4,3)}
@@ -149,7 +149,7 @@ function nearest(){let best=null,dist=2.25;for(const o of interactables){if(o.us
 function interact(){if(!active)return;const o=nearest();if(!o){toast('Move closer to the stairs, a door or something unusual.');return}if(o.kind==='stairs'){setFloor(level===3?0:level+1);toast('You follow the staircase to '+floorNames[level]+'.');return}if(o.kind==='key'){o.used=true;keys++;o.group.visible=false;$('#inventory').textContent=keys+' / 3 keys · '+memories+' / 3 memories';toast(o.name+' collected.');return}if(o.kind==='memory'){o.used=true;memories++;o.group.visible=false;$('#inventory').textContent=keys+' / 3 keys · '+memories+' / 3 memories';toast(o.name+' recovered.');return}if(o.kind==='door'){if(keys<3){toast('The Heart Chamber needs three keys. You have '+keys+'.');return}$('#ending').hidden=false;active=false;return}toast(o.name+': '+o.desc)}
 function move(dt){let forward=(held.KeyW||held.ArrowUp?1:0)-(held.KeyS||held.ArrowDown?1:0)-joy.y,side=(held.KeyD||held.ArrowRight?1:0)-(held.KeyA||held.ArrowLeft?1:0)+joy.x;const n=Math.hypot(forward,side);if(!n)return;forward/=n;side/=n;const v=player.speed*dt,fx=-Math.sin(player.yaw),fz=-Math.cos(player.yaw),rx=Math.cos(player.yaw),rz=-Math.sin(player.yaw),dx=(fx*forward+rx*side)*v,dz=(fz*forward+rz*side)*v;if(canMove(player.x+dx,player.z))player.x+=dx;if(canMove(player.x,player.z+dz))player.z+=dz;
  // Crossing the actual front threshold changes the objective; the player stays in the same continuous 3D scene.
- if(level===-1&&player.z<7.6){level=0;$('#floorTag').textContent=floorNames[0];$('#chapter').textContent='THE HOUSE REMEMBERS';$('#objective').textContent='You have crossed the threshold. Explore the grand foyer.';$('#state').textContent='INSIDE';toast('THE GREAT DOORS CLOSE BEHIND YOU')}
+ if(level===-1&&player.z<7.6){frontDoors.forEach(d=>{d.rotation.y=Math.PI*.48});level=0;$('#floorTag').textContent=floorNames[0];$('#chapter').textContent='THE HOUSE REMEMBERS';$('#objective').textContent='You have crossed the threshold. Explore the grand foyer.';$('#state').textContent='INSIDE';toast('THE GREAT DOORS CLOSE BEHIND YOU')}
 }
 function updateCamera(){camera.position.set(player.x,player.y,player.z);camera.rotation.set(player.pitch,player.yaw,0,'YXZ')}
 function animate(){if(!renderer)return;requestAnimationFrame(animate);if(active){const dt=Math.min(clock.getDelta(),.05);move(dt);updateCamera();const t=clock.elapsedTime;scene.traverse(o=>{if(o.isMesh&&o.material&&o.material.emissive&&o.material.emissiveIntensity>1.2&&o.geometry.type==='OctahedronGeometry')o.rotation.y=t*.7});}renderer.render(scene,camera)}
