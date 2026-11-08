@@ -142,7 +142,7 @@ function buildInteractables(){
 }
 const player={x:0,y:1.65,z:25,yaw:0,pitch:0,speed:4.1},radius=.34;
 function isBlocked(x,z){if(x<-10.55||x>10.55||z<-15.4||z>7.6)return false;for(const c of colliders){if(Math.abs(x-c.x)<c.w/2+radius&&Math.abs(z-c.z)<c.d/2+radius)return true}return false}
-function canMove(x,z){if(z>8.1&&Math.abs(x)<1.6)return false;return !isBlocked(x,z)}
+function canMove(x,z){return !isBlocked(x,z)}
 function setFloor(l){level=(l+4)%4;player.y=level===3?-4.5+1.65:level*4.5+1.65;player.x=0;player.z=-2;$('#floorTag').textContent=floorNames[level];$('#chapter').textContent=['THE HOUSE REMEMBERS','THE DANCE NEVER ENDED','ABOVE THE CEILING','BELOW THE FOUNDATIONS'][level];$('#objective').textContent='Explore this floor. Look for objects that shimmer in the candlelight.'}
 function toast(message){const el=$('#toast');el.textContent=message;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),2600)}
 function nearest(){let best=null,dist=2.25;for(const o of interactables){if(o.used||o.level!==level)continue;const d=Math.hypot(o.x-player.x,o.z-player.z);if(d<dist){dist=d;best=o}}return best}
