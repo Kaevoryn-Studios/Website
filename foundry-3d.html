@@ -23,6 +23,29 @@ function point(x,y,z,color,intensity,dist){const l=new THREE.PointLight(color,in
 scene.add(new THREE.HemisphereLight(0xf1f7ff,0x77716a,3.1));const key=new THREE.DirectionalLight(0xffedda,2.35);key.position.set(-12,22,15);key.castShadow=true;key.shadow.mapSize.set(1024,1024);scene.add(key);for(let z=12;z>=-44;z-=8){for(const x of [-11,0,11]){const lamp=point(x,6.35,z,0xffe4bd,5.5,19);lamp.decay=1.35;}}
 box(0,-.3,-15,38,.6,76,dark,false);box(0,7.5,-15,38,.6,76,dark);box(-18,3.5,-15,.7,7,76,concrete);box(18,3.5,-15,.7,7,76,concrete);box(0,3.5,-53,38,7,.7,concrete);
 for(let z=16;z>-52;z-=8){for(const x of [-17.5,17.5]){box(x,3.4,z,1,6.8,1.2,concrete);box(x*.91,6.8,z,2,.45,1.6,iron)}box(0,7.15,z,36,.3,.45,iron)}
+// Foundry architecture: unmistakable steel roof trusses, work lights and wayfinding
+for(const z of [13,5,-3,-11,-19,-27,-35,-43]){
+  beam(new THREE.Vector3(-17,6.95,z),new THREE.Vector3(0,5.8,z),.22,iron);
+  beam(new THREE.Vector3(0,5.8,z),new THREE.Vector3(17,6.95,z),.22,iron);
+  beam(new THREE.Vector3(-17,6.95,z),new THREE.Vector3(17,6.95,z),.16,brass);
+}
+for(const z of [11,-1,-13,-25,-37]){
+  const strip=box(0,6.78,z,5.2,.12,.38,coldGlow,false);
+  const lamp=point(0,6.35,z,0xffe8c7,6.5,22);lamp.decay=1.25;
+}
+function makeSign(label,sub,x,y,z,rotation=0){
+  const c=document.createElement('canvas');c.width=1024;c.height=256;
+  const g=c.getContext('2d');g.fillStyle='#18232c';g.fillRect(0,0,1024,256);
+  g.strokeStyle='#ffb56f';g.lineWidth=12;g.strokeRect(12,12,1000,232);
+  g.fillStyle='#fff0d8';g.font='900 76px system-ui';g.textAlign='center';g.fillText(label,512,112);
+  g.fillStyle='#ffbd83';g.font='700 34px system-ui';g.fillText(sub,512,180);
+  const tex=new THREE.CanvasTexture(c);tex.colorSpace=THREE.SRGBColorSpace;
+  const panel=new THREE.Mesh(new THREE.PlaneGeometry(7.5,1.875),new THREE.MeshBasicMaterial({map:tex}));
+  panel.position.set(x,y,z);panel.rotation.y=rotation;scene.add(panel);
+  const frame=box(x,y,z-.08,7.7,2.05,.12,brass,false);frame.rotation.y=rotation;panel.position.z+=rotation?-.09:.09;
+}
+makeSign('FOUNDRY HALL','AUTHORIZED PERSONNEL ONLY',0,5.35,10.9);
+makeSign('FURNACE CORE','HIGH TEMPERATURE  ·  KEEP CLEAR',0,5.35,-31.4,Math.PI);
 // Overhead pipe network and heavy supports
 for(const x of [-10,-7,7,10]){cyl(x,6.4,-15,.22,.22,66,pipeMat);for(let z=13;z>-48;z-=11)cyl(x,6.4,z,.42,.42,.35,rust)}
 for(const z of [10,-2,-14,-26,-38]){beam(new THREE.Vector3(-16,6.3,z),new THREE.Vector3(16,6.3,z),.18,iron)}
