@@ -20,7 +20,7 @@ function cyl(x,y,z,r1,r2,h,m=iron,n=12){const o=new THREE.Mesh(new THREE.Cylinde
 function sphere(x,y,z,r,m){const o=new THREE.Mesh(new THREE.SphereGeometry(r,12,10),m);o.position.set(x,y,z);o.castShadow=true;scene.add(o);return o}
 function beam(a,b,r,m){const d=new THREE.Vector3().subVectors(b,a);const o=new THREE.Mesh(new THREE.CylinderGeometry(r,r,d.length(),8),m);o.position.copy(a).add(b).multiplyScalar(.5);o.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),d.normalize());o.castShadow=true;scene.add(o);return o}
 function point(x,y,z,color,intensity,dist){const l=new THREE.PointLight(color,intensity,dist,2);l.position.set(x,y,z);scene.add(l);return l}
-scene.add(new THREE.HemisphereLight(0xf1f7ff,0x77716a,3.1));const key=new THREE.DirectionalLight(0xffedda,2.35);key.position.set(-12,22,15);key.castShadow=true;key.shadow.mapSize.set(1024,1024);scene.add(key);for(let z=12;z>=-44;z-=8){for(const x of [-11,0,11]){const lamp=point(x,6.35,z,0xffe4bd,5.5,19);lamp.decay=1.35;}}
+scene.add(new THREE.HemisphereLight(0xf1f7ff,0x77716a,3.1));const key=new THREE.DirectionalLight(0xffedda,2.35);key.position.set(-12,22,15);key.castShadow=true;key.shadow.mapSize.set(1024,1024);scene.add(key);const workLights=[];for(let z=12;z>=-44;z-=8){for(const x of [-11,0,11]){const lamp=point(x,6.35,z,0xffe4bd,5.5,19);lamp.decay=1.35;workLights.push({lamp,phase:Math.random()*9,base:5.5});}}
 box(0,-.3,-15,38,.6,76,dark,false);box(0,7.5,-15,38,.6,76,dark);box(-18,3.5,-15,.7,7,76,concrete);box(18,3.5,-15,.7,7,76,concrete);box(0,3.5,-53,38,7,.7,concrete);
 for(let z=16;z>-52;z-=8){for(const x of [-17.5,17.5]){box(x,3.4,z,1,6.8,1.2,concrete);box(x*.91,6.8,z,2,.45,1.6,iron)}box(0,7.15,z,36,.3,.45,iron)}
 // Foundry architecture: unmistakable steel roof trusses, work lights and wayfinding
@@ -92,6 +92,29 @@ for(const x of [-4.5,4.5]){box(x,.05,-35,1.1,.12,27,rust,false);for(let z=-22;z>
 const steamMat=new THREE.MeshBasicMaterial({color:0xb7c2cb,transparent:true,opacity:.14,depthWrite:false});const steam=[];
 for(let i=0;i<38;i++){const mesh=new THREE.Mesh(new THREE.SphereGeometry(.25+Math.random()*.5,7,6),steamMat);mesh.position.set([-13,13,0][i%3]+(Math.random()-.5)*2,Math.random()*5,-34+Math.random()*24);mesh.scale.set(1,1.6,1);scene.add(mesh);steam.push({mesh,phase:Math.random()*8})}
 const sparks=[];const sparkMat=new THREE.MeshBasicMaterial({color:0xff9b46});for(let i=0;i<65;i++){const p=new THREE.Mesh(new THREE.SphereGeometry(.035,5,4),sparkMat);scene.add(p);sparks.push({mesh:p,phase:Math.random()*8})}
+// Unsettling details: hanging chains, warning beacons, and a distant Watcher silhouette.
+const chainMat=mat(0x34383d,.65,.75);
+for(const x of [-15,-9,9,15])for(const z of [-5,-17,-29]){
+  const chain=cyl(x,5.5,z,.055,.055,2.5,chainMat,7);chain.rotation.z=.08*Math.sin(z+x);
+  const hook=cyl(x,4.2,z,.12,.12,.22,brass,8);hook.rotation.z=Math.PI/2;
+}
+const alarmLights=[];
+for(const x of [-16,16])for(const z of [9,-15,-33]){
+  const housing=box(x*.96,5.55,z,.55,.45,.55,rust);
+  const bulb=sphere(x*.96,5.25,z,.22,glow);
+  const lamp=point(x*.96,5.1,z,0xff3c19,0,9);
+  alarmLights.push({bulb,lamp,phase:Math.random()*5});
+}
+const watcher=new THREE.Group();watcher.position.set(8.5,0,-29.5);scene.add(watcher);
+const shadowMat=new THREE.MeshStandardMaterial({color:0x050609,roughness:1,transparent:true,opacity:0,side:THREE.DoubleSide});
+const hood=new THREE.Mesh(new THREE.SphereGeometry(.48,12,10),shadowMat);hood.position.y=2.85;hood.scale.set(.78,1.18,.72);watcher.add(hood);
+const cloak=new THREE.Mesh(new THREE.ConeGeometry(.92,2.5,9,1,true),shadowMat);cloak.position.y=1.25;cloak.rotation.x=Math.PI;watcher.add(cloak);
+const shoulders=new THREE.Mesh(new THREE.CylinderGeometry(.28,.68,.75,9),shadowMat);shoulders.position.y=2.1;watcher.add(shoulders);
+for(const side of [-1,1]){const arm=new THREE.Mesh(new THREE.CylinderGeometry(.12,.2,1.5,7),shadowMat);arm.position.set(side*.62,1.65,0);arm.rotation.z=side*-.28;watcher.add(arm);}
+const eyeMat=new THREE.MeshBasicMaterial({color:0xff6a34,transparent:true,opacity:0});
+for(const x of [-.16,.16]){const eye=new THREE.Mesh(new THREE.SphereGeometry(.055,8,6),eyeMat);eye.position.set(x,2.9,-.35);watcher.add(eye);}
+const watcherGlow=point(8.5,2.7,-29.2,0xff552a,0,5);
+
 function toast(s){const el=document.querySelector('#toast');el.textContent=s;el.classList.add('show');clearTimeout(toast.timer);toast.timer=setTimeout(()=>el.classList.remove('show'),2400)}
 function closest(){let best=null,dist=1e9;for(const it of interactables){const d=it.position.distanceTo(camera.position);if(d<dist){best=it;dist=d}}return dist<4.5?best:null}
 function updateHud(){document.querySelector('#count').textContent='VALVES '+relieved+' / 3';document.querySelector('#progress').style.width=(relieved/3*100)+'%';if(relieved===3)document.querySelector('#objective').textContent='SHUT DOWN THE FURNACE';}
@@ -122,7 +145,7 @@ function hitsSolid(x,z){
   return false;
 }
 function move(dt){if(!active||finished)return;let f=(keys.KeyW||keys.ArrowUp?1:0)-(keys.KeyS||keys.ArrowDown?1:0)-touch.y,s=(keys.KeyD||keys.ArrowRight?1:0)-(keys.KeyA||keys.ArrowLeft?1:0)+touch.x;if(!f&&!s)return;const len=Math.hypot(f,s)||1;f/=len;s/=len;const v=new THREE.Vector3(-Math.sin(yaw)*f+Math.cos(yaw)*s,0,-Math.cos(yaw)*f-Math.sin(yaw)*s);const step=dt*6.1,oldX=camera.position.x,oldZ=camera.position.z,nextX=oldX+v.x*step,nextZ=oldZ+v.z*step;if(!hitsSolid(nextX,oldZ))camera.position.x=nextX;if(!hitsSolid(camera.position.x,nextZ))camera.position.z=nextZ;camera.position.y=1.7+Math.sin(clock.elapsedTime*9)*.025}
-function frame(){requestAnimationFrame(frame);const dt=Math.min(clock.getDelta(),.04),t=clock.elapsedTime;move(dt);beacons.forEach((b,i)=>{b.ring.rotation.y+=dt*(i%2?-.9:.9);b.crown.rotation.y+=dt*1.1;const pulse=.78+Math.sin(t*2.4+i)*.18;b.group.scale.setScalar(pulse);});valves.forEach(v=>{if(v.used){v.beacon.shaft.material.opacity=.025;v.beacon.light.intensity=.15;v.beacon.ring.material.color.set(0x6a7780);v.beacon.crown.material.color.set(0x6a7780);}});consoleBeacon.group.visible=relieved===3&&!consoleOn;exitBeacon.group.visible=consoleOn;wheels.forEach((w,i)=>{w.rotation.x+=dt*(consoleOn?-.2:.55)});pistons.forEach((p,i)=>{p.position.y=2.5+Math.sin(t*2.5+i)*.4*(consoleOn?.08:1)});steam.forEach(s=>{s.mesh.position.y+=dt*(.3+Math.sin(t+s.phase)*.15);s.mesh.position.x+=Math.sin(t*.5+s.phase)*dt*.1;if(s.mesh.position.y>7)s.mesh.position.y=.3});sparks.forEach(s=>{const q=(t+s.phase)%1.8;s.mesh.position.set(Math.sin(s.phase*7+t*1.2)*.6,1+q*2,-35+Math.cos(s.phase*3)*.8);s.mesh.visible=!consoleOn&&q<.8});coreLight.intensity=consoleOn?1.1:6.5+Math.sin(t*7)*.6;if(active&&!finished){camera.rotation.order='YXZ';camera.rotation.y=yaw;camera.rotation.x=pitch;const it=closest();document.querySelector('#use').textContent=it?'INTERACT · '+(it.type==='valve'?'TURN VALVE':it.type==='console'?'SHUT DOWN':'EXIT'):'INTERACT'}renderer.render(scene,camera)}
+function frame(){requestAnimationFrame(frame);const dt=Math.min(clock.getDelta(),.04),t=clock.elapsedTime;move(dt);workLights.forEach((w,i)=>{const flicker=(i%5===2&&Math.sin(t*5+w.phase)>.94)?0.22:1;w.lamp.intensity=w.base*flicker;});alarmLights.forEach(a=>{const pulse=Math.max(0,Math.sin(t*2.1+a.phase));a.lamp.intensity=pulse>0.78?2.8:0;a.bulb.material=glow;a.bulb.scale.setScalar(pulse>0.78?1.1:.7);});const apparition=Math.pow(Math.max(0,Math.sin(t*.19-1.2)),3);shadowMat.opacity=apparition*.78;eyeMat.opacity=apparition*.9;watcher.position.x=8.5+Math.sin(t*.22)*.35;watcher.rotation.y=Math.sin(t*.13)*.12;watcherGlow.intensity=apparition*1.4;beacons.forEach((b,i)=>{b.ring.rotation.y+=dt*(i%2?-.9:.9);b.crown.rotation.y+=dt*1.1;const pulse=.78+Math.sin(t*2.4+i)*.18;b.group.scale.setScalar(pulse);});valves.forEach(v=>{if(v.used){v.beacon.shaft.material.opacity=.025;v.beacon.light.intensity=.15;v.beacon.ring.material.color.set(0x6a7780);v.beacon.crown.material.color.set(0x6a7780);}});consoleBeacon.group.visible=relieved===3&&!consoleOn;exitBeacon.group.visible=consoleOn;wheels.forEach((w,i)=>{w.rotation.x+=dt*(consoleOn?-.2:.55)});pistons.forEach((p,i)=>{p.position.y=2.5+Math.sin(t*2.5+i)*.4*(consoleOn?.08:1)});steam.forEach(s=>{s.mesh.position.y+=dt*(.3+Math.sin(t+s.phase)*.15);s.mesh.position.x+=Math.sin(t*.5+s.phase)*dt*.1;if(s.mesh.position.y>7)s.mesh.position.y=.3});sparks.forEach(s=>{const q=(t+s.phase)%1.8;s.mesh.position.set(Math.sin(s.phase*7+t*1.2)*.6,1+q*2,-35+Math.cos(s.phase*3)*.8);s.mesh.visible=!consoleOn&&q<.8});coreLight.intensity=consoleOn?1.1:6.5+Math.sin(t*7)*.6;if(active&&!finished){camera.rotation.order='YXZ';camera.rotation.y=yaw;camera.rotation.x=pitch;const it=closest();document.querySelector('#use').textContent=it?'INTERACT · '+(it.type==='valve'?'TURN VALVE':it.type==='console'?'SHUT DOWN':'EXIT'):'INTERACT'}renderer.render(scene,camera)}
 frame();
 document.querySelector('#enter').addEventListener('click',()=>{document.querySelector('#start').hidden=true;active=true});
 document.querySelector('#use').addEventListener('click',interact);document.querySelector('#again').addEventListener('click',reset);
