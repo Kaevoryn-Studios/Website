@@ -11,6 +11,9 @@
 <div class="bottom"><div class="pad" id="joy"><div class="stick" id="stick"></div></div><div class="controls"><button id="act">EXAMINE / OPEN</button><button id="help">CONTROLS</button></div></div>
 <div class="screen" id="start"><div class="card"><p class="eyebrow">KAEVORYN AFTERDARK · IMMERSIVE HAUNTED ESTATE</p><h1>THE<br>HOLLOW CROWN</h1><p>A forgotten Victorian mansion where the portraits watch, the ballroom remembers its dancers, and locked doors conceal rooms the house would rather keep buried.</p><p class="small">Explore four levels, discover secret chambers, collect three keys and memories, meet the spirits, and uncover the Heart Below. Move with the joystick or WASD. Drag the scene to look. Tap EXAMINE near objects and doors.</p><button id="enter" type="button" onclick="if(window.__hollowStart){window.__hollowStart()}else{window.__hollowStartPending=true}">ENTER THE MANSION</button></div></div>
 <div class="screen" id="ending" hidden><div class="card"><p class="eyebrow">THE HOUSE HAS CHOSEN TO REMEMBER YOU</p><h1>THE CROWN<br>IS YOURS.</h1><p>The Heart Below has awakened. The Hollow Crown is no longer empty.</p><button id="again">EXPLORE AGAIN</button><p><a href="park-life.html?park=afterdark" style="color:#e2b77f">RETURN TO AFTERDARK</a></p></div></div>
+<script>
+(()=>{const b=document.getElementById('enter');if(!b)return;b.style.pointerEvents='auto';b.style.position='relative';b.style.zIndex='2';b.addEventListener('click',()=>{window.__hollowStartPending=true;b.textContent='OPENING THE MANSION…';const p=b.parentElement.querySelector('.small');if(p)p.textContent='The front doors are unlocking…';if(typeof window.__hollowStart==='function')window.__hollowStart()},{passive:true});})();
+</script>
 <script type="module">
 const $=s=>document.querySelector(s);
 try{
