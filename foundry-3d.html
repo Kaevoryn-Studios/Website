@@ -17,7 +17,7 @@
 <script type="module">
 const $=s=>document.querySelector(s);
 try{
-const loadThree=url=>Promise.race([import(url),new Promise((_,reject)=>setTimeout(()=>reject(new Error('3D engine request timed out: '+url)),9000))]);let THREE;try{THREE=await loadThree('https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js')}catch(firstLoadError){console.warn('Primary 3D engine host failed or timed out; trying backup.',firstLoadError);THREE=await loadThree('https://unpkg.com/three@0.160.0/build/three.module.js')}
+const THREE=await import('./vendor/three.module.min.js');
 const renderer=new THREE.WebGLRenderer({canvas:$('#world'),antialias:true,powerPreference:'low-power'});renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.4));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.35;
 const scene=new THREE.Scene();scene.background=new THREE.Color(0x29252a);scene.fog=new THREE.FogExp2(0x29252a,.0023);
 const camera=new THREE.PerspectiveCamera(67,innerWidth/innerHeight,.1,180);
