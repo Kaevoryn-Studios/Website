@@ -20,7 +20,22 @@ const floors=[
 {name:'SECOND FLOOR · THE ATTIC',chapter:'ABOVE THE CEILING',desc:'The nursery, servants’ rooms and the old family attic.',wall:'#494034',floor:'#40362c',ceiling:'#302a23'},
 {name:'LOWER LEVEL · THE DEEP BASEMENT',chapter:'BELOW THE FOUNDATIONS',desc:'The boiler rooms, wine cellar and the sealed Heart Chamber.',wall:'#30343a',floor:'#292b2e',ceiling:'#25272b'}
 ];
-function makeMap(){const a=Array.from({length:GRID},(_,y)=>Array.from({length:GRID},(_,x)=>(x===0||y===0||x===GRID-1||y===GRID-1)?'#':'.'));for(let y=3;y<21;y++){if(![4,10,11,12,19].includes(y)){a[y][7]='#';a[y][16]='#'}}for(let x=2;x<22;x++){if(![4,11,12,19].includes(x)){a[7][x]='#';a[16][x]='#'}};a[11][12]='.';a[12][12]='.';a[13][12]='.';return a}
+function makeMap(){
+ const a=Array.from({length:GRID},(_,y)=>Array.from({length:GRID},(_,x)=>(x===0||y===0||x===GRID-1||y===GRID-1)?'#':'.'));
+ // A broad central gallery forms the mansion's grand axis; the side wings open into suites and galleries.
+ for(let y=2;y<22;y++){a[y][5]='#';a[y][18]='#'}
+ for(let y of [4,5,6,11,12,13,18,19,20]){a[y][5]='.';a[y][18]='.'}
+ // Cross-walls create separate rooms in each wing, with generous door openings.
+ for(let x=1;x<5;x++){a[8][x]='#';a[16][x]='#'}
+ for(let x=19;x<23;x++){a[8][x]='#';a[16][x]='#'}
+ for(let x of [2,3,21,22]){a[8][x]='.';a[16][x]='.'}
+ // The rear gallery and grand entrance remain open and aligned with the central hall.
+ for(let x=6;x<18;x++){a[3][x]='#';a[21][x]='#'}
+ for(let x=10;x<=14;x++){a[3][x]='.';a[21][x]='.'}
+ // The central stairwell is a wide open architectural feature, not a blocked tile.
+ for(let y=10;y<=15;y++)a[y][12]='.';
+ return a
+}
 const maps=Array.from({length:4},makeMap);
 const objects=[
 {x:5.2,y:4.5,f:0,t:'portrait',n:'The Matriarch',d:'Her eyes follow you. The paint around her mouth is cracked.'},{x:18.8,y:4.5,f:0,t:'portrait',n:'The Patriarch',d:'His painted hand points toward the grand staircase.'},{x:5.2,y:19.2,f:0,t:'portrait',n:'The Lost Heir',d:'A child has scratched a tiny crown into the frame.'},{x:18.8,y:19.2,f:0,t:'portrait',n:'The Bride',d:'Her veil stirs although the air is still.'},
@@ -35,7 +50,7 @@ let map=maps[0];
 function resize(){dpr=Math.min(devicePixelRatio||1,1.5);W=innerWidth;H=innerHeight;canvas.width=Math.round(W*dpr);canvas.height=Math.round(H*dpr);canvas.style.width=W+'px';canvas.style.height=H+'px';ctx.setTransform(dpr,0,0,dpr,0,0)}
 addEventListener('resize',resize);addEventListener('orientationchange',()=>setTimeout(resize,100));resize();
 function solid(x,y){const c=map[Math.floor(y)]?.[Math.floor(x)];return !c||c==='#'}
-function setFloor(n){level=(n+4)%4;map=maps[level];player={x:12.5,y:15};angle=-Math.PI/2;pitch=0;$('#floorTag').textContent=floors[level].name;$('#chapter').textContent=floors[level].chapter;$('#objective').textContent=floors[level].desc;$('#state').textContent='EXPLORING'}
+function setFloor(n){level=(n+4)%4;map=maps[level];player={x:12.5,y:18.5};angle=-Math.PI/2;pitch=0;$('#floorTag').textContent=floors[level].name;$('#chapter').textContent=floors[level].chapter;$('#objective').textContent=floors[level].desc;$('#state').textContent='EXPLORING'}
 function rgb(h,k){const c=[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)];return 'rgb('+c.map(v=>Math.max(0,Math.min(255,Math.round(v*k)))).join(',')+')'}
 function render(ts){
  const horizon=H*.49+pitch*H*.22,proj=H*.5/Math.tan(FOV*.5),fc=floors[level];ctx.fillStyle='#09090e';ctx.fillRect(0,0,W,H);
@@ -80,7 +95,7 @@ function counts(){$('#keys').textContent=keyCount+' / 3 keys · '+memoryCount+' 
 function interact(){if(!active)return;const o=nearest();if(!o){toast('Move closer to the staircase or something that catches your eye.');return}if(o.t==='stairs'){setFloor(level+1);toast('You climb the connected staircase: '+floors[level].name+'.');return}if(o.t==='key'){o.taken=true;keyCount++;counts();toast(o.n+' collected.');return}if(o.t==='memory'){o.taken=true;memoryCount++;counts();toast(o.n+' · '+o.d);return}if(o.t==='spirit'){o.source.cleared=true;toast('The spirit dissolves into the dust.');return}if(o.t==='door'){if(keyCount<3){toast('Three locks remain. Find all three keys throughout the house.');return}$('#ending').hidden=false;active=false;return}toast(o.n+': '+o.d)}
 function move(dt){let f=(down.KeyW||down.ArrowUp?1:0)-(down.KeyS||down.ArrowDown?1:0)-joy.y,s=(down.KeyD||down.ArrowRight?1:0)-(down.KeyA||down.ArrowLeft?1:0)+joy.x,n=Math.hypot(f,s);if(!n)return;f/=n;s/=n;const v=dt*2.65,dx=(Math.cos(angle)*f-Math.sin(angle)*s)*v,dy=(Math.sin(angle)*f+Math.cos(angle)*s)*v,nx=player.x+dx,ny=player.y+dy;if(!solid(nx,player.y)&&!solid(nx,player.y+.18)&&!solid(nx,player.y-.18))player.x=nx;if(!solid(player.x,ny)&&!solid(player.x+.18,ny)&&!solid(player.x-.18,ny))player.y=ny}
 function loop(ts){if(!active)return;const dt=Math.min(.045,(ts-lastFrame)/1000||0);lastFrame=ts;move(dt);render(ts);requestAnimationFrame(loop)}
-function start(){if(active)return;$('#start').hidden=true;$('#ending').hidden=true;active=true;keyCount=0;memoryCount=0;objects.forEach(o=>{o.taken=false;o.open=false});spirits.forEach(s=>s.cleared=false);counts();setFloor(0);player={x:12.5,y:21.2};angle=-Math.PI/2;$('#objective').textContent='The front doors close behind you. Find the staircase.';$('#state').textContent='EXPLORING';lastFrame=performance.now();requestAnimationFrame(loop);toast('THE FRONT DOORS CLOSE BEHIND YOU')}
+function start(){if(active)return;$('#start').hidden=true;$('#ending').hidden=true;active=true;keyCount=0;memoryCount=0;objects.forEach(o=>{o.taken=false;o.open=false});spirits.forEach(s=>s.cleared=false);counts();setFloor(0);player={x:12.5,y:19.8};angle=-Math.PI/2;$('#objective').textContent='The front doors close behind you. Find the staircase.';$('#state').textContent='EXPLORING';lastFrame=performance.now();requestAnimationFrame(loop);toast('THE FRONT DOORS CLOSE BEHIND YOU')}
 function soundOn(){try{audio=audio||new(window.AudioContext||window.webkitAudioContext)();if(audio.state==='suspended')audio.resume();if(hum)return;const osc=audio.createOscillator(),gain=audio.createGain(),filter=audio.createBiquadFilter();osc.type='sine';osc.frequency.value=48;filter.type='lowpass';filter.frequency.value=115;gain.gain.value=.03;osc.connect(filter);filter.connect(gain);gain.connect(audio.destination);osc.start();hum={osc,gain};$('#sound').textContent='SOUND: ON'}catch(e){toast('Ambient sound is unavailable on this device.')}}
 function soundOff(){if(hum){hum.gain.gain.setTargetAtTime(0,audio.currentTime,.15);hum.osc.stop(audio.currentTime+.5);hum=null}$('#sound').textContent='SOUND: OFF'}
 $('#enter').addEventListener('click',e=>{e.preventDefault();start()});$('#act').addEventListener('click',interact);$('#help').addEventListener('click',()=>toast('Joystick or WASD: move · Drag the scene: look around · EXAMINE: inspect, collect and use the staircase.'));$('#sound').addEventListener('click',()=>hum?soundOff():soundOn());$('#again').addEventListener('click',start);
