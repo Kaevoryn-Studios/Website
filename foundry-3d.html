@@ -56,35 +56,48 @@ for(var side of [-1,1])for(var wz of [-10,-3,3]){cube(g,side*8,3.1,wz,1.2,2.1,.1
 // The front entrance is deliberately open; the doors swing from the frame when entered.
 wall(g,-7.4,2.2,8,7.2,4.4,.55,stone);wall(g,7.4,2.2,8,7.2,4.4,.55,stone);wall(g,0,4.15,8,2.4,.5,.55,stone,false);
 for(var px of [-2.6,2.6]){cyl(g,px,2.1,8.45,.2,.26,4.2,M.gold,16);cyl(g,px,4.25,8.45,.34,.34,.2,M.gold,16)}
-// New monumental Gothic entrance: thick walnut leaves, recessed pointed panels, iron bracing and aged-brass ring pulls.
+// Rebuilt monumental Gothic double doors: solid walnut leaves with true pointed-arch relief panels.
+function pointedPanel(parent,x,y,z,w,h,mat,depth){
+  var shape=new THREE.Shape();
+  shape.moveTo(-w/2,-h/2);
+  shape.lineTo(-w/2,h*.16);
+  shape.quadraticCurveTo(-w/2,h*.39,0,h/2);
+  shape.quadraticCurveTo(w/2,h*.39,w/2,h*.16);
+  shape.lineTo(w/2,-h/2);
+  shape.closePath();
+  var geo=new THREE.ExtrudeGeometry(shape,{depth:depth||.045,bevelEnabled:true,bevelSegments:2,steps:1,bevelSize:.018,bevelThickness:.018});
+  var mesh=new THREE.Mesh(geo,mat);mesh.position.set(x,y,z);mesh.castShadow=true;parent.add(mesh);return mesh;
+}
 function entranceLeaf(parent,cx){
-  var w=1.3,h=3.35,g=group(parent,cx,0,0);
-  cube(g,0,h/2,0,w,h,.3,material('#241811',.72),false);
-  cube(g,0,h/2,.18,w+.12,h+.12,.09,M.gold,false);
-  cube(g,0,h/2,.235,w-.16,h-.16,.055,material('#3a2418'),false);
-  // Two deep inset panels on each leaf, framed in carved-looking walnut and brass.
-  [-.78,.78].forEach(function(py){
-    var ph=1.22, pw=.86, z=.29;
-    cube(g,0,h/2+py, z,pw,ph,.07,M.gold,false);
-    cube(g,0,h/2+py, z+.045,pw-.13,ph-.13,.055,material('#1b1513'),false);
-    cube(g,0,h/2+py-.04,z+.08,pw-.25,ph-.28,.035,material('#503321'),false);
-    cube(g,0,h/2+py+ph/2-.08,z+.09,pw-.2,.07,.04,M.gold,false);
-    cube(g,0,h/2+py-ph/2+.08,z+.09,pw-.2,.07,.04,M.gold,false);
-    // A narrow pointed Gothic crest gives the upper panel a distinct silhouette.
-    var crest=new THREE.Mesh(new THREE.ConeGeometry(.32,.48,4),M.gold);
-    crest.position.set(0,h/2+py+ph*.22,z+.13);crest.rotation.y=Math.PI/4;g.add(crest);
+  var w=1.34,h=3.45,g=group(parent,cx,0,0);
+  // Heavy timber core and continuous outer brass edging.
+  cube(g,0,h/2,0,w,h,.34,material('#24150f',.68),false);
+  cube(g,0,h/2,.19,w+.12,h+.12,.09,M.gold,false);
+  cube(g,0,h/2,.245,w-.13,h-.13,.055,material('#382318',.7),false);
+  // Strong carved stiles and rails make each leaf read as a single solid door.
+  [-.56,.56].forEach(function(sx){cube(g,sx,h/2,.31,.12,h-.22,.12,M.oak,false)});
+  [.12,h-.12].forEach(function(yy){cube(g,0,yy,.31,w-.16,.14,.12,M.oak,false)});
+  // Two complete pointed Gothic panels, layered like deep hand-carved timber.
+  [-.79,.79].forEach(function(py){
+    pointedPanel(g,0,h/2+py,.325,.91,1.24,M.gold,.055);
+    pointedPanel(g,0,h/2+py,.39,.77,1.10,material('#1a1210',.78),.045);
+    pointedPanel(g,0,h/2+py-.035,.445,.61,.91,material('#503321',.62),.035);
+    // Raised central rib and small forged studs, attached directly to the panel.
+    cube(g,0,h/2+py-.02,.49,.045,.66,.035,M.gold,false);
+    [-.34,.34].forEach(function(yy){ball(g,0,h/2+py+yy,.49,.035,M.gold)});
   });
-  cube(g,0,h/2,.34,.1,h-.18,.07,M.gold,false);
-  // Forged iron cross-straps and a prominent old brass pull.
-  [-1,1].forEach(function(side){
-    var brace=cube(g,side*.39,h/2,.38,.055,h-.35,.055,M.iron,false);
-    brace.rotation.z=side*.035;
+  // Heavy black iron hinge straps and visible hinge barrels at the outer edge.
+  var outer=cx>0?-.57:.57;
+  [-1.12,0,1.12].forEach(function(yy){
+    cube(g,outer,h/2+yy,.39,.13,.075,.09,M.iron,false);
+    cyl(g,outer*1.04,h/2+yy,.02,.075,.075,.22,M.gold,12);
   });
-  var pull=group(g,cx<0?.48:-.48,h/2,.43);
-  var ring=new THREE.Mesh(new THREE.TorusGeometry(.13,.035,10,24),M.gold);
-  ring.position.set(0,-.12,0);pull.add(ring);
-  cyl(pull,0,.05,0,.075,.075,.08,M.gold,12);
-  ball(pull,0,.05,.05,.055,M.gold);
+  // Paired aged-brass ring handles sit close to the meeting stile.
+  var inner=cx>0?-.47:.47;
+  var pull=group(g,inner,h/2,.52);
+  var ring=new THREE.Mesh(new THREE.TorusGeometry(.14,.04,12,28),M.gold);
+  ring.position.set(0,-.13,0);pull.add(ring);
+  ball(pull,0,.045,.02,.075,M.gold);
   return g;
 }
 var leftHinge=group(g,-1.3,0,8.35),rightHinge=group(g,1.3,0,8.35);
