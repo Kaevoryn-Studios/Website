@@ -1,155 +1,75 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><meta name="theme-color" content="#09080d"><title>The Watcher's Foundry — Kaevoryn Afterdark</title>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><meta name="theme-color" content="#100b0c"><title>The Watcher's Foundry — Kaevoryn Afterdark</title>
 <style>
-*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#09080d;color:#f5eee8;font:15px/1.4 system-ui,Arial}#world{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none}.veil{position:fixed;inset:0;pointer-events:none;background:linear-gradient(180deg,#08080c88,transparent 23%,transparent 70%,#08080c99)}header{position:fixed;z-index:3;top:0;left:0;right:0;padding:13px 15px;display:flex;justify-content:space-between;pointer-events:none;font-size:10px;letter-spacing:.15em}header a{color:#fff;text-decoration:none;font-weight:900;pointer-events:auto}header span{color:#e5b78b}.hud{position:fixed;z-index:3;top:53px;left:12px;right:12px;display:flex;justify-content:space-between;gap:8px;pointer-events:none}.panel{background:#100f16df;border:1px solid #c59a6b66;border-radius:12px;padding:9px 12px;max-width:70vw;backdrop-filter:blur(8px)}.panel b{display:block;color:#e9c59d;font-size:10px;letter-spacing:.14em}.panel p{margin:3px 0 0;font-size:12px;color:#ddd1c8}.cross{position:fixed;z-index:2;left:50%;top:50%;width:10px;height:10px;border:1px solid #fff9;border-radius:50%;transform:translate(-50%,-50%);pointer-events:none}.bottom{position:fixed;z-index:4;left:0;right:0;bottom:0;padding:12px;display:flex;align-items:end;justify-content:space-between;pointer-events:none}.pad,.actions{pointer-events:auto}.pad{width:132px;height:132px;border:2px solid #e7d6c188;border-radius:50%;background:radial-gradient(circle,#51463ccc,#17141ddd);position:relative;touch-action:none}.pad:after{content:'MOVE';position:absolute;bottom:10px;left:0;right:0;text-align:center;font-size:9px;letter-spacing:.15em;font-weight:900}.stick{position:absolute;left:50%;top:50%;width:52px;height:52px;transform:translate(-50%,-50%);border-radius:50%;background:linear-gradient(145deg,#e3d4c0,#665b50);border:2px solid #fff9;pointer-events:none}.actions{display:flex;flex-direction:column;gap:7px;align-items:end}.actions button,.card button,.card a{border:1px solid #d5aa7c;background:#2d211d;color:white;border-radius:11px;min-height:48px;padding:0 16px;font-weight:900;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;touch-action:manipulation}.actions #use{min-width:145px;min-height:57px;background:#563321}.start,.ending{position:fixed;z-index:10;inset:0;padding:20px;display:grid;place-items:center;background:radial-gradient(ellipse at 50% 45%,#34251feF,#08070bf9 70%)}[hidden]{display:none!important}.card{width:min(100%,570px);padding:clamp(22px,5vw,40px);border:1px solid #d2a57488;border-radius:20px;background:#100e14f2;text-align:center;box-shadow:0 24px 90px #000c}.eyebrow{font-size:10px;letter-spacing:.22em;color:#e7b98c;font-weight:900}.card h1{font-size:clamp(34px,8vw,60px);line-height:.98;margin:13px 0}.card p{color:#ddd0c6}.small{font-size:11px!important;color:#bcb0a8!important}.toast{position:fixed;z-index:7;top:34%;left:50%;transform:translateX(-50%);max-width:88vw;padding:11px 16px;border:1px solid #d4a57588;border-radius:10px;background:#100e14f2;color:#f4d8b8;text-align:center;font-size:12px;opacity:0;pointer-events:none;transition:opacity .2s}.toast.show{opacity:1}
-@media(max-width:390px){.pad{width:112px;height:112px}.actions #use{min-width:126px}.panel p{font-size:11px}}
-@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#100b0c;color:#f4e9db;font:15px system-ui,Arial}#world{position:fixed;inset:0;width:100%;height:100%;touch-action:none}.shade{position:fixed;inset:0;pointer-events:none;background:linear-gradient(180deg,#08060866,transparent 25%,transparent 75%,#08060888)}header{position:fixed;z-index:3;top:0;left:0;right:0;padding:14px;display:flex;justify-content:space-between;font-size:10px;letter-spacing:.15em;pointer-events:none}header a{color:#fff;text-decoration:none;font-weight:900;pointer-events:auto}header span{color:#e9b77b}.hud{position:fixed;z-index:3;top:50px;left:12px;right:12px;display:flex;justify-content:space-between;gap:8px;pointer-events:none}.panel{padding:9px 12px;background:#100d0cdd;border:1px solid #b78b5c88;border-radius:11px;backdrop-filter:blur(7px)}.panel b{display:block;color:#e8bd88;font-size:10px;letter-spacing:.14em}.panel p{margin:3px 0 0;font-size:12px}.bottom{position:fixed;z-index:4;left:0;right:0;bottom:0;padding:12px;display:flex;justify-content:space-between;align-items:end;pointer-events:none}.pad,.actions{pointer-events:auto}.pad{width:120px;height:120px;border:2px solid #d8c3a488;border-radius:50%;background:#28201dcc;position:relative;touch-action:none}.pad:after{content:'MOVE';position:absolute;bottom:8px;left:0;right:0;text-align:center;font-size:9px;letter-spacing:.14em}.stick{position:absolute;left:50%;top:50%;width:48px;height:48px;transform:translate(-50%,-50%);border-radius:50%;background:linear-gradient(145deg,#e4d4b8,#74634e);border:2px solid #fff9;pointer-events:none}.actions{display:flex;flex-direction:column;gap:7px;align-items:end}.actions button,.card button,.card a{min-height:48px;padding:0 16px;border:1px solid #d2a16a;border-radius:10px;background:#422719;color:#fff;font-weight:900;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;touch-action:manipulation}.actions #use{min-width:140px;min-height:56px;background:#67401e}.cross{position:fixed;z-index:2;left:50%;top:50%;width:9px;height:9px;border:1px solid #fff9;border-radius:50%;transform:translate(-50%,-50%);pointer-events:none}.screen{position:fixed;z-index:10;inset:0;display:grid;place-items:center;padding:20px;background:radial-gradient(ellipse at center,#3b2618f2,#090709fa 70%)}[hidden]{display:none!important}.card{width:min(100%,560px);padding:clamp(22px,5vw,40px);background:#130f0ef2;border:1px solid #c49a6b99;border-radius:20px;text-align:center;box-shadow:0 24px 90px #000c}.eyebrow{font-size:10px;letter-spacing:.2em;color:#e5b77c;font-weight:900}.card h1{font-size:clamp(34px,8vw,58px);line-height:.98;margin:12px 0}.card p{color:#d9cbbd}.small{font-size:11px!important;color:#b9a99b!important}.toast{position:fixed;z-index:8;top:35%;left:50%;transform:translateX(-50%);max-width:88vw;padding:12px 16px;background:#120e0df2;border:1px solid #c99b68;border-radius:10px;text-align:center;opacity:0;pointer-events:none;transition:opacity .2s}.toast.show{opacity:1}@media(max-width:390px){.pad{width:108px;height:108px}.actions #use{min-width:125px}}
 </style></head><body>
-<canvas id="world" aria-label="Playable haunted hallway 3D attraction"></canvas><div class="veil"></div><header><a href="park-life.html?park=afterdark">KAEVORYN AFTERDARK</a><span>THE WATCHER'S FOUNDRY · HAUNTED WING</span></header>
-<div class="hud"><div class="panel"><b id="objective">THE DOORS ARE SEALED</b><p id="hint">Search the endless corridor. Find three old keys.</p></div><div class="panel" style="text-align:right"><b>FOUND KEYS</b><p id="keys">0 / 3</p></div></div><div class="cross"></div><div class="toast" id="toast"></div>
-<div class="bottom"><div class="pad" id="joystick"><div class="stick" id="stick"></div></div><div class="actions"><button id="use">INTERACT</button><button id="help">LOOK · DRAG</button></div></div>
-<div class="start" id="start"><div class="card"><p class="eyebrow">KAEVORYN AFTERDARK · A HAUNTED WALKTHROUGH</p><h1>THE WATCHER'S<br>FOUNDRY</h1><p>The corridor was sealed after the last guests vanished. The doors still lock from the inside. Portraits watch every step. Somewhere in the dark, a presence is waiting.</p><p class="small">Move with the joystick or WASD. Drag the scene to look. Find three keys, unlock the final door, and do not trust the paintings.</p><button id="enter">ENTER THE HALL</button></div></div>
-<div class="ending" id="ending" hidden><div class="card"><p class="eyebrow">THE LAST LOCK CLICKS OPEN</p><h1>YOU FOUND<br>THE WAY OUT.</h1><p>Behind you, the portraits have all turned their heads.</p><button id="again">RESTART THE WALK</button><a href="park-life.html?park=afterdark">RETURN TO AFTERDARK</a></div></div>
+<canvas id="world"></canvas><div class="shade"></div><header><a href="park-life.html?park=afterdark">KAEVORYN AFTERDARK</a><span>THE WATCHER'S FOUNDRY</span></header>
+<div class="hud"><div class="panel"><b id="objective">THE HEART HAS GONE COLD</b><p id="hint">Find the three furnace seals.</p></div><div class="panel" style="text-align:right"><b>FURNACE SEALS</b><p id="count">0 / 3</p></div></div><div class="cross"></div><div class="toast" id="toast"></div>
+<div class="bottom"><div class="pad" id="joy"><div class="stick" id="stick"></div></div><div class="actions"><button id="use">INTERACT</button><button id="look">HOW TO PLAY</button></div></div>
+<div class="screen" id="start"><div class="card"><p class="eyebrow">KAEVORYN AFTERDARK · IMMERSIVE 3D ATTRACTION</p><h1>THE WATCHER'S<br>FOUNDRY</h1><p>Deep beneath the abandoned manor, a colossal furnace once powered the impossible. Now its heart is silent. The foundry doors have sealed themselves—and something has started the machinery again.</p><p class="small">Explore a vast industrial chamber, search the side rooms for three brass seals, and restart the ancient furnace. Move with the joystick or WASD. Drag the scene to look.</p><button id="enter">DESCEND INTO THE FOUNDRY</button></div></div>
+<div class="screen" id="ending" hidden><div class="card"><p class="eyebrow">THE FURNACE AWAKENS</p><h1>THE HEART<br>BEATS AGAIN.</h1><p>The great machine roars to life. Somewhere above, every clock in the manor begins to strike.</p><button id="again">EXPLORE AGAIN</button><a href="park-life.html?park=afterdark">RETURN TO AFTERDARK</a></div></div>
 <script>
-const start=document.querySelector('#start'),toastEl=document.querySelector('#toast');
-function showToast(s){toastEl.textContent=s;toastEl.classList.add('show');clearTimeout(showToast.timer);showToast.timer=setTimeout(()=>toastEl.classList.remove('show'),2600)}
-document.querySelector('#enter').addEventListener('click',()=>{if(window.hallReady){start.hidden=true;window.hallStart?.()}else showToast('The old hall is still waking up. Try again in a moment.')});
-window.addEventListener('hall-ready',()=>{});
+const $=s=>document.querySelector(s),toast=s=>{ $('#toast').textContent=s;$('#toast').classList.add('show');clearTimeout(toast.timer);toast.timer=setTimeout(()=>$('#toast').classList.remove('show'),2600)};
+$('#enter').onclick=()=>{if(window.foundryReady){$('#start').hidden=true;window.startFoundry()}else toast('The foundry is still waking up. Try again in a moment.')};
 </script>
 <script type="module">
 try{
 const THREE=await import('https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js');
-const canvas=document.querySelector('#world'),renderer=new THREE.WebGLRenderer({canvas,antialias:true,powerPreference:'low-power'});
-renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.35));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.45;
-const scene=new THREE.Scene();scene.background=new THREE.Color(0x17131a);scene.fog=new THREE.FogExp2(0x17131a,.012);
-const camera=new THREE.PerspectiveCamera(72,innerWidth/innerHeight,.1,180);camera.position.set(0,1.65,7);
-const clock=new THREE.Clock(),keys={},touch={x:0,y:0};let active=false,yaw=0,pitch=0,drag=null,found=0,unlocked=false,won=false;
-const mat=(c,r=.8,m=0,e=0)=>new THREE.MeshStandardMaterial({color:c,roughness:r,metalness:m,emissive:e,emissiveIntensity:e?1:0});
-const plaster=mat(0x65534a),panel=mat(0x30272a),wood=mat(0x39251e,.72),darkWood=mat(0x211714),gold=mat(0x9d754b,.42,.65),brass=mat(0xb18b55,.35,.7),stone=mat(0x4c4544),wax=mat(0xe0cba7,.55),flameMat=new THREE.MeshBasicMaterial({color:0xffb45d}),eyeWhite=new THREE.MeshBasicMaterial({color:0xd9c7a8}),pupilMat=new THREE.MeshBasicMaterial({color:0x08070a});
-function box(x,y,z,w,h,d,m,cast=true){const o=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m);o.position.set(x,y,z);o.castShadow=cast;o.receiveShadow=true;scene.add(o);return o}
-function cyl(x,y,z,rt,rb,h,m,n=12){const o=new THREE.Mesh(new THREE.CylinderGeometry(rt,rb,h,n),m);o.position.set(x,y,z);o.castShadow=true;scene.add(o);return o}
-function light(x,y,z,color,intensity,dist){const l=new THREE.PointLight(color,intensity,dist,2);l.position.set(x,y,z);scene.add(l);return l}
-scene.add(new THREE.HemisphereLight(0xc8c0bb,0x201619,1.15));const moon=new THREE.DirectionalLight(0xc7b9aa,1.15);moon.position.set(-8,13,5);scene.add(moon);
-const sconces=[],candles=[],portraits=[],doors=[],items=[],solids=[];
-function addSolid(x,z,hx,hz){solids.push({x,z,hx,hz})}
-const length=142;
-box(0,-.25,-length/2+7,12,.5,length+14,stone,false);box(0,8,-length/2+7,12,.45,length+14,darkWood,false);
-box(-6,4,-length/2+7,.5,8,length+14,plaster);box(6,4,-length/2+7,.5,8,length+14,plaster);
-for(const side of [-1,1]){
-  box(side*5.65,4,-length/2+7,.16,7.7,length+12,panel,false);
-  for(let z=4;z>-length;z-=7){
-    box(side*5.52,4,z,.18,7.5,.22,gold,false);
-    box(side*5.48,.18,z,1,.35,.35,wood,false);
-  }
-}
-for(let z=4;z>-length;z-=10){
-  for(const side of [-1,1]){
-    const x=side*5.45;
-    const bracket=box(x-side*.28,5.05,z,.55,.16,.75,gold);bracket.rotation.z=side*.18;
-    const bulb=light(x-side*.48,5.4,z,0xffb76d,1.7,10);sconces.push({bulb,phase:Math.random()*10,base:1.7});
-    const flame=new THREE.Mesh(new THREE.ConeGeometry(.09,.3,7),flameMat);flame.position.set(x-side*.55,5.65,z);scene.add(flame);
-  }
-}
-// Repeating arches and ceiling ribs create the illusion of a corridor that never ends.
-for(let z=2;z>-length;z-=14){
-  for(const side of [-1,1]){
-    const p=new THREE.Vector3(side*5.55,7.5,z),q=new THREE.Vector3(side*5.55,3.2,z);
-    const rib=new THREE.Mesh(new THREE.CylinderGeometry(.12,.12,4.3,8),gold);rib.position.set(p.x,5.35,z);scene.add(rib);
-  }
-  const arch=new THREE.Mesh(new THREE.TorusGeometry(5.55,.13,8,28,Math.PI),gold);arch.position.set(0,5.8,z);arch.rotation.z=Math.PI;scene.add(arch);
-}
-// Portraits on both walls: the pupils rotate toward the player's position.
-function portrait(side,z,index){
- const x=side*5.34,group=new THREE.Group();group.position.set(x,3.65,z);group.rotation.y=side===1?-Math.PI/2:Math.PI/2;scene.add(group);
- box(0,0,-.09,1.75,2.35,.16,darkWood);box(0,0,.015,1.52,2.1,.08,gold);box(0,0,.07,1.35,1.92,.06,wood);
- const canvas2=document.createElement('canvas');canvas2.width=256;canvas2.height=384;const ctx=canvas2.getContext('2d');
- const grad=ctx.createLinearGradient(0,0,256,384);grad.addColorStop(0,'#5a463d');grad.addColorStop(1,'#17171b');ctx.fillStyle=grad;ctx.fillRect(0,0,256,384);
- ctx.fillStyle=['#b9a18a','#8b817b','#c4b49c'][index%3];ctx.beginPath();ctx.ellipse(128,145,61,82,0,0,Math.PI*2);ctx.fill();
- ctx.fillStyle='#20191a';ctx.beginPath();ctx.ellipse(128,265,90,100,0,0,Math.PI*2);ctx.fill();
- ctx.fillStyle='#2a1b17';ctx.beginPath();ctx.arc(128,104,67,Math.PI,0);ctx.fill();
- const tex=new THREE.CanvasTexture(canvas2);tex.colorSpace=THREE.SRGBColorSpace;
- const image=new THREE.Mesh(new THREE.PlaneGeometry(1.28,1.84),new THREE.MeshBasicMaterial({map:tex}));image.position.z=.12;group.add(image);
- const eyes=[];
- for(const ex of [-.22,.22]){const white=new THREE.Mesh(new THREE.SphereGeometry(.075,10,8),eyeWhite);white.position.set(ex,.12,.18);group.add(white);const pupil=new THREE.Mesh(new THREE.SphereGeometry(.035,8,7),pupilMat);pupil.position.set(ex,.12,.245);group.add(pupil);eyes.push({pupil,ex});}
- portraits.push({group,eyes,side,z});
-}
-let pi=0;for(let z=-5;z>-length+12;z-=14){portrait(-1,z,pi++);portrait(1,z-6,pi++);}
-function door(side,z,index,final=false){
- const x=side*5.32,group=new THREE.Group();group.position.set(x,0,z);group.rotation.y=side===1?-Math.PI/2:Math.PI/2;scene.add(group);
- const frame=new THREE.Mesh(new THREE.BoxGeometry(2.65,5.3,.35),gold);frame.position.y=2.65;group.add(frame);
- const slab=new THREE.Mesh(new THREE.BoxGeometry(2.35,5,.25),wood);slab.position.set(0,2.5,.22);slab.castShadow=true;group.add(slab);
- for(let y=.7;y<4.6;y+=.65){const panelBox=new THREE.Mesh(new THREE.BoxGeometry(1.75,.12,.12),darkWood);panelBox.position.set(0,y,.38);group.add(panelBox)}
- const knob=new THREE.Mesh(new THREE.SphereGeometry(.11,10,8),brass);knob.position.set(.75,2.45,.43);group.add(knob);
- const keyhole=new THREE.Mesh(new THREE.CircleGeometry(.085,12),pupilMat);keyhole.position.set(.75,2.18,.44);group.add(keyhole);
- const label=final?'THE LAST DOOR':'ROOM '+String(index+1).padStart(2,'0');
- const item={type:final?'finalDoor':'door',position:new THREE.Vector3(x,1.5,z),group,slab,locked:true,final,index,label};doors.push(item);items.push(item);group.userData.baseRotation=group.rotation.y;
-}
-let di=0;for(let z=-12;z>-length+16;z-=18){door(-1,z,di++);door(1,z-8,di++);}
-// A true end-of-hall blast door, wider than the corridor and physically blocking the way.
-{
- const z=-length+9,group=new THREE.Group();group.position.set(0,0,z);scene.add(group);
- const frame=new THREE.Mesh(new THREE.BoxGeometry(10.4,7.2,.42),gold);frame.position.y=3.6;group.add(frame);
- const slab=new THREE.Mesh(new THREE.BoxGeometry(9.7,6.8,.3),wood);slab.position.set(0,3.4,.25);slab.castShadow=true;group.add(slab);
- for(let x=-3.6;x<=3.6;x+=1.2){const rib=new THREE.Mesh(new THREE.BoxGeometry(.12,6.1,.12),darkWood);rib.position.set(x,3.4,.44);group.add(rib)}
- const lock=new THREE.Mesh(new THREE.TorusGeometry(.32,.09,8,18),brass);lock.position.set(0,3.2,.5);group.add(lock);
- const item={type:'finalDoor',position:new THREE.Vector3(0,1.5,z+2.1),group,slab,locked:true,final:true,index:99,label:'THE LAST DOOR'};
- doors.push(item);items.push(item);group.userData.baseRotation=0;addSolid(0,z,5.2,.5);
-}
-// Three antique keys placed in pools of candlelight.
-function keyPickup(x,z,index){
- const g=new THREE.Group();g.position.set(x,.9,z);scene.add(g);
- const ring=new THREE.Mesh(new THREE.TorusGeometry(.22,.055,8,16),brass);ring.position.y=.35;g.add(ring);
- const stem=cyl(0,.03,0,.055,.055,.62,brass,8);stem.rotation.z=Math.PI/2;g.add(stem);
- for(let n=0;n<2;n++){const tooth=box(.2+n*.13,-.13,0,.08,.16,.09,brass);g.add(tooth)}
- const glow=light(x,1.4,z,0xffc16d,1.3,5);items.push({type:'key',position:new THREE.Vector3(x,1,z),group:g,glow,index,taken:false});
-}
-keyPickup(-2.8,-25,0);keyPickup(2.8,-69,1);keyPickup(-2.8,-108,2);
-// Floating candles drift gently above the floor, each with a soft real-time flame glow.
-for(let i=0;i<26;i++){
- const z=1-i*5.1,x=(i%2?1:-1)*(1.4+(i%4)*.62),g=new THREE.Group();g.position.set(x,2.8+(i%3)*.55,z);scene.add(g);
- const body=new THREE.Mesh(new THREE.CylinderGeometry(.13,.16,.62,10),wax);g.add(body);
- const flame=new THREE.Mesh(new THREE.SphereGeometry(.105,9,8),flameMat);flame.position.y=.39;flame.scale.set(.7,1.5,.7);g.add(flame);
- const halo=light(x,g.position.y+.45,z,0xffa94f,.75,5);candles.push({g,flame,halo,phase:i*.71,baseY:g.position.y});
-}
-// Floor runner, cracked tiles and scattered debris.
-const runner=mat(0x34252b);box(0,.025,-length/2+7,3.3,.05,length,runner,false);
-for(let z=0;z>-length;z-=3.5){for(const side of [-1,1]){const tile=box(side*4.35,.015,z,1.4,.035,2.8,mat(0x393234),false);tile.rotation.y=(Math.random()-.5)*.03;}}
-for(let i=0;i<45;i++){const x=(Math.random()-.5)*8,z=-Math.random()*length;const debris=box(x,.12,z,.18+Math.random()*.4,.18,.18+Math.random()*.4,stone);debris.rotation.y=Math.random()*3;}
-// End door and an ominous watcher, kept distant and partially obscured by fog.
-const endGlow=light(0,4,-length+7,0xff9b56,2.2,18);
-const watcher=new THREE.Group();watcher.position.set(0,0,-length+22);scene.add(watcher);
-const wbody=new THREE.Mesh(new THREE.ConeGeometry(.9,3.4,8),new THREE.MeshStandardMaterial({color:0x111016,transparent:true,opacity:.72,roughness:1}));wbody.position.y=1.8;watcher.add(wbody);
-const hood=new THREE.Mesh(new THREE.SphereGeometry(.48,12,10),mat(0x09090e));hood.position.y=3.55;watcher.add(hood);
-for(const x of [-.15,.15]){const e=new THREE.Mesh(new THREE.SphereGeometry(.045,8,7),new THREE.MeshBasicMaterial({color:0xb84c35}));e.position.set(x,3.58,.42);watcher.add(e)}
-function nearest(){let best=null,d=1e9;for(const it of items){if(it.taken)continue;const q=it.position.distanceTo(camera.position);if(q<d){d=q;best=it}}return d<3.6?best:null}
-function message(s){showToast(s)}
-function interact(){
- if(!active||won)return;const it=nearest();if(!it){message('Move closer. Listen for the lock or look for a glint.');return}
- if(it.type==='key'){it.taken=true;it.group.visible=false;it.glow.intensity=0;found++;document.querySelector('#keys').textContent=found+' / 3';document.querySelector('#objective').textContent=found===3?'THE LAST DOOR AWAITS':'THE HALL KEEPS ITS SECRETS';message(['An old brass key.','Another key, warm to the touch.','The final key. The last lock is near.'][found-1]);return}
- if(it.type==='door'){message('LOCKED. This door will not open.');it.slab.rotation.y=.025;return}
- if(it.type==='finalDoor'){if(found<3){message('THREE KEYS ARE REQUIRED. The lock will not turn.');return}it.locked=false;it.group.rotation.y+=.9;message('The final lock gives way.');won=true;active=false;document.querySelector('#ending').hidden=false;}
-}
-function updateHUD(){document.querySelector('#keys').textContent=found+' / 3'}
-function collision(x,z){const r=.42;if(x<-5.15||x>5.15||z>6.2||z<-length+1)return true;for(const b of solids){const nx=Math.max(b.x-b.hx,Math.min(x,b.x+b.hx)),nz=Math.max(b.z-b.hz,Math.min(z,b.z+b.hz));if((x-nx)**2+(z-nz)**2<r*r)return true;}return false}
-function move(dt){if(!active)return;let f=(keys.KeyW||keys.ArrowUp?1:0)-(keys.KeyS||keys.ArrowDown?1:0)-touch.y,s=(keys.KeyD||keys.ArrowRight?1:0)-(keys.KeyA||keys.ArrowLeft?1:0)+touch.x;if(!f&&!s)return;const len=Math.hypot(f,s)||1;f/=len;s/=len;const v=new THREE.Vector3(-Math.sin(yaw)*f+Math.cos(yaw)*s,0,-Math.cos(yaw)*f-Math.sin(yaw)*s);const step=dt*4.6,nx=camera.position.x+v.x*step,nz=camera.position.z+v.z*step;if(!collision(nx,camera.position.z))camera.position.x=nx;if(!collision(camera.position.x,nz))camera.position.z=nz}
-function reset(){found=0;won=false;active=true;camera.position.set(0,1.65,7);yaw=0;pitch=0;items.forEach(it=>{it.taken=false;if(it.type==='key'){it.group.visible=true;it.glow.intensity=1.3}});doors.forEach(d=>{d.group.rotation.y=d.group.userData.baseRotation??0;d.locked=true});document.querySelector('#ending').hidden=true;document.querySelector('#objective').textContent='THE DOORS ARE SEALED';updateHUD()}
-function frame(){requestAnimationFrame(frame);const dt=Math.min(clock.getDelta(),.04),t=clock.elapsedTime;move(dt);
- sconces.forEach((s,i)=>{const flick=(Math.sin(t*9+s.phase)>.91||Math.sin(t*21+s.phase)>.985)?.12:1;s.bulb.intensity=s.base*flick;});
- candles.forEach(c=>{c.g.position.y=c.baseY+Math.sin(t*1.2+c.phase)*.22;c.g.position.x+=Math.sin(t*.5+c.phase)*dt*.08;c.halo.intensity=.55+Math.sin(t*7+c.phase)*.17;c.flame.scale.y=1.35+Math.sin(t*11+c.phase)*.28;});
- portraits.forEach(p=>{const local= p.group.worldToLocal(camera.position.clone());const tx=THREE.MathUtils.clamp(local.x*.13,-.09,.09);p.eyes.forEach(e=>{e.pupil.position.x=e.ex+tx;e.pupil.position.y=.12+THREE.MathUtils.clamp((local.y-3.6)*.012,-.04,.04)})});
- watcher.position.x=Math.sin(t*.22)*.55;watcher.visible=camera.position.z<-85;
- if(active){camera.rotation.order='YXZ';camera.rotation.y=yaw;camera.rotation.x=pitch;const it=nearest();document.querySelector('#use').textContent=it?(it.type==='key'?'TAKE KEY':it.type==='finalDoor'?'UNLOCK DOOR':'TRY DOOR'):'INTERACT';}
- renderer.render(scene,camera);
-}
-frame();
-window.hallReady=true;window.hallStart=()=>{active=true};if(start.hidden)active=true;
-document.querySelector('#use').addEventListener('click',interact);document.querySelector('#again').addEventListener('click',reset);
-const joy=document.querySelector('#joystick'),stick=document.querySelector('#stick');let jp=null;
-function setJoy(e){const r=joy.getBoundingClientRect(),dx=e.clientX-r.left-r.width/2,dy=e.clientY-r.top-r.height/2,lim=38,len=Math.hypot(dx,dy)||1,k=Math.min(1,lim/len),x=dx*k,y=dy*k;touch.x=x/lim;touch.y=y/lim;stick.style.left='calc(50% + '+x+'px)';stick.style.top='calc(50% + '+y+'px)'}
-joy.addEventListener('pointerdown',e=>{jp=e.pointerId;joy.setPointerCapture(e.pointerId);setJoy(e)});joy.addEventListener('pointermove',e=>{if(jp===e.pointerId)setJoy(e)});function release(e){if(jp!==e.pointerId)return;jp=null;touch.x=touch.y=0;stick.style.left=stick.style.top='50%'}joy.addEventListener('pointerup',release);joy.addEventListener('pointercancel',release);
-addEventListener('keydown',e=>{keys[e.code]=true;if(e.code==='KeyE'||e.code==='Space'){e.preventDefault();interact()}});addEventListener('keyup',e=>keys[e.code]=false);
-canvas.addEventListener('pointerdown',e=>{drag={x:e.clientX,y:e.clientY};canvas.setPointerCapture(e.pointerId)});canvas.addEventListener('pointermove',e=>{if(!drag||!active)return;const dx=e.clientX-drag.x,dy=e.clientY-drag.y;yaw-=dx*.004;pitch=THREE.MathUtils.clamp(pitch-dy*.003,-.58,.58);drag={x:e.clientX,y:e.clientY}});canvas.addEventListener('pointerup',()=>drag=null);canvas.addEventListener('pointercancel',()=>drag=null);
-document.querySelector('#help').addEventListener('click',()=>message('Move with the joystick. Drag the scene to look. Tap INTERACT near doors or keys.'));
+const canvas=$('#world'),renderer=new THREE.WebGLRenderer({canvas,antialias:true,powerPreference:'low-power'});renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.35));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.35;
+const scene=new THREE.Scene();scene.background=new THREE.Color(0x171211);scene.fog=new THREE.FogExp2(0x171211,.018);
+const camera=new THREE.PerspectiveCamera(72,innerWidth/innerHeight,.1,100);camera.position.set(0,1.65,14);
+const clock=new THREE.Clock(),held={},move={x:0,y:0};let yaw=0,pitch=0,drag=null,active=false,seals=0,complete=false;
+const material=(c,r=.8,m=0,e=0)=>new THREE.MeshStandardMaterial({color:c,roughness:r,metalness:m,emissive:e,emissiveIntensity:e?1:0});
+const brick=material(0x51403a),dark=material(0x211a19),iron=material(0x303438,.4,.8),copper=material(0x98603a,.38,.7),gold=material(0xc09150,.35,.7),floorMat=material(0x37302c),wood=material(0x39251c),glass=material(0x6b2617,.25,.4,0x6d1608),wax=material(0xe1cba5),flameMat=new THREE.MeshBasicMaterial({color:0xffad55});
+function box(x,y,z,w,h,d,m,shadow=true){const o=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m);o.position.set(x,y,z);o.castShadow=shadow;o.receiveShadow=true;scene.add(o);return o}
+function cyl(x,y,z,rt,rb,h,m,n=16){const o=new THREE.Mesh(new THREE.CylinderGeometry(rt,rb,h,n),m);o.position.set(x,y,z);o.castShadow=true;scene.add(o);return o}
+function point(x,y,z,color,power,range){const l=new THREE.PointLight(color,power,range,2);l.position.set(x,y,z);scene.add(l);return l}
+scene.add(new THREE.HemisphereLight(0xb6a79b,0x20130f,1.2));const keyLight=new THREE.DirectionalLight(0xffd5a1,1.3);keyLight.position.set(-8,14,10);scene.add(keyLight);
+const lights=[],candles=[],portraits=[],objects=[],barriers=[];
+function barrier(x,z,hx,hz){barriers.push({x,z,hx,hz})}
+// Main foundry chamber: broad, high-ceilinged, symmetrical, walkable.
+box(0,-.3,0,34,.6,42,floorMat);box(0,12,0,34,.7,42,dark);box(-17,6,0,.8,12,42,brick);box(17,6,0,.8,12,42,brick);box(0,6,-21,34,12,.8,brick);box(0,6,21,34,12,.8,brick);
+for(let x=-15;x<=15;x+=6){for(const z of [-18,18]){box(x,6,z,.8,12,.8,iron);box(x,11.7,z,2,.35,1.5,copper)}}
+for(let z=-18;z<=18;z+=6){for(const x of [-16,16])box(x,6,z,.8,12,.8,iron)}
+// Exposed roof trusses and iron crossbeams.
+for(let z=-18;z<=18;z+=6){box(0,11.2,z,33,.28,.38,iron);for(let x of [-14,14]){const beam=box(x/2,9.4,z,Math.hypot(x/2,3),.22,.25,copper);beam.rotation.z=Math.atan2(3,x/2)}}
+// Furnace: monumental brick housing, arched glowing mouth, pipes and pressure wheels.
+box(0,4.8,-15,12,9,3,brick);box(0,9.4,-15,13,.5,4,iron);box(-6.2,5,-15,.5,9,4,copper);box(6.2,5,-15,.5,9,4,copper);
+box(0,2.3,-13.35,5.4,3.7,.25,dark);const fireCore=point(0,3,-13,0xff4a16,4,14);
+const furnaceGlass=box(0,3.1,-13.15,4.7,2.8,.12,glass,false);
+for(let x=-2;x<=2;x+=.65){const grate=box(x,1.8,-13,.08,2.8,.18,iron);grate.rotation.z=.08}
+for(const x of [-4.8,4.8]){cyl(x,6.8,-12.9,.42,.42,3.2,iron);const wheel=new THREE.Mesh(new THREE.TorusGeometry(.8,.12,10,24),copper);wheel.position.set(x,7.8,-12.7);scene.add(wheel);for(let a=0;a<8;a++){const spoke=box(x,7.8,-12.7,.12,1.5,.12,gold);spoke.rotation.z=a*Math.PI/4;}}
+for(let x=-5;x<=5;x+=2.5){cyl(x,9.8,-15,.22,.3,3,iron);}
+// Central suspended clockwork heart, gear teeth, ring, pendulum.
+const heart=new THREE.Group();heart.position.set(0,7.2,-4);scene.add(heart);
+const core=new THREE.Mesh(new THREE.SphereGeometry(1.25,24,18),new THREE.MeshStandardMaterial({color:0x8c3d20,metalness:.5,roughness:.25,emissive:0x641600,emissiveIntensity:.8}));heart.add(core);
+for(const rad of [2.1,2.65]){const ring=new THREE.Mesh(new THREE.TorusGeometry(rad,.13,12,48),gold);heart.add(ring)}
+for(let i=0;i<16;i++){const a=i*Math.PI/8;const tooth=box(Math.cos(a)*2.65,Math.sin(a)*2.65,0,.28,.6,.25,iron);tooth.rotation.z=a;heart.add(tooth)}
+const pendulum=new THREE.Group();pendulum.position.set(0,4.5,-4);scene.add(pendulum);const rod=cyl(0,-1,0,.08,.08,2.5,copper);pendulum.add(rod);const bob=new THREE.Mesh(new THREE.SphereGeometry(.45,16,12),gold);bob.position.y=-2.2;pendulum.add(bob);
+// Side alcoves and actual locked doors on both long walls.
+function door(side,z,i){const x=side*16.35,g=new THREE.Group();g.position.set(x,0,z);g.rotation.y=side===1?-Math.PI/2:Math.PI/2;scene.add(g);const frame=new THREE.Mesh(new THREE.BoxGeometry(3.4,6.5,.55),gold);frame.position.y=3.25;g.add(frame);const slab=new THREE.Mesh(new THREE.BoxGeometry(3,6,.28),wood);slab.position.set(0,3,.32);g.add(slab);for(let y=1;y<5.6;y+=1.15){const p=new THREE.Mesh(new THREE.BoxGeometry(2.2,.12,.12),dark);p.position.set(0,y,.5);g.add(p)}const knob=new THREE.Mesh(new THREE.SphereGeometry(.13,12,10),gold);knob.position.set(.9,2.7,.54);g.add(knob);objects.push({type:'door',position:new THREE.Vector3(side*14.5,1.3,z),group:g,slab,index:i});}
+door(-1,-6,0);door(1,-6,1);door(-1,8,2);door(1,8,3);
+// Three seal pedestals are easy to spot, placed around the room.
+function pedestal(x,z,i){cyl(x,.35,z,.75,.9,.7,iron);cyl(x,.78,z,.62,.62,.18,gold);const gem=new THREE.Mesh(new THREE.OctahedronGeometry(.48),new THREE.MeshStandardMaterial({color:0xd88a48,metalness:.45,roughness:.2,emissive:0x6b260a,emissiveIntensity:1}));gem.position.set(x,1.5,z);scene.add(gem);const glow=point(x,1.8,z,0xff8c39,1.4,6);objects.push({type:'seal',position:new THREE.Vector3(x,1.2,z),gem,glow,taken:false,index:i});}
+pedestal(-10,9,0);pedestal(10,3,1);pedestal(0,-9,2);
+// Tall portrait frames with pupils tracking the visitor.
+function portrait(side,z,i){const x=side*16.42,g=new THREE.Group();g.position.set(x,5,z);g.rotation.y=side===1?-Math.PI/2:Math.PI/2;scene.add(g);const frame=new THREE.Mesh(new THREE.BoxGeometry(2.6,3.6,.22),gold);g.add(frame);const canvas2=document.createElement('canvas');canvas2.width=256;canvas2.height=384;const c=canvas2.getContext('2d'),gr=c.createLinearGradient(0,0,0,384);gr.addColorStop(0,'#625047');gr.addColorStop(1,'#171211');c.fillStyle=gr;c.fillRect(0,0,256,384);c.fillStyle='#bba38c';c.beginPath();c.ellipse(128,145,66,90,0,0,7);c.fill();c.fillStyle='#251a19';c.beginPath();c.ellipse(128,300,110,100,0,0,7);c.fill();c.fillStyle='#241714';c.beginPath();c.arc(128,100,72,Math.PI,0);c.fill();const tex=new THREE.CanvasTexture(canvas2);tex.colorSpace=THREE.SRGBColorSpace;const pic=new THREE.Mesh(new THREE.PlaneGeometry(2.25,3.25),new THREE.MeshBasicMaterial({map:tex}));pic.position.z=.14;g.add(pic);const eyes=[];for(const ex of [-.34,.34]){const w=new THREE.Mesh(new THREE.SphereGeometry(.11,10,8),new THREE.MeshBasicMaterial({color:0xe2d4be}));w.position.set(ex,.25,.23);g.add(w);const p=new THREE.Mesh(new THREE.SphereGeometry(.052,8,7),new THREE.MeshBasicMaterial({color:0x080606}));p.position.set(ex,.25,.3);g.add(p);eyes.push({p,ex})}portraits.push({g,eyes})}
+portrait(-1,-14,0);portrait(1,-14,1);portrait(-1,14,2);portrait(1,14,3);
+// Chains, hanging hooks, pipes, lamps and candle clusters add scale and atmosphere.
+for(let i=0;i<9;i++){const x=-13+i*3.25,z=(i%2?5:-5);cyl(x,9.2,z,.045,.045,4,iron,8);const c=cyl(x,7.1,z,.28,.28,.45,iron);const fl=new THREE.Mesh(new THREE.ConeGeometry(.12,.38,8),flameMat);fl.position.set(x,7.55,z);scene.add(fl);candles.push({mesh:fl,base:7.55,phase:i*.8,glow:point(x,7.7,z,0xffa34e,.8,5)})}
+for(let side of [-1,1])for(let z=-16;z<=16;z+=4){const pipe=cyl(side*15,8,z,.16,.16,3,iron);pipe.rotation.x=Math.PI/2;const lamp=point(side*13.5,9,z,0xffa85a,1.6,8);lights.push({lamp,phase:Math.random()*9})}
+for(let i=0;i<30;i++){const x=(Math.random()-.5)*29,z=(Math.random()-.5)*36;const debris=box(x,.08,z,.15+Math.random()*.35,.15,.15+Math.random()*.35,dark);debris.rotation.y=Math.random()*3}
+function nearest(){let best=null,d=1e9;for(const o of objects){if(o.taken)continue;const q=o.position.distanceTo(camera.position);if(q<3.3&&q<d){d=q;best=o}}return best}
+function interact(){if(!active||complete)return;const o=nearest();if(!o){toast('Nothing within reach. Explore the chamber and look for glowing seals.');return}if(o.type==='door'){toast('SEALED. The furnace mechanism must be restored first.');return}o.taken=true;o.gem.visible=false;o.glow.intensity=0;seals++;$('#count').textContent=seals+' / 3';$('#hint').textContent=seals===3?'Return to the furnace heart.':'Search the other corners of the chamber.';toast(['First seal recovered.','The second seal hums in your hand.','All three seals are yours. Return to the furnace.'][seals-1]);}
+function blocked(x,z){if(Math.abs(x)>15.5||Math.abs(z)>19.5)return true;const r=.48;for(const b of barriers){if(Math.abs(x-b.x)<b.hx+r&&Math.abs(z-b.z)<b.hz+r)return true}return false}
+function move(dt){if(!active)return;let f=(held.KeyW||held.ArrowUp?1:0)-(held.KeyS||held.ArrowDown?1:0)-move.y,s=(held.KeyD||held.ArrowRight?1:0)-(held.KeyA||held.ArrowLeft?1:0)+move.x;if(!f&&!s)return;const n=Math.hypot(f,s)||1;f/=n;s/=n;const dx=(-Math.sin(yaw)*f+Math.cos(yaw)*s)*dt*4.7,dz=(-Math.cos(yaw)*f-Math.sin(yaw)*s)*dt*4.7;if(!blocked(camera.position.x+dx,camera.position.z))camera.position.x+=dx;if(!blocked(camera.position.x,camera.position.z+dz))camera.position.z+=dz}
+function reset(){seals=0;complete=false;active=true;camera.position.set(0,1.65,14);yaw=0;pitch=0;objects.forEach(o=>{if(o.type==='seal'){o.taken=false;o.gem.visible=true;o.glow.intensity=1.4}});$('#count').textContent='0 / 3';$('#hint').textContent='Find the three furnace seals.';$('#ending').hidden=true;$('#objective').textContent='THE HEART HAS GONE COLD'}
+function animate(){requestAnimationFrame(animate);const dt=Math.min(clock.getDelta(),.04),t=clock.elapsedTime;move(dt);lights.forEach((v,i)=>v.lamp.intensity=1.4*((Math.sin(t*11+v.phase)>.95)?.15:1));candles.forEach(v=>{v.mesh.position.y=v.base+Math.sin(t*1.8+v.phase)*.09;v.glow.intensity=.65+Math.sin(t*8+v.phase)*.15});portraits.forEach(v=>{const local=v.g.worldToLocal(camera.position.clone());v.eyes.forEach(e=>{e.p.position.x=e.ex+THREE.MathUtils.clamp(local.x*.012,-.08,.08);e.p.position.y=.25+THREE.MathUtils.clamp((local.y-5)*.009,-.06,.06)})});heart.rotation.z=Math.sin(t*.6)*.05;pendulum.rotation.z=Math.sin(t*1.4)*.24;fireCore.intensity=3.4+Math.sin(t*8)*.7;if(active){camera.rotation.order='YXZ';camera.rotation.y=yaw;camera.rotation.x=pitch;const o=nearest();$('#use').textContent=o?(o.type==='seal'?'TAKE SEAL':'TRY DOOR'):'INTERACT';if(seals===3){$('#objective').textContent='RETURN TO THE FURNACE';const near=camera.position.distanceTo(new THREE.Vector3(0,1.5,-12.2));if(near<3.4){$('#use').textContent='RESTART FURNACE';}}}renderer.render(scene,camera)}
+function useAction(){if(!active)return;if(seals===3&&camera.position.distanceTo(new THREE.Vector3(0,1.5,-12.2))<3.4){complete=true;active=false;$('#ending').hidden=false;return}interact()}
+$('#use').addEventListener('click',useAction);$('#again').addEventListener('click',reset);$('#look').onclick=()=>toast('Use the left joystick to walk. Drag anywhere in the scene to look around. Tap INTERACT near a glowing seal or door.');addEventListener('keydown',e=>{held[e.code]=true;if(e.code==='KeyE'||e.code==='Space'){e.preventDefault();useAction()}});addEventListener('keyup',e=>held[e.code]=false);
+const joy=$('#joy'),stick=$('#stick');let joyId=null;function setJoy(e){const r=joy.getBoundingClientRect(),dx=e.clientX-r.left-r.width/2,dy=e.clientY-r.top-r.height/2,l=Math.hypot(dx,dy)||1,k=Math.min(1,38/l),x=dx*k,y=dy*k;move.x=x/38;move.y=y/38;stick.style.left='calc(50% + '+x+'px)';stick.style.top='calc(50% + '+y+'px)'}joy.addEventListener('pointerdown',e=>{joyId=e.pointerId;joy.setPointerCapture(e.pointerId);setJoy(e)});joy.addEventListener('pointermove',e=>{if(joyId===e.pointerId)setJoy(e)});function release(e){if(joyId!==e.pointerId)return;joyId=null;move.x=move.y=0;stick.style.left=stick.style.top='50%'}joy.addEventListener('pointerup',release);joy.addEventListener('pointercancel',release);
+canvas.addEventListener('pointerdown',e=>{drag={x:e.clientX,y:e.clientY};canvas.setPointerCapture(e.pointerId)});canvas.addEventListener('pointermove',e=>{if(!drag||!active)return;const dx=e.clientX-drag.x,dy=e.clientY-drag.y;yaw-=dx*.004;pitch=THREE.MathUtils.clamp(pitch-dy*.003,-.55,.55);drag={x:e.clientX,y:e.clientY}});canvas.addEventListener('pointerup',()=>drag=null);canvas.addEventListener('pointercancel',()=>drag=null);
 addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.35))});
-}catch(err){console.error(err);document.querySelector('#start').hidden=false;document.querySelector('.card .small').textContent='The 3D hall could not load. Check your connection and try again.';document.querySelector('#enter').disabled=true;document.querySelector('#enter').textContent='3D HALL UNAVAILABLE';}
+animate();window.foundryReady=true;window.startFoundry=()=>{active=true};
+}catch(err){console.error(err);$('#start').hidden=false;$('#start .small').textContent='The 3D foundry could not load. Check your connection and try again.';$('#enter').disabled=true;$('#enter').textContent='FOUNDRY UNAVAILABLE'}
 </script></body></html>
