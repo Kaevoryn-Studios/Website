@@ -14,10 +14,11 @@
 <script>
 (()=>{const b=document.getElementById('enter');if(!b)return;b.style.pointerEvents='auto';b.style.position='relative';b.style.zIndex='2';b.addEventListener('click',()=>{window.__hollowStartPending=true;b.textContent='OPENING THE MANSION…';const p=b.parentElement.querySelector('.small');if(p)p.textContent='The front doors are unlocking…';if(typeof window.__hollowStart==='function')window.__hollowStart()},{passive:true});})();
 </script>
-<script type="module">
+<script src="./vendor/three.min.js"></script>
+<script>
 const $=s=>document.querySelector(s);
 try{
-const THREE=await import('./vendor/three.module.min.js');
+const THREE=window.THREE;
 const renderer=new THREE.WebGLRenderer({canvas:$('#world'),antialias:true,powerPreference:'low-power'});renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.4));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.35;
 const scene=new THREE.Scene();scene.background=new THREE.Color(0x29252a);scene.fog=new THREE.FogExp2(0x29252a,.0023);
 const camera=new THREE.PerspectiveCamera(67,innerWidth/innerHeight,.1,180);
