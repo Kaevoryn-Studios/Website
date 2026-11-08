@@ -56,9 +56,39 @@ for(var side of [-1,1])for(var wz of [-10,-3,3]){cube(g,side*8,3.1,wz,1.2,2.1,.1
 // The front entrance is deliberately open; the doors swing from the frame when entered.
 wall(g,-7.4,2.2,8,7.2,4.4,.55,stone);wall(g,7.4,2.2,8,7.2,4.4,.55,stone);wall(g,0,4.15,8,2.4,.5,.55,stone,false);
 for(var px of [-2.6,2.6]){cyl(g,px,2.1,8.45,.2,.26,4.2,M.gold,16);cyl(g,px,4.25,8.45,.34,.34,.2,M.gold,16)}
-// Two heavy oak leaves on side hinges. Positive swing on the left and negative on the right both turn inward, into the foyer.
+// New monumental Gothic entrance: thick walnut leaves, recessed pointed panels, iron bracing and aged-brass ring pulls.
+function entranceLeaf(parent,cx){
+  var w=1.3,h=3.35,g=group(parent,cx,0,0);
+  cube(g,0,h/2,0,w,h,.3,material('#241811',.72),false);
+  cube(g,0,h/2,.18,w+.12,h+.12,.09,M.gold,false);
+  cube(g,0,h/2,.235,w-.16,h-.16,.055,material('#3a2418'),false);
+  // Two deep inset panels on each leaf, framed in carved-looking walnut and brass.
+  [-.78,.78].forEach(function(py){
+    var ph=1.22, pw=.86, z=.29;
+    cube(g,0,h/2+py, z,pw,ph,.07,M.gold,false);
+    cube(g,0,h/2+py, z+.045,pw-.13,ph-.13,.055,material('#1b1513'),false);
+    cube(g,0,h/2+py-.04,z+.08,pw-.25,ph-.28,.035,material('#503321'),false);
+    cube(g,0,h/2+py+ph/2-.08,z+.09,pw-.2,.07,.04,M.gold,false);
+    cube(g,0,h/2+py-ph/2+.08,z+.09,pw-.2,.07,.04,M.gold,false);
+    // A narrow pointed Gothic crest gives the upper panel a distinct silhouette.
+    var crest=new THREE.Mesh(new THREE.ConeGeometry(.32,.48,4),M.gold);
+    crest.position.set(0,h/2+py+ph*.22,z+.13);crest.rotation.y=Math.PI/4;g.add(crest);
+  });
+  cube(g,0,h/2,.34,.1,h-.18,.07,M.gold,false);
+  // Forged iron cross-straps and a prominent old brass pull.
+  [-1,1].forEach(function(side){
+    var brace=cube(g,side*.39,h/2,.38,.055,h-.35,.055,M.iron,false);
+    brace.rotation.z=side*.035;
+  });
+  var pull=group(g,cx<0?.48:-.48,h/2,.43);
+  var ring=new THREE.Mesh(new THREE.TorusGeometry(.13,.035,10,24),M.gold);
+  ring.position.set(0,-.12,0);pull.add(ring);
+  cyl(pull,0,.05,0,.075,.075,.08,M.gold,12);
+  ball(pull,0,.05,.05,.055,M.gold);
+  return g;
+}
 var leftHinge=group(g,-1.3,0,8.35),rightHinge=group(g,1.3,0,8.35);
-doorUnit(leftHinge,.65,0,0,1.3,3.25);doorUnit(rightHinge,-.65,0,0,1.3,3.25);
+entranceLeaf(leftHinge,.65);entranceLeaf(rightHinge,-.65);
 doors.push({pivot:leftHinge,direction:1,angle:0,target:0},{pivot:rightHinge,direction:-1,angle:0,target:0});
 for(var i=0;i<6;i++)cube(g,0,-.02,9+i*.68,5.6+i*.45,.18,.7-i*.02,M.stone,false);
 for(var side2 of [-1,1]){for(var i2=0;i2<15;i2++){var fx=side2*(13+i2*.9);cyl(g,fx,1.1,12,.04,.04,2.2,M.iron);cyl(g,fx,2.2,12,.11,.11,.18,M.gold)}cube(g,side2*18,1.1,12,.1,2.2,22,M.iron,false);for(var tz of [-3,7,17]){cyl(g,side2*17,.9,tz,.24,.34,1.8,material('#30231e'));ball(g,side2*17,2.5,tz,1,material('#10171b'),1.25,1.2,.9)}}
