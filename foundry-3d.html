@@ -116,13 +116,7 @@ function entranceLeaf(parent,cx){
     cube(g,outer,h/2+y,.43,.19,.13,.10,iron,false);
     cyl(g,outer*1.03,h/2+y,.02,.085,.085,.28,M.gold,12);
   });
-  // Large forged ring pull with a sculpted backplate near the center seam.
-  var inner=cx>0?-.43:.43;
-  var plate=new THREE.Mesh(new THREE.CircleGeometry(.19,8),iron);
-  plate.position.set(inner,h/2,.55);g.add(plate);
-  var ring=new THREE.Mesh(new THREE.TorusGeometry(.145,.045,12,28),M.gold);
-  ring.position.set(inner,h/2-.15,.61);g.add(ring);
-  ball(g,inner,h/2+.02,.60,.085,M.gold);
+  // Door faces are intentionally clean: no ring knockers or backplates.
   // Pointed crown carving at the top of each leaf, attached to the door face.
   var crest=new THREE.Mesh(new THREE.ConeGeometry(.34,.48,4),M.gold);
   crest.position.set(0,h-.18,.43);crest.rotation.z=Math.PI;g.add(crest);
