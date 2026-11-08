@@ -27,7 +27,7 @@ var floorNames=['GROUND FLOOR · GRAND FOYER','FIRST FLOOR · PORTRAIT GALLERY',
 function material(color,rough,metal){return new THREE.MeshStandardMaterial({color:color,roughness:rough===undefined?.82:rough,metalness:metal||0})}
 var M={wall:null,plaster:null,wood:null,oak:null,gold:null,stone:null,floor:null,dark:null,velvet:null,glass:null,iron:null,ivory:null};
 function group(parent,x,y,z){var g=new THREE.Group();g.position.set(x||0,y||0,z||0);parent.add(g);return g}
-function cube(parent,x,y,z,w,h,d,m,collision){var o=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m);o.position.set(x,y,z);o.castShadow=true;o.receiveShadow=true;parent.add(o);if(collision){var wx=x,wy=y,wz=z,p=parent;while(p){wx+=p.position.x||0;wy+=p.position.y||0;wz+=p.position.z||0;p=p.parent}colliders.push({x:wx,y:wy,z:wz,w:w,d:d,h:h})}return o}
+function cube(parent,x,y,z,w,h,d,m,collision){var o=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m);o.position.set(x,y,z);o.castShadow=true;o.receiveShadow=true;parent.add(o);var solid=collision===true||(collision!==false&&w>=.65&&h>=.65&&d>=.18);if(solid){var wx=x,wy=y,wz=z,p=parent;while(p){wx+=p.position.x||0;wy+=p.position.y||0;wz+=p.position.z||0;p=p.parent}colliders.push({x:wx,y:wy,z:wz,w:w,d:d,h:h})}return o}
 function cyl(parent,x,y,z,r1,r2,h,m,n){var o=new THREE.Mesh(new THREE.CylinderGeometry(r1,r2,h,n||12),m);o.position.set(x,y,z);o.castShadow=true;parent.add(o);return o}
 function ball(parent,x,y,z,r,m,sx,sy,sz){var o=new THREE.Mesh(new THREE.SphereGeometry(r,16,12),m);o.position.set(x,y,z);o.scale.set(sx||1,sy||1,sz||1);o.castShadow=true;parent.add(o);return o}
 function point(parent,x,y,z,color,power,range){var l=new THREE.PointLight(color,power,range,2);l.position.set(x,y,z);parent.add(l);return l}
@@ -96,12 +96,12 @@ function blocked(x,z){
   // Test solid walls and furniture on the player's current floor only.
   for(var i=0;i<colliders.length;i++){
     var b=colliders[i];
-    if(Math.abs(player.y-b.y)>(b.h/2+.72))continue;
+    if(Math.abs(player.y-b.y)>(b.h/2+1.05))continue;
     if(Math.abs(x-b.x)<(b.w/2+radius)&&Math.abs(z-b.z)<(b.d/2+radius))return true;
   }
   return false
 }
-function move(dx,dz){var nx=player.x+dx,nz=player.z+dz;if(!blocked(nx,player.z))player.x=nx;if(!blocked(player.x,nz))player.z=nz;if(fallbackCanvas)fallbackDraw()}
+function move(dx,dz){var distance=Math.hypot(dx,dz),steps=Math.max(1,Math.ceil(distance/.12)),sx=dx/steps,sz=dz/steps;for(var step=0;step<steps;step++){var nx=player.x+sx,nz=player.z+sz;if(!blocked(nx,player.z))player.x=nx;if(!blocked(player.x,nz))player.z=nz}if(fallbackCanvas)fallbackDraw()}
 function update(dt){var f=(held.KeyW||held.ArrowUp?1:0)-(held.KeyS||held.ArrowDown?1:0)-joy.y,s=(held.KeyD||held.ArrowRight?1:0)-(held.KeyA||held.ArrowLeft?1:0)+joy.x;var n=Math.hypot(f,s);if(n>.02){f/=n;s/=n;var v=player.speed*dt,fx=-Math.sin(player.yaw),fz=-Math.cos(player.yaw),rx=Math.cos(player.yaw),rz=-Math.sin(player.yaw);move((fx*f+rx*s)*v,(fz*f+rz*s)*v)}
 camera.position.set(player.x,player.y,player.z);camera.rotation.set(player.pitch,player.yaw,0,'YXZ');
 if(level===-1&&player.z<10.5&&Math.abs(player.x)<2.8){doors.forEach(function(d){d.target=d.direction*1.18})}
