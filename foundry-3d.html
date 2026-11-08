@@ -7,12 +7,16 @@
 <div class="toast" id="toast"></div><div class="bottom"><div class="pad" id="joystick" role="application" aria-label="Virtual movement joystick"><div class="stick" id="stick"></div></div><div class="actions"><button id="use">INTERACT</button><button id="help">LOOK: DRAG</button></div></div>
 <div class="start" id="start"><div class="card"><p class="eyebrow">KAEVORYN AFTERDARK · IMMERSIVE DARK RIDE</p><h1>THE WATCHER’S<br>FOUNDRY</h1><p>Deep beneath the park, a forgotten machine is building something that should not exist. The pressure is rising. Find the three control valves, shut down the furnace, and reach the exit before the Watcher awakens.</p><p class="small">Use the on-screen joystick to move. Drag the scene to look around. Tap INTERACT near a valve, the control console, or the exit. The experience starts silently; no artificial sound effects.</p><button id="enter">ENTER THE FOUNDRY</button></div></div>
 <div class="ending" id="ending" hidden><div class="card"><p class="eyebrow">THE FURNACE FALLS SILENT</p><h1>YOU ESCAPED.<br>IT REMEMBERS.</h1><p>The great machine is quiet. Somewhere behind the iron walls, something has begun to move again.</p><button id="again">RESTART ATTRACTION</button><a href="park-life.html?park=afterdark">RETURN TO AFTERDARK</a></div></div>
+<script>
+// Keep the entry control responsive even if the 3D module is delayed or fails to initialize.
+document.querySelector("#enter").addEventListener("click",()=>{window.foundryStarted=true;document.querySelector("#start").hidden=true;document.querySelector("#toast").textContent="Entering the foundry…";document.querySelector("#toast").classList.add("show");});
+</script>
 <script type="module">
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
 const canvas=document.querySelector('#world'),renderer=new THREE.WebGLRenderer({canvas,antialias:true,powerPreference:'low-power'});renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.5));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=2.15;
 const scene=new THREE.Scene();scene.background=new THREE.Color(0x65717d);scene.fog=new THREE.FogExp2(0x65717d,.0028);
 const camera=new THREE.PerspectiveCamera(73,innerWidth/innerHeight,.1,150);camera.position.set(0,1.7,7);
-const clock=new THREE.Clock();let active=false,finished=false,yaw=0,pitch=0,drag=null,relieved=0,consoleOn=false,pressure=100;const keys={},touch={x:0,y:0};const interactables=[];
+const clock=new THREE.Clock();let active=!!window.foundryStarted,finished=false,yaw=0,pitch=0,drag=null,relieved=0,consoleOn=false,pressure=100;const keys={},touch={x:0,y:0};const interactables=[];
 const mat=(c,r=.8,m=0,e=0)=>new THREE.MeshStandardMaterial({color:c,roughness:r,metalness:m,emissive:e,emissiveIntensity:e?1:0});
 const concrete=mat(0x737b82),dark=mat(0x424b54),rust=mat(0x79503b),iron=mat(0x56616a,.5,.62),brass=mat(0xb58a53,.4,.55),pipeMat=mat(0x77828a,.4,.6),glow=mat(0xff5b20,.35,.25,0xff3c08),coldGlow=mat(0x7acde0,.3,.35,0x174c5a);
 function box(x,y,z,sx,sy,sz,m=concrete,shadow=true){const o=new THREE.Mesh(new THREE.BoxGeometry(sx,sy,sz),m);o.position.set(x,y,z);o.castShadow=shadow;o.receiveShadow=true;scene.add(o);return o}
