@@ -68,7 +68,34 @@ enterButton.addEventListener('pointerup',e=>{e.preventDefault();e.stopPropagatio
 document.addEventListener('click',e=>{if(e.target&&e.target.closest&&e.target.closest('#enter')){e.preventDefault();beginMansion()}},true);
 $('#act').addEventListener('click',interact);$('#help').addEventListener('click',()=>toast('Joystick or WASD: move · Drag: look · EXAMINE: collect keys, memories and approach the stairs to change floors.'));
 document.addEventListener('keydown',e=>{keysDown[e.code]=true;if(e.code==='KeyE'||e.code==='Space'){e.preventDefault();interact()}});document.addEventListener('keyup',e=>keysDown[e.code]=false);
-const joyEl=$('#joy'),stick=$('#stick');let joyId=null;function joyMove(e){const r=joyEl.getBoundingClientRect(),dx=e.clientX-r.left-r.width/2,dy=e.clientY-r.top-r.height/2,l=Math.hypot(dx,dy)||1,k=Math.min(1,38/l),x=dx*k,y=dy*k;joy.x=x/38;joy.y=y/38;stick.style.left='calc(50% + '+x+'px)';stick.style.top='calc(50% + '+y+'px')}joyEl.addEventListener('pointerdown',e=>{joyId=e.pointerId;joyEl.setPointerCapture(e.pointerId);joyMove(e)});joyEl.addEventListener('pointermove',e=>{if(e.pointerId===joyId)joyMove(e)});function joyEnd(e){if(e.pointerId!==joyId)return;joyId=null;joy.x=joy.y=0;stick.style.left=stick.style.top='50%'}joyEl.addEventListener('pointerup',joyEnd);joyEl.addEventListener('pointercancel',joyEnd);
+const joyEl=$('#joy'),stick=$('#stick');
+let joyId=null;
+function joyMove(e){
+  const rect=joyEl.getBoundingClientRect();
+  const dx=e.clientX-rect.left-rect.width/2;
+  const dy=e.clientY-rect.top-rect.height/2;
+  const length=Math.hypot(dx,dy)||1;
+  const scale=Math.min(1,38/length);
+  const x=dx*scale,y=dy*scale;
+  joy.x=x/38;joy.y=y/38;
+  stick.style.left='calc(50% + '+x+'px)';
+  stick.style.top='calc(50% + '+y+'px)';
+}
+joyEl.addEventListener('pointerdown',e=>{
+  joyId=e.pointerId;
+  joyEl.setPointerCapture(e.pointerId);
+  joyMove(e);
+});
+joyEl.addEventListener('pointermove',e=>{
+  if(e.pointerId===joyId)joyMove(e);
+});
+function joyEnd(e){
+  if(e.pointerId!==joyId)return;
+  joyId=null;joy.x=0;joy.y=0;
+  stick.style.left='50%';stick.style.top='50%';
+}
+joyEl.addEventListener('pointerup',joyEnd);
+joyEl.addEventListener('pointercancel',joyEnd);
 canvas.addEventListener('pointerdown',e=>{turnDrag={x:e.clientX,y:e.clientY};canvas.setPointerCapture(e.pointerId)});canvas.addEventListener('pointermove',e=>{if(!turnDrag||!active)return;const dx=e.clientX-turnDrag.x;angle+=dx*.006;pitch=Math.max(-.5,Math.min(.5,pitch+(e.clientY-turnDrag.y)*.0015));turnDrag={x:e.clientX,y:e.clientY}});canvas.addEventListener('pointerup',()=>turnDrag=null);canvas.addEventListener('pointercancel',()=>turnDrag=null);
 })(); 
 </script></body></html>
