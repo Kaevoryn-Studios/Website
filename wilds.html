@@ -93,6 +93,14 @@ function carouselRide(x,z){
  }
  scene.add(ride);rideSpinners.push(ride);addCollider(x,z,5.4,5.4);discovery('THE ENCHANTED CAROUSEL',x,z,'A hand-crafted royal carousel turns beneath a glowing canopy, with eight painted steeds.')
 }
+
+function dockPier(x,z,length,width){
+ var deck=new THREE.Mesh(new THREE.BoxGeometry(width,.42,length),m.wood);deck.position.set(x,.38,z);deck.receiveShadow=true;scene.add(deck);
+ for(var i=0;i<Math.floor(length/2);i++){var plank=new THREE.Mesh(new THREE.BoxGeometry(width-.12,.08,1.85),i%2?m.wood:m.gold);plank.position.set(x,.63,z-length/2+1+i*2);scene.add(plank)}
+ for(var side of [-1,1]){var rail=new THREE.Mesh(new THREE.BoxGeometry(.22,.2,length),m.wood);rail.position.set(x+side*(width/2-.12),1.65,z);scene.add(rail);for(var p=0;p<=length/2;p+=3){var post=new THREE.Mesh(new THREE.CylinderGeometry(.13,.16,2.2,8),m.wood);post.position.set(x+side*(width/2-.12),1.2,z-length/2+p);scene.add(post);addCollider(post.position.x,post.position.z,.18,.18)}}
+ discovery('THE BOARDING PIER',x,z,'Follow the timber harbor pier to the side of the Lost Galleon and look up at its towering masts.')
+}
+
 function pirateCannons(x,z){
  for(var i=0;i<3;i++){var px=x+i*4.2;
   var wheelA=new THREE.Mesh(new THREE.TorusGeometry(.78,.13,8,18),m.wood);wheelA.position.set(px,.85,z-.65);scene.add(wheelA);
@@ -226,7 +234,7 @@ landSign('ENCHANTED KINGDOM',-92,-124,'#f5d58c');castle(-112,-158);kiosk(-70,-15
 /* JUNGLE EXPEDITION: giant trees, temple, waterfall and river ride. */
 landSign('JUNGLE EXPEDITION',-145,-4,'#a6d18a');waterfall(-158,1,-58,17,19);riverRapids(-158,-29);jungleBridge(-158,-5);kiosk(-183,-5,'#526b48','EXPEDITION OUTFITTERS');for(var i=0;i<25;i++)palm(-165+(i%5)*10,-35+Math.floor(i/5)*13,1.5+(i%3)*.22);building(-146,-47,24,18,13,m.temple,m.roof,'LOST TEMPLE');fountain(-116,-15);coaster(-160,22,'#68a9a1',.75);discovery('THE LOST TEMPLE',-146,-47,'A monumental overgrown temple with carved stonework, towering columns and a hidden expedition entrance.');discovery('JUNGLE RIVER RAPIDS',-158,-29,'Board a floating expedition raft and drift through a rocky jungle channel beneath the cascading falls.');discovery('EXPEDITION OUTFITTERS',-183,-5,'Step inside the jungle supply shop for maps, field gear and expedition keepsakes.');
 /* PIRATE COVE: harbor, ship, lighthouse and coastal village. */
-landSign('PIRATE COVE',145,-4,'#a6d8e8');var sea=waterSurface(154,-48,78,90,42,false);for(var i=0;i<16;i++)palm(122+(i%4)*15,-83+Math.floor(i/4)*19,1.1);pirateShip(151,-34);kiosk(190,0,'#80513b','HARBOR TAVERN');cyl(195,13,-85,3,4,26,m.stone,12);cyl(195,28,-85,2.5,3,5,m.red,12);light(195,29,-85,'#fff0a8',2,35);pirateCannons(166,-75);discovery('THE LOST GALLEON',151,-34,'A towering pirate ship sits in its harbor, surrounded by docks, sails, ropes and coastal buildings.');discovery('SMUGGLERS LIGHTHOUSE',195,-85,'Climb toward the beacon above the cove and look out across the entire pirate coast.');
+landSign('PIRATE COVE',145,-4,'#a6d8e8');var sea=waterSurface(154,-48,78,90,42,false);for(var i=0;i<16;i++)palm(122+(i%4)*15,-83+Math.floor(i/4)*19,1.1);pirateShip(151,-34);dockPier(151,-23,24,6);kiosk(190,0,'#80513b','HARBOR TAVERN');cyl(195,13,-85,3,4,26,m.stone,12);cyl(195,28,-85,2.5,3,5,m.red,12);light(195,29,-85,'#fff0a8',2,35);pirateCannons(132,-12);discovery('THE LOST GALLEON',151,-34,'A towering pirate ship sits in its harbor, surrounded by docks, sails, ropes and coastal buildings.');discovery('SMUGGLERS LIGHTHOUSE',195,-85,'Climb toward the beacon above the cove and look out across the entire pirate coast.');
 /* VOLCANIC FRONTIER: giant mountain, mine, coaster. */
 landSign('VOLCANIC FRONTIER',88,-145,'#ffb17c');volcano(120,-190);kiosk(78,-170,'#59645c','MINING SUPPLY');mineEntrance(102,-166);coaster(70,-115,'#e66b45',1.05);discovery('EMBER MOUNTAIN',120,-190,'A huge volcanic peak dominates the skyline, with glowing lava seams and a smoking crater.');discovery('MAGMA RUN',70,-115,'A high-speed coaster races around the volcanic foothills and through the mining frontier.');
 /* CRYSTAL GARDENS and observation wheel. */
