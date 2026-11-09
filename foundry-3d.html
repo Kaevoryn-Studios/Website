@@ -6,350 +6,148 @@
 <meta name="theme-color" content="#08090e">
 <title>The Hollow Crown · Kaevoryn Afterdark</title>
 <style>
-*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#08090e;color:#eee5d8;font:15px system-ui}#world{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none}.vignette{position:fixed;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse,transparent 48%,#05040855)}header{position:fixed;z-index:3;top:0;left:0;right:0;padding:12px;display:flex;justify-content:space-between;font-size:10px;letter-spacing:.14em;text-shadow:0 2px 8px #000}header a{color:#e8c18d;text-decoration:none;font-weight:900}.hud{position:fixed;z-index:3;top:44px;left:10px;right:10px;display:flex;justify-content:space-between;gap:8px;pointer-events:none}.plaque{padding:8px 11px;border:1px solid #b58b5b99;border-radius:8px;background:#101016df;backdrop-filter:blur(8px);max-width:74%}.plaque b{font-size:10px;letter-spacing:.12em;color:#e8c18d}.plaque small{display:block;margin-top:3px;font-size:11px;color:#d6cabb}.floor{position:fixed;z-index:3;top:102px;left:50%;transform:translateX(-50%);white-space:nowrap;padding:5px 10px;border:1px solid #a98760;border-radius:20px;background:#090910dd;color:#e8c99f;font-size:10px;letter-spacing:.1em;pointer-events:none}.bottom{position:fixed;z-index:4;left:0;right:0;bottom:0;padding:12px;display:flex;justify-content:space-between;align-items:end;pointer-events:none}.pad,.controls{pointer-events:auto}.pad{position:relative;width:104px;height:104px;border:2px solid #c9b49a88;border-radius:50%;background:#12121ddd;touch-action:none}.pad:after{content:'MOVE';position:absolute;bottom:6px;left:0;right:0;text-align:center;font-size:9px;letter-spacing:.15em;color:#eee}.stick{position:absolute;left:50%;top:50%;width:42px;height:42px;transform:translate(-50%,-50%);border-radius:50%;background:linear-gradient(145deg,#ead7b7,#74634e);border:2px solid #fff8;pointer-events:none}.controls{display:flex;flex-direction:column;align-items:end;gap:7px}.controls button,.card button{min-height:44px;padding:0 14px;border:1px solid #d3a46d;border-radius:9px;background:#38271c;color:#fff;font-weight:900;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}.controls #act{min-width:145px;min-height:50px;background:#674526}.controls .move{min-width:105px;min-height:37px;background:#25212a;border-color:#c5a477;font-size:10px;user-select:none}.controls #sound,.controls #help{min-height:34px;background:#17171d;border-color:#8c795e;font-size:10px}.screen{position:fixed;z-index:10;inset:0;display:grid;place-items:center;padding:16px;background:radial-gradient(ellipse at center,#28232bbd,#050508ed 78%)}[hidden]{display:none!important}.card{width:min(100%,620px);max-height:90vh;overflow:auto;padding:clamp(22px,5vw,38px);border:1px solid #b98d5e99;border-radius:17px;background:#111117f5;text-align:center;box-shadow:0 25px 90px #000d}.eyebrow{font-size:10px;letter-spacing:.22em;color:#e3b77f;font-weight:900}.card h1{font-size:clamp(34px,8vw,58px);line-height:.94;margin:13px 0}.card p{color:#d6cabc;line-height:1.5}.small{font-size:11px;color:#b6a897!important}.toast{position:fixed;z-index:8;left:50%;top:34%;transform:translateX(-50%);padding:12px 17px;max-width:88vw;border:1px solid #c49a6b;border-radius:8px;background:#101219f5;text-align:center;opacity:0;transition:opacity .2s;pointer-events:none}.toast.show{opacity:1}#error{color:#f1d4ad}@media(max-width:390px){.pad{width:96px;height:96px}.plaque{padding:7px 8px}.controls button{min-height:40px}}@media(orientation:landscape) and (max-height:600px){header{padding:6px 12px}.hud{top:29px}.plaque{padding:5px 8px}.plaque small{font-size:10px}.floor{top:74px}.bottom{padding:7px 14px}.pad{width:82px;height:82px}.stick{width:34px;height:34px}.controls{flex-direction:row;flex-wrap:wrap;justify-content:end}.controls button{min-height:38px}.controls #act{min-height:42px}.card{max-height:94vh;padding:16px 24px}.card h1{font-size:clamp(28px,6vh,42px);margin:8px 0}.card p{margin:7px 0;font-size:13px}}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#08090e;color:#eee7dc;font:15px system-ui}#world{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none}.shade{position:fixed;inset:0;pointer-events:none;background:radial-gradient(ellipse,transparent 45%,#03030899);z-index:1}header{position:fixed;z-index:3;top:0;left:0;right:0;padding:12px 15px;display:flex;justify-content:space-between;gap:8px;font-size:10px;letter-spacing:.15em;text-shadow:0 2px 9px #000}header a{color:#e4bd8a;text-decoration:none;font-weight:900}.hud{position:fixed;z-index:3;top:43px;left:10px;right:10px;display:flex;justify-content:space-between;gap:8px;pointer-events:none}.plaque{padding:8px 11px;border:1px solid #a9855c99;border-radius:8px;background:#0b0b11dc;backdrop-filter:blur(8px);max-width:75%}.plaque b{font-size:10px;letter-spacing:.13em;color:#e7c18e}.plaque small{display:block;margin-top:3px;font-size:11px;color:#d3c6b5}.floor{position:fixed;z-index:3;top:101px;left:50%;transform:translateX(-50%);white-space:nowrap;padding:5px 11px;border:1px solid #9b7a57;border-radius:20px;background:#08080ee8;color:#e7c18e;font-size:10px;letter-spacing:.12em;pointer-events:none}.bottom{position:fixed;z-index:4;left:0;right:0;bottom:0;padding:12px;display:flex;justify-content:space-between;align-items:end;pointer-events:none}.pad,.controls{pointer-events:auto}.pad{position:relative;width:104px;height:104px;border:2px solid #c5ad8d88;border-radius:50%;background:#101017e8;touch-action:none}.pad:after{content:'MOVE';position:absolute;bottom:6px;left:0;right:0;text-align:center;font-size:9px;letter-spacing:.15em;color:#eee}.stick{position:absolute;left:50%;top:50%;width:42px;height:42px;transform:translate(-50%,-50%);border-radius:50%;background:linear-gradient(145deg,#ead9bc,#78644c);border:2px solid #fff8;pointer-events:none}.controls{display:flex;flex-direction:column;align-items:end;gap:6px}.controls button,.card button{min-height:43px;padding:0 14px;border:1px solid #c49b6a;border-radius:9px;background:#33241c;color:#fff;font-weight:900;cursor:pointer;touch-action:manipulation}.controls #act{min-width:145px;min-height:49px;background:#644326}.controls .move{min-width:104px;min-height:35px;background:#211f25;border-color:#a88a67;font-size:10px}.controls #sound,.controls #help{min-height:32px;background:#14141b;border-color:#817057;font-size:10px}.screen{position:fixed;z-index:10;inset:0;display:grid;place-items:center;padding:16px;background:radial-gradient(ellipse at center,#28232bbd,#050508f2 78%)}[hidden]{display:none!important}.card{width:min(100%,640px);max-height:90vh;overflow:auto;padding:clamp(22px,5vw,38px);border:1px solid #b98d5e99;border-radius:17px;background:#111117f5;text-align:center;box-shadow:0 25px 90px #000d}.eyebrow{font-size:10px;letter-spacing:.22em;color:#e3b77f;font-weight:900}.card h1{font-size:clamp(36px,8vw,60px);line-height:.92;margin:14px 0}.card p{color:#d6cabc;line-height:1.55}.small{font-size:11px;color:#b6a897!important}.toast{position:fixed;z-index:8;left:50%;top:35%;transform:translateX(-50%);padding:12px 17px;max-width:88vw;border:1px solid #c49a6b;border-radius:8px;background:#101219f5;text-align:center;opacity:0;transition:opacity .2s;pointer-events:none}.toast.show{opacity:1}#error{color:#f1d4ad}@media(max-width:390px){.pad{width:94px;height:94px}.plaque{padding:7px 8px}.controls button{min-height:39px}}@media(orientation:landscape) and (max-height:600px){header{padding:6px 12px}.hud{top:29px}.plaque{padding:5px 8px}.plaque small{font-size:10px}.floor{top:73px}.bottom{padding:7px 13px}.pad{width:80px;height:80px}.stick{width:34px;height:34px}.controls{flex-direction:row;flex-wrap:wrap;justify-content:end}.controls button{min-height:35px}.controls #act{min-height:40px}.card{max-height:94vh;padding:16px 24px}.card h1{font-size:clamp(28px,6vh,42px);margin:8px 0}.card p{margin:7px 0;font-size:13px}}
 </style>
 </head>
 <body>
-<canvas id="world"></canvas><div class="vignette"></div>
+<canvas id="world"></canvas><div class="shade"></div>
 <header><a href="park-life.html?park=afterdark">KAEVORYN AFTERDARK</a><span>THE HOLLOW CROWN · HAUNTED ESTATE</span></header>
-<div class="hud"><div class="plaque"><b id="chapter">THE HOUSE REMEMBERS</b><small id="objective">A forgotten estate waits beyond the iron gates.</small></div><div class="plaque" style="text-align:right"><b id="state">DORMANT</b><small id="inventory">0 / 3 keys · 0 / 3 memories</small></div></div>
+<div class="hud"><div class="plaque"><b id="chapter">THE HOUSE REMEMBERS</b><small id="objective">A forgotten estate waits beyond the iron gates.</small></div><div class="plaque" style="text-align:right"><b id="state">DORMANT</b><small id="inventory">0 / 3 relics found</small></div></div>
 <div class="floor" id="floor">THE FORECOURT · MIDNIGHT</div><div class="toast" id="toast"></div>
 <div class="bottom"><div class="pad" id="joy"><div class="stick" id="stick"></div></div><div class="controls"><button id="act">EXAMINE / OPEN</button><button class="move" id="forward">▲ WALK FORWARD</button><button class="move" id="back">▼ WALK BACK</button><button class="move" id="left">◀ STEP LEFT</button><button class="move" id="right">STEP RIGHT ▶</button><button id="sound">SOUND: OFF</button><button id="help">CONTROLS</button></div></div>
-<div class="screen" id="start"><div class="card"><p class="eyebrow">KAEVORYN AFTERDARK · BUILT ANEW</p><h1>THE<br>HOLLOW CROWN</h1><p>Begin in the moonlit courtyard. Cross the grounds, climb the stone steps and enter a vast Victorian estate. Explore the grand foyer, portrait gallery, ballroom, library, nursery, attic and the rooms hidden beneath the foundations.</p><p class="small">Joystick or WASD to walk · Drag the scene to look · EXAMINE to interact · Mobile portrait and landscape supported.</p><button id="enter">ENTER THE ESTATE</button><p class="small" id="error" hidden>The 3D scene could not start. Check your connection and reload.</p></div></div>
-<div class="screen" id="ending" hidden><div class="card"><p class="eyebrow">THE HOUSE HAS CHOSEN TO REMEMBER YOU</p><h1>THE CROWN<br>IS YOURS.</h1><p>The Heart Below has awakened. The Hollow Crown is no longer empty.</p><button id="again">EXPLORE AGAIN</button><p><a href="park-life.html?park=afterdark" style="color:#e2b77f">RETURN TO AFTERDARK</a></p></div></div>
+<div class="screen" id="start"><div class="card"><p class="eyebrow">KAEVORYN AFTERDARK · A NEW EXPERIENCE</p><h1>THE<br>HOLLOW CROWN</h1><p>A vast Victorian manor rises beyond the iron gates. Cross its forecourt, pass through the great doors and explore candlelit halls, forgotten chambers, a grand ballroom, the upper gallery and the vaults beneath the house.</p><p class="small">Joystick or WASD to walk · Drag the scene to look · EXAMINE to open doors, collect relics and use the stairs. Works in portrait and landscape.</p><button id="enter">ENTER THE ESTATE</button><p class="small" id="error" hidden>3D graphics could not start. Check your connection and reload.</p></div></div>
+<div class="screen" id="ending" hidden><div class="card"><p class="eyebrow">THE HOUSE HAS CHOSEN TO REMEMBER YOU</p><h1>THE CROWN<br>IS YOURS.</h1><p>You have found the relics and awakened the heart beneath the estate.</p><button id="again">EXPLORE AGAIN</button><p><a href="park-life.html?park=afterdark" style="color:#e2b77f">RETURN TO AFTERDARK</a></p></div></div>
 <script>
 (function(){
 'use strict';
-var THREE=null,renderer,scene,camera,clock,started=false,active=false,level=-1,drag=null,joyId=null,audio=null,hum=null,toastTimer=0;
-var held={},joy={x:0,y:0},colliders=[],items=[],keys=0,memories=0,doors=[],player={x:0,y:1.65,z:25,yaw:0,pitch:0,speed:4.2};
+var THREE,scene,camera,renderer,clock,active=false,level=-1,drag=null,joyId=null,audio=null,hum=null,toastTimer=0,held={},colliders=[],objects=[],doors=[],relics=0;
+var player={x:0,y:1.65,z:27,yaw:0,pitch:0,speed:4.1},joy={x:0,y:0};
 var $=function(id){return document.getElementById(id)},canvas=$('world');
-var floorNames=['GROUND FLOOR · GRAND FOYER','FIRST FLOOR · PORTRAIT GALLERY','SECOND FLOOR · THE ATTIC','LOWER LEVEL · THE CATACOMBS'];
-function material(color,rough,metal){return new THREE.MeshStandardMaterial({color:color,roughness:rough===undefined?.82:rough,metalness:metal||0})}
-var M={wall:null,plaster:null,wood:null,oak:null,gold:null,stone:null,floor:null,dark:null,velvet:null,glass:null,iron:null,ivory:null};
-function group(parent,x,y,z){var g=new THREE.Group();g.position.set(x||0,y||0,z||0);parent.add(g);return g}
-function cube(parent,x,y,z,w,h,d,m,collision){var o=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m);o.position.set(x,y,z);o.castShadow=true;o.receiveShadow=true;parent.add(o);var solid=collision===true||(collision!==false&&w>=.65&&h>=.65&&d>=.18);if(solid){var wx=x,wy=y,wz=z,p=parent;while(p){wx+=p.position.x||0;wy+=p.position.y||0;wz+=p.position.z||0;p=p.parent}colliders.push({x:wx,y:wy,z:wz,w:w,d:d,h:h})}return o}
-function cyl(parent,x,y,z,r1,r2,h,m,n){var o=new THREE.Mesh(new THREE.CylinderGeometry(r1,r2,h,n||12),m);o.position.set(x,y,z);o.castShadow=true;parent.add(o);return o}
-function ball(parent,x,y,z,r,m,sx,sy,sz){var o=new THREE.Mesh(new THREE.SphereGeometry(r,16,12),m);o.position.set(x,y,z);o.scale.set(sx||1,sy||1,sz||1);o.castShadow=true;parent.add(o);return o}
-function point(parent,x,y,z,color,power,range){var l=new THREE.PointLight(color,power,range,2);l.position.set(x,y,z);parent.add(l);return l}
-function wall(parent,x,y,z,w,h,d,m,solid){cube(parent,x,y,z,w,h,d,m,solid!==false)}
-function chandelier(parent,x,y,z){var g=group(parent,x,y,z);cyl(g,0,0,0,.05,.05,.35,M.gold);cyl(g,0,-.2,0,.48,.38,.12,M.gold,16);for(var i=0;i<6;i++){var a=i*Math.PI/3,xx=Math.cos(a)*.62,zz=Math.sin(a)*.62;cyl(g,xx,-.36,zz,.035,.035,.24,M.gold);var flame=ball(g,xx,-.19,zz,.09,material('#ffcf83',.3),.6,1.6,.6);flame.material.emissive=new THREE.Color('#ff8b32');flame.material.emissiveIntensity=1.8;point(g,xx,-.25,zz,'#ffd18a',1.05,7)}cyl(g,0,.22,0,.025,.025,.45,M.iron);return g}
-function portrait(parent,x,y,z,flip){var g=group(parent,x,y,z);cube(g,0,0,0,1.05,1.45,.13,M.gold,false);cube(g,0,0,.08,.86,1.25,.04,M.dark,false);cube(g,0,-.23,.12,.62,.65,.035,M.velvet,false);ball(g,0,.28,.16,.19,material('#b69b80'),.8,1.15,.5);ball(g,-.07,.3,.19,.025,M.iron);ball(g,.07,.3,.19,.025,M.iron);cube(g,0,-.48,.15,.48,.3,.03,M.wood,false);g.rotation.y=flip||0;return g}
-function windowUnit(parent,x,y,z,w){cube(parent,x,y,z,w,.07,.12,M.gold,false);cube(parent,x,y-1.35,z,w,.07,.12,M.gold,false);cube(parent,x-w/2,y-.675,z,.07,1.4,.12,M.gold,false);cube(parent,x+w/2,y-.675,z,.07,1.4,.12,M.gold,false);cube(parent,x,y-.675,z+.05,w-.14,1.22,.035,M.glass,false);cube(parent,x,y-.675,z+.08,.045,1.22,.04,M.gold,false)}
-function doorUnit(parent,x,y,z,w,h){var g=group(parent,x,y,z);cube(g,0,h/2,0,w,h,.2,M.wood,false);cube(g,0,h/2,.12,w+.16,h+.16,.08,M.gold,false);cube(g,0,h/2,.17,w-.24,h-.24,.04,M.dark,false);for(var s=-1;s<=1;s+=2){cube(g,s*w*.25,h*.48,.2,w*.34,h*.35,.05,M.oak,false);cube(g,s*w*.25,h*.16,.2,w*.34,h*.2,.05,M.oak,false)}ball(g,w*.37,h*.48,.25,.065,M.gold);return g}
-function fireplace(parent,x,y,z){var g=group(parent,x,y,z);cube(g,0,1.35,0,2.5,2.7,.48,M.stone,true);cube(g,0,1.25,.26,1.25,1.55,.07,M.dark,false);cube(g,0,2.75,.12,2.8,.2,.72,M.gold,false);var flame=new THREE.Mesh(new THREE.ConeGeometry(.38,.9,9),new THREE.MeshStandardMaterial({color:'#ff8b38',emissive:'#a52d08',emissiveIntensity:1.8}));flame.position.set(0,.62,.34);g.add(flame);point(g,0,.9,.8,'#ff9b54',2.0,8)}
-function table(parent,x,y,z,w,d){var g=group(parent,x,y,z);cube(g,0,1.03,0,w,.17,d,M.oak,true);[-1,1].forEach(function(a){[-1,1].forEach(function(b){cube(g,a*(w/2-.12),.5,b*(d/2-.12),.15,1,.15,M.wood,true)})});return g}
-function room(parent,y,kind){
-var g=group(parent,0,y,0),stone=kind===3?M.stone:M.wall;
-cube(g,0,-.13,-2,24,.26,34,kind===3?M.stone:M.floor,false);
-// Continuous perimeter walls and a broad, open central circulation route.
-wall(g,-12,2.2,-2,.45,4.4,34,stone);wall(g,12,2.2,-2,.45,4.4,34,stone);
-wall(g,0,2.2,-19,24,.45,.45,stone);
-wall(g,-9,2.2,15,6,4.4,.45,stone);wall(g,9,2.2,15,6,4.4,.45,stone);
-wall(g,0,4.1,15,6,.6,.45,stone,false);
-// Deep walnut wainscoting, repeated raised panels, dado rails and carved pilasters.
+var floorY=[0,5.2,10.4,-5.2],floorNames=['GROUND FLOOR · GRAND FOYER','FIRST FLOOR · PORTRAIT GALLERY','SECOND FLOOR · THE ATTIC','LOWER LEVEL · THE VAULTS'];
+var mats={};
+function mat(c,r,m,e){return new THREE.MeshStandardMaterial({color:c,roughness:r===undefined?.82:r,metalness:m||0,emissive:e||'#000000',emissiveIntensity:e?0.22:0})}
+function box(x,y,z,w,h,d,m,solid){var o=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m);o.position.set(x,y,z);o.castShadow=true;o.receiveShadow=true;scene.add(o);if(solid)colliders.push({x:x,y:y,z:z,w:w,h:h,d:d});return o}
+function group(x,y,z){var g=new THREE.Group();g.position.set(x,y,z);scene.add(g);return g}
+function cylinder(x,y,z,rt,rb,h,m,n){var o=new THREE.Mesh(new THREE.CylinderGeometry(rt,rb,h,n||16),m);o.position.set(x,y,z);o.castShadow=true;scene.add(o);return o}
+function sphere(x,y,z,r,m,sx,sy,sz){var o=new THREE.Mesh(new THREE.SphereGeometry(r,18,14),m);o.position.set(x,y,z);o.scale.set(sx||1,sy||1,sz||1);o.castShadow=true;scene.add(o);return o}
+function light(x,y,z,c,power,range){var l=new THREE.PointLight(c,power,range,2);l.position.set(x,y,z);scene.add(l);return l}
+function trim(x,y,z,w,h,d){box(x,y,z,w,h,d,mats.gold,false)}
+function column(x,y,z,h){cylinder(x,y+h/2,z,.30,.38,h,mats.stone,12);cylinder(x,y+.16,z,.48,.48,.28,mats.gold,12);cylinder(x,y+h-.16,z,.48,.48,.28,mats.gold,12);cylinder(x,y+h+.02,z,.55,.55,.12,mats.stone,12)}
+function windowBay(x,y,z,w,h){box(x,y,z,w,h,.22,mats.black,false);box(x-w/2-.12,y,z+.12,.16,h+.28,.28,mats.gold,false);box(x+w/2+.12,y,z+.12,.16,h+.28,.28,mats.gold,false);box(x,y-h/2-.12,z+.12,w+.35,.16,.28,mats.gold,false);box(x,y+h/2+.12,z+.12,w+.35,.16,.28,mats.gold,false);box(x,y,z+.16,.07,h,.12,mats.gold,false);box(x,y,z+.17,w,.07,.12,mats.gold,false)}
+function pointedPanel(parent,x,y,z,w,h){var s=new THREE.Shape();s.moveTo(-w/2,-h/2);s.lineTo(-w/2,h*.18);s.lineTo(0,h/2);s.lineTo(w/2,h*.18);s.lineTo(w/2,-h/2);s.closePath();var m=new THREE.Mesh(new THREE.ExtrudeGeometry(s,{depth:.06,bevelEnabled:true,bevelSegments:2,steps:1,bevelSize:.025,bevelThickness:.025}),mats.gold);m.position.set(x,y,z);m.castShadow=true;parent.add(m)}
+function makeDoor(x,side){var pivot=new THREE.Group();pivot.position.set(x,0,15.0);scene.add(pivot);var dir=side>0?-1:1,leaf=new THREE.Group();leaf.position.x=side>0?-.02:.02;pivot.add(leaf);boxLocal(leaf,side*.84,2.12,0,1.68,4.24,.34,mats.door);boxLocal(leaf,side*.84,2.12,.20,1.42,3.94,.10,mats.oak);pointedPanel(leaf,side*.84,2.88,.27,1.08,1.28);pointedPanel(leaf,side*.84,1.22,.27,1.08,1.20);[-.72,.72].forEach(function(xx){boxLocal(leaf,side*.84+xx,2.12,.29,.07,3.95,.07,mats.gold)});[.16,2.1,4.08].forEach(function(yy){boxLocal(leaf,side*.84,yy,.3,1.48,.10,.08,mats.iron)});for(var h=0;h<3;h++){boxLocal(leaf,side*.84-side*.68,.65+h*1.7,.22,.18,.36,.14,mats.gold)}doors.push({pivot:pivot,angle:0,target:0,dir:dir})}
+function boxLocal(parent,x,y,z,w,h,d,m){var o=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m);o.position.set(x,y,z);o.castShadow=true;o.receiveShadow=true;parent.add(o)}
+function archTrim(){var g=group(0,0,0);var tor=new THREE.Mesh(new THREE.TorusGeometry(1.82,.10,10,36,Math.PI),mats.gold);tor.position.set(0,4.28,15.22);tor.rotation.z=Math.PI;g.add(tor);box(0,4.55,15.2,4.1,.22,.65,mats.gold,false);box(0,5.0,15.18,4.0,.75,.55,mats.stone,false);box(0,5.43,15.18,4.5,.18,.75,mats.gold,false);var crest=new THREE.Mesh(new THREE.OctahedronGeometry(.62),mats.gold);crest.position.set(0,6.05,15.18);crest.scale.set(1.25,1.5,.42);scene.add(crest)}
+function makeExterior(){
+var stone=mats.stone,roof=mats.roof;
+// Forecourt, approach path and planted grounds.
+box(0,-.38,19,110,.55,100,mats.ground,false);box(0,-.06,22,7,.12,35,mats.path,false);
+for(var side of [-1,1]){box(side*16,.02,18,1.1,.12,32,mats.path,false);for(var z=4;z<35;z+=5){cylinder(side*16,.9,z,.16,.22,1.8,mats.iron,10);sphere(side*16,1.95,z,.72,mats.topiary,1,1.25,1);light(side*5,2.1,z,'#ffca83',.75,7)}}
+// Continuous building shell. The only ground-level opening is the central doorway.
+box(-6.9,2.6,15,10.2,5.2,.85,stone,true);box(6.9,2.6,15,10.2,5.2,.85,stone,true);
+box(0,4.88,15,3.65,.64,.85,stone,true);
+box(0,7.8,15,24,5.2,.85,stone,true);box(0,13.0,15,24,5.2,.85,stone,true);
+box(0,7.8,-18,24,15.6,.9,stone,true);
+box(-12,7.8,-1.5,.9,15.6,33,stone,true);box(12,7.8,-1.5,.9,15.6,33,stone,true);
+box(0,15.9,-1.5,24.8,.8,34.5,roof,true);
+box(0,-.08,-1.5,24,.18,33,mats.floor,false);box(0,5.18,-1.5,24,.32,33,mats.floor,false);box(0,10.38,-1.5,24,.32,33,mats.floor,false);
+// Three strong storeys, with no transparent holes into the interior.
+for(var fy of [5.2,10.4]){box(0,fy+2.6,15,24,5.2,.12,mats.stone,false);for(var wx of [-8.2,-3.2,3.2,8.2])windowBay(wx,fy+2.55,15.22,1.45,2.8)}
+for(var side2 of [-1,1]){
+// Giant corner towers and mansard roof shoulders.
+box(side2*9.6,8.0,15.52,4.1,16,.32,mats.stone,false);
+for(var y of [0.35,5.05,5.45,10.25,10.65,15.35])box(side2*6.8,y,15.55,10.2,.22,.35,mats.gold,false);
+for(var x of [side2*11.5,side2*2.4]){column(x,.1,15.4,15.2)}
+for(var wz of [-12,-5,2,9]){box(side2*12.45,7.8,wz,.24,15.2,.24,mats.gold,false)}
+// Tower roof silhouettes.
+var cone=new THREE.Mesh(new THREE.ConeGeometry(3.3,4.5,4),roof);cone.position.set(side2*9.5,18.2,15);cone.rotation.y=Math.PI/4;scene.add(cone);
+}
+// Upper storey window bays are opaque black glass with deep surrounds.
+for(var fy2 of [7.8,13.0])for(var wx2 of [-8.2,-3.2,3.2,8.2])windowBay(wx2,fy2,15.58,1.5,2.9);
+// Main entrance jambs, stone arch and two heavy inward-folding leaves.
+box(-1.86,2.25,15.18,.28,4.5,.92,mats.gold,false);box(1.86,2.25,15.18,.28,4.5,.92,mats.gold,false);
+box(0,4.58,15.18,3.7,.26,.92,mats.gold,false);archTrim();makeDoor(-1.72,1);makeDoor(1.72,-1);
+// Carved masonry, corner quoins, pilasters and plinth.
+for(var side3 of [-1,1]){for(var q=0;q<7;q++){box(side3*11.62,.65+q*.78,15.56,.62,.54,.38,mats.stone,false);box(side3*11.62,.92+q*.78,15.78,.66,.09,.12,mats.gold,false)}for(var xx of [side3*2.35,side3*11.3]){box(xx,2.6,15.57,.24,5.0,.28,mats.gold,false);box(xx,5.18,15.58,.55,.22,.42,mats.stone,false)}}
+// Mansard roof edges, dormers and a central lantern tower.
+for(var side4 of [-1,1]){var roofMesh=new THREE.Mesh(new THREE.ConeGeometry(8.6,4.2,4),roof);roofMesh.position.set(side4*6.5,17.0,-2);roofMesh.rotation.y=Math.PI/4;scene.add(roofMesh)}
+var tower=new THREE.Mesh(new THREE.CylinderGeometry(1.6,2.0,3.6,8),mats.stone);tower.position.set(0,18.0,-2);scene.add(tower);var cap=new THREE.Mesh(new THREE.ConeGeometry(2.2,3.5,8),roof);cap.position.set(0,21.2,-2);scene.add(cap);
+for(var lx of [-7,7]){box(lx,1.6,16.1,.28,2.7,.28,mats.iron,false);light(lx,3.2,16.1,'#ffcc8a',1.3,9)}
+for(var i=0;i<8;i++){box(0,-.02,16.2+i*.58,5.2+i*.35,.22,.62,mats.stone,false)}
+}
+function roomDetails(y,kind){
+var base=y,ceiling=y+4.95;
+box(0,base+.03,-1,23.4,.14,31.8,kind===3?mats.vault:mats.floor,false);
+box(0,ceiling,-1,23.4,.16,31.8,mats.wood,false);
 for(var side of [-1,1]){
-cube(g,side*11.72,1.05,-2,.16,1.85,32,M.wood,false);
-cube(g,side*11.58,2.02,-2,.22,.12,32,M.gold,false);
-cube(g,side*11.58,.13,-2,.22,.16,32,M.gold,false);
-for(var pz=-16;pz<=12;pz+=4){
-cube(g,side*11.48,1.08,pz,.10,1.35,2.65,M.oak,false);
-cube(g,side*11.40,1.08,pz,.06,1.16,2.42,M.wood,false);
-cube(g,side*11.34,1.08,pz,.035,1.02,2.25,M.oak,false);
-cube(g,side*11.62,2.12,pz,.28,.22,.28,M.gold,false);
-cube(g,side*11.62,.12,pz,.28,.22,.28,M.gold,false);
+box(side*11.65,base+1.0,-1,.22,1.9,31,mats.wood,false);box(side*11.52,base+2.0,-1,.20,.12,31,mats.gold,false);
+for(var z=-14;z<14;z+=4){box(side*11.48,base+1.0,z,.10,1.45,2.55,mats.oak,false);box(side*11.39,base+1.0,z,.06,1.22,2.28,mats.wood,false);box(side*11.57,base+2.1,z,.3,.22,.32,mats.gold,false)}
+for(var z2 of [-13,-5,3,11]){box(side*11.42,base+2.3,z2,.34,4.5,.4,mats.wood,false);box(side*11.42,base+4.48,z2,.52,.18,.58,mats.gold,false)}
 }
-for(var z of [-15,-8,0,8]){cube(g,side*11.45,2.25,z,.32,4.5,.38,M.wood,false);cube(g,side*11.45,4.45,z,.5,.18,.58,M.gold,false)}
-for(var wz of [-15,-8,0,9])windowUnit(g,side*11.70,3.2,wz,1.25);
+for(var z3 of [-15,-9,-3,3,9,14])box(0,base+4.72,z3,23,.12,.22,mats.gold,false);
+box(0,base+.14,-1,5.2,.035,29,kind===3?mats.runner:mats.runner,false);
+for(var side5 of [-1,1])box(side5*2.42,base+.17,-1,.08,.04,29,mats.gold,false);
 }
-// Back-wall paneling and a tall, paired interior door motif.
-for(var bx of [-9,-6,-3,3,6,9]){cube(g,bx,1.05,-18.72,2.55,1.85,.12,M.wood,false);cube(g,bx,1.05,-18.62,2.32,1.55,.06,M.oak,false)}
-// Coffered ceiling with heavy cross beams; keep the central height open.
-cube(g,0,4.52,-2,24,.18,34,M.wood,false);
-for(var rz of [-17,-11,-5,1,7,13]){
-cube(g,0,4.35,rz,23,.16,.3,M.gold,false);
-for(var sx of [-1,1])cube(g,sx*5.8,4.27,rz,.16,.32,.38,M.wood,false);
+// Furniture, paintings, chandeliers and fireplaces are positioned along side bays, keeping the main walkways open.
+function portrait(x,y,z,side){box(x,y,z,.12,1.75,.12,mats.gold,false);box(x,y,z+side*.08,.08,1.48,.08,mats.black,false);var face=sphere(x,y+.12,z+side*.14,.24,mats.portrait,.8,1.25,.3);box(x,y-.53,z+side*.13,.48,.52,.06,mats.velvet,false)}
+function chandelier(x,y,z){cylinder(x,y,z,.06,.06,.45,mats.gold,12);cylinder(x,y-.25,z,.52,.34,.12,mats.gold,16);for(var i=0;i<6;i++){var a=i*Math.PI/3,xx=x+Math.cos(a)*.64,zz=z+Math.sin(a)*.64;cylinder(xx,y-.43,zz,.035,.035,.25,mats.gold,10);sphere(xx,y-.26,zz,.09,mats.flame,.6,1.7,.6);light(xx,y-.32,zz,'#ffc77c',1.05,8)}}
+function fireplace(x,y,z){box(x,y+1.35,z,2.5,2.7,.45,mats.stone,false);box(x,y+1.2,z+.25,1.3,1.45,.08,mats.black,false);box(x,y+2.75,z,2.9,.22,.7,mats.gold,false);var f=new THREE.Mesh(new THREE.ConeGeometry(.38,.9,9),mats.flame);f.position.set(x,y+.62,z+.38);scene.add(f);light(x,y+1,z+.8,'#ff8d43',2.1,9)}
+function table(x,y,z,w,d){box(x,y+1,z,w,.16,d,mats.oak,false);for(var a of [-1,1])for(var b of [-1,1])box(x+a*(w/2-.12),y+.5,z+b*(d/2-.12),.14,1,.14,mats.wood,false)}
+function buildInterior(){for(var i=0;i<4;i++){var y=floorY[i];roomDetails(y,i)}
+// Grand foyer.
+fireplace(-8,0,-12);fireplace(8,0,-12);chandelier(0,4.4,-10);chandelier(0,4.4,-1);chandelier(0,4.4,8);
+portrait(-11.38,2.8,-7,1);portrait(11.38,2.8,-7,-1);portrait(-11.38,2.8,4,1);portrait(11.38,2.8,4,-1);
+table(-8,0,1,2.5,1.3);table(8,0,1,2.5,1.3);
+// Portrait gallery.
+for(var z of [-12,-7,-2,3,8]){portrait(-11.38,7.9,z,1);portrait(11.38,7.9,z,-1)}
+fireplace(-8,5.2,-13);fireplace(8,5.2,-13);chandelier(0,9.6,-9);chandelier(0,9.6,2);table(0,5.2,-3,4.2,1.8);
+// Attic: dark beams, trunks and a circular stained-glass feature.
+for(var side of [-1,1]){for(var z2 of [-12,-5,2,9]){box(side*8,12.0,z2,2.6,1.3,2.0,mats.wood,false);box(side*8,12.72,z2,2.7,.12,2.1,mats.gold,false)}}
+chandelier(0,14.8,-5);portrait(-11.38,13.0,5,1);portrait(11.38,13.0,5,-1);
+// Vaults.
+for(var x of [-9,-5,5,9]){cylinder(x,-4.1,-12,.48,.48,1.7,mats.stone,16);cylinder(x,-3.2,-12,.54,.54,.12,mats.gold,16)}
+fireplace(0,-5.2,-15);chandelier(0,-.4,-4);for(var side2 of [-1,1]){box(side2*8,-4.4,5,2.4,.15,1.2,mats.stone,false);box(side2*8,-3.8,5,2.1,1.0,.12,mats.iron,false)}
+// A broad staircase occupies the rear central bay. Its steps are decorative; interaction moves between levels.
+for(var step=0;step<15;step++){var sy=step*.34,sz=-7.0-step*.58;box(0,sy+.12,sz,3.5,.24,.66,mats.oak,false);box(-1.72,sy+.20,sz,.12,.38,.12,mats.gold,false);box(1.72,sy+.20,sz,.12,.38,.12,mats.gold,false)}
+box(0,5.05,-15.7,4.4,.2,2.8,mats.stone,false);
 }
-for(var sx2 of [-1,1])for(var rz2 of [-15,-7,1,9]){cube(g,sx2*8.8,4.15,rz2,4.8,.10,.12,M.gold,false)}
-// A long, worn runner guides visitors through the mansion without blocking movement.
-cube(g,0,.012,-2,5.6,.035,28,material(kind===3?'#292126':'#512b32'),false);
-for(var edge of [-1,1])cube(g,edge*2.62,.04,-2,.09,.045,28,M.gold,false);
-for(var rz3 of [-14,-8,-2,4,10])cube(g,0,.045,rz3,2.9,.025,.08,M.gold,false);
-// Distinct room dressing, arranged along the side bays to leave the central aisle walkable.
-if(kind===0){
-fireplace(g,-8,0,-13);fireplace(g,8,0,-13);
-portrait(g,-11.45,2.8,-8,Math.PI/2);portrait(g,11.45,2.8,-8,-Math.PI/2);
-portrait(g,-11.45,2.8,4,Math.PI/2);portrait(g,11.45,2.8,4,-Math.PI/2);
-table(g,-8,0,0,2.2,1.35);table(g,8,0,0,2.2,1.35);
-chandelier(g,0,4,-11);chandelier(g,0,4,-2);chandelier(g,0,4,7);
-for(var bx0 of [-9,9]){cube(g,bx0,.48,8,2.3,.12,1.0,M.oak,true);cube(g,bx0,1.0,8,2.2,.9,.12,M.wood,false);cube(g,bx0,1.48,8,2.35,.12,1.1,M.gold,false)}
-}
-if(kind===1){
-fireplace(g,-8,0,-13);fireplace(g,8,0,-13);
-for(var px of [-11.45,11.45])for(var pz of [-7,2])portrait(g,px,2.8,pz,px<0?Math.PI/2:-Math.PI/2);
-table(g,0,0,-4,3.8,1.5);chandelier(g,0,4,-10);chandelier(g,0,4,0);chandelier(g,0,4,9);
-for(var bx1 of [-8,8]){cube(g,bx1,.55,8,2.3,.14,1.1,M.oak,true);cube(g,bx1,1.1,8,2.1,1,.12,M.velvet,false)}
-}
-if(kind===2){
-for(var bx2 of [-8,8]){cube(g,bx2,.75,-12,2.4,.14,2.2,M.wood,true);cube(g,bx2,1.3,-12,2.4,.9,.16,M.oak,false);cube(g,bx2,1.85,-12,2.45,.12,2.25,M.velvet,false);table(g,bx2,0,-3,1.5,1)}
-chandelier(g,0,4,-4);portrait(g,-11.45,2.8,2,Math.PI/2);portrait(g,11.45,2.8,2,-Math.PI/2);
-for(var bx3 of [-8,8]){cube(g,bx3,.65,7,2.1,.12,1.4,M.oak,true);cube(g,bx3,1.25,7,2.1,1.05,.14,M.wood,false)}
-}
-if(kind===3){
-for(var cx of [-9,-5,5,9]){cyl(g,cx,.9,-12,.6,.6,1.7,M.wood,16);cyl(g,cx,1.8,-12,.64,.64,.12,M.gold,16)}
-fireplace(g,0,0,-15);chandelier(g,0,4,-4);
-for(var bx4 of [-8,8]){cube(g,bx4,.5,5,2.4,.14,1.1,M.stone,true);cube(g,bx4,1.1,5,2.1,1,.12,M.iron,false)}
-}
-return g
-}
-function makeExterior(){var g=group(scene);cube(g,0,-.35,16,100,.5,100,material('#17191c'),false);cube(g,0,-.02,17,6,.12,32,material('#4b4641'),false);
-var stone=material('#39312e'),roof=material('#171a21');
-// Split the front facade into two wings so there is a real, unobstructed doorway through the entire wall thickness.
-// Continuous lower front facade wings run from the doorway jambs all the way to both outer corners.
-cube(g,-6.8,3.3,7.7,10.4,6.6,.85,stone,true);cube(g,6.8,3.3,7.7,10.4,6.6,.85,stone,true);cube(g,0,6.6,7.4,24,.35,1.4,M.gold,false);
-for(var s of [-1,1]){cube(g,s*8,3.2,7.1,6,6.4,.7,stone,true);var r=new THREE.Mesh(new THREE.ConeGeometry(5,3,4),roof);r.position.set(s*8,7.7,7);r.rotation.y=Math.PI/4;g.add(r)}
-// Tower supports flank the entrance instead of forming a solid wall across it.
-cube(g,-2.3,7.1,7,.7,8,.9,stone,false);cube(g,2.3,7.1,7,.7,8,.9,stone,false);var tower=new THREE.Mesh(new THREE.ConeGeometry(4.2,4.5,4),roof);tower.position.set(0,13,7);tower.rotation.y=Math.PI/4;g.add(tower);
-for(var side of [-1,1])for(var wz of [-10,-3,3]){cube(g,side*8,3.1,wz,1.2,2.1,.15,M.glass,false);cube(g,side*8,3.1,wz,.12,2.2,.2,M.gold,false);point(g,side*8,3,wz,'#ffca83',1.0,8)}
-// Rebuilt entrance: a clearly defined, full-height doorway with a matched pair of inward-swinging doors.
- // Keep the wall opening completely clear; only the outer jambs and header frame the passage.
-var jamb=material('#55402f',.72),doorWood=material('#28180f',.78),doorPanel=material('#49301f',.7),doorIron=material('#202126',.6,.78);
-cube(g,-1.48,2.12,8.28,.24,4.24,.78,jamb,false);
-cube(g,1.48,2.12,8.28,.24,4.24,.78,jamb,false);
-cube(g,0,4.18,8.28,3.2,.28,.78,M.gold,false);
-cube(g,0,3.93,8.28,2.92,.12,.8,doorWood,false);
-// Solid Gothic transom closes the visible gap between the door leaves and the stone header.
- // The infill sits above the moving leaves, so it never blocks the doorway when they swing open.
-cube(g,0,3.78,8.40,2.68,.48,.62,doorWood,true);
-cube(g,0,3.78,8.73,2.38,.28,.035,doorPanel,false);
-cube(g,0,3.78,8.76,.12,.40,.06,M.gold,false);
-for(var transomX of [-.78,.78]){
-  cube(g,transomX,3.78,8.76,.08,.40,.06,M.gold,false);
-}
-// Continuous stone spandrel closes the entire facade band above the entrance.
-// It bridges the door header to the upper-storey wall; the moving doorway below stays clear.
-cube(g,0,5.48,8.98,3.55,2.48,.82,material('#39312e',.94,0),true);
-cube(g,0,6.70,9.43,3.72,.18,.16,M.gold,false);
-cube(g,0,4.24,9.43,3.48,.16,.16,M.gold,false);
-// Small pointed arch crown above the doors, leaving the actual doorway unobstructed.
-var arch=new THREE.Mesh(new THREE.TorusGeometry(1.42,.095,8,32,Math.PI),M.gold);
-arch.position.set(0,3.78,8.64);arch.rotation.z=Math.PI;g.add(arch);
-function entranceLeaf(pivot,side){
-  var leaf=group(pivot,side*.68,0,0),w=1.34,h=3.55;
-  // Thick timber slab and layered edge moulding.
-  cube(leaf,0,h/2,0,w,h,.24,doorWood,false);
-  cube(leaf,0,h/2,.135,w-.12,h-.12,.07,doorPanel,false);
-  [-.57,.57].forEach(function(x){cube(leaf,x,h/2,.19,.10,h-.08,.11,M.gold,false)});
-  [.10,h/2,h-.10].forEach(function(y){cube(leaf,0,y,.19,w-.10,.12,.11,doorPanel,false)});
-  // Two inset Gothic panels, with pointed tops and raised beveled borders.
-  function panel(y,ph,pw){
-    var s=new THREE.Shape();s.moveTo(-pw/2,-ph/2);s.lineTo(-pw/2,ph*.2);s.lineTo(0,ph/2);s.lineTo(pw/2,ph*.2);s.lineTo(pw/2,-ph/2);s.closePath();
-    var border=new THREE.Mesh(new THREE.ExtrudeGeometry(s,{depth:.055,bevelEnabled:true,bevelSegments:2,steps:1,bevelSize:.018,bevelThickness:.018}),M.gold);
-    border.position.set(0,y,.205);border.castShadow=true;leaf.add(border);
-    var inner=new THREE.Mesh(new THREE.ExtrudeGeometry(s,{depth:.035,bevelEnabled:true,bevelSegments:2,steps:1,bevelSize:.012,bevelThickness:.012}),doorPanel);
-    inner.scale.set(.78,.82,1);inner.position.set(0,y,.275);leaf.add(inner);
-    var detail=new THREE.Mesh(new THREE.ConeGeometry(.09,.28,4),M.gold);detail.position.set(0,y+.02,.33);detail.rotation.z=Math.PI;leaf.add(detail);
-  }
-  panel(2.48,1.18,.88);panel(.91,1.18,.88);
-  // Forged cross braces and visible rivets; deliberately no ring pulls or knockers.
-  [.20,3.34].forEach(function(y){
-    cube(leaf,0,y,.30,w-.12,.085,.075,doorIron,false);
-    for(var n=0;n<6;n++)ball(leaf,-.48+n*.192,y,.35,.025,M.gold);
-  });
-  // Three hinge straps sit on the outside edge of each leaf.
-  var outer=side>0?-.61:.61;
-  [-1.22,0,1.22].forEach(function(y){
-    cube(leaf,outer,h/2+y,.22,.18,.12,.09,doorIron,false);
-    cyl(leaf,outer,h/2+y,.015,.065,.065,.22,M.gold,12);
-  });
-  return leaf;
-}
-var leftHinge=group(g,-1.36,0,8.72),rightHinge=group(g,1.36,0,8.72);
-entranceLeaf(leftHinge,1);entranceLeaf(rightHinge,-1);
-doors.push({pivot:leftHinge,direction:1,angle:0,target:0},{pivot:rightHinge,direction:-1,angle:0,target:0});
-for(var i=0;i<6;i++)cube(g,0,-.02,9+i*.68,5.6+i*.45,.18,.7-i*.02,M.stone,false);
-for(var side2 of [-1,1]){for(var i2=0;i2<15;i2++){var fx=side2*(13+i2*.9);cyl(g,fx,1.1,12,.04,.04,2.2,M.iron);cyl(g,fx,2.2,12,.11,.11,.18,M.gold)}cube(g,side2*18,1.1,12,.1,2.2,22,M.iron,false);for(var tz of [-3,7,17]){cyl(g,side2*17,.9,tz,.24,.34,1.8,material('#30231e'));ball(g,side2*17,2.5,tz,1,material('#10171b'),1.25,1.2,.9)}}
-// Rebuild the full visible house envelope: long side elevations, corner masonry,
-// a continuous stone plinth and a detailed front wall around the open central entrance.
-for(var sideWall of [-1,1]){
-cube(g,sideWall*12.25,3.15,-5.6,.72,6.3,26.2,stone,true);
-cube(g,sideWall*12.30,.18,-5.6,.9,.38,26.6,M.gold,false);
-cube(g,sideWall*12.30,6.25,-5.6,.95,.32,26.6,M.gold,false);
-for(var wz2 of [-16,-10,-4,2]){
-cube(g,sideWall*12.62,3.05,wz2,.12,2.35,1.65,M.glass,false);
-cube(g,sideWall*12.70,3.05,wz2,.08,2.5,1.82,M.gold,false);
-cube(g,sideWall*12.72,3.05,wz2,.08,.10,1.8,M.iron,false);
-point(g,sideWall*12.1,3.0,wz2,'#ffbf76',.55,6);
-}
-for(var q=0;q<7;q++){cube(g,sideWall*11.78,3.2,-17+q*3.8,.22,6.4,.32,M.gold,false)}
-}
-// Front-facing window bays, stone surrounds, keystones and broad cornice bands.
-for(var fs of [-1,1]){
-var wx=fs*8.1;
-cube(g,wx,3.25,7.18,2.0,2.8,.18,M.dark,false);
-cube(g,wx,3.25,7.05,1.58,2.35,.12,M.glass,false);
-cube(g,wx-1.02,3.25,7.0,.16,3.0,.24,M.gold,false);
-cube(g,wx+1.02,3.25,7.0,.16,3.0,.24,M.gold,false);
-cube(g,wx,4.78,7.0,2.2,.18,.24,M.gold,false);
-cube(g,wx,1.72,7.0,2.2,.18,.24,M.gold,false);
-cube(g,wx,3.25,6.94,.10,2.65,.20,M.gold,false);
-cube(g,wx,3.25,6.92,1.8,.10,.20,M.gold,false);
-cube(g,wx,5.0,7.0,.48,.32,.3,M.stone,false);
-for(var fy of [0.3,6.3])cube(g,fs*6.8,fy,7.12,10.5,.22,.34,M.gold,false);
-for(var q2=0;q2<5;q2++){cube(g,fs*(3.1+q2*2.2),3.3,7.18,.16,6.0,.18,M.gold,false)}
-}
-// Heavy corner quoins and a carved central crest preserve the mansion's established silhouette.
-for(var cs of [-1,1])for(var cy=0;cy<6;cy++){cube(g,cs*11.8,.7+cy*1.05,7.12,.42,.72,.32,M.stone,false);cube(g,cs*11.8,.7+cy*1.05,6.92,.46,.12,.12,M.gold,false)}
-// Clearly visible front elevation skin: the earlier window dressing sat behind the wall faces.
- // These two solid stone wings deliberately stop at the doorway edges, so the entrance remains open.
-for(var wing of [-1,1]){
-  cube(g,wing*6.8,3.25,8.19,10.25,6.35,.16,stone,true);
-  cube(g,wing*6.8,.18,8.31,10.35,.34,.22,M.gold,false);
-  cube(g,wing*6.8,6.30,8.31,10.35,.30,.22,M.gold,false);
-  // Raised masonry panels across the full front wall.
-  for(var px of [2.05,4.35,6.8,9.25,11.55]){
-    var xx=wing*px;
-    cube(g,xx,3.15,8.31,.20,6.0,.20,M.gold,false);
-    cube(g,xx,3.15,8.43,.10,5.72,.06,M.stone,false);
-  }
-  // Recessed front windows now sit proud of the wall face and are visible from the courtyard.
-  var wx=wing*8.1;
-  cube(g,wx,3.25,8.34,1.72,2.55,.12,M.dark,false);
-  cube(g,wx,3.25,8.42,1.42,2.24,.08,M.glass,false);
-  cube(g,wx-0.88,3.25,8.49,.13,2.72,.12,M.gold,false);
-  cube(g,wx+0.88,3.25,8.49,.13,2.72,.12,M.gold,false);
-  cube(g,wx,4.66,8.49,1.95,.16,.12,M.gold,false);
-  cube(g,wx,1.84,8.49,1.95,.16,.12,M.gold,false);
-  cube(g,wx,3.25,8.52,.10,2.48,.10,M.gold,false);
-  cube(g,wx,3.25,8.52,1.52,.10,.10,M.gold,false);
-  // Broad stone pilasters and carved capitals frame each wing.
-  for(var cx of [2.0,11.6]){
-    cube(g,wing*cx,3.25,8.38,.48,6.25,.42,M.stone,false);
-    cube(g,wing*cx,6.42,8.40,.72,.24,.52,M.gold,false);
-    cube(g,wing*cx,.10,8.40,.72,.24,.52,M.gold,false);
-  }
-}
-// FINAL SEALED BUILDING ENVELOPE: opaque masonry behind all decorative window dressing.
- // The front doors sit OUTSIDE this wall plane, so no interior sightline remains when shut.
-for(var sealSide of [-1,1]){
-  cube(g,sealSide*6.8,3.22,8.43,10.25,6.35,.58,stone,true);
-  cube(g,sealSide*6.8,.16,8.76,10.32,.30,.24,M.gold,false);
-  cube(g,sealSide*6.8,6.35,8.76,10.32,.28,.24,M.gold,false);
-}
-// SEAL THE SECOND AND THIRD STOREYS: the previous shell stopped at the first-floor roofline.
- // These opaque upper walls close every exterior sightline while leaving the ground-floor doorway untouched.
-cube(g,0,9.72,8.43,24.5,6.62,.72,stone,true);
-for(var upperSide of [-1,1]){
-  cube(g,upperSide*12.25,9.72,-5.6,.82,6.62,26.5,stone,true);
-}
-cube(g,0,9.72,-19.05,24.5,6.62,.72,stone,true);
-// FULL-FOOTPRINT UPPER STOREY ENCLOSURE.
- // The room groups extend to z=15 at the front; the earlier shell sat too far back.
- // Seal the real room perimeter above the ground-floor entrance, not the decorative facade.
-var upperEnvelope=material('#39312e',.94,0);
-cube(g,0,9.0,15.48,25.2,9.0,.9,upperEnvelope,true);
-cube(g,0,9.0,-19.48,25.2,9.0,.9,upperEnvelope,true);
-for(var perimeterSide of [-1,1]){
-  cube(g,perimeterSide*12.48,9.0,-2.0,.9,9.0,35.0,upperEnvelope,true);
-}
-// FRONTMOST UPPER-FLOOR PRIVACY WALLS.
- // Place these on the courtyard-facing side of every older facade detail so no
- // decorative window geometry can expose the second- or third-floor rooms.
-var opaqueFront=material('#39312e',.9,0);
-cube(g,0,6.95,7.02,25.0,.18,.24,opaqueFront,true);
-cube(g,0,9.72,7.02,25.0,5.55,.24,opaqueFront,true);
-cube(g,0,12.62,7.02,25.0,.22,.24,opaqueFront,true);
-// Opaque night-dark window faces and raised frames make the upper facade read as windows,
-// without creating transparent holes into the ballroom or attic.
-var nightGlass=material('#090b12',.32,.18);
-for(var upperY of [8.15,11.15]){
-  for(var upperX of [-8.2,8.2]){
-    cube(g,upperX,upperY,8.02,1.82,2.35,.12,nightGlass,false);
-    cube(g,upperX-.98,upperY,7.94,.14,2.55,.18,M.gold,false);
-    cube(g,upperX+.98,upperY,7.94,.14,2.55,.18,M.gold,false);
-    cube(g,upperX,upperY+1.28,7.94,2.1,.14,.18,M.gold,false);
-    cube(g,upperX,upperY-1.28,7.94,2.1,.14,.18,M.gold,false);
-    cube(g,upperX,upperY,7.91,.10,2.32,.18,M.gold,false);
-    cube(g,upperX,upperY,7.90,1.78,.10,.18,M.gold,false);
-  }
-}
-// Close the masonry above the doorway; only the actual door aperture remains.
-cube(g,0,5.15,8.43,3.35,2.45,.58,stone,true);
-cube(g,-1.52,2.0,8.43,.30,4.0,.68,stone,true);
-cube(g,1.52,2.0,8.43,.30,4.0,.68,stone,true);
-// Opaque upper roof deck and rear closure complete the shell around every floor.
-cube(g,0,13.35,-5.4,25.1,.65,38.2,roof,true);
-cube(g,0,3.2,-19.05,24.5,6.4,.7,stone,true);
-// Reinforce the side elevations as uninterrupted solid barriers; window trim remains decorative only.
-for(var shellSide of [-1,1]){
-  cube(g,shellSide*12.25,3.2,-5.6,.82,6.4,26.5,stone,true);
-}
-// Solid threshold cheeks keep the player aligned with the doorway and prevent clipping around jambs.
-cube(g,-1.68,1.9,8.55,.22,3.8,.9,stone,true);
-cube(g,1.68,1.9,8.55,.22,3.8,.9,stone,true);
-cube(g,0,6.95,7.05,3.1,.22,.42,M.stone,false);
-var crest=new THREE.Mesh(new THREE.OctahedronGeometry(.72),M.gold);crest.position.set(0,7.75,7.02);crest.scale.set(1.2,1.45,.35);g.add(crest);
-for(var lampZ of [13,20,27])for(var lampS of [-1,1]){cyl(g,lampS*4,.7,lampZ,.09,.13,1.4,M.iron);point(g,lampS*4,1.5,lampZ,'#ffe0a8',.9,8)}
-}
-function buildItems(){var specs=[['key','Brass foyer key',-8,-8,0],['memory','The family supper',8,-8,0],['memory','The matriarch’s last letter',-9,-1,0],['key','Silver ballroom key',-8,-8,1],['memory','The last waltz',8,-8,1],['key','Iron attic key',8,-11,2],['memory','The nursery song',-8,-11,2],['door','The Heart Chamber',0,-15,3]];
-specs.forEach(function(a){var kind=a[0],name=a[1],x=a[2],z=a[3],lv=a[4],y=lv===3?-4.5:lv*4.5,g=group(scene,x,y,z);
-if(kind==='key'){var ring=new THREE.Mesh(new THREE.TorusGeometry(.22,.055,8,20),M.gold);ring.position.y=1;g.add(ring);cyl(g,0,.65,0,.035,.035,.42,M.gold);point(g,0,1,0,'#ffd27b',.7,4)}
-else if(kind==='memory'){var crystal=new THREE.Mesh(new THREE.OctahedronGeometry(.32),new THREE.MeshStandardMaterial({color:'#b8e6ed',emissive:'#4c9cb0',emissiveIntensity:1.5}));crystal.position.y=1.15;g.add(crystal);point(g,0,1.15,0,'#7dd9ee',.7,4)}
-else{doorUnit(g,0,0,0,2.7,3.2)}
-items.push({kind:kind,name:name,x:x,z:z,level:lv,group:g,used:false})})}
-function initScene(){M.wall=material('#302522');M.plaster=material('#40332c');M.wood=material('#3b291f');M.oak=material('#62452e');M.gold=material('#a98758',.48,.55);M.stone=material('#514b46');M.floor=material('#382a25');M.dark=material('#151318');M.velvet=material('#43242d');M.glass=new THREE.MeshStandardMaterial({color:'#d6a96d',emissive:'#8f4f1e',emissiveIntensity:.55});M.iron=material('#292a2d',.75,.8);M.ivory=material('#d9cbb2');
-scene=new THREE.Scene();scene.background=new THREE.Color('#171923');scene.fog=new THREE.FogExp2('#171923',.006);
-camera=new THREE.PerspectiveCamera(72,innerWidth/innerHeight,.08,130);camera.rotation.order='YXZ';
-renderer=new THREE.WebGLRenderer({canvas:canvas,antialias:true,alpha:false,powerPreference:'high-performance'});renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.5));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.65;
-scene.add(new THREE.HemisphereLight('#d5e1f5','#514034',2.0));var moon=new THREE.DirectionalLight('#d3ddf2',2.0);moon.position.set(-15,24,12);moon.castShadow=true;moon.shadow.mapSize.set(1024,1024);scene.add(moon);
-makeExterior();room(scene,0,0);room(scene,4.5,1);room(scene,9,2);room(scene,-4.5,3);buildItems();
-}
-function toast(msg){var el=$('toast');el.textContent=msg;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(function(){el.classList.remove('show')},2500)}
-function floorChange(n){level=n;player.y=(n===3?-4.5:n*4.5)+1.65;player.x=0;player.z=1;$('floor').textContent=floorNames[n];$('chapter').textContent=['THE HOUSE REMEMBERS','THE DANCE NEVER ENDED','ABOVE THE CEILING','BELOW THE FOUNDATIONS'][n];$('objective').textContent='Search the rooms. Look for objects glowing in the candlelight.';$('state').textContent='EXPLORING';}
-function nearest(){var best=null,dist=2.6;items.forEach(function(o){if(o.used||o.level!==level)return;var d=Math.hypot(o.x-player.x,o.z-player.z);if(d<dist){best=o;dist=d}});return best}
-function interact(){if(!active)return;var o=nearest();if(o){if(o.kind==='key'){o.used=true;keys++;o.group.visible=false;toast(o.name+' collected.')}else if(o.kind==='memory'){o.used=true;memories++;o.group.visible=false;toast(o.name+' recovered.')}else if(keys<3){toast('The Heart Chamber is sealed. Find all three keys.')}else{$('ending').hidden=false;active=false} $('inventory').textContent=keys+' / 3 keys · '+memories+' / 3 memories';return}
-if(level===-1&&player.z>7&&player.z<12&&Math.abs(player.x)<3.2){doors.forEach(function(d){d.target=d.direction*1.3});toast('THE GREAT DOORS SWING OPEN');return}
-if(level===-1&&player.z<12){toast('The entrance is sealed. Stand before the doors and use EXAMINE / OPEN.');return}
-if(Math.abs(player.x)<3.2&&player.z>-7&&player.z<-1){floorChange((level+1)%4);toast('You climb the grand staircase.');return}
-toast('Nothing responds. Move closer to an object or the staircase.')}
-function blocked(x,z){
-  var radius=.38;
-  // Keep the outdoor grounds separate from the indoor room limits.
-  if(level===-1){
-    if(x<-22+radius||x>22-radius||z<4+radius||z>38-radius)return true;
-    // The entrance stays sealed until the player deliberately opens both doors.
-    if(z<8.05+radius&&z>7.15-radius&&Math.abs(x)<1.72&&doors.some(function(d){return Math.abs(d.angle)<0.95}))return true;
-  }else{
-    if(x<-11.2+radius||x>11.2-radius||z<-18.2+radius||z>14.4-radius)return true;
-  }
-  // Test solid walls and furniture on the player's current floor only.
-  for(var i=0;i<colliders.length;i++){
-    var b=colliders[i];
-    if(Math.abs(player.y-b.y)>(b.h/2+1.05))continue;
-    if(Math.abs(x-b.x)<(b.w/2+radius)&&Math.abs(z-b.z)<(b.d/2+radius))return true;
-  }
-  return false
-}
-function move(dx,dz){var distance=Math.hypot(dx,dz),steps=Math.max(1,Math.ceil(distance/.12)),sx=dx/steps,sz=dz/steps;for(var step=0;step<steps;step++){var nx=player.x+sx,nz=player.z+sz;if(!blocked(nx,player.z))player.x=nx;if(!blocked(player.x,nz))player.z=nz}if(fallbackCanvas)fallbackDraw()}
-function update(dt){var f=(held.KeyW||held.ArrowUp?1:0)-(held.KeyS||held.ArrowDown?1:0)-joy.y,s=(held.KeyD||held.ArrowRight?1:0)-(held.KeyA||held.ArrowLeft?1:0)+joy.x;var n=Math.hypot(f,s);if(n>.02){f/=n;s/=n;var v=player.speed*dt,fx=-Math.sin(player.yaw),fz=-Math.cos(player.yaw),rx=Math.cos(player.yaw),rz=-Math.sin(player.yaw);move((fx*f+rx*s)*v,(fz*f+rz*s)*v)}
+function addRelics(){var defs=[['The brass mourning key',-8,-5,0,'key'],['The matriarch’s portrait',8,-7,0,'memory'],['The silver music locket',-8,4,1,'memory'],['The ballroom key',8,-5,1,'key'],['The attic signet',8,5,2,'key'],['The nursery keepsake',-8,7,2,'memory'],['The sealed heart',0,-14,3,'heart']];defs.forEach(function(d){var g=group(d[1],floorY[d[3]]+1.25,d[2]);if(d[4]==='key'){var ring=new THREE.Mesh(new THREE.TorusGeometry(.22,.055,8,22),mats.gold);g.add(ring);boxLocal(g,0,-.3,0,.07,.55,.07,mats.gold)}else{var gem=new THREE.Mesh(new THREE.OctahedronGeometry(.34),mats.gem);g.add(gem);light(d[1],floorY[d[3]]+1.3,d[2],'#7ddcf4',.75,5)}objects.push({name:d[0],x:d[1],z:d[2],level:d[3],group:g,kind:d[4],used:false})})}
+function init(){mats.stone=mat('#4b4642');mats.roof=mat('#171923');mats.gold=mat('#a98557',.45,.62);mats.wood=mat('#2a1b16');mats.oak=mat('#523724');mats.door=mat('#21140f');mats.black=mat('#080a11',.28,.2);mats.glass=mat('#080c16',.2,.25);mats.floor=mat('#332722');mats.ground=mat('#111419');mats.path=mat('#38332e');mats.iron=mat('#24262a',.6,.85);mats.velvet=mat('#45232c');mats.portrait=mat('#9c7c61');mats.flame=mat('#ff9a43',.35,0,'#e94b13');mats.runner=mat('#4a2730');mats.topiary=mat('#17251e');mats.vault=mat('#29282b');mats.gem=mat('#80dff1',.25,.15,'#2b8da7');
+scene=new THREE.Scene();scene.background=new THREE.Color('#11141d');scene.fog=new THREE.FogExp2('#11141d',.0058);
+camera=new THREE.PerspectiveCamera(72,innerWidth/innerHeight,.08,180);camera.rotation.order='YXZ';
+renderer=new THREE.WebGLRenderer({canvas:canvas,antialias:true,powerPreference:'high-performance'});renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.5));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.35;
+scene.add(new THREE.HemisphereLight('#cbd7ed','#342820',1.55));var moon=new THREE.DirectionalLight('#cbd8ed',1.7);moon.position.set(-18,26,22);moon.castShadow=true;moon.shadow.mapSize.set(1024,1024);scene.add(moon);
+makeExterior();buildInterior();addRelics();camera.position.set(0,player.y,player.z);clock=new THREE.Clock();animate()}
+function toast(t){var el=$('toast');el.textContent=t;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(function(){el.classList.remove('show')},2400)}
+function updateHUD(){ $('floor').textContent=level<0?'THE FORECOURT · MIDNIGHT':floorNames[level];$('state').textContent=level<0?'APPROACHING':'EXPLORING';$('inventory').textContent=relics+' / 6 relics found'}
+function start(){if(!clock){toast('The 3D estate is still loading.');return}active=true;level=-1;relics=0;objects.forEach(function(o){o.used=false;o.group.visible=true});doors.forEach(function(d){d.angle=0;d.target=0;d.pivot.rotation.y=0});player.x=0;player.y=1.65;player.z=27;player.yaw=0;player.pitch=0;$('start').hidden=true;$('ending').hidden=true;$('chapter').textContent='THE HOUSE REMEMBERS';$('objective').textContent='Approach the front doors and open them.';updateHUD();toast('THE ESTATE AWAITS')}
+function blocked(x,z){var r=.34;if(level<0){if(x<-22+r||x>22-r||z<5||z>42)return true;if(z<15.0+r&&z>14.15-r&&Math.abs(x)<1.75&&doors.some(function(d){return Math.abs(d.angle)<.9}))return true;return false}
+var base=floorY[level];if(x<-11.25+r||x>11.25-r||z<-17.4+r||z>14.25-r)return true;
+for(var i=0;i<colliders.length;i++){var b=colliders[i];if(b.y+b.h/2<base+.05||b.y-b.h/2>base+1.85)continue;if(Math.abs(x-b.x)<b.w/2+r&&Math.abs(z-b.z)<b.d/2+r)return true}
+return false}
+function move(dx,dz){var n=Math.max(1,Math.ceil(Math.hypot(dx,dz)/.11)),sx=dx/n,sz=dz/n;for(var i=0;i<n;i++){var nx=player.x+sx,nz=player.z+sz;if(!blocked(nx,player.z))player.x=nx;if(!blocked(player.x,nz))player.z=nz}}
+function setFloor(n){level=n;player.y=floorY[n]+1.65;player.x=0;player.z=-12.2;$('chapter').textContent=['THE HOUSE REMEMBERS','THE PORTRAITS WATCH','ABOVE THE CEILING','THE VAULTS BELOW'][n];$('objective').textContent='Explore this floor. Search for the six lost relics.';updateHUD();toast(floorNames[n])}
+function interact(){if(!active)return;
+if(level<0&&player.z<18.5&&Math.abs(player.x)<3.3){doors.forEach(function(d){d.target=d.dir*1.34});$('objective').textContent='The great doors are opening. Walk inside.';toast('THE GREAT DOORS SWING INWARD');return}
+if(level<0){toast('Walk up the front steps to the great doors.');return}
+var near=null,dist=2.4;objects.forEach(function(o){if(o.used||o.level!==level)return;var d=Math.hypot(o.x-player.x,o.z-player.z);if(d<dist){near=o;dist=d}});
+if(near){near.used=true;near.group.visible=false;if(near.kind==='heart'){if(relics<6){toast('The Heart Below is still bound. Find all six relics.');near.used=false;near.group.visible=true}else{$('ending').hidden=false;active=false}return}relics++;$('inventory').textContent=relics+' / 6 relics found';toast(near.name+' recovered.');if(relics===6)$('objective').textContent='Return to the sealed Heart Below in the vaults.';return}
+if(Math.abs(player.x)<2.8&&player.z<-6.2&&player.z>-16.5){setFloor((level+1)%4);return}
+toast('Move closer to an object or the grand staircase.')}
+function update(dt){var f=(held.KeyW||held.ArrowUp?1:0)-(held.KeyS||held.ArrowDown?1:0)-joy.y,s=(held.KeyD||held.ArrowRight?1:0)-(held.KeyA||held.ArrowLeft?1:0)+joy.x,n=Math.hypot(f,s);if(n>.02){f/=n;s/=n;var fx=-Math.sin(player.yaw),fz=-Math.cos(player.yaw),rx=Math.cos(player.yaw),rz=-Math.sin(player.yaw);move((fx*f+rx*s)*player.speed*dt,(fz*f+rz*s)*player.speed*dt)}
 camera.position.set(player.x,player.y,player.z);camera.rotation.set(player.pitch,player.yaw,0,'YXZ');
-if(level===-1&&player.z<7.8&&Math.abs(player.x)<2.8&&doors.every(function(d){return Math.abs(d.angle)>0.9})){level=0;$('floor').textContent=floorNames[0];$('chapter').textContent='THE HOUSE REMEMBERS';$('objective').textContent='The doors close behind you. Search the grand foyer.';$('state').textContent='INSIDE';toast('WELCOME TO THE HOLLOW CROWN')}
-}
-function animate(){requestAnimationFrame(animate);if(!renderer)return;if(active){var dt=Math.min(clock.getDelta(),.05);update(dt);doors.forEach(function(d){d.angle+=(d.target-d.angle)*Math.min(1,dt*1.9);d.pivot.rotation.y=d.angle});var t=clock.elapsedTime;items.forEach(function(o){if(!o.used&&o.group.visible&&o.kind!=='door'){o.group.position.y+=Math.sin(t*1.8+o.x)*.0015;o.group.rotation.y+=dt*.5}})}renderer.render(scene,camera)}
-function start(){if(active)return;if(!clock){toast('The 3D scene is still starting. Please wait a moment.');return}keys=0;memories=0;items.forEach(function(o){o.used=false;o.group.visible=true});$('inventory').textContent='0 / 3 keys · 0 / 3 memories';$('start').hidden=true;$('ending').hidden=true;player.x=0;player.y=1.65;player.z=25;player.yaw=0;player.pitch=0;level=-1;$('floor').textContent='THE FORECOURT · MIDNIGHT';$('chapter').textContent='THE HOUSE REMEMBERS';$('objective').textContent='Walk up the steps and pass through the great front doors.';$('state').textContent='APPROACHING';active=true;clock.start();toast('THE ESTATE AWAITS')}
+if(level<0&&player.z<14.1&&Math.abs(player.x)<1.55&&doors.every(function(d){return Math.abs(d.angle)>1.0})){level=0;player.y=1.65;$('chapter').textContent='THE HOUSE REMEMBERS';$('objective').textContent='The doors close behind you. Find the lost relics.';updateHUD();toast('WELCOME TO THE HOLLOW CROWN')}}
+function animate(){requestAnimationFrame(animate);if(!renderer)return;var dt=clock?Math.min(clock.getDelta(),.05):.016;if(active){update(dt);doors.forEach(function(d){d.angle+=(d.target-d.angle)*Math.min(1,dt*1.8);d.pivot.rotation.y=d.angle});objects.forEach(function(o){if(!o.used){o.group.rotation.y+=dt*.55;o.group.position.y=floorY[o.level]+1.25+Math.sin(clock.elapsedTime*1.6+o.x)*.12}})}renderer.render(scene,camera)}
 function resize(){if(!renderer)return;camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.5))}
-function soundToggle(){try{if(hum){hum.gain.gain.setTargetAtTime(0,audio.currentTime,.15);hum.osc.stop(audio.currentTime+.5);hum=null;$('sound').textContent='SOUND: OFF';return}audio=audio||new(window.AudioContext||window.webkitAudioContext)();if(audio.state==='suspended')audio.resume();var osc=audio.createOscillator(),gain=audio.createGain();osc.type='sine';osc.frequency.value=43;gain.gain.value=.018;osc.connect(gain);gain.connect(audio.destination);osc.start();hum={osc:osc,gain:gain};$('sound').textContent='SOUND: ON'}catch(e){toast('Ambient sound is unavailable on this device.')}}
-function bind(){window.addEventListener('resize',resize);window.addEventListener('orientationchange',function(){setTimeout(resize,120)});$('enter').addEventListener('click',start);$('again').addEventListener('click',start);$('act').addEventListener('click',interact);$('sound').addEventListener('click',soundToggle);$('help').addEventListener('click',function(){toast('Joystick or WASD: walk · Drag the scene: look around · EXAMINE: collect objects and use the stairs.')});
-[['forward','f'],['back','b'],['left','l'],['right','r']].forEach(function(pair){$(pair[0]).addEventListener('click',function(){if(!active){toast('Enter the estate first.');return}var d=1.2,fx=-Math.sin(player.yaw),fz=-Math.cos(player.yaw),rx=Math.cos(player.yaw),rz=-Math.sin(player.yaw);if(pair[1]==='f')move(fx*d,fz*d);if(pair[1]==='b')move(-fx*d,-fz*d);if(pair[1]==='l')move(-rx*d,-rz*d);if(pair[1]==='r')move(rx*d,rz*d);camera.position.set(player.x,player.y,player.z)})});
+function soundToggle(){try{if(hum){hum.gain.gain.setTargetAtTime(0,audio.currentTime,.12);hum.osc.stop(audio.currentTime+.4);hum=null;$('sound').textContent='SOUND: OFF';return}audio=audio||new(window.AudioContext||window.webkitAudioContext)();if(audio.state==='suspended')audio.resume();var osc=audio.createOscillator(),gain=audio.createGain();osc.type='sine';osc.frequency.value=42;gain.gain.value=.014;osc.connect(gain);gain.connect(audio.destination);osc.start();hum={osc:osc,gain:gain};$('sound').textContent='SOUND: ON'}catch(e){toast('Ambient sound is unavailable on this device.')}}
+function bind(){window.addEventListener('resize',resize);window.addEventListener('orientationchange',function(){setTimeout(resize,150)});$('enter').addEventListener('click',start);$('again').addEventListener('click',start);$('act').addEventListener('click',interact);$('sound').addEventListener('click',soundToggle);$('help').addEventListener('click',function(){toast('Joystick or WASD: move · Drag the scene: look · EXAMINE: open doors, collect relics and use stairs.')});
+[['forward',0,-1],['back',0,1],['left',-1,0],['right',1,0]].forEach(function(a){$(a[0]).addEventListener('click',function(){if(!active)return;var fx=-Math.sin(player.yaw),fz=-Math.cos(player.yaw),rx=Math.cos(player.yaw),rz=-Math.sin(player.yaw);move((fx*a[1]+rx*a[2])*1.15,(fz*a[1]+rz*a[2])*1.15)})});
 document.addEventListener('keydown',function(e){held[e.code]=true;if(e.code==='KeyE'||e.code==='Space'){e.preventDefault();interact()}});document.addEventListener('keyup',function(e){held[e.code]=false});
-var pad=$('joy'),stick=$('stick');function joyMove(e){var r=pad.getBoundingClientRect(),dx=e.clientX-r.left-r.width/2,dy=e.clientY-r.top-r.height/2,len=Math.hypot(dx,dy)||1,k=Math.min(1,38/len),x=dx*k,y=dy*k;joy.x=x/38;joy.y=y/38;stick.style.left='calc(50% + '+x+'px)';stick.style.top='calc(50% + '+y+'px)'}function joyEnd(e){if(e.pointerId!==joyId)return;joyId=null;joy.x=0;joy.y=0;stick.style.left='50%';stick.style.top='50%'}pad.addEventListener('pointerdown',function(e){joyId=e.pointerId;pad.setPointerCapture(e.pointerId);joyMove(e)});pad.addEventListener('pointermove',function(e){if(e.pointerId===joyId)joyMove(e)});pad.addEventListener('pointerup',joyEnd);pad.addEventListener('pointercancel',joyEnd);
-canvas.addEventListener('pointerdown',function(e){drag={x:e.clientX,y:e.clientY}});canvas.addEventListener('pointermove',function(e){if(!drag||!active)return;player.yaw-=(e.clientX-drag.x)*.004;player.pitch=Math.max(-.55,Math.min(.55,player.pitch-(e.clientY-drag.y)*.003));drag={x:e.clientX,y:e.clientY}});canvas.addEventListener('pointerup',function(){drag=null});canvas.addEventListener('pointercancel',function(){drag=null});
-}
-var fallbackCanvas=null;
-function fallbackDraw(){if(!fallbackCanvas)return;var ctx=fallbackCanvas.getContext('2d');if(!ctx)return;var dpr=Math.min(devicePixelRatio||1,1.5),cw=innerWidth,ch=innerHeight;fallbackCanvas.width=Math.max(1,Math.floor(cw*dpr));fallbackCanvas.height=Math.max(1,Math.floor(ch*dpr));ctx.setTransform(dpr,0,0,dpr,0,0);ctx.fillStyle='#090a10';ctx.fillRect(0,0,cw,ch);var inside=level>=0,cx=cw/2,cy=ch*.48,scale=Math.min(cw/30,ch/25);ctx.save();ctx.translate(cx-player.x*scale,cy-player.z*scale);ctx.fillStyle='#17191c';ctx.fillRect(-18*scale,-22*scale,36*scale,46*scale);ctx.fillStyle=inside?'#49372e':'#39312e';ctx.fillRect(-11*scale,-18*scale,22*scale,33*scale);ctx.strokeStyle='#b08b5c';ctx.lineWidth=3;ctx.strokeRect(-11*scale,-18*scale,22*scale,33*scale);ctx.fillStyle='#20171a';ctx.fillRect(-3*scale,6*scale,6*scale,2*scale);ctx.fillStyle='#d9b477';ctx.fillRect(-1.5*scale,6*scale,3*scale,2*scale);for(var z=-15;z<=12;z+=5){ctx.strokeStyle='#8b6d4c';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(-10*scale,z*scale);ctx.lineTo(10*scale,z*scale);ctx.stroke()}items.forEach(function(o){if(o.used||o.level!==level)return;ctx.fillStyle=o.kind==='key'?'#ffd27b':o.kind==='memory'?'#8beaff':'#d4a66c';ctx.beginPath();ctx.arc(o.x*scale,o.z*scale,Math.max(4,scale*.28),0,Math.PI*2);ctx.fill()});ctx.fillStyle='#f2d6a7';ctx.beginPath();ctx.arc(0,0,8,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#f2d6a7';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(-Math.sin(player.yaw)*22,-Math.cos(player.yaw)*22);ctx.stroke();ctx.restore();ctx.fillStyle='#eee5d8';ctx.font='11px system-ui';ctx.fillText(inside?'ESTATE FLOOR PLAN · MOVE TO EXPLORE':'COURTYARD · APPROACH THE ENTRANCE',14,ch-18)}
-function enableFallback(){fallbackCanvas=document.createElement('canvas');fallbackCanvas.id='navigation-fallback';fallbackCanvas.style.cssText='position:fixed;inset:0;width:100%;height:100%;z-index:2;pointer-events:none';document.body.insertBefore(fallbackCanvas,canvas.nextSibling);camera={position:{set:function(){}},rotation:{set:function(){}}};clock={elapsedTime:0,start:function(){this.elapsedTime=0},getDelta:function(){this.elapsedTime+=.016;return .016}};renderer={render:function(){fallbackDraw()}};scene={};$('error').textContent='3D graphics are unavailable on this browser. A separate navigation view is active; use the movement controls below.';$('error').hidden=false;$('enter').disabled=false;animate()}
-function loadThree(urls,index){if(index>=urls.length){enableFallback();return}var s=document.createElement('script');s.src=urls[index];s.onload=function(){try{THREE=window.THREE;if(!THREE)throw Error('Three.js unavailable');initScene();camera.position.set(player.x,player.y,player.z);clock=new THREE.Clock();if(!started){animate();started=true}}catch(e){console.error('Hollow Crown startup:',e);enableFallback()}};s.onerror=function(){loadThree(urls,index+1)};document.head.appendChild(s)}
-bind();
-loadThree(['https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js','https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js','https://unpkg.com/three@0.160.0/build/three.min.js'],0);
+var pad=$('joy'),stick=$('stick');function joyMove(e){var r=pad.getBoundingClientRect(),dx=e.clientX-r.left-r.width/2,dy=e.clientY-r.top-r.height/2,len=Math.hypot(dx,dy)||1,k=Math.min(1,38/len),x=dx*k,y=dy*k;joy.x=x/38;joy.y=y/38;stick.style.left='calc(50% + '+x+'px)';stick.style.top='calc(50% + '+y+'px')}function joyEnd(e){if(e.pointerId!==joyId)return;joyId=null;joy.x=0;joy.y=0;stick.style.left='50%';stick.style.top='50%'}pad.addEventListener('pointerdown',function(e){joyId=e.pointerId;pad.setPointerCapture(e.pointerId);joyMove(e)});pad.addEventListener('pointermove',function(e){if(e.pointerId===joyId)joyMove(e)});pad.addEventListener('pointerup',joyEnd);pad.addEventListener('pointercancel',joyEnd);
+canvas.addEventListener('pointerdown',function(e){drag={x:e.clientX,y:e.clientY}});canvas.addEventListener('pointermove',function(e){if(!drag||!active)return;player.yaw-=(e.clientX-drag.x)*.004;player.pitch=Math.max(-.55,Math.min(.55,player.pitch-(e.clientY-drag.y)*.003));drag={x:e.clientX,y:e.clientY}});canvas.addEventListener('pointerup',function(){drag=null});canvas.addEventListener('pointercancel',function(){drag=null})}
+function fallback(){ $('error').textContent='3D graphics could not load in this browser. Try reloading with a connection.';$('error').hidden=false;$('enter').disabled=true}
+function load(urls,i){if(i>=urls.length){fallback();return}var s=document.createElement('script');s.src=urls[i];s.onload=function(){try{THREE=window.THREE;if(!THREE)throw Error('Three missing');init()}catch(e){console.error(e);fallback()}};s.onerror=function(){load(urls,i+1)};document.head.appendChild(s)}
+bind();load(['https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js','https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js','https://unpkg.com/three@0.160.0/build/three.min.js'],0);
 })();
 </script>
 </body>
