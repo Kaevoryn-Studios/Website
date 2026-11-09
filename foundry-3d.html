@@ -35,9 +35,29 @@ function trim(x,y,z,w,h,d){box(x,y,z,w,h,d,mats.gold,false)}
 function column(x,y,z,h){cylinder(x,y+h/2,z,.30,.38,h,mats.stone,12);cylinder(x,y+.16,z,.48,.48,.28,mats.gold,12);cylinder(x,y+h-.16,z,.48,.48,.28,mats.gold,12);cylinder(x,y+h+.02,z,.55,.55,.12,mats.stone,12)}
 function windowBay(x,y,z,w,h){box(x,y,z,w,h,.22,mats.black,false);box(x-w/2-.12,y,z+.12,.16,h+.28,.28,mats.gold,false);box(x+w/2+.12,y,z+.12,.16,h+.28,.28,mats.gold,false);box(x,y-h/2-.12,z+.12,w+.35,.16,.28,mats.gold,false);box(x,y+h/2+.12,z+.12,w+.35,.16,.28,mats.gold,false);box(x,y,z+.16,.07,h,.12,mats.gold,false);box(x,y,z+.17,w,.07,.12,mats.gold,false)}
 function pointedPanel(parent,x,y,z,w,h){var s=new THREE.Shape();s.moveTo(-w/2,-h/2);s.lineTo(-w/2,h*.18);s.lineTo(0,h/2);s.lineTo(w/2,h*.18);s.lineTo(w/2,-h/2);s.closePath();var m=new THREE.Mesh(new THREE.ExtrudeGeometry(s,{depth:.06,bevelEnabled:true,bevelSegments:2,steps:1,bevelSize:.025,bevelThickness:.025}),mats.gold);m.position.set(x,y,z);m.castShadow=true;parent.add(m)}
-function makeDoor(x,side){var pivot=new THREE.Group();pivot.position.set(x,0,15.0);scene.add(pivot);var dir=side>0?1:-1,leaf=new THREE.Group();leaf.position.x=side>0?-.02:.02;pivot.add(leaf);boxLocal(leaf,side*.84,2.12,0,1.68,4.24,.34,mats.door);boxLocal(leaf,side*.84,2.12,.20,1.42,3.94,.10,mats.oak);pointedPanel(leaf,side*.84,2.88,.27,1.08,1.28);pointedPanel(leaf,side*.84,1.22,.27,1.08,1.20);[-.72,.72].forEach(function(xx){boxLocal(leaf,side*.84+xx,2.12,.29,.07,3.95,.07,mats.gold)});[.16,2.1,4.08].forEach(function(yy){boxLocal(leaf,side*.84,yy,.3,1.48,.10,.08,mats.iron)});for(var h=0;h<3;h++){boxLocal(leaf,side*.84-side*.68,.65+h*1.7,.22,.18,.36,.14,mats.gold)}doors.push({pivot:pivot,angle:0,target:0,dir:dir})}
+function makeDoor(x,side){var pivot=new THREE.Group();pivot.position.set(x,0,15.0);scene.add(pivot);var dir=side>0?1:-1,leaf=new THREE.Group();leaf.position.x=side>0?-.02:.02;pivot.add(leaf);boxLocal(leaf,side*.84,2.12,0,1.78,4.24,.34,mats.door);boxLocal(leaf,side*.84,2.12,.20,1.42,3.94,.10,mats.oak);pointedPanel(leaf,side*.84,2.88,.27,1.08,1.28);pointedPanel(leaf,side*.84,1.22,.27,1.08,1.20);[-.72,.72].forEach(function(xx){boxLocal(leaf,side*.84+xx,2.12,.29,.07,3.95,.07,mats.gold)});[.16,2.1,4.08].forEach(function(yy){boxLocal(leaf,side*.84,yy,.3,1.48,.10,.08,mats.iron)});for(var h=0;h<3;h++){boxLocal(leaf,side*.84-side*.68,.65+h*1.7,.22,.18,.36,.14,mats.gold)}doors.push({pivot:pivot,angle:0,target:0,dir:dir})}
 function boxLocal(parent,x,y,z,w,h,d,m){var o=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m);o.position.set(x,y,z);o.castShadow=true;o.receiveShadow=true;parent.add(o)}
 function archTrim(){var g=group(0,0,0);var tor=new THREE.Mesh(new THREE.TorusGeometry(1.82,.10,10,36,Math.PI),mats.gold);tor.position.set(0,4.28,15.22);tor.rotation.z=Math.PI;g.add(tor);box(0,4.55,15.2,4.1,.22,.65,mats.gold,false);box(0,5.0,15.18,4.0,.75,.55,mats.stone,false);box(0,5.43,15.18,4.5,.18,.75,mats.gold,false);var crest=new THREE.Mesh(new THREE.OctahedronGeometry(.62),mats.gold);crest.position.set(0,6.05,15.18);crest.scale.set(1.25,1.5,.42);scene.add(crest)}
+function branch(ax,ay,az,bx,by,bz,r,m){var a=new THREE.Vector3(ax,ay,az),b=new THREE.Vector3(bx,by,bz),v=new THREE.Vector3().subVectors(b,a),o=new THREE.Mesh(new THREE.CylinderGeometry(r*.72,r,v.length(),7),m);o.position.copy(a).add(b).multiplyScalar(.5);o.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),v.normalize());o.castShadow=true;scene.add(o);return o}
+function deadTree(x,z,h){var bark=mat('#211d1c'),tip=mat('#302626');branch(x,0,z,x,h*.52,z,h*.24,bark);branch(x,h*.38,z,x-1.0,h*.72,z+.2,h*.10,bark);branch(x-1.0,h*.72,z+.2,x-1.65,h*.91,z+.5,h*.055,tip);branch(x,h*.48,z,x+1.0,h*.73,z-.15,h*.11,bark);branch(x+1.0,h*.73,z-.15,x+1.6,h*.98,z-.4,h*.055,tip);branch(x,h*.60,z,x+.1,h*.87,z+1.0,h*.09,bark);branch(x+.1,h*.87,z+1.0,x-.35,h*1.04,z+1.4,h*.045,tip);branch(x,h*.55,z,x-.3,h*.82,z-1.0,h*.08,bark);branch(x-.3,h*.82,z-1.0,x-.1,h*.98,z-1.55,h*.045,tip)}
+function gravestone(x,z,h,lean){var g=group(x,0,z);var slab=new THREE.Mesh(new THREE.BoxGeometry(.95,h*.72,.24),mats.stone);slab.position.y=h*.36;slab.rotation.z=lean||0;slab.castShadow=true;g.add(slab);var cap=new THREE.Mesh(new THREE.SphereGeometry(.475,14,8,0,Math.PI*2,0,Math.PI/2),mats.stone);cap.position.y=h*.72;cap.scale.set(1,.48,.26);g.add(cap);box(x,.12,z,.8,.18,.42,mats.iron,false);box(x,h*.38,z+.14,.08,h*.36,.04,mats.gold,false)}
+function makeSpookyGrounds(){
+  // Crooked dead trees, weathered graves and broken iron fencing frame the approach.
+  [[-25,5,10],[-29,19,13],[-24,32,9],[25,8,12],[29,23,14],[24,35,10]].forEach(function(t){deadTree(t[0],t[1],t[2])});
+  [[-19,8,1.7],[-22,14,1.35],[-18,24,1.55],[-27,29,1.8],[19,9,1.45],[22,16,1.8],[18,27,1.4],[27,32,1.7]].forEach(function(t,i){gravestone(t[0],t[1],t[2],(i%2?-.07:.06))});
+  for(var side of [-1,1]){
+    for(var z=-2;z<39;z+=3.2){
+      cylinder(side*23,.72,z,.055,.055,1.45,mats.iron,7);
+      cylinder(side*23,.72,z+1.6,.055,.055,1.45,mats.iron,7);
+      box(side*23,1.05,z+.8,.08,.07,1.7,mats.gold,false);
+      box(side*23,1.35,z+.8,.08,.07,1.7,mats.iron,false);
+    }
+    for(var z2=3;z2<38;z2+=8){var glow=light(side*18,2.0,z2,'#9eb6d4',.55,10);glow.intensity=.35}
+  }
+  // Low drifting ground mist, kept outside the walkable path.
+  var mistMat=new THREE.MeshBasicMaterial({color:'#9ba9b9',transparent:true,opacity:.075,depthWrite:false});
+  for(var i=0;i<18;i++){var fog=new THREE.Mesh(new THREE.SphereGeometry(1,10,7),mistMat);fog.position.set((i%2?1:-1)*(14+(i%4)*2),.35+(i%3)*.08,3+(i*2.1)%36);fog.scale.set(4.8,.35,1.8);scene.add(fog)}
+}
 function makeExterior(){
 var stone=mats.stone,roof=mats.roof;
 // Forecourt, approach path and planted grounds.
@@ -91,7 +111,7 @@ for(var side5 of [-1,1])box(side5*2.42,base+.17,-1,.08,.04,29,mats.gold,false);
 // Furniture, paintings, chandeliers and fireplaces are positioned along side bays, keeping the main walkways open.
 function portrait(x,y,z,side){box(x,y,z,.12,1.75,.12,mats.gold,false);box(x,y,z+side*.08,.08,1.48,.08,mats.black,false);var face=sphere(x,y+.12,z+side*.14,.24,mats.portrait,.8,1.25,.3);box(x,y-.53,z+side*.13,.48,.52,.06,mats.velvet,false)}
 function chandelier(x,y,z){cylinder(x,y,z,.06,.06,.45,mats.gold,12);cylinder(x,y-.25,z,.52,.34,.12,mats.gold,16);for(var i=0;i<6;i++){var a=i*Math.PI/3,xx=x+Math.cos(a)*.64,zz=z+Math.sin(a)*.64;cylinder(xx,y-.43,zz,.035,.035,.25,mats.gold,10);sphere(xx,y-.26,zz,.09,mats.flame,.6,1.7,.6);light(xx,y-.32,zz,'#ffc77c',1.05,8)}}
-function fireplace(x,y,z){box(x,y+1.35,z,2.5,2.7,.45,mats.stone,false);box(x,y+1.2,z+.25,1.3,1.45,.08,mats.black,false);box(x,y+2.75,z,2.9,.22,.7,mats.gold,false);var f=new THREE.Mesh(new THREE.ConeGeometry(.38,.9,9),mats.flame);f.position.set(x,y+.62,z+.38);scene.add(f);light(x,y+1,z+.8,'#ff8d43',2.1,9)}
+function fireplace(x,y,z){box(x,y+1.35,z,2.5,2.7,.45,mats.stone,true);box(x,y+1.2,z+.25,1.3,1.45,.08,mats.black,false);box(x,y+2.75,z,2.9,.22,.7,mats.gold,true);var f=new THREE.Mesh(new THREE.ConeGeometry(.38,.9,9),mats.flame);f.position.set(x,y+.62,z+.38);scene.add(f);light(x,y+1,z+.8,'#ff8d43',2.1,9)}
 function table(x,y,z,w,d){box(x,y+1,z,w,.16,d,mats.oak,true);for(var a of [-1,1])for(var b of [-1,1])box(x+a*(w/2-.12),y+.5,z+b*(d/2-.12),.14,1,.14,mats.wood,true)}
 function buildInterior(){for(var i=0;i<4;i++){var y=floorY[i];roomDetails(y,i)}
 // Grand foyer.
@@ -102,7 +122,7 @@ table(-8,0,1,2.5,1.3);table(8,0,1,2.5,1.3);
 for(var z of [-12,-7,-2,3,8]){portrait(-11.38,7.9,z,1);portrait(11.38,7.9,z,-1)}
 fireplace(-8,5.2,-13);fireplace(8,5.2,-13);chandelier(0,9.6,-9);chandelier(0,9.6,2);table(0,5.2,-3,4.2,1.8);
 // Attic: dark beams, trunks and a circular stained-glass feature.
-for(var side of [-1,1]){for(var z2 of [-12,-5,2,9]){box(side*8,12.0,z2,2.6,1.3,2.0,mats.wood,false);box(side*8,12.72,z2,2.7,.12,2.1,mats.gold,false)}}
+for(var side of [-1,1]){for(var z2 of [-12,-5,2,9]){box(side*8,12.0,z2,2.6,1.3,2.0,mats.wood,true);box(side*8,12.72,z2,2.7,.12,2.1,mats.gold,false)}}
 chandelier(0,14.8,-5);portrait(-11.38,13.0,5,1);portrait(11.38,13.0,5,-1);
 // Vaults.
 for(var x of [-9,-5,5,9]){cylinder(x,-4.1,-12,.48,.48,1.7,mats.stone,16);cylinder(x,-3.2,-12,.54,.54,.12,mats.gold,16)}
@@ -117,14 +137,25 @@ scene=new THREE.Scene();scene.background=new THREE.Color('#11141d');scene.fog=ne
 camera=new THREE.PerspectiveCamera(72,innerWidth/innerHeight,.08,180);camera.rotation.order='YXZ';
 renderer=new THREE.WebGLRenderer({canvas:canvas,antialias:true,powerPreference:'high-performance'});renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.5));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.35;
 scene.add(new THREE.HemisphereLight('#cbd7ed','#342820',1.55));var moon=new THREE.DirectionalLight('#cbd8ed',1.7);moon.position.set(-18,26,22);moon.castShadow=true;moon.shadow.mapSize.set(1024,1024);scene.add(moon);
-makeExterior();buildInterior();addRelics();camera.position.set(0,player.y,player.z);clock=new THREE.Clock();animate();if(pendingStart)start()}
+makeExterior();makeSpookyGrounds();buildInterior();addRelics();camera.position.set(0,player.y,player.z);clock=new THREE.Clock();animate();if(pendingStart)start()}
 function toast(t){var el=$('toast');el.textContent=t;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(function(){el.classList.remove('show')},2400)}
 function updateHUD(){ $('floor').textContent=level<0?'THE FORECOURT · MIDNIGHT':floorNames[level];$('state').textContent=level<0?'APPROACHING':'EXPLORING';$('inventory').textContent=relics+' / 6 relics found'}
 function start(){if(!clock){pendingStart=true;$('enter').textContent='PREPARING THE ESTATE…';$('error').hidden=false;$('error').textContent='Loading the 3D mansion. You will enter automatically when it is ready.';return}pendingStart=false;active=true;level=-1;relics=0;objects.forEach(function(o){o.used=false;o.group.visible=true});doors.forEach(function(d){d.angle=0;d.target=0;d.pivot.rotation.y=0});player.x=0;player.y=1.65;player.z=27;player.yaw=0;player.pitch=0;$('start').hidden=true;$('ending').hidden=true;$('chapter').textContent='THE HOUSE REMEMBERS';$('objective').textContent='Approach the front doors and open them.';updateHUD();toast('THE ESTATE AWAITS')}
-function blocked(x,z){var r=.34;if(level<0){if(x<-22+r||x>22-r||z<5||z>42)return true;if(z<15.0+r&&z>14.15-r&&Math.abs(x)<1.75&&doors.some(function(d){return Math.abs(d.angle)<.9}))return true;return false}
-var base=floorY[level];if(x<-11.25+r||x>11.25-r||z<-17.4+r||z>14.25-r)return true;
-for(var i=0;i<colliders.length;i++){var b=colliders[i];if(b.y+b.h/2<base+.05||b.y-b.h/2>base+1.85)continue;if(Math.abs(x-b.x)<b.w/2+r&&Math.abs(z-b.z)<b.d/2+r)return true}
-return false}
+function blocked(x,z){
+  var r=.36,doorClosed=doors.some(function(d){return Math.abs(d.angle)<.92});
+  // The threshold is solid from either side until both heavy leaves swing fully open.
+  if(doorClosed&&z<15.18+r&&z>14.55-r&&Math.abs(x)<1.86)return true;
+  if(level<0){if(x<-22+r||x>22-r||z<5||z>42)return true;return false}
+  var base=floorY[level];
+  // Continuous room shell: side walls, rear wall and the closed front facade.
+  if(x<-11.25+r||x>11.25-r||z<-17.4+r||z>14.25-r)return true;
+  for(var i=0;i<colliders.length;i++){
+    var b=colliders[i];
+    if(b.y+b.h/2<base+.05||b.y-b.h/2>base+1.85)continue;
+    if(Math.abs(x-b.x)<b.w/2+r&&Math.abs(z-b.z)<b.d/2+r)return true;
+  }
+  return false
+}
 function move(dx,dz){var n=Math.max(1,Math.ceil(Math.hypot(dx,dz)/.11)),sx=dx/n,sz=dz/n;for(var i=0;i<n;i++){var nx=player.x+sx,nz=player.z+sz;if(!blocked(nx,player.z))player.x=nx;if(!blocked(player.x,nz))player.z=nz}}
 function setFloor(n){level=n;player.y=floorY[n]+1.65;player.x=0;player.z=-12.2;$('chapter').textContent=['THE HOUSE REMEMBERS','THE PORTRAITS WATCH','ABOVE THE CEILING','THE VAULTS BELOW'][n];$('objective').textContent='Explore this floor. Search for the six lost relics.';updateHUD();toast(floorNames[n])}
 function interact(){if(!active)return;
