@@ -125,6 +125,11 @@ landSign('PIRATE COVE',145,-4,'#a6d8e8');var sea=box(154,.0,-48,78,.3,90,m.water
 landSign('VOLCANIC FRONTIER',88,-145,'#ffb17c');volcano(120,-190);kiosk(78,-170,'#59645c','MINING SUPPLY');coaster(70,-115,'#e66b45',1.05);discovery('EMBER MOUNTAIN',120,-190,'A huge volcanic peak dominates the skyline, with glowing lava seams and a smoking crater.');discovery('MAGMA RUN',70,-115,'A high-speed coaster races around the volcanic foothills and through the mining frontier.');
 /* CRYSTAL GARDENS and observation wheel. */
 landSign('CRYSTAL GARDENS',0,-140,'#a7e4ee');ferris(0,-184);for(var i=0;i<18;i++){var a=i*Math.PI/9,x=Math.cos(a)*28,z=-184+Math.sin(a)*28;var crystal=new THREE.Mesh(new THREE.OctahedronGeometry(3+(i%3)*1.2),[m.crystal,m.crystal2,m.water][i%3]);crystal.position.set(x,3+(i%3),z);crystal.scale.y=2.3;crystal.castShadow=true;scene.add(crystal);addCollider(x,z,2.4+(i%3)*.8,2.4+(i%3)*.8)}kiosk(-30,-183,'#526c87','CRYSTAL BOUTIQUE');discovery('THE SKY WHEEL',0,-184,'A giant observation wheel rises over the crystal gardens with colorful gondolas and a sweeping view of the park.');discovery('CRYSTAL GROTTO',-30,-183,'A glittering pavilion sits among towering crystals, reflective pools and glowing garden paths.');
+/* Continuous walkways lead directly to each shop entrance; no floating labels or billboards. */
+path([[-82,-125],[-78,-136],[-70,-143]],6,m.path);
+path([[145,-15],[162,-10],[177,-3],[190,5]],6,m.path);
+path([[70,-170],[76,-170]],6,m.path);
+path([[0,-184],[-14,-184],[-23,-183]],6,m.path);
 /* Guest services tucked beside the central loop, with short connected access paths. */
 path([[-35,42],[-47,36],[-55,30],[-62,25]],6,m.path);
 path([[35,42],[47,36],[55,30],[62,25]],6,m.path);
