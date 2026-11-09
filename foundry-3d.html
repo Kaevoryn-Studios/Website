@@ -125,6 +125,11 @@ cube(g,0,3.78,8.76,.12,.40,.06,M.gold,false);
 for(var transomX of [-.78,.78]){
   cube(g,transomX,3.78,8.76,.08,.40,.06,M.gold,false);
 }
+// Continuous stone spandrel closes the entire facade band above the entrance.
+// It bridges the door header to the upper-storey wall; the moving doorway below stays clear.
+cube(g,0,5.48,8.98,3.55,2.48,.82,material('#39312e',.94,0),true);
+cube(g,0,6.70,9.43,3.72,.18,.16,M.gold,false);
+cube(g,0,4.24,9.43,3.48,.16,.16,M.gold,false);
 // Small pointed arch crown above the doors, leaving the actual doorway unobstructed.
 var arch=new THREE.Mesh(new THREE.TorusGeometry(1.42,.095,8,32,Math.PI),M.gold);
 arch.position.set(0,3.78,8.64);arch.rotation.z=Math.PI;g.add(arch);
