@@ -48,10 +48,12 @@ if(kind===3){for(var cx of [-9,-5,5,9]){cyl(g,cx,.9,-12,.6,.6,1.7,M.wood,16);cyl
 cube(g,0,4.52,-2,24,.18,34,M.wood,false);for(var rz of [-17,-10,-3,4,12])cube(g,0,4.35,rz,23,.14,.22,M.gold,false);
 return g}
 function makeExterior(){var g=group(scene);cube(g,0,-.35,16,100,.5,100,material('#17191c'),false);cube(g,0,-.02,17,6,.12,32,material('#4b4641'),false);
-var stone=material('#39312e'),roof=material('#171a21');cube(g,0,3.3,7.7,22,6.6,.65,stone,false);cube(g,0,6.6,7.4,24,.35,1.4,M.gold,false);
+var stone=material('#39312e'),roof=material('#171a21');
+// Split the front facade into two wings so there is a real, unobstructed doorway through the entire wall thickness.
+cube(g,-6.8,3.3,7.7,8.4,6.6,.65,stone,false);cube(g,6.8,3.3,7.7,8.4,6.6,.65,stone,false);cube(g,0,6.6,7.4,24,.35,1.4,M.gold,false);
 for(var s of [-1,1]){cube(g,s*8,3.2,7.1,6,6.4,.7,stone,true);var r=new THREE.Mesh(new THREE.ConeGeometry(5,3,4),roof);r.position.set(s*8,7.7,7);r.rotation.y=Math.PI/4;g.add(r)}
-// Tower and steep roof silhouette
-cube(g,0,7.1,7,5.5,8,.9,stone,false);var tower=new THREE.Mesh(new THREE.ConeGeometry(4.2,4.5,4),roof);tower.position.set(0,13,7);tower.rotation.y=Math.PI/4;g.add(tower);
+// Tower supports flank the entrance instead of forming a solid wall across it.
+cube(g,-2.3,7.1,7,.7,8,.9,stone,false);cube(g,2.3,7.1,7,.7,8,.9,stone,false);var tower=new THREE.Mesh(new THREE.ConeGeometry(4.2,4.5,4),roof);tower.position.set(0,13,7);tower.rotation.y=Math.PI/4;g.add(tower);
 for(var side of [-1,1])for(var wz of [-10,-3,3]){cube(g,side*8,3.1,wz,1.2,2.1,.15,M.glass,false);cube(g,side*8,3.1,wz,.12,2.2,.2,M.gold,false);point(g,side*8,3,wz,'#ffca83',1.0,8)}
 // The front entrance is deliberately open; the doors swing from the frame when entered.
 wall(g,-7.4,2.2,8,7.2,4.4,.55,stone);wall(g,7.4,2.2,8,7.2,4.4,.55,stone);wall(g,0,4.15,8,2.4,.5,.55,stone,false);
