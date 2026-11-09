@@ -222,6 +222,27 @@ for(var sealSide of [-1,1]){
   cube(g,sealSide*6.8,.16,8.76,10.32,.30,.24,M.gold,false);
   cube(g,sealSide*6.8,6.35,8.76,10.32,.28,.24,M.gold,false);
 }
+// SEAL THE SECOND AND THIRD STOREYS: the previous shell stopped at the first-floor roofline.
+ // These opaque upper walls close every exterior sightline while leaving the ground-floor doorway untouched.
+cube(g,0,9.72,8.43,24.5,6.62,.72,stone,true);
+for(var upperSide of [-1,1]){
+  cube(g,upperSide*12.25,9.72,-5.6,.82,6.62,26.5,stone,true);
+}
+cube(g,0,9.72,-19.05,24.5,6.62,.72,stone,true);
+// Opaque night-dark window faces and raised frames make the upper facade read as windows,
+// without creating transparent holes into the ballroom or attic.
+var nightGlass=material('#090b12',.32,.18);
+for(var upperY of [8.15,11.15]){
+  for(var upperX of [-8.2,8.2]){
+    cube(g,upperX,upperY,8.02,1.82,2.35,.12,nightGlass,false);
+    cube(g,upperX-.98,upperY,7.94,.14,2.55,.18,M.gold,false);
+    cube(g,upperX+.98,upperY,7.94,.14,2.55,.18,M.gold,false);
+    cube(g,upperX,upperY+1.28,7.94,2.1,.14,.18,M.gold,false);
+    cube(g,upperX,upperY-1.28,7.94,2.1,.14,.18,M.gold,false);
+    cube(g,upperX,upperY,7.91,.10,2.32,.18,M.gold,false);
+    cube(g,upperX,upperY,7.90,1.78,.10,.18,M.gold,false);
+  }
+}
 // Close the masonry above the doorway; only the actual door aperture remains.
 cube(g,0,5.15,8.43,3.35,2.45,.58,stone,true);
 cube(g,-1.52,2.0,8.43,.30,4.0,.68,stone,true);
