@@ -48,23 +48,48 @@ function bench(x,z,rot){var parts=[[0,.9,0,3.4,.35,.9,m.wood],[0,1.8,-.35,3.4,1.
 function planter(x,z,flower){box(x,.55,z,3.4,1.1,2.4,m.stone,false);for(var i=0;i<7;i++){var a=i*Math.PI*2/7;var f=sphere(x+Math.cos(a)*.9,1.55,z+Math.sin(a)*.65,.48,flower,1,.7,1);f.castShadow=true}}
 function banner(x,z,color){cyl(x,4,z,.09,.09,8,m.gold,8);var cloth=box(x+1.1,5.8,z,2.2,2.8,.12,material(color,.55,0),false);cloth.rotation.z=-.08}
 function kiosk(x,z,color,name){
-/* Walk-in shop: real floor, open doorway, solid side/back walls, roof and furnished interior. */
+/* Walk-in shop with a broad open doorway, furnished interior and themed merchandise. */
 var wall=material(color||'#9d493d'),trim=m.gold,wood=m.wood;
 var floor=new THREE.Mesh(new THREE.BoxGeometry(9.2,.22,7.2),material('#8b775b'));floor.position.set(x,.12,z);floor.receiveShadow=true;scene.add(floor);
-box(x-4.45,2.65,z, .3,5.2,7.2,wall,true);box(x+4.45,2.65,z,.3,5.2,7.2,wall,true);
+box(x-4.45,2.65,z,.3,5.2,7.2,wall,true);box(x+4.45,2.65,z,.3,5.2,7.2,wall,true);
 box(x,2.65,z-3.45,9.2,5.2,.3,wall,true);
-/* Split front wall leaves a generous, permanently open entrance. */
+/* The front is deliberately open: no door panel or invisible doorway blocker. */
 box(x-3.35,2.65,z+3.45,2.5,5.2,.3,wall,true);box(x+3.35,2.65,z+3.45,2.5,5.2,.3,wall,true);
-box(x,5.35,z,10,.55,8, m.roof,false);
-box(x,5.05,z+3.7,10,.35,.8,trim,false);
+box(x,5.35,z,10,.55,8,m.roof,false);box(x,5.05,z+3.7,10,.35,.8,trim,false);
 box(x,1.15,z-1.65,5.7,1.5,.85,wood,true);
-box(x-3.35,1.4,z-.2,1.15,2.2,4.2,m.wood,true);
-box(x+3.35,1.4,z-.2,1.15,2.2,4.2,m.wood,true);
-for(var i=-1;i<=1;i++){var product=sphere(x+i*1.45,2.05,z-1.55,.38,[m.glow,m.crystal,m.red][(i+1)%3],1,.75,1);product.castShadow=true}
-for(var side of [-1,1]){box(x+side*3.55,2.2,z-1.7,.55,3.5,2.8,trim,true);for(var shelf=0;shelf<3;shelf++){box(x+side*3.55,1.05+shelf*.9,z-1.7,.72,.13,3.0,wood,false);for(var item=0;item<3;item++)sphere(x+side*3.55+(item-1)*.16,1.3+shelf*.9,z-2.5+item*.8,.18,[m.glow,m.crystal,m.crystal2][(item+shelf)%3])}}
-var signpost=box(x,4.25,z+3.93,4.5,.18,.18,trim,false);
+box(x-3.35,1.4,z-.2,1.15,2.2,4.2,m.wood,true);box(x+3.35,1.4,z-.2,1.15,2.2,4.2,m.wood,true);
+/* Interior floor runner, ceiling rafters, warm pendant lights and checkout till. */
+var rug=new THREE.Mesh(new THREE.BoxGeometry(4.8,.035,4.1),material('#5a3930'));rug.position.set(x,.25,z+.25);scene.add(rug);
+for(var beam=-1;beam<=1;beam++){box(x+beam*3.0,4.95,z,.18,.24,7.1,wood,false)}
+cyl(x,4.45,z-.25,.12,.12,1.1,trim,8);sphere(x,3.85,z-.25,.28,m.glow,1,1,1);light(x,3.8,z-.25,'#ffdfa0',.8,10);
+box(x,2.05,z-1.55,1.0,.65,.75,m.iron,true);box(x,2.42,z-1.55,.45,.12,.35,m.gold,false);
+for(var side of [-1,1]){
+ box(x+side*3.55,2.2,z-1.7,.55,3.5,2.8,trim,true);
+ for(var shelf=0;shelf<3;shelf++){
+  box(x+side*3.55,1.05+shelf*.9,z-1.7,.72,.13,3.0,wood,false);
+  for(var item=0;item<3;item++){
+   var productMat=[m.glow,m.crystal,m.crystal2,m.red,m.blue][(item+shelf+(side>0?1:0))%5];
+   sphere(x+side*3.55+(item-1)*.16,1.3+shelf*.9,z-2.5+item*.8,.18,productMat);
+  }
+ }
+}
+/* Freestanding center display islands keep the floor explorable. */
+for(var island=-1;island<=1;island+=2){
+ box(x+island*1.35,.9,z+.65,1.1,1.15,1.1,wood,true);
+ sphere(x+island*1.35,1.75,z+.65,.48,[m.crystal,m.glow,m.red][island===-1?0:1],1,.9,1);
+}
+if(name.indexOf('ROYAL')>=0){
+ for(var i=0;i<3;i++){var a=i*2.1-2.1;box(x+a,2.7,z-2.5,.65,1.2,.65,m.gold,false);sphere(x+a,3.45,z-2.5,.32,[m.red,m.crystal2,m.glow][i])}
+ banner(x-3.5,z-2.7,'#8e3948');
+}else if(name.indexOf('HARBOR')>=0){
+ for(var b=0;b<3;b++){cyl(x-2.8+b*2.8,.85,z+1.9,.48,.55,1.7,wood,12);box(x-2.8+b*2.8,1.8,z+1.9,.95,.18,.95,trim,false)}
+}else if(name.indexOf('MINING')>=0){
+ for(var q=0;q<4;q++){var ore=new THREE.Mesh(new THREE.DodecahedronGeometry(.65),q%2?m.crystal:m.lava);ore.position.set(x-2.8+q*1.85,.8,z+2.1);ore.castShadow=true;scene.add(ore)}
+}else{
+ for(var g=0;g<5;g++){var gem=new THREE.Mesh(new THREE.OctahedronGeometry(.72),[m.crystal,m.crystal2,m.glow][g%3]);gem.position.set(x-3.0+g*1.5,2.2,z+1.6);gem.scale.y=1.8;gem.castShadow=true;scene.add(gem)}
+}
 lamp(x-2.8,z+5.8);lamp(x+2.8,z+5.8);
-discovery(name,x,z+5,'Step inside this fully walkable shop. Browse the shelves, look over the counter and explore the themed merchandise.');
+discovery(name,x,z+5,'Step inside this fully walkable shop. Browse its themed displays, shelves, merchandise and checkout counter.');
 }
 function wasteBin(x,z){cyl(x,.95,z,.65,.72,1.9,m.iron,12);cyl(x,1.95,z,.76,.76,.18,m.gold,12);box(x,1.25,z+.69,.38,.65,.12,m.wood,false)}
 function pathDetails(){var points=[[-7,64],[7,64],[-7,30],[7,30],[-7,-5],[7,-5],[-7,-38],[7,-38],[-7,-72],[7,-72]];points.forEach(function(p,i){bench(p[0],p[1],i%2?Math.PI:0);if(i%2===0)planter(p[0]+(p[0]<0?-3:3),p[1],m.glow)});kiosk(-34,30,'#9d493d','WILDS CAFE');kiosk(34,30,'#3d7185','PARK GIFTS');banner(-48,-8,'#8e493f');banner(48,-8,'#3f7189');planter(-18,-18,m.crystal);planter(18,-18,m.crystal2);bench(-19,10,Math.PI/2);bench(19,10,-Math.PI/2);[[-15,57],[15,57],[-15,-25],[15,-25],[-42,-8],[42,-8]].forEach(function(p){wasteBin(p[0],p[1])})}
