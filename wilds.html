@@ -18,7 +18,7 @@
 <script>
 (function(){
 'use strict';
-var rideVehicles=[],waterSurfaces=[],fountainJets=[],waterfalls=[],waterfallDrops=[],THREE,scene,camera,renderer,clock,active=false,pending=false,ready=false,drag=null,joyId=null,held={},joy={x:0,y:0},audio=null,hum=null,toastTimer=0,seen={},near=null;
+var rideVehicles=[],rideSpinners=[],waterSurfaces=[],fountainJets=[],waterfalls=[],waterfallDrops=[],THREE,scene,camera,renderer,clock,active=false,pending=false,ready=false,drag=null,joyId=null,held={},joy={x:0,y:0},audio=null,hum=null,toastTimer=0,seen={},near=null;
 var player={x:0,y:1.7,z:92,yaw:0,pitch:0,speed:10};
 var $=function(id){return document.getElementById(id)},canvas=$('world'),m={},collisions=[],discoveries=[],trees=[],lamps=[];
 function material(c,r,metal,em){return new THREE.MeshStandardMaterial({color:c,roughness:r===undefined?.82:r,metalness:metal||0,emissive:em||'#000000',emissiveIntensity:em?.22:0})}
@@ -74,6 +74,57 @@ function riverRapids(x,z){
   rideVehicles.push({cart:raft,curve:curve,progress:n/3,speed:.034});
  }
  for(var t=0;t<4;t++){var xTorch=x+(t%2?1:-1)*11,zTorch=z-20+Math.floor(t/2)*38;lamp(xTorch,zTorch)}
+}
+
+
+function carouselRide(x,z){
+ var ride=group(x,.35,z),base=new THREE.Mesh(new THREE.CylinderGeometry(5.2,5.8,.7,32),m.wood);base.position.y=.15;ride.add(base);
+ var platform=new THREE.Mesh(new THREE.CylinderGeometry(4.8,4.8,.28,40),m.gold);platform.position.y=.62;ride.add(platform);
+ var canopy=new THREE.Mesh(new THREE.ConeGeometry(5.1,2.6,12),m.red);canopy.position.y=5.5;ride.add(canopy);
+ var crown=new THREE.Mesh(new THREE.SphereGeometry(.8,16,12),m.glow);crown.position.y=7;ride.add(crown);
+ var pole=new THREE.Mesh(new THREE.CylinderGeometry(.28,.42,5.2,16),m.gold);pole.position.y=3.1;ride.add(pole);
+ for(var i=0;i<8;i++){var a=i*Math.PI/4,px=Math.cos(a)*3.55,pz=Math.sin(a)*3.55;
+  var horse=new THREE.Group();horse.position.set(px,1.2,pz);horse.rotation.y=-a;
+  var body=new THREE.Mesh(new THREE.SphereGeometry(.62,12,10),i%2?m.white:m.red);body.scale.set(1.35,.62,.58);body.position.y=.2;horse.add(body);
+  var head=new THREE.Mesh(new THREE.SphereGeometry(.32,12,10),m.white);head.position.set(.68,.65,0);horse.add(head);
+  var neck=new THREE.Mesh(new THREE.CylinderGeometry(.14,.22,.65,8),m.gold);neck.position.set(.55,.48,0);neck.rotation.z=-.45;horse.add(neck);
+  for(var leg=0;leg<4;leg++){var l=new THREE.Mesh(new THREE.CylinderGeometry(.07,.09,.58,7),m.wood);l.position.set((leg<2?.38:-.38),-.25,leg%2?.25:-.25);horse.add(l)}
+  var rod=new THREE.Mesh(new THREE.CylinderGeometry(.045,.045,3.5,7),m.gold);rod.position.y=1.9;horse.add(rod);ride.add(horse);
+ }
+ scene.add(ride);rideSpinners.push(ride);addCollider(x,z,5.4,5.4);discovery('THE ENCHANTED CAROUSEL',x,z,'A hand-crafted royal carousel turns beneath a glowing canopy, with eight painted steeds.')
+}
+function pirateCannons(x,z){
+ for(var i=0;i<3;i++){var px=x+i*4.2;
+  var wheelA=new THREE.Mesh(new THREE.TorusGeometry(.78,.13,8,18),m.wood);wheelA.position.set(px,.85,z-.65);scene.add(wheelA);
+  var wheelB=wheelA.clone();wheelB.position.z=z+.65;scene.add(wheelB);
+  var barrel=new THREE.Mesh(new THREE.CylinderGeometry(.48,.62,2.6,12),m.iron);barrel.rotation.x=Math.PI/2;barrel.position.set(px,1.35,z);barrel.castShadow=true;scene.add(barrel);
+  var muzzle=new THREE.Mesh(new THREE.TorusGeometry(.47,.1,8,16),m.gold);muzzle.position.set(px,1.35,z+1.27);scene.add(muzzle);
+  addCollider(px,z,1.25,1.35);
+ }
+ discovery('THE CANNON BATTERY',x+4,z,'Three old harbor cannons guard the cove, aimed out across the pirate waters.')
+}
+function mineEntrance(x,z){
+ box(x-3,3,z,1,6,1.2,m.wood,true);box(x+3,3,z,1,6,1.2,m.wood,true);box(x,6,z,7,1,1.4,m.wood,true);
+ var mouth=new THREE.Mesh(new THREE.CircleGeometry(2.45,24),material('#090d12',1,0));mouth.position.set(x,2.8,z+.08);scene.add(mouth);
+ for(var i=0;i<5;i++){var rail=new THREE.Mesh(new THREE.BoxGeometry(.18,.18,10),m.iron);rail.position.set(x-1.15+i*.58,.35,z-5);scene.add(rail)}
+ var cart=group(x,.65,z-3);var tub=new THREE.Mesh(new THREE.BoxGeometry(1.8,1.05,1.5),m.wood);tub.position.y=.6;cart.add(tub);
+ for(var side of [-1,1]){var wheel=new THREE.Mesh(new THREE.CylinderGeometry(.38,.38,.2,12),m.iron);wheel.rotation.z=Math.PI/2;wheel.position.set(side*.98,.2,0);cart.add(wheel)}
+ discovery('THE DEEP EARTH MINE',x,z-5,'Pass the timber supports and ore cart at the entrance to the old volcanic mine.')
+}
+function crystalArch(x,z){
+ for(var side of [-1,1]){var pillar=new THREE.Mesh(new THREE.CylinderGeometry(.65,.95,8,8),m.stone);pillar.position.set(x+side*6,4,z);pillar.castShadow=true;scene.add(pillar);
+  var gem=new THREE.Mesh(new THREE.OctahedronGeometry(2.2),side<0?m.crystal:m.crystal2);gem.position.set(x+side*6,9,z);gem.scale.y=1.8;scene.add(gem);addCollider(x+side*6,z,1.25,1.25)}
+ var arch=new THREE.Mesh(new THREE.TorusGeometry(6, .55,10,32,Math.PI),m.gold);arch.position.set(x,8,z);scene.add(arch);
+ var center=new THREE.Mesh(new THREE.OctahedronGeometry(1.5),m.glow);center.position.set(x,7,z);center.scale.y=1.8;scene.add(center);
+ discovery('THE PRISM GATE',x,z,'Walk beneath the great crystal arch, where a suspended prism glows above the garden path.')
+}
+function jungleBridge(x,z){
+ var deck=new THREE.Mesh(new THREE.BoxGeometry(26,.55,4.5),m.wood);deck.position.set(x,.55,z);deck.receiveShadow=true;scene.add(deck);
+ for(var i=0;i<18;i++){var plank=new THREE.Mesh(new THREE.BoxGeometry(1.35,.12,4.6),m.gold);plank.position.set(x-12.5+i*1.47,.88,z);scene.add(plank)}
+ for(var side of [-1,1]){var rail=new THREE.Mesh(new THREE.BoxGeometry(26,.22,.22),m.wood);rail.position.set(x,2.0,z+side*2.05);scene.add(rail);
+  for(var p=0;p<14;p++){var post=new THREE.Mesh(new THREE.CylinderGeometry(.12,.14,2.1,7),m.wood);post.position.set(x-12+p*1.85,1.4,z+side*2.05);scene.add(post);addCollider(post.position.x,post.position.z,.16,.16)}
+ }
+ discovery('THE CANOPY CROSSING',x,z,'Cross a timber bridge above the jungle rapids for a view of the falling water and expedition rafts.')
 }
 
 function addCollider(x,z,rx,rz){collisions.push({x:x,z:z,rx:Math.max(.18,rx),rz:Math.max(.18,rz)})}
@@ -171,17 +222,17 @@ for(var z=78;z>-155;z-=13){lamp(-8,z);lamp(8,z)}
 /* Entrance plaza, ticket hall, fountain and central hub. */
 arch(0,78,'WELCOME TO KAEVORYN WILDS');building(-24,100,18,12,9,m.stone,m.roof,'TICKETS');building(24,100,18,12,9,m.stone,m.roof,'GUEST SERVICES');fountain(0,5);landSign('THE GRAND PLAZA',0,-19,'#f1d99d');pathDetails();
 /* ENCHANTED KINGDOM: castle, village and family coaster. */
-landSign('ENCHANTED KINGDOM',-92,-124,'#f5d58c');castle(-112,-158);kiosk(-70,-150,'#8b6545','ROYAL MARKET');coaster(-82,-95,'#d6a84e',.9);for(var i=0;i<12;i++){var a=i*Math.PI/6;tree(-112+Math.cos(a)*38,-150+Math.sin(a)*35,1.1,i%3)}discovery('THE ENCHANTED CITADEL',-112,-158,'A towering fairytale castle anchors this entire land. Walk around its walls, explore the courtyard and discover the royal realm.');discovery('DRAGONFLIGHT COASTER',-82,-95,'A full-scale family coaster twists around the forest edge before diving beneath the castle approach.');
+landSign('ENCHANTED KINGDOM',-92,-124,'#f5d58c');castle(-112,-158);kiosk(-70,-150,'#8b6545','ROYAL MARKET');carouselRide(-47,-151);coaster(-82,-95,'#d6a84e',.9);for(var i=0;i<12;i++){var a=i*Math.PI/6;tree(-112+Math.cos(a)*38,-150+Math.sin(a)*35,1.1,i%3)}discovery('THE ENCHANTED CITADEL',-112,-158,'A towering fairytale castle anchors this entire land. Walk around its walls, explore the courtyard and discover the royal realm.');discovery('DRAGONFLIGHT COASTER',-82,-95,'A full-scale family coaster twists around the forest edge before diving beneath the castle approach.');
 /* JUNGLE EXPEDITION: giant trees, temple, waterfall and river ride. */
-landSign('JUNGLE EXPEDITION',-145,-4,'#a6d18a');waterfall(-158,1,-58,17,19);riverRapids(-158,-29);kiosk(-183,-5,'#526b48','EXPEDITION OUTFITTERS');for(var i=0;i<25;i++)palm(-165+(i%5)*10,-35+Math.floor(i/5)*13,1.5+(i%3)*.22);building(-146,-47,24,18,13,m.temple,m.roof,'LOST TEMPLE');fountain(-116,-15);coaster(-160,22,'#68a9a1',.75);discovery('THE LOST TEMPLE',-146,-47,'A monumental overgrown temple with carved stonework, towering columns and a hidden expedition entrance.');discovery('JUNGLE RIVER RAPIDS',-158,-29,'Board a floating expedition raft and drift through a rocky jungle channel beneath the cascading falls.');discovery('EXPEDITION OUTFITTERS',-183,-5,'Step inside the jungle supply shop for maps, field gear and expedition keepsakes.');
+landSign('JUNGLE EXPEDITION',-145,-4,'#a6d18a');waterfall(-158,1,-58,17,19);riverRapids(-158,-29);jungleBridge(-158,-5);kiosk(-183,-5,'#526b48','EXPEDITION OUTFITTERS');for(var i=0;i<25;i++)palm(-165+(i%5)*10,-35+Math.floor(i/5)*13,1.5+(i%3)*.22);building(-146,-47,24,18,13,m.temple,m.roof,'LOST TEMPLE');fountain(-116,-15);coaster(-160,22,'#68a9a1',.75);discovery('THE LOST TEMPLE',-146,-47,'A monumental overgrown temple with carved stonework, towering columns and a hidden expedition entrance.');discovery('JUNGLE RIVER RAPIDS',-158,-29,'Board a floating expedition raft and drift through a rocky jungle channel beneath the cascading falls.');discovery('EXPEDITION OUTFITTERS',-183,-5,'Step inside the jungle supply shop for maps, field gear and expedition keepsakes.');
 /* PIRATE COVE: harbor, ship, lighthouse and coastal village. */
-landSign('PIRATE COVE',145,-4,'#a6d8e8');var sea=waterSurface(154,-48,78,90,42,false);for(var i=0;i<16;i++)palm(122+(i%4)*15,-83+Math.floor(i/4)*19,1.1);pirateShip(151,-34);kiosk(190,0,'#80513b','HARBOR TAVERN');cyl(195,13,-85,3,4,26,m.stone,12);cyl(195,28,-85,2.5,3,5,m.red,12);light(195,29,-85,'#fff0a8',2,35);discovery('THE LOST GALLEON',151,-34,'A towering pirate ship sits in its harbor, surrounded by docks, sails, ropes and coastal buildings.');discovery('SMUGGLERS LIGHTHOUSE',195,-85,'Climb toward the beacon above the cove and look out across the entire pirate coast.');
+landSign('PIRATE COVE',145,-4,'#a6d8e8');var sea=waterSurface(154,-48,78,90,42,false);for(var i=0;i<16;i++)palm(122+(i%4)*15,-83+Math.floor(i/4)*19,1.1);pirateShip(151,-34);kiosk(190,0,'#80513b','HARBOR TAVERN');cyl(195,13,-85,3,4,26,m.stone,12);cyl(195,28,-85,2.5,3,5,m.red,12);light(195,29,-85,'#fff0a8',2,35);pirateCannons(166,-75);discovery('THE LOST GALLEON',151,-34,'A towering pirate ship sits in its harbor, surrounded by docks, sails, ropes and coastal buildings.');discovery('SMUGGLERS LIGHTHOUSE',195,-85,'Climb toward the beacon above the cove and look out across the entire pirate coast.');
 /* VOLCANIC FRONTIER: giant mountain, mine, coaster. */
-landSign('VOLCANIC FRONTIER',88,-145,'#ffb17c');volcano(120,-190);kiosk(78,-170,'#59645c','MINING SUPPLY');coaster(70,-115,'#e66b45',1.05);discovery('EMBER MOUNTAIN',120,-190,'A huge volcanic peak dominates the skyline, with glowing lava seams and a smoking crater.');discovery('MAGMA RUN',70,-115,'A high-speed coaster races around the volcanic foothills and through the mining frontier.');
+landSign('VOLCANIC FRONTIER',88,-145,'#ffb17c');volcano(120,-190);kiosk(78,-170,'#59645c','MINING SUPPLY');mineEntrance(102,-166);coaster(70,-115,'#e66b45',1.05);discovery('EMBER MOUNTAIN',120,-190,'A huge volcanic peak dominates the skyline, with glowing lava seams and a smoking crater.');discovery('MAGMA RUN',70,-115,'A high-speed coaster races around the volcanic foothills and through the mining frontier.');
 /* CRYSTAL GARDENS and observation wheel. */
-landSign('CRYSTAL GARDENS',0,-140,'#a7e4ee');ferris(0,-184);for(var i=0;i<18;i++){var a=i*Math.PI/9,x=Math.cos(a)*28,z=-184+Math.sin(a)*28;var crystal=new THREE.Mesh(new THREE.OctahedronGeometry(3+(i%3)*1.2),[m.crystal,m.crystal2,m.water][i%3]);crystal.position.set(x,3+(i%3),z);crystal.scale.y=2.3;crystal.castShadow=true;scene.add(crystal);addCollider(x,z,2.4+(i%3)*.8,2.4+(i%3)*.8)}kiosk(-30,-183,'#526c87','CRYSTAL BOUTIQUE');discovery('THE SKY WHEEL',0,-184,'A giant observation wheel rises over the crystal gardens with colorful gondolas and a sweeping view of the park.');discovery('CRYSTAL GROTTO',-30,-183,'A glittering pavilion sits among towering crystals, reflective pools and glowing garden paths.');
+landSign('CRYSTAL GARDENS',0,-140,'#a7e4ee');ferris(0,-184);crystalArch(-30,-160);for(var i=0;i<18;i++){var a=i*Math.PI/9,x=Math.cos(a)*28,z=-184+Math.sin(a)*28;var crystal=new THREE.Mesh(new THREE.OctahedronGeometry(3+(i%3)*1.2),[m.crystal,m.crystal2,m.water][i%3]);crystal.position.set(x,3+(i%3),z);crystal.scale.y=2.3;crystal.castShadow=true;scene.add(crystal);addCollider(x,z,2.4+(i%3)*.8,2.4+(i%3)*.8)}kiosk(-30,-183,'#526c87','CRYSTAL BOUTIQUE');discovery('THE SKY WHEEL',0,-184,'A giant observation wheel rises over the crystal gardens with colorful gondolas and a sweeping view of the park.');discovery('CRYSTAL GROTTO',-30,-183,'A glittering pavilion sits among towering crystals, reflective pools and glowing garden paths.');
 /* Continuous walkways lead directly to each shop entrance; no floating labels or billboards. */
-path([[-82,-125],[-78,-136],[-70,-143]],6,m.path);
+path([[-82,-125],[-78,-136],[-70,-143]],6,m.path);path([[-70,-143],[-58,-148],[-47,-151]],6,m.path);path([[-145,-15],[-150,-11],[-158,-5]],6,m.path);path([[-158,-5],[-170,-5],[-183,-5]],6,m.path);path([[78,-170],[89,-169],[102,-166]],6,m.path);path([[0,-184],[-12,-173],[-24,-162],[-30,-160]],6,m.path);
 path([[145,-15],[162,-10],[177,-3],[190,5]],6,m.path);
 path([[70,-170],[76,-170]],6,m.path);
 path([[0,-184],[-14,-184],[-23,-183]],6,m.path);
@@ -208,7 +259,7 @@ function interact(){if(!active)return;near=nearest();if(!near||near.dist>25){toa
 function blocked(x,z){return Math.abs(x)>=196||Math.abs(z)>=196||collisions.some(function(b){return Math.abs(x-b.x)<b.rx+.72&&Math.abs(z-b.z)<b.rz+.72})}
 function move(dx,dz){var n=Math.max(1,Math.ceil(Math.hypot(dx,dz)/.18)),sx=dx/n,sz=dz/n;for(var i=0;i<n;i++){var nx=player.x+sx,nz=player.z+sz;if(!blocked(nx,nz)){player.x=nx;player.z=nz}else{if(!blocked(nx,player.z))player.x=nx;if(!blocked(player.x,nz))player.z=nz}}}
 function update(dt){var f=(held.KeyW||held.ArrowUp?1:0)-(held.KeyS||held.ArrowDown?1:0)-joy.y,s=(held.KeyD||held.ArrowRight?1:0)-(held.KeyA||held.ArrowLeft?1:0)+joy.x,n=Math.hypot(f,s);if(n>.02){f/=n;s/=n;var fx=-Math.sin(player.yaw),fz=-Math.cos(player.yaw),rx=Math.cos(player.yaw),rz=-Math.sin(player.yaw);move((fx*f+rx*s)*player.speed*dt,(fz*f+rz*s)*player.speed*dt)}camera.position.set(player.x,player.y,player.z);camera.rotation.set(player.pitch,player.yaw,0,'YXZ');updateHUD()}
-function animate(){requestAnimationFrame(animate);if(!renderer)return;var dt=clock?Math.min(clock.getDelta(),.05):.016;if(active){update(dt);lamps.forEach(function(o){if(o.userData.spin)o.rotation.z+=dt*.08});rideVehicles.forEach(function(v){v.progress=(v.progress+dt*v.speed)%1;var p=v.curve.getPointAt(v.progress),t=v.curve.getTangentAt(v.progress);v.cart.position.copy(p);v.cart.position.y+=.65;v.cart.rotation.y=Math.atan2(t.x,t.z)})}var elapsed=clock?clock.elapsedTime:0;waterfalls.forEach(function(w){var a=w.geo.attributes.position;for(var i=0;i<a.count;i++){var x=w.base[i*3],y=w.base[i*3+1];a.setZ(i,w.base[i*3+2]+Math.sin(x*.8+elapsed*3.4+w.phase+y*.35)*.075+Math.sin(y*1.2-elapsed*4.1)*.035)}a.needsUpdate=true;w.geo.computeVertexNormals()});waterfallDrops.forEach(function(d){var fall=(elapsed*3.4+d.phase)%(d.height+1);d.mesh.position.set(d.baseX+Math.sin(elapsed*2+d.phase)*.12,d.height-fall,d.baseZ);d.mesh.visible=fall<d.height});waterSurfaces.forEach(function(w){var a=w.geo.attributes.position;for(var i=0;i<a.count;i++){var x=w.base[i*3],z=w.base[i*3+1],dist=Math.hypot(x,z);var wave=Math.sin(x*.22+elapsed*1.35+w.phase)*.035+Math.cos(z*.19-elapsed*1.05+w.phase)*.025;if(w.round)wave*=Math.max(0,1-dist/7);a.setZ(i,w.base[i*3+2]+wave)}a.needsUpdate=true;w.geo.computeVertexNormals()});fountainJets.forEach(function(j){j.mesh.position.y=j.baseY+Math.sin(elapsed*3+j.phase)*.12;j.mesh.scale.y=.92+Math.sin(elapsed*4+j.phase)*.12});renderer.render(scene,camera)}
+function animate(){requestAnimationFrame(animate);if(!renderer)return;var dt=clock?Math.min(clock.getDelta(),.05):.016;if(active){update(dt);lamps.forEach(function(o){if(o.userData.spin)o.rotation.z+=dt*.08});rideSpinners.forEach(function(r){r.rotation.y+=dt*.22});rideVehicles.forEach(function(v){v.progress=(v.progress+dt*v.speed)%1;var p=v.curve.getPointAt(v.progress),t=v.curve.getTangentAt(v.progress);v.cart.position.copy(p);v.cart.position.y+=.65;v.cart.rotation.y=Math.atan2(t.x,t.z)})}var elapsed=clock?clock.elapsedTime:0;waterfalls.forEach(function(w){var a=w.geo.attributes.position;for(var i=0;i<a.count;i++){var x=w.base[i*3],y=w.base[i*3+1];a.setZ(i,w.base[i*3+2]+Math.sin(x*.8+elapsed*3.4+w.phase+y*.35)*.075+Math.sin(y*1.2-elapsed*4.1)*.035)}a.needsUpdate=true;w.geo.computeVertexNormals()});waterfallDrops.forEach(function(d){var fall=(elapsed*3.4+d.phase)%(d.height+1);d.mesh.position.set(d.baseX+Math.sin(elapsed*2+d.phase)*.12,d.height-fall,d.baseZ);d.mesh.visible=fall<d.height});waterSurfaces.forEach(function(w){var a=w.geo.attributes.position;for(var i=0;i<a.count;i++){var x=w.base[i*3],z=w.base[i*3+1],dist=Math.hypot(x,z);var wave=Math.sin(x*.22+elapsed*1.35+w.phase)*.035+Math.cos(z*.19-elapsed*1.05+w.phase)*.025;if(w.round)wave*=Math.max(0,1-dist/7);a.setZ(i,w.base[i*3+2]+wave)}a.needsUpdate=true;w.geo.computeVertexNormals()});fountainJets.forEach(function(j){j.mesh.position.y=j.baseY+Math.sin(elapsed*3+j.phase)*.12;j.mesh.scale.y=.92+Math.sin(elapsed*4+j.phase)*.12});renderer.render(scene,camera)}
 function resize(){if(!renderer)return;camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.5))}
 function start(){if(!ready||!renderer||!camera){pending=true;$('error').hidden=false;$('error').textContent='The park is still loading. You will enter automatically when it is ready.';$('enter').textContent='PREPARING THE PARK…';return}pending=false;active=true;player.x=0;player.z=92;player.yaw=0;player.pitch=0;$('start').hidden=true;$('discovery').hidden=true;toast('WELCOME TO KAEVORYN WILDS')}
 function soundToggle(){try{if(hum){hum.gain.gain.setTargetAtTime(0,audio.currentTime,.12);hum.osc.stop(audio.currentTime+.3);hum=null;$('sound').textContent='SOUND: OFF';return}audio=audio||new(window.AudioContext||window.webkitAudioContext)();if(audio.state==='suspended')audio.resume();var osc=audio.createOscillator(),gain=audio.createGain();osc.type='sine';osc.frequency.value=58;gain.gain.value=.012;osc.connect(gain);gain.connect(audio.destination);osc.start();hum={osc:osc,gain:gain};$('sound').textContent='SOUND: ON'}catch(e){toast('Ambient sound is unavailable on this device.')}}
