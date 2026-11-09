@@ -40,14 +40,18 @@ nav{display:flex;gap:7px}nav a{color:#f4ecd6;text-decoration:none;border:1px sol
 (()=>{'use strict';
 const c=document.getElementById('scene'),g=c.getContext('2d'),landEl=document.getElementById('land'),hint=document.getElementById('hint'),prompt=document.getElementById('prompt');
 let w=0,h=0,dpr=1,player={x:340,y:1040},cam={x:0,y:0},keys={},joy={x:0,y:0},near=null,modal=false,started=false;
-const sx=.78,sy=.43,worldW=2300,worldH=1900;
+const sx=.78,sy=.43,worldW=3300,worldH=2700;
 const areas=[
 {name:'JUNGLE OUTPOST',x:340,y:1040,desc:'The expedition base. Canvas tents, supply wagons, warm lanterns and the first trail into the untamed jungle.'},
 {name:'VALLEY OF GIANTS',x:1040,y:440,desc:'A vast prehistoric basin where enormous creatures roam between fern forests and ancient stone ridges.'},
 {name:'THE SUNKEN EMPIRE',x:1740,y:690,desc:'A forgotten civilization reclaimed by vines. Its royal temple still guards a secret beneath the roots.'},
 {name:'EMERALD FALLS',x:1170,y:1510,desc:'A hidden lagoon, roaring waterfall and winding river passage through the green heart of the wilderness.'},
 {name:'EMBER MOUNTAIN',x:2070,y:1390,desc:'A sleeping volcano split by glowing magma. The ground trembles as the mountain begins to awaken.'},
-{name:'THE FORBIDDEN PASS',x:490,y:330,desc:'A high jungle pass of rope bridges, weathered watchtowers and a sealed gateway beyond the known map.'}
+{name:'THE FORBIDDEN PASS',x:490,y:330,desc:'A high jungle pass of rope bridges, weathered watchtowers and a sealed gateway beyond the known map.'},
+{name:'MOONSTONE COAST',x:2780,y:390,desc:'A huge hidden shoreline of pale cliffs, shipwrecks, glowing tide pools and a forgotten lighthouse.'},
+{name:'THE CRYSTAL HIGHLANDS',x:2860,y:1740,desc:'Towering crystal formations rise above a high mountain forest, glowing as the sun disappears.'},
+{name:'WHISPERING MARSH',x:520,y:2240,desc:'A broad mist-covered wetland filled with ancient trees, hidden boardwalks and strange calls in the reeds.'},
+{name:'SKYFALL FRONTIER',x:1840,y:2460,desc:'A remote plateau beyond the waterfall, where enormous cliffs overlook the entire wild kingdom.'}
 ];
 const finds=[
 {name:'COLOSSUS: VALLEY RUN',x:1110,y:520,desc:'A colossal expedition coaster dives through the cliffs and the shadow of a prehistoric giant.'},
@@ -55,7 +59,11 @@ const finds=[
 {name:'LOST EMPIRE EXPEDITION',x:1620,y:850,desc:'Climb aboard an expedition truck and follow the overgrown streets of the ancient city.'},
 {name:'RIVER OF SECRETS',x:1290,y:1590,desc:'Drift below the waterfall, through misty caverns and into a hidden underground river.'},
 {name:'HEART OF THE VOLCANO',x:2130,y:1260,desc:'Enter the volcanic caldera where firelight, smoke and thunder reveal the mountain’s secret.'},
-{name:'THE LAST CROSSING',x:590,y:260,desc:'A swaying rope bridge leads to a sealed frontier no expedition has crossed.'}
+{name:'THE LAST CROSSING',x:590,y:260,desc:'A swaying rope bridge leads to a sealed frontier no expedition has crossed.'},
+{name:'LIGHTHOUSE OF THE LOST',x:2960,y:310,desc:'Climb the abandoned lighthouse above the wreckers’ coast and discover the signal that still shines at night.'},
+{name:'CRYSTAL CAVERN DESCENT',x:2920,y:1870,desc:'Descend through a vast crystal cavern where underground rivers reflect impossible colors.'},
+{name:'THE MARSH PHANTOM',x:660,y:2370,desc:'A mysterious expedition boat carries you through fog, giant roots and the silent heart of the marsh.'},
+{name:'SKYFALL RAVINE',x:1970,y:2540,desc:'Cross a dramatic suspended bridge above a roaring ravine at the far edge of the park.'}
 ];
 function iso(x,y,z=0){return {x:(x-y)*sx,y:(x+y)*sy-z}}
 function resize(){dpr=Math.min(devicePixelRatio||1,2);w=innerWidth;h=innerHeight;c.width=w*dpr;c.height=h*dpr;c.style.width=w+'px';c.style.height=h+'px'}addEventListener('resize',resize);resize();
@@ -70,8 +78,8 @@ function hut(x,y,color='#987a4c'){let p=worldPoint(x,y);g.fillStyle='#09150f88';
 function temple(x,y,s=1){let p=worldPoint(x,y);g.fillStyle='#09150f88';g.beginPath();g.ellipse(p.x,p.y+10,66*s,19*s,0,0,Math.PI*2);g.fill();for(let i=0;i<4;i++){let width=(88-i*16)*s,top=p.y-18*s-i*19*s;g.fillStyle=['#92886c','#b0a17c','#7e775f','#c2ad7d'][i];g.beginPath();g.moveTo(p.x-width/2,top);g.lineTo(p.x,top-18*s);g.lineTo(p.x+width/2,top);g.lineTo(p.x+width/2-7*s,top+10*s);g.lineTo(p.x-width/2+7*s,top+10*s);g.closePath();g.fill()}for(let i=0;i<4;i++){g.fillStyle='#c8b58b';g.fillRect(p.x-34*s+i*21*s,p.y-27*s,8*s,27*s)}g.fillStyle='#171d16';g.fillRect(p.x-8*s,p.y-24*s,16*s,24*s)}
 function dino(x,y,s=1){let p=worldPoint(x,y);g.fillStyle='#0a150e88';g.beginPath();g.ellipse(p.x,p.y+5*s,40*s,10*s,0,0,Math.PI*2);g.fill();g.fillStyle='#839b61';g.beginPath();g.ellipse(p.x,p.y-17*s,27*s,17*s,0,0,Math.PI*2);g.fill();g.fillRect(p.x+15*s,p.y-43*s,9*s,31*s);g.beginPath();g.arc(p.x+21*s,p.y-43*s,12*s,0,Math.PI*2);g.fill();g.fillStyle='#20251b';g.beginPath();g.arc(p.x+25*s,p.y-46*s,2*s,0,Math.PI*2);g.fill();g.fillStyle='#617a4a';g.fillRect(p.x-18*s,p.y-5*s,7*s,22*s);g.fillRect(p.x+8*s,p.y-5*s,7*s,22*s);g.beginPath();g.moveTo(p.x-23*s,p.y-15*s);g.lineTo(p.x-57*s,p.y-6*s);g.lineTo(p.x-24*s,p.y-7*s);g.fill()}
 function lantern(x,y){let p=worldPoint(x,y,12);g.shadowColor='#ffd47b';g.shadowBlur=18;g.fillStyle='#ffe3a0';g.beginPath();g.arc(p.x,p.y,4,0,Math.PI*2);g.fill();g.shadowBlur=0;g.strokeStyle='#a98a4e';g.lineWidth=2;g.beginPath();g.moveTo(p.x,p.y+5);g.lineTo(p.x,p.y+20);g.stroke()}
-const paths=[[[340,1040],[520,980],[690,850],[850,670],[1040,440],[1280,800],[1510,750],[1740,690]],[[1510,750],[1650,980],[1860,1150],[2070,1390]],[[980,860],[1050,1120],[1170,1510],[1430,1420],[1700,1280]],[[520,980],[490,740],[490,330]]];
-let foliage=[];for(let i=0;i<230;i++){let x=(i*137)%worldW,y=(i*283)%worldH;if(areas.some(a=>Math.hypot(x-a.x,y-a.y)<150))continue;foliage.push({x,y,s:.65+(i%6)*.12,k:i%4})}
+const paths=[[[340,1040],[520,980],[690,850],[850,670],[1040,440],[1280,800],[1510,750],[1740,690]],[[1510,750],[1650,980],[1860,1150],[2070,1390]],[[980,860],[1050,1120],[1170,1510],[1430,1420],[1700,1280]],[[520,980],[490,740],[490,330]],[[1740,690],[2050,620],[2350,510],[2780,390]],[[2070,1390],[2360,1510],[2630,1640],[2860,1740]],[[1170,1510],[990,1800],[760,2070],[520,2240]],[[1430,1420],[1570,1810],[1710,2150],[1840,2460]]];
+let foliage=[];for(let i=0;i<520;i++){let x=(i*137)%worldW,y=(i*283)%worldH;if(areas.some(a=>Math.hypot(x-a.x,y-a.y)<150))continue;foliage.push({x,y,s:.65+(i%6)*.12,k:i%4})}
 function drawGround(){g.fillStyle='#1a432c';g.fillRect(0,0,w,h);polygon([[0,0],[worldW,0],[worldW,worldH],[0,worldH]],'#214a30');for(let i=0;i<foliage.length;i++){let f=foliage[i];tree(f.x,f.y,f.s,f.k)}
 /* broad winding river with pale banks */let river=[[960,0],[920,280],[1180,520],[1330,770],[1110,1030],[1000,1280],[1170,1530],[1100,1900]];line(river,75,'#a7a16b');line(river,62,'#236b70');line(river,4,'#9ce0cf88');
 paths.forEach(t=>{line(t,34,'#4d442e');line(t,25,'#b49a65');line(t,2,'#d9c58f88')});
@@ -82,11 +90,17 @@ function drawLandmarks(){areas.forEach((a,i)=>{ellipse(a.x,a.y,76,34,'#0b1a1066'
 /* volcano */let v=worldPoint(2070,1390);g.fillStyle='#3c3930';g.beginPath();g.moveTo(v.x-110,v.y+24);g.lineTo(v.x-20,v.y-155);g.lineTo(v.x+18,v.y-190);g.lineTo(v.x+115,v.y+24);g.closePath();g.fill();g.fillStyle='#c45b36';g.beginPath();g.moveTo(v.x-27,v.y-147);g.lineTo(v.x+18,v.y-190);g.lineTo(v.x+55,v.y-132);g.closePath();g.fill();g.strokeStyle='#ffad56';g.lineWidth=5;g.beginPath();g.moveTo(v.x+9,v.y-112);g.lineTo(v.x+31,v.y-53);g.stroke();
 /* waterfall basin */let f=worldPoint(1170,1510);g.fillStyle='#3e9890';g.beginPath();g.ellipse(f.x,f.y,65,23,0,0,Math.PI*2);g.fill();g.fillStyle='#b7eee0';g.fillRect(f.x-28,f.y-72,56,65);g.fillStyle='#e1fff0aa';g.fillRect(f.x-12,f.y-70,8,60);
 /* creatures */dino(970,390,1.3);dino(1120,490,.85);dino(1230,430,.65);
+/* far coast, crystal ridge, marsh and high frontier */
+for(let i=0;i<10;i++){rock(2670+i*34,330+(i%3)*24,.85,'#8b9b8c');}
+let coast=worldPoint(2780,390);g.fillStyle='#b5b08b';g.beginPath();g.ellipse(coast.x,coast.y,120,40,0,0,Math.PI*2);g.fill();g.fillStyle='#267e86';g.beginPath();g.ellipse(coast.x+20,coast.y+4,100,29,0,0,Math.PI*2);g.fill();
+let cr=worldPoint(2860,1740);for(let i=0;i<7;i++){g.fillStyle=['#75b9a6','#8dc6bb','#5d9b99'][i%3];g.beginPath();g.moveTo(cr.x-70+i*21,cr.y+10);g.lineTo(cr.x-55+i*21,cr.y-55-(i%3)*24);g.lineTo(cr.x-39+i*21,cr.y+10);g.closePath();g.fill();}
+for(let i=0;i<12;i++){tree(390+i*29,2200+(i%4)*35,1.35,i%4);}
+let sky=worldPoint(1840,2460);g.fillStyle='#8a8871';g.beginPath();g.moveTo(sky.x-120,sky.y+20);g.lineTo(sky.x-60,sky.y-75);g.lineTo(sky.x+70,sky.y-80);g.lineTo(sky.x+130,sky.y+20);g.closePath();g.fill();g.strokeStyle='#c3b58d';g.lineWidth=5;g.beginPath();g.moveTo(sky.x-100,sky.y-50);g.lineTo(sky.x+105,sky.y-50);g.stroke();
 /* watch towers */for(let j=0;j<3;j++){let p=worldPoint(430+j*45,350+j*18);g.fillStyle='#765c3d';g.fillRect(p.x-5,p.y-48,10,50);g.fillStyle='#b49b6d';g.fillRect(p.x-19,p.y-52,38,9)}
 /* attraction markers */finds.forEach((a,i)=>{let p=worldPoint(a.x,a.y,20);g.shadowColor='#f3d68d';g.shadowBlur=15;g.fillStyle='#f3d68d';g.beginPath();g.arc(p.x,p.y,7,0,Math.PI*2);g.fill();g.shadowBlur=0;g.strokeStyle='#fff0c4';g.lineWidth=2;g.beginPath();g.arc(p.x,p.y,13,0,Math.PI*2);g.stroke();label(a.x,a.y-15,a.name,'#fff0c7',8)})}
 function drawPlayer(){let p=worldPoint(player.x,player.y);ellipse(player.x,player.y,20,10,'#07140dcc');g.fillStyle='#c6d4a0';g.beginPath();g.arc(p.x,p.y-23,12,0,Math.PI*2);g.fill();g.fillStyle='#8d5634';g.fillRect(p.x-10,p.y-12,20,27);g.fillStyle='#e8d69f';g.fillRect(p.x-13,p.y+13,9,13);g.fillRect(p.x+4,p.y+13,9,13);g.strokeStyle='#fff1c4';g.lineWidth=3;g.beginPath();g.arc(p.x,p.y-5,29,0,Math.PI*2);g.stroke();g.fillStyle='#e9d79f';g.fillRect(p.x-15,p.y-40,30,5)}
 function nearest(){let candidates=[...finds.map(a=>({...a,type:'find'})),...areas.map(a=>({...a,type:'area'}))];return candidates.map(a=>({...a,d:Math.hypot(a.x-player.x,a.y-player.y)})).sort((a,b)=>a.d-b.d)[0]}
-function render(){let p=iso(player.x,player.y);cam.x+=(p.x-cam.x)*.09;cam.y+=(p.y-cam.y)*.09;g.setTransform(dpr,0,0,dpr,0,0);drawGround();drawLandmarks();drawPlayer();near=nearest();let current=areas.reduce((a,b)=>Math.hypot(player.x-b.x,player.y-b.y)<Math.hypot(player.x-a.x,player.y-a.y)?b:a);landEl.textContent=current.name;hint.textContent=near.d<145?'Discovery nearby: '+near.name:'Follow the lanterns deeper into the wild';prompt.classList.toggle('show',near.d<145);requestAnimationFrame(render)}
+function render(){let p=iso(player.x,player.y);cam.x+=(p.x-cam.x)*.09;cam.y+=(p.y-cam.y)*.09;g.setTransform(dpr,0,0,dpr,0,0);drawGround();drawLandmarks();drawPlayer();near=nearest();let current=areas.reduce((a,b)=>Math.hypot(player.x-b.x,player.y-b.y)<Math.hypot(player.x-a.x,player.y-a.y)?b:a);landEl.textContent=current.name;hint.textContent=near.d<145?'Discovery nearby: '+near.name:'Follow the lanterns deeper into the wild kingdom';prompt.classList.toggle('show',near.d<145);requestAnimationFrame(render)}
 function discover(){if(!near||near.d>180){hint.textContent='Keep exploring. A discovery is waiting along the trail.';return}document.getElementById('disTitle').textContent=near.name;document.getElementById('disText').textContent=near.desc;document.getElementById('discover').classList.add('open');modal=true}
 document.getElementById('enter').onclick=()=>{started=true;document.getElementById('intro').classList.add('hide')};document.getElementById('explore').onclick=discover;document.getElementById('close').onclick=()=>{document.getElementById('discover').classList.remove('open');modal=false};document.getElementById('home').onclick=()=>{player.x=340;player.y=1040;document.getElementById('discover').classList.remove('open');modal=false};
 addEventListener('keydown',e=>{keys[e.key.toLowerCase()]=true;if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' '].includes(e.key))e.preventDefault();if(e.key==='Enter'&&started&&!modal)discover()});addEventListener('keyup',e=>keys[e.key.toLowerCase()]=false);
