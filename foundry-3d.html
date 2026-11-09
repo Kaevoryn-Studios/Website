@@ -140,11 +140,37 @@ if(level<0&&player.z<14.1&&Math.abs(player.x)<1.55&&doors.every(function(d){retu
 function animate(){requestAnimationFrame(animate);if(!renderer)return;var dt=clock?Math.min(clock.getDelta(),.05):.016;if(active){update(dt);doors.forEach(function(d){d.angle+=(d.target-d.angle)*Math.min(1,dt*1.8);d.pivot.rotation.y=d.angle});objects.forEach(function(o){if(!o.used){o.group.rotation.y+=dt*.55;o.group.position.y=floorY[o.level]+1.25+Math.sin(clock.elapsedTime*1.6+o.x)*.12}})}renderer.render(scene,camera)}
 function resize(){if(!renderer)return;camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.5))}
 function soundToggle(){try{if(hum){hum.gain.gain.setTargetAtTime(0,audio.currentTime,.12);hum.osc.stop(audio.currentTime+.4);hum=null;$('sound').textContent='SOUND: OFF';return}audio=audio||new(window.AudioContext||window.webkitAudioContext)();if(audio.state==='suspended')audio.resume();var osc=audio.createOscillator(),gain=audio.createGain();osc.type='sine';osc.frequency.value=42;gain.gain.value=.014;osc.connect(gain);gain.connect(audio.destination);osc.start();hum={osc:osc,gain:gain};$('sound').textContent='SOUND: ON'}catch(e){toast('Ambient sound is unavailable on this device.')}}
-function bind(){window.addEventListener('resize',resize);window.addEventListener('orientationchange',function(){setTimeout(resize,150)});$('enter').addEventListener('click',start);$('again').addEventListener('click',start);$('act').addEventListener('click',interact);$('sound').addEventListener('click',soundToggle);$('help').addEventListener('click',function(){toast('Joystick or WASD: move · Drag the scene: look · EXAMINE: open doors, collect relics and use stairs.')});
-[['forward',0,-1],['back',0,1],['left',-1,0],['right',1,0]].forEach(function(a){$(a[0]).addEventListener('click',function(){if(!active)return;var fx=-Math.sin(player.yaw),fz=-Math.cos(player.yaw),rx=Math.cos(player.yaw),rz=-Math.sin(player.yaw);move((fx*a[1]+rx*a[2])*1.15,(fz*a[1]+rz*a[2])*1.15)})});
-document.addEventListener('keydown',function(e){held[e.code]=true;if(e.code==='KeyE'||e.code==='Space'){e.preventDefault();interact()}});document.addEventListener('keyup',function(e){held[e.code]=false});
-var pad=$('joy'),stick=$('stick');function joyMove(e){var r=pad.getBoundingClientRect(),dx=e.clientX-r.left-r.width/2,dy=e.clientY-r.top-r.height/2,len=Math.hypot(dx,dy)||1,k=Math.min(1,38/len),x=dx*k,y=dy*k;joy.x=x/38;joy.y=y/38;stick.style.left='calc(50% + '+x+'px)';stick.style.top='calc(50% + '+y+'px')}function joyEnd(e){if(e.pointerId!==joyId)return;joyId=null;joy.x=0;joy.y=0;stick.style.left='50%';stick.style.top='50%'}pad.addEventListener('pointerdown',function(e){joyId=e.pointerId;pad.setPointerCapture(e.pointerId);joyMove(e)});pad.addEventListener('pointermove',function(e){if(e.pointerId===joyId)joyMove(e)});pad.addEventListener('pointerup',joyEnd);pad.addEventListener('pointercancel',joyEnd);
-canvas.addEventListener('pointerdown',function(e){drag={x:e.clientX,y:e.clientY}});canvas.addEventListener('pointermove',function(e){if(!drag||!active)return;player.yaw-=(e.clientX-drag.x)*.004;player.pitch=Math.max(-.55,Math.min(.55,player.pitch-(e.clientY-drag.y)*.003));drag={x:e.clientX,y:e.clientY}});canvas.addEventListener('pointerup',function(){drag=null});canvas.addEventListener('pointercancel',function(){drag=null})}
+function bind(){
+  window.addEventListener('resize',resize);
+  window.addEventListener('orientationchange',function(){setTimeout(resize,150)});
+  $('enter').addEventListener('click',start);
+  $('again').addEventListener('click',start);
+  $('act').addEventListener('click',interact);
+  $('sound').addEventListener('click',soundToggle);
+  $('help').addEventListener('click',function(){toast('Joystick or WASD: move · Drag the scene to look · EXAMINE to interact.');});
+  [['forward',0,-1],['back',0,1],['left',-1,0],['right',1,0]].forEach(function(a){
+    $(a[0]).addEventListener('click',function(){
+      if(!active)return;
+      var fx=-Math.sin(player.yaw),fz=-Math.cos(player.yaw),rx=Math.cos(player.yaw),rz=-Math.sin(player.yaw);
+      move((fx*a[1]+rx*a[2])*1.15,(fz*a[1]+rz*a[2])*1.15);
+    });
+  });
+  document.addEventListener('keydown',function(e){held[e.code]=true;if(e.code==='KeyE'||e.code==='Space'){e.preventDefault();interact();}});
+  document.addEventListener('keyup',function(e){held[e.code]=false;});
+  var pad=$('joy'),stick=$('stick');
+  function joyMove(e){
+    var r=pad.getBoundingClientRect(),dx=e.clientX-r.left-r.width/2,dy=e.clientY-r.top-r.height/2;
+    var len=Math.hypot(dx,dy)||1,k=Math.min(1,38/len),x=dx*k,y=dy*k;
+    joy.x=x/38;joy.y=y/38;stick.style.left='calc(50% + '+x+'px)';stick.style.top='calc(50% + '+y+'px)';
+  }
+  function joyEnd(e){if(e.pointerId!==joyId)return;joyId=null;joy.x=0;joy.y=0;stick.style.left='50%';stick.style.top='50%';}
+  pad.addEventListener('pointerdown',function(e){joyId=e.pointerId;pad.setPointerCapture(e.pointerId);joyMove(e);});
+  pad.addEventListener('pointermove',function(e){if(e.pointerId===joyId)joyMove(e);});
+  pad.addEventListener('pointerup',joyEnd);pad.addEventListener('pointercancel',joyEnd);
+  canvas.addEventListener('pointerdown',function(e){drag={x:e.clientX,y:e.clientY};});
+  canvas.addEventListener('pointermove',function(e){if(!drag||!active)return;player.yaw-=(e.clientX-drag.x)*.004;player.pitch=Math.max(-.55,Math.min(.55,player.pitch-(e.clientY-drag.y)*.003));drag={x:e.clientX,y:e.clientY};});
+  canvas.addEventListener('pointerup',function(){drag=null;});canvas.addEventListener('pointercancel',function(){drag=null;});
+}
 function fallback(){pendingStart=false;$('error').textContent='3D graphics could not load in this browser. Check your connection, then reload.';$('error').hidden=false;$('enter').textContent='3D GRAPHICS UNAVAILABLE';$('enter').disabled=true}
 function load(urls,i){if(i>=urls.length){fallback();return}var s=document.createElement('script');s.src=urls[i];s.onload=function(){try{THREE=window.THREE;if(!THREE)throw Error('Three missing');init()}catch(e){console.error(e);fallback()}};s.onerror=function(){load(urls,i+1)};document.head.appendChild(s)}
 bind();load(['https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js','https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js','https://unpkg.com/three@0.160.0/build/three.min.js'],0);
