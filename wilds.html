@@ -95,8 +95,8 @@ function carouselRide(x,z){
 }
 
 function dockPier(x,z,length,width){
- var deck=new THREE.Mesh(new THREE.BoxGeometry(width,.42,length),m.wood);deck.position.set(x,.08,z);deck.receiveShadow=true;scene.add(deck);
- for(var i=0;i<Math.floor(length/2);i++){var plank=new THREE.Mesh(new THREE.BoxGeometry(width-.12,.08,1.85),i%2?m.wood:m.gold);plank.position.set(x,.2,z-length/2+1+i*2);scene.add(plank)}
+ var deck=new THREE.Mesh(new THREE.BoxGeometry(width,.16,length),m.wood);deck.position.set(x,.08,z);deck.receiveShadow=true;scene.add(deck);
+ for(var i=0;i<Math.floor(length/2);i++){var plank=new THREE.Mesh(new THREE.BoxGeometry(width-.12,.08,1.85),i%2?m.wood:m.gold);plank.position.set(x,.17,z-length/2+1+i*2);scene.add(plank)}
  for(var side of [-1,1]){var rail=new THREE.Mesh(new THREE.BoxGeometry(.22,.2,length),m.wood);rail.position.set(x+side*(width/2-.12),1.65,z);scene.add(rail);for(var p=0;p<=length/2;p+=3){var post=new THREE.Mesh(new THREE.CylinderGeometry(.13,.16,2.2,8),m.wood);post.position.set(x+side*(width/2-.12),1.2,z-length/2+p);scene.add(post);addCollider(post.position.x,post.position.z,.18,.18)}}
  discovery('THE BOARDING PIER',x,z,'Follow the timber harbor pier to the side of the Lost Galleon and look up at its towering masts.')
 }
@@ -127,8 +127,8 @@ function crystalArch(x,z){
  discovery('THE PRISM GATE',x,z,'Walk beneath the great crystal arch, where a suspended prism glows above the garden path.')
 }
 function jungleBridge(x,z){
- var deck=new THREE.Mesh(new THREE.BoxGeometry(26,.55,4.5),m.wood);deck.position.set(x,.1,z);deck.receiveShadow=true;scene.add(deck);
- for(var i=0;i<18;i++){var plank=new THREE.Mesh(new THREE.BoxGeometry(1.35,.12,4.6),m.gold);plank.position.set(x-12.5+i*1.47,.22,z);scene.add(plank)}
+ var deck=new THREE.Mesh(new THREE.BoxGeometry(26,.16,4.5),m.wood);deck.position.set(x,.1,z);deck.receiveShadow=true;scene.add(deck);
+ for(var i=0;i<18;i++){var plank=new THREE.Mesh(new THREE.BoxGeometry(1.35,.12,4.6),m.gold);plank.position.set(x-12.5+i*1.47,.17,z);scene.add(plank)}
  for(var side of [-1,1]){var rail=new THREE.Mesh(new THREE.BoxGeometry(26,.22,.22),m.wood);rail.position.set(x,2.0,z+side*2.05);scene.add(rail);
   for(var p=0;p<14;p++){var post=new THREE.Mesh(new THREE.CylinderGeometry(.12,.14,2.1,7),m.wood);post.position.set(x-12+p*1.85,1.4,z+side*2.05);scene.add(post);addCollider(post.position.x,post.position.z,.16,.16)}
  }
