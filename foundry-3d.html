@@ -117,6 +117,14 @@ cube(g,-1.48,2.12,8.28,.24,4.24,.78,jamb,false);
 cube(g,1.48,2.12,8.28,.24,4.24,.78,jamb,false);
 cube(g,0,4.18,8.28,3.2,.28,.78,M.gold,false);
 cube(g,0,3.93,8.28,2.92,.12,.8,doorWood,false);
+// Solid Gothic transom closes the visible gap between the door leaves and the stone header.
+ // The infill sits above the moving leaves, so it never blocks the doorway when they swing open.
+cube(g,0,3.78,8.40,2.68,.48,.62,doorWood,true);
+cube(g,0,3.78,8.73,2.38,.28,.035,doorPanel,false);
+cube(g,0,3.78,8.76,.12,.40,.06,M.gold,false);
+for(var transomX of [-.78,.78]){
+  cube(g,transomX,3.78,8.76,.08,.40,.06,M.gold,false);
+}
 // Small pointed arch crown above the doors, leaving the actual doorway unobstructed.
 var arch=new THREE.Mesh(new THREE.TorusGeometry(1.42,.095,8,32,Math.PI),M.gold);
 arch.position.set(0,3.78,8.64);arch.rotation.z=Math.PI;g.add(arch);
