@@ -82,6 +82,16 @@ landSign('PIRATE COVE',145,-4,'#a6d8e8');var sea=box(154,.0,-48,78,.3,90,m.water
 landSign('VOLCANIC FRONTIER',88,-145,'#ffb17c');volcano(120,-190);building(78,-170,20,18,11,m.iron,m.roof,'MINING COMPANY');coaster(70,-115,'#e66b45',1.05);discovery('EMBER MOUNTAIN',120,-190,'A huge volcanic peak dominates the skyline, with glowing lava seams and a smoking crater.');discovery('MAGMA RUN',70,-115,'A high-speed coaster races around the volcanic foothills and through the mining frontier.');
 /* CRYSTAL GARDENS and observation wheel. */
 landSign('CRYSTAL GARDENS',0,-140,'#a7e4ee');ferris(0,-184);for(var i=0;i<18;i++){var a=i*Math.PI/9,x=Math.cos(a)*28,z=-184+Math.sin(a)*28;var crystal=new THREE.Mesh(new THREE.OctahedronGeometry(3+(i%3)*1.2),[m.crystal,m.crystal2,m.water][i%3]);crystal.position.set(x,3+(i%3),z);crystal.scale.y=2.3;crystal.castShadow=true;scene.add(crystal);addCollider(x,z,2.4+(i%3)*.8,2.4+(i%3)*.8)}building(-30,-183,15,12,8,m.stone,m.roof,'GEM EXCHANGE');discovery('THE SKY WHEEL',0,-184,'A giant observation wheel rises over the crystal gardens with colorful gondolas and a sweeping view of the park.');discovery('CRYSTAL GROTTO',-30,-183,'A glittering pavilion sits among towering crystals, reflective pools and glowing garden paths.');
+/* Guest services tucked beside the central loop, with short connected access paths. */
+path([[-35,42],[-47,36],[-55,30],[-62,25]],6,m.path);
+path([[35,42],[47,36],[55,30],[62,25]],6,m.path);
+building(-64,22,13,10,7,m.stone,m.roof,'FIRST AID');
+building(64,22,13,10,7,m.castle,m.roof,'RESTROOMS');
+landSign('GUEST CARE',-64,13,'#a9e5ff');
+landSign('RESTROOMS',64,13,'#b7e6c0');
+lamp(-53,28);lamp(53,28);
+discovery('FIRST AID STATION',-64,22,'A staffed guest-care building beside the central loop, ready for anyone who needs assistance.');
+discovery('GUEST RESTROOMS',64,22,'Convenient guest facilities just off the central plaza loop.');
 themedDetails();
 /* Scenic edges and boundary walls/fences. */
 fence(-200,-200,400,'x');fence(-200,200,400,'x');fence(-200,-200,400,'z');fence(200,-200,400,'z');
