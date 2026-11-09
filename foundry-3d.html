@@ -236,8 +236,8 @@ function toast(msg){var el=$('toast');el.textContent=msg;el.classList.add('show'
 function floorChange(n){level=n;player.y=(n===3?-4.5:n*4.5)+1.65;player.x=0;player.z=1;$('floor').textContent=floorNames[n];$('chapter').textContent=['THE HOUSE REMEMBERS','THE DANCE NEVER ENDED','ABOVE THE CEILING','BELOW THE FOUNDATIONS'][n];$('objective').textContent='Search the rooms. Look for objects glowing in the candlelight.';$('state').textContent='EXPLORING';}
 function nearest(){var best=null,dist=2.6;items.forEach(function(o){if(o.used||o.level!==level)return;var d=Math.hypot(o.x-player.x,o.z-player.z);if(d<dist){best=o;dist=d}});return best}
 function interact(){if(!active)return;var o=nearest();if(o){if(o.kind==='key'){o.used=true;keys++;o.group.visible=false;toast(o.name+' collected.')}else if(o.kind==='memory'){o.used=true;memories++;o.group.visible=false;toast(o.name+' recovered.')}else if(keys<3){toast('The Heart Chamber is sealed. Find all three keys.')}else{$('ending').hidden=false;active=false} $('inventory').textContent=keys+' / 3 keys · '+memories+' / 3 memories';return}
-if(level===-1&&player.z<12){toast('The great doors stand before you. Walk closer to enter.');return}
-if(player.z>7&&player.z<12&&Math.abs(player.x)<3){doors.forEach(function(d){d.target=d.direction*1.3});level=0;$('floor').textContent=floorNames[0];$('chapter').textContent='THE HOUSE REMEMBERS';$('objective').textContent='You have entered. Explore the foyer and find the hidden keys.';$('state').textContent='INSIDE';toast('THE GREAT DOORS SWING OPEN');return}
+if(level===-1&&player.z>7&&player.z<12&&Math.abs(player.x)<3.2){doors.forEach(function(d){d.target=d.direction*1.3});toast('THE GREAT DOORS SWING OPEN');return}
+if(level===-1&&player.z<12){toast('The entrance is sealed. Stand before the doors and use EXAMINE / OPEN.');return}
 if(Math.abs(player.x)<3.2&&player.z>-7&&player.z<-1){floorChange((level+1)%4);toast('You climb the grand staircase.');return}
 toast('Nothing responds. Move closer to an object or the staircase.')}
 function blocked(x,z){
@@ -245,6 +245,8 @@ function blocked(x,z){
   // Keep the outdoor grounds separate from the indoor room limits.
   if(level===-1){
     if(x<-22+radius||x>22-radius||z<4+radius||z>38-radius)return true;
+    // The entrance stays sealed until the player deliberately opens both doors.
+    if(z<8.05+radius&&z>7.15-radius&&Math.abs(x)<1.72&&doors.some(function(d){return Math.abs(d.angle)<0.95}))return true;
   }else{
     if(x<-11.2+radius||x>11.2-radius||z<-18.2+radius||z>14.4-radius)return true;
   }
@@ -259,7 +261,6 @@ function blocked(x,z){
 function move(dx,dz){var distance=Math.hypot(dx,dz),steps=Math.max(1,Math.ceil(distance/.12)),sx=dx/steps,sz=dz/steps;for(var step=0;step<steps;step++){var nx=player.x+sx,nz=player.z+sz;if(!blocked(nx,player.z))player.x=nx;if(!blocked(player.x,nz))player.z=nz}if(fallbackCanvas)fallbackDraw()}
 function update(dt){var f=(held.KeyW||held.ArrowUp?1:0)-(held.KeyS||held.ArrowDown?1:0)-joy.y,s=(held.KeyD||held.ArrowRight?1:0)-(held.KeyA||held.ArrowLeft?1:0)+joy.x;var n=Math.hypot(f,s);if(n>.02){f/=n;s/=n;var v=player.speed*dt,fx=-Math.sin(player.yaw),fz=-Math.cos(player.yaw),rx=Math.cos(player.yaw),rz=-Math.sin(player.yaw);move((fx*f+rx*s)*v,(fz*f+rz*s)*v)}
 camera.position.set(player.x,player.y,player.z);camera.rotation.set(player.pitch,player.yaw,0,'YXZ');
-if(level===-1&&player.z<10.5&&Math.abs(player.x)<2.8){doors.forEach(function(d){d.target=d.direction*1.3})}
 if(level===-1&&player.z<7.8&&Math.abs(player.x)<2.8&&doors.every(function(d){return Math.abs(d.angle)>0.9})){level=0;$('floor').textContent=floorNames[0];$('chapter').textContent='THE HOUSE REMEMBERS';$('objective').textContent='The doors close behind you. Search the grand foyer.';$('state').textContent='INSIDE';toast('WELCOME TO THE HOLLOW CROWN')}
 }
 function animate(){requestAnimationFrame(animate);if(!renderer)return;if(active){var dt=Math.min(clock.getDelta(),.05);update(dt);doors.forEach(function(d){d.angle+=(d.target-d.angle)*Math.min(1,dt*1.9);d.pivot.rotation.y=d.angle});var t=clock.elapsedTime;items.forEach(function(o){if(!o.used&&o.group.visible&&o.kind!=='door'){o.group.position.y+=Math.sin(t*1.8+o.x)*.0015;o.group.rotation.y+=dt*.5}})}renderer.render(scene,camera)}
