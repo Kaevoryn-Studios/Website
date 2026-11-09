@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#07140f">
+<meta name="description" content="Enter Kaevoryn Wilds: a vast adventure park of ancient jungles, lost temples, living rivers, prehistoric encounters, and forgotten civilizations.">
+<title>KAEVORYN WILDS — Kaevoryn Studios</title>
+<link rel="stylesheet" href="parks/parks.css">
+<style>
+body[data-park="wilds"]{--accent:#9ee7a6;--accent2:#d7b77a;--gold:#f3d28c;background:radial-gradient(ellipse at 18% 0%,#1b513b88,transparent 38%),radial-gradient(ellipse at 90% 25%,#a0783b33,transparent 36%),#07140f}
+.wilds-hero{min-height:480px;display:grid;place-items:center;overflow:hidden;position:relative;border:1px solid #a4d7a344;border-radius:28px;margin-top:18px;padding:45px 20px;background:linear-gradient(180deg,#07140f22,#07140fdd),radial-gradient(ellipse at 50% 80%,#c2a45b55,transparent 35%),linear-gradient(135deg,#123c2d,#1b4937 42%,#172c22 70%,#09140f);box-shadow:inset 0 0 100px #020905}
+.wilds-hero:before,.wilds-hero:after{content:"";position:absolute;inset:auto -10% 0;height:46%;pointer-events:none;background:linear-gradient(135deg,transparent 20%,#06120d 20% 24%,transparent 24% 46%,#06120d 46% 51%,transparent 51%),linear-gradient(0deg,#06120d,transparent);opacity:.85}
+.wilds-hero:after{inset:0;background:radial-gradient(ellipse at 50% 15%,#f4d48a55,transparent 26%);opacity:.7}
+.wilds-hero>*{position:relative;z-index:1}.wilds-hero h1{font-size:clamp(48px,10vw,100px);text-shadow:0 8px 45px #000}.wilds-hero .lead{max-width:780px}.wilds-kicker{color:#c6e9bd;letter-spacing:.3em;font-size:10px;font-weight:900}
+.wilds-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:18px 0 30px}.wilds-stat{padding:15px;border:1px solid #9ee7a633;border-radius:15px;background:#0b2119;text-align:center}.wilds-stat strong{display:block;color:#d6e9a7;font-size:23px}.wilds-stat span{color:#bacbbd;font-size:10px;letter-spacing:.12em;text-transform:uppercase}
+.wilds-land{position:relative;min-height:255px;overflow:hidden;background:linear-gradient(145deg,#153b2b,#0a1a13 78%)}.wilds-land:after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 80% 0%,#b5d18b22,transparent 45%)}.wilds-land>*{position:relative;z-index:1}.wilds-land .symbol{font-size:32px}.wilds-land h3{color:#e7eacb}.wilds-land p{color:#c2d2c4}
+.wilds-map{padding:20px;border:1px solid #9ee7a644;border-radius:24px;background:radial-gradient(ellipse at center,#244c32,#09170f 70%)}.wilds-map-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:900px;margin:auto}.wilds-node{min-height:112px;padding:12px;border:1px solid #a6d8a644;border-radius:15px;background:#0b1c13;color:#f4f4df;cursor:pointer}.wilds-node[aria-pressed="true"],.wilds-node:hover{border-color:#d7c18a;background:#294a31;box-shadow:0 0 25px #9ee7a622}.wilds-node span{display:block;font-size:25px}.wilds-node strong{display:block;font-size:12px}.wilds-node small{color:#b9cbb8}.wilds-map-detail{max-width:900px;margin:15px auto 0;padding:18px;border:1px solid #d7b77a55;border-radius:15px;background:#07140fdd}.wilds-map-detail h3{margin:0 0 5px;color:#f0d99b}.wilds-map-detail p{margin:0;color:#c7d5c6}
+.wilds-callout{border-color:#a8d89b66;background:linear-gradient(110deg,#173a2b,#0b1711 75%)}
+@media(max-width:650px){.wilds-stats{grid-template-columns:repeat(2,1fr)}.wilds-map-grid{grid-template-columns:repeat(2,1fr)}.wilds-hero{min-height:410px}}
+@media(max-width:390px){.wilds-map-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body data-park="wilds">
+<a class="skip" href="#main">Skip to content</a>
+<header class="topbar"><a class="brand" href="index.html">KAEVORYN STUDIOS<small>CREATE THE IMPOSSIBLE</small></a><nav class="links" aria-label="Main navigation"><a href="parks.html">All Parks</a><a href="attractions.html">Attractions</a><a href="shows.html">Shows</a><a href="index.html">Home</a></nav></header>
+<main id="main" class="wrap">
+<section class="wilds-hero">
+<div><p class="wilds-kicker">THE GREAT ADVENTURE & EXPEDITION PARK</p><h1>KAEVORYN WILDS</h1><p class="lead">Beyond the last known trail lies a world reclaimed by nature. Cross ancient rivers, enter forgotten temples, encounter colossal creatures, and uncover the secrets of a civilization swallowed by the jungle.</p><span class="status">VIRTUAL PARK EXPERIENCE · CONCEPT IN DEVELOPMENT</span><div class="actions"><a class="btn" href="#lands">Enter the Wilds ↓</a><a class="btn secondary" href="park-life.html?park=wilds">Explore rides, dining, shops & shows ↗</a></div></div>
+</section>
+<div class="wilds-stats" aria-label="Park overview"><div class="wilds-stat"><strong>6</strong><span>Expedition lands</span></div><div class="wilds-stat"><strong>8</strong><span>Featured adventures</span></div><div class="wilds-stat"><strong>1</strong><span>Lost civilization</span></div><div class="wilds-stat"><strong>∞</strong><span>Secrets to uncover</span></div></div>
+<section id="lands"><div class="section-head"><p class="eyebrow">THE EXPEDITION BEGINS</p><h2>Six territories. One untamed world.</h2><p>From the first river crossing to the heart of a lost empire, every territory reveals another part of the Wilds.</p></div>
+<div class="lands">
+<article class="land wilds-land"><span class="symbol">🌴</span><h3>Jungle Outpost</h3><p>Your base camp at the edge of the unknown. Supply depots, rope bridges, expedition guides, and trails into the green.</p><button class="btn" data-wild-discover="outpost">Explore territory ↗</button></article>
+<article class="land wilds-land"><span class="symbol">🦖</span><h3>Valley of Giants</h3><p>A vast prehistoric valley where enormous creatures roam through fern forests, cliffs, and mist-covered lakes.</p><button class="btn" data-wild-discover="giants">Explore territory ↗</button></article>
+<article class="land wilds-land"><span class="symbol">🏛️</span><h3>The Sunken Empire</h3><p>Ancient stone avenues, overgrown plazas, colossal statues, and a royal temple hidden beneath the canopy.</p><button class="btn" data-wild-discover="empire">Explore territory ↗</button></article>
+<article class="land wilds-land"><span class="symbol">🌋</span><h3>Ember Mountain</h3><p>A rugged volcanic frontier of black rock, steaming vents, glowing caverns, and a river that winds toward the crater.</p><button class="btn" data-wild-discover="ember">Explore territory ↗</button></article>
+<article class="land wilds-land"><span class="symbol">💧</span><h3>Emerald Falls</h3><p>A spectacular waterfall basin with hidden caves, hanging gardens, river rapids, and quiet pools beneath the mist.</p><button class="btn" data-wild-discover="falls">Explore territory ↗</button></article>
+<article class="land wilds-land"><span class="symbol">🧭</span><h3>The Forbidden Pass</h3><p>A high-risk expedition route through ravines, rope bridges, ancient watchtowers, and the final sealed gateway.</p><button class="btn" data-wild-discover="pass">Explore territory ↗</button></article>
+</div>
+<div class="discovery" aria-live="polite"><div><p class="eyebrow">FIELD NOTES</p><h3 id="wildDetailTitle">Jungle Outpost</h3><p id="wildDetailCopy">Your base camp at the edge of the unknown. Stock up, meet the expedition team, and choose your first trail.</p></div><div class="side"><strong id="wildAttractionTitle">The Expedition Begins</strong><span id="wildAttractionCopy">A guided introduction that leads you from camp into the living jungle.</span></div></div>
+</section>
+<section><div class="section-head"><p class="eyebrow">SIGNATURE EXPEDITIONS</p><h2>Adventure is waiting beyond the trail</h2><p>Each experience is designed around exploration, discovery, and a strong sense of place.</p></div><div class="rides">
+<article class="ride"><span class="symbol">🦖</span><h3>Colossus: Valley Run</h3><p>A high-speed expedition coaster racing past towering prehistoric creatures, collapsing ruins, and a thundering river gorge.</p><p><strong>Type:</strong> Signature adventure coaster · <strong>Land:</strong> Valley of Giants</p><a class="btn" href="ride-experience.html?park=wilds&amp;ride=colossus-valley-run">Preview expedition ↗</a></article>
+<article class="ride"><span class="symbol">🚙</span><h3>Lost Empire Expedition</h3><p>Board an open-air expedition vehicle and journey through overgrown temples, ancient chambers, and a city hidden beneath the jungle.</p><p><strong>Type:</strong> Immersive trackless adventure · <strong>Land:</strong> The Sunken Empire</p><a class="btn" href="ride-experience.html?park=wilds&amp;ride=lost-empire-expedition">Preview expedition ↗</a></article>
+<article class="ride"><span class="symbol">🛶</span><h3>River of Secrets</h3><p>Travel by expedition boat through glowing lagoons, hidden waterfalls, and mysterious ruins along the river.</p><p><strong>Type:</strong> Boat adventure · <strong>Land:</strong> Emerald Falls</p><a class="btn" href="ride-experience.html?park=wilds&amp;ride=river-of-secrets">Preview expedition ↗</a></article>
+<article class="ride"><span class="symbol">🌋</span><h3>Heart of the Volcano</h3><p>Descend into Ember Mountain as the ancient caldera begins to awaken around your expedition.</p><p><strong>Type:</strong> Indoor/outdoor thrill adventure · <strong>Land:</strong> Ember Mountain</p><a class="btn" href="ride-experience.html?park=wilds&amp;ride=heart-of-the-volcano">Preview expedition ↗</a></article>
+<article class="ride"><span class="symbol">🗿</span><h3>Temple of the Lost Sun</h3><p>Explore a monumental temple, solve environmental puzzles, and uncover the truth behind the vanished empire.</p><p><strong>Type:</strong> Interactive dark adventure · <strong>Land:</strong> The Sunken Empire</p><a class="btn" href="ride-experience.html?park=wilds&amp;ride=temple-of-the-lost-sun">Preview expedition ↗</a></article>
+<article class="ride"><span class="symbol">🌉</span><h3>Forbidden Pass: Edge of the World</h3><p>A suspenseful expedition across ravines, ancient bridges, and a sealed mountain gate.</p><p><strong>Type:</strong> Suspense adventure · <strong>Land:</strong> The Forbidden Pass</p><a class="btn" href="ride-experience.html?park=wilds&amp;ride=forbidden-pass">Preview expedition ↗</a></article>
+</div></section>
+<section><div class="section-head"><p class="eyebrow">THE EXPEDITION MAP</p><h2>Choose your next destination</h2><p>Select a territory to reveal its field notes and featured discovery.</p></div><div class="wilds-map"><div class="wilds-map-grid" role="group" aria-label="Interactive map of Kaevoryn Wilds">
+<button class="wilds-node" data-wild-node="outpost" aria-pressed="true"><span>🌴</span><strong>Jungle Outpost</strong><small>Expedition base</small></button>
+<button class="wilds-node" data-wild-node="giants" aria-pressed="false"><span>🦖</span><strong>Valley of Giants</strong><small>Prehistoric frontier</small></button>
+<button class="wilds-node" data-wild-node="empire" aria-pressed="false"><span>🏛️</span><strong>The Sunken Empire</strong><small>Lost civilization</small></button>
+<button class="wilds-node" data-wild-node="ember" aria-pressed="false"><span>🌋</span><strong>Ember Mountain</strong><small>Volcanic territory</small></button>
+<button class="wilds-node" data-wild-node="falls" aria-pressed="false"><span>💧</span><strong>Emerald Falls</strong><small>Waterfall basin</small></button>
+<button class="wilds-node" data-wild-node="pass" aria-pressed="false"><span>🧭</span><strong>The Forbidden Pass</strong><small>Final frontier</small></button>
+</div><div class="wilds-map-detail"><h3 id="wildMapTitle">Jungle Outpost</h3><p id="wildMapCopy">Begin your expedition here, gather supplies, and choose a trail into the unknown.</p></div></div></section>
+<section class="callout wilds-callout"><p class="eyebrow">THE WILD IS CALLING</p><h2>Every discovery opens another path.</h2><p>Kaevoryn Wilds is a virtual park concept in development. Its lands, attractions, and expedition previews are digital experiences—not an operating physical theme park.</p><div class="actions"><a class="btn" href="park-life.html?park=wilds">Open the Wilds park guide ↗</a><a class="btn secondary" href="parks.html">Return to all parks ↗</a></div></section>
+</main>
+<footer class="footer"><strong>KAEVORYN STUDIOS</strong>CREATE THE IMPOSSIBLE · <a href="parks.html">All Parks</a></footer>
+<script>
+(function(){
+const info={
+outpost:["Jungle Outpost","Your base camp at the edge of the unknown. Stock up, meet the expedition team, and choose your first trail.","The Expedition Begins","A guided introduction that leads you from camp into the living jungle."],
+giants:["Valley of Giants","A vast prehistoric valley where enormous creatures roam through fern forests, cliffs, and mist-covered lakes.","Colossus: Valley Run","Race through a prehistoric landscape as colossal creatures move around the expedition route."],
+empire:["The Sunken Empire","Ancient stone avenues, overgrown plazas, colossal statues, and a royal temple hidden beneath the canopy.","Temple of the Lost Sun","Explore the lost capital and uncover the mystery behind its disappearance."],
+ember:["Ember Mountain","A rugged volcanic frontier of black rock, steaming vents, glowing caverns, and a river that winds toward the crater.","Heart of the Volcano","Descend into the mountain as the caldera begins to awaken."],
+falls:["Emerald Falls","A spectacular waterfall basin with hidden caves, hanging gardens, river rapids, and quiet pools beneath the mist.","River of Secrets","Follow the waterway through caves, falls, and hidden ancient markers."],
+pass:["The Forbidden Pass","A high-risk expedition route through ravines, rope bridges, ancient watchtowers, and the final sealed gateway.","Edge of the World","Cross the last bridge and discover what the lost civilization sealed away."]
+};
+function select(key){const v=info[key];if(!v)return;
+document.getElementById("wildDetailTitle").textContent=v[0];document.getElementById("wildDetailCopy").textContent=v[1];document.getElementById("wildAttractionTitle").textContent=v[2];document.getElementById("wildAttractionCopy").textContent=v[3];document.getElementById("wildMapTitle").textContent=v[0];document.getElementById("wildMapCopy").textContent=v[1];
+document.querySelectorAll("[data-wild-node]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.wildNode===key)));
+}
+document.querySelectorAll("[data-wild-node]").forEach(b=>b.addEventListener("click",()=>select(b.dataset.wildNode)));
+document.querySelectorAll("[data-wild-discover]").forEach(b=>b.addEventListener("click",()=>{select(b.dataset.wildDiscover);document.getElementById("wildMapTitle").scrollIntoView({behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"center"});}));
+})();
+</script>
+</body></html>
