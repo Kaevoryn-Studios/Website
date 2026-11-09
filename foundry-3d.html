@@ -50,7 +50,8 @@ return g}
 function makeExterior(){var g=group(scene);cube(g,0,-.35,16,100,.5,100,material('#17191c'),false);cube(g,0,-.02,17,6,.12,32,material('#4b4641'),false);
 var stone=material('#39312e'),roof=material('#171a21');
 // Split the front facade into two wings so there is a real, unobstructed doorway through the entire wall thickness.
-cube(g,-6.8,3.3,7.7,8.4,6.6,.65,stone,false);cube(g,6.8,3.3,7.7,8.4,6.6,.65,stone,false);cube(g,0,6.6,7.4,24,.35,1.4,M.gold,false);
+// Continuous lower front facade wings run from the doorway jambs all the way to both outer corners.
+cube(g,-6.8,3.3,7.7,10.4,6.6,.85,stone,false);cube(g,6.8,3.3,7.7,10.4,6.6,.85,stone,false);cube(g,0,6.6,7.4,24,.35,1.4,M.gold,false);
 for(var s of [-1,1]){cube(g,s*8,3.2,7.1,6,6.4,.7,stone,true);var r=new THREE.Mesh(new THREE.ConeGeometry(5,3,4),roof);r.position.set(s*8,7.7,7);r.rotation.y=Math.PI/4;g.add(r)}
 // Tower supports flank the entrance instead of forming a solid wall across it.
 cube(g,-2.3,7.1,7,.7,8,.9,stone,false);cube(g,2.3,7.1,7,.7,8,.9,stone,false);var tower=new THREE.Mesh(new THREE.ConeGeometry(4.2,4.5,4),roof);tower.position.set(0,13,7);tower.rotation.y=Math.PI/4;g.add(tower);
