@@ -219,11 +219,18 @@ for(var n=0;n<7;n++){var x=58+n*7,z=-164-(n%2)*9;var ore=new THREE.Mesh(new THRE
 /* Crystal gardens: low reflecting pools and stone lanterns. */
 for(var p=0;p<4;p++){var x=-42+p*28;box(x,.35,-158,12,.7,4,m.stone,true);box(x,.72,-158,10,.12,2,m.water,false);cyl(x,1.6,-153,.4,.55,2.5,m.iron,8);sphere(x,3.1,-153,.55,m.crystal,1,1.4,1)}
 }
+
+function nearWalkway(x,z){
+ var routes=[[[0,104],[0,-68]],[[0,-40],[-78,-110]],[[0,-40],[78,-110]],[[0,-68],[-105,-155]],[[0,-68],[105,-155]],[[-78,-110],[-145,-15]],[[78,-110],[145,-15]],[[-145,-15],[145,-15]],[[-78,-110],[-112,-158]],[[-145,-15],[-183,-5]],[[-145,-15],[-146,-47]],[[145,-15],[151,-34]],[[78,-110],[70,-170]],[[0,-140],[0,-184]],[[-70,-143],[-47,-151]],[[-145,-15],[-158,-5]],[[78,-170],[102,-166]],[[0,-184],[-30,-160]]];
+ for(var r=0;r<routes.length;r++)for(var i=0;i<routes[r].length-1;i++){var a=routes[r][i],b=routes[r][i+1],dx=b[0]-a[0],dz=b[1]-a[1],t=Math.max(0,Math.min(1,((x-a[0])*dx+(z-a[1])*dz)/(dx*dx+dz*dz))),px=a[0]+dx*t,pz=a[1]+dz*t;if(Math.hypot(x-px,z-pz)<10)return true}
+ return false
+}
+
 function makePark(){
 scene.background=new THREE.Color('#9bc5d2');scene.fog=new THREE.Fog('#9bc5d2',150,330);
 var hemi=new THREE.HemisphereLight('#e7f5ff','#536d43',2.0);scene.add(hemi);var sun=new THREE.DirectionalLight('#fff0d2',2.2);sun.position.set(-80,120,55);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);sun.shadow.camera.left=-180;sun.shadow.camera.right=180;sun.shadow.camera.top=180;sun.shadow.camera.bottom=-180;sun.shadow.bias=-.00025;sun.shadow.normalBias=.035;sun.shadow.radius=4;scene.add(sun);
 box(0,-1.1,0,420,2,420,m.grass,false);
-for(var i=0;i<240;i++){var x=((i*73)%390)-195,z=((i*137)%390)-195;if(Math.abs(x)<48&&Math.abs(z)<48)continue;if(Math.abs(x)<14||Math.abs(z)<14)continue;tree(x,z,.65+(i%5)*.12,i%3)}
+for(var i=0;i<240;i++){var x=((i*73)%390)-195,z=((i*137)%390)-195;if(Math.abs(x)<48&&Math.abs(z)<48)continue;if(Math.abs(x)<14||Math.abs(z)<14)continue;if(nearWalkway(x,z))continue;tree(x,z,.65+(i%5)*.12,i%3)}
 /* Main entrance and a genuinely connected path network. */
 path([[0,104],[0,75],[0,48],[0,20],[0,-10],[0,-40],[0,-68]],14,m.path);path([[0,-40],[-32,-60],[-58,-82],[-78,-110]],10,m.path);path([[0,-40],[32,-60],[58,-82],[78,-110]],10,m.path);path([[0,-68],[-48,-92],[-82,-125],[-105,-155]],10,m.path);path([[0,-68],[48,-92],[82,-125],[105,-155]],10,m.path);path([[-78,-110],[-115,-88],[-142,-55],[-145,-15]],9,m.path);path([[78,-110],[115,-88],[142,-55],[145,-15]],9,m.path);path([[-145,-15],[-120,28],[-80,50],[-35,42],[0,20],[35,42],[80,50],[120,28],[145,-15]],9,m.path);path([[-78,-110],[-92,-128],[-108,-148],[-112,-158]],8,m.path);path([[-145,-15],[-148,-28],[-146,-47]],8,m.path);path([[-145,-15],[-160,-10],[-174,-5],[-183,-1]],6,m.path);path([[-146,-47],[-156,-50],[-170,-54],[-178,-58]],6,m.path);path([[145,-15],[153,-25],[151,-34]],8,m.path);path([[78,-110],[83,-132],[78,-150],[70,-170]],8,m.path);path([[0,-140],[0,-162],[0,-184]],8,m.path);
 for(var z=78;z>-155;z-=13){lamp(-8,z);lamp(8,z)}
