@@ -218,6 +218,9 @@ for(var k=0;k<6;k++){var x=132+k*7;box(x,.45,-12,5,.9,8,m.wood,true);box(x,.9,-1
 for(var n=0;n<7;n++){var x=58+n*7,z=-164-(n%2)*9;var ore=new THREE.Mesh(new THREE.DodecahedronGeometry(2.1+(n%3)*.4),n%2?m.lava:m.iron);ore.position.set(x,1.3,z);ore.scale.set(1.5,.8,1.1);ore.castShadow=true;scene.add(ore);addCollider(x,z,3,2.5)}for(var v=0;v<3;v++){var x=68+v*10;box(x,3,-184,1,6,1,m.wood,true);box(x,6,-184,5,1,1,m.wood,true)}
 /* Crystal gardens: low reflecting pools and stone lanterns. */
 for(var p=0;p<4;p++){var x=-42+p*28;box(x,.35,-158,12,.7,4,m.stone,true);box(x,.72,-158,10,.12,2,m.water,false);cyl(x,1.6,-153,.4,.55,2.5,m.iron,8);sphere(x,3.1,-153,.55,m.crystal,1,1.4,1)}
+/* Warm lanterns, resting points and waste bins continue through every themed land. */
+[[-126,-116],[-96,-136],[-178,-14],[-139,-64],[-132,-25],[128,-16],[174,-15],[187,-72],[58,-132],[92,-178],[142,-170],[22,-155],[-24,-177]].forEach(function(p){lamp(p[0],p[1])});
+[[-98,-112],[-135,-28],[178,-42],[92,-145],[28,-172]].forEach(function(p){bench(p[0],p[1],0);wasteBin(p[0]+2,p[1]+2)});
 }
 
 function nearWalkway(x,z){
