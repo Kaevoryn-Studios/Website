@@ -30,7 +30,8 @@ function addMesh(geo,mat,x,y,z,parent){var mesh=new THREE.Mesh(geo,mat);mesh.pos
 function addBox(x,y,z,w,h,d,mat,parent){return addMesh(new THREE.BoxGeometry(w,h,d),mat,x,y,z,parent)}
 function addSphere(x,y,z,r,mat,parent){return addMesh(new THREE.SphereGeometry(r,12,10),mat,x,y,z,parent)}
 function addCylinder(x,y,z,rt,rb,h,mat,segments,parent){return addMesh(new THREE.CylinderGeometry(rt,rb,h,segments||12),mat,x,y,z,parent)}
-function addCollider(x,z,rx,rz){colliders.push({type:'circle',x:x,z:z,rx:rx,rz:rz})}\nfunction addRectCollider(x,z,w,d){colliders.push({type:'rect',x:x,z:z,w:w,d:d})}
+function addCollider(x,z,rx,rz){colliders.push({type:'circle',x:x,z:z,rx:rx,rz:rz})}
+function addRectCollider(x,z,w,d){colliders.push({type:'rect',x:x,z:z,w:w,d:d})}
 function addPath(points,width,mat){for(var i=0;i<points.length-1;i++){var a=points[i],b=points[i+1],dx=b[0]-a[0],dz=b[1]-a[1],len=Math.hypot(dx,dz),mesh=addBox((a[0]+b[0])/2,.03,(a[1]+b[1])/2,width,.12,len,mat);mesh.rotation.y=Math.atan2(dx,dz)}}
 function addTree(x,z,size){addCylinder(x,size*1.7,z,.42*size,.62*size,size*3.4,M.bark,8);for(var i=0;i<3;i++){var crown=addSphere(x+(i-1)*.5*size,size*3.3+i*.55*size,z+(i%2)*.45*size,size*(1.8-i*.18),i%2?M.leaf:M.leaf2);crown.scale.set(1,.8,1)}addCollider(x,z,.55*size,.55*size)}
 function addLamp(x,z){addCylinder(x,2.1,z,.12,.12,4.2,M.iron,8);addBox(x,4.35,z,.65,.16,.65,M.gold);var orb=addSphere(x,4.7,z,.28,M.lamp);var light=new THREE.PointLight('#ffc978',.45,10);light.position.set(x,4.7,z);scene.add(light);addCollider(x,z,.3,.3)}
