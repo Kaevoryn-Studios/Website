@@ -41,7 +41,8 @@ function fountain(x,z){cyl(x,.45,z,8,8,1.1,stone,32);cyl(x,1.2,z,5.6,5.6,.5,gold
 function observationWheel(x,z){var group=new THREE.Group();group.position.set(x,0,z);scene.add(group);var ring=new THREE.Mesh(new THREE.TorusGeometry(15,.42,10,72),gold);ring.position.y=20;group.add(ring);for(var i=0;i<12;i++){var a=i*Math.PI/6;var spoke=box(x+Math.cos(a)*7,20+Math.sin(a)*7,z,.22,30,.22,iron,false);spoke.rotation.z=-a;/* fixed support spokes */var pod=box(x+Math.cos(a)*15,20+Math.sin(a)*15,z,1.8,1.6,1.8,[red,blue,gold][i%3],false);rideParts.push({gondola:pod,cx:x,cz:z,a:a})}cyl(x,10,z,1,1,20,iron,12);box(x,1,z,12,1,8,stone,false);addCol(x-8,z,1,4);addCol(x+8,z,1,4)}
 function parkLantern(x,z){cyl(x,2.5,z,.13,.13,5,iron,10);var orb=sphere(x,5.2,z,.42,gold);orb.material.emissive=new THREE.Color('#ffc56a');var glow=new THREE.PointLight('#ffc56a',.7,15);glow.position.set(x,5,z);scene.add(glow)}
 
-var wallMat;\n
+var wallMat;
+
 function restaurant(x,z){
   /* Open-front dining pavilion with a clear guest entrance */
   box(x,.18,z,22,.36,18,wood,false);
@@ -76,7 +77,8 @@ function restaurant(x,z){
   addCol(x,z-9,11,.35);addCol(x-10.7,z,.35,9);addCol(x+10.7,z,.35,9);
   addCol(x-7.5,z+9,3.5,.35);addCol(x+7.5,z+9,3.5,.35);
 }
-\nfunction discovery(name,x,z,desc){discoveries.push({name:name,x:x,z:z,desc:desc})}
+
+function discovery(name,x,z,desc){discoveries.push({name:name,x:x,z:z,desc:desc})}
 function buildPark(){
 scene.background=new THREE.Color('#9bc5d4');scene.fog=new THREE.Fog('#9bc5d4',150,330);scene.add(new THREE.HemisphereLight('#e6f5ff','#526b46',1.8));var sun=new THREE.DirectionalLight('#fff0d7',2.1);sun.position.set(-70,110,80);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);scene.add(sun);
 box(0,-1,0,420,2,420,grass,false);
