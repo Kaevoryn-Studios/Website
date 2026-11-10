@@ -37,68 +37,139 @@ function addLamp(x,z){addCylinder(x,2.1,z,.12,.12,4.2,M.iron,8);addBox(x,4.35,z,
 function sign(x,z,labelColor){addBox(x,5,z,15,3,.5,M.dark);addBox(x,5,z-.3,13,.13,.12,labelColor);addBox(x,4,z-.3,10,.08,.12,M.gold)}
 function discovery(name,x,z,description){points.push({name:name,x:x,z:z,description:description})}
 function fenceLine(x,z,count,axis){for(var i=0;i<count;i++){var px=x+(axis==='x'?i*2.5:0),pz=z+(axis==='z'?i*2.5:0);addCylinder(px,.65,pz,.11,.11,1.3,M.gold,8);if(i<count-1)addBox(px+(axis==='x'?1.25:0),1.05,pz+(axis==='z'?1.25:0),axis==='x'?2.5:.12,.12,axis==='z'?2.5:.12,M.wood)}}
-function coaster(x,z,color){var curvePoints=[];for(var i=0;i<=64;i++){var a=i/64*Math.PI*2;curvePoints.push(new THREE.Vector3(x+Math.cos(a)*17,3+Math.sin(a*2)*3,z+Math.sin(a)*13))}var curve=new THREE.CatmullRomCurve3(curvePoints);addMesh(new THREE.TubeGeometry(curve,100,.3,6,false),material(color,.35,.45),0,0,0);for(var i=0;i<18;i++){var p=curve.getPointAt(i/18);addCylinder(p.x,Math.max(.6,p.y/2),p.z,.14,.14,Math.max(1,p.y-1),M.iron,7)}var cart=addBox(x,4,z,2.5,.8,3,M.red);animated.push({type:'cart',curve:curve,mesh:cart,t:0})}
+function coaster(x,z,color){
+/* A complete steel coaster: shaped track, cross-ties, real support bents and a multi-car train. */
+var pts=[
+ new THREE.Vector3(x-20,2,z+8),new THREE.Vector3(x-23,8,z-1),new THREE.Vector3(x-18,19,z-13),
+ new THREE.Vector3(x-8,29,z-18),new THREE.Vector3(x+2,31,z-13),new THREE.Vector3(x+10,21,z-4),
+ new THREE.Vector3(x+17,10,z+5),new THREE.Vector3(x+22,5,z+13),new THREE.Vector3(x+14,4,z+22),
+ new THREE.Vector3(x+1,7,z+24),new THREE.Vector3(x-12,5,z+19),new THREE.Vector3(x-20,2,z+8)
+];
+var curve=new THREE.CatmullRomCurve3(pts,true,'catmullrom',.42);
+var trackMat=material(color,.32,.62),railMat=material('#c5cbd0',.3,.72),supportMat=M.iron;
+addMesh(new THREE.TubeGeometry(curve,260,.24,10,true),trackMat,0,0,0);
+var samples=120;
+for(var i=0;i<samples;i++){
+ var u=i/samples,p=curve.getPointAt(u),t=curve.getTangentAt(u),side=new THREE.Vector3(-t.z,0,t.x).normalize();
+ for(var railSide=-1;railSide<=1;railSide+=2){
+  var rp=p.clone().addScaledVector(side,railSide*.62);rp.y+=.08;
+  addSphere(rp.x,rp.y,rp.z,.22,railMat);
+ }
+ if(i%2===0){
+  var tie=addBox(p.x,p.y-.24,p.z,1.9,.16,.42,M.wood);
+  tie.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),new THREE.Vector3(0,1,0));
+ }
+ if(i%5===0&&p.y>2.6){
+  var footY=.25,topY=p.y-.4;
+  addCylinder(p.x,(topY+footY)/2,p.z,.24,.34,topY-footY,supportMat,8);
+  addBox(p.x,footY,p.z,1.25,.35,1.25,M.stone);
+  if(i%10===0){var brace=addBox(p.x,.5+(topY-footY)*.45,p.z, .16,topY-footY*.5,.16,M.gold);brace.rotation.z=.42}
+ }
+}
+var train=new THREE.Group();scene.add(train);
+var cars=[];
+for(var c=0;c<6;c++){
+ var car=new THREE.Group();
+ addBox(0,.35,0,2.35,.55,3.25,M.red,car);
+ addBox(0,.72,-.12,2.1,.24,2.7,M.gold,car);
+ for(var row=0;row<2;row++)for(var seat=-1;seat<=1;seat++){
+  addBox(seat*.58,1.08,row*.95-.5,.5,.62,.62,M.dark,car);
+  addBox(seat*.58,1.42,row*.95-.7,.48,.12,.18,M.gold,car);
+ }
+ addBox(0,1.02,1.2,1.75,.16,.18,M.iron,car);
+ for(var side=-1;side<=1;side+=2)for(var axle=0;axle<2;axle++){
+  var wheel=addCylinder(side*.92,.12,axle?1.05:-1.05,.24,.24,.22,M.iron,12,car);
+  wheel.rotation.z=Math.PI/2;
+ }
+ car.position.z=-c*3.35;train.add(car);cars.push(car);
+}
+animated.push({type:'coasterTrain',mesh:train,curve:curve,cars:cars,t:0});
+addCollider(x,z,7,6)
+}
 function castle(x,z){addBox(x,7,z,28,14,20,M.stone);for(var i=0;i<4;i++){var tx=x+(i%2?13:-13),tz=z+(i<2?-9:9);addCylinder(tx,13,tz,2.4,2.8,25,M.roof,8);addCylinder(tx,27,tz,0,2.6,5,M.gold,8)}addBox(x,3,z+10.3,6,6,.6,M.wood);addCollider(x,z,14,10)}
 function openShop(x,z,wall){addBox(x,.15,z,14,.3,12,M.wood);addBox(x,3.5,z-5.8,14,7,.45,wall);addBox(x-6.8,3.5,z,.4,7,12,wall);addBox(x+6.8,3.5,z,.4,7,12,wall);addBox(x,7.1,z,15,1,13,M.roof);addBox(x-4,3.5,z+5.8,.5,7,.5,M.wood);addBox(x+4,3.5,z+5.8,.5,7,.5,M.wood);addBox(x,1.5,z+2,8,2,.6,M.gold);addCollider(x,z-5.8,7,.3);addCollider(x-6.8,z,.3,6);addCollider(x+6.8,z,.3,6)}
 function water(x,z,w,d){var mesh=addMesh(new THREE.PlaneGeometry(w,d,1,1),M.water,x,.12,z);mesh.rotation.x=-Math.PI/2}
 function dragon(x,z){
-/* NEW DESIGN: an immense emerald mountain wyrm, posed on a broken basalt ledge. */
+/* A low, powerful mountain dragon with believable proportions and a grounded stance. */
 var rig=new THREE.Group();rig.position.set(x,0,z);scene.add(rig);
-function orb(px,py,pz,sx,sy,sz,mat,seg){var m=new THREE.Mesh(new THREE.SphereGeometry(1,seg||24,16),mat);m.position.set(px,py,pz);m.scale.set(sx,sy,sz);rig.add(m);return m}
-function link(a,b,r1,r2,mat,parent){var A=new THREE.Vector3(a[0],a[1],a[2]),B=new THREE.Vector3(b[0],b[1],b[2]),d=B.clone().sub(A),m=new THREE.Mesh(new THREE.CylinderGeometry(r2||r1*.7,r1,d.length(),12),mat);m.position.copy(A).add(B).multiplyScalar(.5);m.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),d.normalize());(parent||rig).add(m);return m}
-function spike(a,b,r,mat){link(a,b,r,.025,mat)}
-/* Ribbed torso, layered chest plates and muscular haunches. */
-orb(0,7.5,0,5.8,3.8,8.7,M.dragon,36);
-orb(0,5.8,1.7,4.1,2.25,5.9,M.belly,32);
-orb(-3.6,7,-4,2.7,3.1,3.5,M.dragon,28);orb(3.6,7,-4,2.7,3.1,3.5,M.dragon,28);
-for(var p=0;p<8;p++){var zz=4-p*1.45;orb(0,5.2,zz,2.8,.34,.82,p%2?M.belly:M.gold,18)}
-/* Raised S-curve neck and broad angular head. */
-var nc=new THREE.CatmullRomCurve3([new THREE.Vector3(0,8,5),new THREE.Vector3(0,9.5,7),new THREE.Vector3(0,12.5,9),new THREE.Vector3(0,13.3,11.5)]);
-rig.add(new THREE.Mesh(new THREE.TubeGeometry(nc,36,1.75,18,false),M.dragon));
-orb(0,13.2,12,2.55,1.75,3.25,M.dragon,32);
-orb(0,12.1,14.3,2.1,.72,2.5,M.belly,24);
-orb(0,12.65,15.1,1.9,.62,2.15,M.dragon,24);
-orb(0,12.05,16.55,1.45,.38,1.05,M.claw,20);
+function ell(px,py,pz,sx,sy,sz,mat){var m=new THREE.Mesh(new THREE.SphereGeometry(1,28,20),mat);m.position.set(px,py,pz);m.scale.set(sx,sy,sz);rig.add(m);return m}
+function bone(a,b,r1,r2,mat){var A=new THREE.Vector3(a[0],a[1],a[2]),B=new THREE.Vector3(b[0],b[1],b[2]),d=B.clone().sub(A),m=new THREE.Mesh(new THREE.CylinderGeometry(r2||r1*.72,r1,d.length(),16),mat);m.position.copy(A).add(B).multiplyScalar(.5);m.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),d.normalize());rig.add(m);return m}
+function claw(a,b){bone(a,b,.2,.025,M.claw)}
+/* Broad rib cage, shoulders and haunches; belly plates follow the body line. */
+ell(0,5.3,0,5.9,3.05,8.8,M.dragon);
+ell(0,4.25,1.0,4.55,1.55,6.6,M.belly);
+ell(-3.5,5.3,-4.5,2.5,2.65,3.7,M.dragon);ell(3.5,5.3,-4.5,2.5,2.65,3.7,M.dragon);
+for(var i=0;i<11;i++){var zz=5.4-i*1.05;ell(0,3.35,zz,2.7-i*.055,.34,.65,i%2?M.belly:M.gold)}
+/* Neck rises from the shoulders in a natural curve, not a straight tube. */
+var neckCurve=new THREE.CatmullRomCurve3([new THREE.Vector3(0,5.5,5.3),new THREE.Vector3(0,6.4,7.4),new THREE.Vector3(0,8.2,9.2),new THREE.Vector3(0,9.0,11.2)]);
+rig.add(new THREE.Mesh(new THREE.TubeGeometry(neckCurve,48,1.42,20,false),M.dragon));
+ell(0,9.15,11.4,2.15,1.4,2.7,M.dragon);
+ell(0,8.35,13.3,1.8,.62,2.05,M.belly);
+ell(0,8.8,14.2,1.65,.52,1.55,M.dragon);
+ell(0,8.48,15.35,1.2,.34,.8,M.claw);
 for(var side=-1;side<=1;side+=2){
- orb(side*1.95,13.55,13.05,.55,.42,.58,M.eye,20);
- orb(side*2.04,13.56,13.48,.13,.3,.13,M.dark,12);
- orb(side*1.8,13.9,11.25,.7,.42,1.0,M.dragon,18);
- spike([side*1.2,14,10.5],[side*2.0,16.8,9.1],.48,M.claw);
- spike([side*2.0,16.8,9.1],[side*2.55,17.25,8.6],.2,M.gold);
- spike([side*1.2,13.2,14.3],[side*2.25,13.45,15.2],.18,M.claw);
+ ell(side*1.63,9.55,11.75,.42,.32,.52,M.eye);
+ ell(side*1.68,9.55,12.05,.09,.24,.1,M.dark);
+ ell(side*1.5,9.9,10.15,.62,.34,.92,M.dragon);
+ bone([side*.95,9.8,10.1],[side*1.65,12.4,8.7],.38,.08,M.claw);
+ bone([side*1.65,12.4,8.7],[side*2.0,12.7,8.25],.12,.025,M.gold);
+ ell(side*1.2,8.95,13.2,.12,.1,.14,M.dark);
 }
-/* Four weight-bearing legs with clear joints, feet and hooked talons. */
+/* Four bent legs with visible joints, grounded feet and individual talons. */
 for(var side=-1;side<=1;side+=2)for(var fore=0;fore<2;fore++){
- var zz=fore?4.8:-5.0,hx=side*3.6,hy=7.1;
- orb(hx,hy,zz,1.8,2.15,2.25,M.dragon,22);
- var knee=[side*4.6,4.1,zz+(fore?-.4:.6)],ankle=[side*4.4,1.25,zz+(fore?-.8:1.0)];
- link([hx,hy-.7,zz],knee,1.15,.8,M.dragon);link(knee,ankle,.8,.52,M.dragon);
- orb(side*4.4,1.0,ankle[2]+.45,1.15,.55,1.5,M.claw,18);
- for(var toe=0;toe<3;toe++){var tx=side*(3.7+toe*.62);link([tx,.95,ankle[2]+.8],[tx,.65,ankle[2]+1.75],.27,.13,M.claw);spike([tx,.7,ankle[2]+1.7],[tx,.34,ankle[2]+2.1],.13,M.gold)}
+ var zz=fore?4.3:-5.0,hx=side*3.7,shoulderY=5.1;
+ ell(hx,shoulderY,zz,1.55,1.8,2.0,M.dragon);
+ var elbow=[side*4.45,2.8,zz+(fore?-.3:.5)],foot=[side*4.25,.72,zz+(fore?-.9:1.0)];
+ bone([hx,shoulderY-.6,zz],elbow,1.0,.72,M.dragon);
+ ell(elbow[0],elbow[1],elbow[2],.76,.82,.82,M.dragon);
+ bone(elbow,foot,.65,.43,M.dragon);
+ ell(foot[0],.58,foot[2]+.38,1.0,.48,1.25,M.claw);
+ for(var toe=-1;toe<=1;toe++){
+  var tx=foot[0]+toe*.52;
+  bone([tx,.62,foot[2]+.75],[tx,.4,foot[2]+1.35],.2,.12,M.claw);
+  claw([tx,.4,foot[2]+1.3],[tx,.16,foot[2]+1.63]);
+ }
 }
-/* Long articulated tail with a blade-like terminal fin. */
-var tail=[[0,7,-6],[0,6.2,-10],[0,5.3,-14],[0,4.8,-18],[0,5.3,-22],[0,6.1,-26],[0,7,-29]];
-for(var ti=0;ti<tail.length-1;ti++){var r=1.35-ti*.17;link(tail[ti],tail[ti+1],r,Math.max(.12,r-.2),M.dragon)}
-var fin=orb(0,7,-29.5,.55,.55,2.5,M.claw,18);fin.rotation.x=.55;
-/* New wing silhouette: two broad, curved membranes with distinct finger spars. */
+/* Long tapering tail sweeps along the rock behind the creature. */
+var tailPts=[[0,5.1,-6],[0,4.5,-9],[.5,3.9,-12],[1.3,3.4,-15],[2.4,3.25,-18],[3.4,3.55,-21],[4.2,4.1,-23.5]];
+for(var i=0;i<tailPts.length-1;i++)bone(tailPts[i],tailPts[i+1],1.05-i*.14,.88-i*.14,M.dragon);
+ell(4.4,4.2,-24,.42,.35,1.9,M.claw);
+/* Broad, curved bat wings with a thick leading spar and scalloped trailing edge. */
 for(var side=-1;side<=1;side+=2){
- var wing=new THREE.Group();wing.position.set(side*3.3,10.2,-2.2);rig.add(wing);
- var sh=new THREE.Shape();sh.moveTo(0,0);sh.quadraticCurveTo(side*4,7,side*9,12);sh.quadraticCurveTo(side*13,14,side*17,11);sh.quadraticCurveTo(side*15,7,side*17,4);sh.quadraticCurveTo(side*15,1,side*15,-4);sh.quadraticCurveTo(side*11,-2,side*10,-8);sh.quadraticCurveTo(side*6,-5,side*5,-10);sh.quadraticCurveTo(side*2,-5,0,-2);sh.closePath();
- var membrane=new THREE.Mesh(new THREE.ShapeGeometry(sh,24),M.dragonWing);membrane.material.side=THREE.DoubleSide;wing.add(membrane);
- var fingers=[[side*9,12,0],[side*17,11,0],[side*17,4,0],[side*15,-4,0],[side*10,-8,0],[side*5,-10,0]];
- for(var wi=0;wi<fingers.length;wi++)link([0,0,0],fingers[wi],.3,.16,wi===0?M.gold:M.claw,wing);
- link([0,0,0],[side*9,12,0],.26,.15,M.gold,wing);
+ var wing=new THREE.Group();wing.position.set(side*2.8,7.2,-2.6);rig.add(wing);
+ var sh=new THREE.Shape();sh.moveTo(0,0);sh.quadraticCurveTo(side*3.8,5.6,side*9.2,9.8);sh.quadraticCurveTo(side*13.8,12.1,side*17,9.2);sh.quadraticCurveTo(side*15.3,6.6,side*16.4,3.2);sh.quadraticCurveTo(side*13.8,1.7,side*14.2,-1.7);sh.quadraticCurveTo(side*10.8,-1.0,side*10,-5.4);sh.quadraticCurveTo(side*6.8,-3.7,side*5.3,-7.4);sh.quadraticCurveTo(side*2.3,-4.2,0,-1.3);sh.closePath();
+ var membrane=new THREE.Mesh(new THREE.ShapeGeometry(sh,28),M.dragonWing);membrane.material.side=THREE.DoubleSide;wing.add(membrane);
+ var tips=[[side*9.2,9.8,0],[side*17,9.2,0],[side*16.4,3.2,0],[side*14.2,-1.7,0],[side*10,-5.4,0],[side*5.3,-7.4,0]];
+ for(var j=0;j<tips.length;j++)bone([0,0,0],tips[j],.24,.12,j===0?M.gold:M.claw);
+ bone([0,0,0],[side*9.2,9.8,0],.3,.14,M.gold);
  animated.push({type:'dragonwing',mesh:wing,side:side});
 }
-/* Crown of swept dorsal spines and a short, coherent fire breath. */
-for(var si=0;si<19;si++){var zz=9-si*1.7,yy=13-Math.max(0,si-5)*.48;spike([0,yy,zz],[0,yy+1.05+(si%3)*.2,zz-.95],.32,M.claw)}
-var breath=new THREE.Group();breath.position.set(0,12.0,16.9);rig.add(breath);
-for(var fi=0;fi<6;fi++){var flame=new THREE.Mesh(new THREE.ConeGeometry(.52-fi*.055,2.2+fi*.2,12),M.flame);flame.rotation.x=Math.PI/2;flame.position.z=fi*1.15;breath.add(flame)}
+/* Small swept back horns and a continuous ridge of dorsal spines. */
+for(var i=0;i<22;i++){var zz=7.2-i*1.25,yy=7.65-Math.max(0,i-5)*.2;bone([0,yy,zz],[0,yy+.7+(i%3)*.13,zz-.62],.23,.025,M.claw)}
+/* Subtle breath flame at the muzzle, directed forward and away from the body. */
+var breath=new THREE.Group();breath.position.set(0,8.35,15.6);rig.add(breath);
+for(var i=0;i<5;i++){var flame=new THREE.Mesh(new THREE.ConeGeometry(.36-i*.045,1.5+i*.18,14),M.flame);flame.rotation.x=Math.PI/2;flame.position.z=i*.85;breath.add(flame)}
 animated.push({type:'dragonbreath',mesh:breath});
-var glow=new THREE.PointLight('#ff9a42',1.25,28);glow.position.set(x,12,z+18);scene.add(glow);
-addCollider(x,z,12,13)
+var glow=new THREE.PointLight('#ff8b38',.9,20);glow.position.set(x,8,z+17);scene.add(glow);
+addCollider(x,z,12,12)
 }
-function pirateShip(x,z){var group=new THREE.Group();group.position.set(x,2,z);scene.add(group);addBox(0,0,0,18,2,6,M.wood,group);for(var i=0;i<3;i++){var mast=addCylinder(-5+i*5,8,0,.22,.3,15,M.gold,8,group);var sail=addBox(-5+i*5,9,0,4.2,5.5,.18,M.sail,group);sail.rotation.z=.05}animated.push({type:'ship',mesh:group});addCollider(x,z,10,4)}
+function pirateShip(x,z){
+/* A full swinging pirate galleon ride with a timber hull, mast, rigging and passenger rows. */
+var frame=new THREE.Group();frame.position.set(x,0,z);scene.add(frame);
+function strut(a,b,r,mat){var A=new THREE.Vector3(a[0],a[1],a[2]),B=new THREE.Vector3(b[0],b[1],b[2]),d=B.clone().sub(A),m=new THREE.Mesh(new THREE.CylinderGeometry(r*.8,r,d.length(),12),mat);m.position.copy(A).add(B).multiplyScalar(.5);m.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),d.normalize());frame.add(m)}
+strut([-8,1,0],[-4,16,0],.5,M.iron);strut([8,1,0],[4,16,0],.5,M.iron);strut([-4,16,0],[4,16,0],.5,M.gold);
+strut([-8,1,0],[8,1,0],.3,M.gold);
+var pivot=new THREE.Group();pivot.position.set(0,13,0);frame.add(pivot);
+var hull=addMesh(new THREE.CylinderGeometry(2.4,4.0,17,12,1,false),M.wood,0,-3,0,pivot);hull.rotation.z=Math.PI/2;
+addBox(0,-2.6,0,17,1.1,5.3,M.wood,pivot);
+for(var side=-1;side<=1;side+=2){addBox(0,-1.6,side*2.55,16,2,.3,M.gold,pivot);for(var i=0;i<8;i++)addBox(-7+i*2,-1.45,side*2.74,.12,1.5,.1,M.iron,pivot)}
+for(var row=0;row<2;row++)for(var seat=-2;seat<=2;seat++){addBox(seat*2.4,-.5+row*.05,row?-.9:1.0,1.8,.35,1.2,M.red,pivot);addBox(seat*2.4,.15+row*.05,row?-.9:1.0,1.6,.8,.18,M.gold,pivot)}
+strut([0,-1,0],[0,9,0],.22,M.gold);addBox(0,7,0,5,.35,.3,M.gold,pivot);
+for(var sail=0;sail<2;sail++){var sy=4+sail*2.6;addBox(0,sy,0,4.2,2.1,.15,M.sail,pivot)}
+for(var side=-1;side<=1;side+=2){strut([side*8,0,0],[side*1.8,7,0],.12,M.gold)}
+animated.push({type:'ship',mesh:pivot});
+addCollider(x,z,11,7)
+}
 function grove(x,z){for(var i=0;i<11;i++){var a=i/11*Math.PI*2,tx=x+Math.cos(a)*(17+i%3*3),tz=z+Math.sin(a)*(17+i%3*3);addCylinder(tx,7,tz,.8,.65,14,M.bark,9);for(var j=0;j<3;j++){var top=addSphere(tx+(j-1)*1.5,14+j*1.4,tz,5-j*.4,j%2?M.leaf:M.leaf2);top.scale.set(1.2,.8,1.1)}}
 for(var i=0;i<8;i++){var a=i/8*Math.PI*2,crystal=addMesh(new THREE.ConeGeometry(.9,4,6),i%2?M.violet:M.mint,x+Math.cos(a)*12,2,z+Math.sin(a)*12);crystal.rotation.z=.2;var glow=new THREE.PointLight(i%2?'#ad8cff':'#68efc2',.5,11);glow.position.copy(crystal.position);scene.add(glow)}
 var ring=addMesh(new THREE.TorusGeometry(5,.4,8,32),M.gold,x,6,z-24);var inner=addMesh(new THREE.TorusGeometry(4,.14,8,32),M.mint,x,6,z-24);animated.push({type:'portal',mesh:ring,inner:inner});addCollider(x,z,3,3)}
@@ -139,37 +210,51 @@ animated.push({type:'wheel',mesh:group,cabins:cabins});
 addCollider(x,z,6,6)
 }
 function volcano(x,z){
-/* NEW DESIGN: a broad, eroded volcanic massif with a real recessed caldera and branching molten rivers. */
-var radial=48,rings=[[27,0],[24,3],[20,7],[16,12],[12.5,17],[10.5,20],[9.2,20.7],[7.7,18.7],[5.2,17.2],[2.5,16.8]];
-var verts=[],indices=[];
-for(var ri=0;ri<rings.length;ri++)for(var j=0;j<radial;j++){
- var a=j/radial*Math.PI*2,baseR=rings[ri][0],noise=Math.sin(j*2.37+ri*1.8)*.65+Math.cos(j*.73-ri*2.1)*.42;
- var rr=baseR+noise*(ri<6?1.15:.45),yy=rings[ri][1]+(ri>5?noise*.18:noise*.65);
- verts.push(Math.cos(a)*rr,yy,Math.sin(a)*rr);
+/* A broad stratovolcano with a visible bowl-shaped caldera, layered rock and lava fissures. */
+var segments=72,profile=[
+ [31,.3],[29,1.2],[26,2.7],[23,4.8],[20,7.5],[17,10.7],[14.5,13.5],[12.5,15.8],
+ [10.8,17.1],[9.3,16.7],[7.8,15.1],[6.2,13.8],[4.2,13.1],[0,13.0]
+],verts=[],idx=[];
+for(var r=0;r<profile.length;r++)for(var i=0;i<segments;i++){
+ var a=i/segments*Math.PI*2,noise=(Math.sin(i*2.31+r*1.7)*.48+Math.cos(i*.67-r*1.1)*.32);
+ var radius=profile[r][0]+noise*(r<9?1.05:.3),height=profile[r][1]+noise*(r<9?.45:.18);
+ verts.push(Math.cos(a)*radius,height,Math.sin(a)*radius);
 }
-for(var ri=0;ri<rings.length-1;ri++)for(var j=0;j<radial;j++){var a=ri*radial+j,b=ri*radial+(j+1)%radial,c=(ri+1)*radial+j,d=(ri+1)*radial+(j+1)%radial;indices.push(a,c,b,b,c,d)}
-var geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.Float32BufferAttribute(verts,3));geo.setIndex(indices);geo.computeVertexNormals();
+for(var r=0;r<profile.length-1;r++)for(var i=0;i<segments;i++){var a=r*segments+i,b=r*segments+(i+1)%segments,c=(r+1)*segments+i,d=(r+1)*segments+(i+1)%segments;idx.push(a,b,c,b,d,c)}
+var geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.Float32BufferAttribute(verts,3));geo.setIndex(idx);geo.computeVertexNormals();
 var mountain=new THREE.Mesh(geo,M.rock);mountain.position.set(x,0,z);scene.add(mountain);
-for(var i=0;i<46;i++){var a=i*2.399,rad=13+(i%7)*2.1,h=2+(i%5)*1.7,rock=addMesh(new THREE.DodecahedronGeometry(1,0),M.rock,x+Math.cos(a)*rad,h*.45,z+Math.sin(a)*rad);rock.scale.set(1.2+(i%3)*.35,h,1+(i%4)*.3);rock.rotation.set(a*.4,a*.7,a*.2)}
-/* Lava glows down inside the crater rather than sitting as a flat disc on top. */
-var pool=addMesh(new THREE.CircleGeometry(6.2,56),M.lava,x,17.35,z);pool.rotation.x=-Math.PI/2;
-var core=addMesh(new THREE.CircleGeometry(3.4,48),M.lavaBright,x,17.39,z);core.rotation.x=-Math.PI/2;
-var rim=addMesh(new THREE.TorusGeometry(8.5,.75,12,64),M.rock,x,19.1,z);rim.rotation.x=Math.PI/2;
-var channels=[
- [[-4,17.5,3],[-7,14,7],[-10,10,10],[-13,6,13],[-16,2,16]],
- [[4,17.5,-2],[7,14,-5],[10,10,-8],[13,6,-11],[16,1,-13]],
- [[-2,17.5,-5],[-4,13,-9],[-6,9,-13],[-8,5,-17],[-9,1,-20]]
-];
-for(var ci=0;ci<channels.length;ci++){
- var pts=channels[ci].map(function(p){return new THREE.Vector3(x+p[0],p[1],z+p[2])}),curve=new THREE.CatmullRomCurve3(pts);
- addMesh(new THREE.TubeGeometry(curve,36,.62,8,false),M.lava,0,0,0);
- var hot=new THREE.Mesh(new THREE.TubeGeometry(curve,36,.2,7,false),M.lavaBright);scene.add(hot);
+/* Broken basalt buttresses and layered cliff bands give the mountain scale. */
+for(var i=0;i<64;i++){
+ var a=i/64*Math.PI*2,r=19+(i%5)*2.0,h=2.2+(i%6)*1.5;
+ var boulder=addMesh(new THREE.DodecahedronGeometry(1,1),M.rock,x+Math.cos(a)*r,h*.48,z+Math.sin(a)*r);
+ boulder.scale.set(1.3+(i%3)*.4,h,1.1+(i%4)*.28);boulder.rotation.set(a*.3,a*.8,a*.2);
 }
-var smoke=new THREE.Group();smoke.position.set(x,19,z);scene.add(smoke);
-for(var si=0;si<12;si++){var puff=addSphere(0,si*2,0,1.8+(si%4)*.45,M.smoke,smoke);puff.material=M.smoke}
-var heat=new THREE.PointLight('#ff5418',2.6,48);heat.position.set(x,19,z);scene.add(heat);
+for(var band=0;band<3;band++){
+ var rr=25-band*5,yy=2+band*4;
+ var ledge=addMesh(new THREE.TorusGeometry(rr,.38,8,96),M.iron,x,yy,z);ledge.rotation.x=Math.PI/2;
+}
+/* Deep inset lava lake, with a bright molten centre and jagged caldera lip. */
+var pool=addMesh(new THREE.CircleGeometry(7.1,64),M.lava,x,13.15,z);pool.rotation.x=-Math.PI/2;
+var core=addMesh(new THREE.CircleGeometry(3.6,64),M.lavaBright,x,13.19,z);core.rotation.x=-Math.PI/2;
+var innerRim=addMesh(new THREE.TorusGeometry(8.4,.62,12,72),M.rock,x,15.9,z);innerRim.rotation.x=Math.PI/2;
+var lip=addMesh(new THREE.TorusGeometry(10.5,.34,8,72),M.gold,x,16.2,z);lip.rotation.x=Math.PI/2;
+/* Three branching lava channels descend the outer slopes, with dark banks. */
+var routes=[
+ [[-4,13.4,4],[-6,11,8],[-10,8,12],[-13,5,16],[-17,1.2,20]],
+ [[4,13.4,-3],[7,11,-6],[10,8,-10],[13,5,-14],[17,1.2,-18]],
+ [[-2,13.4,-6],[-4,10,-10],[-6,7,-14],[-8,4,-18],[-10,1.2,-23]]
+];
+for(var c=0;c<routes.length;c++){
+ var pts=routes[c].map(function(p){return new THREE.Vector3(x+p[0],p[1],z+p[2])}),curve=new THREE.CatmullRomCurve3(pts);
+ addMesh(new THREE.TubeGeometry(curve,48,.82,10,false),M.dark,0,0,0);
+ addMesh(new THREE.TubeGeometry(curve,48,.38,10,false),M.lava,0,0,0);
+ addMesh(new THREE.TubeGeometry(curve,48,.13,8,false),M.lavaBright,0,0,0);
+}
+var smoke=new THREE.Group();smoke.position.set(x,16,z);scene.add(smoke);
+for(var i=0;i<15;i++){var puff=addSphere(0,0,0,1.4+(i%4)*.35,M.smoke,smoke);puff.position.set((i%3-1)*.7,i*1.25,(i%4-1.5)*.55)}
+var heat=new THREE.PointLight('#ff581c',2.8,50);heat.position.set(x,15,z);scene.add(heat);
 animated.push({type:'volcanoSmoke',mesh:smoke,light:heat});
-addCollider(x,z,25,25)
+addCollider(x,z,28,28)
 }
 function fountain(x,z){addCylinder(x,.4,z,6,6,.8,M.stone,24);addCylinder(x,1.1,z,4,4,.5,M.gold,24);for(var i=0;i<6;i++){var a=i*Math.PI/3,jet=addSphere(x+Math.cos(a)*1.5,2.2,z+Math.sin(a)*1.5,.35,M.water);animated.push({type:'jet',mesh:jet,phase:a})}}
 function build(){
@@ -271,7 +356,7 @@ function update(dt){var forward=(keys.KeyW||keys.ArrowUp?1:0)-(keys.KeyS||keys.A
 function nearby(){var best=null,dist=Infinity;for(var i=0;i<points.length;i++){var p=points[i],d=Math.hypot(player.x-p.x,player.z-p.z);if(d<dist){best=p;dist=d}}return best?{point:best,distance:dist}:null}
 function showToast(message){el('toast').textContent=message;el('toast').classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(function(){el('toast').classList.remove('show')},2200)}
 function interact(){if(!started)return;var n=nearby();if(!n||n.distance>23){showToast('Follow the park paths to find an attraction.');return}found[n.point.name]=true;el('dtitle').textContent=n.point.name;el('ddesc').textContent=n.point.description;el('discovery').hidden=false;started=false;update(.016)}
-function animate(){requestAnimationFrame(animate);if(!renderer)return;var dt=Math.min(clock.getDelta(),.04),t=clock.elapsedTime;if(started)update(dt);for(var i=0;i<animated.length;i++){var a=animated[i];if(a.type==='cart'){a.t=(a.t+dt*.055)%1;var p=a.curve.getPointAt(a.t);a.mesh.position.copy(p);a.mesh.position.y+=.6}else if(a.type==='wing'){a.mesh.rotation.z=Math.sin(t*1.4+a.side)*.28*a.side}else if(a.type==='dragonwing'){a.mesh.rotation.z=Math.sin(t*2.0+a.side*.3)*.48*a.side}else if(a.type==='dragonbreath'){a.mesh.scale.set(1,.82+.18*Math.sin(t*18),.8+.2*Math.sin(t*12));a.mesh.rotation.y=Math.sin(t*3)*.05}else if(a.type==='ship'){a.mesh.rotation.z=Math.sin(t*.7)*.14}else if(a.type==='wheel'){a.mesh.rotation.z=t*.13;for(var ci=0;ci<a.cabins.length;ci++)a.cabins[ci].rotation.z=-a.mesh.rotation.z}else if(a.type==='volcanoSmoke'){a.mesh.children.forEach(function(p,i){p.position.y=i*2.4+((t*.9+i*1.7)%8);p.position.x=Math.sin(t*.55+i*1.3)*2.8;p.position.z=Math.cos(t*.43+i*1.1)*2.4;p.scale.setScalar(1+(Math.sin(t+i)*.16))});a.light.intensity=2.3+Math.sin(t*5)*.65}else if(a.type==='portal'){a.mesh.rotation.z=t*.2;a.inner.rotation.z=-t*.3}else if(a.type==='jet'){a.mesh.position.y=2+Math.abs(Math.sin(t*2+a.phase))*.8}else if(a.type==='fall'){a.mesh.position.y=11+Math.sin(t*2+a.phase)*.2;a.mesh.scale.y=1+Math.sin(t*3+a.phase)*.025}}renderer.render(scene,camera)}
+function animate(){requestAnimationFrame(animate);if(!renderer)return;var dt=Math.min(clock.getDelta(),.04),t=clock.elapsedTime;if(started)update(dt);for(var i=0;i<animated.length;i++){var a=animated[i];if(a.type==='coasterTrain'){a.t=(a.t+dt*.035)%1;var p=a.curve.getPointAt(a.t),tangent=a.curve.getTangentAt(a.t);a.mesh.position.copy(p);a.mesh.position.y+=.85;a.mesh.rotation.set(0,Math.atan2(tangent.x,tangent.z),0);for(var ci=0;ci<a.cars.length;ci++){var u=(a.t-ci*.006)%1;if(u<0)u+=1;var cp=a.curve.getPointAt(u),ct=a.curve.getTangentAt(u);a.cars[ci].position.set(cp.x-p.x,cp.y-p.y,cp.z-p.z);a.cars[ci].rotation.y=Math.atan2(ct.x,ct.z)}}else if(a.type==='wing'){a.mesh.rotation.z=Math.sin(t*1.4+a.side)*.28*a.side}else if(a.type==='dragonwing'){a.mesh.rotation.z=Math.sin(t*2.0+a.side*.3)*.48*a.side}else if(a.type==='dragonbreath'){a.mesh.scale.set(1,.82+.18*Math.sin(t*18),.8+.2*Math.sin(t*12));a.mesh.rotation.y=Math.sin(t*3)*.05}else if(a.type==='ship'){a.mesh.rotation.z=Math.sin(t*.72)*.48}else if(a.type==='wheel'){a.mesh.rotation.z=t*.13;for(var ci=0;ci<a.cabins.length;ci++)a.cabins[ci].rotation.z=-a.mesh.rotation.z}else if(a.type==='volcanoSmoke'){a.mesh.children.forEach(function(p,i){p.position.y=i*2.4+((t*.9+i*1.7)%8);p.position.x=Math.sin(t*.55+i*1.3)*2.8;p.position.z=Math.cos(t*.43+i*1.1)*2.4;p.scale.setScalar(1+(Math.sin(t+i)*.16))});a.light.intensity=2.3+Math.sin(t*5)*.65}else if(a.type==='portal'){a.mesh.rotation.z=t*.2;a.inner.rotation.z=-t*.3}else if(a.type==='jet'){a.mesh.position.y=2+Math.abs(Math.sin(t*2+a.phase))*.8}else if(a.type==='fall'){a.mesh.position.y=11+Math.sin(t*2+a.phase)*.2;a.mesh.scale.y=1+Math.sin(t*3+a.phase)*.025}}renderer.render(scene,camera)}
 function resize(){if(!renderer)return;camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight,false);renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.25))}
 function start(){if(!ready){el('loadmsg').textContent='The 3D world is still loading. Please tap ENTER again in a moment.';return}started=true;player.x=0;player.z=12;player.yaw=0;player.pitch=-.16;el('welcome').hidden=true;showToast('WELCOME TO KICKAPOO PARK!')}
 function load(){if(loading||ready)return;loading=true;el('loadmsg').textContent='Building the park…';var script=document.createElement('script');script.src='./vendor/three.min.js?v=160';script.onload=function(){try{THREE=window.THREE;if(!THREE)throw new Error('3D engine did not initialize');M.grass=material('#3d6747',.98);M.path=material('#b8ad91',.96);M.stone=material('#aaa89a',.9);M.gold=material('#d6ad62',.45,.3);M.iron=material('#38454a',.5,.55);M.wood=material('#70492f');M.roof=material('#49404a');M.red=material('#a94a3e');M.blue=material('#438eaa');M.glass=material('#68bdc9',.25,.25,'#174d5c');M.rock=material('#514c43',.96);M.lava=material('#ff4b12',.28,0,'#f13a08');M.lavaBright=material('#ffd34a',.22,0,'#ff8c18');M.smoke=new THREE.MeshStandardMaterial({color:'#565b60',roughness:1,transparent:true,opacity:.48,depthWrite:false});M.flame=material('#ff702d',.3,0,'#ff4a13');M.lamp=material('#ffd18a',.3,0,'#ffba60');M.water=material('#3298a7',.25,.15,'#0c4350');M.bark=material('#4d382b');M.leaf=material('#2d6942');M.leaf2=material('#4c8a4c');M.temple=material('#8b8a72');M.sail=material('#e8dfca');M.wing=material('#78363a',.85);M.mint=material('#63e8bd',.25,.2,'#1ab88d');M.violet=material('#a98aff',.25,.15,'#6945d5');M.dark=material('#18212a');M.dragon=material('#34483d',.82,.03);M.dragonWing=new THREE.MeshStandardMaterial({color:'#465a4a',roughness:.9,side:THREE.DoubleSide});M.belly=material('#91866d',.94);M.claw=material('#202a27',.48,.12);M.eye=material('#d8a54c',.28,.08,'#5b2d08');M.dome=new THREE.MeshPhysicalMaterial({color:'#8bd8e7',roughness:.12,metalness:.12,transparent:true,opacity:.34,side:THREE.DoubleSide,depthWrite:false});scene=new THREE.Scene();build();camera=new THREE.PerspectiveCamera(64,innerWidth/innerHeight,.1,350);camera.rotation.order='YXZ';renderer=new THREE.WebGLRenderer({canvas:canvas,antialias:true,alpha:false,powerPreference:'high-performance'});renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.25));renderer.setSize(innerWidth,innerHeight,false);renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.12;clock=new THREE.Clock();ready=true;loading=false;el('loadmsg').textContent='Your park is ready.';el('count').textContent='0 / '+points.length+' discoveries';animate();if(window.innerWidth)resize()}catch(error){loading=false;console.error(error);el('loadmsg').textContent='The park could not start: '+error.message+'. Tap ENTER to retry.'}};script.onerror=function(){loading=false;el('loadmsg').textContent='Could not load the 3D engine. Check your connection and tap ENTER to retry.'};document.head.appendChild(script)}
