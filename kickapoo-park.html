@@ -43,39 +43,59 @@ function openShop(x,z,wall){addBox(x,.15,z,14,.3,12,M.wood);addBox(x,3.5,z-5.8,1
 function water(x,z,w,d){var mesh=addMesh(new THREE.PlaneGeometry(w,d,1,1),M.water,x,.12,z);mesh.rotation.x=-Math.PI/2}
 function dragon(x,z){
 var rig=new THREE.Group();rig.position.set(x,0,z);scene.add(rig);
-function part(geo,mat,px,py,pz,sx,sy,sz){var m=new THREE.Mesh(geo,mat);m.position.set(px,py,pz);if(sx!==undefined)m.scale.set(sx,sy,sz);m.castShadow=false;rig.add(m);return m}
-function bone(a,b,r,mat){var d=new THREE.Vector3(b[0]-a[0],b[1]-a[1],b[2]-a[2]),m=part(new THREE.CylinderGeometry(r*.72,r,d.length(),8),mat,(a[0]+b[0])/2,(a[1]+b[1])/2,(a[2]+b[2])/2);m.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),d.normalize());return m}
-part(new THREE.SphereGeometry(4.2,24,16),M.dragon,0,10,0,1.65,.82,1.05);
-part(new THREE.SphereGeometry(2.8,20,14),M.belly,0,9.3,1.2,1.18,.72,1.08);
-part(new THREE.SphereGeometry(2.15,20,14),M.dragon,0,12,4.4,.78,.86,1.2);
-part(new THREE.SphereGeometry(1.65,20,14),M.dragon,0,13.1,6.2,1.12,.72,1.25);
-part(new THREE.SphereGeometry(.95,16,12),M.belly,0,11.9,7.1,1.05,.48,1.1);
-part(new THREE.SphereGeometry(.7,14,10),M.dragon,0,12.8,8.2,1.45,.55,.8);
-for(var s=-1;s<=1;s+=2){
-part(new THREE.SphereGeometry(.36,12,8),M.eye,s*1.05,13.45,6.8,.9,1,1);
-part(new THREE.SphereGeometry(.15,10,8),M.dark,s*1.12,13.48,7.03,1,1,.5);
-bone([s*.7,14.2,5.8],[s*1.1,16.1,5.3],.38,M.claw);
-bone([s*1.1,16.1,5.3],[s*1.5,16.8,5.1],.2,M.gold);
-bone([s*.9,13.6,8.1],[s*1.05,14.5,8.7],.18,M.claw);
-for(var k=0;k<3;k++){var spike=part(new THREE.ConeGeometry(.38,1.25,7),M.claw,s*(.9+k*.12),14.4-k*.28,4.7-k*.8);spike.rotation.z=s*.24}
-for(var leg=-1;leg<=1;leg+=2){var lx=s*4.4,lz=leg>0?2.2:-2.2;bone([s*3.1,9.7,lz],[lx,6.8,lz+.6],.9,M.dragon);bone([lx,6.8,lz+.6],[s*4.6,5.8,lz+1.4],.58,M.dragon);part(new THREE.SphereGeometry(.8,12,10),M.claw,s*4.7,5.55,lz+1.8,1.2,.45,1.35);for(var c=0;c<3;c++)bone([s*4.2+c*.32,5.5,lz+2.3],[s*4.2+c*.32,5.15,lz+2.9],.12,M.gold)}
+function ellipsoid(px,py,pz,sx,sy,sz,mat,detail){var m=new THREE.Mesh(new THREE.SphereGeometry(1,detail||24,18),mat);m.position.set(px,py,pz);m.scale.set(sx,sy,sz);m.castShadow=false;rig.add(m);return m}
+function bone(a,b,r1,r2,mat){var A=new THREE.Vector3(a[0],a[1],a[2]),B=new THREE.Vector3(b[0],b[1],b[2]),d=B.clone().sub(A),m=new THREE.Mesh(new THREE.CylinderGeometry(r2||r1*.72,r1,d.length(),10),mat);m.position.copy(A).add(B).multiplyScalar(.5);m.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),d.normalize());rig.add(m);return m}
+function spike(a,b,r,mat){bone(a,b,r,.015,mat)}
+/* A heavy, grounded western dragon: deep chest, powerful haunches and a long articulated neck. */
+ellipsoid(0,7.2,0,5.7,3.6,8.2,M.dragon,32);
+ellipsoid(0,5.9,1.5,4.4,2.1,5.4,M.belly,28);
+ellipsoid(-3.5,7.1,-3.5,2.6,3.1,3.2,M.dragon,24);ellipsoid(3.5,7.1,-3.5,2.6,3.1,3.2,M.dragon,24);
+var neckCurve=new THREE.CatmullRomCurve3([new THREE.Vector3(0,8,4),new THREE.Vector3(0,9.5,7),new THREE.Vector3(0,11.8,9),new THREE.Vector3(0,12.2,11)]);
+var neck=new THREE.Mesh(new THREE.TubeGeometry(neckCurve,28,1.9,16,false),M.dragon);rig.add(neck);
+ellipsoid(0,12.2,11.8,2.5,1.8,3.5,M.dragon,28);
+ellipsoid(0,11.25,14.1,2.1,.9,2.6,M.belly,24);
+ellipsoid(0,12.7,14.5,2.15,.9,2.5,M.dragon,24);
+ellipsoid(0,11.9,15.9,1.7,.48,1.65,M.claw,20);
+for(var side=-1;side<=1;side+=2){
+ellipsoid(side*1.72,13.05,13.1,.48,.4,.62,M.eye,16);
+ellipsoid(side*1.82,13.08,13.45,.13,.28,.16,M.dark,12);
+ellipsoid(side*1.7,13.55,12.1,.65,.35,.9,M.dragon,16);
+spike([side*1.2,13.5,10.5],[side*1.8,15.8,9.6],.48,M.claw);
+spike([side*1.8,15.8,9.6],[side*2.25,16.7,9.2],.2,M.gold);
+spike([side*.9,13.4,10.8],[side*1.05,15.2,11.5],.3,M.claw);
+for(var horn=0;horn<4;horn++){var hz=8.4-horn*1.65;spike([side*(1.35-horn*.08),11.8+horn*.28,hz],[side*(1.55-horn*.08),13.3+horn*.35,hz-.6],.22,M.claw)}
+/* Four muscular legs, bent at the hock, ending in splayed toes and dark talons. */
+for(var fore=0;fore<2;fore++){
+var z0=fore? -4.4:4.6,hipY=fore?7.4:7.0,hipX=side*(fore?3.7:3.8);
+ellipsoid(hipX,hipY,z0,1.7,2.15,2.1,M.dragon,20);
+var elbow=[side*4.4,4.5,z0+(fore?-.3:.2)],wrist=[side*4.35,1.35,z0+(fore?-.7:.9)];
+bone([hipX,hipY-.7,z0],elbow,1.12,.76,M.dragon);bone(elbow,wrist,.76,.48,M.dragon);
+ellipsoid(side*4.35,1.05,wrist[2]+.5,1.05,.55,1.45,M.claw,16);
+for(var toe=0;toe<3;toe++){var tx=side*(3.65+toe*.62);bone([tx,1.0,wrist[2]+.9],[tx, .72,wrist[2]+2.0],.27,.13,M.claw);spike([tx,.76,wrist[2]+1.9],[tx,.38,wrist[2]+2.35],.13,M.gold)}
 }
-var tailCurve=new THREE.CatmullRomCurve3([new THREE.Vector3(0,9,-3),new THREE.Vector3(0,8,-7),new THREE.Vector3(0,7,-11),new THREE.Vector3(0,7.7,-15),new THREE.Vector3(0,9,-18)]);
-part(new THREE.TubeGeometry(tailCurve,32,1.05,10,false),M.dragon);
-var tailTip=part(new THREE.ConeGeometry(.85,3,8),M.claw,0,9,-19);tailTip.rotation.x=-Math.PI/2;
-var wingGroups=[];
-for(var s=-1;s<=1;s+=2){
-var wing=new THREE.Group();wing.position.set(s*2.5,12.3,-1);rig.add(wing);
-var shape=new THREE.Shape();shape.moveTo(0,0);shape.quadraticCurveTo(s*5,5,s*12,7);shape.quadraticCurveTo(s*10,3,s*14,-3);shape.quadraticCurveTo(s*8,-2,s*8,-7);shape.quadraticCurveTo(s*4,-4,s*2,-6);shape.lineTo(0,-1);shape.closePath();
-var membrane=new THREE.Mesh(new THREE.ShapeGeometry(shape,12),M.dragonWing);wing.add(membrane);
-var tips=[[s*12,7,0],[s*14,-3,0],[s*8,-7,0],[s*2,-6,0]];
-for(var k=0;k<tips.length;k++)bone([0,0,0],tips[k],.22,M.claw);
-bone([s*2,-1,0],[s*12,7,0],.16,M.gold);
-wingGroups.push(wing);animated.push({type:'dragonwing',mesh:wing,side:s});
 }
-for(var i=0;i<7;i++){var flame=part(new THREE.SphereGeometry(.72-i*.055,12,10),M.flame,0,12,9+i*1.25);animated.push({type:'dragonflame',mesh:flame,index:i})}
-var glow=new THREE.PointLight('#ff9b3d',1.3,24);glow.position.set(x,13,z+10);scene.add(glow);
-addCollider(x,z,9,9);
+/* Long tapering tail built from overlapping articulated vertebrae, not a blunt tube. */
+var tailPts=[[0,7,-6],[0,6,-10],[0,5,-14],[0,4.7,-18],[0,5.3,-22],[0,6.5,-25]];
+for(var ti=0;ti<tailPts.length-1;ti++){var rr=1.35-ti*.2;bone(tailPts[ti],tailPts[ti+1],rr,Math.max(.12,rr-.24),M.dragon)}
+var tailFin=ellipsoid(0,6.5,-25.5,.45,.5,2.3,M.claw,16);tailFin.rotation.x=.5;
+/* Broad bat-like wings: jointed spars, stretched membrane and scalloped trailing edge. */
+for(var side=-1;side<=1;side+=2){
+var wing=new THREE.Group();wing.position.set(side*3.5,10.3,-2.5);rig.add(wing);
+var sh=new THREE.Shape();sh.moveTo(0,0);sh.quadraticCurveTo(side*5,5,side*10,10);sh.quadraticCurveTo(side*9,6,side*15,3);sh.quadraticCurveTo(side*13,1,side*16,-4);sh.quadraticCurveTo(side*12,-2,side*11,-8);sh.quadraticCurveTo(side*7,-5,side*6,-10);sh.quadraticCurveTo(side*3,-5,0,-2);sh.closePath();
+var membrane=new THREE.Mesh(new THREE.ShapeGeometry(sh,18),M.dragonWing);membrane.material.side=THREE.DoubleSide;wing.add(membrane);
+var joints=[[side*10,10,0],[side*15,3,0],[side*16,-4,0],[side*11,-8,0],[side*6,-10,0]];
+for(var wi=0;wi<joints.length;wi++)bone([0,0,0],joints[wi],.32,.18,M.claw);
+bone([0,0,0],[side*10,10,0],.24,.16,M.gold);
+animated.push({type:'dragonwing',mesh:wing,side:side});
+}
+/* Ridge of irregular backward swept armor spines along neck and back. */
+for(var si=0;si<17;si++){var zz=8-si*1.65,yy=12.7-Math.max(0,si-5)*.48,hh=1.05+(si%3)*.25;spike([0,yy,zz],[0,yy+hh,zz-1.05],.34-(si%3)*.035,M.claw)}
+/* A short, coherent breath plume anchored to the muzzle. */
+var breath=new THREE.Group();breath.position.set(0,11.8,16.8);rig.add(breath);
+for(var fi=0;fi<5;fi++){var flame=new THREE.Mesh(new THREE.ConeGeometry(.55-fi*.07,2.1+fi*.18,10),M.flame);flame.rotation.x=Math.PI/2;flame.position.z=fi*1.35;breath.add(flame)}
+animated.push({type:'dragonbreath',mesh:breath});
+var glow=new THREE.PointLight('#ff9a42',1.2,28);glow.position.set(x,12,z+18);scene.add(glow);
+addCollider(x,z,11,12);
 }
 
 function pirateShip(x,z){var group=new THREE.Group();group.position.set(x,2,z);scene.add(group);addBox(0,0,0,18,2,6,M.wood,group);for(var i=0;i<3;i++){var mast=addCylinder(-5+i*5,8,0,.22,.3,15,M.gold,8,group);var sail=addBox(-5+i*5,9,0,4.2,5.5,.18,M.sail,group);sail.rotation.z=.05}animated.push({type:'ship',mesh:group});addCollider(x,z,10,4)}
@@ -85,81 +105,98 @@ var ring=addMesh(new THREE.TorusGeometry(5,.4,8,32),M.gold,x,6,z-24);var inner=a
 function bridge(x,z){addBox(x,.7,z,18,1.2,8,M.stone);for(var s=-1;s<=1;s+=2){addBox(x+s*8,2.2,z,.35,2.5,8,M.gold);for(var i=0;i<4;i++)addCylinder(x+s*8,2.2,z-3+i*2,.22,.22,2.6,M.gold,8)}}
 function wheel(x,z){var group=new THREE.Group();group.position.set(x,19,z);scene.add(group);addMesh(new THREE.TorusGeometry(14,.35,8,64),M.gold,0,0,0,group);for(var i=0;i<10;i++){var a=i*Math.PI/5;var spoke=addBox(Math.cos(a)*7,Math.sin(a)*7,0,.2,28,.2,M.iron,group);spoke.rotation.z=-a;addBox(Math.cos(a)*14,Math.sin(a)*14,0,1.4,1.4,1.4,i%2?M.red:M.blue,group)}animated.push({type:'wheel',mesh:group});addCylinder(x,9,z,.9,.9,18,M.iron,10)}
 function fountain(x,z){addCylinder(x,.4,z,6,6,.8,M.stone,24);addCylinder(x,1.1,z,4,4,.5,M.gold,24);for(var i=0;i<6;i++){var a=i*Math.PI/3,jet=addSphere(x+Math.cos(a)*1.5,2.2,z+Math.sin(a)*1.5,.35,M.water);animated.push({type:'jet',mesh:jet,phase:a})}}
-function build(){scene.background=new THREE.Color('#a8d0df');scene.fog=new THREE.Fog('#a8d0df',150,290);scene.add(new THREE.HemisphereLight('#eaf7ff','#536342',1.5));var sun=new THREE.DirectionalLight('#fff1d8',1.6);sun.position.set(-60,100,40);scene.add(sun);scene.add(new THREE.AmbientLight('#ffffff',.25));
-addBox(0,-1,0,380,2,380,M.grass);
-/* Layered park landscaping: planted edges and tree clusters break up the empty lawn */
-for(var edge=0;edge<18;edge++){var ex=-165+edge*19;addTree(ex,-178,.9+(edge%3)*.12);addTree(ex,178,.85+(edge%4)*.1)}
-for(var side=-1;side<=1;side+=2){for(var row=0;row<9;row++){var tz=-145+row*34;addTree(side*(166+(row%2)*5),tz,.85+(row%3)*.12)}}
-for(var garden=0;garden<16;garden++){var ga=garden/16*Math.PI*2;addTree( Math.cos(ga)*48,32+Math.sin(ga)*27,.55+(garden%3)*.08)}
-addPath([[0,88],[0,55],[0,20],[0,-20],[0,-60]],15,M.path);addPath([[0,-20],[-45,-35],[-75,-70]],11,M.path);addPath([[0,-20],[45,-35],[75,-70]],11,M.path);addPath([[-75,-70],[-110,-20],[-120,30]],10,M.path);addPath([[75,-70],[110,-20],[120,30]],10,M.path);addPath([[-120,30],[-65,48],[0,32],[65,48],[120,30]],10,M.path);addPath([[0,32],[35,48],[70,75],[82,108]],10,M.path);addPath([[35,48],[10,95],[-35,125],[-78,145]],9,M.path);addPath([[70,75],[105,90],[145,112],[160,145]],9,M.path);
-addBox(0,6,72,25,2,3,M.gold);addBox(-11,5,72,2,10,3,M.stone);addBox(11,5,72,2,10,3,M.stone);addBox(0,11,72,25,2,3,M.gold);sign(0,57,M.gold);fountain(0,30);discovery('THE GRAND GATE',0,72,'Welcome through the grand entrance, with golden architecture and a beautiful fountain plaza.');
-castle(-75,-83);coaster(-70,-48,'#d9a64e');openShop(-108,-80,M.wood);sign(-75,-105,M.gold);discovery('ADVENTURE KINGDOM',-75,-83,'Explore a storybook castle, royal village and a thrilling coaster.');
-dragon(0,-112);coaster(30,-78,'#b64c42');sign(0,-132,M.red);discovery("DRAGON'S REACH",0,-112,'Meet the mighty dragon guarding its rocky lair and fiery ravine.');
-water(115,-35,48,62);pirateShip(115,-32);openShop(145,7,M.blue);for(var i=0;i<8;i++)addTree(87+i%4*15,-70+Math.floor(i/4)*20,.8);sign(115,4,M.gold);discovery("PIRATE'S BAY",115,-32,'A swinging pirate ship, harbor village and sparkling lagoon await.');
-water(-118,-22,45,70);for(var i=0;i<16;i++){var px=-143+(i%4)*13,pz=-58+Math.floor(i/4)*20;addCylinder(px,4,pz,.3,.22,8,M.wood,8);for(var k=0;k<5;k++){var a=k/5*Math.PI*2,leaf=addBox(px+Math.cos(a)*2.5,8,pz+Math.sin(a)*2.5,1,.25,5,M.leaf);leaf.rotation.y=-a}}addBox(-118,5,-12,18,10,14,M.temple);coaster(-155,30,'#4ba6a4');sign(-118,15,M.blue);discovery('JUNGLE EXPEDITION',-118,-22,'A lush jungle river, tropical palms and ancient temple create a wild expedition.');
-addCylinder(115,14,-150,19,29,28,M.rock,12);addCylinder(115,29,-150,8,11,2,M.flame,16);coaster(75,-115,'#e87846');sign(115,-150,M.red);discovery('MONSTER MOUNTAIN',115,-150,'A towering volcano glows above a rugged mountain coaster.');
+function build(){
+scene.background=new THREE.Color('#b7d2d1');scene.fog=new THREE.Fog('#b7d2d1',190,360);
+scene.add(new THREE.HemisphereLight('#eaf5f0','#42513c',1.35));
+var sun=new THREE.DirectionalLight('#fff0d5',2.0);sun.position.set(-80,130,65);scene.add(sun);
+var fill=new THREE.DirectionalLight('#a8d8e8',.55);fill.position.set(70,55,-90);scene.add(fill);
+addBox(0,-1,0,390,2,390,M.grass);
+/* New master plan: a landscaped resort with defined themed districts, planted berms and broad stone promenades. */
+for(var edge=0;edge<24;edge++){var ex=-174+edge*15;addTree(ex,-180,.9+(edge%4)*.12);addTree(ex,180,.95+(edge%3)*.12)}
+for(var side=-1;side<=1;side+=2){for(var row=0;row<12;row++){var tz=-155+row*28;addTree(side*(169+(row%2)*4),tz,.9+(row%3)*.1)}}
+for(var g=0;g<28;g++){var a=g/28*Math.PI*2;addTree(Math.cos(a)*53,Math.sin(a)*43,.58+(g%4)*.06)}
+/* Wide, gently connected guest promenades with smaller paths into each land. */
+addPath([[0,92],[0,62],[0,35],[0,8],[0,-22],[0,-58]],17,M.path);
+addPath([[0,-20],[-32,-36],[-72,-56],[-100,-82]],12,M.path);
+addPath([[0,-20],[38,-38],[76,-62],[112,-88]],12,M.path);
+addPath([[-100,-82],[-130,-48],[-130,-12],[-120,28]],11,M.path);
+addPath([[112,-88],[136,-55],[142,-18],[130,18]],11,M.path);
+addPath([[-120,28],[-70,44],[0,38],[68,48],[130,18]],11,M.path);
+addPath([[0,38],[32,62],[70,82],[82,108]],11,M.path);
+addPath([[32,62],[8,100],[-35,128],[-78,145]],10,M.path);
+addPath([[70,82],[108,100],[145,125],[160,145]],10,M.path);
+/* Entrance plaza: formal gardens, a stone arrival court and a sculptural fountain. */
+addBox(0,6,72,31,2,3,M.gold);addBox(-14,6,72,2.5,12,3,M.stone);addBox(14,6,72,2.5,12,3,M.stone);addBox(0,13,72,31,2,3,M.gold);
+for(var pi=0;pi<8;pi++){var pa=pi*Math.PI/4;addTree(Math.cos(pa)*17,48+Math.sin(pa)*10,.52)}
+sign(0,57,M.gold);fountain(0,30);discovery('THE GRAND GATE',0,72,'A grand stone arrival court, formal gardens, fountains and the signature entrance to Kickapoo Park.');
+/* Adventure Kingdom — keep the castle district, with a tree-lined village and coaster. */
+castle(-75,-83);coaster(-70,-48,'#d9a64e');openShop(-108,-80,M.wood);sign(-75,-105,M.gold);
+for(var ac=0;ac<10;ac++)addTree(-118+(ac%5)*19,-118+Math.floor(ac/5)*15,.7);
+discovery('ADVENTURE KINGDOM',-75,-83,'Explore a dramatic castle, a charming village and a thrilling mountain coaster.');
+/* Dragon's Reach — new creature design in a rocky, forested ravine. */
+for(var rr=0;rr<18;rr++){var ra=rr/18*Math.PI*2;var rx=Math.cos(ra)*23,rz=-112+Math.sin(ra)*19;addCylinder(rx,2.5,rz,3.2,4.5,5,M.rock,9)}
+addCylinder(0,1,-112,15,17,2,M.rock,32);dragon(0,-112);coaster(30,-78,'#b66c4c');sign(0,-137,M.red);
+for(var dr=0;dr<10;dr++)addTree(-26+dr*6,-142+(dr%2)*5,.7);
+discovery("DRAGON'S REACH",0,-112,'Enter a rugged dragon sanctuary, where an ancient, winged guardian watches over a volcanic stone ravine.');
+/* Pirate harbour with a sheltered lagoon, quay and forested shoreline. */
+water(115,-35,48,62);pirateShip(115,-32);openShop(145,7,M.blue);
+for(var i=0;i<14;i++)addTree(87+(i%7)*10,-70+Math.floor(i/7)*18,.72);
+sign(115,4,M.gold);discovery("PIRATE'S BAY",115,-32,'A lively pirate harbour with a swinging ship, waterside village and sheltered lagoon.');
+/* Jungle Expedition: river, dense palms, ancient temple and overgrown coaster. */
+water(-118,-22,45,70);
+for(var i=0;i<24;i++){var px=-146+(i%6)*11,pz=-65+Math.floor(i/6)*21;addCylinder(px,4,pz,.38,.24,8,M.wood,8);for(var k=0;k<5;k++){var aa=k/5*Math.PI*2,leaf=addBox(px+Math.cos(aa)*2.5,8,pz+Math.sin(aa)*2.5,1,.25,5,M.leaf);leaf.rotation.y=-aa}}
+addBox(-118,5,-12,18,10,14,M.temple);coaster(-155,30,'#4ba6a4');sign(-118,15,M.blue);
+for(var jt=0;jt<15;jt++)addTree(-164+(jt%5)*20,-55+Math.floor(jt/5)*25,.8);
+discovery('JUNGLE EXPEDITION',-118,-22,'A dense tropical expedition through a winding river, ancient temple ruins and lush jungle canopy.');
+/* Monster Mountain and the observation wheel frame the far skyline. */
+addCylinder(115,14,-150,19,29,28,M.rock,20);addCylinder(115,29,-150,8,11,2,M.flame,20);coaster(75,-115,'#e87846');sign(115,-150,M.red);
 wheel(0,-165);
-/* FUTURE WORLD: framed glass conservatory dome, not a floating sphere */
+/* Future World: steel-and-glass conservatory dome with ribs and a clear silhouette. */
 var domeX=28,domeZ=-165,domeR=13,domeY=.35;
 addCylinder(domeX,.45,domeZ,domeR+1,domeR+1,.8,M.iron,48);
-var domeBase=addMesh(new THREE.TorusGeometry(domeR,.42,10,64),M.gold,domeX,.9,domeZ);
-var domeGeo=new THREE.SphereGeometry(domeR,32,20,0,Math.PI*2,0,Math.PI/2);
-var domeMesh=addMesh(domeGeo,M.dome,domeX,domeY,domeZ);
-for(var di=0;di<12;di++){var da=di*Math.PI/6;var meridian=[];for(var dj=0;dj<=24;dj++){var phi=(dj/24)*Math.PI/2;meridian.push(new THREE.Vector3(domeX+Math.cos(da)*Math.cos(phi)*domeR,domeY+Math.sin(phi)*domeR,domeZ+Math.sin(da)*Math.cos(phi)*domeR))}var ribCurve=new THREE.CatmullRomCurve3(meridian);addMesh(new THREE.TubeGeometry(ribCurve,32,.13,6,false),M.gold,0,0,0)}
-for(var ringI=1;ringI<=3;ringI++){var lat=(ringI/4)*Math.PI/2;var ringR=domeR*Math.cos(lat);addMesh(new THREE.TorusGeometry(ringR,.09,6,48),M.iron,domeX,domeY+domeR*Math.sin(lat),domeZ).rotation.x=Math.PI/2}
+addMesh(new THREE.TorusGeometry(domeR,.42,10,64),M.gold,domeX,.9,domeZ);
+var domeGeo=new THREE.SphereGeometry(domeR,32,20,0,Math.PI*2,0,Math.PI/2);addMesh(domeGeo,M.dome,domeX,domeY,domeZ);
+for(var di=0;di<16;di++){var da=di*Math.PI/8,meridian=[];for(var dj=0;dj<=24;dj++){var phi=(dj/24)*Math.PI/2;meridian.push(new THREE.Vector3(domeX+Math.cos(da)*Math.cos(phi)*domeR,domeY+Math.sin(phi)*domeR,domeZ+Math.sin(da)*Math.cos(phi)*domeR))}addMesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(meridian),32,.14,6,false),M.gold,0,0,0)}
+for(var ringI=1;ringI<=3;ringI++){var lat=ringI/4*Math.PI/2,ringR=domeR*Math.cos(lat);addMesh(new THREE.TorusGeometry(ringR,.1,6,48),M.iron,domeX,domeY+domeR*Math.sin(lat),domeZ).rotation.x=Math.PI/2}
 addBox(domeX,2,domeZ+domeR,7,4,.5,M.glass);addBox(domeX,4.2,domeZ+domeR,8,.35,.8,M.gold);
-discovery('FUTURE WORLD',0,-165,'A soaring observation wheel and a framed glass conservatory with a visible steel lattice overlook the park.');
-water(-25,-170,58,38);for(var i=0;i<4;i++){var slide=addCylinder(-45+i*8,5,-170,1.2,.6,10,[M.red,M.blue,M.gold,M.mint][i],12);slide.rotation.z=.35}discovery('SPLASH ISLAND',-25,-170,'A bright lagoon and colorful slides make a refreshing water-play land.');
-addPath([[0,-60],[-35,-20],[-65,20],[-100,55]],10,M.path);bridge(-86,49);grove(-125,100);coaster(-155,115,'#6ed2b5');sign(-125,73,M.violet);discovery('THE ENCHANTED GROVE',-125,100,'Discover glowing crystals, ancient trees and a mysterious magical portal.');
-openShop(55,28,M.blue);openShop(-55,28,M.wood);discovery('THE PARKSIDE GRILL',55,28,'Take a break in the park village dining pavilion.');
-/* NEW RESORT DISTRICT: theater, hotels and waterfall valley */
-addPath([[0,32],[35,48],[70,75],[82,108]],10,M.path);
-addPath([[35,48],[10,95],[-35,125],[-78,145]],9,M.path);
-addPath([[70,75],[105,90],[145,112],[160,145]],9,M.path);
-/* Kickapoo Theater */
-addBox(82,7,112,48,14,30,M.dark);addBox(82,15,112,52,3,34,M.gold);
-addBox(82,8,95,28,10,2,M.red);addBox(82,8,94,20,3,.4,M.gold);
+discovery('FUTURE WORLD',0,-165,'A futuristic observation wheel and a luminous glass conservatory rise above the park.');
+/* Splash Island and the Enchanted Grove are separated by planted waterside paths. */
+water(-25,-170,58,38);for(var i=0;i<4;i++){var slide=addCylinder(-45+i*8,5,-170,1.2,.6,10,[M.red,M.blue,M.gold,M.mint][i],12);slide.rotation.z=.35}
+discovery('SPLASH ISLAND',-25,-170,'A landscaped water-play island with a broad lagoon, colorful slides and shaded relaxation areas.');
+addPath([[0,-60],[-35,-20],[-65,20],[-100,55]],10,M.path);bridge(-86,49);grove(-125,100);coaster(-155,115,'#6ed2b5');sign(-125,73,M.violet);
+discovery('THE ENCHANTED GROVE',-125,100,'Discover an ancient woodland of towering trees, glowing crystals and a mysterious portal.');
+openShop(55,28,M.blue);openShop(-55,28,M.wood);discovery('THE PARKSIDE GRILL',55,28,'Enjoy relaxed dining and refreshments in the heart of the park village.');
+/* Resort quarter: theater, hotels and a landscaped waterfall valley. */
+addBox(82,7,112,48,14,30,M.dark);addBox(82,15,112,52,3,34,M.gold);addBox(82,8,95,28,10,2,M.red);addBox(82,8,94,20,3,.4,M.gold);
 for(var tc=0;tc<6;tc++){var tx=61+tc*8.4;addCylinder(tx,8,95,1.1,1.1,15,M.stone,12);addSphere(tx,16,95,1.25,M.gold)}
-addBox(82,19,112,56,2,35,M.roof);addBox(82,22,112,38,1,24,M.red);
-addBox(82,7,128,12,9,2,M.wood);addBox(82,12,128,14,1,2,M.gold);
-sign(82,89,M.red);discovery('KICKAPOO THEATER',82,112,'A grand show palace for live performances, musical spectaculars, comedy, and unforgettable nighttime productions.');
-/* Kickapoo Hotels — two connected resort buildings */
-addBox(-78,8,145,38,16,28,M.stone);addBox(-78,17,145,42,3,32,M.roof);
-addBox(-78,22,145,26,2,20,M.gold);addBox(-78,6,130,18,10,2,M.wood);
+addBox(82,19,112,56,2,35,M.roof);addBox(82,22,112,38,1,24,M.red);addBox(82,7,128,12,9,2,M.wood);addBox(82,12,128,14,1,2,M.gold);sign(82,89,M.red);
+discovery('KICKAPOO THEATER',82,112,'A grand show palace for live performances, musicals, comedy and nighttime spectaculars.');
+addBox(-78,8,145,38,16,28,M.stone);addBox(-78,17,145,42,3,32,M.roof);addBox(-78,22,145,26,2,20,M.gold);addBox(-78,6,130,18,10,2,M.wood);
 for(var hf=0;hf<3;hf++)for(var hw=0;hw<5;hw++){addBox(-93+hw*7,10+hf*5,130,2.5,3,.35,M.glass);addBox(-93+hw*7,10+hf*5,159,2.5,3,.35,M.glass)}
-addBox(-112,5,145,18,10,22,M.blue);addBox(-112,11,145,20,2,24,M.gold);
-water(-78,177,38,22);addBox(-78,.2,177,38,.25,22,M.water);
-for(var hp=0;hp<4;hp++)addTree(-103+hp*17,184,.8);
-sign(-78,124,M.gold);discovery('KICKAPOO HOTELS',-78,145,'Stay in the heart of the resort at our signature hotel, with guest wings, a sparkling pool, landscaped gardens, and relaxing resort spaces.');
-/* Kickapoo Falls — cliffs, cascades, pools and lookout bridge */
-addCylinder(160,9,145,20,20,18,M.rock,12);addCylinder(160,20,145,16,16,5,M.rock,12);
-addBox(151,12,130,9,15,2,M.water);addBox(164,12,130,8,15,2,M.water);
-addBox(157,4,116,28,1,22,M.water);addBox(157,.7,116,34,.5,27,M.blue);
-addBox(157,8,130,2,17,1,M.glass);addBox(157,16,130,2,.35,1,M.glass);
-for(var fi=0;fi<9;fi++){var fx=148+fi*2.2;var cascade=addBox(fx,11+(fi%3)*.35,128,1.25,12,.5,M.water);animated.push({type:'fall',mesh:cascade,phase:fi*.7})}
-for(var fr=0;fr<12;fr++){var fa=fr/12*Math.PI*2;addTree(160+Math.cos(fa)*25,145+Math.sin(fa)*24,.85+(fr%3)*.12)}
-addBox(157,5,99,34,1,3,M.wood);for(var fb=0;fb<9;fb++)addBox(141+fb*4,6,99, .35,2,.35,M.gold);
-sign(157,91,M.blue);discovery('KICKAPOO FALLS',160,116,'Explore a dramatic multi-stream waterfall, clear plunge pool, rocky cliffs, scenic footbridges, and misty forest trails.');
-
-/* KICKAPOO BOARDWALK — waterfront promenade, dining, shopping and evening lights */
-addPath([[115,-32],[132,-48],[151,-66],[155,-88]],10,M.path);
-water(166,-91,68,58);
-addBox(151,.55,-91,54,.8,12,M.wood);
-for(var bp=0;bp<22;bp++){addBox(126+bp*2.35,.98,-91,2.15,.12,12,M.gold)}
+addBox(-112,5,145,18,10,22,M.blue);addBox(-112,11,145,20,2,24,M.gold);water(-78,177,38,22);addBox(-78,.2,177,38,.25,22,M.water);
+for(var hp=0;hp<8;hp++)addTree(-108+(hp%4)*20,181+Math.floor(hp/4)*8,.75);
+sign(-78,124,M.gold);discovery('KICKAPOO HOTELS',-78,145,'Stay in a signature resort hotel with guest wings, a sparkling pool and landscaped gardens.');
+addCylinder(160,9,145,20,20,18,M.rock,18);addCylinder(160,20,145,16,16,5,M.rock,18);
+addBox(151,12,130,9,15,2,M.water);addBox(164,12,130,8,15,2,M.water);addBox(157,4,116,28,1,22,M.water);addBox(157,.7,116,34,.5,27,M.blue);
+for(var fi=0;fi<11;fi++){var fx=146+fi*2.2,cascade=addBox(fx,11+(fi%3)*.35,128,1.25,12,.5,M.water);animated.push({type:'fall',mesh:cascade,phase:fi*.7})}
+for(var fr=0;fr<14;fr++){var fa=fr/14*Math.PI*2;addTree(160+Math.cos(fa)*25,145+Math.sin(fa)*24,.8+(fr%3)*.1)}
+addBox(157,5,99,34,1,3,M.wood);for(var fb=0;fb<9;fb++)addBox(141+fb*4,6,99,.35,2,.35,M.gold);sign(157,91,M.blue);
+discovery('KICKAPOO FALLS',160,116,'Explore a multi-stream waterfall, clear plunge pool, rocky cliffs, scenic footbridges and forest trails.');
+/* Boardwalk district: timber promenade, restaurants, stage and warm practical lighting. */
+addPath([[115,-32],[132,-48],[151,-66],[155,-88]],10,M.path);water(166,-91,68,58);addBox(151,.55,-91,54,.8,12,M.wood);
+for(var bp=0;bp<22;bp++)addBox(126+bp*2.35,.98,-91,2.15,.12,12,M.gold);
 for(var bs=-1;bs<=1;bs+=2){addBox(151,1.35,-91+bs*6,54,.35,.35,M.wood);for(var br=0;br<18;br++)addCylinder(126+br*3,2.2,-91+bs*6,.12,.12,2,M.gold,7)}
-/* Food hall and waterfront restaurants */
 addBox(139,5,-111,20,9,13,M.stone);addBox(139,10,-111,22,1.4,15,M.roof);addBox(139,5,-104,16,5,.5,M.glass);addBox(139,8,-103,18,.7,.7,M.red);sign(139,-120,M.gold);
 for(var shop=0;shop<3;shop++){var sx=160+shop*15;openShop(sx,-112,[M.red,M.blue,M.wood][shop]);addBox(sx,7,-105,12,.6,.8,M.gold);addBox(sx,5,-105,10,1,.5,M.glass)}
-/* Boardwalk stage and illuminated wheel-side attraction */
 addBox(151,2,-72,22,1.2,10,M.wood);addBox(151,5,-76,20,5,.8,M.dark);addBox(151,8,-76,14,.5,.5,M.gold);
 for(var stage=0;stage<5;stage++){var beam=addCylinder(142+stage*4.5,5,-70,.12,.12,5,M.gold,8);beam.rotation.z=.2}
 for(var bl=0;bl<18;bl++){var lx=126+bl*3;addLamp(lx,-82);addSphere(lx,4,-84,.22,M.lamp)}
 for(var flags=0;flags<8;flags++){var fx=128+flags*6;addCylinder(fx,4,-100,.08,.08,6,M.gold,6);var banner=addBox(fx+1,5,-100,2,.2,.9,flags%2?M.red:M.blue);banner.rotation.z=.25}
-sign(151,-125,M.gold);
-discovery('KICKAPOO BOARDWALK',151,-91,'Stroll the lively waterfront promenade for seaside restaurants, sweet treats, specialty shops, glowing evening lights, live music, and a waterside stage.');
-for(var i=0;i<26;i++){var a=i/26*Math.PI*2;addTree(Math.cos(a)*175,Math.sin(a)*175,1+(i%3)*.15)}
-for(var z=60;z>=-150;z-=25){addLamp(-12,z);addLamp(12,z)}for(var x=-130;x<=130;x+=26){addLamp(x,48)}
-for(var i=0;i<8;i++){var side=i%2?1:-1;addBox(side*22, .8,48+i*6,3,.3,1.1,M.wood);addBox(side*22,1.7,47.6+i*6,3,1.4,.2,M.wood)}
+sign(151,-125,M.gold);discovery('KICKAPOO BOARDWALK',151,-91,'Stroll the waterfront promenade for restaurants, specialty shops, glowing lights, live music and a waterside stage.');
+/* Planted sightline buffers, flowering beds and promenade lamps finish the new master plan. */
+for(var i=0;i<34;i++){var a=i/34*Math.PI*2;addTree(Math.cos(a)*175,Math.sin(a)*175,1+(i%3)*.12)}
+for(var zz=60;zz>=-150;zz-=25){addLamp(-12,zz);addLamp(12,zz)}for(var xx=-130;xx<=130;xx+=26)addLamp(xx,48);
+for(var i=0;i<12;i++){var side=i%2?1:-1;addBox(side*22,.8,48+i*6,3,.3,1.1,M.wood);addBox(side*22,1.7,47.6+i*6,3,1.4,.2,M.wood)}
 }
 function blocked(x,z){if(Math.abs(x)>180||Math.abs(z)>180)return true;for(var i=0;i<colliders.length;i++){var c=colliders[i];if(Math.abs(x-c.x)<c.rx+.6&&Math.abs(z-c.z)<c.rz+.6)return true}return false}
 function move(dx,dz){var steps=Math.max(1,Math.ceil(Math.hypot(dx,dz)/.25)),sx=dx/steps,sz=dz/steps;for(var i=0;i<steps;i++){var nx=player.x+sx,nz=player.z+sz;if(!blocked(nx,nz)){player.x=nx;player.z=nz}else{if(!blocked(nx,player.z))player.x=nx;if(!blocked(player.x,nz))player.z=nz}}}
@@ -167,10 +204,10 @@ function update(dt){var forward=(keys.KeyW||keys.ArrowUp?1:0)-(keys.KeyS||keys.A
 function nearby(){var best=null,dist=Infinity;for(var i=0;i<points.length;i++){var p=points[i],d=Math.hypot(player.x-p.x,player.z-p.z);if(d<dist){best=p;dist=d}}return best?{point:best,distance:dist}:null}
 function showToast(message){el('toast').textContent=message;el('toast').classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(function(){el('toast').classList.remove('show')},2200)}
 function interact(){if(!started)return;var n=nearby();if(!n||n.distance>23){showToast('Follow the park paths to find an attraction.');return}found[n.point.name]=true;el('dtitle').textContent=n.point.name;el('ddesc').textContent=n.point.description;el('discovery').hidden=false;started=false;update(.016)}
-function animate(){requestAnimationFrame(animate);if(!renderer)return;var dt=Math.min(clock.getDelta(),.04),t=clock.elapsedTime;if(started)update(dt);for(var i=0;i<animated.length;i++){var a=animated[i];if(a.type==='cart'){a.t=(a.t+dt*.055)%1;var p=a.curve.getPointAt(a.t);a.mesh.position.copy(p);a.mesh.position.y+=.6}else if(a.type==='wing'){a.mesh.rotation.z=Math.sin(t*1.4+a.side)*.28*a.side}else if(a.type==='dragonwing'){a.mesh.rotation.z=Math.sin(t*1.35+a.side)*.2*a.side}else if(a.type==='dragonflame'){var travel=(t*.65+a.index*.11)%1;a.mesh.position.set(Math.sin(t*4+a.index)*.25,12+Math.sin(t*7+a.index)*.35,9+travel*13);a.mesh.scale.setScalar((1-travel*.55)*(.8+Math.sin(t*12+a.index)*.15))}else if(a.type==='ship'){a.mesh.rotation.z=Math.sin(t*.7)*.14}else if(a.type==='wheel'){a.mesh.rotation.z=t*.12}else if(a.type==='portal'){a.mesh.rotation.z=t*.2;a.inner.rotation.z=-t*.3}else if(a.type==='jet'){a.mesh.position.y=2+Math.abs(Math.sin(t*2+a.phase))*.8}else if(a.type==='fall'){a.mesh.position.y=11+Math.sin(t*2+a.phase)*.2;a.mesh.scale.y=1+Math.sin(t*3+a.phase)*.025}}renderer.render(scene,camera)}
+function animate(){requestAnimationFrame(animate);if(!renderer)return;var dt=Math.min(clock.getDelta(),.04),t=clock.elapsedTime;if(started)update(dt);for(var i=0;i<animated.length;i++){var a=animated[i];if(a.type==='cart'){a.t=(a.t+dt*.055)%1;var p=a.curve.getPointAt(a.t);a.mesh.position.copy(p);a.mesh.position.y+=.6}else if(a.type==='wing'){a.mesh.rotation.z=Math.sin(t*1.4+a.side)*.28*a.side}else if(a.type==='dragonwing'){a.mesh.rotation.z=Math.sin(t*1.35+a.side)*.2*a.side}else if(a.type==='dragonbreath'){a.mesh.scale.set(1,.82+.18*Math.sin(t*18),.8+.2*Math.sin(t*12));a.mesh.rotation.y=Math.sin(t*3)*.05}else if(a.type==='ship'){a.mesh.rotation.z=Math.sin(t*.7)*.14}else if(a.type==='wheel'){a.mesh.rotation.z=t*.12}else if(a.type==='portal'){a.mesh.rotation.z=t*.2;a.inner.rotation.z=-t*.3}else if(a.type==='jet'){a.mesh.position.y=2+Math.abs(Math.sin(t*2+a.phase))*.8}else if(a.type==='fall'){a.mesh.position.y=11+Math.sin(t*2+a.phase)*.2;a.mesh.scale.y=1+Math.sin(t*3+a.phase)*.025}}renderer.render(scene,camera)}
 function resize(){if(!renderer)return;camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight,false);renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.25))}
-function start(){if(!ready){el('loadmsg').textContent='The 3D world is still loading. Please tap ENTER again in a moment.';return}started=true;player.x=0;player.z=12;player.yaw=0;player.pitch=-.2;el('welcome').hidden=true;showToast('WELCOME TO KICKAPOO PARK!')}
-function load(){if(loading||ready)return;loading=true;el('loadmsg').textContent='Building the park…';var script=document.createElement('script');script.src='./vendor/three.min.js?v=160';script.onload=function(){try{THREE=window.THREE;if(!THREE)throw new Error('3D engine did not initialize');M.grass=material('#477c47');M.path=material('#b8a47b');M.stone=material('#c2b58f');M.gold=material('#d6ad62',.45,.3);M.iron=material('#38454a',.5,.55);M.wood=material('#70492f');M.roof=material('#49404a');M.red=material('#a94a3e');M.blue=material('#438eaa');M.glass=material('#68bdc9',.25,.25,'#174d5c');M.rock=material('#554940');M.flame=material('#ff702d',.3,0,'#ff4a13');M.lamp=material('#ffd18a',.3,0,'#ffba60');M.water=material('#3298a7',.25,.15,'#0c4350');M.bark=material('#4d382b');M.leaf=material('#2d6942');M.leaf2=material('#4c8a4c');M.temple=material('#8b8a72');M.sail=material('#e8dfca');M.wing=material('#78363a',.85);M.mint=material('#63e8bd',.25,.2,'#1ab88d');M.violet=material('#a98aff',.25,.15,'#6945d5');M.dark=material('#18212a');M.dragon=material('#344b3e',.72,.08);M.dragonWing=material('#53634a',.86,.02);M.belly=material('#8b8060',.9);M.claw=material('#252d2a',.55,.18);M.eye=material('#f5b94e',.3,.1,'#6d3509');M.dome=new THREE.MeshPhysicalMaterial({color:'#8bd8e7',roughness:.12,metalness:.12,transparent:true,opacity:.34,side:THREE.DoubleSide,depthWrite:false});scene=new THREE.Scene();build();camera=new THREE.PerspectiveCamera(64,innerWidth/innerHeight,.1,350);camera.rotation.order='YXZ';renderer=new THREE.WebGLRenderer({canvas:canvas,antialias:true,alpha:false,powerPreference:'high-performance'});renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.25));renderer.setSize(innerWidth,innerHeight,false);renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.12;clock=new THREE.Clock();ready=true;loading=false;el('loadmsg').textContent='Your park is ready.';el('count').textContent='0 / '+points.length+' discoveries';animate();if(window.innerWidth)resize()}catch(error){loading=false;console.error(error);el('loadmsg').textContent='The park could not start: '+error.message+'. Tap ENTER to retry.'}};script.onerror=function(){loading=false;el('loadmsg').textContent='Could not load the 3D engine. Check your connection and tap ENTER to retry.'};document.head.appendChild(script)}
+function start(){if(!ready){el('loadmsg').textContent='The 3D world is still loading. Please tap ENTER again in a moment.';return}started=true;player.x=0;player.z=12;player.yaw=0;player.pitch=-.16;el('welcome').hidden=true;showToast('WELCOME TO KICKAPOO PARK!')}
+function load(){if(loading||ready)return;loading=true;el('loadmsg').textContent='Building the park…';var script=document.createElement('script');script.src='./vendor/three.min.js?v=160';script.onload=function(){try{THREE=window.THREE;if(!THREE)throw new Error('3D engine did not initialize');M.grass=material('#3d6747',.98);M.path=material('#b8ad91',.96);M.stone=material('#aaa89a',.9);M.gold=material('#d6ad62',.45,.3);M.iron=material('#38454a',.5,.55);M.wood=material('#70492f');M.roof=material('#49404a');M.red=material('#a94a3e');M.blue=material('#438eaa');M.glass=material('#68bdc9',.25,.25,'#174d5c');M.rock=material('#514c43',.96);M.flame=material('#ff702d',.3,0,'#ff4a13');M.lamp=material('#ffd18a',.3,0,'#ffba60');M.water=material('#3298a7',.25,.15,'#0c4350');M.bark=material('#4d382b');M.leaf=material('#2d6942');M.leaf2=material('#4c8a4c');M.temple=material('#8b8a72');M.sail=material('#e8dfca');M.wing=material('#78363a',.85);M.mint=material('#63e8bd',.25,.2,'#1ab88d');M.violet=material('#a98aff',.25,.15,'#6945d5');M.dark=material('#18212a');M.dragon=material('#34483d',.82,.03);M.dragonWing=new THREE.MeshStandardMaterial({color:'#465a4a',roughness:.9,side:THREE.DoubleSide});M.belly=material('#91866d',.94);M.claw=material('#202a27',.48,.12);M.eye=material('#d8a54c',.28,.08,'#5b2d08');M.dome=new THREE.MeshPhysicalMaterial({color:'#8bd8e7',roughness:.12,metalness:.12,transparent:true,opacity:.34,side:THREE.DoubleSide,depthWrite:false});scene=new THREE.Scene();build();camera=new THREE.PerspectiveCamera(64,innerWidth/innerHeight,.1,350);camera.rotation.order='YXZ';renderer=new THREE.WebGLRenderer({canvas:canvas,antialias:true,alpha:false,powerPreference:'high-performance'});renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.25));renderer.setSize(innerWidth,innerHeight,false);renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.12;clock=new THREE.Clock();ready=true;loading=false;el('loadmsg').textContent='Your park is ready.';el('count').textContent='0 / '+points.length+' discoveries';animate();if(window.innerWidth)resize()}catch(error){loading=false;console.error(error);el('loadmsg').textContent='The park could not start: '+error.message+'. Tap ENTER to retry.'}};script.onerror=function(){loading=false;el('loadmsg').textContent='Could not load the 3D engine. Check your connection and tap ENTER to retry.'};document.head.appendChild(script)}
 function bind(){window.addEventListener('resize',resize);el('enter').addEventListener('click',start);el('explore').addEventListener('click',interact);el('close').addEventListener('click',function(){el('discovery').hidden=true;started=true});el('help').addEventListener('click',function(){showToast('Joystick or WASD to walk. Drag the view to look around. Explore nearby attractions with the gold button.')});document.addEventListener('keydown',function(e){keys[e.code]=true;if(e.code==='KeyE'||e.code==='Space'){e.preventDefault();interact()}});document.addEventListener('keyup',function(e){keys[e.code]=false});var pad=el('pad'),nub=el('stick');function joystick(e){var r=pad.getBoundingClientRect(),dx=e.clientX-r.left-r.width/2,dy=e.clientY-r.top-r.height/2,l=Math.hypot(dx,dy)||1,k=Math.min(1,36/l),x=dx*k,y=dy*k;stick.x=x/36;stick.y=y/36;nub.style.left='calc(50% + '+x+'px)';nub.style.top='calc(50% + '+y+'px)'}function endJoy(e){if(e.pointerId!==stick.id)return;stick.id=null;stick.x=0;stick.y=0;nub.style.left='50%';nub.style.top='50%'}pad.addEventListener('pointerdown',function(e){stick.id=e.pointerId;pad.setPointerCapture(e.pointerId);joystick(e)});pad.addEventListener('pointermove',function(e){if(e.pointerId===stick.id)joystick(e)});pad.addEventListener('pointerup',endJoy);pad.addEventListener('pointercancel',endJoy);canvas.addEventListener('pointerdown',function(e){look={x:e.clientX,y:e.clientY}});canvas.addEventListener('pointermove',function(e){if(!look||!started)return;player.yaw-=(e.clientX-look.x)*.004;player.pitch=Math.max(-.55,Math.min(.55,player.pitch-(e.clientY-look.y)*.003));look={x:e.clientX,y:e.clientY}});canvas.addEventListener('pointerup',function(){look=null});canvas.addEventListener('pointercancel',function(){look=null})}
 bind();load();
 })();
