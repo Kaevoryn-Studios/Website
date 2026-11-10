@@ -87,6 +87,58 @@ function queueLine(x,z,length,axis){for(var i=0;i<=length;i+=3){var px=x+(axis==
 function parkLamp(x,z){cyl(x,2.4,z,.14,.14,4.8,iron,10);box(x,4.9,z,.8,.18,.8,gold,false);var bulb=sphere(x,5.25,z,.34,gold);bulb.material.emissive=new THREE.Color('#ffbf68');var glow=new THREE.PointLight('#ffbf68',.55,13);glow.position.set(x,5,z);scene.add(glow)}
 function plazaTree(x,z){planter(x,z,5,5);tree(x,z,1.15)}
 
+
+function enchantedGrove(x,z){
+  /* A living fantasy forest with giant trees, luminous crystals and fireflies */
+  var glowMat=mat('#73e8c4',.25,.25,'#1bcfa0');
+  var violetGlow=mat('#a88cff',.22,.2,'#6840d8');
+  var bark=mat('#4b382d'),leaf=mat('#245d43'),leaf2=mat('#397b52');
+  path([[x+4,z+45],[x,z+28],[x-9,z+10],[x,z-8],[x+12,z-25]],8,mat('#82765f'));
+  for(var i=0;i<13;i++){
+    var a=i/13*Math.PI*2,rad=19+(i%3)*5,tx=x+Math.cos(a)*rad,tz=z+Math.sin(a)*rad;
+    cyl(tx,8,tz,1.15,.8,16,bark,10);
+    for(var j=0;j<4;j++){
+      var crown=sphere(tx+(j%2?2:-2),16+j*2,tz+(j<2?2:-2),6-j*.35,j%2?leaf:leaf2);
+      crown.scale.set(1.2,.8,1.1);
+    }
+    for(var k=0;k<3;k++){
+      var mushroom=sphere(tx+(k-1)*2,1.1,tz+2,.7,k%2?violetGlow:glowMat);
+      mushroom.scale.set(1,.55,1);
+      sphere(mushroom.position.x,1.8,mushroom.position.z,.65,k%2?violetGlow:glowMat);
+    }
+  }
+  for(var i=0;i<9;i++){
+    var a=i/9*Math.PI*2,crystal=cone(x+Math.cos(a)*13,2,z+Math.sin(a)*13,1.1,5,i%2?violetGlow:glowMat);
+    crystal.rotation.z=.18*Math.sin(i);
+    var light=new THREE.PointLight(i%2?'#a88cff':'#62f0c0',.8,18);
+    light.position.set(crystal.position.x,4,crystal.position.z);scene.add(light);
+  }
+  var portal=new THREE.Group();portal.position.set(x,7,z-29);scene.add(portal);
+  var ring=new THREE.Mesh(new THREE.TorusGeometry(6,.55,12,48),gold);portal.add(ring);
+  var inner=new THREE.Mesh(new THREE.TorusGeometry(4.7,.18,8,48),glowMat);portal.add(inner);
+  for(var i=0;i<7;i++){
+    var orb=sphere(x-11+i*3.6,4+(i%3)*2,z-17,.24,glowMat);
+    rideParts.push({firefly:orb,base:orb.position.clone(),phase:i*1.7});
+  }
+  var stone=box(x,1,z-29,15,1.2,3,stone,false);
+  parkSign(x,16,z-42,25,5,violetGlow);
+  discovery('THE ENCHANTED GROVE',x,z,'Wander beneath ancient trees, glowing crystals and a mysterious portal in this hidden fantasy forest.');
+}
+function themedBridge(x,z){
+  box(x,1,z,22,1.4,9,stone,false);
+  for(var s=-1;s<=1;s+=2){
+    for(var i=0;i<4;i++){
+      var px=x+s*9, pz=z-3+i*2;
+      cyl(px,3,pz,.35,.35,4,gold,10);
+    }
+    var rail=box(x+s*9,4,z, .5,1,9,wood,false);
+  }
+  for(var i=0;i<5;i++){
+    var orb=sphere(x-8+i*4,5,z,.28,gold);
+    orb.material.emissive=new THREE.Color('#ffc46c');
+  }
+}
+
 function mythicDragon(x,z){
   /* A full-scale fantasy creature staged like a practical theme-park show set */
   var mound=sphere(x,5,z,15,rock);mound.scale.set(1.55,.72,1.15);
@@ -183,6 +235,13 @@ function buildPark(){
   for(var i=0;i<4;i++){var slide=cyl(-42+i*6,7,-188,1.5,.5,12,[red,blue,gold,foliage[1]][i],12);slide.rotation.z=.25;slide.rotation.x=.4}
   parkSign(-15,6,-222,23,5,blue);
   discovery('SPLASH ISLAND',-15,-190,'A sparkling lagoon, bright slides and tropical poolside spaces bring the water park to life.');
+
+  /* Enchanted Grove - a glowing forest sanctuary beyond the main boulevard */
+  path([[0,-72],[45,-85],[90,-92],[126,-68],[145,-28]],10,pathMat);
+  enchantedGrove(145,105);
+  themedBridge(118,66);
+  coaster(158,140,'#71cdb6');
+  queueLine(175,116,22,'x');
   /* Central food court, guest services and street dressing */
   shop(-62,25,wood);shop(62,25,blue);restaurant(82,48);
   discovery('THE PARKSIDE GRILL',82,48,'Step into the open-air dining pavilion for a meal beneath warm hanging lights.');
@@ -199,7 +258,7 @@ function update(dt){var f=(held.KeyW||held.ArrowUp?1:0)-(held.KeyS||held.ArrowDo
 function nearest(){var b=null,d=1e9;discoveries.forEach(function(x){var n=Math.hypot(player.x-x.x,player.z-x.z);if(n<d){b=x;d=n}});return b?{item:b,dist:d}:null}
 function interact(){if(!active)return;var n=nearest();if(!n||n.dist>24){toast('Follow the paths to discover nearby attractions.');return}var d=n.item;seen[d.name]=true;$('dTitle').textContent=d.name;$('dText').textContent=d.desc;$('discovery').hidden=false;active=false;update(.016)}
 function toast(t){$('toast').textContent=t;$('toast').classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(function(){$('toast').classList.remove('show')},2300)}
-function animate(){requestAnimationFrame(animate);if(!renderer)return;var dt=Math.min(clock.getDelta(),.05),elapsed=clock.elapsedTime;if(active){update(dt);rideParts.forEach(function(r){if(r.curve){r.p=(r.p+dt*r.speed)%1;var p=r.curve.getPointAt(r.p);r.cart.position.copy(p);r.cart.position.y+=.8}else if(r.wheel){r.a+=dt*.25;r.part.position.set(r.cx+Math.cos(r.a)*17,21+Math.sin(r.a)*17,r.cz)}else if(r.gondola){r.a+=dt*.25;r.gondola.position.set(r.cx+Math.cos(r.a)*15,20+Math.sin(r.a)*15,r.cz)}else if(r.swing){r.swing.rotation.z=Math.sin(elapsed*.7)*.18}else if(r.dragonWing){r.dragonWing.rotation.z=r.base+Math.sin(elapsed*1.5+r.side)*.22*r.side}})}waterParts.forEach(function(w){if(w.water){var a=w.water.geometry.attributes.position;for(var i=0;i<a.count;i++){var x=w.base[i*3],y=w.base[i*3+1];a.setZ(i,w.base[i*3+2]+Math.sin(x*.18+elapsed*1.4+w.phase)*.09+Math.cos(y*.2-elapsed)*.06)}a.needsUpdate=true;w.water.geometry.computeVertexNormals()}else if(w.smoke){w.smoke.position.y=w.base+(elapsed*.8+w.phase)%9;w.smoke.material.opacity=.2+Math.sin(elapsed+w.phase)*.12}else if(w.flame){w.flame.scale.setScalar(.75+Math.sin(elapsed*7+w.phase)*.22);w.flame.position.y=20+Math.sin(elapsed*5+w.phase)*.55}else if(w.jets){w.jets.forEach(function(j){j.o.position.y=2.8+Math.abs(Math.sin(elapsed*2.2+j.a))*1.1});w.crown.position.y=3+Math.sin(elapsed*2)*.25}});renderer.render(scene,camera)}
+function animate(){requestAnimationFrame(animate);if(!renderer)return;var dt=Math.min(clock.getDelta(),.05),elapsed=clock.elapsedTime;if(active){update(dt);rideParts.forEach(function(r){if(r.curve){r.p=(r.p+dt*r.speed)%1;var p=r.curve.getPointAt(r.p);r.cart.position.copy(p);r.cart.position.y+=.8}else if(r.wheel){r.a+=dt*.25;r.part.position.set(r.cx+Math.cos(r.a)*17,21+Math.sin(r.a)*17,r.cz)}else if(r.gondola){r.a+=dt*.25;r.gondola.position.set(r.cx+Math.cos(r.a)*15,20+Math.sin(r.a)*15,r.cz)}else if(r.swing){r.swing.rotation.z=Math.sin(elapsed*.7)*.18}else if(r.dragonWing){r.dragonWing.rotation.z=r.base+Math.sin(elapsed*1.5+r.side)*.22*r.side}else if(r.firefly){r.firefly.position.y=r.base.y+Math.sin(elapsed*2+r.phase)*1.4;r.firefly.position.x=r.base.x+Math.cos(elapsed+r.phase)*1.1}})}waterParts.forEach(function(w){if(w.water){var a=w.water.geometry.attributes.position;for(var i=0;i<a.count;i++){var x=w.base[i*3],y=w.base[i*3+1];a.setZ(i,w.base[i*3+2]+Math.sin(x*.18+elapsed*1.4+w.phase)*.09+Math.cos(y*.2-elapsed)*.06)}a.needsUpdate=true;w.water.geometry.computeVertexNormals()}else if(w.smoke){w.smoke.position.y=w.base+(elapsed*.8+w.phase)%9;w.smoke.material.opacity=.2+Math.sin(elapsed+w.phase)*.12}else if(w.flame){w.flame.scale.setScalar(.75+Math.sin(elapsed*7+w.phase)*.22);w.flame.position.y=20+Math.sin(elapsed*5+w.phase)*.55}else if(w.jets){w.jets.forEach(function(j){j.o.position.y=2.8+Math.abs(Math.sin(elapsed*2.2+j.a))*1.1});w.crown.position.y=3+Math.sin(elapsed*2)*.25}});renderer.render(scene,camera)}
 function resize(){if(!renderer)return;camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.5))}
 function start(){if(!ready){pending=true;$('error').hidden=false;$('error').textContent=loading?'The 3D world is loading. You can tap this button again when it is ready.':'The 3D park is preparing. Tap to retry if loading stopped.';$('enter').textContent=loading?'LOADING… TAP AGAIN':'RETRY';$('enter').disabled=false;if(!loading)load();return}active=true;pending=false;player.x=0;player.z=105;player.yaw=0;player.pitch=0;$('start').hidden=true;toast('WELCOME TO KICKAPOO PARK!')}
 function load(){if(loading||ready)return;loading=true;$('enter').disabled=false;$('enter').textContent='LOADING THE PARK…';var s=document.createElement('script');s.src='./vendor/three.min.js?v=160';s.onload=function(){loading=false;try{THREE=window.THREE;if(!THREE)throw Error('3D engine unavailable');var mats={};grass=mat('#477a43');wallMat=mat('#b99f77');pathMat=mat('#b4a17a');wood=mat('#68452e');stone=mat('#c3b58f');roof=mat('#463d45');gold=mat('#d4ad63',.4,.4);iron=mat('#343d43',.5,.7);red=mat('#a94b3e');blue=mat('#438ca9');glass=mat('#65c7d1',.2,.4,'#1a778b');rock=mat('#51443e');lava=mat('#ff6a2b',.35,0,'#ff4512');smoke=mat('#b8c0c4');smoke.transparent=true;smoke.opacity=.3;foliage=[mat('#28613d'),mat('#3f8046'),mat('#5b914b')];temple=mat('#8c8a72');sailMat=mat('#e7ddc6');waterMat=mat('#329ba9',.2,.2,'#0b5364');scene=new THREE.Scene();buildPark();camera=new THREE.PerspectiveCamera(74,innerWidth/innerHeight,.1,500);camera.rotation.order='YXZ';renderer=new THREE.WebGLRenderer({canvas:canvas,antialias:true,powerPreference:'high-performance'});renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.5));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.15;clock=new THREE.Clock();ready=true;$('enter').disabled=false;$('enter').textContent='ENTER THE PARK';$('error').hidden=true;animate();if(pending)start()}catch(e){console.error(e);$('error').hidden=false;$('error').textContent='Could not start the park: '+e.message;$('enter').disabled=false;$('enter').textContent='RETRY'}};s.onerror=function(){loading=false;$('error').hidden=false;$('error').textContent='The 3D engine could not load. Check your connection and tap RETRY.';$('enter').disabled=false;$('enter').textContent='RETRY'};document.head.appendChild(s)}
