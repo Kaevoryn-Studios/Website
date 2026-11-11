@@ -134,7 +134,18 @@ card.append(element('h4','',m.title));
 const meta=[m.memory_type.replaceAll('_',' '),safeDate(m.memory_date)].filter(Boolean).join(' · ');
 card.append(element('div','vault-meta',meta));
 if(m.story)card.append(element('p','',m.story));
-const footer=element('footer');footer.append(element('span','', 'Saved '+safeDate(m.created_at.slice(0,10))));
+const footer=element('footer');
+footer.append(element('span','', 'Saved '+safeDate(m.created_at.slice(0,10))));
+footer.append(button('EDIT MEMORY','secondary',async()=>{
+const newTitle=window.prompt('Edit memory title:',m.title);
+if(newTitle===null)return;
+if(!newTitle.trim()){showStatus('A memory needs a title. No changes were made.','error');return;}
+const newStory=window.prompt('Edit memory story:',m.story||'');
+if(newStory===null)return;
+const {error}=await client.from('evermore_memories').update({title:newTitle.trim(),story:newStory}).eq('id',m.id);
+if(error){showStatus('Your changes could not be saved. Please try again.','error');return;}
+showStatus('Your memory changes were saved privately.','success');await loadData();
+}));
 footer.append(button('DELETE MEMORY','danger',async()=>{
 if(!window.confirm('Permanently delete this memory?'))return;
 const {error}=await client.from('evermore_memories').delete().eq('id',m.id);
