@@ -4,18 +4,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#07131b">
-<title>Kickapoo Park | The Adventure Starts Here</title>
+<title>Kickapoo Park | Grand Resort Edition</title>
 <style>
 *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#07131b;color:#fff;font-family:Arial,system-ui,sans-serif}#world{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none}.top{position:fixed;z-index:4;top:0;left:0;right:0;display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:linear-gradient(#06121be8,transparent);font-size:10px;letter-spacing:.16em;pointer-events:none}.top b{color:#f6d391}.top a{color:#f6d391;text-decoration:none;pointer-events:auto}.hud{position:fixed;z-index:4;top:52px;left:12px;right:12px;display:flex;justify-content:space-between;gap:8px;pointer-events:none}.plate{padding:8px 10px;border:1px solid #e8c47b88;border-radius:10px;background:#071721df;max-width:68%;backdrop-filter:blur(8px)}.plate b{font-size:10px;letter-spacing:.1em;color:#f6d391}.plate small{display:block;margin-top:4px;color:#d4e2e8;font-size:10px}.bottom{position:fixed;z-index:5;left:0;right:0;bottom:0;padding:12px max(12px,env(safe-area-inset-right)) max(12px,env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left));display:flex;justify-content:space-between;align-items:end;pointer-events:none}.pad,.buttons{pointer-events:auto}.pad{width:106px;height:106px;border:2px solid #e8c47b99;border-radius:50%;background:#071721df;position:relative;touch-action:none}.pad:after{content:'WALK';position:absolute;left:0;right:0;bottom:6px;text-align:center;font-size:9px;letter-spacing:.14em;color:#e9d8b5}.stick{position:absolute;left:50%;top:50%;width:42px;height:42px;border-radius:50%;transform:translate(-50%,-50%);background:linear-gradient(145deg,#fff0c8,#bd843d);border:2px solid #fff9;pointer-events:none}.buttons{display:flex;flex-direction:column;align-items:flex-end;gap:7px}.buttons button,.card button{border:1px solid #e8c47b;border-radius:24px;min-height:42px;padding:0 15px;background:#14394c;color:#fff1cf;font-weight:900;font-size:10px;letter-spacing:.08em;touch-action:manipulation}.buttons #explore{background:#d5a454;color:#15202a;min-height:46px}.buttons .sub{min-height:32px;background:#071721ed;font-size:9px}.overlay{position:fixed;z-index:10;inset:0;display:grid;place-items:center;padding:16px;background:radial-gradient(ellipse at center,#1a3a4b,#03090ef7 78%)}[hidden]{display:none!important}.card{width:min(100%,620px);padding:clamp(22px,5vw,38px);max-height:92vh;overflow:auto;border:1px solid #e8c47b99;border-radius:18px;background:linear-gradient(145deg,#17394bfa,#07131df7);text-align:center;box-shadow:0 25px 90px #000d}.eyebrow{font-size:10px;letter-spacing:.22em;color:#f6d391;font-weight:900}.card h1{font:500 clamp(42px,9vw,74px)/.92 Georgia,serif;color:#f6d391;margin:14px 0}.card p{font-size:13px;line-height:1.55;color:#d8e5eb}.card .hint{font-size:10px;color:#b9cbd4}.toast{position:fixed;z-index:8;left:50%;top:29%;transform:translateX(-50%);max-width:88vw;padding:12px 17px;border:1px solid #e8c47b;border-radius:12px;background:#071721f5;text-align:center;font-size:11px;opacity:0;transition:opacity .2s;pointer-events:none}.toast.show{opacity:1}@media(max-width:430px){.top{font-size:9px;padding:12px}.hud{top:43px}.plate{padding:7px 8px}.pad{width:98px;height:98px}.buttons button{min-height:39px}.buttons #explore{min-height:44px}}@media(orientation:landscape) and (max-height:600px){.top{padding:6px 12px}.hud{top:29px}.plate{padding:5px 8px}.bottom{padding:6px 12px}.pad{width:78px;height:78px}.stick{width:33px;height:33px}.buttons{flex-direction:row;flex-wrap:wrap}.buttons button{min-height:33px}.card{padding:14px 22px}.card h1{font-size:38px;margin:7px 0}}
 </style>
 </head>
 <body>
 <canvas id="world"></canvas>
-<div class="top"><b>KICKAPOO PARK</b><span>REAL THRILLS · IMPOSSIBLE WORLDS</span><a href="parks.html">PARKS</a></div>
+<div class="top"><b>KICKAPOO PARK</b><span>THE GRAND RESORT · REAL THRILLS · BIGGER WORLDS</span><a href="parks.html">PARKS</a></div>
 <div class="hud"><div class="plate"><b id="land">THE GRAND ENTRANCE</b><small id="objective">Your next adventure is waiting.</small></div><div class="plate" style="text-align:right"><b>EXPLORER</b><small id="count">0 / 12 discoveries</small></div></div>
 <div class="bottom"><div class="pad" id="pad"><div class="stick" id="stick"></div></div><div class="buttons"><button id="explore">EXPLORE NEARBY · E</button><button class="sub" id="help">HOW TO EXPLORE</button></div></div>
 <div class="toast" id="toast"></div>
-<div class="overlay" id="welcome"><div class="card"><div class="eyebrow">A BRAND-NEW PARK EXPERIENCE</div><h1>KICKAPOO<br>PARK</h1><p>Real-world thrills. Impossible worlds. A world of extraordinary lands and unforgettable discoveries.</p><p class="hint">Use the joystick or WASD to walk. Drag the screen to look around. Approach an attraction and tap EXPLORE NEARBY.</p><button id="enter">ENTER THE PARK</button><p class="hint" id="loadmsg">Preparing your park…</p></div></div>
+<div class="overlay" id="welcome"><div class="card"><div class="eyebrow">THE GRAND RESORT EDITION</div><h1>KICKAPOO<br>PARK</h1><p>A vast resort of legendary rides, dramatic landscapes, waterfront escapes and extraordinary worlds. The adventure is bigger than ever.</p><p class="hint">Explore the expanded resort with the joystick or WASD. Drag the screen to look around, then visit each themed land.</p><button id="enter">ENTER THE PARK</button><p class="hint" id="loadmsg">Preparing your park…</p></div></div>
 <div class="overlay" id="discovery" hidden><div class="card"><div class="eyebrow">PARK DISCOVERY</div><h1 id="dtitle">WELCOME</h1><p id="ddesc"></p><button id="close">KEEP EXPLORING</button></div></div>
 <script>
 (function(){
@@ -24,9 +24,9 @@ var el=function(id){return document.getElementById(id)};
 var canvas=el('world'),THREE,scene,camera,renderer,clock,ready=false,started=false,loading=false;
 var player={x:0,z:82,yaw:0,pitch:0,height:1.7,speed:10};
 var keys={},stick={x:0,y:0,id:null},look=null,colliders=[],points=[],found={},animated=[],waterMeshes=[],toastTimer=0,lastTime=0;
-var M={};
+var M={},PARK_SCALE=1.6;
 function material(color,roughness,metalness,emissive){return new THREE.MeshStandardMaterial({color:color,roughness:roughness===undefined?.85:roughness,metalness:metalness||0,emissive:emissive||0})}
-function addMesh(geo,mat,x,y,z,parent){var mesh=new THREE.Mesh(geo,mat);mesh.position.set(x,y,z);mesh.castShadow=false;mesh.receiveShadow=false;(parent||scene).add(mesh);return mesh}
+function addMesh(geo,mat,x,y,z,parent){var mesh=new THREE.Mesh(geo,mat);mesh.position.set(x,y,z);mesh.castShadow=(geo.type==='BoxGeometry'&&Math.max(geo.parameters.width,geo.parameters.height,geo.parameters.depth)>5)||(geo.type==='SphereGeometry'&&geo.parameters.radius>3)||(geo.type==='CylinderGeometry'&&geo.parameters.height>8);mesh.receiveShadow=true;(parent||scene).add(mesh);return mesh}
 function addBox(x,y,z,w,h,d,mat,parent){return addMesh(new THREE.BoxGeometry(w,h,d),mat,x,y,z,parent)}
 function addSphere(x,y,z,r,mat,parent){return addMesh(new THREE.SphereGeometry(r,12,10),mat,x,y,z,parent)}
 function addCylinder(x,y,z,rt,rb,h,mat,segments,parent){return addMesh(new THREE.CylinderGeometry(rt,rb,h,segments||12),mat,x,y,z,parent)}
@@ -275,7 +275,7 @@ var heat=new THREE.PointLight('#ff541b',3.4,58);heat.position.set(x,13,z);scene.
 animated.push({type:'volcanoSmoke',mesh:smoke,light:heat});addCollider(x,z,34,34);
 }
 function fountain(x,z){addCylinder(x,.4,z,6,6,.8,M.stone,24);addCylinder(x,1.1,z,4,4,.5,M.gold,24);for(var i=0;i<6;i++){var a=i*Math.PI/3,jet=addSphere(x+Math.cos(a)*1.5,2.2,z+Math.sin(a)*1.5,.35,M.water);animated.push({type:'jet',mesh:jet,phase:a})}addCollider(x,z,6,6)}
-function build(){
+function buildLegacy(){
 /* KICKAPOO PARK — complete reimagined master plan: a compact, walkable fantasy resort at golden hour. */
 scene.background=new THREE.Color('#9bbfc8');scene.fog=new THREE.Fog('#9bbfc8',175,330);
 scene.add(new THREE.HemisphereLight('#e7f5ff','#263c32',1.45));
@@ -385,16 +385,93 @@ for(var z=65;z>=-155;z-=26){addLamp(-13,z);addLamp(13,z)}
 for(var x=-130;x<=130;x+=26)addLamp(x,48);
 for(var i=0;i<24;i++){var a=i/24*Math.PI*2;addTree(Math.cos(a)*166,Math.sin(a)*166,.85)}
 }
+
+function build(){
+  buildLegacy();
+  /* KICKAPOO PARK: GRAND RESORT EDITION — expanded scale and a new twilight resort atmosphere. */
+  scene.background=new THREE.Color('#718b98');
+  scene.fog=new THREE.Fog('#718b98',250,510);
+  scene.traverse(function(o){
+    if(o.isDirectionalLight){
+      o.color.set('#ffe0b5');o.intensity=2.25;o.position.set(-105,165,90);
+      o.castShadow=true;o.shadow.mapSize.set(1024,1024);
+      o.shadow.camera.near=1;o.shadow.camera.far=520;
+      o.shadow.camera.left=-235;o.shadow.camera.right=235;
+      o.shadow.camera.top=235;o.shadow.camera.bottom=-235;
+      o.shadow.bias=-0.00018;o.shadow.normalBias=.035;
+    }else if(o.isHemisphereLight){o.color.set('#dcecf5');o.groundColor.set('#263a32');o.intensity=1.25}
+  });
+  /* Monumental new arrival gate and forecourt. */
+  addCylinder(-13,9,91,.95,.95,18,M.stone,20);
+  addCylinder(13,9,91,.95,.95,18,M.stone,20);
+  addBox(-13,18.3,91,2.4,.45,2.4,M.gold);
+  addBox(13,18.3,91,2.4,.45,2.4,M.gold);
+  addBox(0,18,91,28,2.1,2.2,M.wood);
+  addBox(0,19.35,91,25,.28,1.9,M.gold);
+  var gateArc=addMesh(new THREE.TorusGeometry(12,.72,14,72,Math.PI),M.gold,0,18.5,91);
+  gateArc.rotation.z=Math.PI;
+  addBox(0,14.8,91,17,2.5,.65,M.dark);
+  addBox(0,16.2,90.6,13,.14,.12,M.lamp);
+  /* A broader landscaped boulevard with formal gardens and warm resort lighting. */
+  addPath([[-24,104],[-24,78],[-17,61],[0,48],[17,61],[24,78],[24,104]],5,M.stone);
+  for(var side=-1;side<=1;side+=2){
+    for(var i=0;i<8;i++){
+      var z=48+i*7,x=side*(20+(i%2)*2);
+      addCylinder(x,.22,z,2.1,2.1,.38,M.stone,18);
+      for(var k=0;k<5;k++){
+        var a=k*Math.PI*2/5;
+        addSphere(x+Math.cos(a)*1.2,.62,z+Math.sin(a)*1.2,.28,k%2?M.violet:M.lamp);
+      }
+      if(i%2===0)addLamp(side*29,z);
+    }
+  }
+  /* New scenic mountain skyline beyond the park perimeter. */
+  var peaks=[[-205,-155,36,78],[-172,-210,48,92],[-95,-218,35,72],[15,-220,48,96],[128,-215,42,86],[205,-155,38,80],[210,20,44,90],[205,170,42,84],[70,215,50,100],[-75,215,44,88],[-205,145,40,82]];
+  for(var p=0;p<peaks.length;p++){
+    var q=peaks[p],rock=addMesh(new THREE.ConeGeometry(q[2],q[3],9,3),M.rock,q[0],q[3]*.48-2,q[1]);
+    rock.rotation.y=p*.37;rock.scale.z=1.25;
+    var shoulder=addMesh(new THREE.ConeGeometry(q[2]*.72,q[3]*.72,8,2),M.volcanic,q[0]+q[2]*.42,q[3]*.34-3,q[1]+q[2]*.24);
+    shoulder.rotation.z=.12;
+  }
+  /* More natural garden edges, layered planting and scenic overlooks. */
+  for(var i=0;i<42;i++){
+    var a=i/42*Math.PI*2,rx=151,rz=151;
+    var tx=Math.cos(a)*rx,tz=Math.sin(a)*rz;
+    addTree(tx,tz,1.05+(i%4)*.12);
+    if(i%3===0){
+      var bed=addCylinder(tx,.18,tz,2.4,2.4,.32,M.stone,16);
+      for(var k=0;k<7;k++){
+        var fa=k/7*Math.PI*2;
+        addSphere(tx+Math.cos(fa)*1.5,.48,tz+Math.sin(fa)*1.5,.3,k%2?M.mint:M.lamp);
+      }
+    }
+  }
+  /* Waterfront resort details and a new pedestrian bridge at the boardwalk approach. */
+  bridge(113,-75);
+  for(var i=0;i<12;i++){
+    var x=105+i*2.6;
+    addLamp(x,-62);
+  }
+  /* Subtle warm pools of light at the main themed-land gateways. */
+  [[-82,-108],[0,-143],[118,-111],[-137,13],[-130,78],[82,88],[-78,119],[157,91],[151,-125]].forEach(function(pt,i){
+    var glow=new THREE.PointLight(i%2?'#8ccfe8':'#ffd18b',1.15,30);
+    glow.position.set(pt[0],8,pt[1]);scene.add(glow);
+  });
+  scene.scale.setScalar(PARK_SCALE);
+  scene.fog.near=250*PARK_SCALE;
+  scene.fog.far=510*PARK_SCALE;
+}
+
 function blocked(x,z){/* Consistent player-radius collision: circles for rides, AABBs for walls and buildings. */var r=.82;if(Math.abs(x)>178-r||Math.abs(z)>178-r)return true;for(var i=0;i<colliders.length;i++){var c=colliders[i];if(c.type==='rect'){var qx=Math.max(c.x-c.w/2,Math.min(x,c.x+c.w/2)),qz=Math.max(c.z-c.d/2,Math.min(z,c.z+c.d/2)),dx=x-qx,dz=z-qz;if(dx*dx+dz*dz<r*r)return true}else{var rx=c.rx+r,rz=c.rz+r,dx=(x-c.x)/rx,dz=(z-c.z)/rz;if(dx*dx+dz*dz<1)return true}}return false}
 function move(dx,dz){var steps=Math.max(1,Math.ceil(Math.hypot(dx,dz)/.12)),sx=dx/steps,sz=dz/steps;for(var i=0;i<steps;i++){var nx=player.x+sx,nz=player.z+sz;if(!blocked(nx,nz)){player.x=nx;player.z=nz}else{var moved=false;if(!blocked(nx,player.z)){player.x=nx;moved=true}if(!blocked(player.x,nz)){player.z=nz;moved=true}if(!moved)break}}}
-function update(dt){var forward=(keys.KeyW||keys.ArrowUp?1:0)-(keys.KeyS||keys.ArrowDown?1:0)-stick.y,side=(keys.KeyD||keys.ArrowRight?1:0)-(keys.KeyA||keys.ArrowLeft?1:0)+stick.x,len=Math.hypot(forward,side);if(len>.01){forward/=len;side/=len;var fx=-Math.sin(player.yaw),fz=-Math.cos(player.yaw),rx=Math.cos(player.yaw),rz=-Math.sin(player.yaw);move((fx*forward+rx*side)*player.speed*dt,(fz*forward+rz*side)*player.speed*dt)}camera.position.set(player.x,player.height,player.z);camera.rotation.set(player.pitch,player.yaw,0,'YXZ');var lands=[['THE GRAND ENTRANCE',0,65],['ADVENTURE KINGDOM',-75,-83],["DRAGON'S REACH",0,-112],["PIRATE'S BAY",115,-32],['JUNGLE EXPEDITION',-118,-22],['MONSTER MOUNTAIN',115,-150],['FUTURE WORLD',0,-165],['SPLASH ISLAND',-25,-170],['THE ENCHANTED GROVE',-125,100],['KICKAPOO THEATER',82,112],['KICKAPOO HOTELS',-78,145],['KICKAPOO FALLS',160,116],['KICKAPOO BOARDWALK',151,-91]];var best=lands[0],distance=Infinity;for(var i=0;i<lands.length;i++){var d=Math.hypot(player.x-lands[i][1],player.z-lands[i][2]);if(d<distance){distance=d;best=lands[i]}}el('land').textContent=best[0];el('count').textContent=Object.keys(found).length+' / '+points.length+' discoveries'}
+function update(dt){var forward=(keys.KeyW||keys.ArrowUp?1:0)-(keys.KeyS||keys.ArrowDown?1:0)-stick.y,side=(keys.KeyD||keys.ArrowRight?1:0)-(keys.KeyA||keys.ArrowLeft?1:0)+stick.x,len=Math.hypot(forward,side);if(len>.01){forward/=len;side/=len;var fx=-Math.sin(player.yaw),fz=-Math.cos(player.yaw),rx=Math.cos(player.yaw),rz=-Math.sin(player.yaw);move((fx*forward+rx*side)*player.speed*dt,(fz*forward+rz*side)*player.speed*dt)}camera.position.set(player.x*PARK_SCALE,player.height*PARK_SCALE,player.z*PARK_SCALE);camera.rotation.set(player.pitch,player.yaw,0,'YXZ');var lands=[['THE GRAND ENTRANCE',0,65],['ADVENTURE KINGDOM',-75,-83],["DRAGON'S REACH",0,-112],["PIRATE'S BAY",115,-32],['JUNGLE EXPEDITION',-118,-22],['MONSTER MOUNTAIN',115,-150],['FUTURE WORLD',0,-165],['SPLASH ISLAND',-25,-170],['THE ENCHANTED GROVE',-125,100],['KICKAPOO THEATER',82,112],['KICKAPOO HOTELS',-78,145],['KICKAPOO FALLS',160,116],['KICKAPOO BOARDWALK',151,-91]];var best=lands[0],distance=Infinity;for(var i=0;i<lands.length;i++){var d=Math.hypot(player.x-lands[i][1],player.z-lands[i][2]);if(d<distance){distance=d;best=lands[i]}}el('land').textContent=best[0];el('count').textContent=Object.keys(found).length+' / '+points.length+' discoveries'}
 function nearby(){var best=null,dist=Infinity;for(var i=0;i<points.length;i++){var p=points[i],d=Math.hypot(player.x-p.x,player.z-p.z);if(d<dist){best=p;dist=d}}return best?{point:best,distance:dist}:null}
 function showToast(message){el('toast').textContent=message;el('toast').classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(function(){el('toast').classList.remove('show')},2200)}
 function interact(){if(!started)return;var n=nearby();if(!n||n.distance>23){showToast('Follow the park paths to find an attraction.');return}found[n.point.name]=true;el('dtitle').textContent=n.point.name;el('ddesc').textContent=n.point.description;el('discovery').hidden=false;started=false;update(.016)}
 function animate(){requestAnimationFrame(animate);if(!renderer)return;var dt=Math.min(clock.getDelta(),.04),t=clock.elapsedTime;if(started)update(dt);for(var i=0;i<animated.length;i++){var a=animated[i];if(a.type==='coasterTrain'){a.t=(a.t+dt*.035)%1;var p=a.curve.getPointAt(a.t),tangent=a.curve.getTangentAt(a.t);a.mesh.position.copy(p);a.mesh.position.y+=.85;a.mesh.rotation.set(0,Math.atan2(tangent.x,tangent.z),0);for(var ci=0;ci<a.cars.length;ci++){var u=(a.t-ci*.006)%1;if(u<0)u+=1;var cp=a.curve.getPointAt(u),ct=a.curve.getTangentAt(u);a.cars[ci].position.set(cp.x-p.x,cp.y-p.y,cp.z-p.z);a.cars[ci].rotation.y=Math.atan2(ct.x,ct.z)}}else if(a.type==='wing'){a.mesh.rotation.z=Math.sin(t*1.4+a.side)*.28*a.side}else if(a.type==='dragonwing'){a.mesh.rotation.z=Math.sin(t*2.0+a.side*.3)*.48*a.side}else if(a.type==='dragonbreath'){a.mesh.scale.set(1,.82+.18*Math.sin(t*18),.8+.2*Math.sin(t*12));a.mesh.rotation.y=Math.sin(t*3)*.05}else if(a.type==='ship'){a.mesh.rotation.z=Math.sin(t*.72)*.48}else if(a.type==='wheel'){a.mesh.rotation.z=t*.13;for(var ci=0;ci<a.cabins.length;ci++)a.cabins[ci].rotation.z=-a.mesh.rotation.z}else if(a.type==='volcanoSmoke'){a.mesh.children.forEach(function(p,i){p.position.y=i*2.4+((t*.9+i*1.7)%8);p.position.x=Math.sin(t*.55+i*1.3)*2.8;p.position.z=Math.cos(t*.43+i*1.1)*2.4;p.scale.setScalar(1+(Math.sin(t+i)*.16))});a.light.intensity=2.3+Math.sin(t*5)*.65}else if(a.type==='portal'){a.mesh.rotation.z=t*.2;a.inner.rotation.z=-t*.3}else if(a.type==='jet'){a.mesh.position.y=2+Math.abs(Math.sin(t*2+a.phase))*.8}else if(a.type==='fall'){a.mesh.position.y=11+Math.sin(t*2+a.phase)*.2;a.mesh.scale.y=1+Math.sin(t*3+a.phase)*.025}}renderer.render(scene,camera)}
 function resize(){if(!renderer)return;camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight,false);renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.25))}
 function start(){if(!ready){el('loadmsg').textContent='The 3D world is still loading. Please tap ENTER again in a moment.';return}started=true;player.x=0;player.z=12;player.yaw=0;player.pitch=-.16;el('welcome').hidden=true;showToast('WELCOME TO KICKAPOO PARK!')}
-function load(){if(loading||ready)return;loading=true;el('loadmsg').textContent='Building the park…';var script=document.createElement('script');script.src='./vendor/three.min.js?v=160';script.onload=function(){try{THREE=window.THREE;if(!THREE)throw new Error('3D engine did not initialize');M.grass=material('#3d6747',.98);M.path=material('#b8ad91',.96);M.stone=material('#aaa89a',.9);M.gold=material('#d6ad62',.45,.3);M.iron=material('#38454a',.5,.55);M.wood=material('#70492f');M.roof=material('#49404a');M.red=material('#a94a3e');M.blue=material('#438eaa');M.glass=material('#68bdc9',.25,.25,'#174d5c');M.rock=material('#514c43',.96);M.lava=material('#ff4b12',.28,0,'#f13a08');M.lavaBright=material('#ffd34a',.22,0,'#ff8c18');M.smoke=new THREE.MeshStandardMaterial({color:'#565b60',roughness:1,transparent:true,opacity:.48,depthWrite:false});M.flame=material('#ff702d',.3,0,'#ff4a13');M.lamp=material('#ffd18a',.3,0,'#ffba60');M.water=material('#3298a7',.25,.15,'#0c4350');M.bark=material('#4d382b');M.leaf=material('#2d6942');M.leaf2=material('#4c8a4c');M.temple=material('#8b8a72');M.sail=material('#e8dfca');M.wing=material('#78363a',.85);M.mint=material('#63e8bd',.25,.2,'#1ab88d');M.violet=material('#a98aff',.25,.15,'#6945d5');M.dark=material('#18212a');M.dragon=material('#168447',.68,.08,'#063d1b');M.dragonWing=new THREE.MeshStandardMaterial({color:'#236b3d',roughness:.82,metalness:.02,side:THREE.DoubleSide});M.volcanic=material('#302d2b',.98,.02);M.belly=material('#91866d',.94);M.claw=material('#202a27',.48,.12);M.eye=material('#d8a54c',.28,.08,'#5b2d08');M.dome=new THREE.MeshPhysicalMaterial({color:'#8bd8e7',roughness:.12,metalness:.12,transparent:true,opacity:.34,side:THREE.DoubleSide,depthWrite:false});scene=new THREE.Scene();build();camera=new THREE.PerspectiveCamera(64,innerWidth/innerHeight,.1,350);camera.rotation.order='YXZ';renderer=new THREE.WebGLRenderer({canvas:canvas,antialias:true,alpha:false,powerPreference:'high-performance'});renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.25));renderer.setSize(innerWidth,innerHeight,false);renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.12;clock=new THREE.Clock();ready=true;loading=false;el('loadmsg').textContent='Your park is ready.';el('count').textContent='0 / '+points.length+' discoveries';animate();if(window.innerWidth)resize()}catch(error){loading=false;console.error(error);el('loadmsg').textContent='The park could not start: '+error.message+'. Tap ENTER to retry.'}};script.onerror=function(){loading=false;el('loadmsg').textContent='Could not load the 3D engine. Check your connection and tap ENTER to retry.'};document.head.appendChild(script)}
+function load(){if(loading||ready)return;loading=true;el('loadmsg').textContent='Building the park…';var script=document.createElement('script');script.src='./vendor/three.min.js?v=160';script.onload=function(){try{THREE=window.THREE;if(!THREE)throw new Error('3D engine did not initialize');M.grass=material('#3d6747',.98);M.path=material('#b8ad91',.96);M.stone=material('#aaa89a',.9);M.gold=material('#d6ad62',.45,.3);M.iron=material('#38454a',.5,.55);M.wood=material('#70492f');M.roof=material('#49404a');M.red=material('#a94a3e');M.blue=material('#438eaa');M.glass=material('#68bdc9',.25,.25,'#174d5c');M.rock=material('#514c43',.96);M.lava=material('#ff4b12',.28,0,'#f13a08');M.lavaBright=material('#ffd34a',.22,0,'#ff8c18');M.smoke=new THREE.MeshStandardMaterial({color:'#565b60',roughness:1,transparent:true,opacity:.48,depthWrite:false});M.flame=material('#ff702d',.3,0,'#ff4a13');M.lamp=material('#ffd18a',.3,0,'#ffba60');M.water=material('#3298a7',.25,.15,'#0c4350');M.bark=material('#4d382b');M.leaf=material('#2d6942');M.leaf2=material('#4c8a4c');M.temple=material('#8b8a72');M.sail=material('#e8dfca');M.wing=material('#78363a',.85);M.mint=material('#63e8bd',.25,.2,'#1ab88d');M.violet=material('#a98aff',.25,.15,'#6945d5');M.dark=material('#18212a');M.dragon=material('#168447',.68,.08,'#063d1b');M.dragonWing=new THREE.MeshStandardMaterial({color:'#236b3d',roughness:.82,metalness:.02,side:THREE.DoubleSide});M.volcanic=material('#302d2b',.98,.02);M.belly=material('#91866d',.94);M.claw=material('#202a27',.48,.12);M.eye=material('#d8a54c',.28,.08,'#5b2d08');M.dome=new THREE.MeshPhysicalMaterial({color:'#8bd8e7',roughness:.12,metalness:.12,transparent:true,opacity:.34,side:THREE.DoubleSide,depthWrite:false});scene=new THREE.Scene();build();camera=new THREE.PerspectiveCamera(64,innerWidth/innerHeight,.1,760);camera.rotation.order='YXZ';renderer=new THREE.WebGLRenderer({canvas:canvas,antialias:true,alpha:false,powerPreference:'high-performance'});renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.25));renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.setSize(innerWidth,innerHeight,false);renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.12;clock=new THREE.Clock();ready=true;loading=false;el('loadmsg').textContent='Your park is ready.';el('count').textContent='0 / '+points.length+' discoveries';animate();if(window.innerWidth)resize()}catch(error){loading=false;console.error(error);el('loadmsg').textContent='The park could not start: '+error.message+'. Tap ENTER to retry.'}};script.onerror=function(){loading=false;el('loadmsg').textContent='Could not load the 3D engine. Check your connection and tap ENTER to retry.'};document.head.appendChild(script)}
 function bind(){window.addEventListener('resize',resize);el('enter').addEventListener('click',start);el('explore').addEventListener('click',interact);el('close').addEventListener('click',function(){el('discovery').hidden=true;started=true});el('help').addEventListener('click',function(){showToast('Joystick or WASD to walk. Drag the view to look around. Explore nearby attractions with the gold button.')});document.addEventListener('keydown',function(e){keys[e.code]=true;if(e.code==='KeyE'||e.code==='Space'){e.preventDefault();interact()}});document.addEventListener('keyup',function(e){keys[e.code]=false});var pad=el('pad'),nub=el('stick');function joystick(e){var r=pad.getBoundingClientRect(),dx=e.clientX-r.left-r.width/2,dy=e.clientY-r.top-r.height/2,l=Math.hypot(dx,dy)||1,k=Math.min(1,36/l),x=dx*k,y=dy*k;stick.x=x/36;stick.y=y/36;nub.style.left='calc(50% + '+x+'px)';nub.style.top='calc(50% + '+y+'px)'}function endJoy(e){if(e.pointerId!==stick.id)return;stick.id=null;stick.x=0;stick.y=0;nub.style.left='50%';nub.style.top='50%'}pad.addEventListener('pointerdown',function(e){stick.id=e.pointerId;pad.setPointerCapture(e.pointerId);joystick(e)});pad.addEventListener('pointermove',function(e){if(e.pointerId===stick.id)joystick(e)});pad.addEventListener('pointerup',endJoy);pad.addEventListener('pointercancel',endJoy);canvas.addEventListener('pointerdown',function(e){look={x:e.clientX,y:e.clientY}});canvas.addEventListener('pointermove',function(e){if(!look||!started)return;player.yaw-=(e.clientX-look.x)*.004;player.pitch=Math.max(-.55,Math.min(.55,player.pitch-(e.clientY-look.y)*.003));look={x:e.clientX,y:e.clientY}});canvas.addEventListener('pointerup',function(){look=null});canvas.addEventListener('pointercancel',function(){look=null})}
 bind();load();
 })();
