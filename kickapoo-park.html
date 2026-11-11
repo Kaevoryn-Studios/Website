@@ -4,18 +4,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#07131b">
-<title>Kickapoo Park | Grand Resort Edition</title>
+<title>Kickapoo Park | The Grand Theme Park</title>
 <style>
 *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#07131b;color:#fff;font-family:Arial,system-ui,sans-serif}#world{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none}.top{position:fixed;z-index:4;top:0;left:0;right:0;display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:linear-gradient(#06121be8,transparent);font-size:10px;letter-spacing:.16em;pointer-events:none}.top b{color:#f6d391}.top a{color:#f6d391;text-decoration:none;pointer-events:auto}.hud{position:fixed;z-index:4;top:52px;left:12px;right:12px;display:flex;justify-content:space-between;gap:8px;pointer-events:none}.plate{padding:8px 10px;border:1px solid #e8c47b88;border-radius:10px;background:#071721df;max-width:68%;backdrop-filter:blur(8px)}.plate b{font-size:10px;letter-spacing:.1em;color:#f6d391}.plate small{display:block;margin-top:4px;color:#d4e2e8;font-size:10px}.bottom{position:fixed;z-index:5;left:0;right:0;bottom:0;padding:12px max(12px,env(safe-area-inset-right)) max(12px,env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left));display:flex;justify-content:space-between;align-items:end;pointer-events:none}.pad,.buttons{pointer-events:auto}.pad{width:106px;height:106px;border:2px solid #e8c47b99;border-radius:50%;background:#071721df;position:relative;touch-action:none}.pad:after{content:'WALK';position:absolute;left:0;right:0;bottom:6px;text-align:center;font-size:9px;letter-spacing:.14em;color:#e9d8b5}.stick{position:absolute;left:50%;top:50%;width:42px;height:42px;border-radius:50%;transform:translate(-50%,-50%);background:linear-gradient(145deg,#fff0c8,#bd843d);border:2px solid #fff9;pointer-events:none}.buttons{display:flex;flex-direction:column;align-items:flex-end;gap:7px}.buttons button,.card button{border:1px solid #e8c47b;border-radius:24px;min-height:42px;padding:0 15px;background:#14394c;color:#fff1cf;font-weight:900;font-size:10px;letter-spacing:.08em;touch-action:manipulation}.buttons #explore{background:#d5a454;color:#15202a;min-height:46px}.buttons .sub{min-height:32px;background:#071721ed;font-size:9px}.overlay{position:fixed;z-index:10;inset:0;display:grid;place-items:center;padding:16px;background:radial-gradient(ellipse at center,#1a3a4b,#03090ef7 78%)}[hidden]{display:none!important}.card{width:min(100%,620px);padding:clamp(22px,5vw,38px);max-height:92vh;overflow:auto;border:1px solid #e8c47b99;border-radius:18px;background:linear-gradient(145deg,#17394bfa,#07131df7);text-align:center;box-shadow:0 25px 90px #000d}.eyebrow{font-size:10px;letter-spacing:.22em;color:#f6d391;font-weight:900}.card h1{font:500 clamp(42px,9vw,74px)/.92 Georgia,serif;color:#f6d391;margin:14px 0}.card p{font-size:13px;line-height:1.55;color:#d8e5eb}.card .hint{font-size:10px;color:#b9cbd4}.toast{position:fixed;z-index:8;left:50%;top:29%;transform:translateX(-50%);max-width:88vw;padding:12px 17px;border:1px solid #e8c47b;border-radius:12px;background:#071721f5;text-align:center;font-size:11px;opacity:0;transition:opacity .2s;pointer-events:none}.toast.show{opacity:1}@media(max-width:430px){.top{font-size:9px;padding:12px}.hud{top:43px}.plate{padding:7px 8px}.pad{width:98px;height:98px}.buttons button{min-height:39px}.buttons #explore{min-height:44px}}@media(orientation:landscape) and (max-height:600px){.top{padding:6px 12px}.hud{top:29px}.plate{padding:5px 8px}.bottom{padding:6px 12px}.pad{width:78px;height:78px}.stick{width:33px;height:33px}.buttons{flex-direction:row;flex-wrap:wrap}.buttons button{min-height:33px}.card{padding:14px 22px}.card h1{font-size:38px;margin:7px 0}}
 </style>
 </head>
 <body>
 <canvas id="world"></canvas>
-<div class="top"><b>KICKAPOO PARK</b><span>THE GRAND RESORT · REAL THRILLS · BIGGER WORLDS</span><a href="parks.html">PARKS</a></div>
+<div class="top"><b>KICKAPOO PARK</b><span>THE GRAND THEME PARK · ENDLESS PATHS · BIG ADVENTURES</span><a href="parks.html">PARKS</a></div>
 <div class="hud"><div class="plate"><b id="land">THE GRAND ENTRANCE</b><small id="objective">Your next adventure is waiting.</small></div><div class="plate" style="text-align:right"><b>EXPLORER</b><small id="count">0 / 12 discoveries</small></div></div>
 <div class="bottom"><div class="pad" id="pad"><div class="stick" id="stick"></div></div><div class="buttons"><button id="explore">EXPLORE NEARBY · E</button><button class="sub" id="help">HOW TO EXPLORE</button></div></div>
 <div class="toast" id="toast"></div>
-<div class="overlay" id="welcome"><div class="card"><div class="eyebrow">THE GRAND RESORT EDITION</div><h1>KICKAPOO<br>PARK</h1><p>A vast resort of legendary rides, dramatic landscapes, waterfront escapes and extraordinary worlds. The adventure is bigger than ever.</p><p class="hint">Explore the expanded resort with the joystick or WASD. Drag the screen to look around, then visit each themed land.</p><button id="enter" type="button">ENTER THE PARK</button><p class="hint" id="loadmsg">Preparing your park…</p></div></div>
+<div class="overlay" id="welcome"><div class="card"><div class="eyebrow">THE GRAND THEME PARK</div><h1>KICKAPOO<br>PARK</h1><p>A sprawling world of legendary coasters, spectacular rides, immersive lands, grand promenades and endless places to discover.</p><p class="hint">Follow the long walking promenades between themed lands. Use the joystick or WASD to walk; drag the screen to look around.</p><button id="enter" type="button">ENTER THE PARK</button><p class="hint" id="loadmsg">Preparing your park…</p></div></div>
 <div class="overlay" id="discovery" hidden><div class="card"><div class="eyebrow">PARK DISCOVERY</div><h1 id="dtitle">WELCOME</h1><p id="ddesc"></p><button id="close">KEEP EXPLORING</button></div></div>
 <script>
 (function(){
@@ -386,8 +386,76 @@ for(var x=-130;x<=130;x+=26)addLamp(x,48);
 for(var i=0;i<24;i++){var a=i/24*Math.PI*2;addTree(Math.cos(a)*166,Math.sin(a)*166,.85)}
 }
 
+
+function buildGrandPromenade(){
+  /* A continuous pedestrian network: wide main avenue, cross-park promenades,
+     scenic loops and branches that make the park feel like one destination. */
+  var routes=[
+    {w:13,p:[[0,112],[0,91],[0,76],[0,58],[0,42],[0,24],[0,5],[0,-18],[0,-42],[0,-67],[0,-91],[0,-116],[0,-143],[0,-174]]},
+    {w:10,p:[[-178,48],[-150,48],[-122,48],[-95,48],[-68,48],[-42,48],[-18,48],[18,48],[42,48],[68,48],[95,48],[122,48],[150,48],[178,48]]},
+    {w:9,p:[[-165,-20],[-140,-20],[-112,-20],[-85,-20],[-58,-20],[-30,-20],[0,-20],[30,-20],[58,-20],[85,-20],[112,-20],[140,-20],[165,-20]]},
+    {w:9,p:[[-150,-105],[-125,-105],[-100,-105],[-75,-105],[-50,-105],[-25,-105],[0,-105],[25,-105],[50,-105],[75,-105],[100,-105],[125,-105],[150,-105]]},
+    {w:8,p:[[-145,115],[-125,95],[-105,75],[-85,55],[-65,35],[-45,15],[-25,-5],[0,-25],[25,-45],[50,-65],[75,-85],[100,-105],[125,-125],[150,-145]]},
+    {w:8,p:[[145,130],[125,110],[105,90],[85,70],[65,50],[45,30],[25,10],[0,-10],[-25,-30],[-50,-50],[-75,-70],[-100,-90],[-125,-110],[-150,-130]]},
+    {w:8,p:[[-145,145],[-120,145],[-95,145],[-70,145],[-45,145],[-20,145],[5,145],[30,145],[55,145],[80,145],[105,145],[130,145],[155,145]]},
+    {w:8,p:[[-155,-155],[-130,-155],[-105,-155],[-80,-155],[-55,-155],[-30,-155],[-5,-155],[20,-155],[45,-155],[70,-155],[95,-155],[120,-155],[145,-155]]}
+  ];
+  routes.forEach(function(r){
+    addPath(r.p,r.w,M.path);
+    var left=[],right=[];
+    for(var i=0;i<r.p.length;i++){
+      var prev=r.p[Math.max(0,i-1)],next=r.p[Math.min(r.p.length-1,i+1)];
+      var dx=next[0]-prev[0],dz=next[1]-prev[1],len=Math.hypot(dx,dz)||1;
+      var ox=-dz/len*(r.w*.53),oz=dx/len*(r.w*.53);
+      left.push([r.p[i][0]+ox,r.p[i][1]+oz]);
+      right.push([r.p[i][0]-ox,r.p[i][1]-oz]);
+    }
+    addPath(left,.42,M.stone);addPath(right,.42,M.stone);
+  });
+  /* Grand central arrival plaza and a sequence of destination courts. */
+  [[0,43,17],[-78,48,11],[82,48,11],[0,-20,13],[0,-105,12],[0,-155,11]].forEach(function(v){
+    addCylinder(v[0],.12,v[1],v[2],v[2],.24,M.stone,48);
+    addCylinder(v[0],.27,v[1],v[2]-.9,v[2]-.9,.12,M.gold,48);
+    addCylinder(v[0],.35,v[1],v[2]-2,v[2]-2,.08,M.path,48);
+  });
+  /* A signature fountain anchors the main crossroads. */
+  addCylinder(0,.62,43,5.8,6.6,1.05,M.stone,32);
+  addCylinder(0,1.2,43,4.6,4.6,.18,M.water,32);
+  addCylinder(0,1.55,43,1.45,1.8,.8,M.gold,24);
+  addSphere(0,2.25,43,.72,M.water);
+  for(var i=0;i<8;i++){
+    var a=i*Math.PI/4,x=Math.cos(a)*3.5,z=43+Math.sin(a)*3.5;
+    addCylinder(x,1.6,z,.12,.12,1.1,M.gold,8);
+    addSphere(x,2.2,z,.22,M.lamp);
+  }
+  addCollider(0,43,6.8,6.8);
+  /* Formal garden beds and seating rhythmically line the long guest avenues. */
+  for(var side=-1;side<=1;side+=2){
+    for(var z=30;z>=-160;z-=24){
+      var x=side*9.5;
+      addCylinder(x,.22,z,2.25,2.25,.4,M.stone,18);
+      for(var k=0;k<7;k++){
+        var a=k*Math.PI*2/7;
+        addSphere(x+Math.cos(a)*1.45,.62,z+Math.sin(a)*1.45,.38,k%2?M.leaf:M.mint);
+      }
+      if(z%48===30)addLamp(side*16,z);
+      if(z%48===6){
+        addBox(x+side*2,.85,z,4.2,.28,1.05,M.wood);
+        addBox(x+side*2,1.38,z-0.35,4.2,.85,.18,M.wood);
+      }
+    }
+  }
+  /* Scenic connector paths make the hotel, theatre, falls and waterfront
+     reachable by continuous promenades rather than isolated dead ends. */
+  addPath([[-78,48],[-78,68],[-78,90],[-78,112],[-78,132],[-78,158]],8,M.path);
+  addPath([[82,48],[82,68],[82,88],[82,110],[112,112],[137,112],[157,116]],8,M.path);
+  addPath([[151,-20],[151,-42],[151,-65],[151,-91],[151,-116]],8,M.path);
+  addPath([[-137,-20],[-137,-45],[-137,-70],[-137,-95],[-137,-120],[-137,-145]],8,M.path);
+}
+
 function build(){
   buildLegacy();
+  buildGrandPromenade();
   /* KICKAPOO PARK: GRAND RESORT EDITION — expanded scale and a new twilight resort atmosphere. */
   scene.background=new THREE.Color('#718b98');
   scene.fog=new THREE.Fog('#718b98',250,510);
