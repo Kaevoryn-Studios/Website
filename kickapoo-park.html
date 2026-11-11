@@ -673,12 +673,71 @@ function buildGrandEntranceShowpiece(){
   }
 }
 
+
+function buildGrandConservatory(){
+  /* A signature park icon: a glass-domed conservatory with a proper arrival court. */
+  var x=34,z=-2;
+  addCylinder(x,.22,z,15.8,15.8,.44,M.stone,48);
+  addCylinder(x,.52,z,13.8,13.8,.18,M.gold,48);
+  addCylinder(x,4.25,z,10.9,11.7,7.2,M.cream,40);
+  addCylinder(x,8.0,z,11.35,11.35,.55,M.gold,40);
+  var dome=addMesh(new THREE.SphereGeometry(11.2,40,24,0,Math.PI*2,0,Math.PI/2),M.dome,x,8.25,z);
+  dome.material.side=THREE.DoubleSide;
+  for(var i=0;i<20;i++){
+    var a=i*Math.PI/10;
+    var pts=[];
+    for(var j=0;j<=16;j++){
+      var p=j/16*Math.PI/2;
+      pts.push(new THREE.Vector3(x+Math.cos(a)*11.25*Math.cos(p),8.28+11.25*Math.sin(p),z+Math.sin(a)*11.25*Math.cos(p)));
+    }
+    addMesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts),24,.13,6,false),M.gold);
+  }
+  addSphere(x,19.55,z,1.05,M.gold);
+  addSphere(x,20.5,z,.42,M.lamp);
+  /* Tall glazed bays and paired stone piers give the drum real architectural scale. */
+  for(var i=0;i<16;i++){
+    var a=i*Math.PI/8,px=x+Math.cos(a)*11.1,pz=z+Math.sin(a)*11.1;
+    var win=addBox(px,4.25,pz,2.0,5.8,.16,M.glass);
+    win.rotation.y=-a;
+    var pier=addCylinder(x+Math.cos(a)*11.65,4.2,z+Math.sin(a)*11.65,.34,.42,7.4,M.stone,10);
+    pier.rotation.z=0;
+    var capital=addSphere(x+Math.cos(a)*11.65,8.0,z+Math.sin(a)*11.65,.48,M.gold);
+  }
+  /* Grand entrance portico faces the promenade, with a clear open doorway. */
+  addBox(20.4,5.0,z,2.2,10,13,M.cream);
+  addBox(18.9,10.2,z,5.2,1.0,16,M.gold);
+  for(var side=-1;side<=1;side+=2){
+    addCylinder(17.9,4.9,z+side*5.5,.58,.72,9.8,M.cream,16);
+    addCylinder(17.9,10.0,z+side*5.5,.86,.86,.55,M.gold,16);
+    addCylinder(17.9,.38,z+side*5.5,.9,.9,.42,M.stone,16);
+  }
+  addBox(19.9,2.1,z, .24,4.2,4.2,M.dark);
+  addBox(19.6,4.4,z, .18,.2,4.3,M.gold);
+  /* Low garden walls, sculpted planting and benches frame the approach. */
+  for(var side=-1;side<=1;side+=2){
+    addBox(24,.65,z+side*17,15,1.3,.8,M.stone);
+    addBox(24,1.35,z+side*17,15,.18,1.0,M.gold);
+    for(var i=0;i<5;i++){
+      var gx=18+i*3.2,gz=z+side*(19.5+(i%2)*1.0);
+      addSphere(gx,.8,gz,.78,i%2?M.leaf:M.leaf2);
+      if(i%2===0)addSphere(gx,.96,gz,.34,M.mint);
+    }
+    addBox(34,1.05,z+side*21,5.2,.3,1.2,M.wood);
+    addBox(34,1.75,z+side*21.45,5.2,1.1,.2,M.wood);
+    addLamp(13,z+side*15);
+  }
+  addPath([[13,-2],[8,-2],[2,-2],[-5,-2]],6,M.stone);
+  addCollider(x,z,13.4,13.4);
+  discovery('THE GRAND CONSERVATORY',x,z,'Step into Kickapoo’s glass-domed garden palace, framed by a sweeping rotunda, sculpted gardens and a monumental stone portico.');
+}
+
 function build(){
   buildLegacy();
   buildGrandPromenade();
   buildKickapooMainStreet();
   buildGuestExperienceDetails();
   buildGrandEntranceShowpiece();
+  buildGrandConservatory();
   /* KICKAPOO PARK: GRAND RESORT — warm daylight, detailed guest districts and cinematic landmarks. */
   scene.background=new THREE.Color('#a9d2dc');
   scene.fog=new THREE.Fog('#a9d2dc',280,560);
