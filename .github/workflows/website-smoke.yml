@@ -13,6 +13,7 @@ on:
       - "scripts/website_browser_test.py"
       - ".github/workflows/website-smoke.yml"
       - "sitemap.xml"
+      - "robots.txt"
   workflow_dispatch:
 
 permissions:
