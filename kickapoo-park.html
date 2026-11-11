@@ -633,11 +633,52 @@ function buildGuestExperienceDetails(){
   });
 }
 
+
+function buildGrandEntranceShowpiece(){
+  /* A deliberately oversized, unmistakable front gate visible from the arrival path. */
+  for(var side=-1;side<=1;side+=2){
+    var x=side*12;
+    addBox(x,8.2,96,3.2,16.4,4.2,M.cream);
+    addBox(x,16.8,96,4.5,1.1,5.3,M.gold);
+    addBox(x,5.2,93.78,2.35,7.8,.18,M.blue);
+    addBox(x,5.2,96,2.35,7.8,.18,M.red);
+    addBox(x,5.2,98.22,2.35,7.8,.18,M.blue);
+    addBox(x,18.2,96,5.2,1.1,5.8,M.red);
+    var cap=addMesh(new THREE.ConeGeometry(3.15,5.8,4),M.roof,x,21.6,96);
+    cap.rotation.y=Math.PI/4;
+    addSphere(x,25.1,96,.72,M.gold);
+    addSphere(x,26.0,96,.3,M.lamp);
+    addCollider(x,96,1.7,1.7);
+  }
+  addBox(0,17.3,96,21.8,2.1,3.8,M.cream);
+  addBox(0,18.7,96,19.8,.48,4.2,M.gold);
+  addBox(0,15.9,96,18.8,.42,4.2,M.blue);
+  addBox(0,19.6,96,13.5,.45,3.2,M.red);
+  addSphere(0,22.2,96,2.15,M.gold);
+  addSphere(0,22.2,93.85,1.25,M.mint);
+  addSphere(0,22.2,98.15,1.25,M.violet);
+  /* Layered paving, low fountains and flower beds make the approach feel ceremonial. */
+  addBox(0,.09,107,29,.18,15,M.stone);
+  addBox(0,.2,107,24,.12,11,M.gold);
+  for(var side=-1;side<=1;side+=2){
+    addCylinder(side*19,.28,105,3.2,3.2,.55,M.stone,24);
+    addCylinder(side*19,.58,105,2.25,2.25,.12,M.gold,24);
+    addCylinder(side*19,1.15,105,.24,.42,1.05,M.water,16);
+    addSphere(side*19,1.85,105,.42,M.mint);
+    for(var k=0;k<8;k++){
+      var a=k*Math.PI/4;
+      addSphere(side*19+Math.cos(a)*2.55,.72,105+Math.sin(a)*2.55,.38,k%2?M.violet:M.red);
+    }
+    addLamp(side*24,98);
+  }
+}
+
 function build(){
   buildLegacy();
   buildGrandPromenade();
   buildKickapooMainStreet();
   buildGuestExperienceDetails();
+  buildGrandEntranceShowpiece();
   /* KICKAPOO PARK: GRAND RESORT — warm daylight, detailed guest districts and cinematic landmarks. */
   scene.background=new THREE.Color('#a9d2dc');
   scene.fog=new THREE.Fog('#a9d2dc',280,560);
