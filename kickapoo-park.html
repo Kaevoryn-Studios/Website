@@ -679,7 +679,7 @@ function buildGrandConservatory(){
   var x=34,z=-2;
   addCylinder(x,.22,z,15.8,15.8,.44,M.stone,48);
   addCylinder(x,.52,z,13.8,13.8,.18,M.gold,48);
-  addCylinder(x,4.25,z,10.9,11.7,7.2,M.cream,40);
+  /* The drum is open between its piers so guests can enter the pavilion. */
   addCylinder(x,8.0,z,11.35,11.35,.55,M.gold,40);
   var dome=addMesh(new THREE.SphereGeometry(11.2,40,24,0,Math.PI*2,0,Math.PI/2),M.dome,x,8.25,z);
   dome.material.side=THREE.DoubleSide;
@@ -697,22 +697,21 @@ function buildGrandConservatory(){
   /* Tall glazed bays and paired stone piers give the drum real architectural scale. */
   for(var i=0;i<16;i++){
     var a=i*Math.PI/8,px=x+Math.cos(a)*11.1,pz=z+Math.sin(a)*11.1;
-    var win=addBox(px,4.25,pz,2.0,5.8,.16,M.glass);
-    win.rotation.y=-a;
-    var pier=addCylinder(x+Math.cos(a)*11.65,4.2,z+Math.sin(a)*11.65,.34,.42,7.4,M.stone,10);
-    pier.rotation.z=0;
-    var capital=addSphere(x+Math.cos(a)*11.65,8.0,z+Math.sin(a)*11.65,.48,M.gold);
+    if(i!==10){
+      var win=addBox(px,4.25,pz,2.0,5.8,.16,M.glass);
+      win.rotation.y=-a;
+      addCylinder(x+Math.cos(a)*11.65,4.2,z+Math.sin(a)*11.65,.34,.42,7.4,M.stone,10);
+      addSphere(x+Math.cos(a)*11.65,8.0,z+Math.sin(a)*11.65,.48,M.gold);
+    }
   }
   /* Grand entrance portico faces the promenade, with a clear open doorway. */
-  addBox(20.4,5.0,z,2.2,10,13,M.cream);
+  /* The portico is supported by columns, not a wall across the doorway. */
   addBox(18.9,10.2,z,5.2,1.0,16,M.gold);
   for(var side=-1;side<=1;side+=2){
     addCylinder(17.9,4.9,z+side*5.5,.58,.72,9.8,M.cream,16);
     addCylinder(17.9,10.0,z+side*5.5,.86,.86,.55,M.gold,16);
     addCylinder(17.9,.38,z+side*5.5,.9,.9,.42,M.stone,16);
   }
-  addBox(19.9,2.1,z, .24,4.2,4.2,M.dark);
-  addBox(19.6,4.4,z, .18,.2,4.3,M.gold);
   /* Low garden walls, sculpted planting and benches frame the approach. */
   for(var side=-1;side<=1;side+=2){
     addBox(24,.65,z+side*17,15,1.3,.8,M.stone);
