@@ -1,0 +1,24 @@
+{
+  "id": "./",
+  "name": "Kaevoryn Studios Creator Desk",
+  "short_name": "Creator Desk",
+  "description": "A mobile-first creative workspace for Kaevoryn Studios.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#050713",
+  "theme_color": "#050713",
+  "categories": [
+    "productivity",
+    "utilities"
+  ],
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

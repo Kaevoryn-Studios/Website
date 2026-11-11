@@ -1,0 +1,29 @@
+name: Creator Desk smoke tests
+
+on:
+  pull_request:
+    paths:
+      - "creator-desk/**"
+      - ".github/workflows/creator-desk-smoke.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "creator-desk/**"
+      - ".github/workflows/creator-desk-smoke.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  smoke-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Run Creator Desk smoke tests
+        run: node --test creator-desk/tests/smoke.test.js
