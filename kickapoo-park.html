@@ -306,7 +306,7 @@ function splashSlideRide(x,z){
   addCollider(x,z,5,5);
 }
 function buildLegacy(){
-/* KICKAPOO PARK — complete reimagined master plan: a compact, walkable fantasy resort at golden hour. */
+/* KICKAPOO PARK — a bright, immersive destination resort with original themed lands. */
 scene.background=new THREE.Color('#9bbfc8');scene.fog=new THREE.Fog('#9bbfc8',175,330);
 parkSky=new THREE.HemisphereLight('#e7f5ff','#263c32',1.45);scene.add(parkSky);
 parkSun=new THREE.DirectionalLight('#ffe1ad',2.15);parkSun.position.set(-95,145,70);scene.add(parkSun);
@@ -483,12 +483,88 @@ function buildGrandPromenade(){
   addPath([[-137,-20],[-137,-45],[-137,-70],[-137,-95],[-137,-120],[-137,-145]],8,M.path);
 }
 
+
+function buildKickapooMainStreet(){
+  /* A lived-in arrival district: original resort architecture, layered storefronts,
+     a clock landmark, shaded arcades and landscaped thresholds. */
+  function shop(x,z,side,base,roof,accent){
+    var frontX=x-side*6.8;
+    addBox(x,0.22,z,13.2,.44,11.5,M.stone);
+    addBox(x,4.0,z,12.4,7.2,10.4,base);
+    addBox(x,7.75,z,13.4,.7,11.4,roof);
+    addBox(x,8.35,z,10.8,.28,9.4,accent);
+    addBox(frontX,3.2,z, .42,6.2,9.8,base);
+    addBox(frontX-side*.25,6.7,z, .8,.38,10.4,accent);
+    addBox(frontX-side*.42,2.5,z, .24,2.8,4.0,M.dark);
+    for(var w=-1;w<=1;w++){
+      addBox(frontX-side*.55,4.25,z+w*2.65,.22,1.35,1.55,M.dome);
+      addBox(frontX-side*.72,3.35,z+w*2.65,.3,.18,1.75,M.gold);
+    }
+    addBox(x,8.8,z,8.5,.42,1.0,M.gold);
+    addBox(x,9.55,z,7.2,1.05,.42,accent);
+    addBox(x,10.25,z,5.6,.22,.32,M.gold);
+    addRectCollider(x,z,13.5,11.8);
+    for(var a=-1;a<=1;a+=2){
+      addBox(frontX-side*1.2,5.3,z+a*4.9,1.1,.28,.5,M.gold);
+    }
+  }
+  /* Storefronts sit outside the broad guest avenue, leaving the central route open. */
+  shop(-23,83,-1,M.cream,M.red,M.gold);
+  shop(23,83,1,M.blue,M.roof,M.gold);
+  shop(-23,65,-1,M.cream,M.roof,M.red);
+  shop(23,65,1,M.temple,M.red,M.gold);
+  shop(-23,47,-1,M.blue,M.roof,M.gold);
+  shop(23,47,1,M.cream,M.red,M.blue);
+  /* Clock tower is a recognisable skyline marker, set beside—not in—the avenue. */
+  addBox(-38,8,66,8,16,8,M.stone);
+  addBox(-38,17,66,9,2,9,M.roof);
+  addCylinder(-38,22,66,4.4,3.8,2.2,M.gold,8);
+  addBox(-38,25,66,2.2,5.5,2.2,M.red);
+  addCylinder(-38,28.2,66,1.8,1.8,1.1,M.gold,12);
+  for(var side=-1;side<=1;side+=2){
+    addBox(-38+side*2.2,9,66, .28,4.8,.35,M.gold);
+    addSphere(-38+side*2.2,12.1,66,.42,M.lamp);
+  }
+  addCollider(-38,66,5.2,5.2);
+  /* A planted, curved approach court softens the transition from the entrance gate. */
+  addPath([[-31,103],[-27,96],[-18,90],[0,86],[18,90],[27,96],[31,103]],5,M.stone);
+  addPath([[-30,42],[-36,34],[-38,23],[-32,12],[-20,4]],5,M.path);
+  addPath([[30,42],[36,34],[39,22],[34,10],[21,1]],5,M.path);
+  for(var side=-1;side<=1;side+=2){
+    for(var i=0;i<7;i++){
+      var x=side*(34+(i%2)*2),z=91-i*8;
+      addCylinder(x,.2,z,1.9,1.9,.4,M.stone,16);
+      for(var k=0;k<6;k++){
+        var a=k*Math.PI/3;
+        addSphere(x+Math.cos(a)*1.2,.55,z+Math.sin(a)*1.2,.34,k%2?M.mint:M.violet);
+      }
+      if(i%2===0)addLamp(side*40,z);
+    }
+  }
+  /* Distinct land portals frame each transition and make the park legible at walking speed. */
+  var portals=[
+    [-82,-105, M.gold], [0,-140,M.red], [118,-108,M.red],
+    [-137,10,M.blue], [-130,76,M.violet], [82,87,M.gold],
+    [-78,119,M.blue], [157,92,M.mint]
+  ];
+  portals.forEach(function(p){
+    var x=p[0],z=p[1],c=p[2];
+    addCylinder(x-8,5,z,.65,.85,10,M.stone,12);
+    addCylinder(x+8,5,z,.65,.85,10,M.stone,12);
+    addBox(x,10.1,z,18,1.2,1.4,c);
+    addBox(x,11.0,z,10,.35,1.1,M.gold);
+    addSphere(x-8,10.9,z,.65,M.lamp);
+    addSphere(x+8,10.9,z,.65,M.lamp);
+  });
+}
+
 function build(){
   buildLegacy();
   buildGrandPromenade();
-  /* KICKAPOO PARK: GRAND RESORT EDITION — expanded scale and a new twilight resort atmosphere. */
-  scene.background=new THREE.Color('#718b98');
-  scene.fog=new THREE.Fog('#718b98',250,510);
+  buildKickapooMainStreet();
+  /* KICKAPOO PARK: GRAND RESORT — warm daylight, detailed guest districts and cinematic landmarks. */
+  scene.background=new THREE.Color('#a9d2dc');
+  scene.fog=new THREE.Fog('#a9d2dc',280,560);
   scene.traverse(function(o){
     if(o.isDirectionalLight){
       o.color.set('#ffe0b5');o.intensity=2.25;o.position.set(-105,165,90);
@@ -565,7 +641,7 @@ function move(dx,dz){var steps=Math.max(1,Math.ceil(Math.hypot(dx,dz)/.12)),sx=d
 function update(dt){if(activeRide){updateRideCamera();return}var forward=(keys.KeyW||keys.ArrowUp?1:0)-(keys.KeyS||keys.ArrowDown?1:0)-stick.y,side=(keys.KeyD||keys.ArrowRight?1:0)-(keys.KeyA||keys.ArrowLeft?1:0)+stick.x,len=Math.hypot(forward,side);if(len>.01){forward/=len;side/=len;var fx=-Math.sin(player.yaw),fz=-Math.cos(player.yaw),rx=Math.cos(player.yaw),rz=-Math.sin(player.yaw);move((fx*forward+rx*side)*player.speed*dt,(fz*forward+rz*side)*player.speed*dt)}camera.position.set(player.x*PARK_SCALE,player.height*PARK_SCALE,player.z*PARK_SCALE);camera.rotation.set(player.pitch,player.yaw,0,'YXZ');var lands=[['THE GRAND ENTRANCE',0,65],['ADVENTURE KINGDOM',-75,-83],["DRAGON'S REACH",0,-112],["PIRATE'S BAY",115,-32],['JUNGLE EXPEDITION',-118,-22],['MONSTER MOUNTAIN',115,-150],['FUTURE WORLD',0,-165],['SPLASH ISLAND',-25,-170],['THE ENCHANTED GROVE',-125,100],['KICKAPOO THEATER',82,112],['KICKAPOO HOTELS',-78,145],['KICKAPOO FALLS',160,116],['KICKAPOO BOARDWALK',151,-91]];var best=lands[0],distance=Infinity;for(var i=0;i<lands.length;i++){var d=Math.hypot(player.x-lands[i][1],player.z-lands[i][2]);if(d<distance){distance=d;best=lands[i]}}el('land').textContent=best[0];el('count').textContent=Object.keys(found).length+' / '+points.length+' discoveries';var ride=nearestRide();el('explore').textContent=ride&&ride.distance<19?'RIDE: '+ride.ride.name.toUpperCase()+' · E':'EXPLORE NEARBY · E'}
 function nearestRide(){var best=null,dist=Infinity;for(var i=0;i<rides.length;i++){var r=rides[i],d=Math.hypot(player.x-r.x,player.z-r.z);if(d<dist){best=r;dist=d}}return best?{ride:best,distance:dist}:null}
 function nearby(){var best=null,dist=Infinity;for(var i=0;i<points.length;i++){var p=points[i],d=Math.hypot(player.x-p.x,player.z-p.z);if(d<dist){best=p;dist=d}}return best?{point:best,distance:dist}:null}
-function toggleNight(){if(!scene||!parkSun||!parkSky)return;nightMode=!nightMode;var bg=nightMode?'#071321':'#718b98';scene.background.set(bg);scene.fog.color.set(bg);parkSun.intensity=nightMode ? 0.42 : 2.25;parkRim.intensity=nightMode ? 0.28 : 2.25;parkSky.intensity=nightMode ? 0.52 : 1.25;parkLampLights.forEach(function(l){l.intensity=nightMode?2.0:.45;l.distance=nightMode?18:10});el('night').textContent=nightMode?'RETURN TO DAY':'DAY / NIGHT';showToast(nightMode?'NIGHT SPECTACULAR · LIGHTS AWAKEN':'DAYLIGHT RESTORED');}
+function toggleNight(){if(!scene||!parkSun||!parkSky)return;nightMode=!nightMode;var bg=nightMode?'#071321':'#a9d2dc';scene.background.set(bg);scene.fog.color.set(bg);parkSun.intensity=nightMode ? 0.42 : 2.25;parkRim.intensity=nightMode ? 0.28 : 2.25;parkSky.intensity=nightMode ? 0.52 : 1.25;parkLampLights.forEach(function(l){l.intensity=nightMode?2.0:.45;l.distance=nightMode?18:10});el('night').textContent=nightMode?'RETURN TO DAY':'DAY / NIGHT';showToast(nightMode?'NIGHT SPECTACULAR · LIGHTS AWAKEN':'DAYLIGHT RESTORED');}
 function showToast(message){el('toast').textContent=message;el('toast').classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(function(){el('toast').classList.remove('show')},2200)}
 function interact(){if(!started)return;var ride=nearestRide();if(ride&&ride.distance<19){boardRide(ride.ride);return}var n=nearby();if(!n||n.distance>23){showToast('Follow the park paths to find an attraction.');return}found[n.point.name]=true;el('dtitle').textContent=n.point.name;el('ddesc').textContent=n.point.description;el('discovery').hidden=false;started=false;update(.016)}
 function boardRide(ride){if(activeRide)return;rideLook.x=0;rideLook.y=0;activeRide={ride:ride,startedAt:clock.elapsedTime};stick.x=0;stick.y=0;el('pad').hidden=true;el('explore').hidden=true;el('help').hidden=true;el('exitRide').hidden=false;el('land').textContent='NOW RIDING';showToast('BOARDING '+ride.name.toUpperCase()+'!')}
