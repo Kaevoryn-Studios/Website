@@ -726,11 +726,13 @@ function buildGrandConservatory(){
   /* Tall glazed bays and paired stone piers give the drum real architectural scale. */
   for(var i=0;i<16;i++){
     var a=i*Math.PI/8,px=x+Math.cos(a)*11.1,pz=z+Math.sin(a)*11.1;
-    if(i!==10){
+    if(i!==8){
       var win=addBox(px,4.25,pz,2.0,5.8,.16,M.glass);
       win.rotation.y=-a;
       addCylinder(x+Math.cos(a)*11.65,4.2,z+Math.sin(a)*11.65,.34,.42,7.4,M.stone,10);
       addSphere(x+Math.cos(a)*11.65,8.0,z+Math.sin(a)*11.65,.48,M.gold);
+      /* Match collision to each real pier; leave the west-facing portico entrance open. */
+      addCollider(x+Math.cos(a)*11.65,z+Math.sin(a)*11.65,.62,.62);
     }
   }
   /* Grand entrance portico faces the promenade, with a clear open doorway. */
@@ -755,7 +757,8 @@ function buildGrandConservatory(){
     addLamp(13,z+side*15);
   }
   addPath([[13,-2],[8,-2],[2,-2],[-5,-2]],6,M.stone);
-  addCollider(x,z,13.4,13.4);
+  /* The old solid-disk collider sealed the pavilion. Only the actual columns and portico supports are solid. */
+  addCollider(17.9,z-5.5,.72,.72);addCollider(17.9,z+5.5,.72,.72);
   discovery('THE GRAND CONSERVATORY',x,z,'Step into Kickapoo’s glass-domed garden palace, framed by a sweeping rotunda, sculpted gardens and a monumental stone portico.');
 }
 
