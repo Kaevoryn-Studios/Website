@@ -752,7 +752,35 @@ function gate(x,z,accent,land){
   }
 }
 function build(){
-/*KICKAPOO_NEW_DESIGN*/
+scene.background=new THREE.Color('#a9d7e8');scene.fog=new THREE.Fog('#a9d7e8',340,660);
+parkSky=new THREE.HemisphereLight('#eaf8ff','#344b37',1.55);scene.add(parkSky);
+parkSun=new THREE.DirectionalLight('#fff0d1',2.35);parkSun.position.set(-135,190,115);scene.add(parkSun);
+parkRim=new THREE.DirectionalLight('#a8dcf0',.9);parkRim.position.set(145,100,-150);scene.add(parkRim);
+addBox(0,-1,0,360,2,360,M.grass);
+/* New resort boulevard, monumental entrance and Main Street. */
+addPath([[0,178],[0,155],[0,132],[0,109],[0,86],[0,64]],22,M.path);
+for(var side=-1;side<=1;side+=2){
+ addBox(side*15,7,151,3,14,4,M.cream);addBox(side*15,14,151,5,1,5,M.gold);
+ addMesh(new THREE.ConeGeometry(3,5,6),M.roof,side*15,18,151);addSphere(side*15,21,151,.6,M.lamp);
+ for(var i=0;i<6;i++){addTree(side*(25+i%2*2),151-i*9,.8);if(i%2===0)addLamp(side*34,151-i*9)}
+}
+addBox(0,15,151,26,2,5,M.red);addBox(0,16.5,151,22,.5,5,M.gold);addSphere(0,19,151,1.4,M.lamp);
+discovery('THE GRAND ARRIVAL',0,151,'A monumental entrance and tree-lined boulevard welcome guests to Kickapoo Park.');
+addPath([[0,145],[0,128],[0,111],[0,94],[0,77],[0,62]],18,M.path);
+openShop(-25,133,M.cream);openShop(25,133,M.blue);openShop(-25,113,M.temple);openShop(25,113,M.cream);openShop(-25,93,M.blue);openShop(25,93,M.temple);
+addBox(-43,8,99,9,16,9,M.stone);addBox(-43,17,99,10,1,10,M.roof);addCylinder(-43,23,99,3.5,3.5,3,M.gold,12);addMesh(new THREE.ConeGeometry(4,7,8),M.red,-43,28,99);addCollider(-43,99,5,5);
+discovery('KICKAPOO MAIN STREET',0,105,'A lively shopping street of colorful storefronts, cafes and a landmark clock tower.');
+/* Central lagoon, fountain plaza and a complete dry guest promenade. */
+addCylinder(0,.12,29,24,24,.24,M.stone,64);addCylinder(0,.3,29,20,20,.16,M.gold,64);fountain(0,29);
+addPath([[0,68],[-25,59],[-45,42],[-55,18],[-53,-7],[-39,-30],[-18,-44],[10,-49],[36,-39],[53,-18],[56,8],[45,35],[25,55],[0,68]],10,M.path);
+water(0,8,38,27);addCylinder(0,.35,8,7,7,.7,M.stone,32);addSphere(0,2.4,8,1.3,M.lamp);
+addPath([[-55,18],[-76,12],[-93,0],[-110,-14]],9,M.stone);addPath([[56,8],[78,5],[98,-5],[113,-20]],9,M.stone);
+addPath([[-18,-44],[-12,-68],[-4,-88],[0,-106]],10,M.path);addPath([[10,-49],[30,-66],[52,-79],[75,-91]],9,M.stone);
+addPath([[-25,59],[-48,78],[-75,94],[-102,111]],9,M.path);addPath([[25,55],[49,75],[77,91],[104,108]],9,M.path);
+for(var i=0;i<16;i++){var a=i/16*Math.PI*2;addTree(Math.cos(a)*68,Math.sin(a)*58+8,.8)}
+discovery('THE LAGOON PROMENADE',0,8,'A scenic waterside loop with gardens, a fountain plaza and paths to every land.');
+
+/*KICKAPOO_CHUNK_2*/
 }
 function blocked(x,z){/* Water and structures always remain solid; rides are reached from their dry queue plazas. */var r=.82;if(Math.abs(x)>178-r||Math.abs(z)>178-r)return true;for(var i=0;i<colliders.length;i++){var c=colliders[i];if(c.type==='rect'){var qx=Math.max(c.x-c.w/2,Math.min(x,c.x+c.w/2)),qz=Math.max(c.z-c.d/2,Math.min(z,c.z+c.d/2)),dx=x-qx,dz=z-qz;if(dx*dx+dz*dz<r*r)return true}else{var rx=c.rx+r,rz=c.rz+r,dx=(x-c.x)/rx,dz=(z-c.z)/rz;if(dx*dx+dz*dz<1)return true}}return false}
 function move(dx,dz){var steps=Math.max(1,Math.ceil(Math.hypot(dx,dz)/.12)),sx=dx/steps,sz=dz/steps;for(var i=0;i<steps;i++){var nx=player.x+sx,nz=player.z+sz;if(!blocked(nx,nz)){player.x=nx;player.z=nz}else{var moved=false;if(!blocked(nx,player.z)){player.x=nx;moved=true}if(!blocked(player.x,nz)){player.z=nz;moved=true}if(!moved)break}}}
