@@ -805,7 +805,38 @@ for(var i=0;i<40;i++){
 }
 discovery('JUNGLE EXPEDITION',-147,-36,'A tropical world of ancient ruins, towering palms and a guided river adventure.');
 
-/*KICKAPOO_CHUNK_3*/
+/* Sky Gardens: a formal garden around the observation wheel. */
+addPath([[45,35],[66,57],[84,79],[105,101]],10,M.path);wheel(119,119);addCylinder(119,.35,119,28,28,.7,M.stone,48);
+for(var i=0;i<18;i++){var a=i/18*Math.PI*2;addTree(119+Math.cos(a)*38,119+Math.sin(a)*38,.88)}
+discovery('SKY GARDENS',119,119,'A giant observation wheel surrounded by formal gardens and scenic terraces.');
+/* Splash Lagoon: pools, palms and a towering flume. */
+addPath([[0,-49],[5,-77],[15,-103],[22,-128],[24,-148]],11,M.path);water(28,-159,68,37);splashSlideRide(2,-169);
+for(var i=0;i<6;i++)addCylinder(-1+i*12,6,-145,1.3,.7,12,[M.red,M.blue,M.gold,M.mint,M.violet,M.red][i],12);
+discovery('SPLASH LAGOON',28,-159,'A bright water-play district with tropical gardens and a twisting flume.');
+/* Kickapoo Theater and resort hotel. */
+addPath([[-25,59],[-54,80],[-82,99],[-110,117],[-137,132]],9,M.path);
+addBox(-139,7,124,44,14,27,M.cream);addBox(-139,14.5,124,46,1.2,29,M.red);addBox(-139,5,109,24,8,.7,M.dark);addCollider(-139,124,22,13);
+discovery('KICKAPOO THEATER',-139,124,'A grand performance palace for live shows and spectacular nighttime productions.');
+addPath([[25,55],[53,78],[81,98],[110,117],[138,132]],9,M.path);
+addBox(142,10,124,42,20,29,M.cream);addBox(142,20.5,124,44,1.4,31,M.gold);addBox(142,12,109,15,2,.5,M.red);
+for(var f=0;f<3;f++)for(var w=0;w<5;w++)addBox(126+w*8,4+f*5,109,2.8,2.4,.2,M.glass);
+addCollider(142,124,21,15);water(142,153,32,14);
+discovery('KICKAPOO RESORT HOTEL',142,124,'A grand resort hotel with guest wings, a welcoming lobby and a sparkling garden pool.');
+/* Kickapoo Falls: a scenic garden destination. */
+addPath([[56,8],[80,0],[104,-1],[127,-1],[150,-1]],8,M.stone);
+addCylinder(160,8,1,17,19,16,M.rock,24);addCylinder(160,16,1,13,14,3,M.rock,24);
+addBox(151,8,-13,7,12,.7,M.water);addBox(168,8,-13,7,12,.7,M.water);addBox(160,.45,-26,31,.9,20,M.water);
+for(var i=0;i<14;i++){var fall=addBox(146+i*2.15,9,-13,.95,10,.35,M.water);animated.push({type:'fall',mesh:fall,phase:i*.5})}
+for(var i=0;i<14;i++){var a=i/14*Math.PI*2;addTree(160+Math.cos(a)*26,1+Math.sin(a)*25,.72)}
+discovery('KICKAPOO FALLS',160,1,'A shaded garden trail leads to a dramatic multi-stream waterfall and plunge pool.');
+/* A tree-lined resort boundary and distant mountain horizon. */
+for(var i=0;i<28;i++){var x=-165+i*12.2;addTree(x,166,.8);addTree(x,-166,.85)}
+for(var z=132;z>=-150;z-=25){addTree(-174,z,.72);addTree(174,z,.72)}
+for(var i=0;i<36;i++){var a=i/36*Math.PI*2;addLamp(Math.cos(a)*158,Math.sin(a)*158)}
+var peaks=[[-210,-145,42,84],[-178,-210,48,96],[-85,-218,38,76],[25,-220,48,96],[145,-205,43,86],[210,-130,42,84],[210,55,42,86],[125,215,48,96],[-35,218,45,90],[-165,190,42,84]];
+for(var p=0;p<peaks.length;p++){var q=peaks[p],rock=addMesh(new THREE.ConeGeometry(q[2],q[3],9,3),M.rock,q[0],q[3]*.48-2,q[1]);rock.rotation.y=p*.37;rock.scale.z=1.3}
+scene.scale.setScalar(PARK_SCALE);scene.fog.near=320*PARK_SCALE;scene.fog.far=660*PARK_SCALE;
+
 }
 function blocked(x,z){/* Water and structures always remain solid; rides are reached from their dry queue plazas. */var r=.82;if(Math.abs(x)>178-r||Math.abs(z)>178-r)return true;for(var i=0;i<colliders.length;i++){var c=colliders[i];if(c.type==='rect'){var qx=Math.max(c.x-c.w/2,Math.min(x,c.x+c.w/2)),qz=Math.max(c.z-c.d/2,Math.min(z,c.z+c.d/2)),dx=x-qx,dz=z-qz;if(dx*dx+dz*dz<r*r)return true}else{var rx=c.rx+r,rz=c.rz+r,dx=(x-c.x)/rx,dz=(z-c.z)/rz;if(dx*dx+dz*dz<1)return true}}return false}
 function move(dx,dz){var steps=Math.max(1,Math.ceil(Math.hypot(dx,dz)/.12)),sx=dx/steps,sz=dz/steps;for(var i=0;i<steps;i++){var nx=player.x+sx,nz=player.z+sz;if(!blocked(nx,nz)){player.x=nx;player.z=nz}else{var moved=false;if(!blocked(nx,player.z)){player.x=nx;moved=true}if(!blocked(player.x,nz)){player.z=nz;moved=true}if(!moved)break}}}
