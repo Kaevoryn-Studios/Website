@@ -43,6 +43,7 @@ function sign(x,y,z,label){const c=document.createElement('canvas');c.width=512;
 function path(x,z,w,d,rot=0){const p=mesh(new THREE.PlaneGeometry(w,d),material(0x4b4149),x,.015,z,-Math.PI/2,0,rot);return p}
 function arch(x,z,w,h){box(x,h,z,w,.5,.65,0x65505a);box(x-w/2,h/2,z,.45,h,.65,0x51404b);box(x+w/2,h/2,z,.45,h,.65,0x51404b)}
 function ghost(x,z,s=1,evil=false){const g=new THREE.Group(),m=new THREE.MeshStandardMaterial({color:evil?0x171019:0xc8b9c1,transparent:true,opacity:evil?.98:.55,emissive:evil?0x27000b:0x17101b,emissiveIntensity:.6});const body=new THREE.Mesh(new THREE.ConeGeometry(.65*s,2.4*s,9),m);body.position.y=1.25*s;g.add(body);const head=new THREE.Mesh(new THREE.SphereGeometry(.4*s,12,10),m);head.position.y=2.35*s;g.add(head);for(const side of [-1,1]){const eye=new THREE.Mesh(new THREE.SphereGeometry(.07*s,8,8),new THREE.MeshBasicMaterial({color:0xff263f}));eye.position.set(side*.15*s,2.4*s,-.34*s);g.add(eye)}g.position.set(x,0,z);scene.add(g);actors.push({obj:g,kind:evil?'stalker':'ghost',home:new THREE.Vector3(x,0,z),phase:Math.random()*8});if(!evil)solid(x,z,.8,.8);return g}
+function addDistrict(name,x,z,desc){districts.push({name,x,z,desc})}
 function build(){
 scene=new THREE.Scene();scene.background=new THREE.Color(0x090d13);scene.fog=new THREE.FogExp2(0x101923,.0058);
 camera=new THREE.PerspectiveCamera(72,innerWidth/innerHeight,.1,460);camera.position.set(0,1.7,104);
