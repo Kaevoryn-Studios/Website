@@ -3,112 +3,116 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<meta name="theme-color" content="#080910">
+<meta name="theme-color" content="#08070c">
 <title>Nightmare Park | Kaevoryn Studios</title>
 <style>
-*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#080910;color:#fff;font-family:system-ui,Arial,sans-serif}#world{position:fixed;inset:0;width:100%;height:100%;touch-action:none}
-header{position:absolute;z-index:3;top:0;left:0;right:0;padding:13px 17px;display:flex;justify-content:space-between;align-items:center;background:linear-gradient(#080910df,transparent);pointer-events:none}header a{pointer-events:auto;color:#fff;text-decoration:none;font-size:10px;letter-spacing:.18em;font-weight:900}header small{display:block;color:#f18aab;font-size:8px;letter-spacing:.25em}header nav{display:flex;gap:16px}
-#intro{position:absolute;z-index:8;inset:0;display:grid;place-items:center;padding:20px;background:radial-gradient(ellipse at 50% 55%,#31203ab0,#070810f5 78%)}#intro.hide{display:none}.panel{width:min(590px,94vw);text-align:center;padding:clamp(22px,5vw,42px);border:1px solid #e39ab966;background:linear-gradient(145deg,#171421f2,#090b14f5);box-shadow:0 0 80px #a43c7650}.eyebrow{font-size:10px;letter-spacing:.35em;color:#ffb2c5;font-weight:900}.panel h1{font-size:clamp(38px,9vw,72px);line-height:.9;letter-spacing:.06em;text-transform:uppercase;margin:16px 0;text-shadow:0 0 30px #f05c93}.panel p{max-width:450px;margin:0 auto 22px;color:#d7d1df;font-size:14px}.enter{padding:14px 34px;border:1px solid #ff9fbb;background:linear-gradient(100deg,#852c55,#4d306c);color:white;font-weight:900;letter-spacing:.2em;text-transform:uppercase}.hint{font-size:11px;color:#a9a3b3;margin-top:15px}
-#hud{display:none;position:absolute;z-index:4;inset:0;pointer-events:none}#hud.show{display:block}.hudline{position:absolute;top:64px;left:14px;right:14px;display:flex;justify-content:space-between;gap:8px}.chip{background:#090b14cc;border:1px solid #d6b3d45c;padding:8px 10px;font-size:9px;letter-spacing:.12em;text-transform:uppercase;backdrop-filter:blur(8px)}#district{color:#ffc3d1}#discovery{color:#d9c4ff}#toast{position:absolute;left:50%;bottom:20%;transform:translateX(-50%);width:max-content;max-width:88vw;padding:10px 14px;background:#0b0b16e8;border:1px solid #d08ba7;color:#fff;font-size:12px;text-align:center;opacity:0;transition:opacity .25s}#toast.on{opacity:1}
-#mobile{display:none;position:absolute;z-index:6;bottom:15px;left:0;right:0;justify-content:space-between;align-items:end;padding:0 16px;pointer-events:none}#mobile.show{display:flex}.stickbase{width:142px;height:142px;border-radius:50%;border:2px solid #dfc5e288;background:radial-gradient(circle,#32263cdd,#100f1ddd 70%);position:relative;pointer-events:auto;touch-action:none;box-shadow:inset 0 0 25px #b58bda33,0 5px 22px #0008}.stickbase:after{content:"";position:absolute;inset:13px;border:1px dashed #e4c9f044;border-radius:50%}.stick{position:absolute;left:50%;top:50%;width:58px;height:58px;transform:translate(-50%,-50%);border-radius:50%;border:2px solid #fff9;background:radial-gradient(circle at 35% 30%,#d6b8e7,#614875 65%,#2b2034);box-shadow:0 5px 16px #000b;pointer-events:none}.look{width:112px;height:112px;border-radius:50%;border:1px solid #e2c8e477;background:#17132399;color:#eee;display:grid;place-items:center;font-size:9px;letter-spacing:.1em;pointer-events:auto;touch-action:none}
-#fatal{display:none;position:absolute;z-index:12;left:5%;right:5%;top:40%;padding:18px;background:#1b101c;border:1px solid #f09;color:white;text-align:center}#fatal.show{display:block}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#08070c;color:#f8f3f5;font-family:Georgia,serif}#world{position:fixed;inset:0;width:100%;height:100%;touch-action:none}
+header{position:absolute;z-index:4;top:0;left:0;right:0;padding:13px 17px;display:flex;justify-content:space-between;align-items:center;background:linear-gradient(#08070ce8,transparent);pointer-events:none}header a{pointer-events:auto;color:#fff;text-decoration:none;font:900 10px system-ui;letter-spacing:.2em}header small{display:block;color:#d58d9b;font-size:8px;letter-spacing:.25em}header nav{display:flex;gap:16px}header nav a{font-size:9px}
+#intro{position:absolute;z-index:9;inset:0;display:grid;place-items:center;padding:20px;background:radial-gradient(ellipse at 50% 58%,#2a1725d9,#07060bf7 76%)}#intro.hide{display:none}.panel{width:min(620px,94vw);text-align:center;padding:clamp(22px,5vw,42px);border:1px solid #c18a9b80;background:linear-gradient(145deg,#1b121af5,#09080ef7);box-shadow:0 0 90px #a62e4c44}.eyebrow{font:900 10px system-ui;letter-spacing:.34em;color:#e7a6b3}.panel h1{font:900 clamp(40px,9vw,76px)/.88 system-ui;letter-spacing:.04em;text-transform:uppercase;margin:17px 0;text-shadow:0 0 32px #a32f55}.panel p{font:14px/1.6 system-ui;color:#d8cbd1;max-width:490px;margin:0 auto 22px}.enter{padding:14px 32px;border:1px solid #e6a1b2;background:linear-gradient(100deg,#76253e,#35213c);color:white;font:900 11px system-ui;letter-spacing:.2em;text-transform:uppercase}.hint{font:11px system-ui;color:#a99aa2;margin-top:15px}
+#hud{display:none;position:absolute;z-index:5;inset:0;pointer-events:none}#hud.show{display:block}.hudline{position:absolute;top:64px;left:14px;right:14px;display:flex;justify-content:space-between;gap:8px}.chip{background:#09070ed9;border:1px solid #c18a9b66;padding:8px 10px;font:9px system-ui;letter-spacing:.12em;text-transform:uppercase;backdrop-filter:blur(8px)}#district{color:#eab2bd}#progress{color:#d7c4d1}#toast{position:absolute;left:50%;bottom:20%;transform:translateX(-50%);width:max-content;max-width:88vw;padding:11px 15px;background:#0c0812ed;border:1px solid #bd8296;color:#fff;font:12px/1.5 system-ui;text-align:center;opacity:0;transition:opacity .25s}#toast.on{opacity:1}
+#mobile{display:none;position:absolute;z-index:6;bottom:14px;left:0;right:0;justify-content:space-between;align-items:end;padding:0 16px;pointer-events:none}#mobile.show{display:flex}.pad{width:142px;height:142px;border-radius:50%;border:2px solid #d4b2c288;background:radial-gradient(circle,#392633e8,#100c14e8 70%);position:relative;pointer-events:auto;touch-action:none;box-shadow:inset 0 0 25px #e3a4bf25,0 5px 22px #000b}.pad:after{content:"";position:absolute;inset:13px;border:1px dashed #e8c9d044;border-radius:50%}.stick{position:absolute;left:50%;top:50%;width:58px;height:58px;transform:translate(-50%,-50%);border-radius:50%;border:2px solid #fff9;background:radial-gradient(circle at 35% 30%,#e0c2d4,#674257 65%,#291c2b);box-shadow:0 5px 16px #000b;pointer-events:none}.look{width:112px;height:112px;border-radius:50%;border:1px solid #d4b2c277;background:#17101bba;color:#eee;display:grid;place-items:center;font:9px system-ui;letter-spacing:.1em;pointer-events:auto;touch-action:none}
+#scare{position:absolute;z-index:8;inset:0;display:grid;place-items:center;background:#07040beF;opacity:0;pointer-events:none;transition:opacity .08s}#scare.on{opacity:1}#scare .face{font:900 clamp(90px,28vw,230px)/1 system-ui;color:#e8d7d9;text-shadow:0 0 25px #d02a49,0 0 90px #8c1639;transform:scaleY(1.3)}#scare small{position:absolute;bottom:20%;font:900 12px system-ui;letter-spacing:.5em;color:#f2c2cb}
+#fatal{display:none;position:absolute;z-index:12;left:5%;right:5%;top:40%;padding:18px;background:#1b101c;border:1px solid #f09;color:white;text-align:center;font:13px system-ui}#fatal.show{display:block}
 @media(orientation:portrait) and (max-width:800px){header nav{display:none}.panel p{font-size:13px}.hudline{top:52px}.chip{font-size:8px;padding:7px}}
 </style>
 </head>
 <body>
 <canvas id="world"></canvas>
 <header><a href="index.html">KAEVORYN STUDIOS<small>CREATE THE IMPOSSIBLE</small></a><nav><a href="parks.html">ALL PARKS</a><a href="kickapoo-park.html">KICKAPOO PARK</a></nav></header>
-<section id="intro"><div class="panel"><div class="eyebrow">A WORLD THAT KNOWS YOU'RE HERE</div><h1>Nightmare<br>Park</h1><p>Beyond the gates, six cursed lands twist through a living night. Follow the lantern road, explore the attractions, and don't trust every shadow.</p><button class="enter" id="enter">ENTER THE NIGHTMARE</button><div class="hint">Landscape recommended · Sound off · Explore freely</div></div></section>
-<div id="hud"><div class="hudline"><div class="chip" id="district">THE FORGOTTEN GATE</div><div class="chip" id="discovery">0 / 6 LANDS FOUND</div></div><div id="toast"></div></div>
-<div id="mobile"><div class="stickbase" id="movePad"><div class="stick" id="stick"></div></div><div class="look" id="lookPad">DRAG TO LOOK</div></div><div id="fatal"></div>
+<section id="intro"><div class="panel"><div class="eyebrow">SOME PLACES SHOULD NEVER BE DREAMED</div><h1>Nightmare<br>Park</h1><p>This is not a collection of haunted rides. It is a nightmare you can walk into. The paths rearrange, the dead watch, and something follows you between the lands.</p><button class="enter" id="enter">CROSS THE THRESHOLD</button><div class="hint">Landscape recommended · Sound off · Keep moving</div></div></section>
+<div id="hud"><div class="hudline"><div class="chip" id="district">THE THRESHOLD</div><div class="chip" id="progress">0 / 6 NIGHTMARES SURVIVED</div></div><div id="toast"></div></div>
+<div id="mobile"><div class="pad" id="movePad"><div class="stick" id="stick"></div></div><div class="look" id="lookPad">DRAG TO LOOK</div></div>
+<div id="scare"><div class="face">◉</div><small>IT KNOWS YOU'RE HERE</small></div><div id="fatal"></div>
 <script type="module">
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
 (()=>{
-const $=id=>document.getElementById(id),canvas=$('world'),intro=$('intro'),hud=$('hud'),mobile=$('mobile'),fatal=$('fatal'),toast=$('toast');
-let scene,camera,renderer,clock,active=false,yaw=0,pitch=0,lastToast=0,lookId=null,moveId=null;
-const moveInput={x:0,y:0},keys={f:0,b:0,l:0,r:0,run:0},solids=[],areas=[],animated=[];
+const $=id=>document.getElementById(id),canvas=$('world'),intro=$('intro'),hud=$('hud'),mobile=$('mobile'),fatal=$('fatal'),toast=$('toast'),scare=$('scare');
+let scene,camera,renderer,clock,active=false,yaw=0,pitch=0,lastToast=0,lookId=null,moveId=null,lastScare=0,scareUntil=0,lightning=0;
+const input={x:0,y:0},keys={f:0,b:0,l:0,r:0,run:0},solids=[],districts=[],actors=[],lights=[],found=new Set();
 const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
-const material=(color,rough=.86,metal=0,emissive=0)=>new THREE.MeshStandardMaterial({color,roughness:rough,metalness:metal,emissive,emissiveIntensity:emissive?1.2:0});
-function mesh(geo,mat,x,y,z,rx=0,ry=0,rz=0){const o=new THREE.Mesh(geo,mat);o.position.set(x,y,z);o.rotation.set(rx,ry,rz);scene.add(o);return o}
-function block(x,y,z,w,h,d,c,ry=0){return mesh(new THREE.BoxGeometry(w,h,d),material(c),x,y,z,0,ry,0)}
-function solid(x,z,w,d){solids.push({x,z,w,d})}
-function tower(x,z,r,h,c=0x393442){mesh(new THREE.CylinderGeometry(r*.8,r,h,12),material(c),x,h/2,z);mesh(new THREE.ConeGeometry(r*1.25,r*.9,12),material(0x211a2a),x,h+r*.4,z);solid(x,z,r*1.8,r*1.8)}
-function pine(x,z,s=1,dead=false){mesh(new THREE.CylinderGeometry(.12*s,.25*s,2.3*s,7),material(0x3a2924),x,1.15*s,z);for(let i=0;i<3;i++)mesh(new THREE.ConeGeometry((dead?.8:1.2)*s,(dead?2.1:2.8)*s,7),material(dead?0x29232c:0x1d332d),x+(i-1)*.12*s,2*s+i*.45*s,z,0,0,(i-1)*.12);solid(x,z,.65*s,.65*s)}
-function light(x,y,z,color,intensity,range){const l=new THREE.PointLight(color,intensity,range);l.position.set(x,y,z);scene.add(l);return l}
-function lantern(x,z){mesh(new THREE.CylinderGeometry(.06,.1,2.7,7),material(0x35251f),x,1.35,z);mesh(new THREE.SphereGeometry(.2,10,8),new THREE.MeshStandardMaterial({color:0xffd18b,emissive:0xff8a37,emissiveIntensity:2}),x,2.85,z);light(x,2.8,z,0xffa65b,1.7,13)}
-function arch(x,z,w,h){block(x,h,z,w,.5,.65,0x5b4c60);block(x-w/2+.22,h/2,z,.45,h,.65,0x514557);block(x+w/2-.22,h/2,z,.45,h,.65,0x514557)}
-function watcher(x,z){const g=new THREE.Group(),dark=material(0x17131e),eye=new THREE.MeshStandardMaterial({color:0xffd18a,emissive:0xff8b25,emissiveIntensity:2});const torso=new THREE.Mesh(new THREE.CapsuleGeometry(.35,.85,5,8),dark);torso.position.y=1.1;g.add(torso);const head=new THREE.Mesh(new THREE.SphereGeometry(.31,12,10),dark);head.position.y=1.95;g.add(head);for(const side of [-1,1]){const e=new THREE.Mesh(new THREE.SphereGeometry(.055,8,8),eye);e.position.set(side*.12,2,-.25);g.add(e);const arm=new THREE.Mesh(new THREE.CylinderGeometry(.08,.12,1.05,7),dark);arm.position.set(side*.43,1.15,0);arm.rotation.z=side*.25;g.add(arm)}g.position.set(x,0,z);scene.add(g);animated.push({kind:'watcher',obj:g,phase:Math.random()*7});solid(x,z,.8,.8)}
-function sign(x,y,z,text){const c=document.createElement('canvas');c.width=512;c.height=128;const ctx=c.getContext('2d');ctx.fillStyle='#160f1d';ctx.fillRect(0,0,512,128);ctx.strokeStyle='#e5a2ba';ctx.lineWidth=6;ctx.strokeRect(6,6,500,116);ctx.fillStyle='#fff0f5';ctx.font='bold 38px system-ui';ctx.textAlign='center';ctx.fillText(text,256,79);const tex=new THREE.CanvasTexture(c);mesh(new THREE.PlaneGeometry(8,2),new THREE.MeshBasicMaterial({map:tex,transparent:true}),x,y,z)}
+const mat=(c,r=.9,m=0,e=0)=>new THREE.MeshStandardMaterial({color:c,roughness:r,metalness:m,emissive:e,emissiveIntensity:e?1.25:0});
+function add(g,m,x,y,z,rx=0,ry=0,rz=0){const o=new THREE.Mesh(g,m);o.position.set(x,y,z);o.rotation.set(rx,ry,rz);scene.add(o);return o}
+function box(x,y,z,w,h,d,c,ry=0){return add(new THREE.BoxGeometry(w,h,d),mat(c),x,y,z,0,ry,0)}
+function block(x,z,w,d){solids.push({x,z,w,d})}
+function point(x,y,z,c,power,range){const l=new THREE.PointLight(c,power,range);l.position.set(x,y,z);scene.add(l);lights.push({light:l,base:power,phase:Math.random()*10});return l}
+function tower(x,z,r,h,c=0x3b303a){add(new THREE.CylinderGeometry(r*.75,r,h,12),mat(c),x,h/2,z);add(new THREE.ConeGeometry(r*1.3,r,12),mat(0x201722),x,h+r*.4,z);block(x,z,r*1.8,r*1.8)}
+function deadTree(x,z,s=1){add(new THREE.CylinderGeometry(.12*s,.32*s,3.6*s,7),mat(0x342326),x,1.8*s,z,0,0,.05);for(let i=0;i<4;i++){const b=add(new THREE.CylinderGeometry(.045*s,.12*s,2.6*s,6),mat(0x342326),x+(i-1.5)*.5*s,2.6*s,z,0,0,(i-1.5)*.34);b.rotation.x=(i%2?-.25:.25)}block(x,z,.55*s,.55*s)}
+function lamp(x,z,c=0xffa66e){add(new THREE.CylinderGeometry(.06,.12,3.2,7),mat(0x2b2023),x,1.6,z);add(new THREE.SphereGeometry(.22,10,8),new THREE.MeshStandardMaterial({color:c,emissive:c,emissiveIntensity:2}),x,3.25,z);point(x,3.2,z,c,1.8,14)}
+function sign(x,y,z,label){const c=document.createElement('canvas');c.width=512;c.height=128;const q=c.getContext('2d');q.fillStyle='#120b12';q.fillRect(0,0,512,128);q.strokeStyle='#b9788b';q.lineWidth=5;q.strokeRect(5,5,502,118);q.fillStyle='#f4dce2';q.font='bold 35px Georgia';q.textAlign='center';q.fillText(label,256,78);const t=new THREE.CanvasTexture(c);add(new THREE.PlaneGeometry(9,2.2),new THREE.MeshBasicMaterial({map:t}),x,y,z)}
+function arch(x,z,w,h){box(x,h,z,w,.5,.7,0x5a414f);box(x-w/2+.2,h/2,z,.4,h,.7,0x4b3946);box(x+w/2-.2,h/2,z,.4,h,.7,0x4b3946)}
+function ghost(x,z,scale=1,stalker=false){const g=new THREE.Group(),cloth=new THREE.MeshStandardMaterial({color:stalker?0x0d0a12:0xc6b9bf,transparent:true,opacity:stalker?.98:.48,roughness:.4,emissive:stalker?0x16000a:0x16101a,emissiveIntensity:.5});const body=new THREE.Mesh(new THREE.ConeGeometry(.7*scale,2.5*scale,9),cloth);body.position.y=1.3*scale;g.add(body);const head=new THREE.Mesh(new THREE.SphereGeometry(.43*scale,14,12),cloth);head.position.y=2.45*scale;g.add(head);const eyeMat=new THREE.MeshBasicMaterial({color:stalker?0xff263f:0x21131c});for(const s of [-1,1]){const eye=new THREE.Mesh(new THREE.SphereGeometry(.075*scale,8,8),eyeMat);eye.position.set(s*.16*scale,2.5*scale,-.36*scale);g.add(eye)}g.position.set(x,0,z);scene.add(g);actors.push({obj:g,kind:stalker?'stalker':'ghost',home:new THREE.Vector3(x,0,z),phase:Math.random()*10,scare:false});if(!stalker)block(x,z,.9,.9);return g}
+function skull(x,y,z,s=1){const g=new THREE.Group(),bone=mat(0xc4b5a9);const cr=new THREE.Mesh(new THREE.SphereGeometry(.5*s,12,10),bone);g.add(cr);for(const side of [-1,1]){const eye=add(new THREE.SphereGeometry(.12*s,8,8),new THREE.MeshBasicMaterial({color:0x08060a}),x+side*.18*s,y,z-.42*s);scene.remove(eye);g.add(eye)}g.position.set(x,y,z);scene.add(g);return g}
 function build(){
-scene=new THREE.Scene();scene.background=new THREE.Color(0x151827);scene.fog=new THREE.FogExp2(0x191725,.009);
-camera=new THREE.PerspectiveCamera(72,innerWidth/innerHeight,.1,320);camera.position.set(0,1.7,15);
-renderer=new THREE.WebGLRenderer({canvas,antialias:true,powerPreference:'high-performance'});renderer.setPixelRatio(Math.min(devicePixelRatio,1.6));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.18;
-clock=new THREE.Clock();
-scene.add(new THREE.HemisphereLight(0xb9c7ee,0x30202b,1.5));const moon=new THREE.DirectionalLight(0xd9d5ff,2.3);moon.position.set(-35,55,35);moon.castShadow=true;moon.shadow.mapSize.set(1024,1024);scene.add(moon);
-mesh(new THREE.SphereGeometry(7,24,18),new THREE.MeshBasicMaterial({color:0xe3d9c5}),-45,42,-105);
-mesh(new THREE.PlaneGeometry(260,300),material(0x29272b),0,-.32,-65);
- // main avenue, cobbled sections, and branching lands
-block(0,-.02,-64,10,.08,175,0x514b4d);
-for(let z=9;z>-151;z-=13){block(0,.035,z,9,.035,1.15,0x716367)}
- // Gatehouse with iron teeth and lanterns
-arch(0,6,14,8);for(let x=-5.8;x<=5.8;x+=1.15){mesh(new THREE.CylinderGeometry(.045,.045,4,6),material(0x171820),x,2,6);mesh(new THREE.ConeGeometry(.12,.35,6),material(0x171820),x,4.15,6)}
-tower(-8,6,1.7,10,0x4c4352);tower(8,6,1.7,10,0x4c4352);sign(0,8.7,5.55,'NO WAY BACK');
- // branching paths widen into plazas
-const lands=[
-{name:'THE FORGOTTEN GATE',x:0,z:2,desc:'The gate seals behind you. A lantern flickers deeper inside.'},
-{name:'HAUNTED WOODS',x:-25,z:-24,desc:'The trees lean closer. Something is moving just beyond the path.'},
-{name:'HOLLOW CROWN',x:25,z:-48,desc:'The castle windows burn with a cold amber light.'},
-{name:'CARNIVAL OF THE DAMNED',x:-26,z:-78,desc:'The midway wakes. The Ferris wheel turns without a operator.'},
-{name:'MONSTER MOUNTAIN',x:25,z:-108,desc:'Heat rolls from the mountain. The creature inside is stirring.'},
-{name:'THE UNDERWORLD',x:0,z:-139,desc:'The ground opens into a violet abyss beneath the park.'}
+scene=new THREE.Scene();scene.background=new THREE.Color(0x100b12);scene.fog=new THREE.FogExp2(0x160f18,.0078);
+camera=new THREE.PerspectiveCamera(72,innerWidth/innerHeight,.1,380);camera.position.set(0,1.7,92);
+renderer=new THREE.WebGLRenderer({canvas,antialias:true,powerPreference:'high-performance'});renderer.setPixelRatio(Math.min(devicePixelRatio,1.55));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.22;
+clock=new THREE.Clock();scene.add(new THREE.HemisphereLight(0xa9a6bc,0x21131b,1.45));const moon=new THREE.DirectionalLight(0xc4b8d1,2.1);moon.position.set(-40,70,45);moon.castShadow=true;moon.shadow.mapSize.set(1024,1024);scene.add(moon);
+add(new THREE.PlaneGeometry(260,280),mat(0x242026),0,-.4,-34);
+ // A broken circular midway instead of a straight corridor
+const ring=add(new THREE.TorusGeometry(43,4.3,8,120),mat(0x484047),0,.02,-30,Math.PI/2);ring.rotation.x=Math.PI/2;
+for(let i=0;i<12;i++){const a=i*Math.PI/6,x=Math.sin(a)*43,z=-30+Math.cos(a)*43;box(x,.06,z,1.5,.08,1.5,0x6e5a60)}
+ // Central landmark: the nightmare heart, a twisted tower and rib cage
+tower(0,-30,7,27,0x40333e);tower(-7,-27,2.4,17);tower(7,-34,2.7,20);tower(0,-42,2.2,15);
+for(let i=0;i<9;i++){const a=i*Math.PI/4.5,x=Math.sin(a)*11,z=-30+Math.cos(a)*11;const rib=add(new THREE.TorusGeometry(7,.35,7,28,Math.PI),mat(0x75616b),x,5+i*.7,z);rib.rotation.y=a}
+const heart=add(new THREE.OctahedronGeometry(3,1),new THREE.MeshStandardMaterial({color:0x76243c,emissive:0x8e1433,emissiveIntensity:2,roughness:.25}),0,15,-30);actors.push({obj:heart,kind:'heart',phase:0});
+point(0,15,-30,0xd32952,5,42);
+ // Entrance: colossal split doors and watchful statues
+arch(0,78,18,11);tower(-10,78,2,14,0x53404b);tower(10,78,2,14,0x53404b);for(const x of [-4,-2,0,2,4]){box(x,3,78,.12,6,.12,0x17131a);add(new THREE.ConeGeometry(.2,.45,6),mat(0x17131a),x,6.2,78)}sign(0,10,77,'DO NOT FALL ASLEEP');
+ // ring promenade and six radial nightmare realms
+const specs=[
+{name:'THE WHISPERING WOOD',x:-57,z:-30,desc:'The trees are whispering your name. None of them have mouths.',color:0x263d31},
+{name:'THE HOUSE THAT BREATHES',x:-40,z:35,desc:'The house inhales. The windows blink. Something is upstairs.',color:0x4a3039},
+{name:'THE DROWNED DISTRICT',x:0,z:-94,desc:'Water runs uphill here. The drowned are still waiting at home.',color:0x293e49},
+{name:'THE SLAUGHTER MIDWAY',x:57,z:-30,desc:'The carnival rides move by themselves. The ticket booth is occupied.',color:0x572a42},
+{name:'THE BLACK HOSPITAL',x:40,z:35,desc:'Every room is numbered. One of them has your name on the door.',color:0x34414b},
+{name:'THE BONE CHAPEL',x:0,z:39,desc:'The bells ring underground. Something answers from beneath the altar.',color:0x554b4b}
 ];
-for(const a of lands.slice(1)){block(a.x/2,.01,a.z,Math.abs(a.x)+10,.06,6,0x50484d);block(a.x,.015,a.z,18,.07,16,0x464047)}
- // dead forest maze, roots, leaning trunks, watcher silhouettes
-for(let i=0;i<58;i++){const x=-46+Math.random()*42,z=-7-Math.random()*43;pine(x,z,.75+Math.random()*.8,true)}
-for(let i=0;i<12;i++){const x=-40+i*2.3;const root=mesh(new THREE.CylinderGeometry(.12,.3,5,6),material(0x30221f),x,.6,-38-Math.random()*9,0,0,Math.PI/2);root.scale.set(1,1,.7)}
-watcher(-29,-23);watcher(-39,-35);sign(-25,5,-19,'HAUNTED WOODS');
- // Hollow Crown castle: layered keep, towers, windows, graveyard
-block(25,5,-51,15,10,12,0x393341);tower(17,-49,2.2,18);tower(33,-49,2.2,18);tower(25,-58,2.7,23);tower(18,-58,1.4,12);tower(32,-58,1.4,12);
-for(let x=20;x<=30;x+=2.5){const win=mesh(new THREE.BoxGeometry(.6,1.8,.12),new THREE.MeshStandardMaterial({color:0xffbd72,emissive:0xa84d20,emissiveIntensity:1.1}),x,7,-44.85)}
-arch(25,-44,4,6);sign(25,10,-44.5,'HOLLOW CROWN');
-for(let i=0;i<27;i++){const x=12+Math.random()*27,z=-39-Math.random()*25;block(x,.6,z,.65,1.2,.22,0x66606b,Math.random()*.3);block(x,.95,z,.14,.8,.25,0x77707a)}
-watcher(31,-66);
- // Carnival of the Damned: tent village, ride wheel, coaster, ticket booth
-for(const [x,z,c] of [[-35,-72,0x8c3154],[-25,-68,0x384b75],[-17,-82,0x9a6737]]){mesh(new THREE.ConeGeometry(4.6,6,9),material(c),x,3,z);block(x,1,z,7,2,7,0x322b39);solid(x,z,7,7)}
-const wheel=new THREE.Group();for(let i=0;i<18;i++){const a=i*Math.PI/9;const spoke=new THREE.Mesh(new THREE.BoxGeometry(.12,17,.12),material(0xd9b878,.4,.5));spoke.position.set(Math.cos(a)*8.2,Math.sin(a)*8.2,0);spoke.rotation.z=-a;wheel.add(spoke)}wheel.add(new THREE.Mesh(new THREE.TorusGeometry(8.2,.2,8,56),material(0xe5c98a,.4,.4)));wheel.position.set(-27,10,-79);scene.add(wheel);animated.push({kind:'wheel',obj:wheel});
-for(let i=0;i<7;i++){const x=-39+i*3.3;const rail=mesh(new THREE.TorusGeometry(2.5,.12,6,24,Math.PI),material(0x9c9aab,.4,.5),x,5,-91);rail.rotation.z=Math.PI}
-block(-27,1,-63,5,2,3,0x3d2830);sign(-27,4,-64.8,'MIDNIGHT MIDWAY');watcher(-17,-87);
- // Monster mountain with volcano, lava rivers, dragon-like rib arches
-mesh(new THREE.ConeGeometry(19,30,10),material(0x332d35),26,14,-111);
-mesh(new THREE.CylinderGeometry(4,5,.7,14),new THREE.MeshStandardMaterial({color:0xff572e,emissive:0xf03916,emissiveIntensity:2}),26,28.5,-111);
-for(let i=0;i<9;i++){const seam=mesh(new THREE.BoxGeometry(.22,6,.28),new THREE.MeshStandardMaterial({color:0xff582e,emissive:0xff3615,emissiveIntensity:2}),18+Math.random()*16,5+Math.random()*12,-108-Math.random()*9,0,0,(Math.random()-.5)*.65)}
-for(let i=0;i<6;i++){const rib=mesh(new THREE.TorusGeometry(5+i*.7,.22,6,24,Math.PI),material(0x64535b),26,5+i*1.3,-103-i*1.2);rib.rotation.y=Math.PI/2}
-watcher(37,-104);sign(25,5,-94,'MONSTER MOUNTAIN');
- // Underworld: broken colonnade, glowing rift, bridge
-for(let i=0;i<12;i++){const x=-22+i*4,z=-135-(i%2)*5;block(x,4,z,1.2,8,1.2,0x5b5262);block(x,8.2,z,2,.45,2,0x817185)}
-block(0,.05,-143,7,.18,28,0x554b5f);
-const rift=mesh(new THREE.CylinderGeometry(9,12,1.1,32),material(0x090711),0,-.05,-147);const core=light(0,1,-147,0xa65cff,8,38);sign(0,8,-128,'THE UNDERWORLD');watcher(-9,-132);watcher(10,-143);
- // landscaping, lanterns, benches, attraction markers
-for(let z=0;z>-145;z-=10){for(const x of [-6.3,6.3])lantern(x,z)}
-for(const [x,z] of [[-12,-17],[12,-28],[-12,-62],[12,-90],[-12,-117]]){block(x,.55,z,2,.9,.7,0x43343b);block(x,1.05,z,2.1,.15,.8,0x806b68)}
-for(const a of lands)areas.push({...a,found:false});
+ // Paths connect ring to each land; each radial path ends in a broad plaza
+for(const d of specs){const midx=d.x*.48,midz=-30+(d.z+30)*.48;const dx=d.x, dz=d.z+30,len=Math.hypot(dx,dz),ang=Math.atan2(dx,dz);const p=add(new THREE.PlaneGeometry(8,len+8),mat(0x4d4248),midx,.015,midz);p.rotation.x=-Math.PI/2;p.rotation.z=-ang;add(new THREE.PlaneGeometry(19,19),mat(0x40373e),d.x,.02,d.z);districts.push({...d,found:false})}
+ // Whispering wood: tight maze of crooked trunks and watching eye lights
+for(let i=0;i<70;i++){const x=-80+Math.random()*43,z=-8-Math.random()*49;deadTree(x,z,.8+Math.random()*.9)}
+for(let i=0;i<13;i++){const x=-78+Math.random()*38,z=-52-Math.random()*13;const eye=add(new THREE.SphereGeometry(.11,8,8),new THREE.MeshBasicMaterial({color:0xff263e}),x,1.8+Math.random()*2,z);point(x,eye.position.y,z,0xff1737,.25,4)}
+ghost(-63,-38,.95);ghost(-75,-18,1.2);sign(-57,6,-30,'THE WHISPERING WOOD');
+ // The breathing house: impossible angles, tall windows, rocking porch
+const houseMat=mat(0x49323a),roofMat=mat(0x21141f);box(-40,5,35,18,10,14,0x49323a);const roof=add(new THREE.ConeGeometry(13,7,4),roofMat,-40,13,35,0,Math.PI/4);roof.scale.set(1,1,.85);for(let x of [-46,-40,-34]){const win=add(new THREE.BoxGeometry(1.5,3,.15),new THREE.MeshStandardMaterial({color:0xd58d6a,emissive:0x9c3926,emissiveIntensity:1.1}),x,7,27.85);block(x,27,1.8,1)}arch(-40,27,4,5);sign(-40,16,26,'THE HOUSE THAT BREATHES');for(let i=0;i<10;i++){const x=-51+i*2.4;deadTree(x,46,.9)}ghost(-32,43,1.2,true);
+ // Drowned district: leaning row houses, crooked docks, dark reflective pools
+for(let i=0;i<9;i++){const x=-23+i*5.7,z=-103-(i%3)*7;const h=7+Math.random()*5;const b=box(x,h/2,z,5,h,5,0x3a4448,(Math.random()-.5)*.3);block(x,z,5,5);for(let y=2;y<h;y+=3)for(let xx=-1;xx<=1;xx+=2)box(x+xx,y,z-2.54,.65,1.3,.08,0x9b9c91)}
+for(let i=0;i<8;i++){const x=-18+i*5;box(x,.15,-88,4,.3,1.2,0x493d3e)}
+const water=add(new THREE.PlaneGeometry(45,35),new THREE.MeshStandardMaterial({color:0x152b34,metalness:.55,roughness:.16,transparent:true,opacity:.82}),0,.02,-105);water.rotation.x=-Math.PI/2;point(0,2,-100,0x4b9aa8,2.2,35);ghost(-10,-111,1.1);ghost(13,-100,.9,true);sign(0,8,-87,'THE DROWNED DISTRICT');
+ // Slaughter midway: tilted big top, broken wheel, swinging ride arms, clown silhouettes
+for(const [x,z,c] of [[48,-23,0x8e344d],[61,-40,0x394d72],[70,-22,0x875f32]]){add(new THREE.ConeGeometry(6,8,9),mat(c),x,4,z);box(x,1,z,9,2,8,0x2b202d);block(x,z,8,8)}
+const wheel=new THREE.Group();for(let i=0;i<20;i++){const a=i*Math.PI/10;const spoke=new THREE.Mesh(new THREE.BoxGeometry(.14,19,.14),mat(0xd4b58c,.45,.5));spoke.position.set(Math.cos(a)*9,Math.sin(a)*9,0);spoke.rotation.z=-a;wheel.add(spoke)}wheel.add(new THREE.Mesh(new THREE.TorusGeometry(9,.23,8,64),mat(0xe0c89b,.4,.4)));wheel.position.set(59,12,-30);scene.add(wheel);actors.push({obj:wheel,kind:'wheel',phase:0});sign(58,5,-18,'THE SLAUGHTER MIDWAY');ghost(72,-46,1.2,true);
+ // Black hospital: long institutional building, lit ward windows, operating theatre
+box(40,6,35,26,12,13,0x39434a);box(40,13,35,28,1,15,0x242c35);for(let x=29;x<=51;x+=4){for(let y=4;y<=10;y+=3){add(new THREE.BoxGeometry(1.5,1.7,.1),new THREE.MeshStandardMaterial({color:0xd3c4a2,emissive:0x76604b,emissiveIntensity:.7}),x,y,28.4)}}tower(27,35,2,17,0x4b4a50);tower(53,35,2,17,0x4b4a50);arch(40,27,5,6);sign(40,17,27,'THE BLACK HOSPITAL');for(let i=0;i<8;i++)box(28+i*3.4,.5,47,2,.8,.5,0x55535a);ghost(49,47,1.1,true);
+ // Bone chapel: ribbed nave, hanging bells, bone piles and crypt stairs
+box(0,5,42,17,10,22,0x51464b);for(let x=-8;x<=8;x+=4){tower(x,32,1.1,12,0x72616a);const rib=add(new THREE.TorusGeometry(5,.3,8,24,Math.PI),mat(0x96818a),x,10,40);rib.rotation.y=Math.PI/2}arch(0,30,5,7);for(let x=-5;x<=5;x+=2.5){const bell=add(new THREE.SphereGeometry(.65,12,10),mat(0x987f70,.4,.5),x,14,37);bell.scale.set(1,1.2,1)}sign(0,17,29,'THE BONE CHAPEL');ghost(-10,50,.95);
+ // Long shadows, tombstones and isolated warning lights
+for(let i=0;i<28;i++){const x=-12+Math.random()*24,z=10+Math.random()*40;box(x,.7,z,.7,1.4,.25,0x686068,Math.random()*.3)}
+for(const [x,z] of [[-8,70],[8,70],[-43,-30],[43,-30],[-31,35],[31,35],[0,-84],[0,50]])lamp(x,z);
+ // distant silhouettes and a stalker that closes in if the player lingers
+ghost(-15,-7,1.5,true);ghost(18,-66,1.35,true);
+const stalk=ghost(4,-9,1.8,true);actors[actors.length-1].kind='stalker';actors[actors.length-1].home.set(4,0,-9);
+ // Ash in the air
+const count=900,positions=new Float32Array(count*3);for(let i=0;i<count;i++){positions[i*3]=(Math.random()-.5)*180;positions[i*3+1]=Math.random()*25;positions[i*3+2]=-35+(Math.random()-.5)*210}const dustGeo=new THREE.BufferGeometry();dustGeo.setAttribute('position',new THREE.BufferAttribute(positions,3));const dust=new THREE.Points(dustGeo,new THREE.PointsMaterial({color:0xb7a3ac,size:.12,transparent:true,opacity:.42}));scene.add(dust);actors.push({obj:dust,kind:'ash',phase:0});
 }
 function toastText(t){toast.textContent=t;toast.classList.add('on');lastToast=performance.now()}
-function collision(x,z){for(const c of solids)if(Math.abs(x-c.x)<c.w/2+.42&&Math.abs(z-c.z)<c.d/2+.42)return true;return false}
-function update(dt){const f=clamp(keys.f-keys.b-moveInput.y,-1,1),s=clamp(keys.r-keys.l+moveInput.x,-1,1);if(f||s){const speed=keys.run?8.5:5.4,len=Math.hypot(f,s)||1,fx=-Math.sin(yaw),fz=-Math.cos(yaw),rx=Math.cos(yaw),rz=-Math.sin(yaw),dx=(fx*f+rx*s)/len*speed*dt,dz=(fz*f+rz*s)/len*speed*dt,nx=clamp(camera.position.x+dx,-78,78),nz=clamp(camera.position.z+dz,-158,18);if(!collision(nx,camera.position.z))camera.position.x=nx;if(!collision(camera.position.x,nz))camera.position.z=nz}
-camera.rotation.order='YXZ';camera.rotation.y=yaw;camera.rotation.x=pitch;
-for(const a of animated){a.phase=(a.phase||0)+dt;if(a.kind==='watcher'){a.obj.position.y=Math.sin(a.phase*1.5)*.14;a.obj.rotation.y=Math.sin(a.phase*.6)*.28}else if(a.kind==='wheel')a.obj.rotation.z+=dt*.13}
-let closest=null,dist=1e9;for(const a of areas){const d=Math.hypot(camera.position.x-a.x,camera.position.z-a.z);if(d<dist){dist=d;closest=a}}if(closest&&dist<19){$('district').textContent=closest.name;if(dist<8&&!closest.found){closest.found=true;$('discovery').textContent=areas.filter(a=>a.found).length+' / 6 LANDS FOUND';toastText(closest.desc)}}if(performance.now()-lastToast>4300)toast.classList.remove('on')}
+function collision(x,z){for(const c of solids)if(Math.abs(x-c.x)<c.w/2+.4&&Math.abs(z-c.z)<c.d/2+.4)return true;return false}
+function move(dt){const f=clamp(keys.f-keys.b-input.y,-1,1),s=clamp(keys.r-keys.l+input.x,-1,1);if(!f&&!s)return;const speed=keys.run?8.2:5.3,len=Math.hypot(f,s)||1,fx=-Math.sin(yaw),fz=-Math.cos(yaw),rx=Math.cos(yaw),rz=-Math.sin(yaw),dx=(fx*f+rx*s)/len*speed*dt,dz=(fz*f+rz*s)/len*speed*dt,nx=clamp(camera.position.x+dx,-105,105),nz=clamp(camera.position.z+dz,-150,105);if(!collision(nx,camera.position.z))camera.position.x=nx;if(!collision(camera.position.x,nz))camera.position.z=nz}
+function update(dt){move(dt);camera.rotation.order='YXZ';camera.rotation.y=yaw;camera.rotation.x=pitch;const pos=camera.position;
+for(const a of actors){a.phase+=dt;if(a.kind==='ghost'){a.obj.position.y=Math.sin(a.phase*1.4)*.18;a.obj.rotation.y=Math.sin(a.phase*.6)*.22}else if(a.kind==='stalker'){const dx=pos.x-a.obj.position.x,dz=pos.z-a.obj.position.z,dist=Math.hypot(dx,dz);if(dist<25&&dist>4){a.obj.position.x+=dx/dist*dt*1.1;a.obj.position.z+=dz/dist*dt*1.1;a.obj.lookAt(pos.x,1.5,pos.z)}else if(dist>=25){a.obj.position.x+=(a.home.x-a.obj.position.x)*dt*.2;a.obj.position.z+=(a.home.z-a.obj.position.z)*dt*.2}a.obj.position.y=Math.sin(a.phase*2)*.12;if(dist<7&&performance.now()-lastScare>18000){lastScare=performance.now();scareUntil=performance.now()+260;scare.classList.add('on');toastText('DO NOT TURN AROUND.')}}else if(a.kind==='wheel')a.obj.rotation.z+=dt*.12;else if(a.kind==='heart'){a.obj.rotation.y+=dt*.35;const pulse=1+Math.sin(a.phase*2.5)*.07;a.obj.scale.setScalar(pulse)}else if(a.kind==='ash'){const arr=a.obj.geometry.attributes.position;for(let i=0;i<arr.count;i++){let y=arr.getY(i)+dt*.22;if(y>26)y=-1;arr.setY(i,y)}arr.needsUpdate=true}}
+if(performance.now()>scareUntil)scare.classList.remove('on');
+for(const l of lights){const flicker=.82+Math.sin(performance.now()*.003+l.phase)*.12+(Math.random()>.992?-.65:0);l.light.intensity=Math.max(.08,l.base*flicker)}
+if(Math.random()>.997)lightning=1.4;if(lightning>0){scene.background.setHex(0xaaa1b0);lightning-=dt*12;if(lightning<=0)scene.background.setHex(0x100b12)}
+let nearest=null,best=1e9;for(const d of districts){const dist=Math.hypot(pos.x-d.x,pos.z-d.z);if(dist<best){best=dist;nearest=d}}if(nearest&&best<24){$('district').textContent=nearest.name;if(best<10&&!found.has(nearest.name)){found.add(nearest.name);$('progress').textContent=found.size+' / 6 NIGHTMARES SURVIVED';toastText(nearest.desc)}}if(performance.now()-lastToast>5000)toast.classList.remove('on')}
 function frame(){if(!active)return;requestAnimationFrame(frame);const dt=Math.min(clock.getDelta(),.04);update(dt);renderer.render(scene,camera)}
-function begin(){if(active)return;try{build();active=true;intro.classList.add('hide');hud.classList.add('show');mobile.classList.add('show');toastText('Welcome, dreamer. The path is yours to explore.');frame()}catch(err){console.error(err);fatal.textContent='Nightmare Park could not start: '+err.message;fatal.classList.add('show')}}
+function begin(){if(active)return;try{build();active=true;intro.classList.add('hide');hud.classList.add('show');mobile.classList.add('show');toastText('The gates have closed. It is too late to wake up.');frame()}catch(e){console.error(e);fatal.textContent='The nightmare could not open: '+e.message;fatal.classList.add('show')}}
 $('enter').addEventListener('click',begin);
 addEventListener('keydown',e=>{const k=e.key.toLowerCase();if(k==='w'||k==='arrowup')keys.f=1;if(k==='s'||k==='arrowdown')keys.b=1;if(k==='a'||k==='arrowleft')keys.l=1;if(k==='d'||k==='arrowright')keys.r=1;if(k==='shift')keys.run=1});
 addEventListener('keyup',e=>{const k=e.key.toLowerCase();if(k==='w'||k==='arrowup')keys.f=0;if(k==='s'||k==='arrowdown')keys.b=0;if(k==='a'||k==='arrowleft')keys.l=0;if(k==='d'||k==='arrowright')keys.r=0;if(k==='shift')keys.run=0});
-const pad=$('movePad'),stick=$('stick');function moveAt(e){const r=pad.getBoundingClientRect(),dx=e.clientX-(r.left+r.width/2),dy=e.clientY-(r.top+r.height/2),max=r.width*.34,len=Math.hypot(dx,dy),q=len>max?max/len:1,x=dx*q,y=dy*q;moveInput.x=x/max;moveInput.y=y/max;stick.style.left=(50+x/r.width*100)+'%';stick.style.top=(50+y/r.height*100)+'%'}function resetMove(){moveId=null;moveInput.x=0;moveInput.y=0;stick.style.left='50%';stick.style.top='50%'}
-pad.addEventListener('pointerdown',e=>{e.preventDefault();moveId=e.pointerId;pad.setPointerCapture(e.pointerId);moveAt(e)});pad.addEventListener('pointermove',e=>{if(e.pointerId===moveId)moveAt(e)});pad.addEventListener('pointerup',e=>{if(e.pointerId===moveId)resetMove()});pad.addEventListener('pointercancel',resetMove);
-const look=$('lookPad');let lastX=0,lastY=0;look.addEventListener('pointerdown',e=>{lookId=e.pointerId;lastX=e.clientX;lastY=e.clientY;look.setPointerCapture(e.pointerId)});look.addEventListener('pointermove',e=>{if(e.pointerId!==lookId)return;const dx=e.clientX-lastX,dy=e.clientY-lastY;lastX=e.clientX;lastY=e.clientY;yaw-=dx*.008;pitch=clamp(pitch-dy*.006,-1.15,1.15)});look.addEventListener('pointerup',()=>lookId=null);look.addEventListener('pointercancel',()=>lookId=null);
-let mouseLook=false;canvas.addEventListener('pointerdown',e=>{if(e.pointerType==='mouse'&&active){mouseLook=true;lastX=e.clientX;lastY=e.clientY;canvas.setPointerCapture(e.pointerId)}});canvas.addEventListener('pointermove',e=>{if(!mouseLook)return;const dx=e.clientX-lastX,dy=e.clientY-lastY;lastX=e.clientX;lastY=e.clientY;yaw-=dx*.004;pitch=clamp(pitch-dy*.004,-1.15,1.15)});canvas.addEventListener('pointerup',()=>mouseLook=false);canvas.addEventListener('pointercancel',()=>mouseLook=false);
-addEventListener('resize',()=>{if(!camera||!renderer)return;camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio,1.6))});
+const pad=$('movePad'),stick=$('stick');function setMove(e){const r=pad.getBoundingClientRect(),dx=e.clientX-r.left-r.width/2,dy=e.clientY-r.top-r.height/2,max=r.width*.34,len=Math.hypot(dx,dy),q=len>max?max/len:1,x=dx*q,y=dy*q;input.x=x/max;input.y=y/max;stick.style.left=(50+x/r.width*100)+'%';stick.style.top=(50+y/r.height*100)+'%'}function resetMove(){moveId=null;input.x=0;input.y=0;stick.style.left='50%';stick.style.top='50%'}pad.addEventListener('pointerdown',e=>{e.preventDefault();moveId=e.pointerId;pad.setPointerCapture(e.pointerId);setMove(e)});pad.addEventListener('pointermove',e=>{if(e.pointerId===moveId)setMove(e)});pad.addEventListener('pointerup',e=>{if(e.pointerId===moveId)resetMove()});pad.addEventListener('pointercancel',resetMove);
+const look=$('lookPad');let lx=0,ly=0;look.addEventListener('pointerdown',e=>{lookId=e.pointerId;lx=e.clientX;ly=e.clientY;look.setPointerCapture(e.pointerId)});look.addEventListener('pointermove',e=>{if(e.pointerId!==lookId)return;const dx=e.clientX-lx,dy=e.clientY-ly;lx=e.clientX;ly=e.clientY;yaw-=dx*.008;pitch=clamp(pitch-dy*.006,-1.1,1.1)});look.addEventListener('pointerup',()=>lookId=null);look.addEventListener('pointercancel',()=>lookId=null);
+let mouse=false;canvas.addEventListener('pointerdown',e=>{if(e.pointerType==='mouse'&&active){mouse=true;lx=e.clientX;ly=e.clientY;canvas.setPointerCapture(e.pointerId)}});canvas.addEventListener('pointermove',e=>{if(!mouse)return;const dx=e.clientX-lx,dy=e.clientY-ly;lx=e.clientX;ly=e.clientY;yaw-=dx*.004;pitch=clamp(pitch-dy*.004,-1.1,1.1)});canvas.addEventListener('pointerup',()=>mouse=false);canvas.addEventListener('pointercancel',()=>mouse=false);
+addEventListener('resize',()=>{if(!camera||!renderer)return;camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio,1.55))});
 })();
 </script>
 </body>
