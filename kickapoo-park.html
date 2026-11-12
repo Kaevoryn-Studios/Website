@@ -925,6 +925,8 @@ function build(){
     var a=i/44*Math.PI*2,r=39+(i%5)*2.1;
     var rock=addMesh(new THREE.DodecahedronGeometry(3.7,1),M.rock,Math.cos(a)*r,2.0,-150+Math.sin(a)*r);
     rock.rotation.set(i*.11,i*.31,i*.17);
+    /* Jagged valley boulders have matching ground-level collision. */
+    addCollider(Math.cos(a)*r,-150+Math.sin(a)*r,3.25,3.25);
   }
   dragon(0,-150);coaster(43,-112,'#49a78b');
   addPath([[-28,-112],[-19,-126],[-10,-140],[0,-151],[15,-158],[30,-160]],9,M.stone);
@@ -953,6 +955,8 @@ function build(){
   for(var i=0;i<64;i++){
     var tx=-188+(i%9)*8.5,tz=-91+Math.floor(i/9)*14;
     addCylinder(tx,4,tz,.48,.32,8,M.wood,8);
+    /* Jungle trunks now stop guests from walking through the tree supports. */
+    addCollider(tx,tz,.82,.82);
     for(var k=0;k<7;k++){var a=k*Math.PI*2/7,leaf=addBox(tx+Math.cos(a)*2.6,8,tz+Math.sin(a)*2.6,1.2,.34,5.6,M.leaf);leaf.rotation.y=-a}
   }
   buildResortFacade(-177,-9,22,12,14,M.temple,M.roof,M.mint,'Expedition Supply',2);
