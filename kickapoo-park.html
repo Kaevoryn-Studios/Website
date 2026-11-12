@@ -64,7 +64,12 @@ for(var i=0;i<samples;i++){
   var footY=.25,topY=p.y-.4;
   addCylinder(p.x,(topY+footY)/2,p.z,.24,.34,topY-footY,supportMat,8);
   addBox(p.x,footY,p.z,1.25,.35,1.25,M.stone);
-  if(i%10===0){var brace=addBox(p.x,.5+(topY-footY)*.45,p.z, .16,topY-footY*.5,.16,M.gold);brace.rotation.z=.42}
+  /* Steel support footings are solid so guests cannot walk through coaster columns. */
+  addCollider(p.x,p.z,.72,.72);
+  if(i%10===0){
+    var brace=addBox(p.x,.5+(topY-footY)*.45,p.z,.16,(topY-footY)*.5,.16,M.gold);
+    brace.rotation.z=.42;
+  }
  }
 }
 var train=new THREE.Group();scene.add(train);
