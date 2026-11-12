@@ -20,7 +20,7 @@ header{position:absolute;z-index:4;top:0;left:0;right:0;padding:13px 17px;displa
 <canvas id="world"></canvas>
 <header><a href="index.html">KAEVORYN STUDIOS<small>CREATE THE IMPOSSIBLE</small></a><nav><a href="parks.html">ALL PARKS</a><a href="kickapoo-park.html">KICKAPOO PARK</a></nav></header>
 <section id="intro"><div class="panel"><div class="eyebrow">KAEVORYN STUDIOS PRESENTS · A WALK THROUGH FEAR</div><h1>NIGHTMARE<br>PARK</h1><div style="color:#d68b9d;font-size:11px;font-weight:900;letter-spacing:.38em;margin:0 0 18px">THE BLACK VEIL</div><p>A forgotten county swallowed by a living darkness. Walk its ruined streets, enter places that should have stayed sealed, and uncover what is calling from beneath the park. The attractions are open. The exits are not.</p><button class="enter" id="enter">CROSS THE GATE</button><div class="hint">A new nightmare experience · Landscape recommended · Joystick to walk · Drag to look · Sound optional</div></div></section>
-<div id="hud"><button id="soundBtn">SOUND: OFF</button><div class="hudline"><div class="chip" id="district">THE OUTER GATE</div><div class="chip" id="progress">0 / 16 AREAS DISCOVERED</div></div><div id="toast"></div></div>
+<div id="hud"><button id="soundBtn">SOUND: OFF</button><div class="hudline"><div class="chip" id="district">THE OUTER GATE</div><div class="chip" id="progress">0 / 9 AREAS DISCOVERED</div></div><div id="toast"></div></div>
 <div id="mobile"><div class="pad" id="movePad"><div class="stick" id="stick"></div></div><div class="look" id="lookPad">DRAG TO LOOK</div></div>
 <div id="scare"><div class="face">◉</div><small>IT HAS BEEN WAITING FOR YOU</small></div><div id="vfx"></div><div id="fatal"></div>
 <script type="module">
@@ -59,128 +59,68 @@ if(evil){const ribs=new THREE.Mesh(new THREE.TorusGeometry(.28*s,.045*s,5,12,Mat
 g.position.set(x,0,z);g.userData.face=face;scene.add(g);actors.push({obj:g,kind:evil?'stalker':'ghost',home:new THREE.Vector3(x,0,z),phase:Math.random()*8});if(!evil)solid(x,z,.8,.8);return g}
 function addDistrict(name,x,z,desc){districts.push({name,x,z,desc})}
 function build(){
-scene=new THREE.Scene();scene.background=new THREE.Color(0x090d13);scene.fog=new THREE.FogExp2(0x101923,.0058);
-camera=new THREE.PerspectiveCamera(72,innerWidth/innerHeight,.1,460);camera.position.set(0,1.7,104);
-renderer=new THREE.WebGLRenderer({canvas,antialias:true,powerPreference:'high-performance'});renderer.setPixelRatio(Math.min(devicePixelRatio,1.35));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.38;
-clock=new THREE.Clock();scene.add(new THREE.HemisphereLight(0x9eb3c6,0x111722,1.45));const moon=new THREE.DirectionalLight(0xb9d1e2,2.1);moon.position.set(-55,85,30);moon.castShadow=true;moon.shadow.mapSize.set(1024,1024);scene.add(moon);
-mesh(new THREE.PlaneGeometry(300,340),material(0x202a30),0,-.5,-25,-Math.PI/2);
-// THE BLACK VEIL — a cursed county arranged around a broken central avenue and branching dead-end attractions.
-path(0,69,15,58);path(0,20,15,46);path(0,-20,17,45);path(0,-63,15,48);path(0,-105,19,30);
-path(-28,27,52,13,0);path(-53,27,34,13,0);path(28,-12,52,13,0);path(56,-12,32,13,0);
-path(-28,-73,52,13,0);path(29,-83,52,13,0);path(0,-122,55,13,0);
-// Abandoned terminal concourse and giant dead clock
-box(0,4,-20,34,8,24,0x343d43);box(0,8.2,-20,36,1,26,0x1c252c);solid(0,-20,34,24);
-for(let x=-13;x<=13;x+=6){box(x,5,-7,.65,10,.65,0x58616a);box(x,10,-7,2,.35,1.2,0x9a8a78)}
-arch(0, -6, 12, 9);sign(0,13,-5,'LAST DEPARTURE');const face=mesh(new THREE.CircleGeometry(5.5,48),new THREE.MeshBasicMaterial({color:0x0a1117}),0,17,-7);mesh(new THREE.TorusGeometry(5.7,.3,10,64),material(0x9a7771,.45,.7),0,17,-6.8);for(let i=0;i<12;i++){const a=i*Math.PI/6;box(Math.sin(a)*4.7,17+Math.cos(a)*4.7,-6.6,.18,.8,.16,0xd7b9a0)}
-const core=mesh(new THREE.OctahedronGeometry(2.4,2),new THREE.MeshStandardMaterial({color:0x4c9aab,emissive:0x176273,emissiveIntensity:2}),0,5,-19);actors.push({obj:core,kind:'core',phase:0});light(0,8,-19,0x43c4d2,4,48);
-// Main entrance and outer iron perimeter
-arch(0,91,18,12);tower(-11,91,2.4,16,0x4a555e);tower(11,91,2.4,16,0x4a555e);sign(0,10,90,'NO TRAINS RETURN');
-const fence=material(0x343e48,.65,.65),rust=material(0x77615c,.6,.4);
-function fenceRun(x1,z1,x2,z2){const len=Math.hypot(x2-x1,z2-z1),n=Math.ceil(len/5),ang=Math.atan2(-(z2-z1),x2-x1);for(let i=0;i<=n;i++){const t=i/n,x=x1+(x2-x1)*t,z=z1+(z2-z1)*t;box(x,3.5,z,.28,7,.28,0x35404a);mesh(new THREE.ConeGeometry(.22,.6,5),rust,x,7.3,z);if(i<n){const mx=(x1+x2)*(i+.5)/n,mz=(z1+z2)*(i+.5)/n;for(const y of [1,3,5.2])box(mx,y,mz,5,.12,.16,0x46525c,ang);for(let k=1;k<5;k++)box(x+(x2-x1)/n*k/5,3.5,z+(z2-z1)/n*k/5,.08,6,.08,0x46525c)}}}
-fenceRun(-112,100,-12,100);fenceRun(12,100,112,100);fenceRun(-112,100,-112,-160);fenceRun(112,100,112,-160);fenceRun(-112,-160,112,-160);
-function gateLeaf(x,side){const g=new THREE.Group();g.position.set(x,0,100);const panel=new THREE.Mesh(new THREE.BoxGeometry(9,7,.35),fence);panel.position.set(side*4.5,3.5,0);g.add(panel);for(let i=0;i<5;i++){const bar=new THREE.Mesh(new THREE.BoxGeometry(.15,8,.18),rust);bar.position.set(side*i*2.1,3.7,0);g.add(bar)}scene.add(g);g.rotation.y=side*Math.PI/2;gates.push({obj:g,side})}gateLeaf(-9,1);gateLeaf(9,-1);
-// District 1: The Signal Graveyard — leaning signal gantries and derailed carriages
-for(let i=0;i<5;i++){const x=-83+i*8,z=35+(i%2)*8;box(x,3,z,7,6,10,0x3c454b,(i%2?-.08:.12));box(x,6.3,z,7.4,.5,10.4,0x202a31);solid(x,z,7,10);for(let y=2;y<6;y+=2)mesh(new THREE.BoxGeometry(1.1,1.1,.12),new THREE.MeshStandardMaterial({color:0x8eab9e,emissive:0x345e55}),x-3.56,y,z)}
-for(let x=-88;x<=-48;x+=10){tower(x,12,.55,14,0x59666b);box(x,14,12,5,.35,.35,0x7a8584);light(x,11,12,0x74b7a0,1.5,15)}sign(-68,10,3,'SIGNAL GRAVEYARD');addDistrict('THE SIGNAL GRAVEYARD',-66,26,'The signal lamps change when you look away. The trains have no wheels.');
-// District 2: Lantern Row — close-set tenements, alley lanterns and a watching figure
-for(let i=0;i<7;i++){const x=43+(i%3)*12,z=32-Math.floor(i/3)*17,h=9+(i%3)*3;box(x,h/2,z,9,h,10,0x44454a,(i%2?-.1:.1));box(x,h+.25,z,9.5,.5,10.5,0x252a31);solid(x,z,9,10);for(let y=3;y<h-1;y+=3)for(let w=-1;w<=1;w++)mesh(new THREE.BoxGeometry(1.1,1.5,.12),new THREE.MeshStandardMaterial({color:0xb7a17f,emissive:0x76502a}),x+w*2.7,y,z-5.08)}
-for(let i=0;i<6;i++)lamp(39+i*8,49,0xffc17a);sign(57,12,4,'LANTERN ROW');ghost(79,8,1.5,true);addDistrict('LANTERN ROW',57,25,'Every window is lit. Every shadow inside is facing the street.');
-// District 3: The Flooded Switchyard — cold water, broken rails and a stranded engine
-const water=mesh(new THREE.PlaneGeometry(65,45),new THREE.MeshStandardMaterial({color:0x16343d,metalness:.45,roughness:.16,transparent:true,opacity:.88}),-25,.035,-64);water.rotation.x=-Math.PI/2;light(-25,3,-62,0x55b9c6,2.6,48);
-for(let i=0;i<6;i++){const x=-53+i*10;box(x,.22,-65,8,.4,1,0x7a6d65);box(x,.55,-59,7,.3,.35,0x4b5154)}box(-26,2,-70,17,4,8,0x333d44);box(-26,4.2,-70,18,.5,9,0x222c33);solid(-26,-70,17,8);for(let i=0;i<5;i++)box(-31+i*2.5,2.8,-65.8,1.2,1.2,.15,0x9b9b87);ghost(-5,-72,1.25);sign(-25,9,-39,'FLOODED SWITCHYARD');addDistrict('THE FLOODED SWITCHYARD',-25,-64,'A locomotive waits beneath the waterline. Its headlamp is still searching.');
-// District 4: The Wax Carnival — abandoned big top, broken wheel and carousel
-for(const [x,z,c] of [[-76,-82,0x743b4b],[-57,-99,0x3c5360],[-83,-111,0x80633f]]){mesh(new THREE.ConeGeometry(8,12,10),material(c),x,6,z);box(x,1,z,13,2,12,0x302b32);solid(x,z,11,10)}
-const wheel=new THREE.Group();for(let i=0;i<16;i++){const a=i*Math.PI/8;const spoke=new THREE.Mesh(new THREE.BoxGeometry(.15,24,.15),material(0xcbbca3,.4,.5));spoke.position.set(Math.cos(a)*11,Math.sin(a)*11,0);spoke.rotation.z=-a;wheel.add(spoke)}wheel.add(new THREE.Mesh(new THREE.TorusGeometry(11,.3,8,64),material(0xbda98e,.4,.5)));for(let i=0;i<8;i++){const a=i*Math.PI/4;const seat=new THREE.Mesh(new THREE.BoxGeometry(1.5,1.2,1.3),material(0x6b3945));seat.position.set(Math.cos(a)*11,Math.sin(a)*11,0);wheel.add(seat)}wheel.position.set(-65,15,-83);scene.add(wheel);actors.push({obj:wheel,kind:'wheel',phase:0});sign(-65,10,-67,'THE WAX CARNIVAL');ghost(-89,-122,1.3,true);addDistrict('THE WAX CARNIVAL',-65,-91,'The wax figures melt upward. The calliope plays from an empty tent.');
-// District 5: The Bone Orchard — dead trees, stone markers and a buried chapel
-for(let i=0;i<35;i++){const x=22+Math.random()*70,z=-92+Math.random()*48;tree(x,z,.9+Math.random()*.8)}
-for(let i=0;i<20;i++){const x=27+Math.random()*53,z=-88+Math.random()*37;box(x,.8,z,.8,1.6,.3,0x777477);if(i%3===0)box(x,.8,z,.25,2,.3,0x777477)}
-box(63,4,-113,22,8,18,0x4d4a50);for(let x=54;x<=72;x+=6)tower(x,-113,1.1,15,0x66616a);arch(63,-104,7,8);sign(63,14,-99,'BONE ORCHARD');ghost(45,-116,1.25,true);addDistrict('THE BONE ORCHARD',63,-91,'The trees grow from the graves. Something is walking beneath the soil.');
-// District 6: The Black Signal Tower — a vertical beacon over the final platform
-tower(0,-132,5,30,0x39434c);for(let y=8;y<28;y+=5){mesh(new THREE.TorusGeometry(4,.18,8,32),material(0x7b9695,.4,.7),0,y,-132);light(0,y,-132,0x6bb5b5,1.2,25)}sign(0,13,-121,'THE BLACK SIGNAL');addDistrict('THE BLACK SIGNAL TOWER',0,-132,'The last platform is empty. The signal tower is broadcasting your name.');
-// Rail lines, platforms and signal lamps create a readable, continuous route.
-for(const x of [-5,5]){box(x,.12,5,.22,.2,170,0x8b7a69);for(let z=85;z>-145;z-=3)box(x,.24,z,.35,.16,2,0x514a49)}
-for(const [x,z] of [[0,75],[0,48],[0,18],[0,-7],[0,-38],[0,-94],[0,-120],[-31,27],[-60,27],[31,-12],[60,-12],[-32,-73],[-64,-83],[31,-83],[62,-83]])lamp(x,z,0xffbd7a);
-for(const [x,z] of [[-10,73],[10,73],[-38,-54],[38,-55],[-80,-70],[80,-75],[0,-115]]){const fire=mesh(new THREE.ConeGeometry(.55,2,8),new THREE.MeshBasicMaterial({color:0x65c9d2,transparent:true,opacity:.85}),x,1.3,z);actors.push({obj:fire,kind:'fire',phase:Math.random()*8});light(x,2,z,0x50b9ca,2.2,18)}
-ghost(-15,-33,1.2,true);ghost(18,41,1.2,true);
-// NIGHTMARE PARK ATTRACTIONS — full-scale ride silhouettes and walk-up entrances.
-function rideSign(x,z,label){box(x,4,z,12,8,.55,0x24151f);sign(x,7,z-.32,label);light(x,6,z,0xd83c60,3,28)}
-function coasterTrack(points,color=0x9c6574){const curve=new THREE.CatmullRomCurve3(points.map(p=>new THREE.Vector3(p[0],p[1],p[2])));mesh(new THREE.TubeGeometry(curve,180,.28,8,false),material(color,.35,.65),0,0,0);const curve2=new THREE.CatmullRomCurve3(points.map(p=>new THREE.Vector3(p[0]+.85,p[1],p[2])));mesh(new THREE.TubeGeometry(curve2,180,.28,8,false),material(0x515b65,.35,.65),0,0,0);for(let i=0;i<points.length;i+=2){const p=points[i];mesh(new THREE.CylinderGeometry(.16,.22,p[1],7),material(0x333940),p[0],p[1]/2,p[2])}}
-function rideCar(x,y,z){const g=new THREE.Group(),base=new THREE.Mesh(new THREE.BoxGeometry(2.6,.7,4),material(0x29242b,.35,.55));base.position.y=.6;g.add(base);const seat=new THREE.Mesh(new THREE.BoxGeometry(2.2,.8,1.4),material(0x6f263b));seat.position.set(0,1.15,-.4);g.add(seat);for(const s of [-1,1]){const w=new THREE.Mesh(new THREE.CylinderGeometry(.35,.35,.25,12),material(0x17191d,.5,.7));w.rotation.z=Math.PI/2;w.position.set(s*1.25,.35,1.1);g.add(w)}g.position.set(x,y,z);scene.add(g);return g}
-// THE REDLINE — steel horror coaster diving through the railway ruins.
-coasterTrack([[-18,2,-42],[-27,8,-48],[-35,16,-56],[-29,22,-67],[-12,19,-72],[4,12,-68],[14,5,-58],[7,3,-46],[-4,4,-39],[-18,2,-42]]);
-for(const [x,z,h] of [[-27,-48,8],[-35,-56,16],[-29,-67,22],[-12,-72,19],[4,-68,12],[14,-58,5],[7,-46,3]])box(x,h/2,z,.35,h,.35,0x3a4148);
-const train=rideCar(-18,2,-42);actors.push({obj:train,kind:'train',phase:0});rideSign(-25,-36,'THE REDLINE');addDistrict('THE REDLINE COASTER',-25,-45,'The coaster runs without a driver. Listen for the empty seats screaming.');
-// BLACKOUT DROP — a towering free-fall ride with warning beacons.
-tower(87,-52,3.2,38,0x343943);mesh(new THREE.TorusGeometry(4,.55,12,32),material(0x8d344d,.3,.7),87,26,-52);for(let y=5;y<34;y+=6)light(87,y,-52,0xe33258,1.2,20);box(87,1,-52,12,2,12,0x29252e);solid(87,-52,12,12);rideSign(87,-40,'BLACKOUT DROP');addDistrict('BLACKOUT DROP',87,-53,'The lift stops at the top. The screams begin before the fall.');
-// THE MAW — enormous dark-ride facade with a jaw-shaped entrance.
-box(83,7,-12,25,14,18,0x29262d);box(83,14,-12,27,.7,20,0x17141b);solid(83,-12,25,18);arch(83,-2,9,9);for(let i=0;i<9;i++)mesh(new THREE.ConeGeometry(.42,2.5,5),material(0x9b8a7f),72+i*2.7,8,-2);sign(83,16,-1,'ENTER THE MAW');light(83,5,-3,0xc51d43,4,32);ghost(92,-16,1.7,true);addDistrict('THE MAW DARK RIDE',83,-14,'Something enormous moves behind the walls. The exit doors are only painted on.');
-// THE HOLLOW CROWN HOTEL — crooked haunted hotel with lit windows.
-box(83,10,72,26,20,18,0x3b343c);box(83,20,72,29,.8,21,0x1b1820);solid(83,72,26,18);for(let f=0;f<4;f++)for(let col=0;col<5;col++)mesh(new THREE.BoxGeometry(2,2.7,.18),new THREE.MeshStandardMaterial({color:0x887a72,emissive:0x48252b,emissiveIntensity:.8}),73+col*5,4+f*4.5,62.75);tower(70,72,1.5,27,0x4a3c45);tower(96,72,1.5,27,0x4a3c45);sign(83,23,61,'THE HOLLOW CROWN');light(83,8,60,0xc34b5d,3,30);addDistrict('THE HOLLOW CROWN HOTEL',83,72,'The front desk is staffed. The guests checked in a hundred years ago.');
-// THE DOLLHOUSE — a warped nursery and a street of watching dolls.
-box(-91,5,-28,18,10,16,0x51404a);box(-91,10.4,-28,20,.7,18,0x2b2029);solid(-91,-28,18,16);for(let i=0;i<5;i++){mesh(new THREE.SphereGeometry(.85,12,10),material(0xd5b5a5),-97+i*3,2,-19);mesh(new THREE.CylinderGeometry(.55,.75,2.5,10),material(0x493344),-97+i*3,.6,-19);for(const dx of [-.25,.25])mesh(new THREE.SphereGeometry(.1,8,8),new THREE.MeshBasicMaterial({color:0xff253f}),-97+i*3+dx,2.05,-19.7)}sign(-91,13,-19,'THE DOLLHOUSE');light(-91,5,-18,0x9e4b76,2.5,25);addDistrict('THE DOLLHOUSE',-91,-28,'The dolls turn their heads when you pass. One of them is missing.');
-// THE WAKING WARD — an abandoned hospital maze at the edge of the park.
-box(-88,6,-142,27,12,18,0x3b4144);box(-88,12.3,-142,29,.6,20,0x22282d);solid(-88,-142,27,18);for(let i=0;i<6;i++)mesh(new THREE.BoxGeometry(2.2,3,.18),new THREE.MeshStandardMaterial({color:0x89918e,emissive:0x33443e}),-99+i*4.3,7,-132.7);arch(-88,-132,8,8);sign(-88,15,-130,'THE WAKING WARD');light(-88,5,-131,0x8cb7a4,2.2,25);ghost(-78,-146,1.4,true);addDistrict('THE WAKING WARD',-88,-139,'The patients are gone. Their beds are still warm.');
-// REALISM PASS — weathered masonry, layered architecture, practical fixtures and ground detail.
-function trimBox(x,y,z,w,h,d,col=0x81747a){const o=box(x,y,z,w,h,d,col);o.castShadow=true;o.receiveShadow=true;return o}
-function windowUnit(x,y,z,glow=0x9b795e){const frame=material(0x25262a,.55,.35),glass=new THREE.MeshStandardMaterial({color:glow,emissive:glow,emissiveIntensity:.35,roughness:.28});trimBox(x,y,z,.16,2.3,1.65,0x24252a);mesh(new THREE.BoxGeometry(.12,1.95,1.3),glass,x,y,z-.1);trimBox(x,y,z-.2,.2,.14,1.85,0x82756e);trimBox(x,y-1.12,z-.2,.2,.14,1.85,0x82756e);trimBox(x,y,z-.22,.18,2.25,.13,0x82756e);trimBox(x,y,z+.22,.18,2.25,.13,0x82756e);trimBox(x,y,z-.27,.18,.12,1.45,0x82756e);trimBox(x,y,z+.27,.18,.12,1.45,0x82756e);return frame}
-function facadeDoor(x,y,z,w=2.3,h=4){trimBox(x,y,z,w,h,.3,0x201b20);trimBox(x,y,z-.19,w-.35,h-.3,.16,0x46343b);mesh(new THREE.BoxGeometry(.12,.12,.12),material(0xb18c62,.3,.7),x+w*.35,y,z-.34)}
-function awning(x,y,z,w=5){const a=mesh(new THREE.BoxGeometry(w,1.1,2),material(0x4b202e),x,y,z);a.rotation.x=-.16;trimBox(x,y-.63,z-.25,w,.13,1.9,0x9b8b80);for(let i=0;i<Math.ceil(w/1.1);i++)trimBox(x-w/2+.5+i*1.1,y-.15,z-.95,.08,.9,.08,0xc5b5a4)}
-function crackLine(x,z,len,rot=0){const points=[];for(let i=0;i<7;i++)points.push(new THREE.Vector3((Math.random()-.5)*.5,.035,(i/6-.5)*len));const curve=new THREE.CatmullRomCurve3(points);const crack=mesh(new THREE.TubeGeometry(curve,18,.025,4,false),material(0x17191b),x,0,z);crack.rotation.y=rot}
-function rubble(x,z,n=8){for(let i=0;i<n;i++){const a=Math.random()*Math.PI*2,r=Math.random()*2.6,s=.15+Math.random()*.45;const b=mesh(new THREE.DodecahedronGeometry(s,0),material(i%2?0x4a4548:0x6c6260),x+Math.cos(a)*r,s*.45,z+Math.sin(a)*r);b.rotation.set(Math.random(),Math.random(),Math.random())}}
-function lowFog(x,z,w=18){const cv=document.createElement('canvas');cv.width=cv.height=128;const ctx=cv.getContext('2d'),g=ctx.createRadialGradient(64,64,4,64,64,62);g.addColorStop(0,'rgba(184,202,205,.24)');g.addColorStop(.45,'rgba(145,164,170,.13)');g.addColorStop(1,'rgba(130,150,160,0)');ctx.fillStyle=g;ctx.fillRect(0,0,128,128);const tex=new THREE.CanvasTexture(cv);const fog=mesh(new THREE.PlaneGeometry(w,7),new THREE.MeshBasicMaterial({map:tex,transparent:true,depthWrite:false,side:THREE.DoubleSide}),x,.28,z,-Math.PI/2);actors.push({obj:fog,kind:'fog',home:new THREE.Vector3(x,0,z),phase:Math.random()*6})}
-// Building depth: pilasters, lintels, sills, boarded openings and roof edges.
-for(const [x,z,w,h,d] of [[-83,35,7,6,10],[-75,43,7,6,10],[-67,35,7,6,10],[-59,43,7,6,10],[43,32,9,9,10],[55,32,9,12,10],[67,32,9,9,10],[43,15,9,12,10],[55,15,9,9,10],[67,15,9,12,10],[83,72,26,20,18],[-91,-28,18,10,16],[-88,-142,27,12,18],[83,-12,25,14,18]]){for(const side of [-1,1])trimBox(x+side*(w/2-.28),h/2,z-d/2-.08,.32,h+.3,.28,0x62575a);trimBox(x,h+.12,z-d/2-.12,w+.5,.28,.45,0x81716d);trimBox(x,h*.12,z-d/2-.13,w+.4,.3,.5,0x28272c);trimBox(x,h+.42,z,w+.9,.25,d+.8,0x27252b)}
-// More convincing occupied-but-abandoned windows, fire escapes and shopfronts.
-for(const [x,z,ys] of [[43,32,[3,6]],[55,32,[3,6,9]],[67,32,[3,6]],[43,15,[3,6,9]],[55,15,[3,6]],[67,15,[3,6,9]],[83,72,[4,8,12,16]],[ -91,-28,[3,7]],[ -88,-142,[4,8]]])for(const y of ys)for(const dx of [-2.6,0,2.6])windowUnit(x+dx,y,z-5.12,y%2?0x5d777a:0x9a624b);
-facadeDoor(83,2.2,62.6,3,4.2);awning(83,6.2,61.8,8);facadeDoor(-88,2.2,-132.5,3.2,4.4);facadeDoor(83,2.2,-2.6,4,5);
-for(let i=0;i<16;i++){const x=-104+i*13;crackLine(x,78,12,(i%3)*.12)}
-for(const [x,z] of [[-68,26],[57,25],[-25,-64],[-65,-91],[63,-91],[0,-132],[-25,-45],[87,-53],[83,-14],[83,72],[-91,-28],[-88,-139]]){rubble(x,z,5);lowFog(x,z,22)}
-// Shop signs, fire escapes, drain pipes, utility boxes and abandoned street furniture.
-for(const [x,z] of [[43,32],[55,15],[67,32]]){awning(x,3.7,z-5.8,5);facadeDoor(x,1.9,z-5.2,2.4,3.8)}
-for(const [x,z,h] of [[39,32,9],[51,32,12],[63,32,9],[39,15,12],[51,15,9],[63,15,12],[83,72,20]]){trimBox(x+5.1,h/2,z-4.9,.18,h,.18,0x4b4c50);for(let y=2;y<h;y+=3)trimBox(x+5.5,y,z-4.9,1,.12,.8,0x65636a)}
-for(const [x,z] of [[-47,27],[37,-12],[-47,-73],[43,-83],[0,-110]]){trimBox(x,1.1,z,2.5,.18,.8,0x49464a);for(const dx of [-.8,.8])trimBox(x+dx,1.6,z,.12,1,.12,0x34353a)}
-// Detailed coaster supports, cross-bracing and maintenance walkways.
-for(const [x,z,h] of [[-27,-48,8],[-35,-56,16],[-29,-67,22],[-12,-72,19],[4,-68,12],[14,-58,5],[7,-46,3]]){for(const dx of [-1.5,1.5])trimBox(x+dx,h/2,z,.22,h,.22,0x59616a);trimBox(x,h*.48,z,3.3,.18,.18,0x73777a);trimBox(x,h*.2,z,3,.13,.13,0x73777a)}
-// The wheel receives a proper hub, support legs and hanging gondolas.
-const wheelHub=mesh(new THREE.CylinderGeometry(1.2,1.2,2,16),material(0x786c65,.4,.65),-65,15,-83,Math.PI/2);for(const dx of [-4,4]){const leg=mesh(new THREE.BoxGeometry(.55,18,.7),material(0x4a5057),-65+dx,7,-83);leg.rotation.z=dx*.055}
-for(let i=0;i<8;i++){const a=i*Math.PI/4;const x=-65+Math.cos(a)*11,z=-83;const chain=mesh(new THREE.CylinderGeometry(.035,.035,2.2,6),material(0x77716a),x,15+Math.sin(a)*11-1.3,z);const gondola=box(x,15+Math.sin(a)*11-2.5,z,1.6,1.1,1.3,0x49313b);gondola.rotation.z=-a}
-// A cold moon, circling ravens and drifting soot complete the new atmosphere.
-mesh(new THREE.SphereGeometry(13,24,18),new THREE.MeshBasicMaterial({color:0xb6c9c7}),-75,63,-145);mesh(new THREE.TorusGeometry(17,.55,8,64),new THREE.MeshBasicMaterial({color:0x668b91,transparent:true,opacity:.55}),-75,63,-144);
-for(let i=0;i<18;i++){const g=new THREE.Group(),m=new THREE.MeshBasicMaterial({color:0x080d12,side:THREE.DoubleSide});g.add(new THREE.Mesh(new THREE.SphereGeometry(.18,8,6),m));for(const side of [-1,1]){const sh=new THREE.Shape();sh.moveTo(0,0);sh.lineTo(side*.9,.2);sh.lineTo(side*.7,-.45);sh.lineTo(side*.2,-.2);sh.closePath();const wing=new THREE.Mesh(new THREE.ShapeGeometry(sh),m);wing.userData.side=side;g.add(wing)}g.position.set((Math.random()-.5)*85,17+Math.random()*18,-25+(Math.random()-.5)*130);scene.add(g);actors.push({obj:g,kind:'bat',home:g.position.clone(),phase:Math.random()*8})}
-const n=720,p=new Float32Array(n*3);for(let i=0;i<n;i++){p[i*3]=(Math.random()-.5)*210;p[i*3+1]=Math.random()*28;p[i*3+2]=-35+(Math.random()-.5)*240}const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.BufferAttribute(p,3));const ash=new THREE.Points(geo,new THREE.PointsMaterial({color:0x9fb0b3,size:.13,transparent:true,opacity:.5}));scene.add(ash);actors.push({obj:ash,kind:'ash'});
-
-// THE BLACK VEIL EXPANSION — new centerpiece landmarks and a second layer of exploration.
-path(-37,24,13,42);path(35,-38,13,48);path(31,-105,13,42);
-function gothicTower(x,z,h=24){tower(x,z,2.1,h,0x303a43);for(let y=5;y<h;y+=6){mesh(new THREE.TorusGeometry(1.7,.12,7,20),material(0x829098,.45,.55),x,y,z);light(x,y,z,0x8e344e,1.1,17)}}
-function gothicWindow(x,y,z){const frame=material(0x242a30,.5,.45),glass=new THREE.MeshStandardMaterial({color:0x9b5360,emissive:0x6e172d,emissiveIntensity:.55,roughness:.25});mesh(new THREE.BoxGeometry(1.25,2.5,.22),frame,x,y,z);mesh(new THREE.BoxGeometry(.82,1.95,.12),glass,x,y,z-.14);mesh(new THREE.ConeGeometry(.72,.95,3),material(0x4b343e),x,y+1.55,z-.02)}
-// Dreadfall Manor — a multi-storey centerpiece with forecourt and broken clock.
-box(-37,8,-5,29,16,22,0x30383d);box(-37,16.4,-5,31,.8,24,0x171d24);box(-37,11,-16.3,10,22,4,0x252c33);box(-37,2,-17,5,4,.5,0x090c11);solid(-37,-5,29,22);
-for(const x of [-49,-25]){gothicTower(x,-14,28);gothicWindow(x,12,-17.2);gothicWindow(x,7,-17.2)}
-for(const x of [-46,-37,-28])for(const y of [6,11])gothicWindow(x,y,-16.25);
-arch(-37,-17,8,8);sign(-37,21,-17,'DREADFALL MANOR');light(-37,5,-20,0xb52d4d,4,35);
-for(let i=0;i<7;i++){const x=-56+i*6.3;box(x,.5,-23,.4,1,.4,0x77716a);mesh(new THREE.SphereGeometry(.2,8,7),new THREE.MeshBasicMaterial({color:0xe3b9a1}),x,1.1,-23)}
-addDistrict('DREADFALL MANOR',-37,-5,'The manor bell rings from a room that was bricked shut. The front door is open now.');
-// Chapel of Teeth — collapsed stone chapel with stained glass.
-box(35,5,-54,21,10,15,0x45464a);box(35,10.2,-54,23,.6,17,0x20262c);solid(35,-54,21,15);
-for(const x of [26,44])gothicTower(x,-54,19);
-arch(35,-46,6,8);for(const x of [29,35,41])gothicWindow(x,6,-61.7);
-sign(35,13,-45,'CHAPEL OF TEETH');light(35,4,-44,0x9a344e,3,25);
-for(let i=0;i<8;i++){const tooth=mesh(new THREE.ConeGeometry(.32,1.6,6),material(0xb7a99a),27+i*2.25,1,-43);tooth.rotation.z=Math.PI}
-addDistrict('CHAPEL OF TEETH',35,-54,'A hymn plays beneath the floor. The pews are facing the wrong direction.');
-// Mirror Maze — black glass corridors and fractured reflective panels.
-for(const [x,z,w,d] of [[25,-91,22,1],[25,-105,22,1],[14,-98,1,14],[36,-98,1,14],[25,-98,1,7],[19,-94,1,7],[31,-102,1,7]]){box(x,2.2,z,w,4.4,d,0x171e25);solid(x,z,w,d)}
-for(const [x,z] of [[14,-91],[36,-91],[14,-105],[36,-105],[25,-98]]){const pane=mesh(new THREE.BoxGeometry(2.6,3.8,.12),new THREE.MeshStandardMaterial({color:0x78939b,metalness:.92,roughness:.08,emissive:0x142c34,emissiveIntensity:.7}),x,2.3,z);pane.rotation.y=.18}
-sign(25,7,-89,'THE MIRROR MAZE');light(25,3,-90,0x54a8b8,2.8,24);
-addDistrict('THE MIRROR MAZE',25,-98,'Your reflection keeps walking after you stop. Do not follow it.');
-// Gristle Works — abandoned processing plant and blood-red loading bay.
-box(31,7,-132,27,14,19,0x3b4144);box(31,14.2,-132,29,.7,21,0x20262c);solid(31,-132,27,19);
-for(const x of [21,40]){mesh(new THREE.CylinderGeometry(1.2,1.5,18,10),material(0x30373c,.7,.5),x,22,-138);mesh(new THREE.CylinderGeometry(1.6,1.2,1,10),material(0x191f25),x,31,-138)}
-for(let i=0;i<5;i++)gothicWindow(22+i*4.5,7,-141.7);
-facadeDoor(31,3,-141.5,5,6);sign(31,17,-141,'THE GRISTLE WORKS');light(31,4,-140,0xa81c36,4,30);
-addDistrict('THE GRISTLE WORKS',31,-132,'The conveyor belt is still moving. Something heavy is coming down it.');
-for(let i=0;i<11;i++){const x=-103+i*7,z=-53-Math.sin(i*.8)*7;mesh(new THREE.ConeGeometry(3+Math.random()*2,9+Math.random()*7,6),material(0x242c32),x,4,z);if(i%2===0)lamp(x,z+5,0xb34a58)}
-lowFog(-37,-5,30);lowFog(35,-54,26);lowFog(25,-98,28);lowFog(31,-132,30);
-
+scene=new THREE.Scene();scene.background=new THREE.Color(0x070a10);scene.fog=new THREE.FogExp2(0x111923,.0065);
+camera=new THREE.PerspectiveCamera(72,innerWidth/innerHeight,.1,460);camera.position.set(0,1.7,112);
+renderer=new THREE.WebGLRenderer({canvas,antialias:true,powerPreference:'high-performance'});renderer.setPixelRatio(Math.min(devicePixelRatio,1.35));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.3;
+clock=new THREE.Clock();scene.add(new THREE.HemisphereLight(0xa8b8c8,0x11131b,1.35));const moon=new THREE.DirectionalLight(0xb8cbd7,1.9);moon.position.set(-45,90,30);moon.castShadow=true;moon.shadow.mapSize.set(1024,1024);scene.add(moon);
+mesh(new THREE.PlaneGeometry(300,340),material(0x171e25),0,-.55,-24,-Math.PI/2);
+districts.length=0;actors.length=0;solids.length=0;lights.length=0;gates.length=0;
+// NEW MAP: THE VEIL — a circular nightmare fairground surrounding a sunken black lake.
+// Main promenade branches into six radial lands; the old railway-town layout is gone.
+path(0,83,16,45);path(0,43,16,36);path(0,4,18,42);path(0,-39,16,42);path(0,-80,20,42);
+path(-28,34,52,14,0);path(-57,34,38,14,0);path(28,4,52,14,0);path(57,4,38,14,0);path(-29,-64,52,14,0);path(29,-64,52,14,0);
+path(-18,-18,34,12,-.65);path(18,-18,34,12,.65);
+// Outer wall and entrance
+for(let x=-105;x<=105;x+=7){if(Math.abs(x)>13)box(x,4,105,.35,8,.35,0x35414a);if(Math.abs(x)>13)box(x,4,-151,.35,8,.35,0x35414a)}
+for(let z=-151;z<=105;z+=7){box(-105,4,z,.35,8,.35,0x35414a);box(105,4,z,.35,8,.35,0x35414a)}
+arch(0,100,20,13);tower(-12,100,2.5,18,0x414a52);tower(12,100,2.5,18,0x414a52);sign(0,12,98,'THE VEIL HAS OPENED');light(0,7,94,0xa83250,4,38);
+box(-7,3,94,.5,6,.5,0x7c7a74);box(7,3,94,.5,6,.5,0x7c7a74);
+gates.push({obj:new THREE.Group(),side:1});
+// Central landmark: The Sunken Bell, a vast circular crater with a suspended iron bell.
+mesh(new THREE.CylinderGeometry(17,21,1.2,48),material(0x080d12),0,-.05,-18);mesh(new THREE.TorusGeometry(19,.8,10,64),material(0x515b62,.45,.7),0,.35,-18);
+for(let i=0;i<16;i++){const a=i*Math.PI/8,x=Math.cos(a)*19,z=-18+Math.sin(a)*19;tower(x,z,.35,3+(i%3),0x55565a)}
+tower(0,-18,1.1,27,0x333b42);mesh(new THREE.TorusGeometry(4,.3,10,32),material(0x9c795e),0,25,-18);mesh(new THREE.TorusGeometry(2.7,.18,8,32),material(0x9c795e),0,19,-18);
+const bell=mesh(new THREE.SphereGeometry(2.5,16,12),material(0x554b45,.75,.7),0,17,-18);bell.scale.set(1,1.2,1);actors.push({obj:bell,kind:'bell',phase:0});light(0,16,-18,0xa42e4b,3,42);
+addDistrict('THE SUNKEN BELL',0,-18,'A bell rings beneath the crater. The sound comes from below your feet.');
+// Dreadfall Estate — large central haunted mansion with wings, towers and lit windows.
+box(-38,9,3,29,18,24,0x343b40);box(-38,18.4,3,31,.8,26,0x1b2027);solid(-38,3,29,24);
+for(const x of [-52,-24]){tower(x,0,2.2,29,0x3b4148);light(x,13,0,0x8d2d49,1.3,20)}
+box(-38,12,-10,12,24,5,0x292e34);arch(-38,-7,9,10);sign(-38,23,-7,'DREADFALL ESTATE');light(-38,5,-12,0xa82c4a,4,32);
+for(const x of [-48,-40,-32,-28])for(const y of [5,10,15]){box(x,y,-9.5,1.7,2.8,.2,0x171c22);mesh(new THREE.BoxGeometry(1.2,2.2,.12),new THREE.MeshStandardMaterial({color:0x9a5961,emissive:0x6a1b30,emissiveIntensity:.7}),x,y,-9.7)}
+facadeDoor(-38,2,-12,3,5);lowFog(-38,0,28);
+addDistrict('DREADFALL ESTATE',-38,3,'The mansion lights turn on one floor at a time. Nobody is inside. Nobody is outside.');
+// The Red Wake — giant broken ferris wheel beside a flooded midway.
+const wheel=new THREE.Group();for(let i=0;i<14;i++){const a=i*Math.PI/7;const sp=new THREE.Mesh(new THREE.BoxGeometry(.16,22,.16),material(0x9b8d7b));sp.position.set(Math.cos(a)*10,Math.sin(a)*10,0);sp.rotation.z=-a;wheel.add(sp)}
+wheel.add(new THREE.Mesh(new THREE.TorusGeometry(10,.28,8,48),material(0x897b70)));wheel.position.set(-76,15,24);scene.add(wheel);actors.push({obj:wheel,kind:'wheel',phase:0});
+for(const x of [-81,-71]){const leg=mesh(new THREE.BoxGeometry(.65,18,.7),material(0x424a50),x,7,24);leg.rotation.z=(x+76)*.04}
+for(let i=0;i<7;i++){const a=i*Math.PI*2/7;box(-76+Math.cos(a)*10,15+Math.sin(a)*10,24,1.5,1.2,1.3,0x563443)}
+box(-76,2,38,22,4,14,0x34383e);solid(-76,38,22,14);sign(-76,10,46,'THE RED WAKE');light(-76,4,44,0xb12c48,3,28);
+addDistrict('THE RED WAKE',-76,25,'The wheel turns only when nobody is looking. The gondolas are occupied.');
+// The Doll Ward — a narrow, crooked street of nursery rooms and watching windows.
+for(let i=0;i<5;i++){const x=38+i*10,z=35-(i%2)*12,h=10+(i%3)*3;box(x,h/2,z,8,h,9,0x454047);box(x,h+.2,z,8.5,.45,9.5,0x24232b);solid(x,z,8,9);for(let y=3;y<h;y+=3){mesh(new THREE.BoxGeometry(1.4,1.8,.14),new THREE.MeshStandardMaterial({color:0x987c72,emissive:0x542a38,emissiveIntensity:.6}),x,y,z-4.6)}}
+sign(58,14,43,'THE DOLL WARD');for(let i=0;i<5;i++){const x=40+i*8;ghost(x,48,.75,true)}addDistrict('THE DOLL WARD',58,28,'Small faces watch from the upstairs windows. They are all facing you.');
+// The Blackwater Pier — boardwalk over dark water with a stranded boat.
+const lake=mesh(new THREE.PlaneGeometry(62,38),new THREE.MeshStandardMaterial({color:0x0a2931,metalness:.55,roughness:.12,transparent:true,opacity:.92}),38,.02,-67);lake.rotation.x=-Math.PI/2;
+for(let i=0;i<12;i++){box(10+i*5,.3,-48,4,.5,3,0x51473f);box(10+i*5,.3,-86,4,.5,3,0x51473f)}
+const boat=mesh(new THREE.BoxGeometry(10,1.4,3),material(0x3d4143),38,.9,-68);boat.rotation.y=.2;actors.push({obj:boat,kind:'boat',phase:0});sign(38,8,-44,'BLACKWATER PIER');light(38,4,-45,0x4eabb9,2.4,30);lowFog(38,-67,38);
+addDistrict('BLACKWATER PIER',38,-65,'A boat rocks against the pier. The rope is tied to something beneath the water.');
+// The Maw — huge jaw-like dark ride facade.
+box(82,7,-9,25,14,18,0x29262d);box(82,14.2,-9,27,.7,20,0x17141b);solid(82,-9,25,18);arch(82,0,9,9);for(let i=0;i<9;i++){const tooth=mesh(new THREE.ConeGeometry(.4,2.4,5),material(0xb5a99d),71+i*2.7,8,0);tooth.rotation.z=Math.PI}sign(82,16,1,'THE MAW');light(82,5,0,0xc51d43,4,32);addDistrict('THE MAW',82,-10,'The entrance breathes. The walls tighten when the lights go out.');
+// The Last Ward — long abandoned hospital with repeated lit rooms.
+box(-86,6,-93,28,12,19,0x3d4546);box(-86,12.3,-93,30,.6,21,0x20282c);solid(-86,-93,28,19);arch(-86,-82,8,8);for(let i=0;i<6;i++){mesh(new THREE.BoxGeometry(2,3,.16),new THREE.MeshStandardMaterial({color:0x9da9a0,emissive:0x384a42,emissiveIntensity:.6}),-98+i*4.5,7,-83.2)}sign(-86,15,-81,'THE LAST WARD');light(-86,4,-81,0x82a99c,2.5,25);ghost(-75,-99,1.4,true);addDistrict('THE LAST WARD',-86,-92,'The intercom calls patients by names that have not been born yet.');
+// The Ashen Chapel and grave terraces.
+box(0,5,-122,22,10,17,0x45454a);box(0,10.2,-122,24,.6,19,0x25282e);solid(0,-122,22,17);for(const x of [-10,10])tower(x,-122,1.4,18,0x48444c);arch(0,-112,7,8);sign(0,14,-111,'ASHEN CHAPEL');light(0,4,-111,0x9c3c50,3,25);
+for(let i=0;i<24;i++){const x=-35+(i%8)*10,z=-141+Math.floor(i/8)*9;box(x,.8,z,.7,1.6,.25,0x7a7771);box(x,.8,z,.25,2,.25,0x7a7771)}
+addDistrict('ASHEN CHAPEL',0,-122,'The choir sings from the sealed crypt. The hymn has no final verse.');
+// The Furnace — industrial stacks, red loading doors and a moving shadow.
+box(78,7,-111,29,14,21,0x3b4144);box(78,14.2,-111,31,.7,23,0x20262c);solid(78,-111,29,21);for(const x of [68,88]){mesh(new THREE.CylinderGeometry(1.2,1.5,18,10),material(0x30373c),x,23,-117);light(x,30,-117,0xc22b42,1.2,20)}for(let i=0;i<6;i++)mesh(new THREE.BoxGeometry(2,2.8,.15),new THREE.MeshStandardMaterial({color:0x9d5c51,emissive:0x671b25,emissiveIntensity:.55}),58+i*7,7,-121.7);facadeDoor(78,3,-122,5,6);sign(78,17,-120,'THE FURNACE');light(78,4,-120,0xc2263c,4,32);addDistrict('THE FURNACE',78,-111,'The furnace has been burning for decades. The chimney smoke is moving against the wind.');
+// A new coaster snakes above the park's ravine.
+const curve=new THREE.CatmullRomCurve3([[-28,3,-45],[-40,11,-52],[-53,19,-62],[-42,22,-76],[-22,14,-83],[2,7,-76],[18,3,-55]].map(p=>new THREE.Vector3(...p)));mesh(new THREE.TubeGeometry(curve,180,.3,8,false),material(0x9a5968,.4,.7));const curve2=new THREE.CatmullRomCurve3([[-27,3,-45],[-39,11,-52],[-52,19,-62],[-41,22,-76],[-21,14,-83],[3,7,-76],[19,3,-55]].map(p=>new THREE.Vector3(...p)));mesh(new THREE.TubeGeometry(curve2,180,.3,8,false),material(0x59636b,.4,.7));for(const [x,z,h] of [[-40,-52,11],[-53,-62,19],[-42,-76,22],[-22,-83,14],[2,-76,7]])box(x,h/2,z,.35,h,.35,0x424950);
+const train=box(-28,3,-45,2.8,1.4,4,0x742c40);actors.push({obj:train,kind:'train',phase:0});sign(-34,10,-42,'THE GRAVE RUN');addDistrict('THE GRAVE RUN',-34,-49,'The train comes around again with one more passenger every lap.');
+// Set-piece details: broken street lamps, chains, ravens, low fog and scattered ash.
+for(const [x,z] of [[0,82],[0,48],[0,17],[0,-45],[0,-94],[-28,34],[-57,34],[28,4],[57,4],[-29,-64],[29,-64],[0,-122],[-76,25],[58,28],[38,-65],[82,-10],[-86,-92],[78,-111]]){lamp(x,z,0xffb77a);lowFog(x,z,20)}
+for(let i=0;i<24;i++){const x=(Math.random()-.5)*190,z=-25+(Math.random()-.5)*230;const bird=mesh(new THREE.SphereGeometry(.2,7,6),material(0x090d12),x,18+Math.random()*12,z);actors.push({obj:bird,kind:'bat',home:bird.position.clone(),phase:Math.random()*8})}
+const count=560,pts=new Float32Array(count*3);for(let i=0;i<count;i++){pts[i*3]=(Math.random()-.5)*210;pts[i*3+1]=Math.random()*24;pts[i*3+2]=-25+(Math.random()-.5)*240}const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.BufferAttribute(pts,3));scene.add(new THREE.Points(geo,new THREE.PointsMaterial({color:0x9baab0,size:.12,transparent:true,opacity:.42})));
 }
 function showToast(t){toast.textContent=t;toast.classList.add('on');lastToast=performance.now()}
 function blocked(x,z){for(const b of solids)if(Math.abs(x-b.x)<b.w/2+.35&&Math.abs(z-b.z)<b.d/2+.35)return true;return false}
@@ -196,7 +136,7 @@ function frame(){if(!active)return;requestAnimationFrame(frame);const dt=Math.mi
 function soundCreak(){if(!soundOn||!audioCtx)return;const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type='sawtooth';o.frequency.setValueAtTime(90,audioCtx.currentTime);o.frequency.exponentialRampToValueAtTime(25,audioCtx.currentTime+1);g.gain.setValueAtTime(.0001,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(.12,audioCtx.currentTime+.08);g.gain.exponentialRampToValueAtTime(.0001,audioCtx.currentTime+1.1);o.connect(g).connect(audioCtx.destination);o.start();o.stop(audioCtx.currentTime+1.15)}
 function toggleSound(){soundOn=!soundOn;$('soundBtn').textContent='SOUND: '+(soundOn?'ON':'OFF');if(soundOn){audioCtx=audioCtx||new(window.AudioContext||window.webkitAudioContext)();audioCtx.resume();const o=audioCtx.createOscillator(),g=audioCtx.createGain(),f=audioCtx.createBiquadFilter();o.type='sawtooth';o.frequency.value=42;f.type='lowpass';f.frequency.value=100;g.gain.value=.016;o.connect(f).connect(g).connect(audioCtx.destination);o.start();ambience={o,g};soundCreak()}else if(ambience){ambience.g.gain.setTargetAtTime(0,audioCtx.currentTime,.12);ambience.o.stop(audioCtx.currentTime+.5);ambience=null}}
 $('soundBtn').addEventListener('click',toggleSound);
-function begin(){if(active)return;try{build();active=true;intro.classList.add('hide');hud.classList.add('show');mobile.classList.add('show');showToast('The Black Veil is awake. Sixteen districts are waiting beyond the gate.');frame()}catch(e){console.error(e);fatal.textContent='The town could not open: '+e.message;fatal.classList.add('show')}}
+function begin(){if(active)return;try{build();active=true;intro.classList.add('hide');hud.classList.add('show');mobile.classList.add('show');showToast('The Black Veil is awake. Nine nightmare districts are waiting beyond the gate.');frame()}catch(e){console.error(e);fatal.textContent='The town could not open: '+e.message;fatal.classList.add('show')}}
 $('enter').addEventListener('click',begin);
 addEventListener('keydown',e=>{const k=e.key.toLowerCase();if(k==='w'||k==='arrowup')keys.f=1;if(k==='s'||k==='arrowdown')keys.b=1;if(k==='a'||k==='arrowleft')keys.l=1;if(k==='d'||k==='arrowright')keys.r=1;if(k==='shift')keys.run=1});
 addEventListener('keyup',e=>{const k=e.key.toLowerCase();if(k==='w'||k==='arrowup')keys.f=0;if(k==='s'||k==='arrowdown')keys.b=0;if(k==='a'||k==='arrowleft')keys.l=0;if(k==='d'||k==='arrowright')keys.r=0;if(k==='shift')keys.run=0});
