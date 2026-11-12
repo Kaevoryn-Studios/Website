@@ -12,7 +12,7 @@
 <body>
 <canvas id="world"></canvas>
 <div class="top"><b>KICKAPOO PARK</b><span>THE GRAND THEME PARK · ENDLESS PATHS · BIG ADVENTURES</span><a href="parks.html">PARKS</a></div>
-<div class="hud"><div class="plate"><b id="land">THE GRAND ENTRANCE</b><small id="objective">Your next adventure is waiting.</small></div><div class="plate" style="text-align:right"><b>EXPLORER</b><small id="count">0 / 13 discoveries</small></div></div>
+<div class="hud"><div class="plate"><b id="land">THE GRAND ENTRANCE</b><small id="objective">Your next adventure is waiting.</small></div><div class="plate" style="text-align:right"><b>EXPLORER</b><small id="count">0 / 12 discoveries</small></div></div>
 <div class="bottom"><div class="pad" id="pad"><div class="stick" id="stick"></div></div><div class="buttons"><button id="explore">EXPLORE NEARBY · E</button><button class="sub" id="exitRide" hidden>EXIT RIDE</button><button class="sub" id="night">DAY / NIGHT</button><button class="sub" id="help">HOW TO EXPLORE</button></div></div>
 <div class="toast" id="toast"></div><div id="rotateHint">FOR THE BEST VIEW, TURN YOUR PHONE SIDEWAYS</div>
 <div class="overlay" id="welcome"><div class="card"><div class="eyebrow">THE GRAND THEME PARK</div><h1>KICKAPOO<br>PARK</h1><p>A sprawling world of legendary coasters, spectacular rides, immersive lands, grand promenades and endless places to discover.</p><p class="hint">Follow the long walking promenades between themed lands. Use the joystick or WASD to walk; drag the screen to look around.</p><button id="enter" type="button">ENTER THE PARK</button><p class="hint" id="loadmsg">Preparing your park…</p></div></div>
@@ -458,14 +458,14 @@ function buildGrandPromenade(){
   /* A continuous pedestrian network: wide main avenue, cross-park promenades,
      scenic loops and branches that make the park feel like one destination. */
   var routes=[
-    {w:13,p:[[0,112],[0,91],[0,76],[0,58],[0,42],[0,24],[0,5],[0,-18],[0,-42],[0,-67],[0,-91],[0,-116],[0,-143],[0,-174]]},
+    {w:13,p:[[0,112],[0,91],[0,76],[0,58],[0,42],[0,24],[0,5],[0,-18],[0,-42],[0,-67],[0,-91],[0,-116],[-26,-132],[-26,-155],[-26,-170],[0,-174]]},
     {w:10,p:[[-178,48],[-150,48],[-122,48],[-95,48],[-68,48],[-42,48],[-18,48],[18,48],[42,48],[68,48],[95,48],[122,48],[150,48],[178,48]]},
     {w:9,p:[[-165,-20],[-140,-20],[-112,-20],[-85,-20],[-58,-20],[-30,-20],[0,-20],[30,-20],[58,-20],[85,-20],[112,-20],[140,-20],[165,-20]]},
-    {w:9,p:[[-150,-105],[-125,-105],[-100,-105],[-75,-105],[-50,-105],[-25,-105],[0,-105],[25,-105],[50,-105],[75,-105],[100,-105],[125,-105],[150,-105]]},
+    {w:9,p:[[-150,-82],[-125,-82],[-100,-82],[-75,-82],[-50,-82],[-25,-82],[0,-82],[25,-82],[50,-82],[75,-82],[100,-82],[125,-82],[150,-82],[170,-82]]},
     {w:8,p:[[-145,115],[-125,95],[-105,75],[-85,55],[-65,35],[-45,15],[-25,-5],[0,-25],[25,-45],[50,-65],[75,-85],[100,-105],[125,-125],[150,-145]]},
     {w:8,p:[[145,130],[125,110],[105,90],[85,70],[65,50],[45,30],[25,10],[0,-10],[-25,-30],[-50,-50],[-75,-70],[-100,-90],[-125,-110],[-150,-130]]},
     {w:8,p:[[-145,145],[-120,145],[-95,145],[-70,145],[-45,145],[-20,145],[5,145],[30,145],[55,145],[80,145],[105,145],[130,145],[155,145]]},
-    {w:8,p:[[-155,-155],[-130,-155],[-105,-155],[-80,-155],[-55,-155],[-30,-155],[-5,-155],[20,-155],[45,-155],[70,-155],[95,-155],[120,-155],[145,-155]]}
+    {w:8,p:[[-165,-155],[-120,-155],[-75,-155],[-35,-155],[-26,-132],[-26,-110],[-26,-82],[0,-82],[40,-82],[80,-82],[120,-82],[170,-82],[170,-110],[170,-145],[170,-155]]}
   ];
   routes.forEach(function(r){
     addPath(r.p,r.w,M.path);
@@ -945,7 +945,7 @@ function build(){
   buildGrandConservatory();
 
   /* Adventure Kingdom — castle district, village facades and a sweeping coaster. */
-  addPath([[-15,-15],[-35,-32],[-57,-53],[-80,-75],[-105,-96],[-128,-112]],11,M.path);
+  addPath([[-15,-15],[-35,-32],[-57,-53],[-80,-75],[-105,-90],[-126,-98]],11,M.path);
   gate(-112,-62,M.gold,'castle');castle(-126,-108);coaster(-78,-82,'#d9a64e');
   buildResortFacade(-164,-72,25,12,15,M.cream,M.red,M.gold,'Royal Provisions',2);
   buildResortFacade(-164,-101,25,12,15,M.temple,M.roof,M.blue,'The Crown Jeweller',2);
@@ -962,13 +962,14 @@ function build(){
     addCollider(Math.cos(a)*r,-150+Math.sin(a)*r,3.25,3.25);
   }
   dragon(0,-150);coaster(43,-112,'#49a78b');
-  addPath([[-28,-112],[-19,-126],[-10,-140],[0,-151],[15,-158],[30,-160]],9,M.stone);
+  addPath([[0,-116],[0,-128],[0,-139],[15,-158],[30,-160]],9,M.stone);
   buildResortFacade(-48,-153,25,12,15,M.wood,M.roof,M.red,'Dragon Keep',2);
   discovery("DRAGON'S REACH",0,-150,'A towering emerald dragon guards a rugged fantasy valley with cliff trails, a fortified lodge and a high-speed mountain coaster.');
 
   /* Monster Mountain — crater, lava glow and a separate thrill-ride skyline. */
   gate(116,-70,M.red,'volcano');volcano(129,-135);coaster(83,-99,'#e36f43');
-  addPath([[83,-99],[90,-130],[96,-160],[120,-174],[150,-174],[166,-155],[161,-135]],9,M.stone);
+  addPath([[97,-99],[90,-130],[96,-160],[120,-174],[150,-174],[166,-155],[161,-135]],9,M.stone);
+  addPath([[97,-99],[97,-87],[105,-82]],9,M.stone);
   buildResortFacade(169,-102,25,13,15,M.volcanic,M.roof,M.lava,'The Ember Lodge',2);
   for(var i=0;i<20;i++){var a=i/20*Math.PI*2;addTree(129+Math.cos(a)*55,-135+Math.sin(a)*45,.7)}
   discovery('MONSTER MOUNTAIN',161,-135,'A volcanic thrill district with a glowing crater, jagged ridgelines, a coaster and an ember-lit mountain lodge.');
@@ -1002,6 +1003,8 @@ function build(){
   }
   buildResortFacade(-177,-9,22,12,14,M.temple,M.roof,M.mint,'Expedition Supply',2);
   addPath([[-137,-5],[-141,-6],[-145,-8],[-148,-9]],8,M.path);
+  /* Cross-pier keeps the east-west promenade open through the jungle lagoon. */
+  buildPier(-148,-20,44,9);addRectCollider(-148,-24.7,44,.35);addRectCollider(-148,-15.3,44,.35);
   discovery('JUNGLE EXPEDITION',-148,-35,'A dense tropical river world with towering canopy, ancient temple ruins and a guided expedition ride.');
 
   /* Sky Gardens — observation wheel, formal terraces and a rooftop garden pavilion. */
