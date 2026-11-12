@@ -976,7 +976,15 @@ function build(){
 
   /* Jungle Expedition — layered canopy, ancient temple and river adventure. */
   gate(-137,-5,M.mint,'jungle');water(-148,-35,40,52);jungleRiverRide(-148,-42);
-  addBox(-148,5,4,26,10,24,M.temple);addBox(-148,10.3,4,28,1,26,M.gold);addCollider(-148,4,13,12);
+  /* Ancient temple ruins rebuilt as a walk-in chamber with a broad, open south-facing doorway. */
+  addBox(-160.5,5,4,.9,10,24,M.temple);addBox(-135.5,5,4,.9,10,24,M.temple);
+  addBox(-148,5,-7,24,10,.9,M.temple);
+  addBox(-154.5,5,15.5,11,10,.9,M.temple);addBox(-141.5,5,15.5,11,10,.9,M.temple);
+  addBox(-148,9.1,15.5,2.2,1.8,.9,M.gold);
+  addBox(-148,10.3,4,28,1,26,M.gold);
+  /* Collision follows the stone walls, leaving the central entrance unobstructed. */
+  addRectCollider(-160.5,4,.9,24);addRectCollider(-135.5,4,.9,24);
+  addRectCollider(-148,-7,24,.9);addRectCollider(-154.5,15.5,11,.9);addRectCollider(-141.5,15.5,11,.9);
   for(var i=0;i<64;i++){
     var tx=-188+(i%9)*8.5,tz=-91+Math.floor(i/9)*14;
     addCylinder(tx,4,tz,.48,.32,8,M.wood,8);
