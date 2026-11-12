@@ -1,91 +1,115 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#080910">
-<meta name="description" content="Enter Kaevoryn Nightmare Park: a living, walkable horror theme park filled with haunted lands, strange creatures, and impossible attractions.">
+<meta name="description" content="Enter Kaevoryn Nightmare Park, a continuous 3D horror world.">
 <title>Nightmare Park — Kaevoryn Studios</title>
 <style>
-:root{color-scheme:dark;--pink:#ff668d;--violet:#a78bfa;--gold:#f4d58d;--ink:#080910}
-*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#080910;color:#f8f5fb;font:15px/1.45 system-ui,Arial,sans-serif}button,a{font:inherit}button{color:inherit;cursor:pointer}.top{position:absolute;z-index:5;top:0;left:0;right:0;display:flex;align-items:center;justify-content:space-between;padding:12px clamp(12px,3vw,30px);background:linear-gradient(#05060be8,transparent);pointer-events:none}.brand,.top nav{pointer-events:auto}.brand{font-size:11px;letter-spacing:.2em;font-weight:900;text-decoration:none}.brand small{display:block;color:var(--pink);font-size:8px;letter-spacing:.25em}.top nav{display:flex;gap:14px;flex-wrap:wrap}.top nav a{font-size:9px;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;color:#e2d9ea}.top nav a:hover{color:var(--pink)}#view{position:absolute;inset:0;width:100%;height:100%;display:block;background:#080910;touch-action:none}.hud{position:absolute;z-index:3;inset:0;pointer-events:none}.hud-top{position:absolute;top:72px;left:16px;right:16px;display:flex;justify-content:space-between;align-items:flex-start;gap:10px}.readout{padding:8px 11px;border:1px solid #ffffff24;border-radius:10px;background:#070912a8;backdrop-filter:blur(8px);font-size:9px;letter-spacing:.13em;color:#d8d1df;text-transform:uppercase}.readout b{display:block;color:var(--gold);font-size:11px;margin-top:2px}.crosshair{position:absolute;left:50%;top:50%;width:18px;height:18px;transform:translate(-50%,-50%);opacity:.65}.crosshair:before,.crosshair:after{content:"";position:absolute;background:#fff}.crosshair:before{width:1px;height:18px;left:8px}.crosshair:after{height:1px;width:18px;top:8px}.prompt{position:absolute;bottom:19%;left:50%;transform:translateX(-50%);padding:9px 14px;border:1px solid #ff668d70;border-radius:10px;background:#090912df;color:#ffe7ef;font-size:10px;letter-spacing:.12em;text-align:center;white-space:nowrap;opacity:0;transition:opacity .2s}.prompt.show{opacity:1}.bottom{position:absolute;z-index:4;left:0;right:0;bottom:0;display:flex;justify-content:space-between;align-items:flex-end;padding:14px clamp(12px,3vw,30px);pointer-events:none}.bottom>*{pointer-events:auto}.controls-note{font-size:9px;color:#e0d7e8;letter-spacing:.08em;text-shadow:0 2px 8px #000}.mobile-controls{display:none;gap:8px;align-items:flex-end}.pad{display:grid;grid-template-columns:repeat(3,42px);grid-template-rows:repeat(3,42px);gap:4px}.pad button,.action{border:1px solid #ffffff40;background:#10121dcc;backdrop-filter:blur(8px);border-radius:12px;min-width:42px;min-height:42px;font-size:17px;touch-action:none}.pad button:active,.action:active{background:#ff668d55}.pad .up{grid-column:2}.pad .left{grid-column:1;grid-row:2}.pad .down{grid-column:2;grid-row:2}.pad .right{grid-column:3;grid-row:2}.mobile-actions{display:flex;flex-direction:column;gap:7px}.action{font-size:9px;letter-spacing:.1em;padding:0 10px}.overlay{position:absolute;z-index:10;inset:0;display:grid;place-items:center;padding:20px;background:radial-gradient(ellipse at 50% 45%,#23101dce,#05060bf5 70%);overflow:auto}.overlay[hidden]{display:none}.panel{width:min(720px,100%);padding:clamp(22px,5vw,42px);border:1px solid #ff668d55;border-radius:22px;background:linear-gradient(145deg,#17101bfa,#090b14fa);box-shadow:0 30px 100px #000b;text-align:center}.kicker{color:var(--pink);font-size:9px;font-weight:900;letter-spacing:.3em}.panel h1{font-size:clamp(35px,8vw,76px);line-height:.92;letter-spacing:-.06em;margin:12px 0;background:linear-gradient(100deg,#fff,#ff8da8 48%,#b49aff);color:transparent;background-clip:text}.panel p{max-width:580px;margin:12px auto;color:#d0c6d6}.enter{margin-top:18px;padding:13px 22px;border:1px solid #ff8ba8;border-radius:12px;background:linear-gradient(110deg,#a5284b,#4d286d);font-size:11px;font-weight:900;letter-spacing:.16em}.facts{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:22px 0}.fact{padding:12px 7px;border:1px solid #ffffff20;border-radius:12px;background:#ffffff07}.fact b{display:block;color:var(--gold);font-size:10px}.fact span{display:block;color:#bcb1c6;font-size:9px;margin-top:4px}.orientation{display:none;position:absolute;z-index:8;inset:0;place-items:center;background:#080910eF;text-align:center;padding:25px}.orientation div{max-width:320px}.orientation strong{display:block;color:var(--gold);font-size:18px;margin-bottom:8px}.orientation p{color:#d1c7d9;font-size:13px}@media(hover:none),(max-width:800px){.mobile-controls{display:flex}.controls-note{display:none}.top nav{gap:8px}.top nav a{font-size:8px}.hud-top{top:60px}.readout{font-size:8px}.readout b{font-size:9px}}@media(max-width:520px){.brand{font-size:9px}.top nav a:nth-child(2){display:none}.facts{gap:5px}.fact{padding:9px 4px}.fact b{font-size:9px}.fact span{font-size:8px}.prompt{bottom:25%;font-size:8px}}@media(orientation:portrait) and (max-width:800px){.orientation{display:grid}}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+:root{color-scheme:dark;--pink:#ff668d;--violet:#a78bfa;--gold:#f4d58d}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#080910;color:#f8f5fb;font:15px/1.4 system-ui,Arial,sans-serif}button,a{font:inherit}button{color:inherit;cursor:pointer}
+#world{position:fixed;inset:0;display:block;width:100%;height:100%;touch-action:none}
+.top{position:absolute;z-index:5;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:12px 18px;background:linear-gradient(#05060be8,transparent);pointer-events:none}.brand,.top a{pointer-events:auto}.brand{font-size:11px;letter-spacing:.2em;font-weight:900;text-decoration:none;color:white}.brand small{display:block;color:var(--pink);font-size:8px;letter-spacing:.25em}.top nav{display:flex;gap:14px}.top nav a{font-size:9px;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;color:#eee}
+#intro{position:absolute;z-index:10;inset:0;display:grid;place-items:center;padding:24px;background:radial-gradient(ellipse at 50% 58%,#161329b8,#05060bf2 75%)}#intro[hidden]{display:none}.panel{width:min(620px,94vw);padding:clamp(22px,5vw,42px);border:1px solid #a78bfa66;background:linear-gradient(145deg,#111321ed,#090a12f2);box-shadow:0 0 70px #6c3c9b30;text-align:center}.eyebrow{color:#ff9ab1;font-size:10px;letter-spacing:.35em;font-weight:900}.panel h1{font-size:clamp(34px,8vw,68px);line-height:.95;margin:14px 0;text-transform:uppercase;letter-spacing:.05em;text-shadow:0 0 28px #a44b85}.panel p{color:#d5d0df;max-width:480px;margin:0 auto 22px}.enter{border:1px solid #ff9ab1;background:linear-gradient(90deg,#762c55,#3c2b65);padding:14px 34px;font-weight:900;letter-spacing:.22em;text-transform:uppercase;box-shadow:0 0 26px #a23c6c55}.enter:active{transform:scale(.98)}.hint{font-size:11px;color:#a9a4b7;margin-top:16px}
+.hud{position:absolute;z-index:4;inset:0;pointer-events:none}.hudtop{position:absolute;top:68px;left:15px;right:15px;display:flex;justify-content:space-between;gap:10px}.chip{background:#090b14c9;border:1px solid #b9a2d44a;padding:8px 11px;font-size:10px;letter-spacing:.13em;text-transform:uppercase;backdrop-filter:blur(8px)}#zone{color:#ffd4a0}#message{position:absolute;left:50%;bottom:19%;transform:translateX(-50%);max-width:min(90vw,520px);text-align:center;background:#090b14d9;border:1px solid #c58db477;padding:10px 15px;font-size:12px;letter-spacing:.08em;opacity:0;transition:opacity .25s}#message.show{opacity:1}
+#controls{position:absolute;z-index:6;inset:auto 0 18px 0;display:none;justify-content:space-between;align-items:end;padding:0 18px;pointer-events:none}#controls.show{display:flex}.pad{width:142px;height:142px;position:relative;pointer-events:auto;touch-action:none}.pad button{position:absolute;width:46px;height:46px;border:1px solid #d9c6e777;border-radius:13px;background:#171426c9;font-size:20px}.pad .up{top:0;left:48px}.pad .down{bottom:0;left:48px}.pad .left{left:0;top:48px}.pad .right{right:0;top:48px}.look{width:112px;height:112px;border:1px solid #d9c6e755;border-radius:50%;background:#17142655;pointer-events:auto;touch-action:none;display:grid;place-items:center;color:#d8cde5;font-size:10px;letter-spacing:.1em}
+#notice{position:absolute;z-index:8;left:50%;top:50%;transform:translate(-50%,-50%);padding:14px 18px;max-width:90vw;background:#140f1deF;border:1px solid #ff9ab1;color:white;text-align:center;display:none}#notice.show{display:block}
+@media(orientation:portrait) and (max-width:800px){.top nav{display:none}.hudtop{top:55px}.chip{font-size:9px;padding:7px}.panel p{font-size:13px}}
 </style>
 </head>
 <body>
-<header class="top"><a class="brand" href="index.html">KAEVORYN STUDIOS<small>CREATE THE IMPOSSIBLE</small></a><nav><a href="parks.html">ALL PARKS</a><a href="attractions.html?park=nightmare">ATTRACTIONS</a><a href="index.html">HOME</a></nav></header>
-<canvas id="view" aria-label="First-person Nightmare Park environment"></canvas>
-<div class="hud" id="hud" hidden><div class="hud-top"><div class="readout">NIGHTMARE PARK<b id="landName">THE FORGOTTEN GATE</b></div><div class="readout">DISCOVERIES<b id="discoveries">0 / 6</b></div></div><div class="crosshair"></div><div class="prompt" id="prompt">PRESS E TO EXPLORE</div></div>
-<div class="bottom" id="bottom" hidden><div class="controls-note">WASD / ARROWS TO WALK · MOUSE OR DRAG TO LOOK · E TO EXPLORE</div><div class="mobile-controls"><div class="pad"><button class="up" data-move="forward" aria-label="Walk forward">▲</button><button class="left" data-move="turnL" aria-label="Turn left">◀</button><button class="down" data-move="back" aria-label="Walk backward">▼</button><button class="right" data-move="turnR" aria-label="Turn right">▶</button></div><div class="mobile-actions"><button class="action" id="lookMode">LOOK</button><button class="action" id="interact">EXPLORE</button></div></div></div>
-<div class="overlay" id="intro"><section class="panel"><div class="kicker">A NEW WORLD IS WAITING</div><h1>NIGHTMARE<br>PARK</h1><p>A place where the rides are real, the shadows have secrets, and the park never feels quite empty. Step through the gate and discover what is watching.</p><div class="facts"><div class="fact"><b>ONE CONNECTED WORLD</b><span>Explore without page jumps</span></div><div class="fact"><b>YOU ARE IN CONTROL</b><span>Move, look, and choose</span></div><div class="fact"><b>THE NIGHT IS ALIVE</b><span>Strange encounters await</span></div></div><button class="enter" id="start" type="button">ENTER THE NIGHTMARE</button><p style="font-size:10px">Best experienced in landscape mode. Sound is off until you choose to enable it.</p></section></div>
-<div class="overlay" id="discovery" hidden><section class="panel"><div class="kicker">YOU FOUND SOMETHING</div><h1 id="discoveryTitle">THE GATEKEEPER</h1><p id="discoveryText">The old gate creaks as if it recognizes you.</p><button class="enter" id="closeDiscovery">CONTINUE EXPLORING</button></section></div>
-<div class="orientation"><div><strong>TURN YOUR DEVICE SIDEWAYS</strong><p>Nightmare Park is designed as a wide, walkable world. Rotate to landscape to explore.</p></div></div>
-<script>
-(()=>{const b=document.getElementById("start");if(b)b.addEventListener("click",()=>{document.getElementById("intro").hidden=true;document.getElementById("hud").hidden=false;document.getElementById("bottom").hidden=false;window.dispatchEvent(new Event("nightmarepark:start"));});})();
-</script>
-<script>
+<canvas id="world" aria-label="Interactive 3D Nightmare Park"></canvas>
+<header class="top"><a class="brand" href="index.html">KAEVORYN STUDIOS<small>CREATE THE IMPOSSIBLE</small></a><nav><a href="parks.html">All Parks</a><a href="kickapoo-park.html">Kickapoo Park</a></nav></header>
+<section id="intro">
+ <div class="panel"><div class="eyebrow">KAEVORYN STUDIOS PRESENTS</div><h1>Nightmare<br>Park</h1><p>A living nightmare stretches beyond the gates. Walk the grounds, explore six cursed lands, and discover what is watching from the dark.</p><button class="enter" id="start" type="button">Enter the Park</button><div class="hint">Best experienced in landscape · Sound is off by default</div></div>
+</section>
+<div class="hud" id="hud" hidden><div class="hudtop"><div class="chip" id="zone">THE FORGOTTEN GATE</div><div class="chip" id="progress">0 / 6 LANDS DISCOVERED</div></div><div id="message"></div></div>
+<div id="controls"><div class="pad" aria-label="Movement controls"><button class="up" data-move="forward">▲</button><button class="down" data-move="back">▼</button><button class="left" data-move="left">◀</button><button class="right" data-move="right">▶</button></div><div class="look" id="look">DRAG TO LOOK</div></div>
+<div id="notice"></div>
+<script type="module">
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
 (()=>{
-const canvas=document.getElementById('view'),ctx=canvas.getContext('2d',{alpha:false});
-const intro=document.getElementById('intro'),hud=document.getElementById('hud'),bottom=document.getElementById('bottom'),discovery=document.getElementById('discovery');
-const landName=document.getElementById('landName'),discoveries=document.getElementById('discoveries'),prompt=document.getElementById('prompt');
-let W=0,H=0,started=false,paused=false,angle=-Math.PI/2,px=3.5,py=13.5,last=0,keys={},touchMove={},dragLook=false,lastTouchX=0,near=null,seen=new Set(),audio=null;
-const map=[
-'1111111111111111111111111111',
-'1000000000000000000000000001',
-'1000000000000000000000000001',
-'1000111000000000000111000001',
-'1000100000000000000001000001',
-'1000100000000000000001000001',
-'1000000000000000000000000001',
-'1000000000111000000000000001',
-'1000000000100000000000000001',
-'1000000000100000000011100001',
-'1000000000000000000010100001',
-'1000000000000000000010100001',
-'1000000000000000000000000001',
-'1000111000000000000000000001',
-'1000100000000000011100000001',
-'1000100000000000010000000001',
-'1000000000000000010000000001',
-'1000000000000000000000000001',
-'1000000000111000000000000001',
-'1000000000100000000000000001',
-'1000000000000000000000000001',
-'1000000000000000000000000001',
-'1000000000000000000000000001',
-'1000000000000000000000000001',
-'1000000000000000000000000001',
-'1111111111111111111111111111'];
-const places=[
-{x:3.5,y:11.5,name:'THE FORGOTTEN GATE',title:'THE GATEKEEPER',text:'The iron gate swings behind you. A lantern burns with no flame, and the stone faces seem to follow your movement.',kind:'gate',color:'#7e617d'},
-{x:8.5,y:6.5,name:'THE HAUNTED WOODS',title:'THE WATCHER IN THE TREES',text:'Something tall moves between the twisted trunks. When you look directly at it, the forest goes still.',kind:'tree',color:'#3b6751'},
-{x:17.5,y:5.5,name:'THE HOLLOW CROWN',title:'THE HOUSE REMEMBERS',text:'A vast manor rises above the path. One upstairs window glows, then goes dark as a silhouette crosses it.',kind:'castle',color:'#66506f'},
-{x:23.5,y:11.5,name:'CARNIVAL OF THE DAMNED',title:'THE MIDWAY CALLIOPE',text:'The old carousel turns without a rider. Somewhere beyond the midway, a calliope plays three slow notes.',kind:'wheel',color:'#81505e'},
-{x:18.5,y:18.5,name:'MONSTER MOUNTAIN',title:'THE THING BELOW',text:'A low rumble travels through the ground. A huge shape shifts behind the volcanic ridge.',kind:'mountain',color:'#68454c'},
-{x:7.5,y:20.5,name:'THE UNDERWORLD',title:'THE LAST DOOR',text:'Cold air breathes from the stairwell. The door has no handle on this side—but you hear it unlock.',kind:'crypt',color:'#4c5274'}
+const canvas=document.getElementById('world'),intro=document.getElementById('intro'),hud=document.getElementById('hud'),controls=document.getElementById('controls'),notice=document.getElementById('notice');
+const zoneEl=document.getElementById('zone'),progressEl=document.getElementById('progress'),messageEl=document.getElementById('message');
+let scene,camera,renderer,clock,started=false,yaw=0,pitch=0,velocity=0,dragging=false,lastX=0,lastY=0,lastMessage=0;
+const keys={forward:false,back:false,left:false,right:false}, discovered=new Set(),colliders=[],landmarks=[];
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+function mat(color,roughness=0.9,metalness=0){return new THREE.MeshStandardMaterial({color,roughness,metalness})}
+function box(x,y,z,sx,sy,sz,material,rot=0){const m=new THREE.Mesh(new THREE.BoxGeometry(sx,sy,sz),material);m.position.set(x,y,z);m.rotation.y=rot;scene.add(m);return m}
+function addCollider(x,z,sx,sz){colliders.push({x,z,sx,sz})}
+function tower(x,z,r,h,material){const m=new THREE.Mesh(new THREE.CylinderGeometry(r*.78,r,h,12),material);m.position.set(x,h/2,z);scene.add(m);const roof=new THREE.Mesh(new THREE.ConeGeometry(r*1.18,r*.75,12),mat(0x241b31));roof.position.set(x,h+r*.37,z);scene.add(roof);addCollider(x,z,r*1.8,r*1.8)}
+function tree(x,z,scale=1,dead=false){const trunk=new THREE.Mesh(new THREE.CylinderGeometry(.16*scale,.28*scale,2.5*scale,7),mat(0x30251f));trunk.position.set(x,1.25*scale,z);scene.add(trunk);for(let i=0;i<3;i++){const b=new THREE.Mesh(new THREE.ConeGeometry((dead?.8:1.05)*scale,(dead?2.1:2.8)*scale,7),mat(dead?0x25232b:0x182a24));b.position.set(x+(i-1)*.18*scale,2.4*scale+i*.48*scale,z);b.rotation.z=(i-1)*.13;scene.add(b)}addCollider(x,z,.9*scale,.9*scale)}
+function arch(x,z,w,h,color){box(x,h/2,z,w,.45,.65,mat(color));box(x-w/2+.22,h/2,z,.44,h,.65,mat(color));box(x+w/2-.22,h/2,z,.44,h,.65,mat(color));const sign=box(x,h+.48,z,.13,.13,.13,mat(0xff9ab1));sign.scale.set(w*.75,.12,.1)}
+function creature(x,z){const body=new THREE.Group();const dark=mat(0x17131e),eyes=new THREE.MeshStandardMaterial({color:0xffd27a,emissive:0xff9d32,emissiveIntensity:2});const torso=new THREE.Mesh(new THREE.CapsuleGeometry(.38,.95,5,8),dark);torso.position.y=1.25;body.add(torso);const head=new THREE.Mesh(new THREE.SphereGeometry(.34,12,10),dark);head.position.y=2.05;body.add(head);for(const s of [-1,1]){const e=new THREE.Mesh(new THREE.SphereGeometry(.055,8,8),eyes);e.position.set(s*.13,2.1,-.28);body.add(e);const arm=new THREE.Mesh(new THREE.CylinderGeometry(.09,.13,1.1,7),dark);arm.position.set(s*.48,1.25,-.02);arm.rotation.z=s*.2;body.add(arm)}body.position.set(x,0,z);scene.add(body);body.userData.phase=Math.random()*6;return body}
+let watchers=[];
+function buildWorld(){
+scene=new THREE.Scene();scene.background=new THREE.Color(0x10121d);scene.fog=new THREE.FogExp2(0x171522,.012);
+camera=new THREE.PerspectiveCamera(72,innerWidth/innerHeight,.08,260);camera.position.set(0,1.7,15);
+renderer=new THREE.WebGLRenderer({canvas,antialias:true,powerPreference:'high-performance'});renderer.setPixelRatio(Math.min(devicePixelRatio,1.7));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.12;
+clock=new THREE.Clock();
+scene.add(new THREE.HemisphereLight(0x9ca7d7,0x211820,1.35));
+const moon=new THREE.DirectionalLight(0xc2c8ff,2.0);moon.position.set(-25,45,30);moon.castShadow=true;moon.shadow.mapSize.set(1024,1024);scene.add(moon);
+const ground=box(0,-.3,-65,170,.5,190,mat(0x24252a));ground.receiveShadow=true;
+const path=box(0,-.02,-61,9,.08,178,mat(0x514b4c));path.receiveShadow=true;
+for(let z=8;z>-145;z-=18){box(0,.035,z,8,.035,1.4,mat(0x65585a))}
+const stone=mat(0x514d58),wall=mat(0x302d38),wood=mat(0x39251f),gold=mat(0xa88a58,.45,.5),red=mat(0x572638),green=mat(0x243d32);
+ // Entrance gates and forecourt
+arch(0,5,12,7,0x55465d);box(-6,3,5,.5,6,.7,stone);box(6,3,5,.5,6,.7,stone);
+for(const x of [-4.6,-3.7,-2.8,-1.9,-1,0,1,1.9,2.8,3.7,4.6]){const rail=box(x,1.5,5,.1,3,.12,mat(0x171820));}
+ // central nightmare castle
+for(const [x,z,r,h] of [[-7,-29,2.4,17],[7,-29,2.4,17],[-5,-43,2,13],[5,-43,2,13],[0,-38,3.3,23]])tower(x,z,r,h,stone);
+box(0,7,-35,12,14,7,wall);box(0,14,-35,8,1,-.01,gold);
+for(let x=-4;x<=4;x+=2){const win=box(x,9,-31.43,.65,1.5,.08,mat(0xf3b56c,.3,.1));win.material.emissive=new THREE.Color(0x6b3518);win.material.emissiveIntensity=.7}
+arch(0,-31,3,5,0x746174);
+ // six districts with paths branching from central spine
+const districts=[
+{name:'THE FORGOTTEN GATE',z:1,x:0,desc:'The iron gates groan behind you. The park has noticed your arrival.'},
+{name:'HAUNTED WOODS',z:-22,x:-24,desc:'Something tall moves between the dead trees.'},
+{name:'HOLLOW CROWN',z:-48,x:23,desc:'The castle windows glow. A silhouette watches from the highest tower.'},
+{name:'CARNIVAL OF THE DAMNED',z:-76,x:-24,desc:'The midway lights flicker on, one ride at a time.'},
+{name:'MONSTER MOUNTAIN',z:-105,x:23,desc:'The mountain breathes heat through cracks in its black stone.'},
+{name:'THE UNDERWORLD',z:-133,x:0,desc:'A cold wind rises from the earth. The path descends below.'}
 ];
-const sprites=places.map(p=>({...p,sx:p.x,sy:p.y,seed:Math.random()*6}));
-function resize(){W=canvas.width=Math.max(1,Math.floor(innerWidth*devicePixelRatio));H=canvas.height=Math.max(1,Math.floor(innerHeight*devicePixelRatio));ctx.imageSmoothingEnabled=true}
-addEventListener('resize',resize);resize();
-function wall(x,y){return y<0||x<0||y>=map.length||x>=map[0].length||map[y][x]==='1'}
-function move(dx,dy){const r=.2;if(!wall(Math.floor(px+dx+r),Math.floor(py))&&!wall(Math.floor(px+dx-r),Math.floor(py)))px+=dx;if(!wall(Math.floor(px),Math.floor(py+dy+r))&&!wall(Math.floor(px),Math.floor(py+dy-r)))py+=dy}
-function findNear(){near=null;let best=2.15;for(const p of places){const d=Math.hypot(px-p.x,py-p.y);if(d<best){best=d;near=p}}prompt.classList.toggle('show',!!near);prompt.textContent=near?'PRESS E TO DISCOVER · '+near.name:'FOLLOW THE LANTERNS';}
-function openPlace(p){if(!p)return;seen.add(p.name);discoveries.textContent=seen.size+' / 6';document.getElementById('discoveryTitle').textContent=p.title;document.getElementById('discoveryText').textContent=p.text;discovery.hidden=false;paused=true;}
-function drawBackground(){const sky=ctx.createLinearGradient(0,0,0,H*.55);sky.addColorStop(0,'#080a18');sky.addColorStop(.58,'#282035');sky.addColorStop(1,'#74505b');ctx.fillStyle=sky;ctx.fillRect(0,0,W,H*.57);const moonX=W*.78,moonY=H*.19;const glow=ctx.createRadialGradient(moonX,moonY,1,moonX,moonY,H*.17);glow.addColorStop(0,'#fff1d2aa');glow.addColorStop(.13,'#f5c9b355');glow.addColorStop(1,'#f5c9b300');ctx.fillStyle=glow;ctx.fillRect(moonX-H*.18,moonY-H*.18,H*.36,H*.36);ctx.fillStyle='#f7e8ca';ctx.beginPath();ctx.arc(moonX,moonY,H*.025,0,Math.PI*2);ctx.fill();ctx.fillStyle='#0a0b15';ctx.fillRect(0,H*.57,W,H*.43);const floor=ctx.createLinearGradient(0,H*.55,0,H);floor.addColorStop(0,'#30242e');floor.addColorStop(.45,'#15131e');floor.addColorStop(1,'#070910');ctx.fillStyle=floor;ctx.fillRect(0,H*.55,W,H*.45);for(let i=0;i<9;i++){let y=H*.58+i*i*H*.004;ctx.strokeStyle='rgba(205,151,160,'+(0.12-i*.011)+')';ctx.lineWidth=devicePixelRatio;ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke()}}
-function renderWorld(){drawBackground();const fov=Math.PI/3.1,cols=Math.max(240,Math.floor(W/2)),step=W/cols,zbuf=new Float32Array(cols);for(let i=0;i<cols;i++){const ray=angle+(i/cols-.5)*fov,rx=Math.cos(ray),ry=Math.sin(ray);let mx=Math.floor(px),my=Math.floor(py),ddx=Math.abs(1/(rx||1e-9)),ddy=Math.abs(1/(ry||1e-9)),sx=rx<0?-1:1,sy=ry<0?-1:1,sdx=(rx<0?px-mx:mx+1-px)*ddx,sdy=(ry<0?py-my:my+1-py)*ddy,side=0,hit=false,dist=0;for(let k=0;k<48;k++){if(sdx<sdy){sdx+=ddx;mx+=sx;side=0}else{sdy+=ddy;my+=sy;side=1}if(wall(mx,my)){hit=true;break}}if(hit){dist=side===0?(mx-px+(1-sx)/2)/(rx||1e-9):(my-py+(1-sy)/2)/(ry||1e-9);dist=Math.max(.05,dist)}else dist=40;zbuf[i]=dist;const h=Math.min(H*1.4,H/(dist*.82)),top=H*.56-h*.5;let shade=Math.max(.13,1-dist/18)*(side===1?.72:1);const wallGrad=ctx.createLinearGradient(0,top,0,top+h);wallGrad.addColorStop(0,'#433443');wallGrad.addColorStop(.45,'#59404a');wallGrad.addColorStop(1,'#171722');ctx.fillStyle=wallGrad;ctx.globalAlpha=shade;ctx.fillRect(i*step,top,step+1,h);ctx.globalAlpha=1;ctx.fillStyle='rgba(5,6,12,.35)';ctx.fillRect(i*step,top,step,Math.max(1,h*.035));const fog=Math.min(.86,dist/23);ctx.fillStyle='rgba(20,17,29,'+fog+')';ctx.fillRect(i*step,top,step+1,h)}drawSprites(zbuf,fov,step,cols)}
-function drawSprites(zbuf,fov,step,cols){const sorted=sprites.slice().sort((a,b)=>Math.hypot(b.x-px,b.y-py)-Math.hypot(a.x-px,a.y-py));for(const s of sorted){const dx=s.x-px,dy=s.y-py,d=Math.hypot(dx,dy),a=Math.atan2(dy,dx)-angle,rel=Math.atan2(Math.sin(a),Math.cos(a));if(Math.abs(rel)>fov*.72||d<.1)continue;const sx=W*(.5+rel/fov),size=Math.min(H*1.5,H/(d*.78)),base=H*.56+size*.46,top=base-size;const col=Math.floor(sx/step);if(col<0||col>=cols||d>zbuf[col]+.6)continue;ctx.save();ctx.translate(sx,top);ctx.globalAlpha=Math.max(.25,1-d/27);const sc=size/180;ctx.scale(sc,sc);drawCreature(s);ctx.restore();ctx.globalAlpha=1}}
-function drawCreature(s){const g=ctx;g.shadowBlur=22;g.shadowColor=s.color;if(s.kind==='castle'){g.fillStyle='#17131f';g.beginPath();g.moveTo(-90,170);g.lineTo(-90,55);g.lineTo(-65,55);g.lineTo(-65,5);g.lineTo(-45,40);g.lineTo(-20,25);g.lineTo(0,-15);g.lineTo(22,25);g.lineTo(45,5);g.lineTo(62,55);g.lineTo(88,55);g.lineTo(88,170);g.closePath();g.fill();g.fillStyle='#ffc978';for(const x of [-52,0,48]){g.fillRect(x-4,74,8,18);g.fillRect(x-4,112,8,18)}}else if(s.kind==='tree'){g.strokeStyle='#17231f';g.lineWidth=18;g.beginPath();g.moveTo(0,180);g.lineTo(-6,70);g.lineTo(-48,18);g.moveTo(-6,83);g.lineTo(48,20);g.moveTo(-5,112);g.lineTo(-67,70);g.stroke();g.fillStyle='#0d1717';g.beginPath();g.arc(-35,14,34,0,7);g.arc(25,0,39,0,7);g.fill();g.fillStyle='#ffe39a';g.fillRect(-30,27,7,4);g.fillRect(15,17,7,4)}else if(s.kind==='wheel'){g.strokeStyle='#9b6376';g.lineWidth=5;g.beginPath();g.arc(0,72,72,0,7);g.stroke();for(let i=0;i<10;i++){const a=i*Math.PI/5;g.beginPath();g.moveTo(0,72);g.lineTo(Math.cos(a)*72,72+Math.sin(a)*72);g.stroke()}g.fillStyle='#f2b6a1';g.beginPath();g.arc(0,72,8,0,7);g.fill();g.fillStyle='#261b2b';g.fillRect(-12,145,24,35)}else if(s.kind==='mountain'){g.fillStyle='#211923';g.beginPath();g.moveTo(-100,180);g.lineTo(-65,65);g.lineTo(-27,94);g.lineTo(8,-10);g.lineTo(42,85);g.lineTo(73,56);g.lineTo(105,180);g.closePath();g.fill();g.fillStyle='#c65d48';g.beginPath();g.moveTo(-8,20);g.lineTo(8,-10);g.lineTo(24,25);g.lineTo(11,48);g.closePath();g.fill();g.fillStyle='#ffbd72';g.beginPath();g.arc(0,92,5,0,7);g.arc(23,97,5,0,7);g.fill()}else if(s.kind==='crypt'){g.fillStyle='#202332';g.fillRect(-70,55,140,125);g.beginPath();g.arc(0,55,70,Math.PI,0);g.fill();g.fillStyle='#090b14';g.fillRect(-33,90,66,90);g.fillStyle='#b5a1d6';g.fillRect(-5,107,10,3)}else{g.fillStyle='#17151f';g.fillRect(-76,65,152,115);g.fillStyle='#44364a';g.beginPath();g.moveTo(-90,65);g.lineTo(0,-10);g.lineTo(90,65);g.closePath();g.fill();g.fillStyle='#f5c978';g.fillRect(-38,86,15,25);g.fillRect(24,86,15,25)}g.shadowBlur=0;g.globalAlpha=1}
-function frame(t){if(!started){requestAnimationFrame(frame);return}const dt=Math.min(.04,(t-last)/1000||0);last=t;if(!paused){let forward=0,turn=0;if(keys.w||keys.ArrowUp||touchMove.forward)forward+=1;if(keys.s||keys.ArrowDown||touchMove.back)forward-=1;if(keys.a)turn-=1;if(keys.d)turn+=1;if(touchMove.turnL)turn-=1;if(touchMove.turnR)turn+=1;angle+=turn*dt*1.75;const speed=dt*2.2;move(Math.cos(angle)*forward*speed,Math.sin(angle)*forward*speed);if(keys.ArrowLeft)angle-=dt*1.75;if(keys.ArrowRight)angle+=dt*1.75;findNear();}renderWorld();requestAnimationFrame(frame)}
-function start(){intro.hidden=true;hud.hidden=false;bottom.hidden=false;started=true;last=performance.now();requestAnimationFrame(frame)}
-window.addEventListener('nightmarepark:start',start);
-document.getElementById('closeDiscovery').addEventListener('click',()=>{discovery.hidden=true;paused=false});
-document.getElementById('interact').addEventListener('click',()=>openPlace(near));
-addEventListener('keydown',e=>{keys[e.key]=true;if(e.key==='e'||e.key==='E')openPlace(near);if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' '].includes(e.key))e.preventDefault()});
-addEventListener('keyup',e=>keys[e.key]=false);
-document.querySelectorAll('[data-move]').forEach(b=>{const k=b.dataset.move;const on=e=>{e.preventDefault();touchMove[k]=true};const off=e=>{e.preventDefault();touchMove[k]=false};b.addEventListener('pointerdown',on);['pointerup','pointercancel','pointerleave'].forEach(ev=>b.addEventListener(ev,off))});
-canvas.addEventListener('pointerdown',e=>{if(e.pointerType==='mouse'&&started){canvas.requestPointerLock?.()}else{dragLook=true;lastTouchX=e.clientX;canvas.setPointerCapture(e.pointerId)}});
-canvas.addEventListener('pointermove',e=>{if(document.pointerLockElement===canvas){angle+=e.movementX*.0022}else if(dragLook&&e.pointerType!=='mouse'){angle+=(e.clientX-lastTouchX)*.006;lastTouchX=e.clientX}});
-canvas.addEventListener('pointerup',()=>dragLook=false);canvas.addEventListener('pointercancel',()=>dragLook=false);
-document.getElementById('lookMode').addEventListener('click',()=>{dragLook=!dragLook;document.getElementById('lookMode').textContent=dragLook?'LOOK ON':'LOOK'});
-document.addEventListener('visibilitychange',()=>{if(document.hidden)paused=true;else if(started&&discovery.hidden)paused=false});
+ // side paths
+for(const d of districts.slice(1)){const len=Math.abs(d.x)*.9;box(d.x/2,.015,d.z,Math.abs(d.x)+8,.07,5,mat(0x494348));}
+ // haunted woods
+for(let i=0;i<45;i++){const x=-42+Math.random()*34,z=-8-Math.random()*34;tree(x,z,.8+Math.random()*.8,true)}
+for(let i=0;i<9;i++){const x=-35+i*2.4,z=-35-Math.random()*9;box(x,.5,z,.12,1,.12,stone)}
+watchers.push(creature(-28,-24),creature(-39,-35));
+ // hollow crown approach / graveyard
+for(let i=0;i<22;i++){const x=13+Math.random()*24,z=-42-Math.random()*22;const grave=box(x,.55,z,.65,1.1,.18,stone,Math.random()*.3);const cross=box(x,.95,z,.12,.8,.22,stone);cross.rotation.z=.1}
+for(let i=0;i<8;i++){const x=14+i*3.2;tree(x,-58,.8,true)}
+watchers.push(creature(27,-55));
+ // carnival: wheel, tents, coaster rails
+for(const [x,z,c] of [[-31,-70,0x8d304e],[-21,-72,0x374d76],[-34,-82,0x8d6a34]]){const tent=new THREE.Mesh(new THREE.ConeGeometry(4,5,8),mat(c));tent.position.set(x,2.5,z);scene.add(tent);addCollider(x,z,5,5)}
+const wheel=new THREE.Group();for(let i=0;i<16;i++){const a=i*Math.PI/8;const p=new THREE.Mesh(new THREE.BoxGeometry(.13,15,.13),gold);p.position.set(Math.cos(a)*7,Math.sin(a)*7,0);p.rotation.z=-a;wheel.add(p)}const ring=new THREE.Mesh(new THREE.TorusGeometry(7,.17,8,48),gold);wheel.add(ring);const hub=new THREE.Mesh(new THREE.CylinderGeometry(.7,.7,.8,16),red);hub.rotation.x=Math.PI/2;wheel.add(hub);wheel.position.set(-26,9,-78);scene.add(wheel);wheel.userData.isWheel=true;
+ // monster mountain and lava seams
+const mountain=new THREE.Mesh(new THREE.ConeGeometry(18,25,9),mat(0x29232b));mountain.position.set(26,12,-111);scene.add(mountain);const crater=new THREE.Mesh(new THREE.CylinderGeometry(3.4,4.2,.6,12),mat(0xff5b2e));crater.position.set(26,24.3,-111);scene.add(crater);
+for(let i=0;i<7;i++){const lava=new THREE.Mesh(new THREE.BoxGeometry(.18,5,.22),new THREE.MeshStandardMaterial({color:0xff552a,emissive:0xff3c17,emissiveIntensity:1.8}));lava.position.set(18+Math.random()*16,4+Math.random()*8,-108-Math.random()*8);lava.rotation.z=(Math.random()-.5)*.7;scene.add(lava)}
+watchers.push(creature(35,-103));
+ // underworld ruins, pillars, glowing chasm
+for(let i=0;i<10;i++){const x=-18+i*4,z=-137-(i%2)*4;box(x,4,z,1,8,1,stone);const cap=box(x,8.2,z,1.8,.5,1.8,gold)}
+const pit=new THREE.Mesh(new THREE.CylinderGeometry(10,13,1,24),mat(0x07070c));pit.position.set(0,-.1,-145);scene.add(pit);
+const glow=new THREE.PointLight(0x9c52ff,5,35);glow.position.set(0,2,-145);scene.add(glow);
+watchers.push(creature(-8,-128),creature(10,-140));
+ // scattered lanterns light the walkways
+for(let z=0;z>-145;z-=12){for(const x of [-5.6,5.6]){const pole=new THREE.Mesh(new THREE.CylinderGeometry(.07,.11,3,7),wood);pole.position.set(x,1.5,z);scene.add(pole);const lamp=new THREE.Mesh(new THREE.SphereGeometry(.22,10,8),new THREE.MeshStandardMaterial({color:0xffc77a,emissive:0xff8a3d,emissiveIntensity:1.8}));lamp.position.set(x,3.1,z);scene.add(lamp);const light=new THREE.PointLight(0xffb36b,1.25,12);light.position.set(x,3,z);scene.add(light)}}
+for(const d of districts){landmarks.push({...d,seen:false})}
+}
+function showMessage(t){messageEl.textContent=t;messageEl.classList.add('show');lastMessage=performance.now()}
+function updateZone(){let nearest=null,best=1e9;for(const d of landmarks){const dist=Math.hypot(camera.position.x-d.x,camera.position.z-d.z);if(dist<best){best=dist;nearest=d}}if(nearest&&best<20){zoneEl.textContent=nearest.name;if(best<8&&!discovered.has(nearest.name)){discovered.add(nearest.name);progressEl.textContent=discovered.size+' / 6 LANDS DISCOVERED';showMessage(nearest.desc)}}}
+function blocked(x,z){for(const c of colliders){if(Math.abs(x-c.x)<c.sx/2+.38&&Math.abs(z-c.z)<c.sz/2+.38)return true}return false}
+function move(dt){const forward=(keys.forward?1:0)-(keys.back?1:0),side=(keys.right?1:0)-(keys.left?1:0);if(!forward&&!side)return;const speed=keys.run?8:5.2;const len=Math.hypot(forward,side)||1;const fx=-Math.sin(yaw),fz=-Math.cos(yaw),rx=Math.cos(yaw),rz=-Math.sin(yaw);const dx=(fx*forward+rx*side)/len*speed*dt,dz=(fz*forward+rz*side)/len*speed*dt;const nx=clamp(camera.position.x+dx,-78,78),nz=clamp(camera.position.z+dz,-153,16);if(!blocked(nx,camera.position.z))camera.position.x=nx;if(!blocked(camera.position.x,nz))camera.position.z=nz}
+function animate(){if(!started)return;requestAnimationFrame(animate);const dt=Math.min(clock.getDelta(),.04);move(dt);camera.rotation.order='YXZ';camera.rotation.y=yaw;camera.rotation.x=pitch;for(const w of watchers){w.userData.phase+=dt;w.position.y=Math.sin(w.userData.phase*1.4)*.12;w.rotation.y=Math.sin(w.userData.phase*.55)*.22}for(const o of scene.children){if(o.userData.isWheel)o.rotation.z+=dt*.18}updateZone();if(performance.now()-lastMessage>4200)messageEl.classList.remove('show');renderer.render(scene,camera)}
+function start(){if(started)return;try{buildWorld();started=true;intro.hidden=true;hud.hidden=false;controls.classList.add('show');if(matchMedia('(pointer:coarse)').matches)document.getElementById('look').style.display='grid';showMessage('Welcome to Nightmare Park. Stay on the path.');animate()}catch(e){notice.textContent='The 3D world could not start: '+(e&&e.message?e.message:'unknown error');notice.classList.add('show');console.error(e)}}
+document.getElementById('start').addEventListener('click',start);
+window.addEventListener('keydown',e=>{const k=e.key.toLowerCase();if(k==='w'||k==='arrowup')keys.forward=true;if(k==='s'||k==='arrowdown')keys.back=true;if(k==='a'||k==='arrowleft')keys.left=true;if(k==='d'||k==='arrowright')keys.right=true;if(k==='shift')keys.run=true});
+window.addEventListener('keyup',e=>{const k=e.key.toLowerCase();if(k==='w'||k==='arrowup')keys.forward=false;if(k==='s'||k==='arrowdown')keys.back=false;if(k==='a'||k==='arrowleft')keys.left=false;if(k==='d'||k==='arrowright')keys.right=false;if(k==='shift')keys.run=false});
+document.querySelectorAll('[data-move]').forEach(b=>{const key=b.dataset.move;const on=e=>{e.preventDefault();keys[key]=true};const off=e=>{e.preventDefault();keys[key]=false};b.addEventListener('pointerdown',on);b.addEventListener('pointerup',off);b.addEventListener('pointerleave',off);b.addEventListener('pointercancel',off)});
+const look=document.getElementById('look');look.addEventListener('pointerdown',e=>{dragging=true;lastX=e.clientX;lastY=e.clientY;look.setPointerCapture(e.pointerId)});look.addEventListener('pointermove',e=>{if(!dragging)return;const dx=e.clientX-lastX,dy=e.clientY-lastY;lastX=e.clientX;lastY=e.clientY;yaw-=dx*.008;pitch=clamp(pitch-dy*.006,-1.15,1.15)});look.addEventListener('pointerup',()=>dragging=false);look.addEventListener('pointercancel',()=>dragging=false);
+canvas.addEventListener('pointerdown',e=>{if(!started||e.pointerType!=='mouse')return;dragging=true;lastX=e.clientX;lastY=e.clientY;canvas.setPointerCapture(e.pointerId)});canvas.addEventListener('pointermove',e=>{if(!dragging||e.pointerType!=='mouse')return;const dx=e.clientX-lastX,dy=e.clientY-lastY;lastX=e.clientX;lastY=e.clientY;yaw-=dx*.004;pitch=clamp(pitch-dy*.004,-1.15,1.15)});canvas.addEventListener('pointerup',()=>dragging=false);canvas.addEventListener('pointercancel',()=>dragging=false);
+window.addEventListener('resize',()=>{if(!camera||!renderer)return;camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio,1.7))});
 })();
 </script>
 </body>
