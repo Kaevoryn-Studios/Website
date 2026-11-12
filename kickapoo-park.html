@@ -401,6 +401,8 @@ discovery('KICKAPOO HOTELS',-78,145,'Stay in a landscaped resort hotel with gues
 addCylinder(157,8,145,18,18,16,M.rock,20);addCylinder(157,17,145,14,14,4,M.rock,20);
 addBox(148,9,130,8,13,1,M.water);addBox(164,9,130,8,13,1,M.water);
 addBox(157,.4,115,30,.8,24,M.water);addBox(157,.8,116,36,.3,28,M.blue);
+/* The waterfall cliff and plunge pool are solid boundaries, not walk-through scenery. */
+addCollider(157,145,16.5,16.5);addCollider(157,115,14.8,12.2);
 for(var i=0;i<12;i++){var x=145+i*2.2,fall=addBox(x,10,128,1.1,11,.4,M.water);animated.push({type:'fall',mesh:fall,phase:i*.6})}
 for(var i=0;i<12;i++){var a=i/12*Math.PI*2;addTree(157+Math.cos(a)*24,145+Math.sin(a)*24,.7)}
 addBox(157,3,99,32,.8,3,M.wood);sign(157,91,M.blue);
