@@ -795,18 +795,25 @@ function buildEntryArch(){
   discovery('THE KICKAPOO PARK GRAND GATE',0,151,'Pass beneath the monumental stone-and-gold entrance arch and step into a world of unforgettable adventures.');
 }
 
+
 function buildResortFacade(x,z,w,h,d,wall,roof,accent,label,floors){
-  /* A layered, walk-up resort facade: masonry base, pilasters, deep window bays,
-     balcony rails, cornice and a real illuminated sign rather than a flat box. */
+  /* Open-front, walk-in resort shell with layered masonry, deep windows and balconies. */
   floors=floors||2;
-  addBox(x,h/2,z,w,h,d,wall);
+  var front=z+d/2,sideWall=.9;
+  addBox(x,h/2,z-d/2,w,h,sideWall,wall);
+  addBox(x-w/2+sideWall/2,h/2,z,sideWall,h,d,wall);
+  addBox(x+w/2-sideWall/2,h/2,z,sideWall,h,d,wall);
+  var wing=(w-6)/2;
+  addBox(x-(w+6)/4,h/2,front,wing,h,.9,wall);
+  addBox(x+(w+6)/4,h/2,front,wing,h,.9,wall);
+  addBox(x,h-2.9,front,6,h-5.8,.9,wall);
   addBox(x,.65,z,w+2,.9,d+1.6,M.stone);
   addBox(x,h-.45,z,w+1.5,.9,d+1.2,roof);
   addBox(x,h+.25,z,w+2.4,.5,d+1.8,M.gold);
   addBox(x,h+.75,z,w+1.3,.5,d+1.1,roof);
   for(var side=-1;side<=1;side+=2){
-    addBox(x+side*(w/2-.9),h/2,z+d/2+.18,1.25,h-.8,.45,accent);
-    addBox(x+side*(w/2-.9),h-.9,z+d/2+.48,1.9,.35,.7,M.gold);
+    addBox(x+side*(w/2-.9),h/2,front+.18,1.25,h-.8,.45,accent);
+    addBox(x+side*(w/2-.9),h-.9,front+.48,1.9,.35,.7,M.gold);
   }
   var floorH=(h-3.2)/floors;
   for(var floor=0;floor<floors;floor++){
@@ -814,42 +821,42 @@ function buildResortFacade(x,z,w,h,d,wall,roof,accent,label,floors){
     var count=Math.max(4,Math.floor(w/7));
     for(var i=0;i<count;i++){
       var wx=x-w/2+3.5+i*(w-7)/(count-1);
-      addBox(wx,cy,z+d/2+.26,2.65,Math.min(3.0,floorH*.57),.22,M.glass);
-      addBox(wx,cy-floorH*.34,z+d/2+.43,3.0,.22,.42,M.gold);
-      addBox(wx,cy+floorH*.34,z+d/2+.43,3.0,.2,.42,accent);
+      if(floor===0&&Math.abs(wx-x)<4.2)continue;
+      addBox(wx,cy,front+.26,2.65,Math.min(3.0,floorH*.57),.22,M.glass);
+      addBox(wx,cy-floorH*.34,front+.43,3.0,.22,.42,M.gold);
+      addBox(wx,cy+floorH*.34,front+.43,3.0,.2,.42,accent);
       if(floor>0){
-        addBox(wx,cy-floorH*.47,z+d/2+.8,3.2,.18,1.05,M.iron);
-        addBox(wx,cy-floorH*.31,z+d/2+1.25,3.2,.12,.12,M.gold);
+        addBox(wx,cy-floorH*.47,front+.8,3.2,.18,1.05,M.iron);
+        addBox(wx,cy-floorH*.31,front+1.25,3.2,.12,.12,M.gold);
       }
     }
   }
   for(var i=0;i<Math.floor(w/8)+1;i++){
     var px=x-w/2+4+i*8;
-    addBox(px,h/2,z+d/2+.52,.34,h-.9,.7,M.cream);
-    addBox(px,h-.9,z+d/2+.72,.72,.42,.9,M.gold);
-    addBox(px,1.5,z+d/2+.72,.72,.42,.9,M.gold);
+    addBox(px,h/2,front+.52,.34,h-.9,.7,M.cream);
+    addBox(px,h-.9,front+.72,.72,.42,.9,M.gold);
+    addBox(px,1.5,front+.72,.72,.42,.9,M.gold);
   }
-  /* Recessed central entrance with a lit canopy. */
-  addBox(x,3.0,z+d/2+.4,5.4,5.8,.28,M.dark);
-  addBox(x,6.1,z+d/2+.75,8.4,.42,2.2,accent);
-  addBox(x,6.42,z+d/2+.78,7.2,.16,2.25,M.gold);
+  /* The central doorway is genuinely open, framed by stone piers and a canopy. */
+  addBox(x-3,3,front+.55,.34,6,.5,accent);
+  addBox(x+3,3,front+.55,.34,6,.5,accent);
+  addBox(x,6.15,front+.55,6.4,.42,.6,M.gold);
+  addBox(x,6.48,front+.65,7.2,.16,1.1,accent);
   var sign=document.createElement('canvas');sign.width=1200;sign.height=180;
-  var ctx=sign.getContext('2d');
-  var grad=ctx.createLinearGradient(0,0,1200,0);
+  var ctx=sign.getContext('2d'),grad=ctx.createLinearGradient(0,0,1200,0);
   grad.addColorStop(0,'#172d39');grad.addColorStop(.5,'#345563');grad.addColorStop(1,'#172d39');
-  ctx.fillStyle=grad;ctx.fillRect(0,0,1200,180);
-  ctx.strokeStyle='#e7c77f';ctx.lineWidth=7;ctx.strokeRect(8,8,1184,164);
-  ctx.fillStyle='#fff1cc';ctx.textAlign='center';ctx.textBaseline='middle';
-  ctx.font='bold 76px Georgia,serif';ctx.shadowColor='#ffe0a0';ctx.shadowBlur=18;
-  ctx.fillText(label.toUpperCase(),600,92);
-  var signMesh=addMesh(new THREE.PlaneGeometry(Math.min(w-8,30),2.7),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(sign)}),x,h-1.8,z+d/2+.98);
+  ctx.fillStyle=grad;ctx.fillRect(0,0,1200,180);ctx.strokeStyle='#e7c77f';ctx.lineWidth=7;ctx.strokeRect(8,8,1184,164);
+  ctx.fillStyle='#fff1cc';ctx.textAlign='center';ctx.textBaseline='middle';ctx.font='bold 76px Georgia,serif';ctx.shadowColor='#ffe0a0';ctx.shadowBlur=18;ctx.fillText(label.toUpperCase(),600,92);
+  var signMesh=addMesh(new THREE.PlaneGeometry(Math.min(w-8,30),2.7),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(sign)}),x,h-1.8,front+.98);
   signMesh.castShadow=false;
-  addRectCollider(x,z,w,d);
-  for(var side=-1;side<=1;side+=2){
-    addCylinder(x+side*(w/2+2),h*.48,z+d/2+1,.34,.48,h*.96,M.stone,12);
-    addCylinder(x+side*(w/2+2),h*.96,z+d/2+1,.62,.62,.38,M.gold,16);
-  }
+  /* Solid collision on walls only; the central entrance stays clear. */
+  addRectCollider(x,z-d/2,w,.95);
+  addRectCollider(x-w/2,z,.95,d);
+  addRectCollider(x+w/2,z,.95,d);
+  addRectCollider(x-(w+6)/4,front,(w-6)/2,.95);
+  addRectCollider(x+(w+6)/4,front,(w-6)/2,.95);
 }
+
 function build(){
   /* KICKAPOO PARK — a fully re-composed destination park with a ceremonial arrival,
      a real resort Main Street, a glass garden palace and distinct themed worlds. */
@@ -877,8 +884,7 @@ function build(){
   addPath([[0,178],[0,166],[0,151],[0,137],[0,122],[0,108],[0,94]],30,M.path);
   buildGrandEntranceShowpiece();
   buildGrandPromenade();
-  buildKickapooMainStreet();
-  buildGuestExperienceDetails();
+  /* The rebuilt Main Street is composed from the new open-front resort facades below. */
   discovery('THE GRAND ARRIVAL',0,151,'Pass beneath the monumental Kickapoo Park arch and enter a resort boulevard framed by fountains, gardens and a lively Main Street.');
 
   /* Main Street becomes a proper architectural district, not a row of primitive kiosks. */
