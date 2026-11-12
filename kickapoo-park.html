@@ -752,71 +752,7 @@ function gate(x,z,accent,land){
   }
 }
 function build(){
-scene.background=new THREE.Color('#9bcbd6');scene.fog=new THREE.Fog('#9bcbd6',300,620);
-parkSky=new THREE.HemisphereLight('#e8f7ff','#304a36',1.5);scene.add(parkSky);
-parkSun=new THREE.DirectionalLight('#ffe2b7',2.3);parkSun.position.set(-120,170,110);scene.add(parkSun);
-parkRim=new THREE.DirectionalLight('#a6d9ee',.8);parkRim.position.set(120,90,-120);scene.add(parkRim);
-addBox(0,-1,0,360,2,360,M.grass);
-/* THE ARRIVAL DISTRICT: a ceremonial gate opens onto a proper resort boulevard. */
-addPath([[0,178],[0,155],[0,135],[0,115],[0,95],[0,70],[0,45],[0,25]],20,M.path);
-for(var side=-1;side<=1;side+=2){
-addBox(side*14,7,140,2.4,14,4,M.cream);addBox(side*14,15,140,4,1,5,M.gold);
-addMesh(new THREE.ConeGeometry(2.8,5.5,5),M.roof,side*14,20,140);
-addSphere(side*14,23,140,.55,M.lamp);
-for(var i=0;i<5;i++){addCylinder(side*(23+i%2*2),.2,145-i*10,2.1,2.1,.4,M.stone,16);addSphere(side*(23+i%2*2),.8,145-i*10,.7,i%2?M.mint:M.violet);if(i%2===0)addLamp(side*32,145-i*10)}
-}
-addBox(0,15,140,24,2.5,4,M.red);addBox(0,16.5,140,20,.45,4.5,M.gold);addSphere(0,19,140,1.5,M.gold);
-/* Main Street: a full street wall of varied two-storey shops, upper windows and awnings. */
-for(var side=-1;side<=1;side+=2)for(var i=0;i<6;i++){
-var x=side*(25+(i%2)*2),z=110-i*13,wall=[M.cream,M.blue,M.temple,M.cream,M.blue,M.cream][i],roof=[M.red,M.roof,M.red,M.blue,M.roof,M.red][i];
-addBox(x,4.8,z,13,9.6,8.5,wall);addBox(x,9.8,z,14,.7,9.2,roof);addBox(x,7.9,z-4.3,11,.35,.25,M.gold);
-for(var w=-1;w<=1;w++){addBox(x+w*3.8,5.8,z-4.35,1.65,2.4,.22,M.glass);addBox(x+w*3.8,4.4,z-4.5,1.9,.22,.3,M.gold)}
-addBox(x,2.1,z-4.45,2.5,4,.3,M.dark);addRectCollider(x,z,13.5,9);
-addBox(x,10.7,z-4.4,7,.35,.45,M.gold);addBox(x,11.4,z-4.4,5.6,.85,.3,i%2?M.blue:M.red);
-if(i%2===0)addLamp(side*40,z);
-}
-addBox(-45,10,88,9,20,9,M.cream);addBox(-45,20,88,10,1.2,10,M.red);addCylinder(-45,25,88,4,4,3,M.gold,8);addMesh(new THREE.ConeGeometry(4,7,8),M.roof,-45,30,88);addCollider(-45,88,5,5);
-addBox(45,5,88,19,10,13,M.cream);addBox(45,10,88,21,1,15,M.gold);addCollider(45,88,10,7);
-addPath([[-18,115],[-25,100],[-26,82],[-18,65],[0,55],[18,65],[26,82],[25,100],[18,115]],7,M.stone);
-/* CENTRAL PLAZA: generous circular space, fountain and radiating themed avenues. */
-addCylinder(0,.12,25,25,25,.24,M.stone,64);addCylinder(0,.28,25,21,21,.16,M.gold,64);fountain(0,25);
-addPath([[0,25],[-40,5],[-72,-15],[-100,-45]],14,M.path);addPath([[0,25],[40,5],[75,-15],[105,-45]],14,M.path);
-addPath([[0,25],[0,-10],[0,-50],[0,-90],[0,-125]],14,M.path);
-addPath([[0,25],[-35,50],[-70,75],[-100,105]],11,M.path);addPath([[0,25],[35,50],[70,75],[105,105]],11,M.path);
-for(var side=-1;side<=1;side+=2)for(var i=0;i<6;i++){addTree(side*18,8-i*14,.85);if(i%2===0)addLamp(side*31,8-i*14)}
-/* ADVENTURE KINGDOM — castle village, garden courts and a major steel coaster. */
-gate(-110,-55,M.gold,'castle');castle(-120,-100);coaster(-82,-70,'#d99c42');
-for(var i=0;i<7;i++){var x=-155+(i%3)*13,z=-80+Math.floor(i/3)*14;addBox(x,3.5,z,10,7,8,i%2?M.cream:M.temple);addBox(x,7.2,z,11,.5,9,M.red);addRectCollider(x,z,10,8)}
-discovery('ADVENTURE KINGDOM',-120,-100,'A storybook castle village with lively streets, gardens and a soaring steel coaster.');
-/* DRAGON'S REACH — a mountain sanctuary guarded by the park's signature dragon. */
-gate(0,-85,M.red,'castle');dragon(0,-120);coaster(36,-92,'#3e9d82');
-for(var i=0;i<20;i++){var a=i/20*Math.PI*2;addMesh(new THREE.DodecahedronGeometry(2.3,1),M.rock,Math.cos(a)*29,1.5,-120+Math.sin(a)*29)}
-discovery("DRAGON'S REACH",0,-120,'A dramatic mountain valley with a giant dragon and a coaster weaving through rugged cliffs.');
-/* MONSTER MOUNTAIN — volcanic skyline, lava rivers and a thrill coaster. */
-gate(125,-72,M.red,'volcano');volcano(128,-135);coaster(92,-92,'#e06b42');discovery('MONSTER MOUNTAIN',128,-135,'A vast volcanic mountain with a glowing crater and molten rivers.');
-/* PIRATE'S BAY — waterfront boardwalk, lagoon and swinging galleon. */
-water(132,12,46,58);pirateShip(132,12);bridge(132,-22);addPath([[75,25],[100,25],[120,22],[150,20]],10,M.stone);
-for(var i=0;i<5;i++){var z=48-i*14;addBox(157,3.5,z,10,7,9,i%2?M.blue:M.cream);addBox(157,7.3,z,11,.5,10,M.red);addRectCollider(157,z,10,9)}
-discovery("PIRATE'S BAY",132,12,'A bustling harbour with a swinging galleon, timber docks, shops and a sheltered lagoon.');
-/* JUNGLE EXPEDITION — ancient temple, tropical canopy and river adventure. */
-gate(-135,-35,M.mint,'jungle');water(-145,-58,38,54);jungleRiverRide(-145,-68);addBox(-145,5,-17,20,10,15,M.temple);addBox(-145,10,-17,22,1,17,M.gold);addCollider(-145,-17,10,8);
-for(var i=0;i<30;i++){var x=-169+(i%7)*8,z=-100+Math.floor(i/7)*18;addCylinder(x,3.7,z,.34,.25,7.4,M.wood,8);for(var k=0;k<5;k++){var a=k*Math.PI*2/5,leaf=addBox(x+Math.cos(a)*2.2,7.4,z+Math.sin(a)*2.2,1,.24,4.6,M.leaf);leaf.rotation.y=-a}}
-discovery('JUNGLE EXPEDITION',-145,-58,'A tropical expedition through ancient ruins, towering palms and a guided river ride.');
-/* SKY GARDENS — observation wheel, formal gardens and scenic overlooks. */
-wheel(112,111);addCylinder(112,.35,111,28,28,.7,M.stone,48);for(var i=0;i<10;i++){var a=i*Math.PI/5;addTree(112+Math.cos(a)*34,111+Math.sin(a)*34,.9)}
-discovery('THE SKY WHEEL',112,111,'A towering observation wheel with panoramic views across the entire resort.');
-/* SPLASH LAGOON — colourful pools and a high twisting flume. */
-water(32,-157,66,38);splashSlideRide(7,-168);addPath([[0,-120],[8,-138],[18,-153],[25,-166]],10,M.stone);
-for(var i=0;i<5;i++){var x=-4+i*17;addCylinder(x,6,-145,1.25,.7,12,[M.red,M.blue,M.gold,M.mint,M.violet][i],12)}
-discovery('SPLASH LAGOON',32,-157,'A bright waterfront escape with a towering flume, pools and tropical gardens.');
-/* Destination amenities: grand theatre and resort hotel. */
-addBox(-145,7,105,42,14,24,M.cream);addBox(-145,14.5,105,44,1.2,26,M.red);addBox(-145,4,92,15,8,.5,M.dark);addCollider(-145,105,21,12);discovery('KICKAPOO THEATER',-145,105,'A grand performance palace with a sweeping marquee and landscaped forecourt.');
-addBox(148,10,111,36,20,27,M.cream);addBox(148,20,111,38,1.5,29,M.gold);addBox(148,10,97,36,2,1.2,M.red);addCollider(148,111,18,14);discovery('KICKAPOO RESORT HOTEL',148,111,'A full-scale resort hotel overlooking the themed lands.');
-/* Resort tree line and distant mountain horizon. */
-for(var i=0;i<34;i++){var a=i/34*Math.PI*2;addTree(Math.cos(a)*164,Math.sin(a)*164,.95)}
-var peaks=[[-205,-145,42,84],[-178,-210,48,96],[-85,-218,38,76],[25,-220,48,96],[145,-205,43,86],[210,-130,42,84],[210,55,42,86],[125,215,48,96],[-35,218,45,90],[-165,190,42,84]];
-for(var p=0;p<peaks.length;p++){var q=peaks[p],rock=addMesh(new THREE.ConeGeometry(q[2],q[3],9,3),M.rock,q[0],q[3]*.48-2,q[1]);rock.rotation.y=p*.37;rock.scale.z=1.3}
-scene.scale.setScalar(PARK_SCALE);scene.fog.near=280*PARK_SCALE;scene.fog.far=580*PARK_SCALE;
+/*KICKAPOO_NEW_DESIGN*/
 }
 function blocked(x,z){/* Water and structures always remain solid; rides are reached from their dry queue plazas. */var r=.82;if(Math.abs(x)>178-r||Math.abs(z)>178-r)return true;for(var i=0;i<colliders.length;i++){var c=colliders[i];if(c.type==='rect'){var qx=Math.max(c.x-c.w/2,Math.min(x,c.x+c.w/2)),qz=Math.max(c.z-c.d/2,Math.min(z,c.z+c.d/2)),dx=x-qx,dz=z-qz;if(dx*dx+dz*dz<r*r)return true}else{var rx=c.rx+r,rz=c.rz+r,dx=(x-c.x)/rx,dz=(z-c.z)/rz;if(dx*dx+dz*dz<1)return true}}return false}
 function move(dx,dz){var steps=Math.max(1,Math.ceil(Math.hypot(dx,dz)/.12)),sx=dx/steps,sz=dz/steps;for(var i=0;i<steps;i++){var nx=player.x+sx,nz=player.z+sz;if(!blocked(nx,nz)){player.x=nx;player.z=nz}else{var moved=false;if(!blocked(nx,player.z)){player.x=nx;moved=true}if(!blocked(player.x,nz)){player.z=nz;moved=true}if(!moved)break}}}
