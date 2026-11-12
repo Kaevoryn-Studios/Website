@@ -47,7 +47,7 @@ scene=new THREE.Scene();scene.background=new THREE.Color(0x100b12);scene.fog=new
 camera=new THREE.PerspectiveCamera(72,innerWidth/innerHeight,.1,380);camera.position.set(0,1.7,92);
 renderer=new THREE.WebGLRenderer({canvas,antialias:true,powerPreference:'high-performance'});renderer.setPixelRatio(Math.min(devicePixelRatio,1.55));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.22;
 clock=new THREE.Clock();scene.add(new THREE.HemisphereLight(0xa9a6bc,0x21131b,1.45));const moon=new THREE.DirectionalLight(0xc4b8d1,2.1);moon.position.set(-40,70,45);moon.castShadow=true;moon.shadow.mapSize.set(1024,1024);scene.add(moon);
-add(new THREE.PlaneGeometry(260,280),mat(0x242026),0,-.4,-34);
+add(new THREE.PlaneGeometry(260,280),mat(0x242026),0,-.4,-34,-Math.PI/2);
  // A broken circular midway instead of a straight corridor
 const ring=add(new THREE.TorusGeometry(43,4.3,8,120),mat(0x484047),0,.02,-30,Math.PI/2);ring.rotation.x=Math.PI/2;
 for(let i=0;i<12;i++){const a=i*Math.PI/6,x=Math.sin(a)*43,z=-30+Math.cos(a)*43;box(x,.06,z,1.5,.08,1.5,0x6e5a60)}
