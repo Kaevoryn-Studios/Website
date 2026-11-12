@@ -730,6 +730,27 @@ function buildGrandConservatory(){
   discovery('THE GRAND CONSERVATORY',x,z,'Step into Kickapoo’s glass-domed garden palace, framed by a sweeping rotunda, sculpted gardens and a monumental stone portico.');
 }
 
+function gate(x,z,accent,land){
+  /* A paired stone gateway with a clear, walk-through center lane. */
+  for(var side=-1;side<=1;side+=2){
+    var px=x+side*9;
+    addBox(px,5.5,z,3.2,11,3.2,M.stone);
+    addBox(px,11.2,z,4.2,1.1,4.2,M.gold);
+    addBox(px,13.2,z,3.0,3.2,3.0,accent||M.gold);
+    addMesh(new THREE.ConeGeometry(2.25,3.6,5),M.roof,px,16.4,z);
+    addSphere(px,18.5,z,.48,M.lamp);
+    addBox(px,5.5,z-1.72,1.45,6.8,.16,M.glass);
+    addCollider(px,z,1.8,2.0);
+  }
+  addBox(x,12.5,z,16.5,1.5,2.6,M.gold);
+  addBox(x,14.0,z,11.5,1.2,2.1,accent||M.red);
+  addSphere(x,15.2,z,.72,M.gold);
+  /* Short approach rails frame the entrance without closing its center. */
+  for(var side=-1;side<=1;side+=2){
+    addBox(x+side*13,.8,z+5,8,1.6,.55,M.stone);
+    addBox(x+side*13,1.7,z+5,8,.2,.7,M.gold);
+  }
+}
 function build(){
 scene.background=new THREE.Color('#9bcbd6');scene.fog=new THREE.Fog('#9bcbd6',300,620);
 parkSky=new THREE.HemisphereLight('#e8f7ff','#304a36',1.5);scene.add(parkSky);
