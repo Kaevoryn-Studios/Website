@@ -751,92 +751,167 @@ function gate(x,z,accent,land){
     addBox(x+side*13,1.7,z+5,8,.2,.7,M.gold);
   }
 }
+function buildEntryArch(){
+  /* Monumental signature entrance: paired stone towers, a sweeping crown and a readable park-name marquee. */
+  var z=151;
+  for(var side=-1;side<=1;side+=2){
+    var x=side*13.2;
+    addCylinder(x,7.1,z,2.15,2.75,14.2,M.stone,24);
+    addCylinder(x,14.45,z,2.55,2.55,.8,M.gold,24);
+    addCylinder(x,15.35,z,1.85,2.1,1.2,M.cream,20);
+    addCylinder(x,1.0,z,3.25,3.25,1.4,M.stone,24);
+    addCylinder(x,1.85,z,2.85,2.85,.28,M.gold,24);
+    addCollider(x,z,2.5,2.5);
+    for(var k=0;k<5;k++){
+      var rib=addBox(x+side*(1.45+k*.12),7.3,z+1.85, .12,10.2,.12,M.cream);
+    }
+    addSphere(x,16.5,z,.65,M.lamp);
+    addCylinder(x,18.0,z,.2,.2,3.0,M.gold,12);
+    addSphere(x,19.65,z,.48,M.lamp);
+  }
+  var crown=addMesh(new THREE.TorusGeometry(13.15,1.55,18,80,Math.PI),M.gold,0,9.5,z);
+  crown.rotation.z=0;
+  addBox(0,20.2,z,21.5,4.0,2.1,M.stone);
+  addBox(0,22.25,z,22.8,.55,2.6,M.gold);
+  addBox(0,18.15,z,22.8,.55,2.6,M.gold);
+  addBox(0,20.2,z+1.18,20.5,3.0,.18,M.dark);
+  var signCanvas=document.createElement('canvas');signCanvas.width=1400;signCanvas.height=260;
+  var ctx=signCanvas.getContext('2d');
+  var grad=ctx.createLinearGradient(0,0,1400,260);grad.addColorStop(0,'#142c3a');grad.addColorStop(.5,'#244b58');grad.addColorStop(1,'#142c3a');
+  ctx.fillStyle=grad;ctx.fillRect(0,0,1400,260);
+  ctx.strokeStyle='#f5d28c';ctx.lineWidth=9;ctx.strokeRect(15,15,1370,230);
+  ctx.textAlign='center';ctx.textBaseline='middle';ctx.shadowColor='#ffe3a6';ctx.shadowBlur=22;
+  ctx.fillStyle='#fff0c5';ctx.font='bold 116px Georgia,serif';ctx.fillText('KICKAPOO PARK',700,133);
+  var signTexture=new THREE.CanvasTexture(signCanvas);
+  var signMat=new THREE.MeshBasicMaterial({map:signTexture});
+  var marquee=addMesh(new THREE.PlaneGeometry(19.6,3.15),signMat,0,20.2,z+1.3);
+  marquee.castShadow=false;
+  addPath([[-13,145],[-9,137],[-5,130],[0,125],[5,130],[9,137],[13,145]],5,M.gold);
+  for(var side=-1;side<=1;side+=2){
+    addBox(side*21,.75,145,10,1.5,1.0,M.stone);
+    addBox(side*21,1.6,145,10,.2,1.2,M.gold);
+    for(var i=0;i<4;i++){var gx=side*(23+i*3),gz=139-(i%2)*5;addTree(gx,gz,.8);addLamp(gx+side*2,gz-3)}
+  }
+  addCollider(0,151,7.5,1.1);
+  discovery('THE KICKAPOO PARK GRAND GATE',0,151,'Pass beneath the monumental stone-and-gold entrance arch and step into a world of unforgettable adventures.');
+}
 function build(){
-scene.background=new THREE.Color('#a9d7e8');scene.fog=new THREE.Fog('#a9d7e8',340,660);
-parkSky=new THREE.HemisphereLight('#eaf8ff','#344b37',1.55);scene.add(parkSky);
-parkSun=new THREE.DirectionalLight('#fff0d1',2.35);parkSun.position.set(-135,190,115);scene.add(parkSun);
-parkRim=new THREE.DirectionalLight('#a8dcf0',.9);parkRim.position.set(145,100,-150);scene.add(parkRim);
-addBox(0,-1,0,360,2,360,M.grass);
-/* New resort boulevard, monumental entrance and Main Street. */
-addPath([[0,178],[0,155],[0,132],[0,109],[0,86],[0,64]],22,M.path);
-for(var side=-1;side<=1;side+=2){
- addBox(side*15,7,151,3,14,4,M.cream);addBox(side*15,14,151,5,1,5,M.gold);
- addMesh(new THREE.ConeGeometry(3,5,6),M.roof,side*15,18,151);addSphere(side*15,21,151,.6,M.lamp);
- for(var i=0;i<6;i++){addTree(side*(25+i%2*2),151-i*9,.8);if(i%2===0)addLamp(side*34,151-i*9)}
-}
-addBox(0,15,151,26,2,5,M.red);addBox(0,16.5,151,22,.5,5,M.gold);addSphere(0,19,151,1.4,M.lamp);
-discovery('THE GRAND ARRIVAL',0,151,'A monumental entrance and tree-lined boulevard welcome guests to Kickapoo Park.');
-addPath([[0,145],[0,128],[0,111],[0,94],[0,77],[0,62]],18,M.path);
-openShop(-25,133,M.cream);openShop(25,133,M.blue);openShop(-25,113,M.temple);openShop(25,113,M.cream);openShop(-25,93,M.blue);openShop(25,93,M.temple);
-addBox(-43,8,99,9,16,9,M.stone);addBox(-43,17,99,10,1,10,M.roof);addCylinder(-43,23,99,3.5,3.5,3,M.gold,12);addMesh(new THREE.ConeGeometry(4,7,8),M.red,-43,28,99);addCollider(-43,99,5,5);
-discovery('KICKAPOO MAIN STREET',0,105,'A lively shopping street of colorful storefronts, cafes and a landmark clock tower.');
-/* Central lagoon, fountain plaza and a complete dry guest promenade. */
-addCylinder(0,.12,29,24,24,.24,M.stone,64);addCylinder(0,.3,29,20,20,.16,M.gold,64);fountain(0,29);
-addPath([[0,68],[-25,59],[-45,42],[-55,18],[-53,-7],[-39,-30],[-18,-44],[10,-49],[36,-39],[53,-18],[56,8],[45,35],[25,55],[0,68]],10,M.path);
-water(0,8,38,27);addCylinder(0,.35,8,7,7,.7,M.stone,32);addSphere(0,2.4,8,1.3,M.lamp);
-addPath([[-55,18],[-76,12],[-93,0],[-110,-14]],9,M.stone);addPath([[56,8],[78,5],[98,-5],[113,-20]],9,M.stone);
-addPath([[-18,-44],[-12,-68],[-4,-88],[0,-106]],10,M.path);addPath([[10,-49],[30,-66],[52,-79],[75,-91]],9,M.stone);
-addPath([[-25,59],[-48,78],[-75,94],[-102,111]],9,M.path);addPath([[25,55],[49,75],[77,91],[104,108]],9,M.path);
-for(var i=0;i<16;i++){var a=i/16*Math.PI*2;addTree(Math.cos(a)*68,Math.sin(a)*58+8,.8)}
-discovery('THE LAGOON PROMENADE',0,8,'A scenic waterside loop with gardens, a fountain plaza and paths to every land.');
+  scene.background=new THREE.Color('#b9e3f2');scene.fog=new THREE.Fog('#b9e3f2',390,760);
+  parkSky=new THREE.HemisphereLight('#f2fbff','#55734b',1.75);scene.add(parkSky);
+  parkSun=new THREE.DirectionalLight('#fff1d5',2.55);parkSun.position.set(-145,210,125);scene.add(parkSun);
+  parkRim=new THREE.DirectionalLight('#b9e5ff',1.0);parkRim.position.set(155,120,-160);scene.add(parkRim);
+  addBox(0,-1,0,360,2,360,M.grass);
 
-/* Adventure Kingdom: castle village and steel coaster. */
-gate(-112,-64,M.gold,'castle');castle(-125,-111);coaster(-79,-83,'#d7a44b');
-for(var i=0;i<8;i++){var x=-158+(i%4)*17,z=-67-Math.floor(i/4)*18;openShop(x,z,i%2?M.cream:M.temple)}
-discovery('ADVENTURE KINGDOM',-125,-111,'A castle village with winding lanes, gardens and a soaring coaster.');
-/* Dragon's Reach: a fantasy valley with a living guardian. */
-gate(0,-112,M.red,'castle');
-for(var i=0;i<24;i++){var a=i/24*Math.PI*2,r=34+(i%3)*3;addMesh(new THREE.DodecahedronGeometry(2.8,1),M.rock,Math.cos(a)*r,1.5,-148+Math.sin(a)*r)}
-dragon(0,-148);coaster(42,-111,'#49a78b');
-discovery("DRAGON'S REACH",0,-148,'A rugged fantasy valley where a giant animated dragon guards the mountain coaster.');
-/* Monster Mountain: volcanic skyline and thrill coaster. */
-gate(117,-75,M.red,'volcano');volcano(128,-137);coaster(83,-99,'#e36f43');
-discovery('MONSTER MOUNTAIN',128,-137,'A towering volcano with a glowing crater, molten channels and a high-speed coaster.');
-/* Pirate's Bay: harbour, boardwalk and swinging galleon. */
-gate(135,-9,M.blue,'sail');water(142,12,43,36);pirateShip(142,12);bridge(142,-19);
-addBox(142,.5,42,54,.8,8,M.wood);for(var i=0;i<22;i++)addBox(116+i*2.45,.95,42,2.2,.12,8,M.gold);
-discovery("PIRATE'S BAY",142,12,'A lively harbour boardwalk and swinging pirate galleon.');
-/* Jungle Expedition: temple, dense canopy and guided river ride. */
-gate(-137,-8,M.mint,'jungle');water(-147,-36,38,50);jungleRiverRide(-147,-42);
-addBox(-147,5,3,24,10,22,M.temple);addBox(-147,10,3,26,1,24,M.gold);addCollider(-147,3,12,11);
-for(var i=0;i<40;i++){
- var x=-174+(i%8)*8,z=-78+Math.floor(i/8)*17;addCylinder(x,4,z,.42,.3,8,M.wood,8);
- for(var k=0;k<6;k++){var a=k*Math.PI/3,leaf=addBox(x+Math.cos(a)*2.5,8,z+Math.sin(a)*2.5,1.1,.3,5.2,M.leaf);leaf.rotation.y=-a}
-}
-discovery('JUNGLE EXPEDITION',-147,-36,'A tropical world of ancient ruins, towering palms and a guided river adventure.');
+  /* A formal resort arrival sequence, scaled around the monumental entrance. */
+  addPath([[0,178],[0,160],[0,142],[0,124],[0,106],[0,87],[0,68]],25,M.path);
+  buildEntryArch();
+  addPath([[-34,151],[-24,151],[-14,151],[14,151],[24,151],[34,151]],9,M.stone);
+  for(var side=-1;side<=1;side+=2){
+    addBox(side*37,5,145,12,10,18,M.cream);addBox(side*37,10.2,145,13,1,19,M.gold);
+    addBox(side*37,3,135,7,5,.7,M.glass);
+    addCollider(side*37,145,6.5,8);
+    for(var i=0;i<5;i++){addTree(side*(48+i*4),154-i*5,.9);if(i%2===0)addLamp(side*(45+i*4),143-i*5)}
+  }
+  discovery('THE GRAND ARRIVAL',0,151,'A sweeping arrival court framed by gardens, fountains and the towering Kickapoo Park entrance arch.');
 
-/* Sky Gardens: a formal garden around the observation wheel. */
-addPath([[45,35],[66,57],[84,79],[105,101]],10,M.path);wheel(119,119);addCylinder(119,.35,119,28,28,.7,M.stone,48);
-for(var i=0;i<18;i++){var a=i/18*Math.PI*2;addTree(119+Math.cos(a)*38,119+Math.sin(a)*38,.88)}
-discovery('SKY GARDENS',119,119,'A giant observation wheel surrounded by formal gardens and scenic terraces.');
-/* Splash Lagoon: pools, palms and a towering flume. */
-addPath([[0,-49],[5,-77],[15,-103],[22,-128],[24,-148]],11,M.path);water(28,-159,68,37);splashSlideRide(2,-169);
-for(var i=0;i<6;i++)addCylinder(-1+i*12,6,-145,1.3,.7,12,[M.red,M.blue,M.gold,M.mint,M.violet,M.red][i],12);
-discovery('SPLASH LAGOON',28,-159,'A bright water-play district with tropical gardens and a twisting flume.');
-/* Kickapoo Theater and resort hotel. */
-addPath([[-25,59],[-54,80],[-82,99],[-110,117],[-137,132]],9,M.path);
-addBox(-139,7,124,44,14,27,M.cream);addBox(-139,14.5,124,46,1.2,29,M.red);addBox(-139,5,109,24,8,.7,M.dark);addCollider(-139,124,22,13);
-discovery('KICKAPOO THEATER',-139,124,'A grand performance palace for live shows and spectacular nighttime productions.');
-addPath([[25,55],[53,78],[81,98],[110,117],[138,132]],9,M.path);
-addBox(142,10,124,42,20,29,M.cream);addBox(142,20.5,124,44,1.4,31,M.gold);addBox(142,12,109,15,2,.5,M.red);
-for(var f=0;f<3;f++)for(var w=0;w<5;w++)addBox(126+w*8,4+f*5,109,2.8,2.4,.2,M.glass);
-addCollider(142,124,21,15);water(142,153,32,14);
-discovery('KICKAPOO RESORT HOTEL',142,124,'A grand resort hotel with guest wings, a welcoming lobby and a sparkling garden pool.');
-/* Kickapoo Falls: a scenic garden destination. */
-addPath([[56,8],[80,0],[104,-1],[127,-1],[150,-1]],8,M.stone);
-addCylinder(160,8,1,17,19,16,M.rock,24);addCylinder(160,16,1,13,14,3,M.rock,24);
-addBox(151,8,-13,7,12,.7,M.water);addBox(168,8,-13,7,12,.7,M.water);addBox(160,.45,-26,31,.9,20,M.water);
-for(var i=0;i<14;i++){var fall=addBox(146+i*2.15,9,-13,.95,10,.35,M.water);animated.push({type:'fall',mesh:fall,phase:i*.5})}
-for(var i=0;i<14;i++){var a=i/14*Math.PI*2;addTree(160+Math.cos(a)*26,1+Math.sin(a)*25,.72)}
-discovery('KICKAPOO FALLS',160,1,'A shaded garden trail leads to a dramatic multi-stream waterfall and plunge pool.');
-/* A tree-lined resort boundary and distant mountain horizon. */
-for(var i=0;i<28;i++){var x=-165+i*12.2;addTree(x,166,.8);addTree(x,-166,.85)}
-for(var z=132;z>=-150;z-=25){addTree(-174,z,.72);addTree(174,z,.72)}
-for(var i=0;i<36;i++){var a=i/36*Math.PI*2;addLamp(Math.cos(a)*158,Math.sin(a)*158)}
-var peaks=[[-210,-145,42,84],[-178,-210,48,96],[-85,-218,38,76],[25,-220,48,96],[145,-205,43,86],[210,-130,42,84],[210,55,42,86],[125,215,48,96],[-35,218,45,90],[-165,190,42,84]];
-for(var p=0;p<peaks.length;p++){var q=peaks[p],rock=addMesh(new THREE.ConeGeometry(q[2],q[3],9,3),M.rock,q[0],q[3]*.48-2,q[1]);rock.rotation.y=p*.37;rock.scale.z=1.3}
-scene.scale.setScalar(PARK_SCALE);scene.fog.near=320*PARK_SCALE;scene.fog.far=660*PARK_SCALE;
+  /* Main Street becomes a real guest district, not a row of isolated props. */
+  addPath([[0,125],[0,109],[0,92],[0,75],[0,58],[0,42]],20,M.path);
+  for(var side=-1;side<=1;side+=2){
+    for(var i=0;i<4;i++){
+      var sx=side*(24+i%2*2),sz=116-i*17;
+      openShop(sx,sz,[M.cream,M.blue,M.temple,M.cream][i]);
+      addBox(sx,8,sz-6.4,12,.5,.7,M.gold);
+      addLamp(side*34,sz-7);
+    }
+  }
+  addBox(-43,8,94,10,16,10,M.stone);addBox(-43,17,94,11,1,11,M.roof);
+  addCylinder(-43,23,94,3.4,3.4,3,M.gold,16);addMesh(new THREE.ConeGeometry(4,7,8),M.red,-43,28,94);
+  addCollider(-43,94,5,5);
+  discovery('KICKAPOO MAIN STREET',0,91,'A lively boulevard of walk-in shops, cafes, dining, music and a landmark clock tower.');
 
+  /* A generous central lake and plaza form the park's navigational heart. */
+  water(0,5,43,31);
+  addCylinder(0,.2,5,26,26,.45,M.stone,64);addCylinder(0,.48,5,21,21,.18,M.gold,64);fountain(0,5);
+  addPath([[0,42],[-20,35],[-39,20],[-48,0],[-43,-23],[-24,-40],[0,-46],[25,-39],[44,-20],[49,2],[39,23],[20,36],[0,42]],12,M.path);
+  addPath([[-48,0],[-70,-2],[-92,-12],[-111,-28]],10,M.stone);
+  addPath([[49,2],[71,0],[94,-10],[113,-27]],10,M.stone);
+  addPath([[-20,35],[-42,54],[-66,72],[-90,91]],10,M.path);
+  addPath([[20,36],[43,55],[67,73],[91,91]],10,M.path);
+  addPath([[-24,-40],[-18,-61],[-8,-82],[0,-105]],10,M.path);
+  addPath([[25,-39],[43,-59],[60,-80],[75,-101]],10,M.path);
+  for(var i=0;i<20;i++){var a=i/20*Math.PI*2;addTree(Math.cos(a)*61,Math.sin(a)*54+5,.82)}
+  discovery('THE LAGOON PROMENADE',0,5,'A landscaped waterfront promenade connects the park’s themed worlds around a spectacular central fountain.');
+
+  /* Adventure Kingdom: castle district, village lanes and a signature coaster. */
+  gate(-112,-62,M.gold,'castle');castle(-126,-108);coaster(-78,-82,'#d9a64e');
+  for(var i=0;i<8;i++){var x=-158+(i%4)*17,z=-64-Math.floor(i/4)*18;openShop(x,z,i%2?M.cream:M.temple)}
+  discovery('ADVENTURE KINGDOM',-126,-108,'A storybook kingdom of soaring towers, lively village streets and a sweeping steel coaster.');
+
+  /* Dragon's Reach: a dramatic fantasy valley with a living guardian. */
+  gate(0,-112,M.red,'castle');
+  for(var i=0;i<28;i++){var a=i/28*Math.PI*2,r=37+(i%3)*3;addMesh(new THREE.DodecahedronGeometry(3.1,1),M.rock,Math.cos(a)*r,1.5,-150+Math.sin(a)*r)}
+  dragon(0,-150);coaster(43,-112,'#49a78b');
+  discovery("DRAGON'S REACH",0,-150,'A rugged fantasy valley where a giant animated dragon guards the mountain coaster.');
+
+  /* Monster Mountain: volcanic skyline, glowing crater and thrill coaster. */
+  gate(116,-70,M.red,'volcano');volcano(129,-135);coaster(83,-99,'#e36f43');
+  discovery('MONSTER MOUNTAIN',129,-135,'A towering volcano rises above a twisting high-speed coaster.');
+
+  /* Pirate's Bay: an actual harbour district with a broad boardwalk. */
+  gate(137,-5,M.blue,'sail');water(145,12,43,34);pirateShip(145,12);bridge(145,-17);
+  addBox(145,.5,39,54,.8,8,M.wood);
+  for(var i=0;i<22;i++)addBox(119+i*2.45,.95,39,2.2,.12,8,M.gold);
+  discovery("PIRATE'S BAY",145,12,'A bustling harbour with a pirate galleon, timber boardwalk and waterside paths.');
+
+  /* Jungle Expedition: ancient temple, dense canopy and a river ride. */
+  gate(-137,-5,M.mint,'jungle');water(-148,-35,38,48);jungleRiverRide(-148,-42);
+  addBox(-148,5,4,24,10,22,M.temple);addBox(-148,10,4,26,1,24,M.gold);addCollider(-148,4,12,11);
+  for(var i=0;i<42;i++){
+    var x=-176+(i%8)*8,z=-80+Math.floor(i/8)*17;
+    addCylinder(x,4,z,.42,.3,8,M.wood,8);
+    for(var k=0;k<6;k++){var a=k*Math.PI/3,leaf=addBox(x+Math.cos(a)*2.5,8,z+Math.sin(a)*2.5,1.1,.3,5.2,M.leaf);leaf.rotation.y=-a}
+  }
+  discovery('JUNGLE EXPEDITION',-148,-35,'Explore a lush tropical world of towering canopy, ancient ruins and a guided river adventure.');
+
+  /* Sky Gardens: elevated terraces and a giant observation wheel. */
+  addPath([[43,23],[65,43],[84,64],[104,85]],11,M.path);wheel(119,112);
+  addCylinder(119,.35,112,28,28,.7,M.stone,48);
+  for(var i=0;i<20;i++){var a=i/20*Math.PI*2;addTree(119+Math.cos(a)*39,112+Math.sin(a)*39,.9)}
+  discovery('SKY GARDENS',119,112,'A grand observation wheel rises above landscaped terraces and scenic gardens.');
+
+  /* Splash Lagoon: a dedicated water district with a towering flume. */
+  addPath([[0,-46],[5,-70],[15,-94],[23,-118],[26,-140]],12,M.path);
+  water(28,-158,68,37);splashSlideRide(2,-168);
+  for(var i=0;i<7;i++)addCylinder(-4+i*12,6,-145,1.3,.7,12,[M.red,M.blue,M.gold,M.mint,M.violet,M.red,M.blue][i],12);
+  discovery('SPLASH LAGOON',28,-158,'A colorful water-play world with tropical gardens, splash zones and a towering flume ride.');
+
+  /* A real entertainment and resort district anchors the arrival-side edge. */
+  addPath([[-20,36],[-46,56],[-72,77],[-99,99],[-128,120]],10,M.path);
+  addBox(-139,7,124,46,14,29,M.cream);addBox(-139,14.5,124,48,1.2,31,M.red);
+  addBox(-139,5,108,24,8,.7,M.dark);addCollider(-139,124,23,14);
+  discovery('KICKAPOO THEATER',-139,124,'A grand performance palace for live shows, spectacular sets and nighttime productions.');
+  addPath([[20,36],[47,57],[74,78],[103,100],[132,120]],10,M.path);
+  addBox(142,10,124,44,20,31,M.cream);addBox(142,20.5,124,46,1.4,33,M.gold);
+  addBox(142,12,107,17,2,.5,M.red);
+  for(var f=0;f<3;f++)for(var w=0;w<5;w++)addBox(126+w*8,4+f*5,107,2.8,2.4,.2,M.glass);
+  addCollider(142,124,22,16);water(142,153,32,14);
+  discovery('KICKAPOO RESORT HOTEL',142,124,'A destination resort hotel with guest wings, a welcoming lobby and a sparkling garden pool.');
+
+  /* Kickapoo Falls becomes a scenic destination at the end of its own trail. */
+  addPath([[49,2],[77,-2],[103,-3],[129,-3],[151,-3]],9,M.stone);
+  addCylinder(160,8,1,17,19,16,M.rock,24);addCylinder(160,16,1,13,14,3,M.rock,24);
+  addBox(151,8,-13,7,12,.7,M.water);addBox(168,8,-13,7,12,.7,M.water);addBox(160,.45,-26,31,.9,20,M.water);
+  for(var i=0;i<16;i++){var fall=addBox(145+i*2.0,9,-13,.95,10,.35,M.water);animated.push({type:'fall',mesh:fall,phase:i*.5})}
+  for(var i=0;i<16;i++){var a=i/16*Math.PI*2;addTree(160+Math.cos(a)*28,1+Math.sin(a)*26,.76)}
+  discovery('KICKAPOO FALLS',160,1,'A garden trail opens onto a dramatic multi-stream waterfall and a peaceful plunge pool.');
+
+  /* A wooded resort boundary and distant mountain skyline complete the world. */
+  for(var i=0;i<32;i++){var x=-170+i*11;addTree(x,170,.9);addTree(x,-170,.9)}
+  for(var z=145;z>=-155;z-=24){addTree(-174,z,.78);addTree(174,z,.78)}
+  for(var i=0;i<40;i++){var a=i/40*Math.PI*2;addLamp(Math.cos(a)*160,Math.sin(a)*160)}
+  var peaks=[[-210,-145,42,84],[-178,-210,48,96],[-85,-218,38,76],[25,-220,48,96],[145,-205,43,86],[210,-130,42,84],[210,55,42,86],[125,215,48,96],[-35,218,45,90],[-165,190,42,84]];
+  for(var p=0;p<peaks.length;p++){var q=peaks[p],rock=addMesh(new THREE.ConeGeometry(q[2],q[3],9,3),M.rock,q[0],q[3]*.48-2,q[1]);rock.rotation.y=p*.37;rock.scale.z=1.3}
+  scene.scale.setScalar(PARK_SCALE);scene.fog.near=390*PARK_SCALE;scene.fog.far=760*PARK_SCALE;
 }
 function blocked(x,z){/* Water and structures always remain solid; rides are reached from their dry queue plazas. */var r=.82;if(Math.abs(x)>178-r||Math.abs(z)>178-r)return true;for(var i=0;i<colliders.length;i++){var c=colliders[i];if(c.type==='rect'){var qx=Math.max(c.x-c.w/2,Math.min(x,c.x+c.w/2)),qz=Math.max(c.z-c.d/2,Math.min(z,c.z+c.d/2)),dx=x-qx,dz=z-qz;if(dx*dx+dz*dz<r*r)return true}else{var rx=c.rx+r,rz=c.rz+r,dx=(x-c.x)/rx,dz=(z-c.z)/rz;if(dx*dx+dz*dz<1)return true}}return false}
 function move(dx,dz){var steps=Math.max(1,Math.ceil(Math.hypot(dx,dz)/.12)),sx=dx/steps,sz=dz/steps;for(var i=0;i<steps;i++){var nx=player.x+sx,nz=player.z+sz;if(!blocked(nx,nz)){player.x=nx;player.z=nz}else{var moved=false;if(!blocked(nx,player.z)){player.x=nx;moved=true}if(!blocked(player.x,nz)){player.z=nz;moved=true}if(!moved)break}}}
