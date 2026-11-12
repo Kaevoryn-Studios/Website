@@ -116,7 +116,7 @@ for(const a of actors){a.phase+=dt;if(a.kind==='ghost'){a.obj.position.y=Math.si
 if(performance.now()>scareUntil)scare.classList.remove('on');
  for(const g of gates){const target=g.closed?0:g.side*Math.PI/2;g.obj.rotation.y+=(target-g.obj.rotation.y)*Math.min(1,dt*1.7)}
  if(pos.z<88&&gates.some(g=>!g.closed)){gates.forEach(g=>g.closed=true);block(0,100,18,1.2);toastText('THE GATES ARE SEALED. THERE IS NO EXIT.');shake=.65;playCreak()}
- if(shake>0){camera.position.x+=(Math.random()-.5)*shake*.22;camera.position.y=1.7+(Math.random()-.5)*shake*.15;shake=Math.max(0,shake-dt*1.8)}
+ if(shake>0){camera.rotation.z=(Math.random()-.5)*shake*.15;camera.position.y=1.7+(Math.random()-.5)*shake*.15;shake=Math.max(0,shake-dt*1.8)}else{camera.rotation.z=0;camera.position.y=1.7}
 for(const l of lights){const flicker=.82+Math.sin(performance.now()*.003+l.phase)*.12+(Math.random()>.992?-.65:0);l.light.intensity=Math.max(.08,l.base*flicker)}
 if(Math.random()>.997)lightning=1.4;if(lightning>0){scene.background.setHex(0xaaa1b0);lightning-=dt*12;if(lightning<=0){scene.background.setHex(0x100b12);playThunder()}$('shockFlash').classList.toggle('hit',lightning>.9)}
 let nearest=null,best=1e9;for(const d of districts){const dist=Math.hypot(pos.x-d.x,pos.z-d.z);if(dist<best){best=dist;nearest=d}}if(nearest&&best<24){$('district').textContent=nearest.name;if(best<10&&!found.has(nearest.name)){found.add(nearest.name);$('progress').textContent=found.size+' / 6 NIGHTMARES SURVIVED';toastText(nearest.desc)}}if(performance.now()-lastToast>5000)toast.classList.remove('on')}
