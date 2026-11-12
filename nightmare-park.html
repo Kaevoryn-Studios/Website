@@ -19,7 +19,7 @@ header{position:absolute;z-index:4;top:0;left:0;right:0;padding:13px 17px;displa
 <body>
 <canvas id="world"></canvas>
 <header><a href="index.html">KAEVORYN STUDIOS<small>CREATE THE IMPOSSIBLE</small></a><nav><a href="parks.html">ALL PARKS</a><a href="kickapoo-park.html">KICKAPOO PARK</a></nav></header>
-<section id="intro"><div class="panel"><div class="eyebrow">A NEW NIGHTMARE IS WAITING</div><h1>THE BLACK<br>MERIDIAN</h1><p>Beyond the gates lies a town that was erased from every map. Follow the crooked lantern road, cross the ruined districts, and find out why the clock tower has no hands.</p><button class="enter" id="enter">ENTER THE FORGOTTEN TOWN</button><div class="hint">Best in landscape · Drag to look · Joystick to walk · Sound optional</div></div></section>
+<section id="intro"><div class="panel"><div class="eyebrow">THE FINAL TRAIN LEFT WITHOUT YOU</div><h1>THE LAST<br>DEPARTURE</h1><p>Step into a forgotten railway town where every platform leads somewhere worse. Find the six lost districts. Do not follow the signal lights when they turn blue.</p><button class="enter" id="enter">BOARD THE NIGHT TRAIN</button><div class="hint">Best in landscape · Drag to look · Joystick to walk · Sound optional</div></div></section>
 <div id="hud"><button id="soundBtn">SOUND: OFF</button><div class="hudline"><div class="chip" id="district">THE GATEHOUSE</div><div class="chip" id="progress">0 / 6 DISTRICTS EXPLORED</div></div><div id="toast"></div></div>
 <div id="mobile"><div class="pad" id="movePad"><div class="stick" id="stick"></div></div><div class="look" id="lookPad">DRAG TO LOOK</div></div>
 <div id="scare"><div class="face">◉</div><small>IT HAS BEEN WAITING FOR YOU</small></div><div id="vfx"></div><div id="fatal"></div>
@@ -44,56 +44,53 @@ function path(x,z,w,d,rot=0){const p=mesh(new THREE.PlaneGeometry(w,d),material(
 function arch(x,z,w,h){box(x,h,z,w,.5,.65,0x65505a);box(x-w/2,h/2,z,.45,h,.65,0x51404b);box(x+w/2,h/2,z,.45,h,.65,0x51404b)}
 function ghost(x,z,s=1,evil=false){const g=new THREE.Group(),m=new THREE.MeshStandardMaterial({color:evil?0x171019:0xc8b9c1,transparent:true,opacity:evil?.98:.55,emissive:evil?0x27000b:0x17101b,emissiveIntensity:.6});const body=new THREE.Mesh(new THREE.ConeGeometry(.65*s,2.4*s,9),m);body.position.y=1.25*s;g.add(body);const head=new THREE.Mesh(new THREE.SphereGeometry(.4*s,12,10),m);head.position.y=2.35*s;g.add(head);for(const side of [-1,1]){const eye=new THREE.Mesh(new THREE.SphereGeometry(.07*s,8,8),new THREE.MeshBasicMaterial({color:0xff263f}));eye.position.set(side*.15*s,2.4*s,-.34*s);g.add(eye)}g.position.set(x,0,z);scene.add(g);actors.push({obj:g,kind:evil?'stalker':'ghost',home:new THREE.Vector3(x,0,z),phase:Math.random()*8});if(!evil)solid(x,z,.8,.8);return g}
 function build(){
-scene=new THREE.Scene();scene.background=new THREE.Color(0x100b14);scene.fog=new THREE.FogExp2(0x17101a,.0068);
-camera=new THREE.PerspectiveCamera(72,innerWidth/innerHeight,.1,420);camera.position.set(0,1.7,104);
-renderer=new THREE.WebGLRenderer({canvas,antialias:true,powerPreference:'high-performance'});renderer.setPixelRatio(Math.min(devicePixelRatio,1.45));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.3;
-clock=new THREE.Clock();scene.add(new THREE.HemisphereLight(0xb9b3c7,0x24151e,1.55));const moon=new THREE.DirectionalLight(0xc8b8d0,2);moon.position.set(-55,80,40);moon.castShadow=true;moon.shadow.mapSize.set(1024,1024);scene.add(moon);
-mesh(new THREE.PlaneGeometry(300,340),material(0x252129),0,-.5,-25,-Math.PI/2);
- // NEW MAP: an irregular figure-eight route wraps around a sunken clockwork crater.
-path(0,69,13,55);path(0,17,13,52);path(-25,-12,57,12,.65);path(-53,-42,50,12,0);path(-19,-76,13,70,-.2);path(25,-76,13,70,.2);path(55,-42,48,12,0);path(24,-12,55,12,-.65);
-path(0,-39,17,45);path(0,-100,16,28);
- // Central sinkhole and handless clock tower
-mesh(new THREE.CylinderGeometry(22,27,1.3,48),material(0x15131a),0,-.2,-27);mesh(new THREE.TorusGeometry(24,.8,8,80),material(0x75616e,.5,.5),0,.25,-27,Math.PI/2).rotation.x=Math.PI/2;
-tower(0,-27,8,34,0x453641);for(let i=0;i<4;i++){const a=i*Math.PI/2;const x=Math.sin(a)*11,z=-27+Math.cos(a)*11;tower(x,z,2.1,20,0x57434d)}
-const clockFace=mesh(new THREE.CircleGeometry(5,48),new THREE.MeshBasicMaterial({color:0x100d15}),0,25,-18);clockFace.rotation.x=0; // vertical clock face facing the approach
-mesh(new THREE.TorusGeometry(5,.25,8,48),material(0x9b7d86,.45,.5),0,25,-17.8);
-for(let i=0;i<12;i++){const a=i*Math.PI/6;mesh(new THREE.BoxGeometry(.16,.7,.1),material(0xc7a6a9),Math.sin(a)*4.2,25+Math.cos(a)*4.2,-17.6)}
-const redCore=mesh(new THREE.IcosahedronGeometry(2.5,2),new THREE.MeshStandardMaterial({color:0x9e2448,emissive:0x8d1235,emissiveIntensity:2}),0,12,-27);actors.push({obj:redCore,kind:'core',phase:0});light(0,14,-27,0xe22c58,5,55);
- // Main gate and a real, visible fence line around the town
-arch(0,91,18,12);tower(-11,91,2.4,16,0x51404b);tower(11,91,2.4,16,0x51404b);sign(0,10,90,'THE TOWN HAS NO NAME');
-const fence=material(0x37303a,.65,.65),rust=material(0x71515e,.6,.4);
-function fenceRun(x1,z1,x2,z2){const len=Math.hypot(x2-x1,z2-z1),n=Math.ceil(len/5),ang=Math.atan2(-(z2-z1),x2-x1);for(let i=0;i<=n;i++){const t=i/n,x=x1+(x2-x1)*t,z=z1+(z2-z1)*t;box(x,3.5,z,.28,7,.28,0x3c333d);mesh(new THREE.ConeGeometry(.22,.6,5),rust,x,7.3,z);if(i<n){const mx=(x1+x2)*(i+.5)/n,mz=(z1+z2)*(i+.5)/n;for(const y of [1,3,5.2])box(mx,y,mz,5,.12,.16,0x51414b,ang);for(let k=1;k<5;k++)box(x+(x2-x1)/n*k/5,3.5,z+(z2-z1)/n*k/5,.08,6,.08,0x51414b)}}}
+scene=new THREE.Scene();scene.background=new THREE.Color(0x090d13);scene.fog=new THREE.FogExp2(0x101923,.0058);
+camera=new THREE.PerspectiveCamera(72,innerWidth/innerHeight,.1,460);camera.position.set(0,1.7,104);
+renderer=new THREE.WebGLRenderer({canvas,antialias:true,powerPreference:'high-performance'});renderer.setPixelRatio(Math.min(devicePixelRatio,1.35));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.38;
+clock=new THREE.Clock();scene.add(new THREE.HemisphereLight(0x9eb3c6,0x111722,1.45));const moon=new THREE.DirectionalLight(0xb9d1e2,2.1);moon.position.set(-55,85,30);moon.castShadow=true;moon.shadow.mapSize.set(1024,1024);scene.add(moon);
+mesh(new THREE.PlaneGeometry(300,340),material(0x202a30),0,-.5,-25,-Math.PI/2);
+// THE LAST DEPARTURE — a ruined rail terminus with a long central avenue and six branching nightmares.
+path(0,69,15,58);path(0,20,15,46);path(0,-20,17,45);path(0,-63,15,48);path(0,-105,19,30);
+path(-28,27,52,13,0);path(-53,27,34,13,0);path(28,-12,52,13,0);path(56,-12,32,13,0);
+path(-28,-73,52,13,0);path(29,-83,52,13,0);path(0,-122,55,13,0);
+// Abandoned terminal concourse and giant dead clock
+box(0,4,-20,34,8,24,0x343d43);box(0,8.2,-20,36,1,26,0x1c252c);solid(0,-20,34,24);
+for(let x=-13;x<=13;x+=6){box(x,5,-7,.65,10,.65,0x58616a);box(x,10,-7,2,.35,1.2,0x9a8a78)}
+arch(0, -6, 12, 9);sign(0,13,-5,'LAST DEPARTURE');const face=mesh(new THREE.CircleGeometry(5.5,48),new THREE.MeshBasicMaterial({color:0x0a1117}),0,17,-7);mesh(new THREE.TorusGeometry(5.7,.3,10,64),material(0x9a7771,.45,.7),0,17,-6.8);for(let i=0;i<12;i++){const a=i*Math.PI/6;box(Math.sin(a)*4.7,17+Math.cos(a)*4.7,-6.6,.18,.8,.16,0xd7b9a0)}
+const core=mesh(new THREE.OctahedronGeometry(2.4,2),new THREE.MeshStandardMaterial({color:0x4c9aab,emissive:0x176273,emissiveIntensity:2}),0,5,-19);actors.push({obj:core,kind:'core',phase:0});light(0,8,-19,0x43c4d2,4,48);
+// Main entrance and outer iron perimeter
+arch(0,91,18,12);tower(-11,91,2.4,16,0x4a555e);tower(11,91,2.4,16,0x4a555e);sign(0,10,90,'NO TRAINS RETURN');
+const fence=material(0x343e48,.65,.65),rust=material(0x77615c,.6,.4);
+function fenceRun(x1,z1,x2,z2){const len=Math.hypot(x2-x1,z2-z1),n=Math.ceil(len/5),ang=Math.atan2(-(z2-z1),x2-x1);for(let i=0;i<=n;i++){const t=i/n,x=x1+(x2-x1)*t,z=z1+(z2-z1)*t;box(x,3.5,z,.28,7,.28,0x35404a);mesh(new THREE.ConeGeometry(.22,.6,5),rust,x,7.3,z);if(i<n){const mx=(x1+x2)*(i+.5)/n,mz=(z1+z2)*(i+.5)/n;for(const y of [1,3,5.2])box(mx,y,mz,5,.12,.16,0x46525c,ang);for(let k=1;k<5;k++)box(x+(x2-x1)/n*k/5,3.5,z+(z2-z1)/n*k/5,.08,6,.08,0x46525c)}}}
 fenceRun(-112,100,-12,100);fenceRun(12,100,112,100);fenceRun(-112,100,-112,-160);fenceRun(112,100,112,-160);fenceRun(-112,-160,112,-160);
 function gateLeaf(x,side){const g=new THREE.Group();g.position.set(x,0,100);const panel=new THREE.Mesh(new THREE.BoxGeometry(9,7,.35),fence);panel.position.set(side*4.5,3.5,0);g.add(panel);for(let i=0;i<5;i++){const bar=new THREE.Mesh(new THREE.BoxGeometry(.15,8,.18),rust);bar.position.set(side*i*2.1,3.7,0);g.add(bar)}scene.add(g);g.rotation.y=side*Math.PI/2;gates.push({obj:g,side})}gateLeaf(-9,1);gateLeaf(9,-1);
- // Six distinct districts arranged around the figure-eight, each with a different silhouette.
-function district(name,x,z,desc){districts.push({name,x,z,desc})}
- // 1 — The Briar Quarter: twisted black trees, red watchlights, ruined cottages
-for(let i=0;i<48;i++){const x=-91+Math.random()*36,z=-20-Math.random()*58;tree(x,z,.8+Math.random()*.8)}
-for(let i=0;i<6;i++){const x=-83+(i%3)*9,z=-48-Math.floor(i/3)*17;box(x,3,z,8,6,7,0x40313a,(Math.random()-.5)*.18);mesh(new THREE.ConeGeometry(6,4,4),material(0x211821),x,8,z,0,Math.PI/4);solid(x,z,8,7);for(let w=-1;w<=1;w++)mesh(new THREE.BoxGeometry(1,1.6,.12),new THREE.MeshStandardMaterial({color:0xd37b62,emissive:0x6c281c}),x+w*2,3,z-3.6)}
-ghost(-74,-42,1);ghost(-94,-67,.9);sign(-73,8,-14,'BRIAR QUARTER');district('THE BRIAR QUARTER',-76,-48,'The trees are rooted through the floorboards. Something is knocking from inside the cottages.');
- // 2 — The Drowned Ward: flooded street, leaning buildings, broken bridge
-const water=mesh(new THREE.PlaneGeometry(48,43),new THREE.MeshStandardMaterial({color:0x18323b,metalness:.5,roughness:.18,transparent:true,opacity:.9}),0,.035,-111);water.rotation.x=-Math.PI/2;light(0,3,-108,0x53a5b4,2.4,38);
-for(let i=0;i<7;i++){const x=-23+i*7,z=-112-(i%2)*9,h=7+(i%3)*2;const b=box(x,h/2,z,6,h,7,0x39474b,(i%2?-.12:.1));solid(x,z,6,7);for(let y=2;y<h;y+=3)mesh(new THREE.BoxGeometry(1.2,1.5,.12),new THREE.MeshStandardMaterial({color:0xb0a78f,emissive:0x544331}),x,y,z-3.55)}
-for(let i=0;i<8;i++)box(-18+i*5,.35,-83,4,.5,1.2,0x65575b);ghost(-15,-119,1.1);ghost(17,-119,1.2,true);sign(0,8,-84,'THE DROWNED WARD');district('THE DROWNED WARD',0,-111,'The water is only ankle deep. The footprints beneath it are much larger than yours.');
- // 3 — The Red Fair: broken ferris wheel, striped tents, abandoned carousel
-for(const [x,z,c] of [[54,-32,0x8b304a],[70,-47,0x394a67],[79,-25,0x80603a]]){mesh(new THREE.ConeGeometry(7,9,10),material(c),x,4.5,z);box(x,1,z,10,2,9,0x30232d);solid(x,z,8,8)}
-const wheel=new THREE.Group();for(let i=0;i<16;i++){const a=i*Math.PI/8;const spoke=new THREE.Mesh(new THREE.BoxGeometry(.13,21,.13),material(0xd7b994,.4,.55));spoke.position.set(Math.cos(a)*10,Math.sin(a)*10,0);spoke.rotation.z=-a;wheel.add(spoke)}wheel.add(new THREE.Mesh(new THREE.TorusGeometry(10,.25,8,64),material(0xe0c89b,.4,.45)));for(let i=0;i<8;i++){const a=i*Math.PI/4;const seat=new THREE.Mesh(new THREE.BoxGeometry(1.3,1.1,1.2),material(0x8c394b));seat.position.set(Math.cos(a)*10,Math.sin(a)*10,0);wheel.add(seat)}wheel.position.set(66,14,-29);scene.add(wheel);actors.push({obj:wheel,kind:'wheel',phase:0});const carousel=mesh(new THREE.CylinderGeometry(7,7,1,24),material(0x6b394c),49,.8,-58);for(let i=0;i<8;i++){const a=i*Math.PI/4;mesh(new THREE.CylinderGeometry(.12,.12,5,8),material(0xc8aa83),49+Math.sin(a)*4,3.5,-58+Math.cos(a)*4)}sign(63,7,-17,'THE RED FAIR');ghost(82,-58,1.1,true);district('THE RED FAIR',66,-39,'The carousel turns without music. One of the painted horses is breathing.');
- // 4 — Saint Mercy Hospital: long ward, glowing windows, ambulance
-box(-48,6,32,30,12,15,0x3e464d);box(-48,12.5,32,32,1,17,0x252c35);for(let x=-60;x<=-36;x+=4)for(let y=4;y<=10;y+=3)mesh(new THREE.BoxGeometry(1.5,1.8,.12),new THREE.MeshStandardMaterial({color:0xd6c7a9,emissive:0x7d5941}),x,y,24.4);tower(-64,32,2.3,18,0x56535b);tower(-32,32,2.3,18,0x56535b);arch(-48,24,5,6);sign(-48,17,23,'SAINT MERCY HOSPITAL');box(-48,1,53,7,2.2,12,0x4b3c42);box(-48,2.3,47,6,1.2,4,0x88746e);ghost(-35,48,1.1,true);district('SAINT MERCY HOSPITAL',-48,36,'The nurses left decades ago. The call buttons are still lighting up.');
- // 5 — The Hollow Cathedral: broken nave, rib arches, bell tower and crypt
-box(43,5,47,22,10,27,0x51464e);for(let x=34;x<=52;x+=6){tower(x,30,1.3,16,0x6b5962);const rib=mesh(new THREE.TorusGeometry(6,.3,8,24,Math.PI),material(0x9b8790),x,10,45);rib.rotation.y=Math.PI/2}arch(43,30,6,8);for(let x=38;x<=48;x+=5)mesh(new THREE.SphereGeometry(.65,12,10),material(0x987f70,.4,.5),x,15,42);sign(43,17,29,'THE HOLLOW CATHEDRAL');ghost(57,58,1);district('THE HOLLOW CATHEDRAL',44,47,'The bell rings below ground. The altar has been turned to face the wall.');
- // 6 — The Gallows Market: crooked stalls, hanging lanterns, an empty execution frame
-for(let i=0;i<9;i++){const x=-36+i*9,z=76+(i%2)*6;box(x,2.5,z,7,5,6,0x493943);mesh(new THREE.ConeGeometry(5,3,4),material(0x29202b),x,6.5,z,0,Math.PI/4);solid(x,z,6,5)}
-for(let i=0;i<7;i++){const x=-28+i*9;lamp(x,64,0xff754c)}box(0,5,68,13,1,1,0x29212a);for(let x of [-5,5])box(x,2.5,68,.5,5,.5,0x30242b);sign(0,10,61,'THE GALLOWS MARKET');ghost(15,75,1.25,true);district('THE GALLOWS MARKET',0,72,'Every stall is open. Every merchant has the same face.');
- // Lanterns and fires mark the actual walking route, never leaving the visitor in pitch black.
-for(const [x,z] of [[0,78],[0,55],[0,28],[-22,-10],[-48,-42],[-20,-78],[0,-96],[23,-78],[53,-42],[26,-10],[0,-3]])lamp(x,z);
-for(const [x,z] of [[-7,78],[7,78],[-58,-7],[58,-7],[-18,-95],[18,-95]]){const fire=mesh(new THREE.ConeGeometry(.55,2,8),new THREE.MeshBasicMaterial({color:0xff5a2e,transparent:true,opacity:.8}),x,1.3,z);actors.push({obj:fire,kind:'fire',phase:Math.random()*8});light(x,2,z,0xff4c29,2.5,18)}
- // Grave markers and distant silhouettes
-for(let i=0;i<24;i++){const x=-16+Math.random()*32,z=6+Math.random()*42;const tomb=box(x,.8,z,.8,1.6,.25,0x68616a,Math.random()*.25);if(i%3===0)box(x,.8,z,.25,2,.3,0x68616a)}
-ghost(-14,-6,1.5,true);ghost(17,-63,1.35,true);
- // Bats circle over the clock tower; ash drifts through the whole town.
-for(let i=0;i<14;i++){const g=new THREE.Group(),m=new THREE.MeshBasicMaterial({color:0x08060d,side:THREE.DoubleSide});g.add(new THREE.Mesh(new THREE.SphereGeometry(.18,8,6),m));for(const side of [-1,1]){const s=new THREE.Shape();s.moveTo(0,0);s.lineTo(side*.9,.2);s.lineTo(side*.7,-.45);s.lineTo(side*.2,-.2);s.closePath();const w=new THREE.Mesh(new THREE.ShapeGeometry(s),m);w.userData.side=side;g.add(w)}g.position.set((Math.random()-.5)*65,13+Math.random()*12,-28+(Math.random()-.5)*60);scene.add(g);actors.push({obj:g,kind:'bat',home:g.position.clone(),phase:Math.random()*8})}
-const n=650,p=new Float32Array(n*3);for(let i=0;i<n;i++){p[i*3]=(Math.random()-.5)*190;p[i*3+1]=Math.random()*26;p[i*3+2]=-40+(Math.random()-.5)*220}const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.BufferAttribute(p,3));scene.add(new THREE.Points(geo,new THREE.PointsMaterial({color:0xbca9b0,size:.13,transparent:true,opacity:.48})));actors.push({obj:scene.children[scene.children.length-1],kind:'ash'});
+// District 1: The Signal Graveyard — leaning signal gantries and derailed carriages
+for(let i=0;i<5;i++){const x=-83+i*8,z=35+(i%2)*8;box(x,3,z,7,6,10,0x3c454b,(i%2?-.08:.12));box(x,6.3,z,7.4,.5,10.4,0x202a31);solid(x,z,7,10);for(let y=2;y<6;y+=2)mesh(new THREE.BoxGeometry(1.1,1.1,.12),new THREE.MeshStandardMaterial({color:0x8eab9e,emissive:0x345e55}),x-3.56,y,z)}
+for(let x=-88;x<=-48;x+=10){tower(x,12,.55,14,0x59666b);box(x,14,12,5,.35,.35,0x7a8584);light(x,11,12,0x74b7a0,1.5,15)}sign(-68,10,3,'SIGNAL GRAVEYARD');district('THE SIGNAL GRAVEYARD',-66,26,'The signal lamps change when you look away. The trains have no wheels.');
+// District 2: Lantern Row — close-set tenements, alley lanterns and a watching figure
+for(let i=0;i<7;i++){const x=43+(i%3)*12,z=32-Math.floor(i/3)*17,h=9+(i%3)*3;box(x,h/2,z,9,h,10,0x44454a,(i%2?-.1:.1));box(x,h+.25,z,9.5,.5,10.5,0x252a31);solid(x,z,9,10);for(let y=3;y<h-1;y+=3)for(let w=-1;w<=1;w++)mesh(new THREE.BoxGeometry(1.1,1.5,.12),new THREE.MeshStandardMaterial({color:0xb7a17f,emissive:0x76502a}),x+w*2.7,y,z-5.08)}
+for(let i=0;i<6;i++)lamp(39+i*8,49,0xffc17a);sign(57,12,4,'LANTERN ROW');ghost(79,8,1.5,true);district('LANTERN ROW',57,25,'Every window is lit. Every shadow inside is facing the street.');
+// District 3: The Flooded Switchyard — cold water, broken rails and a stranded engine
+const water=mesh(new THREE.PlaneGeometry(65,45),new THREE.MeshStandardMaterial({color:0x16343d,metalness:.45,roughness:.16,transparent:true,opacity:.88}),-25,.035,-64);water.rotation.x=-Math.PI/2;light(-25,3,-62,0x55b9c6,2.6,48);
+for(let i=0;i<6;i++){const x=-53+i*10;box(x,.22,-65,8,.4,1,0x7a6d65);box(x,.55,-59,7,.3,.35,0x4b5154)}box(-26,2,-70,17,4,8,0x333d44);box(-26,4.2,-70,18,.5,9,0x222c33);solid(-26,-70,17,8);for(let i=0;i<5;i++)box(-31+i*2.5,2.8,-65.8,1.2,1.2,.15,0x9b9b87);ghost(-5,-72,1.25);sign(-25,9,-39,'FLOODED SWITCHYARD');district('THE FLOODED SWITCHYARD',-25,-64,'A locomotive waits beneath the waterline. Its headlamp is still searching.');
+// District 4: The Wax Carnival — abandoned big top, broken wheel and carousel
+for(const [x,z,c] of [[-76,-82,0x743b4b],[-57,-99,0x3c5360],[-83,-111,0x80633f]]){mesh(new THREE.ConeGeometry(8,12,10),material(c),x,6,z);box(x,1,z,13,2,12,0x302b32);solid(x,z,11,10)}
+const wheel=new THREE.Group();for(let i=0;i<16;i++){const a=i*Math.PI/8;const spoke=new THREE.Mesh(new THREE.BoxGeometry(.15,24,.15),material(0xcbbca3,.4,.5));spoke.position.set(Math.cos(a)*11,Math.sin(a)*11,0);spoke.rotation.z=-a;wheel.add(spoke)}wheel.add(new THREE.Mesh(new THREE.TorusGeometry(11,.3,8,64),material(0xbda98e,.4,.5)));for(let i=0;i<8;i++){const a=i*Math.PI/4;const seat=new THREE.Mesh(new THREE.BoxGeometry(1.5,1.2,1.3),material(0x6b3945));seat.position.set(Math.cos(a)*11,Math.sin(a)*11,0);wheel.add(seat)}wheel.position.set(-65,15,-83);scene.add(wheel);actors.push({obj:wheel,kind:'wheel',phase:0});sign(-65,10,-67,'THE WAX CARNIVAL');ghost(-89,-122,1.3,true);district('THE WAX CARNIVAL',-65,-91,'The wax figures melt upward. The calliope plays from an empty tent.');
+// District 5: The Bone Orchard — dead trees, stone markers and a buried chapel
+for(let i=0;i<35;i++){const x=22+Math.random()*70,z=-92+Math.random()*48;tree(x,z,.9+Math.random()*.8)}
+for(let i=0;i<20;i++){const x=27+Math.random()*53,z=-88+Math.random()*37;box(x,.8,z,.8,1.6,.3,0x777477);if(i%3===0)box(x,.8,z,.25,2,.3,0x777477)}
+box(63,4,-113,22,8,18,0x4d4a50);for(let x=54;x<=72;x+=6)tower(x,-113,1.1,15,0x66616a);arch(63,-104,7,8);sign(63,14,-99,'BONE ORCHARD');ghost(45,-116,1.25,true);district('THE BONE ORCHARD',63,-91,'The trees grow from the graves. Something is walking beneath the soil.');
+// District 6: The Black Signal Tower — a vertical beacon over the final platform
+tower(0,-132,5,30,0x39434c);for(let y=8;y<28;y+=5){mesh(new THREE.TorusGeometry(4,.18,8,32),material(0x7b9695,.4,.7),0,y,-132);light(0,y,-132,0x6bb5b5,1.2,25)}sign(0,13,-121,'THE BLACK SIGNAL');district('THE BLACK SIGNAL TOWER',0,-132,'The last platform is empty. The signal tower is broadcasting your name.');
+// Rail lines, platforms and signal lamps create a readable, continuous route.
+for(const x of [-5,5]){box(x,.12,5,.22,.2,170,0x8b7a69);for(let z=85;z>-145;z-=3)box(x,.24,z,.35,.16,2,0x514a49)}
+for(const [x,z] of [[0,75],[0,48],[0,18],[0,-7],[0,-38],[0,-94],[0,-120],[-31,27],[-60,27],[31,-12],[60,-12],[-32,-73],[-64,-83],[31,-83],[62,-83]])lamp(x,z,0xffbd7a);
+for(const [x,z] of [[-10,73],[10,73],[-38,-54],[38,-55],[-80,-70],[80,-75],[0,-115]]){const fire=mesh(new THREE.ConeGeometry(.55,2,8),new THREE.MeshBasicMaterial({color:0x65c9d2,transparent:true,opacity:.85}),x,1.3,z);actors.push({obj:fire,kind:'fire',phase:Math.random()*8});light(x,2,z,0x50b9ca,2.2,18)}
+ghost(-15,-33,1.2,true);ghost(18,41,1.2,true);
+// A cold moon, circling ravens and drifting soot complete the new atmosphere.
+mesh(new THREE.SphereGeometry(13,24,18),new THREE.MeshBasicMaterial({color:0xb6c9c7}),-75,63,-145);mesh(new THREE.TorusGeometry(17,.55,8,64),new THREE.MeshBasicMaterial({color:0x668b91,transparent:true,opacity:.55}),-75,63,-144);
+for(let i=0;i<18;i++){const g=new THREE.Group(),m=new THREE.MeshBasicMaterial({color:0x080d12,side:THREE.DoubleSide});g.add(new THREE.Mesh(new THREE.SphereGeometry(.18,8,6),m));for(const side of [-1,1]){const sh=new THREE.Shape();sh.moveTo(0,0);sh.lineTo(side*.9,.2);sh.lineTo(side*.7,-.45);sh.lineTo(side*.2,-.2);sh.closePath();const wing=new THREE.Mesh(new THREE.ShapeGeometry(sh),m);wing.userData.side=side;g.add(wing)}g.position.set((Math.random()-.5)*85,17+Math.random()*18,-25+(Math.random()-.5)*130);scene.add(g);actors.push({obj:g,kind:'bat',home:g.position.clone(),phase:Math.random()*8})}
+const n=720,p=new Float32Array(n*3);for(let i=0;i<n;i++){p[i*3]=(Math.random()-.5)*210;p[i*3+1]=Math.random()*28;p[i*3+2]=-35+(Math.random()-.5)*240}const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.BufferAttribute(p,3));const ash=new THREE.Points(geo,new THREE.PointsMaterial({color:0x9fb0b3,size:.13,transparent:true,opacity:.5}));scene.add(ash);actors.push({obj:ash,kind:'ash'});
 }
 function showToast(t){toast.textContent=t;toast.classList.add('on');lastToast=performance.now()}
 function blocked(x,z){for(const b of solids)if(Math.abs(x-b.x)<b.w/2+.35&&Math.abs(z-b.z)<b.d/2+.35)return true;return false}
