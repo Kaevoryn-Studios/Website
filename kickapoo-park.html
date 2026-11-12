@@ -6,15 +6,15 @@
 <meta name="theme-color" content="#07131b">
 <title>Kickapoo Park | The Grand Theme Park</title>
 <style>
-*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#07131b;color:#fff;font-family:Arial,system-ui,sans-serif}#world{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none}.top{position:fixed;z-index:4;top:0;left:0;right:0;display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:linear-gradient(#06121be8,transparent);font-size:10px;letter-spacing:.16em;pointer-events:none}.top b{color:#f6d391}.top a{color:#f6d391;text-decoration:none;pointer-events:auto}.hud{position:fixed;z-index:4;top:52px;left:12px;right:12px;display:flex;justify-content:space-between;gap:8px;pointer-events:none}.plate{padding:8px 10px;border:1px solid #e8c47b88;border-radius:10px;background:#071721df;max-width:68%;backdrop-filter:blur(8px)}.plate b{font-size:10px;letter-spacing:.1em;color:#f6d391}.plate small{display:block;margin-top:4px;color:#d4e2e8;font-size:10px}.bottom{position:fixed;z-index:5;left:0;right:0;bottom:0;padding:12px max(12px,env(safe-area-inset-right)) max(12px,env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left));display:flex;justify-content:space-between;align-items:end;pointer-events:none}.pad,.buttons{pointer-events:auto}.pad{width:106px;height:106px;border:2px solid #e8c47b99;border-radius:50%;background:#071721df;position:relative;touch-action:none}.pad:after{content:'WALK';position:absolute;left:0;right:0;bottom:6px;text-align:center;font-size:9px;letter-spacing:.14em;color:#e9d8b5}.stick{position:absolute;left:50%;top:50%;width:42px;height:42px;border-radius:50%;transform:translate(-50%,-50%);background:linear-gradient(145deg,#fff0c8,#bd843d);border:2px solid #fff9;pointer-events:none}.buttons{display:flex;flex-direction:column;align-items:flex-end;gap:7px}.buttons button,.card button{border:1px solid #e8c47b;border-radius:24px;min-height:42px;padding:0 15px;background:#14394c;color:#fff1cf;font-weight:900;font-size:10px;letter-spacing:.08em;touch-action:manipulation}.buttons #explore{background:#d5a454;color:#15202a;min-height:46px}.buttons .sub{min-height:32px;background:#071721ed;font-size:9px}.overlay{position:fixed;z-index:10;inset:0;display:grid;place-items:center;padding:16px;background:radial-gradient(ellipse at center,#1a3a4b,#03090ef7 78%)}[hidden]{display:none!important}.card{width:min(100%,620px);padding:clamp(22px,5vw,38px);max-height:92vh;overflow:auto;border:1px solid #e8c47b99;border-radius:18px;background:linear-gradient(145deg,#17394bfa,#07131df7);text-align:center;box-shadow:0 25px 90px #000d}.eyebrow{font-size:10px;letter-spacing:.22em;color:#f6d391;font-weight:900}.card h1{font:500 clamp(42px,9vw,74px)/.92 Georgia,serif;color:#f6d391;margin:14px 0}.card p{font-size:13px;line-height:1.55;color:#d8e5eb}.card .hint{font-size:10px;color:#b9cbd4}.toast{position:fixed;z-index:8;left:50%;top:29%;transform:translateX(-50%);max-width:88vw;padding:12px 17px;border:1px solid #e8c47b;border-radius:12px;background:#071721f5;text-align:center;font-size:11px;opacity:0;transition:opacity .2s;pointer-events:none}.toast.show{opacity:1}@media(max-width:430px){.top{font-size:9px;padding:12px}.hud{top:43px}.plate{padding:7px 8px}.pad{width:98px;height:98px}.buttons button{min-height:39px}.buttons #explore{min-height:44px}}@media(orientation:landscape) and (max-height:600px){.top{padding:6px 12px}.hud{top:29px}.plate{padding:5px 8px}.bottom{padding:6px 12px}.pad{width:78px;height:78px}.stick{width:33px;height:33px}.buttons{flex-direction:row;flex-wrap:wrap}.buttons button{min-height:33px}.card{padding:14px 22px}.card h1{font-size:38px;margin:7px 0}}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#07131b;color:#fff;font-family:Arial,system-ui,sans-serif}#world{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none}.top{position:fixed;z-index:4;top:0;left:0;right:0;display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:linear-gradient(#06121be8,transparent);font-size:10px;letter-spacing:.16em;pointer-events:none}.top b{color:#f6d391}.top a{color:#f6d391;text-decoration:none;pointer-events:auto}.hud{position:fixed;z-index:4;top:52px;left:12px;right:12px;display:flex;justify-content:space-between;gap:8px;pointer-events:none}.plate{padding:8px 10px;border:1px solid #e8c47b88;border-radius:10px;background:#071721df;max-width:68%;backdrop-filter:blur(8px)}.plate b{font-size:10px;letter-spacing:.1em;color:#f6d391}.plate small{display:block;margin-top:4px;color:#d4e2e8;font-size:10px}.bottom{position:fixed;z-index:5;left:0;right:0;bottom:0;padding:12px max(12px,env(safe-area-inset-right)) max(12px,env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left));display:flex;justify-content:space-between;align-items:end;pointer-events:none}.pad,.buttons{pointer-events:auto}.pad{width:106px;height:106px;border:2px solid #e8c47b99;border-radius:50%;background:#071721df;position:relative;touch-action:none}.pad:after{content:'WALK';position:absolute;left:0;right:0;bottom:6px;text-align:center;font-size:9px;letter-spacing:.14em;color:#e9d8b5}.stick{position:absolute;left:50%;top:50%;width:42px;height:42px;border-radius:50%;transform:translate(-50%,-50%);background:linear-gradient(145deg,#fff0c8,#bd843d);border:2px solid #fff9;pointer-events:none}.buttons{display:flex;flex-direction:column;align-items:flex-end;gap:7px}.buttons button,.card button{border:1px solid #e8c47b;border-radius:24px;min-height:42px;padding:0 15px;background:#14394c;color:#fff1cf;font-weight:900;font-size:10px;letter-spacing:.08em;touch-action:manipulation}.buttons #explore{background:#d5a454;color:#15202a;min-height:46px}.buttons .sub{min-height:32px;background:#071721ed;font-size:9px}.overlay{position:fixed;z-index:10;inset:0;display:grid;place-items:center;padding:16px;background:radial-gradient(ellipse at center,#1a3a4b,#03090ef7 78%)}[hidden]{display:none!important}.card{width:min(100%,620px);padding:clamp(22px,5vw,38px);max-height:92vh;overflow:auto;border:1px solid #e8c47b99;border-radius:18px;background:linear-gradient(145deg,#17394bfa,#07131df7);text-align:center;box-shadow:0 25px 90px #000d}.eyebrow{font-size:10px;letter-spacing:.22em;color:#f6d391;font-weight:900}.card h1{font:500 clamp(42px,9vw,74px)/.92 Georgia,serif;color:#f6d391;margin:14px 0}.card p{font-size:13px;line-height:1.55;color:#d8e5eb}.card .hint{font-size:10px;color:#b9cbd4}.toast{position:fixed;z-index:8;left:50%;top:29%;transform:translateX(-50%);max-width:88vw;padding:12px 17px;border:1px solid #e8c47b;border-radius:12px;background:#071721f5;text-align:center;font-size:11px;opacity:0;transition:opacity .2s;pointer-events:none}.toast.show{opacity:1}#rotateHint{display:none;position:fixed;z-index:6;left:50%;top:50%;transform:translate(-50%,-50%);padding:12px 16px;border:1px solid #e8c47b;border-radius:12px;background:#071721ef;color:#f6d391;font-size:10px;letter-spacing:.1em;text-align:center;max-width:80vw;pointer-events:none}@media(orientation:portrait) and (max-width:900px){#rotateHint{display:block}}@media(max-width:430px){.top{font-size:9px;padding:12px}.hud{top:43px}.plate{padding:7px 8px}.pad{width:98px;height:98px}.buttons button{min-height:39px}.buttons #explore{min-height:44px}}@media(orientation:landscape) and (max-height:600px){.top{padding:6px 12px}.hud{top:29px}.plate{padding:5px 8px}.bottom{padding:6px 12px}.pad{width:78px;height:78px}.stick{width:33px;height:33px}.buttons{flex-direction:row;flex-wrap:wrap}.buttons button{min-height:33px}.card{padding:14px 22px}.card h1{font-size:38px;margin:7px 0}}
 </style>
 </head>
 <body>
 <canvas id="world"></canvas>
 <div class="top"><b>KICKAPOO PARK</b><span>THE GRAND THEME PARK · ENDLESS PATHS · BIG ADVENTURES</span><a href="parks.html">PARKS</a></div>
-<div class="hud"><div class="plate"><b id="land">THE GRAND ENTRANCE</b><small id="objective">Your next adventure is waiting.</small></div><div class="plate" style="text-align:right"><b>EXPLORER</b><small id="count">0 / 12 discoveries</small></div></div>
+<div class="hud"><div class="plate"><b id="land">THE GRAND ENTRANCE</b><small id="objective">Your next adventure is waiting.</small></div><div class="plate" style="text-align:right"><b>EXPLORER</b><small id="count">0 / 13 discoveries</small></div></div>
 <div class="bottom"><div class="pad" id="pad"><div class="stick" id="stick"></div></div><div class="buttons"><button id="explore">EXPLORE NEARBY · E</button><button class="sub" id="exitRide" hidden>EXIT RIDE</button><button class="sub" id="night">DAY / NIGHT</button><button class="sub" id="help">HOW TO EXPLORE</button></div></div>
-<div class="toast" id="toast"></div>
+<div class="toast" id="toast"></div><div id="rotateHint">FOR THE BEST VIEW, TURN YOUR PHONE SIDEWAYS</div>
 <div class="overlay" id="welcome"><div class="card"><div class="eyebrow">THE GRAND THEME PARK</div><h1>KICKAPOO<br>PARK</h1><p>A sprawling world of legendary coasters, spectacular rides, immersive lands, grand promenades and endless places to discover.</p><p class="hint">Follow the long walking promenades between themed lands. Use the joystick or WASD to walk; drag the screen to look around.</p><button id="enter" type="button">ENTER THE PARK</button><p class="hint" id="loadmsg">Preparing your park…</p></div></div>
 <div class="overlay" id="discovery" hidden><div class="card"><div class="eyebrow">PARK DISCOVERY</div><h1 id="dtitle">WELCOME</h1><p id="ddesc"></p><button id="close">KEEP EXPLORING</button></div></div>
 <script>
@@ -23,7 +23,7 @@
 var el=function(id){return document.getElementById(id)};
 var canvas=el('world'),THREE,scene,camera,renderer,clock,ready=false,started=false,loading=false,enterRequested=false;
 var player={x:0,z:82,yaw:0,pitch:0,height:1.7,speed:10};
-var keys={},stick={x:0,y:0,id:null},look=null,colliders=[],points=[],found={},animated=[],waterMeshes=[],toastTimer=0,lastTime=0;
+var keys={},stick={x:0,y:0,id:null},look=null,colliders=[],dryWalkways=[],points=[],found={},animated=[],waterMeshes=[],toastTimer=0,lastTime=0;
 var M={},PARK_SCALE=1.6,rides=[],activeRide=null,rideLook={x:0,y:0},parkSun=null,parkSky=null,parkRim=null,parkLampLights=[],nightMode=false;
 function material(color,roughness,metalness,emissive){return new THREE.MeshStandardMaterial({color:color,roughness:roughness===undefined?.85:roughness,metalness:metalness||0,emissive:emissive||0})}
 function addMesh(geo,mat,x,y,z,parent){var mesh=new THREE.Mesh(geo,mat);mesh.position.set(x,y,z);mesh.castShadow=(geo.type==='BoxGeometry'&&Math.max(geo.parameters.width,geo.parameters.height,geo.parameters.depth)>5)||(geo.type==='SphereGeometry'&&geo.parameters.radius>3)||(geo.type==='CylinderGeometry'&&geo.parameters.height>8);mesh.receiveShadow=true;(parent||scene).add(mesh);return mesh}
@@ -112,6 +112,8 @@ addRectCollider(x,z-9.5,26,.8);
 }
 function openShop(x,z,wall){addBox(x,.15,z,14,.3,12,M.wood);addBox(x,3.5,z-5.8,14,7,.45,wall);addBox(x-6.8,3.5,z,.4,7,12,wall);addBox(x+6.8,3.5,z,.4,7,12,wall);addBox(x,7.1,z,15,1,13,M.roof);addBox(x-4,3.5,z+5.8,.5,7,.5,M.wood);addBox(x+4,3.5,z+5.8,.5,7,.5,M.wood);addBox(x,1.5,z+2,8,2,.6,M.gold);addRectCollider(x,z-5.8,14,.8);addRectCollider(x-6.8,z,.8,12);addRectCollider(x+6.8,z,.8,12);addRectCollider(x-4,z+5.8,.7,.7);addRectCollider(x+4,z+5.8,.7,.7)}
 function water(x,z,w,d){var mesh=addMesh(new THREE.PlaneGeometry(w,d,1,1),M.water,x,.12,z);mesh.rotation.x=-Math.PI/2;colliders.push({type:'water',x:x,z:z,rx:Math.max(18,w*.46),rz:Math.max(16,d*.46)})}
+function addDryWalkway(x,z,w,d){dryWalkways.push({x:x,z:z,w:w,d:d})}
+function buildPier(x,z,w,d){addDryWalkway(x,z,w,d);addBox(x,.48,z,w,.58,d,M.wood);addBox(x-w/2+.18,1.05,z,.3,1.05,d,M.gold);addBox(x+w/2-.18,1.05,z,.3,1.05,d,M.gold);for(var i=0;i<Math.floor(d/4);i++){addBox(x,.79,z-d/2+2+i*4,w,.1,.18,M.gold)}}
 function dragon(x,z){
 /* A low, powerful mountain dragon with believable proportions and a grounded stance. */
 var rig=new THREE.Group();rig.position.set(x,0,z);scene.add(rig);
@@ -181,7 +183,7 @@ for(var i=0;i<7;i++){var flame=new THREE.Mesh(new THREE.ConeGeometry(.58-i*.055,
 var breathLight=new THREE.PointLight('#ff6a1a',2.2,30);breathLight.position.set(x,8.5,z+19);scene.add(breathLight);
 animated.push({type:'dragonbreath',mesh:breath,light:breathLight});
 var glow=new THREE.PointLight('#ff8b38',.9,20);glow.position.set(x,8,z+17);scene.add(glow);
-addCollider(x,z,18,16)
+addCollider(x,z,18,16);addCollider(x+2,z-21,3,4);addCollider(x-12,z-5,7,8);addCollider(x+12,z-5,7,8)
 }
 function pirateShip(x,z){
 /* A full swinging pirate galleon ride with a timber hull, mast, rigging and passenger rows. */
@@ -197,7 +199,9 @@ for(var row=0;row<2;row++)for(var seat=-2;seat<=2;seat++){addBox(seat*2.4,-.5+ro
 strut([0,-1,0],[0,9,0],.22,M.gold);addBox(0,7,0,5,.35,.3,M.gold,pivot);
 for(var sail=0;sail<2;sail++){var sy=4+sail*2.6;addBox(0,sy,0,4.2,2.1,.15,M.sail,pivot)}
 for(var side=-1;side<=1;side+=2){strut([side*8,0,0],[side*1.8,7,0],.12,M.gold)}
-animated.push({type:'ship',mesh:pivot});rides.push({name:'Pirate Galleon',type:'ship',x:x,z:z,pivot:pivot,duration:24});
+animated.push({type:'ship',mesh:pivot});rides.push({name:'Pirate Galleon',type:'ship',x:x,z:z-5,pivot:pivot,duration:24});
+/* North-shore pier reaches the galleon boarding queue over harbour water. */
+buildPier(x,z-9,10,24);addRectCollider(x-5.2,z-9,.35,24);addRectCollider(x+5.2,z-9,.35,24);
 addCollider(x,z,11,7)
 }
 function grove(x,z){for(var i=0;i<11;i++){var a=i/11*Math.PI*2,tx=x+Math.cos(a)*(17+i%3*3),tz=z+Math.sin(a)*(17+i%3*3);addCylinder(tx,7,tz,.8,.65,14,M.bark,9);for(var j=0;j<3;j++){var top=addSphere(tx+(j-1)*1.5,14+j*1.4,tz,5-j*.4,j%2?M.leaf:M.leaf2);top.scale.set(1.2,.8,1.1)}}
@@ -317,8 +321,10 @@ function jungleRiverRide(x,z){
   for(var side=-1;side<=1;side+=2){addBox(side*2.05,.55,0,.22,.7,6.1,M.wood,raft);for(var seat=0;seat<2;seat++){addBox(side*1.15,.9,seat?1.45:-1.45,1.25,.55,1.1,M.red,raft)}}
   for(var i=0;i<8;i++){var p=curve.getPointAt(i/8);var rock=addSphere(p.x,.25,p.z,.65,M.rock);rock.scale.set(1,.65,1)}
   var motion={type:'riverRide',mesh:raft,curve:curve,t:0};animated.push(motion);
-  rides.push({name:'Jungle River Expedition',type:'river',x:x,z:z,motion:motion,duration:34});
+  rides.push({name:'Jungle River Expedition',type:'river',x:x,z:z+18,motion:motion,duration:34});
   addCollider(x,z,5,5);
+  /* Raised timber pier links the dry jungle path to the raft queue. */
+  buildPier(x,z+20,9,28);addRectCollider(x-4.7,z+20,.35,28);addRectCollider(x+4.7,z+20,.35,28);
 }
 function splashSlideRide(x,z){
   /* A high twisting flume with a first-person descent into Splash Island lagoon. */
@@ -329,8 +335,10 @@ function splashSlideRide(x,z){
   /* Grounded flume tower footing: keep the support solid without sealing the ride approach. */
   addCollider(x+3.7,z-2.8,1.05,1.05);
   var motion={type:'slideRide',mesh:tube,curve:curve,t:0};
-  rides.push({name:'Splash Mountain Flume',type:'slide',x:x,z:z,motion:motion,duration:18});
+  rides.push({name:'Splash Mountain Flume',type:'slide',x:x,z:z+18,motion:motion,duration:18});
   addCollider(x,z,5,5);
+  /* Lagoon pier makes the flume queue reachable without crossing open water. */
+  buildPier(x,z+18,12,28);addRectCollider(x-6.2,z+18,.35,28);addRectCollider(x+6.2,z+18,.35,28);
 }
 function buildLegacy(){
 /* KICKAPOO PARK — a bright, immersive destination resort with original themed lands. */
@@ -960,10 +968,10 @@ function build(){
 
   /* Monster Mountain — crater, lava glow and a separate thrill-ride skyline. */
   gate(116,-70,M.red,'volcano');volcano(129,-135);coaster(83,-99,'#e36f43');
-  addPath([[77,-106],[94,-118],[112,-128],[129,-137],[150,-146]],9,M.stone);
+  addPath([[83,-99],[90,-130],[96,-160],[120,-174],[150,-174],[166,-155],[161,-135]],9,M.stone);
   buildResortFacade(169,-102,25,13,15,M.volcanic,M.roof,M.lava,'The Ember Lodge',2);
   for(var i=0;i<20;i++){var a=i/20*Math.PI*2;addTree(129+Math.cos(a)*55,-135+Math.sin(a)*45,.7)}
-  discovery('MONSTER MOUNTAIN',129,-135,'A volcanic thrill district with a glowing crater, jagged ridgelines, a coaster and an ember-lit mountain lodge.');
+  discovery('MONSTER MOUNTAIN',161,-135,'A volcanic thrill district with a glowing crater, jagged ridgelines, a coaster and an ember-lit mountain lodge.');
 
   /* Pirate's Bay — a working-looking harbour with boardwalk and galleon. */
   gate(137,-5,M.blue,'sail');water(145,12,48,38);pirateShip(145,12);bridge(145,-17);
@@ -993,7 +1001,7 @@ function build(){
     for(var k=0;k<7;k++){var a=k*Math.PI*2/7,leaf=addBox(tx+Math.cos(a)*2.6,8,tz+Math.sin(a)*2.6,1.2,.34,5.6,M.leaf);leaf.rotation.y=-a}
   }
   buildResortFacade(-177,-9,22,12,14,M.temple,M.roof,M.mint,'Expedition Supply',2);
-  addPath([[-137,-20],[-145,-32],[-151,-45],[-158,-60]],9,M.path);
+  addPath([[-137,-5],[-141,-6],[-145,-8],[-148,-9]],8,M.path);
   discovery('JUNGLE EXPEDITION',-148,-35,'A dense tropical river world with towering canopy, ancient temple ruins and a guided expedition ride.');
 
   /* Sky Gardens — observation wheel, formal terraces and a rooftop garden pavilion. */
@@ -1005,7 +1013,7 @@ function build(){
 
   /* Splash Lagoon — bright water attractions, planted islands and a flume. */
   water(28,-158,72,42);splashSlideRide(2,-168);
-  addPath([[0,-116],[8,-130],[18,-145],[28,-158],[38,-170]],12,M.path);
+  addPath([[0,-116],[0,-126],[2,-136]],10,M.path);
   for(var i=0;i<9;i++){var col=[M.red,M.blue,M.gold,M.mint,M.violet,M.red,M.blue,M.gold,M.mint][i];addCylinder(-12+i*10,6,-145,1.35,.72,12,col,12)}
   for(var i=0;i<18;i++){var a=i/18*Math.PI*2;addTree(28+Math.cos(a)*51,-158+Math.sin(a)*33,.72)}
   discovery('SPLASH LAGOON',28,-158,'A bright tropical water world with a towering flume, island planting and broad splash pools.');
@@ -1019,9 +1027,9 @@ function build(){
   discovery('KICKAPOO THEATER',-139,124,'A grand performance palace with layered stonework, a glowing marquee, tall glazed bays and a formal show plaza.');
   discovery('KICKAPOO RESORT HOTEL',142,124,'A landmark resort hotel with four levels of balconies, glazed guest rooms and a garden pool.');
 
-  addPath([[49,2],[76,1],[103,0],[130,0],[153,1]],10,M.stone);
+  addPath([[49,2],[76,-7],[103,-10],[125,-12],[145,-12],[160,-10],[171,1],[174,1]],10,M.stone);
   addCylinder(160,8,1,18,20,17,M.rock,28);addCylinder(160,17,1,14,15,3,M.rock,28);
-  addBox(151,8,-13,7,12,.7,M.water);addBox(168,8,-13,7,12,.7,M.water);addBox(160,.45,-26,34,.9,22,M.water);
+  addBox(151,8,-13,7,12,.7,M.water);addBox(168,8,-13,7,12,.7,M.water);addBox(160,.45,-26,34,.9,22,M.water);addCollider(160,1,10,10);addRectCollider(160,-26,34,22);
   for(var i=0;i<22;i++){var fall=addBox(143+i*1.65,9,-13,.85,10,.35,M.water);animated.push({type:'fall',mesh:fall,phase:i*.5})}
   for(var i=0;i<20;i++){var a=i/20*Math.PI*2;addTree(160+Math.cos(a)*33,1+Math.sin(a)*31,.78)}
   discovery('KICKAPOO FALLS',160,1,'A forested walking trail opens onto a dramatic multi-stream waterfall and broad reflecting pool.');
@@ -1034,7 +1042,7 @@ function build(){
   scene.fog.near=520*PARK_SCALE;scene.fog.far=1120*PARK_SCALE;
 }
 
-function blocked(x,z){/* Water and structures always remain solid; rides are reached from their dry queue plazas. */var r=.82;if(Math.abs(x)>178-r||Math.abs(z)>178-r)return true;for(var i=0;i<colliders.length;i++){var c=colliders[i];if(c.type==='rect'){var qx=Math.max(c.x-c.w/2,Math.min(x,c.x+c.w/2)),qz=Math.max(c.z-c.d/2,Math.min(z,c.z+c.d/2)),dx=x-qx,dz=z-qz;if(dx*dx+dz*dz<r*r)return true}else{var rx=c.rx+r,rz=c.rz+r,dx=(x-c.x)/rx,dz=(z-c.z)/rz;if(dx*dx+dz*dz<1)return true}}return false}
+function blocked(x,z){/* Water and structures remain solid; only authored piers provide walkable crossings. */var r=.82;if(Math.abs(x)>178-r||Math.abs(z)>178-r)return true;for(var i=0;i<colliders.length;i++){var c=colliders[i];if(c.type==='water'&&dryWalkways.some(function(p){return Math.abs(x-p.x)<=p.w/2&&Math.abs(z-p.z)<=p.d/2}))continue;if(c.type==='rect'){var qx=Math.max(c.x-c.w/2,Math.min(x,c.x+c.w/2)),qz=Math.max(c.z-c.d/2,Math.min(z,c.z+c.d/2)),dx=x-qx,dz=z-qz;if(dx*dx+dz*dz<r*r)return true}else{var rx=c.rx+r,rz=c.rz+r,dx=(x-c.x)/rx,dz=(z-c.z)/rz;if(dx*dx+dz*dz<1)return true}}return false}
 function move(dx,dz){var steps=Math.max(1,Math.ceil(Math.hypot(dx,dz)/.12)),sx=dx/steps,sz=dz/steps;for(var i=0;i<steps;i++){var nx=player.x+sx,nz=player.z+sz;if(!blocked(nx,nz)){player.x=nx;player.z=nz}else{var moved=false;if(!blocked(nx,player.z)){player.x=nx;moved=true}if(!blocked(player.x,nz)){player.z=nz;moved=true}if(!moved)break}}}
 function update(dt){if(activeRide){updateRideCamera();return}var forward=(keys.KeyW||keys.ArrowUp?1:0)-(keys.KeyS||keys.ArrowDown?1:0)-stick.y,side=(keys.KeyD||keys.ArrowRight?1:0)-(keys.KeyA||keys.ArrowLeft?1:0)+stick.x,len=Math.hypot(forward,side);if(len>.01){forward/=len;side/=len;var fx=-Math.sin(player.yaw),fz=-Math.cos(player.yaw),rx=Math.cos(player.yaw),rz=-Math.sin(player.yaw);move((fx*forward+rx*side)*player.speed*dt,(fz*forward+rz*side)*player.speed*dt)}camera.position.set(player.x*PARK_SCALE,player.height*PARK_SCALE,player.z*PARK_SCALE);camera.rotation.set(player.pitch,player.yaw,0,'YXZ');var lands=[['GRAND ARRIVAL',0,151],['MAIN STREET',0,105],['LAGOON PROMENADE',0,8],['ADVENTURE KINGDOM',-125,-111],["DRAGON'S REACH",0,-148],['MONSTER MOUNTAIN',128,-137],["PIRATE'S BAY",142,12],['JUNGLE EXPEDITION',-147,-36],['SKY GARDENS',119,119],['SPLASH LAGOON',28,-159],['KICKAPOO THEATER',-139,124],['KICKAPOO RESORT HOTEL',142,124],['KICKAPOO FALLS',160,1]];var best=lands[0],distance=Infinity;for(var i=0;i<lands.length;i++){var d=Math.hypot(player.x-lands[i][1],player.z-lands[i][2]);if(d<distance){distance=d;best=lands[i]}}el('land').textContent=best[0];el('count').textContent=Object.keys(found).length+' / '+points.length+' discoveries';var ride=nearestRide();el('explore').textContent=ride&&ride.distance<19?'RIDE: '+ride.ride.name.toUpperCase()+' · E':'EXPLORE NEARBY · E'}
 function nearestRide(){var best=null,dist=Infinity;for(var i=0;i<rides.length;i++){var r=rides[i],d=Math.hypot(player.x-r.x,player.z-r.z);if(d<dist){best=r;dist=d}}return best?{ride:best,distance:dist}:null}
