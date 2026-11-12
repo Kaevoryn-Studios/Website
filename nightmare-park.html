@@ -33,7 +33,7 @@ import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.m
 const canvas=document.getElementById('world'),intro=document.getElementById('intro'),hud=document.getElementById('hud'),controls=document.getElementById('controls'),notice=document.getElementById('notice');
 const zoneEl=document.getElementById('zone'),progressEl=document.getElementById('progress'),messageEl=document.getElementById('message');
 let scene,camera,renderer,clock,started=false,yaw=0,pitch=0,velocity=0,dragging=false,lastX=0,lastY=0,lastMessage=0;
-const keys={forward:false,back:false,left:false,right:false}, discovered=new Set(),colliders=[],landmarks=[];
+const keys={forward:false,back:false,left:false,right:false}, joy={x:0,y:0}, discovered=new Set(),colliders=[],landmarks=[];
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 function mat(color,roughness=0.9,metalness=0){return new THREE.MeshStandardMaterial({color,roughness,metalness})}
 function box(x,y,z,sx,sy,sz,material,rot=0){const m=new THREE.Mesh(new THREE.BoxGeometry(sx,sy,sz),material);m.position.set(x,y,z);m.rotation.y=rot;scene.add(m);return m}
