@@ -53,11 +53,11 @@ function wayfindingSign(x,z,boards,rotation=0){
     ctx.fillStyle='#e7d6c7';ctx.font='bold 43px Georgia';ctx.textAlign='center';ctx.textBaseline='middle';
     ctx.fillText(entry.arrow+'  '+entry.label,384,81,690);
     const texture=new THREE.CanvasTexture(canvas);texture.colorSpace=THREE.SRGBColorSpace;
-    const board=new THREE.Mesh(new THREE.BoxGeometry(6.7,.12,1.35),wood);
+    const board=new THREE.Mesh(new THREE.BoxGeometry(6.7,1.35,.12),wood);
     board.position.set(0,4.9-i*1.55,0);group.add(board);
     const face=new THREE.Mesh(new THREE.PlaneGeometry(6.35,1.12),new THREE.MeshBasicMaterial({map:texture,side:THREE.DoubleSide,toneMapped:false}));
-    // Place the lettering just in front of the thick wooden plank, not buried inside it.
-    face.position.set(0,4.9-i*1.55,.686);group.add(face);
+    // Face is just in front of the correctly oriented upright plank.
+    face.position.set(0,4.9-i*1.55,.066);group.add(face);
     for(const side of [-1,1]){const bolt=new THREE.Mesh(new THREE.SphereGeometry(.09,8,8),iron);bolt.position.set(side*3.05,4.9-i*1.55,.09);group.add(bolt)}
   });
   group.position.set(x,0,z);group.rotation.y=rotation;scene.add(group);
