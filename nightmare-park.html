@@ -42,8 +42,8 @@ function wayfindingSign(x,z,boards,rotation=0){
   // Rebuilt as a roadside timber post with camera-facing text sprites for guaranteed legibility.
   const group=new THREE.Group();
   const timber=mat(0x4a3529),iron=mat(0x24262b,.45,.65),brass=mat(0xa78a62,.5,.55);
-  const post=new THREE.Mesh(new THREE.BoxGeometry(.58,6.1,.62),timber);post.position.y=3.05;group.add(post);
-  const cap=new THREE.Mesh(new THREE.ConeGeometry(.58,.75,4),brass);cap.position.y=6.45;cap.rotation.y=Math.PI/4;group.add(cap);
+  const post=new THREE.Mesh(new THREE.BoxGeometry(.58,6.1,.62),timber);post.position.set(0,3.05,-.55);group.add(post);
+  const cap=new THREE.Mesh(new THREE.ConeGeometry(.58,.75,4),brass);cap.position.set(0,6.45,-.55);cap.rotation.y=Math.PI/4;group.add(cap);
   const base=new THREE.Mesh(new THREE.BoxGeometry(1.8,.28,1.5),iron);base.position.y=.18;group.add(base);
   boards.forEach((entry,i)=>{
     const y=5.2-i*1.58;
