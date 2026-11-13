@@ -19,7 +19,7 @@ header{position:absolute;z-index:4;top:0;left:0;right:0;padding:14px 17px;displa
 <canvas id="world"></canvas>
 <header><a href="index.html">KAEVORYN STUDIOS<small>CREATE THE IMPOSSIBLE</small></a><span style="font-size:9px;letter-spacing:.2em;color:#c58d9b">AFTER DARK · NO WAY OUT</span></header>
 <div id="intro"><div class="panel"><div class="eyebrow">A PLACE THAT SHOULD NOT EXIST</div><h1>THE<br> NIGHTMARE<br> PARK</h1><p>Beyond the rusted gates, the midway is still running. The rides have passengers. The houses have lights on. Something is walking the paths behind you. Explore the abandoned fairground, enter its dark rides, and find the way out before the park finds you.</p><button class="enter" id="enter">ENTER THE PARK</button><div class="hint">LANDSCAPE MODE RECOMMENDED · JOYSTICK TO WALK · RIGHT PAD TO LOOK · SOUND STARTS WHEN ENABLED</div></div></div>
-<div id="hud"><div class="hudline"><div class="chip" id="district">THE GATE</div><div class="chip" id="progress">0 / 8 NIGHTMARE ZONES</div></div><button id="soundBtn">SOUND: OFF</button><div id="toast"></div></div>
+<div id="hud"><div class="hudline"><div class="chip" id="district">THE GATE</div><div class="chip" id="progress">0 / 10 NIGHTMARE ZONES</div></div><button id="soundBtn">SOUND: OFF</button><div id="toast"></div></div>
 <div id="mobile"><div class="pad" id="movePad"><div class="stick" id="stick"></div></div><div class="look" id="lookPad">LOOK<br>AROUND</div></div>
 <div id="scare"><b>◉</b><small>IT KNOWS YOU ARE HERE</small></div><div id="fatal"></div>
 <script type="module">
@@ -69,6 +69,22 @@ block(-82,6,-111,32,12,22,0x3d4545);solid(-82,-111,32,22);door(-82,-99,4,7);sign
 block(0,5,-139,24,10,17,0x454348);solid(0,-139,24,17);door(0,-129,4,7);tower(-11,-139,1.7,20,0x46434b);tower(11,-139,1.7,20,0x46434b);sign(0,14,-128,'THE SILENT CHAPEL');for(let i=0;i<30;i++){const x=-43+(i%10)*9,z=-151+Math.floor(i/10)*8;block(x,.8,z,.65,1.6,.28,0x77716a);block(x,.8,z,.25,2,.25,0x77716a)}light(0,4,-128,0x9a3c50,3,30);zone('THE SILENT CHAPEL',0,-139,'The choir is singing below the floor. The chapel has no basement stairs.');
 // Furnace and industrial maze
 block(82,7,-112,29,14,22,0x3b4144);solid(82,-112,29,22);door(82,-100,5,7);sign(82,17,-99,'THE FURNACE');for(const x of [71,92]){add(new THREE.CylinderGeometry(1.2,1.5,22,12),mat(0x343a3e),x,18,-119);light(x,29,-119,0xc52a38,1.7,25)}for(let i=0;i<7;i++)block(60+i*6,6,-124,2,12,.4,0x282a2e);light(82,4,-98,0xc22b3f,4,32);fog(82,-112,25);zone('THE FURNACE',82,-112,'The chimney smoke pours down into the yard. Something is working behind the furnace door.');
+// THE ABANDONED KINGDOM — ruined royal district and catacombs
+path(38,88,78,13);path(69,75,14,38);path(48,75,30,12);
+block(73,10,70,32,20,25,0x34353a);solid(73,70,32,25);
+block(73,19,56,18,2,4,0x24252a);block(73,8,56,7,16,2,0x27282d);
+tower(56,62,3.2,31,0x4a4549);tower(90,62,3.2,31,0x4a4549);
+tower(58,83,2.5,23,0x403d43);tower(88,83,2.5,23,0x403d43);
+door(73,56,5,9);sign(73,27,54,'THE ABANDONED KINGDOM');
+block(73,3,54,12,6,1,0x201b20);
+for(let i=0;i<7;i++){const x=45+i*8;block(x,4,91,7,8,8,i%2?0x494348:0x38383d);solid(x,91,7,8);block(x,8,91,7,.7,8,0x252329);tower(x-2.5,89,1.1,12,0x49444b);light(x,4,86,0xa34b4d,1.2,15)}
+// broken royal statue and execution square
+block(42,2,68,18,1,16,0x4b4748);block(42,5,68,2,7,2,0x77716d);add(new THREE.SphereGeometry(1.3,12,10),mat(0x77716d),42,9,68);block(42,1,59,7,2,2,0x2a2529);
+for(let i=0;i<8;i++){const x=54+i*5,z=101+(i%2)*4;block(x,.9,z,.6,1.8,.35,0x77706a);block(x,.9,z,.25,2.2,.3,0x77706a)}
+// catacomb entrance tucked behind the throne wall
+block(73,3,88,13,6,3,0x28252a);door(73,0,4,4);sign(73,7,86,'ROYAL CATACOMBS');
+light(73,8,53,0xa52b42,4,36);light(42,5,60,0xd08b62,2,22);fog(72,78,36);
+ghost(82,78,1.6,true);ghost(62,92,.9);zone('THE ABANDONED KINGDOM',70,77,'The kingdom fell centuries ago. The throne is occupied, and the catacombs are still open.');
 // secondary paths, lamps, barricades and perimeter fog
 for(const [x,z] of [[0,85],[0,52],[0,18],[0,-42],[0,-83],[0,-119],[-35,45],[35,45],[-43,-2],[43,-2],[-36,-83],[36,-83],[-66,42],[-38,2],[0,-34],[-42,-72],[38,-55],[76,14],[-82,-111],[0,-139],[82,-112]]){block(x,1.6,z,.18,3.2,.18,0x28262b);add(new THREE.SphereGeometry(.2,9,8),new THREE.MeshBasicMaterial({color:0xffad78}),x,3.3,z);light(x,3,z,0xffa66f,1.1,17)}
 for(let i=0;i<20;i++){const x=(Math.random()-.5)*205,z=-20+(Math.random()-.5)*250;const bird=add(new THREE.SphereGeometry(.2,7,6),mat(0x080a0d),x,15+Math.random()*14,z);actors.push({kind:'bat',obj:bird,home:bird.position.clone(),phase:Math.random()*8})}
@@ -84,7 +100,7 @@ function frame(){if(!active)return;requestAnimationFrame(frame);const dt=Math.mi
 function startAudio(){audio=audio||new(window.AudioContext||window.webkitAudioContext)();audio.resume();if(!ambience){master=audio.createGain();master.gain.value=.16;master.connect(audio.destination);const osc=audio.createOscillator(),filter=audio.createBiquadFilter(),gain=audio.createGain();osc.type='sawtooth';osc.frequency.value=43;filter.type='lowpass';filter.frequency.value=105;gain.gain.value=.16;osc.connect(filter).connect(gain).connect(master);osc.start();ambience={osc,gain}}}
 function stinger(){if(!audio||!master)return;const o=audio.createOscillator(),g=audio.createGain();o.type='sawtooth';o.frequency.setValueAtTime(180,audio.currentTime);o.frequency.exponentialRampToValueAtTime(28,audio.currentTime+.65);g.gain.setValueAtTime(.001,audio.currentTime);g.gain.exponentialRampToValueAtTime(.8,audio.currentTime+.04);g.gain.exponentialRampToValueAtTime(.001,audio.currentTime+.75);o.connect(g).connect(master);o.start();o.stop(audio.currentTime+.8)}
 $('soundBtn').addEventListener('click',()=>{soundOn=!soundOn;$('soundBtn').textContent='SOUND: '+(soundOn?'ON':'OFF');if(soundOn)startAudio();else if(master)master.gain.setTargetAtTime(0,audio.currentTime,.2);if(!soundOn)ambience=null;});
-function begin(){if(active)return;try{build();active=true;intro.classList.add('hide');hud.classList.add('show');mobile.classList.add('show');say('The gates lock behind you. Find the eight nightmare zones.');frame()}catch(e){console.error(e);fatal.textContent='The park could not open: '+e.message;fatal.classList.add('show')}}
+function begin(){if(active)return;try{build();active=true;intro.classList.add('hide');hud.classList.add('show');mobile.classList.add('show');say('The gates lock behind you. Find all ten nightmare lands.');frame()}catch(e){console.error(e);fatal.textContent='The park could not open: '+e.message;fatal.classList.add('show')}}
 $('enter').addEventListener('click',begin);
 addEventListener('keydown',e=>{const k=e.key.toLowerCase();if(k==='w'||k==='arrowup')keys.f=1;if(k==='s'||k==='arrowdown')keys.b=1;if(k==='a'||k==='arrowleft')keys.l=1;if(k==='d'||k==='arrowright')keys.r=1;if(k==='shift')keys.run=1});
 addEventListener('keyup',e=>{const k=e.key.toLowerCase();if(k==='w'||k==='arrowup')keys.f=0;if(k==='s'||k==='arrowdown')keys.b=0;if(k==='a'||k==='arrowleft')keys.l=0;if(k==='d'||k==='arrowright')keys.r=0;if(k==='shift')keys.run=0});
