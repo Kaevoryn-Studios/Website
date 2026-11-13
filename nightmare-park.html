@@ -59,8 +59,9 @@ function wayfindingSign(x,z,boards,rotation=0){
     ctx.shadowColor='#ffd59a';ctx.shadowBlur=14;ctx.font='bold 64px Georgia';
     ctx.fillText(entry.arrow+'   '+entry.label,600,92,1110);
     const texture=new THREE.CanvasTexture(canvas);texture.colorSpace=THREE.SRGBColorSpace;texture.needsUpdate=true;
-    const sprite=new THREE.Sprite(new THREE.SpriteMaterial({map:texture,transparent:false,depthTest:false,toneMapped:false}));
-    sprite.position.set(0,y,.215);sprite.scale.set(8.55,1.02,1);sprite.renderOrder=20;group.add(sprite);
+    // Use a fixed plane on the sign face, not a Sprite (Sprites rotate toward the camera).
+    const lettering=new THREE.Mesh(new THREE.PlaneGeometry(8.55,1.02),new THREE.MeshBasicMaterial({map:texture,transparent:false,depthTest:true,toneMapped:false,side:THREE.FrontSide}));
+    lettering.position.set(0,y,.215);lettering.renderOrder=20;group.add(lettering);
     for(const side of [-1,1]){const bolt=new THREE.Mesh(new THREE.SphereGeometry(.1,10,8),iron);bolt.position.set(side*4.25,y,.23);group.add(bolt)}
   });
   group.position.set(x,0,z);group.rotation.y=rotation;scene.add(group);
