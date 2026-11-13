@@ -38,6 +38,31 @@ function tower(x,z,r,h,c){add(new THREE.CylinderGeometry(r*.7,r,h,10),mat(c),x,h
 function door(x,z,w=3,h=5){block(x-w/2-.12,h/2,z,.24,h,.45,0x69605e);block(x+w/2+.12,h/2,z,.24,h,.45,0x69605e);block(x,h+.12,z,w+.45,.24,.45,0x69605e);block(x,h/2,z-.08,w,h,.18,0x21191c);block(x,h/2,z-.19,.09,h-.4,.06,0x8e765b)}
 function fog(x,z,spread=18){const g=new THREE.Group(),m=new THREE.MeshBasicMaterial({color:0x9ca9b2,transparent:true,opacity:.065,depthWrite:false});for(let i=0;i<9;i++){const p=new THREE.Mesh(new THREE.SphereGeometry(1,9,7),m);p.scale.set(spread*(.2+Math.random()*.25),.25+Math.random()*.2,spread*(.1+Math.random()*.18));p.position.set((Math.random()-.5)*spread,.12,(Math.random()-.5)*spread*.5);g.add(p)}g.position.set(x,0,z);scene.add(g);actors.push({kind:'fog',obj:g,home:g.position.clone(),phase:Math.random()*8})}
 function sign(x,y,z,label){const c=document.createElement('canvas');c.width=512;c.height=128;const q=c.getContext('2d');q.fillStyle='#100b10';q.fillRect(0,0,512,128);q.strokeStyle='#a66d7a';q.lineWidth=5;q.strokeRect(5,5,502,118);q.fillStyle='#f0dce0';q.font='bold 34px Georgia';q.textAlign='center';q.fillText(label,256,78);const t=new THREE.CanvasTexture(c);add(new THREE.PlaneGeometry(9,2.1),new THREE.MeshBasicMaterial({map:t}),x,y,z)}
+function wayfindingSign(x,z,boards,rotation=0){
+  // A real timber direction post: stacked weathered boards, carved-looking trim and painted arrows.
+  const group=new THREE.Group();
+  const wood=mat(0x49352d),edge=mat(0x88705a),iron=mat(0x25262a,.55,.65);
+  const post=new THREE.Mesh(new THREE.BoxGeometry(.42,5.8,.48),wood);post.position.y=2.9;group.add(post);
+  const cap=new THREE.Mesh(new THREE.ConeGeometry(.42,.75,4),wood);cap.position.y=6.05;cap.rotation.y=Math.PI/4;group.add(cap);
+  boards.forEach((entry,i)=>{
+    const canvas=document.createElement('canvas');canvas.width=768;canvas.height=160;
+    const ctx=canvas.getContext('2d');
+    ctx.fillStyle='#33231f';ctx.fillRect(0,0,768,160);
+    ctx.strokeStyle='#9b8067';ctx.lineWidth=9;ctx.strokeRect(7,7,754,146);
+    ctx.strokeStyle='#171315';ctx.lineWidth=3;ctx.strokeRect(17,17,734,126);
+    ctx.fillStyle='#e7d6c7';ctx.font='bold 43px Georgia';ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText(entry.arrow+'  '+entry.label,384,81,690);
+    const texture=new THREE.CanvasTexture(canvas);texture.colorSpace=THREE.SRGBColorSpace;
+    const board=new THREE.Mesh(new THREE.BoxGeometry(6.7,.12,1.35),wood);
+    board.position.set(0,4.9-i*1.55,0);group.add(board);
+    const face=new THREE.Mesh(new THREE.PlaneGeometry(6.35,1.12),new THREE.MeshBasicMaterial({map:texture}));
+    face.position.set(0,4.9-i*1.55,.071);group.add(face);
+    for(const side of [-1,1]){const bolt=new THREE.Mesh(new THREE.SphereGeometry(.09,8,8),iron);bolt.position.set(side*3.05,4.9-i*1.55,.09);group.add(bolt)}
+  });
+  group.position.set(x,0,z);group.rotation.y=rotation;scene.add(group);
+  solid(x,z,1.1,.9);
+  light(x,5.7,z,0xffbd83,.75,11);
+}
 function ghost(x,z,s=1,stalker=false){const g=new THREE.Group(),cloth=mat(stalker?0x171419:0x656064),bone=mat(0xaaa097),black=mat(0x050509),eyes=new THREE.MeshBasicMaterial({color:0xff203d});const robe=new THREE.Mesh(new THREE.ConeGeometry(.8*s,2.4*s,12),cloth);robe.position.y=1.25*s;g.add(robe);const skull=new THREE.Mesh(new THREE.SphereGeometry(.34*s,14,12),bone);skull.position.set(0,2.55*s,-.08*s);g.add(skull);const hood=new THREE.Mesh(new THREE.SphereGeometry(.48*s,12,10),black);hood.scale.set(1,1.2,.8);hood.position.set(0,2.62*s,.04*s);g.add(hood);for(const side of [-1,1]){const eye=new THREE.Mesh(new THREE.SphereGeometry(.06*s,8,8),eyes);eye.position.set(side*.13*s,2.58*s,-.37*s);g.add(eye);const arm=new THREE.Mesh(new THREE.CylinderGeometry(.08*s,.13*s,.95*s,8),cloth);arm.position.set(side*.57*s,1.75*s,0);arm.rotation.z=side*-.4;g.add(arm)}g.position.set(x,0,z);scene.add(g);actors.push({kind:stalker?'stalker':'ghost',obj:g,home:g.position.clone(),phase:Math.random()*8});return g}
 function zone(name,x,z,desc){zones.push({name,x,z,desc})}
 function build(){
@@ -141,6 +166,12 @@ for(let i=0;i<7;i++){const a=i*Math.PI*2/7;const spike=new THREE.Mesh(new THREE.
 const ring=new THREE.Mesh(new THREE.TorusGeometry(2,.25,8,24),mat(0x9a815e));ring.rotation.x=Math.PI/2;crown.add(ring);crown.position.set(73,3,45);scene.add(crown);
 // secondary paths, lamps, barricades and perimeter fog
 for(const [x,z] of [[0,85],[0,52],[0,18],[0,-42],[0,-83],[0,-119],[-35,45],[35,45],[-43,-2],[43,-2],[-36,-83],[36,-83],[-66,42],[-38,2],[0,-34],[-42,-72],[38,-55],[76,14],[-82,-111],[0,-139],[82,-112]]){block(x,1.6,z,.18,3.2,.18,0x28262b);add(new THREE.SphereGeometry(.2,9,8),new THREE.MeshBasicMaterial({color:0xffad78}),x,3.3,z);light(x,3,z,0xffb875,2.15,24)}
+// WAYFINDING — timber direction posts at the main path junctions (no billboards).
+wayfindingSign(-8,76,[{arrow:'←',label:'DREADFALL MANOR'},{arrow:'→',label:'THE LAST CAROUSEL'},{arrow:'↑',label:'THE LAST BREATH'}],0);
+wayfindingSign(8,20,[{arrow:'←',label:'THE RED WAKE'},{arrow:'→',label:'BLACKWATER'},{arrow:'↓',label:'THE DOLLHOUSE'}],Math.PI);
+wayfindingSign(-8,-82,[{arrow:'←',label:'WARD 13'},{arrow:'→',label:'THE FURNACE'},{arrow:'↑',label:'THE SILENT CHAPEL'}],0);
+wayfindingSign(49,77,[{arrow:'↑',label:'THE ABANDONED KINGDOM'},{arrow:'←',label:'ROYAL CATACOMBS'}],Math.PI/2);
+wayfindingSign(0,101,[{arrow:'↓',label:'MIDWAY & PARK EXIT'},{arrow:'↑',label:'THE ABANDONED KINGDOM'}],0);
 // SPOOKY LIGHTING PASS — readable paths, haunted lanterns and drifting spectral wisps
 // Warm lantern pools lead visitors between the ten lands without removing the night atmosphere.
 for(const [x,z,color] of [[-8,76,0xffbd79],[8,61,0x9edcff],[-8,29,0xd58cff],[8,-15,0xff8b70],[-8,-57,0x9fe8dd],[8,-99,0xd6a0ff],[-50,42,0xffa56f],[-27,45,0x9edcff],[29,45,0xffbd79],[52,-3,0xd58cff],[-50,-82,0x9fe8dd],[51,-82,0xff8b70],[63,83,0xffbd79],[85,83,0x9edcff]]){
