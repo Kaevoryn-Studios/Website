@@ -247,6 +247,67 @@ for(const [x,z,r,h,c] of [[-25,33,4.4,32,0x202538],[25,33,4.4,32,0x202538],[-25,
  // Grand central pointed entrance, stained glass, and a welcoming but eerie courtyard.
 nightmareArch(0,39,'THE NIGHTMARE CASTLE',0xc28cda,1.65);
 for(const [x,y,w,h,c] of [[-17,12,2.1,6,0x7b4e9e],[17,12,2.1,6,0x7b4e9e],[-8,20,2.3,8,0x477db7],[8,20,2.3,8,0x9c456d],[0,27,3.1,10,0xc49a5b],[-17,23,1.7,5,0x6b82b8],[17,23,1.7,5,0xb15a76]])lancet(x,y,33,w,h,c);
+ // GRAND CASTLE UPGRADE: layered roofs, carved stonework, illuminated galleries and royal banners.
+ const paleStone=mat(0x68636b,.34,.62),deepStone=mat(0x302e39,.3,.72),roofSlate=mat(0x242b3c,.28,.68),warmGold=mat(0xc5a36e,.38,.68);
+ // Broad pitched roof silhouettes give both wings a much taller fairytale profile.
+ for(const x of [-17,17]){
+   const roof=add(new THREE.ConeGeometry(12.8,7.5,4),roofSlate,x,23.4,18,0,Math.PI/4);
+   const ridge=add(new THREE.BoxGeometry(1.1,1.1,25),warmGold,x,27.1,18,0,Math.PI/2);
+   for(const z of [8,18,28]){
+     add(new THREE.BoxGeometry(1.2,5.5,1.2),paleStone,x-7.1,18,z);
+     add(new THREE.BoxGeometry(1.2,5.5,1.2),paleStone,x+7.1,18,z);
+   }
+   for(let i=-5;i<=5;i+=2){
+     add(new THREE.BoxGeometry(1.15,1.7,1.1),paleStone,x+i,21.1,33);
+     add(new THREE.BoxGeometry(1.15,1.7,1.1),paleStone,x+i,21.1,3);
+   }
+ }
+ // Layered central keep roof and a crown of smaller corner turrets.
+ add(new THREE.BoxGeometry(28,1.5,30),deepStone,0,33,2);
+ add(new THREE.ConeGeometry(16,9,4),roofSlate,0,38,2,0,Math.PI/4);
+ for(const [x,z] of [[-12,-10],[12,-10],[-12,14],[12,14]]){
+   add(new THREE.CylinderGeometry(1.15,1.45,8,10),paleStone,x,37,z);
+   add(new THREE.ConeGeometry(2.15,5.8,10),roofSlate,x,43.8,z);
+   add(new THREE.ConeGeometry(.16,3.2,8),warmGold,x,48.1,z);
+ }
+ // Deep vertical buttresses and carved horizontal bands make the facade read as masonry.
+ for(const x of [-25,-21,-13,-9,9,13,21,25]){
+   add(new THREE.BoxGeometry(.8,18,1.15),paleStone,x,10.5,33.25);
+   add(new THREE.BoxGeometry(1.35,.7,1.65),warmGold,x,19.2,33.25);
+   add(new THREE.BoxGeometry(1.35,.7,1.65),warmGold,x,3.2,33.25);
+ }
+ for(const y of [4,19.8]){
+   add(new THREE.BoxGeometry(48,.55,1.35),warmGold,0,y,33.45);
+ }
+ // Royal balcony above the central arch; leave the walking entrance completely clear.
+ add(new THREE.BoxGeometry(13,.65,3.2),paleStone,0,22.4,35.1);
+ for(let x=-6;x<=6;x+=1.5)add(new THREE.BoxGeometry(.22,1.45,.22),warmGold,x,23.4,36.35);
+ add(new THREE.BoxGeometry(13,.22,.35),warmGold,0,24.15,36.35);
+ // Large royal crest and hanging banners on the front-facing wings.
+ const crest=add(new THREE.CircleGeometry(2.2,12),deepStone,0,17.3,34.2);
+ const crestRing=add(new THREE.TorusGeometry(2.35,.16,8,24),warmGold,0,17.3,34.05);
+ const crestGem=add(new THREE.OctahedronGeometry(1.05,1),new THREE.MeshStandardMaterial({color:0x9c4bba,emissive:0x55216e,emissiveIntensity:.65,metalness:.45,roughness:.24}),0,17.3,33.9);
+ for(const x of [-20,20]){
+   const banner=add(new THREE.PlaneGeometry(3.1,7),new THREE.MeshStandardMaterial({color:x<0?0x632b4a:0x343c68,side:THREE.DoubleSide,roughness:.7}),x,14.3,34.05);
+   add(new THREE.ConeGeometry(1.55,1.8,3),new THREE.MeshStandardMaterial({color:x<0?0x632b4a:0x343c68,side:THREE.DoubleSide}),x,10.1,34.05,0,Math.PI);
+   add(new THREE.CircleGeometry(.72,8),warmGold,x,15.2,33.9);
+ }
+ // More readable stained glass: warm and jewel-toned light spills across the courtyard.
+ for(const [x,y,c] of [[-17,12,0x9b5ac7],[17,12,0xd08a56],[-8,20,0x5e9bd0],[8,20,0xc45c86],[0,27,0xe0b76b]]){
+   light(x,y,31,c,1.45,23);
+ }
+ light(0,34,4,0x8b62d5,3.2,65);
+ light(-22,24,22,0x5b8ed1,1.8,32);light(22,24,22,0xb65a80,1.8,32);
+ // Gargoyles watch from the outer parapets.
+ for(const x of [-28,28]){
+   const perch=add(new THREE.BoxGeometry(2.5,.7,2.4),deepStone,x,25,29);
+   const body=add(new THREE.SphereGeometry(1.05,10,8),deepStone,x,27,29);
+   for(const side of [-1,1]){
+     const wing=add(new THREE.ConeGeometry(.8,2.8,5),paleStone,x+side*1.15,28,29,0,0,side*.5);
+     const eye=add(new THREE.SphereGeometry(.13,8,8),new THREE.MeshBasicMaterial({color:0xff526d}),x+side*.42,27.2,29.85);
+   }
+ }
+
 for(let x=-22;x<=22;x+=4){if(Math.abs(x)>4){block(x,7,39,2.2,14,1.2,0x48434a);block(x,14,39,2.8,.8,1.8,0x9a816d)}}
 for(let x=-12;x<=12;x+=4){const torch=add(new THREE.ConeGeometry(.38,1.6,8),new THREE.MeshBasicMaterial({color:0xffa45d,emissive:0x9b321d}),x,5,45);light(x,6,45,0xff9a5a,1.4,16)}
 // Drawbridge and reflecting moat; the central route stays open.
