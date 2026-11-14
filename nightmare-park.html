@@ -37,6 +37,21 @@ header{position:absolute;z-index:4;top:0;left:0;right:0;padding:14px 17px;displa
 <div id="hud"><div class="hudline"><div class="chip" id="district">THE GATE</div><div class="chip" id="progress">0 / 10 NIGHTMARE LANDS</div></div><button id="soundBtn">SOUND: OFF</button><div id="toast"></div></div>
 <div id="mobile"><div class="pad" id="movePad"><div class="stick" id="stick"></div></div><div class="look" id="lookPad">LOOK<br>AROUND</div></div>
 <div id="scare"><b>◉</b><small>IT KNOWS YOU ARE HERE</small></div><div id="fatal"></div>
+<script>
+(()=>{const button=document.getElementById('enter'),fatal=document.getElementById('fatal');let requested=false;
+button.addEventListener('click',()=>{
+ if(requested)return;requested=true;button.disabled=true;button.textContent='LOADING THE 3D PARK…';
+ window.__nightmareLaunchRequested=true;
+ if(typeof window.startNightmarePark==='function'){window.startNightmarePark();return;}
+ window.__nightmareLaunchWatch=setTimeout(()=>{
+  if(typeof window.startNightmarePark!=='function'){
+   fatal.textContent='THE 3D ENGINE DID NOT START. Reload the page and try again.';
+   fatal.classList.add('show');button.disabled=false;button.textContent='TRY AGAIN';requested=false;
+  }
+ },15000);
+});
+})();
+</script>
 <script type="module">
 let THREE;
 try {
@@ -495,9 +510,8 @@ function begin(e){
 }
 const enterButton=$('enter');
 enterButton.type='button';
-enterButton.addEventListener('pointerup',begin);
-enterButton.addEventListener('click',begin);
-enterButton.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){begin(e)}});
+window.startNightmarePark=()=>{if(window.__nightmareLaunchWatch)clearTimeout(window.__nightmareLaunchWatch);begin()};
+if(window.__nightmareLaunchRequested)window.startNightmarePark();
 
 addEventListener('keydown',e=>{const k=e.key.toLowerCase();if(k==='w'||k==='arrowup')keys.f=1;if(k==='s'||k==='arrowdown')keys.b=1;if(k==='a'||k==='arrowleft')keys.l=1;if(k==='d'||k==='arrowright')keys.r=1;if(k==='shift')keys.run=1});
 addEventListener('keyup',e=>{const k=e.key.toLowerCase();if(k==='w'||k==='arrowup')keys.f=0;if(k==='s'||k==='arrowdown')keys.b=0;if(k==='a'||k==='arrowleft')keys.l=0;if(k==='d'||k==='arrowright')keys.r=0;if(k==='shift')keys.run=0});
