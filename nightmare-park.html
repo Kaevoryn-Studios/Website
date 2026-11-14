@@ -458,8 +458,32 @@ function frame(){if(!active)return;requestAnimationFrame(frame);const dt=Math.mi
 function startAudio(){audio=audio||new(window.AudioContext||window.webkitAudioContext)();audio.resume();if(!ambience){master=audio.createGain();master.gain.value=.16;master.connect(audio.destination);const osc=audio.createOscillator(),filter=audio.createBiquadFilter(),gain=audio.createGain();osc.type='sawtooth';osc.frequency.value=43;filter.type='lowpass';filter.frequency.value=105;gain.gain.value=.16;osc.connect(filter).connect(gain).connect(master);osc.start();ambience={osc,gain}}}
 function stinger(){if(!audio||!master)return;const o=audio.createOscillator(),g=audio.createGain();o.type='sawtooth';o.frequency.setValueAtTime(180,audio.currentTime);o.frequency.exponentialRampToValueAtTime(28,audio.currentTime+.65);g.gain.setValueAtTime(.001,audio.currentTime);g.gain.exponentialRampToValueAtTime(.8,audio.currentTime+.04);g.gain.exponentialRampToValueAtTime(.001,audio.currentTime+.75);o.connect(g).connect(master);o.start();o.stop(audio.currentTime+.8)}
 $('soundBtn').addEventListener('click',()=>{soundOn=!soundOn;$('soundBtn').textContent='SOUND: '+(soundOn?'ON':'OFF');if(soundOn)startAudio();else if(master)master.gain.setTargetAtTime(0,audio.currentTime,.2);if(!soundOn)ambience=null;});
-function begin(){if(active)return;try{build();active=true;intro.classList.add('hide');hud.classList.add('show');mobile.classList.add('show');say('The gates lock behind you. Find all ten nightmare lands.');frame()}catch(e){console.error(e);fatal.textContent='The park could not open: '+e.message;fatal.classList.add('show')}}
-$('enter').addEventListener('click',begin);
+let starting=false;
+function begin(e){
+ if(e){e.preventDefault();e.stopPropagation()}
+ if(active||starting)return;
+ starting=true;
+ const enterButton=$('enter');enterButton.disabled=true;enterButton.textContent='OPENING THE GATES…';
+ fatal.classList.remove('show');fatal.textContent='';
+ try{
+  build();
+  active=true;
+  intro.classList.add('hide');hud.classList.add('show');mobile.classList.add('show');
+  say('The gates lock behind you. Find all ten nightmare lands.');
+  frame();
+ }catch(err){
+  console.error('Nightmare Park launch failed:',err);
+  starting=false;enterButton.disabled=false;enterButton.textContent='TRY ENTERING AGAIN';
+  fatal.textContent='THE PARK COULD NOT OPEN: '+(err&&err.message?err.message:String(err));
+  fatal.classList.add('show');
+ }
+}
+const enterButton=$('enter');
+enterButton.type='button';
+enterButton.addEventListener('pointerup',begin);
+enterButton.addEventListener('click',begin);
+enterButton.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){begin(e)}});
+
 addEventListener('keydown',e=>{const k=e.key.toLowerCase();if(k==='w'||k==='arrowup')keys.f=1;if(k==='s'||k==='arrowdown')keys.b=1;if(k==='a'||k==='arrowleft')keys.l=1;if(k==='d'||k==='arrowright')keys.r=1;if(k==='shift')keys.run=1});
 addEventListener('keyup',e=>{const k=e.key.toLowerCase();if(k==='w'||k==='arrowup')keys.f=0;if(k==='s'||k==='arrowdown')keys.b=0;if(k==='a'||k==='arrowleft')keys.l=0;if(k==='d'||k==='arrowright')keys.r=0;if(k==='shift')keys.run=0});
 const pad=$('movePad'),stick=$('stick');let moveId=null;function setMove(e){const r=pad.getBoundingClientRect(),dx=e.clientX-r.left-r.width/2,dy=e.clientY-r.top-r.height/2,max=r.width*.34,len=Math.hypot(dx,dy),q=len>max?max/len:1,x=dx*q,y=dy*q;moveInput.x=x/max;moveInput.y=y/max;stick.style.left=(50+x/r.width*100)+'%';stick.style.top=(50+y/r.height*100)+'%'}function resetMove(){moveId=null;moveInput.x=0;moveInput.y=0;stick.style.left='50%';stick.style.top='50%'}pad.addEventListener('pointerdown',e=>{e.preventDefault();moveId=e.pointerId;pad.setPointerCapture(e.pointerId);setMove(e)});pad.addEventListener('pointermove',e=>{if(e.pointerId===moveId)setMove(e)});pad.addEventListener('pointerup',e=>{if(e.pointerId===moveId)resetMove()});pad.addEventListener('pointercancel',resetMove);
