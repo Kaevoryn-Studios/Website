@@ -13,6 +13,21 @@ header{position:absolute;z-index:4;top:0;left:0;right:0;padding:14px 17px;displa
 #scare{position:absolute;z-index:8;inset:0;display:grid;place-items:center;background:#050308f2;opacity:0;pointer-events:none;transition:opacity .08s}#scare.on{opacity:1}#scare b{font-size:clamp(100px,28vw,230px);color:#e9dadd;text-shadow:0 0 28px #d02a49,0 0 90px #8c1639}#scare small{position:absolute;bottom:20%;font-size:12px;font-weight:900;letter-spacing:.4em;color:#f2c2cb}
 #fatal{display:none;position:absolute;z-index:12;left:5%;right:5%;top:40%;padding:18px;background:#1b101c;border:1px solid #f09;color:white;text-align:center;font-size:13px}#fatal.show{display:block}
 @media(orientation:portrait) and (max-width:800px){.panel p{font-size:13px}.hudline{top:52px}.chip{font-size:8px;padding:7px}}
+/* NIGHTMARE REBUILD — stronger cinematic entrance and mobile-first park identity */
+#intro{background:radial-gradient(ellipse at 50% 48%,#3a1725f2 0%,#151019f5 42%,#05060afc 82%)}
+.panel{position:relative;overflow:hidden;border:1px solid #b68a7a;background:linear-gradient(145deg,#211a20f7,#090b11f8 58%,#29111cf5);box-shadow:0 28px 120px #000,0 0 70px #9b243d55}
+.panel:before{content:"";position:absolute;inset:9px;border:1px solid #a57b6655;pointer-events:none}
+.eyebrow{color:#f0b5a7;letter-spacing:.42em}
+.panel h1{font-family:Georgia,serif;letter-spacing:-.065em;text-shadow:0 0 18px #c42d4b,0 0 55px #7a1734}
+.panel p{color:#ddd0d1}
+.enter{border:1px solid #e4b5a6;background:linear-gradient(100deg,#8e233e,#4b2835 55%,#222c37);box-shadow:0 0 28px #a3284544;cursor:pointer}
+.chip{border-color:#b68a7a88;background:linear-gradient(120deg,#100c12ed,#20141ded);box-shadow:0 5px 22px #0008}
+#district{color:#f0b1a7}
+#progress{color:#e8d7c8}
+#soundBtn{border-color:#bd8990;background:#160d15f0}
+#mobile .pad{border-color:#d2a2a9;background:radial-gradient(circle,#4b2537ed,#100c14ed 72%);box-shadow:0 0 25px #7c243d55}
+#mobile .look{border-color:#d2a2a988;background:#1a101bd9}
+@media(max-width:700px){.panel{padding:26px 22px}.panel h1{font-size:clamp(43px,12vw,72px)}.panel p{font-size:12px;line-height:1.55}.enter{padding:14px 22px}}
 </style>
 </head>
 <body>
@@ -70,6 +85,38 @@ function wayfindingSign(x,z,boards,rotation=0){
   const lamp=new THREE.Mesh(new THREE.SphereGeometry(.25,10,8),new THREE.MeshBasicMaterial({color:0xffd49a}));lamp.position.y=6.45;group.add(lamp);
   light(x,6.5,z,0xffc987,1.8,21);
 }
+function nightmareArchway(x,z,label,color=0x9d304c,rotation=0){
+  const g=new THREE.Group(),stone=mat(0x39353a,.96),edge=mat(0x77645e,.72,.28),iron=mat(0x201d24,.48,.72);
+  // Paired carved pillars and a true pointed Gothic arch.
+  for(const side of [-1,1]){
+    const pier=new THREE.Mesh(new THREE.BoxGeometry(1.45,11.2,1.65),stone);pier.position.set(side*5.45,5.6,0);g.add(pier);
+    const foot=new THREE.Mesh(new THREE.BoxGeometry(2.05,.8,2.1),edge);foot.position.set(side*5.45,.4,0);g.add(foot);
+    const capital=new THREE.Mesh(new THREE.BoxGeometry(1.9,.75,2),edge);capital.position.set(side*5.45,10.9,0);g.add(capital);
+    for(let y=2.1;y<10;y+=2.1){const rib=new THREE.Mesh(new THREE.BoxGeometry(1.56,.16,1.72),edge);rib.position.set(side*5.45,y,0);g.add(rib)}
+    const skull=new THREE.Mesh(new THREE.SphereGeometry(.72,12,10),mat(0xb2a49a));skull.position.set(side*5.45,9.5,.94);g.add(skull);
+    for(const eyeSide of [-1,1]){const eye=new THREE.Mesh(new THREE.SphereGeometry(.13,8,8),new THREE.MeshBasicMaterial({color}));eye.position.set(side*5.45+eyeSide*.23,9.58,1.56);g.add(eye)}
+    const horn=new THREE.Mesh(new THREE.ConeGeometry(.22,1.15,6),edge);horn.position.set(side*5.45,10.55,1);horn.rotation.z=side*.24;g.add(horn);
+    const spike=new THREE.Mesh(new THREE.ConeGeometry(.48,2.1,5),iron);spike.position.set(side*5.45,12.35,0);g.add(spike);
+    const torch=new THREE.Mesh(new THREE.ConeGeometry(.34,1.05,8),new THREE.MeshBasicMaterial({color}));torch.position.set(side*5.45,7.8,1.2);g.add(torch);
+  }
+  const arch=new THREE.Mesh(new THREE.TorusGeometry(5.45,.52,10,48,Math.PI),edge);arch.position.set(0,11.2,0);g.add(arch);
+  const inner=new THREE.Mesh(new THREE.TorusGeometry(4.75,.12,7,48,Math.PI),iron);inner.position.set(0,11.2,.08);g.add(inner);
+  for(let i=0;i<=8;i++){const a=Math.PI*i/8,px=Math.cos(a)*5.45,py=11.2+Math.sin(a)*5.45;const fang=new THREE.Mesh(new THREE.ConeGeometry(.22,.95,5),iron);fang.position.set(px,py+.35,.05);g.add(fang)}
+  const plaque=new THREE.Mesh(new THREE.BoxGeometry(9.2,1.55,.48),iron);plaque.position.set(0,17.35,.08);g.add(plaque);
+  const canvas=document.createElement('canvas');canvas.width=1200;canvas.height=220;const ctx=canvas.getContext('2d');
+  ctx.fillStyle='#100c12';ctx.fillRect(0,0,1200,220);ctx.strokeStyle='#b58b73';ctx.lineWidth=9;ctx.strokeRect(10,10,1180,200);
+  ctx.fillStyle='#f4e5df';ctx.font='bold 76px Georgia';ctx.textAlign='center';ctx.textBaseline='middle';ctx.shadowColor='#d63d59';ctx.shadowBlur=20;ctx.fillText(label.toUpperCase(),600,112,1100);
+  const texture=new THREE.CanvasTexture(canvas);texture.colorSpace=THREE.SRGBColorSpace;
+  const lettering=new THREE.Mesh(new THREE.PlaneGeometry(8.75,1.28),new THREE.MeshBasicMaterial({map:texture,toneMapped:false}));lettering.position.set(0,17.35,.34);g.add(lettering);
+  // Chains hang from the shoulders; they sway slightly with the ambient wind.
+  for(const side of [-1,1]){const chain=new THREE.Mesh(new THREE.CylinderGeometry(.055,.055,3.1,7),iron);chain.position.set(side*4.1,8.6,.38);chain.rotation.z=side*.08;g.add(chain)}
+  const glow=new THREE.PointLight(color,2.8,30);glow.position.set(0,8,3);g.add(glow);
+  g.position.set(x,0,z);g.rotation.y=rotation;scene.add(g);
+  for(const side of [-1,1])solid(x+side*5.45,z,1.5,1.7);
+  fog(x,z,12);
+  actors.push({kind:'archGlow',obj:glow,phase:Math.random()*6,base:2.8});
+  return g;
+}
 function ghost(x,z,s=1,stalker=false){const g=new THREE.Group(),cloth=mat(stalker?0x171419:0x656064),bone=mat(0xaaa097),black=mat(0x050509),eyes=new THREE.MeshBasicMaterial({color:0xff203d});const robe=new THREE.Mesh(new THREE.ConeGeometry(.8*s,2.4*s,12),cloth);robe.position.y=1.25*s;g.add(robe);const skull=new THREE.Mesh(new THREE.SphereGeometry(.34*s,14,12),bone);skull.position.set(0,2.55*s,-.08*s);g.add(skull);const hood=new THREE.Mesh(new THREE.SphereGeometry(.48*s,12,10),black);hood.scale.set(1,1.2,.8);hood.position.set(0,2.62*s,.04*s);g.add(hood);for(const side of [-1,1]){const eye=new THREE.Mesh(new THREE.SphereGeometry(.06*s,8,8),eyes);eye.position.set(side*.13*s,2.58*s,-.37*s);g.add(eye);const arm=new THREE.Mesh(new THREE.CylinderGeometry(.08*s,.13*s,.95*s,8),cloth);arm.position.set(side*.57*s,1.75*s,0);arm.rotation.z=side*-.4;g.add(arm)}g.position.set(x,0,z);scene.add(g);actors.push({kind:stalker?'stalker':'ghost',obj:g,home:g.position.clone(),phase:Math.random()*8});return g}
 function zone(name,x,z,desc){zones.push({name,x,z,desc})}
 function build(){
@@ -103,11 +150,16 @@ block(0,5,-139,24,10,17,0x454348);solid(0,-139,24,17);door(0,-129,4,7);tower(-11
 block(82,7,-112,29,14,22,0x3b4144);solid(82,-112,29,22);door(82,-100,5,7);sign(82,17,-99,'THE FURNACE');for(const x of [71,92]){add(new THREE.CylinderGeometry(1.2,1.5,22,12),mat(0x343a3e),x,18,-119);light(x,29,-119,0xc52a38,1.7,25)}for(let i=0;i<7;i++)block(60+i*6,6,-124,2,12,.4,0x282a2e);light(82,4,-98,0xc22b3f,4,32);fog(82,-112,25);zone('THE FURNACE',82,-112,'The chimney smoke pours down into the yard. Something is working behind the furnace door.');
 // THE ABANDONED KINGDOM — ruined royal district and catacombs
 path(38,88,78,13);path(69,75,14,38);path(48,75,30,12);
-block(73,10,70,32,20,25,0x34353a);solid(73,70,32,25);
-block(73,19,56,18,2,4,0x24252a);block(73,8,56,7,16,2,0x27282d);
+// Open courtyard walls: the center gate is deliberately left clear for walking in.
+block(62,9,70,10,18,25,0x34353a);solid(62,70,10,25);
+block(84,9,70,10,18,25,0x34353a);solid(84,70,10,25);
+block(73,9,82,32,18,1.8,0x34353a);solid(73,82,32,1.8);
+block(73,.12,70,20,.24,24,0x34343a);
 tower(56,62,3.2,31,0x4a4549);tower(90,62,3.2,31,0x4a4549);
 tower(58,83,2.5,23,0x403d43);tower(88,83,2.5,23,0x403d43);
-door(73,56,5,9);sign(73,27,54,'THE ABANDONED KINGDOM');
+// Gate piers flank a clear, walkable opening.
+for(const x of [67.2,78.8]){block(x,6,56.8,1.25,12,1.5,0x4a4549);block(x,12.2,56.8,2.1,.65,2.1,0x8b6e65)}
+sign(73,27,54,'THE ABANDONED KINGDOM');
 // NIGHTMARE CASTLE — monumental keep, sharpened roofline and a guarded drawbridge.
 const castleStone=mat(0x292b32,.12,.82),castleTrim=mat(0x75665f,.35,.72);
 block(73,24,69,19,8,17,0x292a31); // raised central keep
@@ -123,10 +175,10 @@ for(let x=61;x<=85;x+=4){
 }
 // Tall lancet windows on the front wall, glowing like cursed stained glass.
 for(const [x,y,w,h,c] of [[65,15,2.2,5,0x8e304b],[73,17,3,7,0xc07855],[81,15,2.2,5,0x573e91]]){
-  const frame=new THREE.Mesh(new THREE.PlaneGeometry(w+.55,h+.55),new THREE.MeshBasicMaterial({color:0x17171d}));frame.position.set(x,y,56.48);scene.add(frame);
-  const glass=new THREE.Mesh(new THREE.PlaneGeometry(w,h),new THREE.MeshBasicMaterial({color:c,transparent:true,opacity:.88,side:THREE.DoubleSide}));glass.position.set(x,y,56.5);scene.add(glass);
-  block(x,y,56.42,.12,h, .12,0x9c806a);
-  light(x,y,55.5,c,.65,13);
+  const frame=new THREE.Mesh(new THREE.PlaneGeometry(w+.55,h+.55),new THREE.MeshBasicMaterial({color:0x17171d}));frame.position.set(x,y,60.28);scene.add(frame);
+  const glass=new THREE.Mesh(new THREE.PlaneGeometry(w,h),new THREE.MeshBasicMaterial({color:c,transparent:true,opacity:.88,side:THREE.DoubleSide}));glass.position.set(x,y,60.3);scene.add(glass);
+  block(x,y,60.22,.12,h, .12,0x9c806a);
+  light(x,y,59.5,c,.85,16);
 }
 // Drawbridge deck and chains leading to the castle gate.
 for(let i=0;i<8;i++)block(73,.65,46+i*1.25,9,.38,1.08,i%2?0x51433e:0x665347);
@@ -137,7 +189,7 @@ for(const x of [68.2,77.8]){
 light(73,10,54,0xc52e48,3.2,28);
 sign(73,8,43,'NIGHTMARE CASTLE');
 
-block(73,3,54,12,6,1,0x201b20);
+// The central gate is open: no solid slab blocks the drawbridge entrance.
 for(let i=0;i<7;i++){const x=45+i*8;block(x,4,91,7,8,8,i%2?0x494348:0x38383d);solid(x,91,7,8);block(x,8,91,7,.7,8,0x252329);tower(x-2.5,89,1.1,12,0x49444b);light(x,4,86,0xa34b4d,1.2,15)}
 // broken royal statue and execution square
 block(42,2,68,18,1,16,0x4b4748);block(42,5,68,2,7,2,0x77716d);add(new THREE.SphereGeometry(1.3,12,10),mat(0x77716d),42,9,68);block(42,1,59,7,2,2,0x2a2529);
@@ -209,6 +261,18 @@ wayfindingSign(-10,-8,[{arrow:'←',label:'BLACKWATER'},{arrow:'→',label:'THE 
 wayfindingSign(10,-87,[{arrow:'←',label:'WARD 13'},{arrow:'→',label:'THE FURNACE'},{arrow:'↑',label:'THE SILENT CHAPEL'}],Math.PI);
 wayfindingSign(49,77,[{arrow:'↑',label:'THE ABANDONED KINGDOM'},{arrow:'←',label:'ROYAL CATACOMBS'}],Math.PI/2);
 wayfindingSign(10,108,[{arrow:'↓',label:'MIDWAY & PARK EXIT'},{arrow:'↑',label:'THE ABANDONED KINGDOM'}],0);
+ // DISTINCT NIGHTMARE ARCHWAYS — one unmistakable gateway for every land.
+ nightmareArchway(-66,29,'THE LAST CAROUSEL',0xb94c5a,-Math.PI/2);
+ nightmareArchway(-38,-18,'DREADFALL MANOR',0x9e344b,-Math.PI/2);
+ nightmareArchway(0,-18,'THE LAST BREATH',0x8e2947,0);
+ nightmareArchway(-30,-72,'THE RED WAKE',0xc64b32,-Math.PI/2);
+ nightmareArchway(38,-39,'BLACKWATER BAY',0x4a9bb0,0);
+ nightmareArchway(60,14,'THE DOLLHOUSE',0xb46b9c,-Math.PI/2);
+ nightmareArchway(-65,-111,'WARD 13',0x82a99b,-Math.PI/2);
+ nightmareArchway(0,-124,'THE SILENT CHAPEL',0x9b8bd0,0);
+ nightmareArchway(65,-112,'THE FURNACE',0xe45a32,Math.PI/2);
+ nightmareArchway(73,43,'NIGHTMARE CASTLE',0xc52e48,0);
+
 // ATMOSPHERIC DETAIL PASS — moving set pieces and stronger land identities.
 // Dreadfall Manor: a lit entrance canopy, cracked stone approach and warning lanterns.
 for(const x of [-43,-33]){
