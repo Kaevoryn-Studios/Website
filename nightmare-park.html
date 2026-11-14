@@ -53,6 +53,7 @@ button.addEventListener('click',()=>{
 })();
 </script>
 <script type="module">
+
 let THREE;
 try {
   THREE = await import('https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js');
@@ -155,462 +156,138 @@ function nightmareArchway(x,z,label,color=0x9d304c,rotation=0){
 function ghost(x,z,s=1,stalker=false){const g=new THREE.Group(),cloth=mat(stalker?0x171419:0x656064),bone=mat(0xaaa097),black=mat(0x050509),eyes=new THREE.MeshBasicMaterial({color:0xff203d});const robe=new THREE.Mesh(new THREE.ConeGeometry(.8*s,2.4*s,12),cloth);robe.position.y=1.25*s;g.add(robe);const skull=new THREE.Mesh(new THREE.SphereGeometry(.34*s,14,12),bone);skull.position.set(0,2.55*s,-.08*s);g.add(skull);const hood=new THREE.Mesh(new THREE.SphereGeometry(.48*s,12,10),black);hood.scale.set(1,1.2,.8);hood.position.set(0,2.62*s,.04*s);g.add(hood);for(const side of [-1,1]){const eye=new THREE.Mesh(new THREE.SphereGeometry(.06*s,8,8),eyes);eye.position.set(side*.13*s,2.58*s,-.37*s);g.add(eye);const arm=new THREE.Mesh(new THREE.CylinderGeometry(.08*s,.13*s,.95*s,8),cloth);arm.position.set(side*.57*s,1.75*s,0);arm.rotation.z=side*-.4;g.add(arm)}g.position.set(x,0,z);scene.add(g);actors.push({kind:stalker?'stalker':'ghost',obj:g,home:g.position.clone(),phase:Math.random()*8});return g}
 function zone(name,x,z,desc){zones.push({name,x,z,desc})}
 function build(){
-solids.length=0;actors.length=0;zones.length=0;
-scene=new THREE.Scene();
-scene.background=new THREE.Color(0x090a12);
-scene.fog=new THREE.FogExp2(0x171923,.0038);
-camera=new THREE.PerspectiveCamera(72,innerWidth/innerHeight,.1,600);
-camera.position.set(0,1.7,115);
-renderer=new THREE.WebGLRenderer({canvas,antialias:true,powerPreference:'high-performance'});
-renderer.setPixelRatio(Math.min(devicePixelRatio,1.4));renderer.setSize(innerWidth,innerHeight);
-renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
-renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.58;
-clock=new THREE.Clock();
-scene.add(new THREE.HemisphereLight(0xc5d4ef,0x29202b,1.95));
-const moon=new THREE.DirectionalLight(0xd9e1ff,2.5);moon.position.set(-45,95,65);moon.castShadow=true;scene.add(moon);
-const fill=new THREE.DirectionalLight(0x725d9b,.65);fill.position.set(55,35,-70);scene.add(fill);
-add(new THREE.PlaneGeometry(340,390),mat(0x24242a),0,-.62,-22,-Math.PI/2);
-
-// New radial layout: one grand central boulevard, a castle forecourt, and ten branching lands.
-path(0,83,22,68);path(0,43,26,30);path(0,5,20,50);path(0,-37,20,34);path(0,-84,20,45);
-path(-32,70,70,13);path(32,70,70,13);path(-46,8,86,13);path(46,8,86,13);
-path(-40,-55,78,13);path(40,-55,78,13);path(-38,-112,72,13);path(38,-112,72,13);
-path(0,-128,90,13);
-
-// Broken perimeter wall, with a monumental entrance aligned to the boulevard.
-for(let x=-116;x<=116;x+=8){if(Math.abs(x)>15){block(x,4,119,.55,8,.7,0x35363e);block(x,4,-166,.55,8,.7,0x35363e)}}
-for(let z=-166;z<=119;z+=8){block(-116,4,z,.7,8,.55,0x35363e);block(116,4,z,.7,8,.55,0x35363e)}
-for(const x of [-13,13]){block(x,8,108,1.6,16,1.8,0x4c454b);block(x,16.5,108,3,.8,3,0x8e6d63)}
-block(0,16,108,28,1.2,2,0x39313a);
-const entryLamp=light(0,10,103,0xb72e51,5,45);sign(0,12,106,'THE NIGHTMARE KINGDOM');
-fog(0,101,30);
-
-// A true pointed Gothic arch frame. The center remains open for walking.
-function nightmareArch(x,z,label,accent,scale=1){
- const g=new THREE.Group(),w=11*scale,h=12*scale;
- const stone=mat(0x45434a,.28,.82),edge=mat(0x918078,.4,.7),dark=mat(0x171821,.2,.85);
- for(const side of [-1,1]){
-  const p=new THREE.Mesh(new THREE.BoxGeometry(1.5*scale,h*.72,.9*scale),stone);p.position.set(side*w*.39,h*.36,0);g.add(p);
-  const cap=new THREE.Mesh(new THREE.BoxGeometry(2*scale,.65*scale,1.25*scale),edge);cap.position.set(side*w*.39,h*.73,0);g.add(cap);
-  const skull=new THREE.Mesh(new THREE.SphereGeometry(.68*scale,12,10),dark);skull.position.set(side*w*.39,h*.83,.52*scale);g.add(skull);
-  for(const eye of [-.23,.23]){const e=new THREE.Mesh(new THREE.SphereGeometry(.1*scale,8,8),new THREE.MeshBasicMaterial({color:accent}));e.position.set(side*w*.39+eye*scale,h*.84,.99*scale);g.add(e)}
-  const flame=new THREE.Mesh(new THREE.ConeGeometry(.32*scale,1.15*scale,7),new THREE.MeshBasicMaterial({color:accent}));flame.position.set(side*w*.39,h*.95,1.1*scale);g.add(flame);
-  light(x+side*w*.39,h*.7,z+.8*scale,accent,1.6,22);
- }
- const curve=new THREE.CatmullRomCurve3([
-  new THREE.Vector3(-w*.46,h*.64,0),new THREE.Vector3(-w*.43,h*.9,0),
-  new THREE.Vector3(-w*.25,h*1.02,0),new THREE.Vector3(0,h*1.13,0),
-  new THREE.Vector3(w*.25,h*1.02,0),new THREE.Vector3(w*.43,h*.9,0),
-  new THREE.Vector3(w*.46,h*.64,0)
- ]);
- g.add(new THREE.Mesh(new THREE.TubeGeometry(curve,48,.48*scale,8,false),edge));
- const plaque=new THREE.Mesh(new THREE.BoxGeometry(7.5*scale,1.25*scale,.35*scale),dark);plaque.position.set(0,h*.78,.72*scale);g.add(plaque);
- const c=document.createElement('canvas');c.width=1024;c.height=180;const q=c.getContext('2d');
- q.fillStyle='#14121a';q.fillRect(0,0,1024,180);q.strokeStyle='#c3a27c';q.lineWidth=8;q.strokeRect(8,8,1008,164);
- q.fillStyle='#fff0df';q.font='bold 66px Georgia';q.textAlign='center';q.textBaseline='middle';q.fillText(label.toUpperCase(),512,92,950);
- const tex=new THREE.CanvasTexture(c);tex.colorSpace=THREE.SRGBColorSpace;
- const lettering=new THREE.Mesh(new THREE.PlaneGeometry(7.1*scale,1.05*scale),new THREE.MeshBasicMaterial({map:tex,toneMapped:false}));
- lettering.position.set(0,h*.78,.91*scale);g.add(lettering);
- g.position.set(x,0,z);scene.add(g);
+solids.length=0;actors.length=0;zones.length=0;found.clear();
+scene=new THREE.Scene();scene.background=new THREE.Color(0x121722);scene.fog=new THREE.FogExp2(0x242633,.0027);
+camera=new THREE.PerspectiveCamera(72,innerWidth/innerHeight,.1,700);camera.position.set(0,1.7,116);
+renderer=new THREE.WebGLRenderer({canvas,antialias:true,powerPreference:'high-performance'});renderer.setPixelRatio(Math.min(devicePixelRatio,1.35));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.72;clock=new THREE.Clock();
+scene.add(new THREE.HemisphereLight(0xdce5ff,0x34303a,2.05));const moon=new THREE.DirectionalLight(0xe0e5ff,2.35);moon.position.set(-55,95,55);moon.castShadow=true;scene.add(moon);const fill=new THREE.DirectionalLight(0x9b82c7,.8);fill.position.set(65,38,-65);scene.add(fill);
+add(new THREE.PlaneGeometry(340,390),mat(0x303039),0,-.7,-20,-Math.PI/2);
+// Fresh radial masterplan: a central castle plaza, circular midway and eight branching lands.
+path(0,83,24,68);path(0,43,34,26);path(0,10,24,46);path(0,-26,24,38);path(0,-76,24,58);
+path(-32,65,72,14);path(32,65,72,14);path(-48,10,100,14);path(48,10,100,14);path(-38,-56,82,14);path(38,-56,82,14);path(-38,-116,82,14);path(38,-116,82,14);path(0,-137,94,14);
+for(let x=-116;x<=116;x+=8){if(Math.abs(x)>15){block(x,4,119,.55,8,.7,0x41414a);block(x,4,-166,.55,8,.7,0x41414a)}}for(let z=-166;z<=119;z+=8){block(-116,4,z,.7,8,.55,0x41414a);block(116,4,z,.7,8,.55,0x41414a)}
+for(const x of [-13,13]){block(x,8,108,1.6,16,1.8,0x62565b);block(x,16.5,108,3,.8,3,0xb18d70)}block(0,17,108,28,1.2,2,0x4c414a);sign(0,12,106,'WELCOME TO NIGHTMARE PARK');light(0,10,103,0xe7a76d,5,45);fog(0,101,28);
+const stone=mat(0x69636a,.52,.28),trim=mat(0xb69a76,.42,.48),wood=mat(0x594239,.78,.08),roof=mat(0x252b3b,.34,.55);
+function arch(x,z,label,color=0xc38ad6){nightmareArchway(x,z,label,color,0)}
+function room(x,z,w,d,h,name,base=0,accent=0xc79cda){
+ add(new THREE.PlaneGeometry(w,d),mat(0x514951,.8),x,base+.03,z,-Math.PI/2);
+ block(x,base+h,z-d/2,w,h,.8,0x55515a);solid(x,z-d/2,w,.9);
+ block(x-w/2,base+h/2,z,.8,h,d,0x55515a);solid(x-w/2,z,.9,d);block(x+w/2,base+h/2,z,.8,h,d,0x55515a);solid(x+w/2,z,.9,d);
+ const gap=Math.min(6,w*.32),side=(w-gap)/2;block(x-w/2+side/2,base+h/2,z+d/2,side,h,.8,0x55515a);block(x+w/2-side/2,base+h/2,z+d/2,side,h,.8,0x55515a);solid(x-w/2+side/2,z+d/2,side,.9);solid(x+w/2-side/2,z+d/2,side,.9);
+ block(x,base+h,z,w+1,.55,d+1,0x282934);arch(x,z+d/2,name,accent);
+ for(const sx of [x-w*.38,x+w*.38])for(const sz of [z-d*.25,z+d*.12]){block(sx,base+3.2,sz,.35,1.2,.35,0x594239);add(new THREE.SphereGeometry(.28,9,8),new THREE.MeshBasicMaterial({color:0xffc078}),sx,base+4,sz);light(sx,base+4,sz,0xffb56e,1.25,15)}
+ sign(x,base+h*.62,z-d/2+.55,name.toUpperCase());
 }
-const archData=[
- [-42,70,'THE LAST CAROUSEL',0xd64a67], [ -42,8,'DREADFALL MANOR',0x9d304e],
- [0,-20,'THE LAST BREATH',0xe0444d],[-32,-60,'THE RED WAKE',0xc43b55],
- [32,-60,'BLACKWATER',0x43a6b4],[42,15,'THE DOLLHOUSE',0xb96d9c],
- [-38,-105,'WARD 13',0x8ba99a],[0,-105,'THE SILENT CHAPEL',0xc6a66e],
- [40,-105,'THE FURNACE',0xff623e],[0,51,'THE ABANDONED KINGDOM',0xb58cce,1.25]
-];
-for(const a of archData)nightmareArch(a[0],a[1],a[2],a[3],a[4]||1);
-
-// THE NIGHTMARE CASTLE: a new, original storybook-gothic wizard kingdom.
-const castleStone=mat(0x4a4850,.24,.78),castleShadow=mat(0x24232d,.2,.85),roofMat=mat(0x171b2b,.32,.65),gold=mat(0xb79a70,.55,.5);
-function castleTower(x,z,r,h,roofColor=0x171b2b){
- const shaft=add(new THREE.CylinderGeometry(r*.78,r,h,12),castleStone,x,h/2,z);
- const belt=add(new THREE.CylinderGeometry(r*1.04,r*1.04,.65,12),gold,x,h*.72,z);
- const roof=add(new THREE.ConeGeometry(r*1.48,h*.42,12),mat(roofColor),x,h+h*.19,z);
- const needle=add(new THREE.ConeGeometry(.25,4,8),gold,x,h+h*.42,z);
- for(let k=0;k<4;k++){const a=k*Math.PI/2;const win=add(new THREE.PlaneGeometry(.62,2.4),new THREE.MeshBasicMaterial({color:k%2?0x9a4a78:0x6b80b8,emissive:k%2?0x4b102e:0x1c2855,side:THREE.DoubleSide}),x+Math.cos(a)*(r+.02),h*.48,z+Math.sin(a)*(r+.02),0,a-Math.PI/2)}
- solid(x,z,r*1.55,r*1.55);
-}
-function lancet(x,y,z,w,h,color){
- const frame=add(new THREE.PlaneGeometry(w+.7,h+.8),new THREE.MeshBasicMaterial({color:0x171821,side:THREE.DoubleSide}),x,y,z);
- const glass=add(new THREE.PlaneGeometry(w,h),new THREE.MeshBasicMaterial({color,emissive:color,emissiveIntensity:.38,side:THREE.DoubleSide}),x,y,z+.025);
- const point=add(new THREE.ConeGeometry(w*.52,w*.65,4),new THREE.MeshBasicMaterial({color,emissive:color,emissiveIntensity:.3,side:THREE.DoubleSide}),x,y+h*.48,z+.03);point.rotation.z=Math.PI;
-}
- // Castle wings leave a broad central gate and forecourt open.
-block(-17,10,18,16,20,30,0x4a4850);solid(-17,18,16,30);
-block(17,10,18,16,20,30,0x4a4850);solid(17,18,16,30);
-// The central keep is a real walk-in great hall, not a solid block.
-path(0,2,22,27);
-block(-11.4,16,2,1.4,32,27,0x393944);solid(-11.4,2,1.6,27);
-block(11.4,16,2,1.4,32,27,0x393944);solid(11.4,2,1.6,27);
-block(0,16,-11.4,24,32,1.4,0x393944);solid(0,-11.4,24,1.6);
-block(0,32,2,24,1.2,27,0x393944);
-block(0,29,-4,28,2,29,0x5a5358);
-block(-17,20,2,18,1.2,32,0x5a5358);block(17,20,2,18,1.2,32,0x5a5358);
-for(const [x,z,r,h,c] of [[-25,33,4.4,32,0x202538],[25,33,4.4,32,0x202538],[-25,3,3.6,27,0x252038],[25,3,3.6,27,0x252038],[-9,-13,3.8,43,0x18223b],[9,-13,3.8,43,0x251b37],[0,31,3.4,37,0x241b35]])castleTower(x,z,r,h,c);
- // Grand central pointed entrance, stained glass, and a welcoming but eerie courtyard.
-nightmareArch(0,39,'THE NIGHTMARE CASTLE',0xc28cda,1.65);
-for(const [x,y,w,h,c] of [[-17,12,2.1,6,0x7b4e9e],[17,12,2.1,6,0x7b4e9e],[-8,20,2.3,8,0x477db7],[8,20,2.3,8,0x9c456d],[0,27,3.1,10,0xc49a5b],[-17,23,1.7,5,0x6b82b8],[17,23,1.7,5,0xb15a76]])lancet(x,y,33,w,h,c);
-
- // THE GREAT HALL: furnished, lit, and fully walkable from the main gate.
- const hallFloor=add(new THREE.PlaneGeometry(21.5,26),mat(0x39313a,.76),0,.08,2,-Math.PI/2);
- const hallRug=add(new THREE.PlaneGeometry(7,22),new THREE.MeshStandardMaterial({color:0x54253f,roughness:.92}),0,.11,2,-Math.PI/2);
- for(const x of [-8.7,8.7]){
-   for(const z of [-7,-1,5,11]){
-     const column=add(new THREE.CylinderGeometry(.65,.85,29,10),mat(0x77717a,.48),x,14.5,z);
-     add(new THREE.CylinderGeometry(1.05,1.05,.65,10),mat(0xb69a72,.42,.45),x,1,z);
-     add(new THREE.CylinderGeometry(1.05,1.05,.65,10),mat(0xb69a72,.42,.45),x,28.3,z);
-     light(x,22,z,0x8a6ac2,.65,14);
-   }
- }
- // High vaulted ribs and a sequence of chandeliers illuminate the full room.
- for(const z of [-7,1,9]){
-   const rib=add(new THREE.TorusGeometry(8.6,.22,8,32,Math.PI),mat(0x8c7c78,.48,.3),0,25,z);
-   rib.rotation.z=Math.PI;
-   const chain=add(new THREE.CylinderGeometry(.055,.055,4,7),mat(0x5e514a),0,29,z);
-   const chandelier=add(new THREE.CylinderGeometry(1.7,2.2,.35,12),mat(0xb69a72,.35,.65),0,26.6,z);
-   for(let k=0;k<8;k++){const a=k*Math.PI/4;const candle=add(new THREE.CylinderGeometry(.09,.12,1.05,7),mat(0xf1d7a0),Math.cos(a)*1.65,27.25,z+Math.sin(a)*1.65);light(Math.cos(a)*1.65,28,z+Math.sin(a)*1.65,0xffb96e,.45,7)}
-   light(0,25,z,0xb17be0,1.7,20);
- }
- // Royal dais, high-backed throne, and a stained-glass feature wall.
- block(0,.45,-7,12,.9,5,0x6d5960);
- block(0,2.2,-9,5,3.2,1.3,0x4b3748);
- block(-2.3,2.4,-7.8,1,3.8,1,0x66506a);block(2.3,2.4,-7.8,1,3.8,1,0x66506a);
- const throneBack=add(new THREE.ConeGeometry(2.5,4.8,5),mat(0x493348),0,5.8,-9.1);
- const throneSeat=add(new THREE.BoxGeometry(4.3,.65,2.5),mat(0xb69a72,.4,.45),0,3.9,-7.6);
- for(const x of [-1.4,1.4])add(new THREE.SphereGeometry(.38,10,8),mat(0xd2ae70,.3,.6),x,7.8,-9.1);
- for(const x of [-5.8,-3.5,3.5,5.8]){
-   const window=add(new THREE.PlaneGeometry(1.45,7),new THREE.MeshBasicMaterial({color:x<0?0x7351a0:0x3f80a6,transparent:true,opacity:.8,side:THREE.DoubleSide}),x,17,-10.55);
-   add(new THREE.ConeGeometry(.8,1.2,4),mat(0xb69a72),x,21,-10.5);
-   light(x,17,-8.5,x<0?0x8d5dc9:0x4b9ac7,.7,12);
- }
- // Tables, benches, and treasure chests make the hall feel inhabited.
- for(const z of [-2,5]){
-   block(-4,1.5,z,4.5,.45,2,0x67483c);block(4,1.5,z,4.5,.45,2,0x67483c);
-   for(const x of [-5.5,-2.5,2.5,5.5])block(x,.65,z, .35,1.3,.35,0x4d3935);
-   for(const x of [-4,4]){
-     block(x,.8,z+2.2,3.8,.35,.55,0x51403b);
-     const chest=add(new THREE.BoxGeometry(1.5,1.15,1.1),mat(0x493342,.45,.4),x,.65,z-1.5);
-     add(new THREE.BoxGeometry(1.58,.16,1.16),mat(0xb69a72,.4,.55),x,1.25,z-1.5);
-   }
- }
- // Wall torches cast warm pools of light between the columns.
- for(const side of [-1,1])for(const z of [-8,-2,4,10]){
-   const x=side*10.55;
-   add(new THREE.BoxGeometry(.35,1.3,.35),mat(0x77604b),x,8,z);
-   add(new THREE.SphereGeometry(.28,8,8),new THREE.MeshBasicMaterial({color:0xffb15e}),x,9,z);
-   light(x,9,z,0xffa34e,1.2,13);
- }
- // The entry remains wide open; collision is limited to the actual hall walls and furnishings.
- zone('THE GREAT HALL',0,3,'Enter the castle. The royal hall is lit, furnished, and waiting.');
- // A slender central lantern crowns the keep without filling its interior.
- add(new THREE.CylinderGeometry(.7,.95,7,10),mat(0x77717a,.4),0,37,2);
- add(new THREE.ConeGeometry(2.4,5.5,10),mat(0x252b40,.3,.5),0,43.2,2);
- light(0,39,2,0x9870d2,2.4,28);
- // GRAND CASTLE UPGRADE: layered roofs, carved stonework, illuminated galleries and royal banners.
- const paleStone=mat(0x68636b,.34,.62),deepStone=mat(0x302e39,.3,.72),roofSlate=mat(0x242b3c,.28,.68),warmGold=mat(0xc5a36e,.38,.68);
- // Broad pitched roof silhouettes give both wings a much taller fairytale profile.
- for(const x of [-17,17]){
-   const roof=add(new THREE.ConeGeometry(12.8,7.5,4),roofSlate,x,23.4,18,0,Math.PI/4);
-   const ridge=add(new THREE.BoxGeometry(1.1,1.1,25),warmGold,x,27.1,18,0,Math.PI/2);
-   for(const z of [8,18,28]){
-     add(new THREE.BoxGeometry(1.2,5.5,1.2),paleStone,x-7.1,18,z);
-     add(new THREE.BoxGeometry(1.2,5.5,1.2),paleStone,x+7.1,18,z);
-   }
-   for(let i=-5;i<=5;i+=2){
-     add(new THREE.BoxGeometry(1.15,1.7,1.1),paleStone,x+i,21.1,33);
-     add(new THREE.BoxGeometry(1.15,1.7,1.1),paleStone,x+i,21.1,3);
-   }
- }
- // Layered central keep roof and a crown of smaller corner turrets.
- add(new THREE.BoxGeometry(28,1.5,30),deepStone,0,33,2);
- add(new THREE.ConeGeometry(16,9,4),roofSlate,0,38,2,0,Math.PI/4);
- for(const [x,z] of [[-12,-10],[12,-10],[-12,14],[12,14]]){
-   add(new THREE.CylinderGeometry(1.15,1.45,8,10),paleStone,x,37,z);
-   add(new THREE.ConeGeometry(2.15,5.8,10),roofSlate,x,43.8,z);
-   add(new THREE.ConeGeometry(.16,3.2,8),warmGold,x,48.1,z);
- }
- // Deep vertical buttresses and carved horizontal bands make the facade read as masonry.
- for(const x of [-25,-21,-13,-9,9,13,21,25]){
-   add(new THREE.BoxGeometry(.8,18,1.15),paleStone,x,10.5,33.25);
-   add(new THREE.BoxGeometry(1.35,.7,1.65),warmGold,x,19.2,33.25);
-   add(new THREE.BoxGeometry(1.35,.7,1.65),warmGold,x,3.2,33.25);
- }
- for(const y of [4,19.8]){
-   add(new THREE.BoxGeometry(48,.55,1.35),warmGold,0,y,33.45);
- }
- // Royal balcony above the central arch; leave the walking entrance completely clear.
- add(new THREE.BoxGeometry(13,.65,3.2),paleStone,0,22.4,35.1);
- for(let x=-6;x<=6;x+=1.5)add(new THREE.BoxGeometry(.22,1.45,.22),warmGold,x,23.4,36.35);
- add(new THREE.BoxGeometry(13,.22,.35),warmGold,0,24.15,36.35);
- // Large royal crest and hanging banners on the front-facing wings.
- const crest=add(new THREE.CircleGeometry(2.2,12),deepStone,0,17.3,34.2);
- const crestRing=add(new THREE.TorusGeometry(2.35,.16,8,24),warmGold,0,17.3,34.05);
- const crestGem=add(new THREE.OctahedronGeometry(1.05,1),new THREE.MeshStandardMaterial({color:0x9c4bba,emissive:0x55216e,emissiveIntensity:.65,metalness:.45,roughness:.24}),0,17.3,33.9);
- for(const x of [-20,20]){
-   const banner=add(new THREE.PlaneGeometry(3.1,7),new THREE.MeshStandardMaterial({color:x<0?0x632b4a:0x343c68,side:THREE.DoubleSide,roughness:.7}),x,14.3,34.05);
-   add(new THREE.ConeGeometry(1.55,1.8,3),new THREE.MeshStandardMaterial({color:x<0?0x632b4a:0x343c68,side:THREE.DoubleSide}),x,10.1,34.05,0,Math.PI);
-   add(new THREE.CircleGeometry(.72,8),warmGold,x,15.2,33.9);
- }
- // More readable stained glass: warm and jewel-toned light spills across the courtyard.
- for(const [x,y,c] of [[-17,12,0x9b5ac7],[17,12,0xd08a56],[-8,20,0x5e9bd0],[8,20,0xc45c86],[0,27,0xe0b76b]]){
-   light(x,y,31,c,1.45,23);
- }
- light(0,34,4,0x8b62d5,3.2,65);
- light(-22,24,22,0x5b8ed1,1.8,32);light(22,24,22,0xb65a80,1.8,32);
- // Gargoyles watch from the outer parapets.
- for(const x of [-28,28]){
-   const perch=add(new THREE.BoxGeometry(2.5,.7,2.4),deepStone,x,25,29);
-   const body=add(new THREE.SphereGeometry(1.05,10,8),deepStone,x,27,29);
-   for(const side of [-1,1]){
-     const wing=add(new THREE.ConeGeometry(.8,2.8,5),paleStone,x+side*1.15,28,29,0,0,side*.5);
-     const eye=add(new THREE.SphereGeometry(.13,8,8),new THREE.MeshBasicMaterial({color:0xff526d}),x+side*.42,27.2,29.85);
-   }
- }
-
-for(let x=-22;x<=22;x+=4){if(Math.abs(x)>4){block(x,7,39,2.2,14,1.2,0x48434a);block(x,14,39,2.8,.8,1.8,0x9a816d)}}
-for(let x=-12;x<=12;x+=4){const torch=add(new THREE.ConeGeometry(.38,1.6,8),new THREE.MeshBasicMaterial({color:0xffa45d,emissive:0x9b321d}),x,5,45);light(x,6,45,0xff9a5a,1.4,16)}
-// Drawbridge and reflecting moat; the central route stays open.
-const moat=add(new THREE.PlaneGeometry(34,7),new THREE.MeshStandardMaterial({color:0x101d2c,metalness:.62,roughness:.16,transparent:true,opacity:.92}),0,.02,47,-Math.PI/2);
-for(let i=0;i<9;i++){block(-5+i*1.25,.45,47,1.15,.7,8,0x66574f)}
-for(const x of [-6,6]){const chain=add(new THREE.TorusGeometry(5,.08,6,24,Math.PI),mat(0x80736b),x,2,47);chain.rotation.z=Math.PI}
-fog(0,47,24);light(0,14,30,0xa34ac5,4,45);
-
-// Central gardens, statues, broken fountains and route lanterns.
-for(const x of [-30,30])for(const z of [54,5,-48,-98]){block(x,1.1,z,8,2,8,0x35343c);add(new THREE.CylinderGeometry(1.1,1.5,1.3,10),mat(0x777078),x,2.7,z);add(new THREE.SphereGeometry(.75,10,8),mat(0x9b8a82),x,4,z);light(x,3,z,0x9b4c77,1,14)}
-for(let z=90;z>=-90;z-=18){for(const x of [-10,10]){block(x,3,z,.45,6,.45,0x4c454b);light(x,5,z,0xe2a96f,1.2,17)}}
-fog(-28,63,22);fog(28,63,22);
-
-// The ten lands now sit around the castle, each with a different silhouette and atmosphere.
- // LAST CAROUSEL: decayed fairground, skeletal horses and a turning canopy.
-block(-76,5,57,28,10,20,0x38343b);solid(-76,57,28,20);
-const carousel=new THREE.Group();carousel.add(new THREE.Mesh(new THREE.CylinderGeometry(.45,.7,13,14),mat(0x8c785f)));
-const carouselRoof=new THREE.Mesh(new THREE.ConeGeometry(13,5,16),mat(0x51283a));carouselRoof.position.y=13;carousel.add(carouselRoof);
-for(let i=0;i<12;i++){const a=i*Math.PI/6,x=Math.cos(a)*8,z=Math.sin(a)*8;const horse=new THREE.Mesh(new THREE.CapsuleGeometry(.48,1.8,5,9),mat(i%2?0xb3a08b:0x62545d));horse.position.set(x,5,z);carousel.add(horse);const rod=new THREE.Mesh(new THREE.CylinderGeometry(.045,.045,5.5,8),gold);rod.position.set(x,8,z);carousel.add(rod)}
-carousel.position.set(-76,0,53);scene.add(carousel);actors.push({kind:'carousel',obj:carousel,phase:0});light(-76,10,53,0xc13c65,3,34);fog(-76,57,25);
-zone('THE LAST CAROUSEL',-76,57,'The horses turn beneath a broken canopy. One of them is breathing.');
- // DREADFALL MANOR: sprawling haunted estate with lit windows.
-block(-78,9,0,34,18,27,0x414047);solid(-78,0,34,27);
-block(-78,18.4,0,37,.9,29,0x292831);block(-78,14,-15,17,28,5,0x302d37);solid(-78,-15,17,5);
-for(const x of [-95,-61])castleTower(x,1,2.8,28,0x171b2a);
-for(let x=-92;x<=-64;x+=7)for(let y of [6,12,17])lancet(x,y,-13,2,3.7,0x9c4058);
-nightmareArch(-78,-17,'DREADFALL MANOR',0xa43a59,1.05);light(-78,7,-19,0xb52c4b,4,32);fog(-78,0,27);ghost(-65,1,1.4,true);
-zone('DREADFALL MANOR',-78,0,'A shadow crosses the upper gallery. Every window is watching.');
- // THE LAST BREATH: immense drop tower and ruined loading hall.
-block(0,5,-52,28,10,23,0x34343d);solid(0,-52,28,23);
-const dropTower=new THREE.Group();dropTower.add(new THREE.Mesh(new THREE.CylinderGeometry(3,4,54,12),mat(0x4a4d56)));
-for(const x of [-4,4]){const rail=new THREE.Mesh(new THREE.BoxGeometry(.4,54,.5),gold);rail.position.set(x,0,0);dropTower.add(rail)}
-const dropCar=new THREE.Mesh(new THREE.BoxGeometry(9,1.8,7),mat(0x842d48));dropCar.position.y=14;dropTower.add(dropCar);dropTower.position.set(0,29,-52);scene.add(dropTower);actors.push({kind:'drop',obj:dropCar,phase:0,home:new THREE.Vector3(0,14,-52)});
-light(0,48,-52,0xed4054,4,48);fog(0,-52,25);nightmareArch(0,-68,'THE LAST BREATH',0xe34a50,1.05);
-zone('THE LAST BREATH',0,-52,'The carriage climbs without an operator. The restraint locks by itself.');
- // RED WAKE: jagged coaster over a ravine.
-const trackPts=[[-30,3,-72],[-47,14,-84],[-61,25,-104],[-45,27,-126],[-15,14,-139],[14,8,-120],[30,3,-91]].map(p=>new THREE.Vector3(...p));
-const curve=new THREE.CatmullRomCurve3(trackPts);add(new THREE.TubeGeometry(curve,240,.38,10,false),mat(0xb04b65,.4,.6));
-const curveB=new THREE.CatmullRomCurve3(trackPts.map(p=>new THREE.Vector3(p.x+1,p.y,p.z)));add(new THREE.TubeGeometry(curveB,240,.3,10,false),mat(0x67717c,.4,.6));
-for(const p of trackPts.slice(1,-1))block(p.x,p.y/2,p.z,.45,p.y,.45,0x474951);
-const train=new THREE.Group();train.add(new THREE.Mesh(new THREE.BoxGeometry(3.5,1.4,4),mat(0x8c2945)));for(let i=0;i<4;i++){const wheel=new THREE.Mesh(new THREE.CylinderGeometry(.38,.38,.28,10),mat(0x17191c));wheel.rotation.z=Math.PI/2;wheel.position.set(i%2?1.3:-1.3,0,i<2?-1.3:1.3);train.add(wheel)}
-scene.add(train);actors.push({kind:'train',obj:train,curve,t:0});nightmareArch(-38,-75,'THE RED WAKE',0xc13b59);light(-48,16,-103,0xb12e4e,3,35);
-zone('THE RED WAKE',-45,-108,'A train races through the fog. Every carriage is empty.');
- // BLACKWATER: drowned harbor with a moving ghost vessel.
-add(new THREE.PlaneGeometry(58,42),new THREE.MeshStandardMaterial({color:0x071c27,metalness:.65,roughness:.13,transparent:true,opacity:.95}),53,.03,-83,-Math.PI/2);
-for(let i=0;i<12;i++){block(29+i*4,.35,-62,3.4,.65,3,0x514b48);block(29+i*4,.35,-104,3.4,.65,3,0x514b48)}
-const boat=add(new THREE.BoxGeometry(9,1.4,3.2),mat(0x343a42),53,1,-83);actors.push({kind:'boat',obj:boat,phase:0});
-block(85,8,-83,17,16,16,0x30333a);solid(85,-83,17,16);nightmareArch(53,-109,'BLACKWATER',0x49a5b8);
-for(const x of [31,75]){block(x,5,-83,.5,10,.5,0x3f454c);light(x,7,-83,0x48aabb,1.5,24)}
-fog(53,-83,36);zone('BLACKWATER',53,-83,'Something follows beneath the black water and strikes the hull.');
- // DOLLHOUSE: towering nursery with crooked roof and watching windows.
-block(82,7,7,30,14,24,0x49404a);solid(82,7,30,24);
-block(82,15,7,33,1,27,0x28232f);block(82,18,7,2,8,2,0x3a3440);
-for(let i=0;i<7;i++){const x=69+i*4.3;lancet(x,8,-5,1.8,4.4,0xb45b80);add(new THREE.SphereGeometry(.2,8,8),new THREE.MeshBasicMaterial({color:0xe8c6b8}),x-.35,8,-4.7);add(new THREE.SphereGeometry(.2,8,8),new THREE.MeshBasicMaterial({color:0xe8c6b8}),x+.35,8,-4.7)}
-nightmareArch(82,-8,'THE DOLLHOUSE',0xb45b91);for(let i=0;i<4;i++)ghost(67+i*9,18,.85,true);light(82,6,-10,0xa43d70,3,30);fog(82,7,24);
-zone('THE DOLLHOUSE',82,7,'The nursery door stands open. Every doll is facing the path.');
- // WARD 13: abandoned hospital with a broken ambulance bay.
-block(-82,7,-115,35,14,25,0x414b4b);solid(-82,-115,35,25);
-block(-82,15,-115,38,1,28,0x252d31);nightmareArch(-82,-131,'WARD 13',0x8ca99a);
-for(let i=0;i<7;i++){const x=-98+i*5.3;block(x,7,-101,2.2,3.8,.2,0x252b2d);block(x,7,-100.8,1.5,2.8,.08,0x879d90)}
-light(-82,5,-99,0x78a89c,3,32);ghost(-65,-120,1.3,true);fog(-82,-115,27);
-zone('WARD 13',-82,-115,'A heart monitor beeps from an empty room. The rhythm changes when you approach.');
- // SILENT CHAPEL: tall nave and graveyard.
-block(0,8,-145,27,16,22,0x4b4850);solid(0,-145,27,22);
-block(0,17,-145,30,1,25,0x292731);castleTower(-14,-145,2.4,26,0x1b2030);castleTower(14,-145,2.4,26,0x1b2030);
-nightmareArch(0,-158,'THE SILENT CHAPEL',0xc5a46e);
-for(let i=0;i<32;i++){const x=-48+(i%11)*9,z=-157+Math.floor(i/11)*8;block(x,.8,z,.7,1.6,.3,0x817a76);block(x,1.1,z,.25,2.1,.25,0x817a76)}
-light(0,5,-130,0xb48a61,3,35);fog(0,-145,26);
-zone('THE SILENT CHAPEL',0,-145,'A choir sings beneath the floor. The chapel has no stairs to the crypt.');
- // FURNACE: industrial foundry, furnaces and smokestacks.
-block(82,8,-119,31,16,25,0x45474a);solid(82,-119,31,25);
-nightmareArch(82,-135,'THE FURNACE',0xff693e);
-for(const x of [68,96]){add(new THREE.CylinderGeometry(1.8,2.1,27,14),mat(0x343941),x,18,-132);add(new THREE.TorusGeometry(2.1,.2,8,16),mat(0x8a4a3d),x,29,-132);light(x,30,-132,0xf05232,2.4,30)}
-for(let i=0;i<9;i++){const x=57+i*6;block(x,7,-139,1.5,14,.4,0x292d32)}
-light(82,5,-101,0xd94831,4,38);fog(82,-119,28);
-zone('THE FURNACE',82,-119,'The furnaces burn with no workers. Something is hammering behind the sealed wall.');
-
-// A few moving silhouettes and atmospheric details across the grounds.
+function steps(x,z,n=12,w=5,depth=.68,rise=.62,base=0,dir=-1){for(let i=0;i<n;i++){const yy=base+i*rise+rise/2,zz=z+dir*i*depth;block(x,yy,zz,w,rise,depth,0x756b69);block(x,yy+rise*.5,zz+dir*depth*.42,w+.18,.14,depth*.18,0xb69a76)}for(const side of [-1,1])block(x+side*(w/2+.25),base+n*rise/2,z+dir*n*depth/2,.25,n*rise,n*depth,0x5a4a46)}
+function warp(name,x,z,desc,tx,ty,tz){zones.push({name,x,z,desc,warp:{x:tx,y:ty,z:tz}})}
+function tower(x,z,r,h){add(new THREE.CylinderGeometry(r*.78,r,h,12),stone,x,h/2,z);add(new THREE.CylinderGeometry(r*1.08,r*1.08,.55,12),trim,x,h*.72,z);add(new THREE.ConeGeometry(r*1.5,h*.48,12),roof,x,h+h*.18,z);add(new THREE.ConeGeometry(.18,3.2,8),trim,x,h+h*.43,z);solid(x,z,r*1.6,r*1.6)}
+function win(x,y,z,w=1.8,h=4,c=0x8b9fd4){add(new THREE.PlaneGeometry(w,h),new THREE.MeshBasicMaterial({color:c,emissive:c,emissiveIntensity:.45,side:THREE.DoubleSide}),x,y,z);light(x,y,z+1,c,.8,12)}
+// Grand gate and illuminated approach.
+for(const x of [-12,12]){block(x,8,99,1.4,16,1.5,0x635a60);tower(x,99,2.1,18)}block(0,17,99,28,1.2,2,0x554b54);arch(0,88,'THE NIGHTMARE KINGDOM',0xd38cae);path(0,75,18,42);fog(0,81,24);
+// Castle silhouette: layered roofs, seven towers, jewel windows and a huge open front arch.
+for(const x of [-23,23]){tower(x,42,4.3,34);tower(x,-7,3.4,27);add(new THREE.ConeGeometry(9,7,4),roof,x,28,17,0,Math.PI/4)}
+for(const x of [-13,13])tower(x,29,3.2,30);
+add(new THREE.BoxGeometry(42,1.5,34),mat(0x34323c),0,28,12);add(new THREE.ConeGeometry(23,11,4),roof,0,35,12,0,Math.PI/4);
+for(const [x,y,z,c] of [[-22,13,27,0x8b7bc4],[22,13,27,0x6d9fc2],[-31,18,28,0xb65b7a],[31,18,28,0xd3a16a],[-13,18,28,0x9c76c9],[13,18,28,0x67a9b6]])win(x,y,z,2.1,6,c);
+add(new THREE.CircleGeometry(2.7,12),mat(0x292631),0,18,29);add(new THREE.TorusGeometry(2.8,.18,8,28),trim,0,18,28.8);add(new THREE.OctahedronGeometry(1.3,1),new THREE.MeshStandardMaterial({color:0xa45db8,emissive:0x5c2a78,emissiveIntensity:.8,metalness:.5,roughness:.2}),0,18,29.1);
+for(const x of [-17,17]){const banner=add(new THREE.PlaneGeometry(3.2,8),new THREE.MeshStandardMaterial({color:x<0?0x762e4a:0x343f70,side:THREE.DoubleSide}),x,13,29.3);actors.push({kind:'banner',obj:banner,phase:Math.random()*6})}
+arch(0,42,'THE NIGHTMARE CASTLE',0xc38ad6);for(let x=-20;x<=20;x+=4)if(Math.abs(x)>4){block(x,6,43,2.2,12,1.2,0x635a60);block(x,12.5,43,2.8,.7,1.8,0xb69a76)}
+for(const x of [-8,8]){block(x,5,48,.45,10,.45,0x514a50);light(x,7,48,0xffb777,1.6,16)}add(new THREE.PlaneGeometry(32,7),new THREE.MeshStandardMaterial({color:0x172b36,metalness:.5,roughness:.2,transparent:true,opacity:.85}),0,.02,54,-Math.PI/2);for(let i=0;i<12;i++)block(-6+i*1.1,.42,54,1,.65,7,0x79675b);
+// Castle's walk-in rooms — no solid block sealing the keep.
+room(0,12,25,25,13,'The Great Foyer',0,0xc79cda);
+room(-29,12,22,23,12,'The Royal Ballroom',0,0xd29a70);
+room(29,12,22,23,12,'The Grand Library',0,0x79a5d1);
+room(0,-20,24,23,13,'The Throne Chamber',0,0xc68baf);
+room(0,43,22,20,12,'The Portrait Gallery',0,0xc8a879);
+room(-29,-20,22,22,11,'The Mirror Maze',0,0x8d87d6);
+room(29,-20,22,22,11,'The Alchemy Laboratory',0,0x72b4a9);
+room(-59,-20,23,23,10,'The Royal Dungeon',-8,0xa84b56);
+room(59,-20,23,23,10,'The Forgotten Crypt',-8,0x7795b8);
+room(0,-75,25,24,11,'The Forbidden Attic',9,0xc5a36e);
+room(31,-75,22,22,10,'The Moon Observatory',9,0x89a9d7);
+path(0,28,80,6);path(0,-8,80,6);path(0,54,50,6);path(0,-63,65,5);
+// Main foyer — red carpet, tall pillars, chandeliers, throne and twin grand staircases.
+add(new THREE.PlaneGeometry(18,21),new THREE.MeshStandardMaterial({color:0x662f4b,roughness:.9}),0,.08,13,-Math.PI/2);
+for(const x of [-9,9])for(const z of [4,12,20]){add(new THREE.CylinderGeometry(.62,.82,11,12),stone,x,5.5,z);add(new THREE.CylinderGeometry(1.05,1.05,.55,12),trim,x,.45,z);add(new THREE.CylinderGeometry(1.05,1.05,.55,12),trim,x,10.5,z)}
+for(const z of [4,13,21]){add(new THREE.CylinderGeometry(.06,.06,4,8),trim,0,11,z);add(new THREE.CylinderGeometry(1.6,2,.35,12),trim,0,9,z);for(let i=0;i<8;i++){const a=i*Math.PI/4;add(new THREE.CylinderGeometry(.08,.12,.9,7),mat(0xffd99c),Math.cos(a)*1.5,9.65,z+Math.sin(a)*1.5);light(Math.cos(a)*1.5,10.1,z+Math.sin(a)*1.5,0xffc06c,.5,8)}}
+block(0,.6,2,10,1.2,3,0x66505d);block(0,2,-1,5,3,1,0x574050);add(new THREE.ConeGeometry(2.5,4.5,5),mat(0x593c56),0,5,-1.1);
+for(const x of [-5,5]){block(x,1.1,14,5,.45,2,0x60463a);for(const z of [12,16])block(x,.6,z,.35,1.2,.35,0x49382f)}
+steps(-7,23,12,5,.68,.62,0,-1);steps(7,23,12,5,.68,.62,0,-1);block(0,7.8,15,16,.6,4,0x756a69);
+warp('THE GRAND STAIRCASE · ATTIC ACCESS',0,15,'The staircase twists upward. A hidden landing carries you into the upper castle.',0,10.7,-75);
+steps(0,-4,12,5,.65,.58,0,1);warp('THE SPIRAL STAIR · BASEMENT ACCESS',0,4,'The stair curls beneath the castle into the forgotten lower kingdom.',-59,-6.2,-20);
+// Ballroom: polished dance floor, banquet tables, chandeliers and a piano.
+add(new THREE.PlaneGeometry(18,18),new THREE.MeshStandardMaterial({color:0x6c4d56,metalness:.24,roughness:.32}),-29,.08,12,-Math.PI/2);
+for(const x of [-35,-23])for(const z of [5,18]){block(x,1,z,2,.4,2,0x5b433c);block(x,.55,z,.3,1,.3,0x4a3933)}
+for(let i=0;i<6;i++){const x=-36+i*2.8;add(new THREE.SphereGeometry(.34,10,8),new THREE.MeshBasicMaterial({color:0xffd49b}),x,8,1);light(x,8,1,0xffc77b,.7,9)}
+block(-35,1,21,5,2,2,0x171a24);block(-35,2.2,21,5,.3,2.2,0x292d3b);ghost(-29,10,.85,false);
+// Library shelves, ladder, reading table and a hovering book.
+for(const x of [22,26,32,36]){block(x,5,4,.75,10,14,0x4d3931);for(let y=2;y<10;y+=2)block(x,y,-3,.9,.16,13,0x9b7650)}
+block(29,1,20,7,.45,3,0x60483a);const floatingBook=add(new THREE.BoxGeometry(1.4,.25,1),mat(0x8d344b),29,5,8);actors.push({kind:'floatBook',obj:floatingBook,home:floatingBook.position.clone(),phase:0});
+// Throne chamber, crown, royal banners and portraits whose eyes seem to follow.
+block(0,.55,-26,13,1.1,5,0x76606a);block(0,2.4,-28,5,3.6,1.3,0x493347);for(const x of [-2.4,2.4])block(x,2.7,-26,1,4.5,1,0x66516d);add(new THREE.TorusGeometry(1.3,.2,8,20),trim,0,5,-28);add(new THREE.OctahedronGeometry(.75,1),new THREE.MeshStandardMaterial({color:0x9b54c3,emissive:0x55226f,emissiveIntensity:.8}),0,6,-28);
+for(let i=0;i<7;i++){const x=-9+i*3;block(x,5,34,2.2,3.2,.35,0x9b795d);block(x,5,33.75,1.75,2.75,.12,i%2?0x293342:0x483044);for(const dx of [-.28,.28])add(new THREE.SphereGeometry(.12,8,8),new THREE.MeshBasicMaterial({color:0xf2d3b4}),x+dx,5,33.6)}
+// Mirror Maze and hidden passage; laboratory has luminous vessels and rotating rings.
+for(let i=0;i<5;i++){const mirror=add(new THREE.BoxGeometry(.18,7,4),new THREE.MeshPhysicalMaterial({color:0x9db4c7,metalness:.92,roughness:.08,transparent:true,opacity:.72}),-37+i*4,4,-20);mirror.rotation.y=(i%2?-.25:.25)}
+warp('THE MIRROR THAT SHOULD NOT OPEN',-29,-28,'Your reflection moves a second too late. The mirror gives way to a hidden passage.',59,-6.2,-20);
+for(const x of [24,34])for(const z of [-25,-16]){add(new THREE.SphereGeometry(.75,12,10),new THREE.MeshStandardMaterial({color:0x55b6b0,emissive:0x245d5a,emissiveIntensity:.8}),x,2,z);light(x,2,z,0x55b6b0,.7,10)}
+for(let i=0;i<3;i++){const ring=add(new THREE.TorusGeometry(3+i*.55,.08,8,40),trim,29,6+i*.5,-20);ring.rotation.x=.7+i*.25;ring.rotation.y=i*.7}
+// Basement destinations: iron-bar cells, bone piles, sealed sarcophagus and paired return triggers.
+for(const x of [-66,-59,-52]){block(x,-3,-12,.35,7,.35,0x51464a);for(const z of [-28,-19,-10])block(x,-5,z,1.5,.25,1.5,0x786a63)}
+for(const x of [53,59,65]){block(x,-3,-12,.35,7,.35,0x55505c);block(x,-5,-27,3,.5,2,0x766d76)}
+for(const x of [-66,-52]){block(x,-2,-20,.25,8,.25,0x9a8c78);for(const z of [-23,-19,-15])block(x,-2,z,.25,.25,.25,0x9a8c78)}
+block(59,-5,-27,6,1,4,0x514b55);add(new THREE.TorusGeometry(2,.22,8,20),trim,59,-3.9,-29);light(59,-1,-20,0x8e9ed0,1.8,18);
+warp('DUNGEON RETURN STAIRS',-68,-11,'You climb the rusted stair cage back to the Great Foyer.',0,1.7,12);
+warp('CRYPT RETURN STAIRS',68,-11,'The stone sarcophagus opens onto a hidden stair back to the Great Foyer.',0,1.7,12);
+// Attic: exposed rafters, trunks, covered mirrors and star map; observatory with telescope and moon.
+for(let x=-10;x<=10;x+=5)add(new THREE.BoxGeometry(.45,8,25),wood,x,13,-75,0,0,x*.008);
+for(const x of [-8,8]){block(x,10,-75,1,2,3,0x6a5341);block(x,11.2,-75,1.2,.3,3.2,trim)}
+for(let i=0;i<5;i++){block(-8+i*4,10,-84,2.5,1.5,2,0x4b3933);block(-8+i*4,10.8,-84,2.6,.25,2.1,0xb69a76)}
+add(new THREE.TorusGeometry(3,.12,8,28),trim,0,14,-68).rotation.x=Math.PI/2;light(0,15,-75,0xffd18a,2.5,30);
+warp('ATTIC STAIR RETURN',-9,-63,'The attic staircase descends into the Great Foyer.',0,1.7,12);
+add(new THREE.CylinderGeometry(.35,.55,8,12),trim,31,12,-75,Math.PI/2,0,Math.PI/2);add(new THREE.SphereGeometry(1.2,12,10),new THREE.MeshStandardMaterial({color:0x7ba5db,emissive:0x314e79,emissiveIntensity:.8}),31,13,-75);add(new THREE.SphereGeometry(3,20,16),new THREE.MeshBasicMaterial({color:0xd6d9e4}),31,15,-84);light(31,13,-75,0x7ba5db,2,20);
+warp('OBSERVATORY STAIR',40,-64,'The moonlit observatory stair returns to the upper attic landing.',0,10.7,-75);
+// Hidden Witching Parlour behind a portrait, with a glowing ritual circle.
+room(-59,30,18,18,9,'The Witching Parlour',0,0x9e6eb8);for(let i=0;i<9;i++){const a=i*Math.PI*2/9;block(-59+Math.cos(a)*5,2,30+Math.sin(a)*5,.12,4,.12,0x9a7a67);light(-59+Math.cos(a)*5,4,30+Math.sin(a)*5,0x9e6eb8,.6,9)}
+add(new THREE.SphereGeometry(1.5,16,12),new THREE.MeshStandardMaterial({color:0x8b5db3,emissive:0x48265e,emissiveIntensity:.8}),-59,3,30);warp('THE WITCHING CIRCLE',-59,20,'The floor sigil wakes. A hidden chamber answers behind the portrait wall.',-59,1.7,30);
+// Castle courtyard gardens and readable lanterns.
+for(const x of [-42,42])for(const z of [40,8,-28]){block(x,.9,z,8,1.8,8,0x4c4a4f);add(new THREE.CylinderGeometry(1,1.35,1.2,12),stone,x,2.4,z);add(new THREE.SphereGeometry(.8,12,10),mat(0xaaa09a),x,3.5,z);light(x,4,z,0xd49b75,1.2,18)}
+for(let z=100;z>=-95;z-=17)for(const x of [-10,10]){block(x,3,z,.35,6,.35,0x635c60);light(x,5,z,0xffc783,1.35,18)}
+// Ten reimagined lands, each with a signature attraction and a recognizable silhouette.
+function deadTree(x,z,h=8){add(new THREE.CylinderGeometry(.25,.55,h,7),mat(0x29292e),x,h/2,z);for(let i=0;i<4;i++)add(new THREE.CylinderGeometry(.08,.18,h*.45,6),mat(0x29292e),x+(Math.random()-.5)*2,h*.65,z+(Math.random()-.5)*2,0,0,(Math.random()-.5)*1.3)}
+// 1. Last Carousel.
+block(-78,5,57,28,10,20,0x454047);solid(-78,57,28,20);const carousel=new THREE.Group();carousel.add(new THREE.Mesh(new THREE.CylinderGeometry(.55,.8,13,14),mat(0x9a8269)));const canopy=new THREE.Mesh(new THREE.ConeGeometry(13,5,16),mat(0x6e344d));canopy.position.y=13;carousel.add(canopy);for(let i=0;i<12;i++){const a=i*Math.PI/6,x=Math.cos(a)*8,z=Math.sin(a)*8;const horse=new THREE.Mesh(new THREE.CapsuleGeometry(.48,1.8,5,9),mat(i%2?0xc5b39d:0x6d5c65));horse.position.set(x,5,z);carousel.add(horse)}carousel.position.set(-78,0,53);scene.add(carousel);actors.push({kind:'carousel',obj:carousel,phase:0});light(-78,10,53,0xd34d75,3,35);fog(-78,57,25);zone('THE LAST CAROUSEL',-78,57,'The carousel turns by itself. One horse has fresh footprints beneath it.');
+// 2. Dreadfall Manor.
+block(-78,9,0,34,18,27,0x55505a);solid(-78,0,34,27);block(-78,18.5,0,38,1,29,0x292a35);for(const x of [-94,-62])tower(x,1,2.8,28);for(let x=-92;x<=-64;x+=7)for(const y of [6,12,17])win(x,y,-13,2,3.8,0xa9516d);arch(-78,-17,'DREADFALL MANOR',0xb34b67);ghost(-65,1,1.4,true);light(-78,7,-19,0xc13d59,3.5,32);zone('DREADFALL MANOR',-78,0,'A figure crosses the upper gallery. Every window is watching.');for(let i=0;i<15;i++)deadTree(-62+(i%5)*10,-26+Math.floor(i/5)*14,6+Math.random()*5);
+// 3. Last Breath drop tower.
+block(0,5,-112,28,10,23,0x45434b);solid(0,-112,28,23);const dropTower=new THREE.Group();dropTower.add(new THREE.Mesh(new THREE.CylinderGeometry(3,4,54,12),mat(0x62616b)));for(const x of [-4,4]){const rail=new THREE.Mesh(new THREE.BoxGeometry(.4,54,.5),trim);rail.position.set(x,0,0);dropTower.add(rail)}const dropCar=new THREE.Mesh(new THREE.BoxGeometry(9,1.8,7),mat(0x8d304d));dropCar.position.y=14;dropTower.add(dropCar);dropTower.position.set(0,29,-112);scene.add(dropTower);actors.push({kind:'drop',obj:dropCar,phase:0});light(0,48,-112,0xf25a66,3.5,48);fog(0,-112,25);zone('THE LAST BREATH',0,-112,'The carriage rises. Its restraints click shut without a rider.');
+// 4. Red Wake coaster over a ravine.
+const pts=[[-30,3,-72],[-47,14,-84],[-61,25,-104],[-45,27,-126],[-15,14,-139],[14,8,-120],[30,3,-91]].map(p=>new THREE.Vector3(...p));const coaster=new THREE.CatmullRomCurve3(pts);add(new THREE.TubeGeometry(coaster,220,.42,10,false),mat(0xb34c68,.4,.5));const coaster2=new THREE.CatmullRomCurve3(pts.map(p=>new THREE.Vector3(p.x+1,p.y,p.z)));add(new THREE.TubeGeometry(coaster2,220,.3,10,false),mat(0x82848b,.4,.5));for(const p of pts.slice(1,-1))block(p.x,p.y/2,p.z,.5,p.y,.5,0x55565e);const train=add(new THREE.BoxGeometry(3.5,1.4,4),mat(0x9b304b),-30,3,-72);actors.push({kind:'train',obj:train,curve:coaster,t:0});zone('THE RED WAKE',-45,-108,'A train races through the ravine. The last carriage has no wheels.');
+// 5. Blackwater Bay ghost harbor.
+add(new THREE.PlaneGeometry(58,42),new THREE.MeshStandardMaterial({color:0x0e303a,metalness:.55,roughness:.18,transparent:true,opacity:.92}),53,.02,-83,-Math.PI/2);for(let i=0;i<12;i++){block(29+i*4,.35,-62,3.4,.65,3,0x615a53);block(29+i*4,.35,-104,3.4,.65,3,0x615a53)}const boat=add(new THREE.BoxGeometry(9,1.4,3.2),mat(0x41464d),53,1,-83);actors.push({kind:'boat',obj:boat,phase:0});block(85,8,-83,17,16,16,0x484850);solid(85,-83,17,16);fog(53,-83,36);zone('BLACKWATER BAY',53,-83,'Something strikes the hull from underneath the black water.');
+// 6. Dollhouse District.
+block(82,7,7,30,14,24,0x58505b);solid(82,7,30,24);block(82,15,7,33,1,27,0x2c2935);for(let i=0;i<7;i++)win(69+i*4.3,8,-5,1.8,4.4,0xc2779a);for(const [x,z] of [[59,31],[94,30],[58,-1],[95,-1]]){add(new THREE.BoxGeometry(2.2,3.5,1.1),mat(0x6b5961),x,1.8,z);add(new THREE.SphereGeometry(.85,12,10),mat(0xcbb7a8),x,4,z);for(const side of [-1,1])add(new THREE.SphereGeometry(.12,8,8),new THREE.MeshBasicMaterial({color:0x160f13}),x+side*.28,4.05,z-.74)}zone('THE DOLLHOUSE',82,7,'The nursery door stands open. Every doll has turned toward you.');
+// 7. Ward 13 hospital.
+block(-82,7,-115,35,14,25,0x56615f);solid(-82,-115,35,25);block(-82,15,-115,38,1,28,0x2b3434);for(let i=0;i<7;i++){const x=-98+i*5.3;block(x,7,-101,2.2,3.8,.2,0x303a39);win(x,7,-100.7,1.5,2.8,0x9ab5a9)}block(-103,1.3,-84,12,2.6,5,0xb8b8b0);block(-103,2.8,-84,6,1.2,4,0xaaa9a1);light(-82,5,-99,0x8ab6a8,3,32);zone('WARD 13',-82,-115,'A heart monitor beeps in a room with no patient.');
+// 8. Silent Chapel and graveyard.
+block(0,8,-145,27,16,22,0x5a555c);solid(0,-145,27,22);tower(-14,-145,2.4,26);tower(14,-145,2.4,26);for(let i=0;i<32;i++){const x=-48+(i%11)*9,z=-157+Math.floor(i/11)*8;block(x,.8,z,.7,1.6,.3,0x928780);block(x,1.1,z,.25,2.1,.25,0x928780)}const bell=add(new THREE.TorusGeometry(.75,.16,8,20),trim,0,18,-151);actors.push({kind:'bell',obj:bell,phase:0});zone('THE SILENT CHAPEL',0,-145,'A choir sings below the floor. The crypt door is unlocked.');
+// 9. Furnace District.
+block(82,8,-119,31,16,25,0x555255);solid(82,-119,31,25);for(const x of [68,96]){add(new THREE.CylinderGeometry(1.8,2.1,27,14),mat(0x44454a),x,18,-132);add(new THREE.TorusGeometry(2.1,.2,8,16),trim,x,29,-132);light(x,30,-132,0xff633d,2.3,30)}for(const [x,z] of [[61,-88],[82,-80],[101,-96],[72,-105],[92,-115]]){const vent=add(new THREE.ConeGeometry(1.15,4.8,9),new THREE.MeshBasicMaterial({color:0xff6534,transparent:true,opacity:.76}),x,2.5,z);const core=add(new THREE.ConeGeometry(.48,3.1,8),new THREE.MeshBasicMaterial({color:0xffc15b,transparent:true,opacity:.82}),x,2.1,z);actors.push({kind:'fireJet',obj:vent,core,phase:Math.random()*6})}zone('THE FURNACE',82,-119,'The furnaces burn with no workers. Something hammers behind the wall.');
+// 10. Abandoned Kingdom ruins.
+for(let i=0;i<14;i++){const x=48+Math.random()*48,z=48+Math.random()*54;add(new THREE.DodecahedronGeometry(1+Math.random()*1.8,0),mat(0x625a5c),x,.9,z,Math.random(),Math.random(),Math.random())}for(const x of [64,82]){block(x,8,49,1,13,.6,0x5c3445);block(x,14,49,3,.5,.6,0xb69a76)}zone('THE ABANDONED KINGDOM',70,77,'The old kingdom surrounds the castle. The royal crown is missing.');
+// Atmosphere: warm lanterns, twisted trees, bats, ghosts and drifting ash; paths remain readable.
+function deadTree(x,z,h=8){add(new THREE.CylinderGeometry(.25,.55,h,7),mat(0x29292e),x,h/2,z);for(let i=0;i<4;i++)add(new THREE.CylinderGeometry(.08,.18,h*.45,6),mat(0x29292e),x+(Math.random()-.5)*2,h*.65,z+(Math.random()-.5)*2,0,0,(Math.random()-.5)*1.3)}
+for(let i=0;i<24;i++){const x=(Math.random()-.5)*205,z=-150+Math.random()*260;deadTree(x,z,5+Math.random()*8)}
+for(const [x,z,c] of [[-8,76,0xffc27b],[8,61,0x9fd7ee],[-8,29,0xd69cff],[8,-15,0xff9d7a],[-8,-57,0x9fe8dd],[8,-99,0xd6a0ff],[-50,42,0xffa56f],[29,45,0xffbd79],[52,-3,0xd58cff],[-50,-82,0x9fe8dd],[51,-82,0xff8b70],[63,83,0xffbd79],[85,83,0x9edcff]]){add(new THREE.SphereGeometry(.34,10,8),new THREE.MeshBasicMaterial({color:c}),x,4,z);const halo=add(new THREE.SphereGeometry(.72,10,8),new THREE.MeshBasicMaterial({color:c,transparent:true,opacity:.12,depthWrite:false}),x,4,z);actors.push({kind:'lanternGlow',obj:halo,phase:Math.random()*6});light(x,4,z,c,1.9,26)}
+for(let i=0;i<18;i++){const x=(Math.random()-.5)*190,z=-145+Math.random()*250;const bat=add(new THREE.SphereGeometry(.18,7,6),new THREE.MeshBasicMaterial({color:0x11131a}),x,9+Math.random()*18,z);actors.push({kind:'bat',obj:bat,home:bat.position.clone(),phase:Math.random()*7})}
 ghost(-28,38,1.3,true);ghost(30,-18,1.1,false);ghost(58,28,1.2,true);
-for(let i=0;i<22;i++){const x=(Math.random()-.5)*190,z=-145+Math.random()*250;const bat=add(new THREE.SphereGeometry(.18,7,6),new THREE.MeshBasicMaterial({color:0x11131a}),x,9+Math.random()*18,z);actors.push({kind:'bat',obj:bat,home:bat.position.clone(),phase:Math.random()*7})}
-for(let x=61;x<=85;x+=4){
-  block(x,21,53,2.2,3.4,1.8,0x4a4549);
-  block(x,21,86,2.2,3.4,1.8,0x4a4549);
-}
-// Tall lancet windows on the front wall, glowing like cursed stained glass.
-for(const [x,y,w,h,c] of [[65,15,2.2,5,0x8e304b],[73,17,3,7,0xc07855],[81,15,2.2,5,0x573e91]]){
-  const frame=new THREE.Mesh(new THREE.PlaneGeometry(w+.55,h+.55),new THREE.MeshBasicMaterial({color:0x17171d}));frame.position.set(x,y,60.28);scene.add(frame);
-  const glass=new THREE.Mesh(new THREE.PlaneGeometry(w,h),new THREE.MeshBasicMaterial({color:c,transparent:true,opacity:.88,side:THREE.DoubleSide}));glass.position.set(x,y,60.3);scene.add(glass);
-  block(x,y,60.22,.12,h, .12,0x9c806a);
-  light(x,y,59.5,c,.85,16);
-}
-// Drawbridge deck and chains leading to the castle gate.
-for(let i=0;i<8;i++)block(73,.65,46+i*1.25,9,.38,1.08,i%2?0x51433e:0x665347);
-for(const x of [68.2,77.8]){
-  const chain=new THREE.Mesh(new THREE.CylinderGeometry(.09,.09,10,8),mat(0x514a49));chain.position.set(x,4,50);chain.rotation.x=Math.PI/2;scene.add(chain);
-  block(x,2,55,.5,4,.5,0x514a49);
-}
-light(73,10,54,0xc52e48,3.2,28);
-sign(73,8,43,'NIGHTMARE CASTLE');
-
-// The central gate is open: no solid slab blocks the drawbridge entrance.
-for(let i=0;i<7;i++){const x=45+i*8;block(x,4,91,7,8,8,i%2?0x494348:0x38383d);solid(x,91,7,8);block(x,8,91,7,.7,8,0x252329);tower(x-2.5,89,1.1,12,0x49444b);light(x,4,86,0xa34b4d,1.2,15)}
-// broken royal statue and execution square
-block(42,2,68,18,1,16,0x4b4748);block(42,5,68,2,7,2,0x77716d);add(new THREE.SphereGeometry(1.3,12,10),mat(0x77716d),42,9,68);block(42,1,59,7,2,2,0x2a2529);
-for(let i=0;i<8;i++){const x=54+i*5,z=101+(i%2)*4;block(x,.9,z,.6,1.8,.35,0x77706a);block(x,.9,z,.25,2.2,.3,0x77706a)}
-// catacomb entrance tucked behind the throne wall
-block(73,3,88,13,6,3,0x28252a);door(73,0,4,4);sign(73,7,86,'ROYAL CATACOMBS');
-light(73,8,53,0xa52b42,4,36);light(42,5,60,0xd08b62,2,22);fog(72,78,36);
-ghost(82,78,1.6,true);ghost(62,92,.9);zone('NIGHTMARE CASTLE · THE ABANDONED KINGDOM',70,77,'The kingdom fell centuries ago. The throne is occupied, and the catacombs are still open.');
-// LAND DETAIL PASS — give every district a recognizable silhouette and its own story
-// Haunted Forest: twisted dead trees surrounding the manor approach
-for(let i=0;i<18;i++){
-  const x=-68+(i%6)*11+(Math.random()-.5)*3,z=-24+Math.floor(i/6)*15;
-  const trunk=add(new THREE.CylinderGeometry(.22,.48,7,7),mat(0x252629),x,3.5,z,0,0,Math.random()*.18-.09);
-  for(let b=0;b<4;b++){
-    const branch=add(new THREE.CylinderGeometry(.07,.16,3.8,6),mat(0x252629),x+(Math.random()-.5)*1.5,5.4+b*.3,z+(Math.random()-.5)*1.5,0,0,(Math.random()-.5)*1.5);
-  }
-  if(i%3===0) light(x,2,z,0x6d3442,.7,9);
-}
-// Cursed Carnival: striped big-top tents and a crooked ticket booth
-for(const [x,z,r,h] of [[-88,47,8,12],[-45,70,6,9],[-91,13,5,8]]){
-  add(new THREE.CylinderGeometry(r,r,h*.55,12,1,true),mat(0x632a3b),x,h*.275,z);
-  add(new THREE.ConeGeometry(r*1.25,h*.7,12),mat(0x27252b),x,h*.9,z);
-  for(let a=0;a<12;a++){const ang=a*Math.PI/6;block(x+Math.cos(ang)*r*.85,h*.27,z+Math.sin(ang)*r*.85,.22,h*.54,.22,0x9d7b70)}
-  light(x,h*.6,z,0xb73b52,1.8,20);
-}
-block(-89,3,34,8,6,4,0x34252b);sign(-89,7,31,'TICKETS');solid(-89,34,8,4);
-// Inferno Ridge: jagged basalt spires and glowing lava fissures
-for(let i=0;i<20;i++){
-  const x=56+(i%5)*10+(Math.random()-.5)*4,z=-91+Math.floor(i/5)*10;
-  const h=4+Math.random()*12,r=1.5+Math.random()*2;
-  add(new THREE.ConeGeometry(r,h,5),mat(i%2?0x29282c:0x3a292b),x,h/2,z,0,Math.random(),0);
-  if(i%2===0){const seam=add(new THREE.BoxGeometry(.18,h*.72,.2),new THREE.MeshBasicMaterial({color:0xff4824}),x+r*.25,h*.4,z-r*.2,0,0,.2);light(x,h*.35,z,0xff4b20,1.1,12)}
-}
-// Blackwater Bay: wrecked ferry hull and broken mast
-const wreck=new THREE.Group();
-const hull=new THREE.Mesh(new THREE.CylinderGeometry(2.1,3.4,15,8),mat(0x282d30));hull.rotation.z=Math.PI/2;hull.position.y=1.2;wreck.add(hull);
-const mast=new THREE.Mesh(new THREE.CylinderGeometry(.12,.2,12,7),mat(0x55483e));mast.position.set(0,7,0);wreck.add(mast);
-const sail=new THREE.Mesh(new THREE.PlaneGeometry(5,5),mat(0x292329));sail.position.set(1,7,0);sail.rotation.y=.25;wreck.add(sail);
-wreck.position.set(52,0,-67);wreck.rotation.y=-.3;scene.add(wreck);
-for(let i=0;i<8;i++){const ripple=add(new THREE.TorusGeometry(1.3+i*.55,.035,5,24),new THREE.MeshBasicMaterial({color:0x31515a,transparent:true,opacity:.45}),52,.13,-67);ripple.rotation.x=Math.PI/2}
-// Ward 13: abandoned emergency vehicle and quarantine barrier
-block(-103,1.3,-84,12,2.6,5,0xaaa9a2);block(-103,2.8,-84,6,1.2,4,0x9b9b96);block(-103,3.5,-84,3,.35,.8,0xb52b3d);
-for(let i=0;i<5;i++){block(-108+i*2.5,1.4,-92,.22,2.8,.22,0x9a343c);block(-108+i*2.5,2.6,-92,1.6,.18,.18,0xb9a9a3)}
-// Silent Chapel: bell frame and shattered rose window
-block(0,14,-151,1,8,1,0x6e6665);block(-3,18,-151,7,.35,.35,0x6e6665);add(new THREE.TorusGeometry(1.5,.18,8,20),mat(0x9b7e70),0,14,-128);
-add(new THREE.CircleGeometry(1.2,12),new THREE.MeshBasicMaterial({color:0x793047,side:THREE.DoubleSide}),0,14,-127.8);
-for(let i=0;i<8;i++){const a=i*Math.PI/4;add(new THREE.BoxGeometry(.08,2.3,.08),mat(0xc2a6a0),Math.cos(a)*.75,14+Math.sin(a)*.75,-127.7,0,0,a)}
-// Dollhouse District: oversized nursery toys outside the walk-through
-for(const [x,z] of [[59,31],[94,30],[58,-1],[95,-1]]){
-  add(new THREE.BoxGeometry(2.2,3.5,1.1),mat(0x5c4c50),x,1.8,z);
-  add(new THREE.SphereGeometry(.85,12,10),mat(0xc6a99b),x,4,z);
-  for(const side of [-1,1])add(new THREE.SphereGeometry(.12,8,8),new THREE.MeshBasicMaterial({color:0x150d11}),x+side*.28,4.05,z-.74);
-}
-// Abandoned Kingdom: fallen masonry, royal banners and a shattered crown sculpture
-for(let i=0;i<14;i++){
-  const x=49+Math.random()*48,z=48+Math.random()*54;
-  const rock=add(new THREE.DodecahedronGeometry(1+Math.random()*1.8,0),mat(0x4a4649),x,.7+Math.random(),z,Math.random(),Math.random(),Math.random());
-}
-for(const x of [64,82]){block(x,8,49,1,13,.6,0x4a2632);block(x,14,49,3,.5,.6,0x9a7c66)}
-const crown=new THREE.Group();
-for(let i=0;i<7;i++){const a=i*Math.PI*2/7;const spike=new THREE.Mesh(new THREE.ConeGeometry(.22,2,5),mat(0xb49a72));spike.position.set(Math.cos(a)*2,2,Math.sin(a)*2);crown.add(spike)}
-const ring=new THREE.Mesh(new THREE.TorusGeometry(2,.25,8,24),mat(0x9a815e));ring.rotation.x=Math.PI/2;crown.add(ring);crown.position.set(73,3,45);scene.add(crown);
-// secondary paths, lamps, barricades and perimeter fog
-for(const [x,z] of [[0,85],[0,52],[0,18],[0,-42],[0,-83],[0,-119],[-35,45],[35,45],[-43,-2],[43,-2],[-36,-83],[36,-83],[-66,42],[-38,2],[0,-34],[-42,-72],[38,-55],[76,14],[-82,-111],[0,-139],[82,-112]]){block(x,1.6,z,.18,3.2,.18,0x28262b);add(new THREE.SphereGeometry(.2,9,8),new THREE.MeshBasicMaterial({color:0xffad78}),x,3.3,z);light(x,3,z,0xffb875,2.15,24)}
-// WAYFINDING — new layout moved directly onto the main paths, including the entrance approach.
-wayfindingSign(-10,98,[{arrow:'←',label:'DREADFALL MANOR'},{arrow:'→',label:'THE LAST CAROUSEL'}],0);
-wayfindingSign(10,72,[{arrow:'←',label:'THE LAST BREATH'},{arrow:'→',label:'THE RED WAKE'}],Math.PI);
-wayfindingSign(-10,-8,[{arrow:'←',label:'BLACKWATER'},{arrow:'→',label:'THE DOLLHOUSE'}],0);
-wayfindingSign(10,-87,[{arrow:'←',label:'WARD 13'},{arrow:'→',label:'THE FURNACE'},{arrow:'↑',label:'THE SILENT CHAPEL'}],Math.PI);
-wayfindingSign(49,77,[{arrow:'↑',label:'THE ABANDONED KINGDOM'},{arrow:'←',label:'ROYAL CATACOMBS'}],Math.PI/2);
-wayfindingSign(10,108,[{arrow:'↓',label:'MIDWAY & PARK EXIT'},{arrow:'↑',label:'THE ABANDONED KINGDOM'}],0);
- // DISTINCT NIGHTMARE ARCHWAYS — one unmistakable gateway for every land.
- nightmareArchway(-66,29,'THE LAST CAROUSEL',0xb94c5a,-Math.PI/2);
- nightmareArchway(-38,-18,'DREADFALL MANOR',0x9e344b,-Math.PI/2);
- nightmareArchway(0,-18,'THE LAST BREATH',0x8e2947,0);
- nightmareArchway(-30,-72,'THE RED WAKE',0xc64b32,-Math.PI/2);
- nightmareArchway(38,-39,'BLACKWATER BAY',0x4a9bb0,0);
- nightmareArchway(60,14,'THE DOLLHOUSE',0xb46b9c,-Math.PI/2);
- nightmareArchway(-65,-111,'WARD 13',0x82a99b,-Math.PI/2);
- nightmareArchway(0,-124,'THE SILENT CHAPEL',0x9b8bd0,0);
- nightmareArchway(65,-112,'THE FURNACE',0xe45a32,Math.PI/2);
- nightmareArchway(73,43,'NIGHTMARE CASTLE',0xc52e48,0);
-
-// ATMOSPHERIC DETAIL PASS — moving set pieces and stronger land identities.
-// Dreadfall Manor: a lit entrance canopy, cracked stone approach and warning lanterns.
-for(const x of [-43,-33]){
-  block(x,5,-13,1.1,10,.8,0x454047);
-  const sconce=add(new THREE.SphereGeometry(.28,10,8),new THREE.MeshBasicMaterial({color:0xffb56c}),x,7,-13);
-  light(x,7,-13,0xff824d,1.7,16);
-}
-block(-38,7,-16,15,.55,2.2,0x30282c);
-// The Abandoned Kingdom: torn royal standards that sway above the ruined walls.
-for(const [x,z,color] of [[64,55,0x7e263b],[82,55,0x7e263b],[58,82,0x8d704f],[88,82,0x8d704f]]){
-  const pole=add(new THREE.CylinderGeometry(.07,.1,9,7),mat(0x82715f),x,13,z);
-  const cloth=add(new THREE.PlaneGeometry(2.8,3.8),new THREE.MeshStandardMaterial({color,roughness:.9,side:THREE.DoubleSide,transparent:true,opacity:.94}),x+1.35,15,z);
-  actors.push({kind:'banner',obj:cloth,phase:Math.random()*6});
-}
-// Inferno Ridge: visible flame vents along the lava field.
-for(const [x,z] of [[61,-88],[82,-80],[101,-96],[72,-105],[92,-115]]){
-  const vent=add(new THREE.ConeGeometry(1.15,4.8,9),new THREE.MeshBasicMaterial({color:0xff5728,transparent:true,opacity:.72,depthWrite:false}),x,2.5,z);
-  const core=add(new THREE.ConeGeometry(.48,3.1,8),new THREE.MeshBasicMaterial({color:0xffc15b,transparent:true,opacity:.82,depthWrite:false}),x,2.1,z);
-  actors.push({kind:'fireJet',obj:vent,core,phase:Math.random()*6});
-  light(x,2.4,z,0xff5b28,1.8,15);
-}
-// Blackwater Bay: broken pier posts and cold blue marker lights around the water.
-for(let i=0;i<7;i++){
-  const x=17+i*7;
-  block(x,1.5,-78,.55,3,.55,0x49423e);
-  if(i%2===0)light(x,2.7,-78,0x5da9b5,.8,12);
-}
-// The Silent Chapel: a slow-turning bell above the nave.
-const bell=new THREE.Group();
-const bellBody=new THREE.Mesh(new THREE.CylinderGeometry(.48,.82,1.25,12),mat(0x82745f));bellBody.position.y=0;bell.add(bellBody);
-const bellLip=new THREE.Mesh(new THREE.TorusGeometry(.78,.09,8,16),mat(0x9d8869));bellLip.position.y=-.58;bell.add(bellLip);
-bell.position.set(0,19,-151);scene.add(bell);actors.push({kind:'bell',obj:bell,phase:0});
-// SPOOKY LIGHTING PASS — readable paths, haunted lanterns and drifting spectral wisps
-// Warm lantern pools lead visitors between the ten lands without removing the night atmosphere.
-for(const [x,z,color] of [[-8,76,0xffbd79],[8,61,0x9edcff],[-8,29,0xd58cff],[8,-15,0xff8b70],[-8,-57,0x9fe8dd],[8,-99,0xd6a0ff],[-50,42,0xffa56f],[-27,45,0x9edcff],[29,45,0xffbd79],[52,-3,0xd58cff],[-50,-82,0x9fe8dd],[51,-82,0xff8b70],[63,83,0xffbd79],[85,83,0x9edcff]]){
-  const lantern=add(new THREE.SphereGeometry(.34,10,8),new THREE.MeshBasicMaterial({color,transparent:true,opacity:.96}),x,4,z);
-  const halo=add(new THREE.SphereGeometry(.72,10,8),new THREE.MeshBasicMaterial({color,transparent:true,opacity:.12,depthWrite:false}),x,4,z);
-  light(x,4,z,color,2.1,27);
-  actors.push({kind:'lanternGlow',obj:halo,phase:Math.random()*6});
-}
-// Spectral wisps drift over paths like tiny ghost lights.
-const wispCount=72,wispPositions=new Float32Array(wispCount*3);
-for(let i=0;i<wispCount;i++){wispPositions[i*3]=(Math.random()-.5)*190;wispPositions[i*3+1]=1+Math.random()*5;wispPositions[i*3+2]=-20+(Math.random()-.5)*230}
-const wispGeo=new THREE.BufferGeometry();wispGeo.setAttribute('position',new THREE.BufferAttribute(wispPositions,3));
-const wisps=new THREE.Points(wispGeo,new THREE.PointsMaterial({color:0x9bdcff,size:.34,transparent:true,opacity:.78,depthWrite:false,blending:THREE.AdditiveBlending}));
-scene.add(wisps);actors.push({kind:'wisps',obj:wisps,phase:0});
-// Extra moonlit haze gives silhouettes and architecture enough separation to read clearly.
-const spectralFill=new THREE.PointLight(0x789acb,1.1,115);spectralFill.position.set(0,28,-40);scene.add(spectralFill);
-const warmFill=new THREE.PointLight(0xb66b55,.75,90);warmFill.position.set(-45,16,25);scene.add(warmFill);
-for(let i=0;i<20;i++){const x=(Math.random()-.5)*205,z=-20+(Math.random()-.5)*250;const bird=add(new THREE.SphereGeometry(.2,7,6),mat(0x080a0d),x,15+Math.random()*14,z);actors.push({kind:'bat',obj:bird,home:bird.position.clone(),phase:Math.random()*8})}
-const n=520,positions=new Float32Array(n*3);for(let i=0;i<n;i++){positions[i*3]=(Math.random()-.5)*220;positions[i*3+1]=Math.random()*24;positions[i*3+2]=-25+(Math.random()-.5)*250}const ashGeo=new THREE.BufferGeometry();ashGeo.setAttribute('position',new THREE.BufferAttribute(positions,3));scene.add(new THREE.Points(ashGeo,new THREE.PointsMaterial({color:0xa4a6a9,size:.12,transparent:true,opacity:.4})));actors.push({kind:'ash',obj:scene.children[scene.children.length-1]});
-ghost(-8,-22,1.4,true);ghost(28,-85,1.2,true);
+const n=300,pos=new Float32Array(n*3);for(let i=0;i<n;i++){pos[i*3]=(Math.random()-.5)*220;pos[i*3+1]=Math.random()*24;pos[i*3+2]=-25+(Math.random()-.5)*250}const ashGeo=new THREE.BufferGeometry();ashGeo.setAttribute('position',new THREE.BufferAttribute(pos,3));const ash=new THREE.Points(ashGeo,new THREE.PointsMaterial({color:0xb9bdc9,size:.13,transparent:true,opacity:.42}));scene.add(ash);actors.push({kind:'ash',obj:ash});
+zone('THE GREAT HALL',0,12,'The castle is open. Explore the halls, upper floors, hidden rooms and lower catacombs.');
 }
 function say(t){toast.textContent=t;toast.classList.add('on');setTimeout(()=>toast.classList.remove('on'),4400)}
 function blocked(x,z){return solids.some(b=>Math.abs(x-b.x)<b.w/2+.5&&Math.abs(z-b.z)<b.d/2+.5)}
 function move(dt){const f=clamp(keys.f-keys.b-moveInput.y,-1,1),s=clamp(keys.r-keys.l+moveInput.x,-1,1);if(!f&&!s)return;const speed=keys.run?8:5.1,len=Math.hypot(f,s)||1,fx=-Math.sin(yaw),fz=-Math.cos(yaw),rx=Math.cos(yaw),rz=-Math.sin(yaw),dx=(fx*f+rx*s)/len*speed*dt,dz=(fz*f+rz*s)/len*speed*dt,nx=clamp(camera.position.x+dx,-108,108),nz=clamp(camera.position.z+dz,-153,113);if(!blocked(nx,camera.position.z))camera.position.x=nx;if(!blocked(camera.position.x,nz))camera.position.z=nz}
-function update(dt){move(dt);camera.rotation.order='YXZ';camera.rotation.y=yaw;camera.rotation.x=pitch;const p=camera.position,now=performance.now();for(const a of actors){a.phase=(a.phase||0)+dt;if(a.kind==='archGlow')a.obj.intensity=a.base*(.82+.18*Math.sin(a.phase*2.1));if(a.kind==='flicker')a.obj.intensity=a.p*(.82+Math.sin(a.phase*3)*.12+(Math.random()>.997?-.65:0));if(a.kind==='fog'){a.obj.position.x=a.home.x+Math.sin(a.phase*.2)*3;a.obj.position.z=a.home.z+Math.cos(a.phase*.17)*2}if(a.kind==='ghost'){a.obj.position.y=Math.sin(a.phase*1.4)*.15;a.obj.rotation.y=Math.sin(a.phase*.5)*.2}if(a.kind==='stalker'){const dx=p.x-a.obj.position.x,dz=p.z-a.obj.position.z,d=Math.hypot(dx,dz);if(d<28&&d>5){a.obj.position.x+=dx/d*dt*.8;a.obj.position.z+=dz/d*dt*.8;a.obj.lookAt(p.x,1.4,p.z)}else if(d>=28){a.obj.position.x+=(a.home.x-a.obj.position.x)*dt*.12;a.obj.position.z+=(a.home.z-a.obj.position.z)*dt*.12}a.obj.position.y=Math.sin(a.phase*2)*.1;if(d<7&&now-lastScare>17000){lastScare=now;scareTimer=now+360;scare.classList.add('on');if(soundOn)stinger()}}if(a.kind==='lanternGlow')a.obj.material.opacity=.09+(.07*(.5+.5*Math.sin(a.phase*2.4)));if(a.kind==='banner')a.obj.rotation.z=Math.sin(a.phase*1.25)*.075;if(a.kind==='fireJet'){const pulse=.78+.22*Math.sin(a.phase*5);a.obj.scale.y=pulse;a.obj.material.opacity=.5+.25*pulse;a.core.scale.y=.72+.28*Math.sin(a.phase*6+1)}if(a.kind==='bell')a.obj.rotation.z=Math.sin(a.phase*1.1)*.16;if(a.kind==='wisps'){const ar=a.obj.geometry.attributes.position;for(let i=0;i<ar.count;i++){let y=ar.getY(i)+Math.sin(a.phase+i*.3)*dt*.16;if(y>7)y=1;ar.setY(i,y);ar.setX(i,ar.getX(i)+Math.sin(a.phase*.7+i)*dt*.12)}ar.needsUpdate=true}if(a.kind==='carousel')a.obj.rotation.y+=dt*.24;if(a.kind==='drop'){const cycle=(a.phase%13)/13;a.obj.position.y=cycle<.65?2+cycle/.65*42:44-(cycle-.65)/.35*42}if(a.kind==='train'){a.t=(a.t+dt*.055)%1;const pt=a.curve.getPointAt(a.t),tan=a.curve.getTangentAt(a.t);a.obj.position.copy(pt);a.obj.rotation.y=Math.atan2(tan.x,tan.z)}if(a.kind==='boat'){a.obj.position.y=.8+Math.sin(a.phase*1.4)*.2;a.obj.rotation.z=Math.sin(a.phase)*.035;a.obj.position.x=38+Math.sin(a.phase*.35)*2}if(a.kind==='bat'){a.obj.position.x=a.home.x+Math.sin(a.phase*.7)*3;a.obj.position.z=a.home.z+Math.cos(a.phase*.6)*4;a.obj.position.y=a.home.y+Math.sin(a.phase*2)*1.2}if(a.kind==='ash'){const ar=a.obj.geometry.attributes.position;for(let i=0;i<ar.count;i++){let y=ar.getY(i)+dt*.18;if(y>25)y=-1;ar.setY(i,y)}ar.needsUpdate=true}}
-if(now>scareTimer)scare.classList.remove('on');let near=null,best=1e9;for(const z of zones){const d=Math.hypot(p.x-z.x,p.z-z.z);if(d<best){best=d;near=z}}if(near&&best<28){$('district').textContent=near.name;if(best<12&&!found.has(near.name)){found.add(near.name);$('progress').textContent=found.size+' / '+zones.length+' NIGHTMARE ZONES';say(near.desc)}}}
+function update(dt){move(dt);camera.rotation.order='YXZ';camera.rotation.y=yaw;camera.rotation.x=pitch;const p=camera.position,now=performance.now();for(const a of actors){a.phase=(a.phase||0)+dt;if(a.kind==='archGlow')a.obj.intensity=a.base*(.82+.18*Math.sin(a.phase*2.1));if(a.kind==='flicker')a.obj.intensity=a.p*(.82+Math.sin(a.phase*3)*.12+(Math.random()>.997?-.65:0));if(a.kind==='fog'){a.obj.position.x=a.home.x+Math.sin(a.phase*.2)*3;a.obj.position.z=a.home.z+Math.cos(a.phase*.17)*2}if(a.kind==='ghost'){a.obj.position.y=Math.sin(a.phase*1.4)*.15;a.obj.rotation.y=Math.sin(a.phase*.5)*.2}if(a.kind==='stalker'){const dx=p.x-a.obj.position.x,dz=p.z-a.obj.position.z,d=Math.hypot(dx,dz);if(d<28&&d>5){a.obj.position.x+=dx/d*dt*.8;a.obj.position.z+=dz/d*dt*.8;a.obj.lookAt(p.x,1.4,p.z)}else if(d>=28){a.obj.position.x+=(a.home.x-a.obj.position.x)*dt*.12;a.obj.position.z+=(a.home.z-a.obj.position.z)*dt*.12}a.obj.position.y=Math.sin(a.phase*2)*.1;if(d<7&&now-lastScare>17000){lastScare=now;scareTimer=now+360;scare.classList.add('on');if(soundOn)stinger()}}if(a.kind==='lanternGlow')a.obj.material.opacity=.09+(.07*(.5+.5*Math.sin(a.phase*2.4)));if(a.kind==='floatBook'){a.obj.position.y=a.home.y+Math.sin(a.phase*1.8)*.45;a.obj.rotation.y=Math.sin(a.phase*.8)*.25;}if(a.kind==='banner')a.obj.rotation.z=Math.sin(a.phase*1.25)*.075;if(a.kind==='fireJet'){const pulse=.78+.22*Math.sin(a.phase*5);a.obj.scale.y=pulse;a.obj.material.opacity=.5+.25*pulse;a.core.scale.y=.72+.28*Math.sin(a.phase*6+1)}if(a.kind==='bell')a.obj.rotation.z=Math.sin(a.phase*1.1)*.16;if(a.kind==='wisps'){const ar=a.obj.geometry.attributes.position;for(let i=0;i<ar.count;i++){let y=ar.getY(i)+Math.sin(a.phase+i*.3)*dt*.16;if(y>7)y=1;ar.setY(i,y);ar.setX(i,ar.getX(i)+Math.sin(a.phase*.7+i)*dt*.12)}ar.needsUpdate=true}if(a.kind==='carousel')a.obj.rotation.y+=dt*.24;if(a.kind==='drop'){const cycle=(a.phase%13)/13;a.obj.position.y=cycle<.65?2+cycle/.65*42:44-(cycle-.65)/.35*42}if(a.kind==='train'){a.t=(a.t+dt*.055)%1;const pt=a.curve.getPointAt(a.t),tan=a.curve.getTangentAt(a.t);a.obj.position.copy(pt);a.obj.rotation.y=Math.atan2(tan.x,tan.z)}if(a.kind==='boat'){a.obj.position.y=.8+Math.sin(a.phase*1.4)*.2;a.obj.rotation.z=Math.sin(a.phase)*.035;a.obj.position.x=38+Math.sin(a.phase*.35)*2}if(a.kind==='bat'){a.obj.position.x=a.home.x+Math.sin(a.phase*.7)*3;a.obj.position.z=a.home.z+Math.cos(a.phase*.6)*4;a.obj.position.y=a.home.y+Math.sin(a.phase*2)*1.2}if(a.kind==='ash'){const ar=a.obj.geometry.attributes.position;for(let i=0;i<ar.count;i++){let y=ar.getY(i)+dt*.18;if(y>25)y=-1;ar.setY(i,y)}ar.needsUpdate=true}}
+if(now>scareTimer)scare.classList.remove('on');let near=null,best=1e9;for(const z of zones){const d=Math.hypot(p.x-z.x,p.z-z.z);if(d<best){best=d;near=z}}if(near&&best<28){$('district').textContent=near.name;if(best<12&&!found.has(near.name)){found.add(near.name);$('progress').textContent=found.size+' / '+zones.length+' NIGHTMARE ZONES';say(near.desc);if(near.warp&&now>(window.__nightmareWarpAt||0)){window.__nightmareWarpAt=now+1800;camera.position.set(near.warp.x,near.warp.y,near.warp.z);pitch=0;yaw=0;say('SECRET PASSAGE OPENED · '+near.name)}}}}
 function frame(){if(!active)return;requestAnimationFrame(frame);const dt=Math.min(clock.getDelta(),.04);update(dt);renderer.render(scene,camera)}
 function startAudio(){audio=audio||new(window.AudioContext||window.webkitAudioContext)();audio.resume();if(!ambience){master=audio.createGain();master.gain.value=.16;master.connect(audio.destination);const osc=audio.createOscillator(),filter=audio.createBiquadFilter(),gain=audio.createGain();osc.type='sawtooth';osc.frequency.value=43;filter.type='lowpass';filter.frequency.value=105;gain.gain.value=.16;osc.connect(filter).connect(gain).connect(master);osc.start();ambience={osc,gain}}}
 function stinger(){if(!audio||!master)return;const o=audio.createOscillator(),g=audio.createGain();o.type='sawtooth';o.frequency.setValueAtTime(180,audio.currentTime);o.frequency.exponentialRampToValueAtTime(28,audio.currentTime+.65);g.gain.setValueAtTime(.001,audio.currentTime);g.gain.exponentialRampToValueAtTime(.8,audio.currentTime+.04);g.gain.exponentialRampToValueAtTime(.001,audio.currentTime+.75);o.connect(g).connect(master);o.start();o.stop(audio.currentTime+.8)}
@@ -654,5 +331,6 @@ addEventListener('resize',()=>{if(!camera||!renderer)return;camera.aspect=innerW
   button.disabled = false;
   button.textContent = 'TRY AGAIN';
 }
+
 </script>
 </body></html>
