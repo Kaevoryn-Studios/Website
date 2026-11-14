@@ -38,8 +38,23 @@ header{position:absolute;z-index:4;top:0;left:0;right:0;padding:14px 17px;displa
 <div id="mobile"><div class="pad" id="movePad"><div class="stick" id="stick"></div></div><div class="look" id="lookPad">LOOK<br>AROUND</div></div>
 <div id="scare"><b>◉</b><small>IT KNOWS YOU ARE HERE</small></div><div id="fatal"></div>
 <script type="module">
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
-(()=>{
+let THREE;
+try {
+  THREE = await import('https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js');
+} catch (primaryError) {
+  try {
+    THREE = await import('https://unpkg.com/three@0.160.0/build/three.module.js');
+  } catch (fallbackError) {
+    const fatal = document.getElementById('fatal');
+    const button = document.getElementById('enter');
+    fatal.textContent = 'THE 3D ENGINE COULD NOT LOAD. Check your connection and reload the park.';
+    fatal.classList.add('show');
+    button.disabled = false;
+    button.textContent = '3D ENGINE UNAVAILABLE';
+    throw fallbackError;
+  }
+}
+try { (()=>{
 const $=id=>document.getElementById(id),canvas=$('world'),intro=$('intro'),hud=$('hud'),mobile=$('mobile'),fatal=$('fatal'),toast=$('toast'),scare=$('scare');
 let scene,camera,renderer,clock,active=false,yaw=0,pitch=0,soundOn=false,audio=null,master=null,lastScare=0,scareTimer=0,ambience=null;
 const solids=[],actors=[],zones=[],keys={f:0,b:0,l:0,r:0,run:0},moveInput={x:0,y:0},found=new Set();const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
@@ -490,6 +505,14 @@ const pad=$('movePad'),stick=$('stick');let moveId=null;function setMove(e){cons
 const look=$('lookPad');let lookId=null,lx=0,ly=0;look.addEventListener('pointerdown',e=>{lookId=e.pointerId;lx=e.clientX;ly=e.clientY;look.setPointerCapture(e.pointerId)});look.addEventListener('pointermove',e=>{if(e.pointerId!==lookId)return;const dx=e.clientX-lx,dy=e.clientY-ly;lx=e.clientX;ly=e.clientY;yaw-=dx*.008;pitch=clamp(pitch-dy*.006,-1.05,1.05)});look.addEventListener('pointerup',()=>lookId=null);look.addEventListener('pointercancel',()=>lookId=null);
 let mouse=false;canvas.addEventListener('pointerdown',e=>{if(e.pointerType==='mouse'&&active){mouse=true;lx=e.clientX;ly=e.clientY;canvas.setPointerCapture(e.pointerId)}});canvas.addEventListener('pointermove',e=>{if(!mouse)return;const dx=e.clientX-lx,dy=e.clientY-ly;lx=e.clientX;ly=e.clientY;yaw-=dx*.004;pitch=clamp(pitch-dy*.004,-1.05,1.05)});canvas.addEventListener('pointerup',()=>mouse=false);canvas.addEventListener('pointercancel',()=>mouse=false);
 addEventListener('resize',()=>{if(!camera||!renderer)return;camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio,1.4))});
-})();
+})(); } catch (startupError) {
+  console.error('Nightmare Park startup failed:', startupError);
+  const fatal = document.getElementById('fatal');
+  const button = document.getElementById('enter');
+  fatal.textContent = 'THE PARK FAILED TO START: ' + (startupError && startupError.message ? startupError.message : String(startupError));
+  fatal.classList.add('show');
+  button.disabled = false;
+  button.textContent = 'TRY AGAIN';
+}
 </script>
 </body></html>
