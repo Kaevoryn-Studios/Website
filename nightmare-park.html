@@ -60,17 +60,22 @@ try {
   try {
     THREE = await import('https://unpkg.com/three@0.160.0/build/three.module.js');
   } catch (fallbackError) {
-    const fatal = document.getElementById('fatal');
-    const button = document.getElementById('enter');
-    fatal.textContent = 'THE 3D ENGINE COULD NOT LOAD. Check your connection and reload the park.';
-    fatal.classList.add('show');
-    button.disabled = false;
-    button.textContent = '3D ENGINE UNAVAILABLE';
-    throw fallbackError;
+    try {
+      THREE = await import('https://esm.sh/three@0.160.0');
+    } catch (lastError) {
+      const fatal = document.getElementById('fatal');
+      const button = document.getElementById('enter');
+      fatal.textContent = 'THE 3D ENGINE COULD NOT LOAD. Check your connection and reload the park.';
+      fatal.classList.add('show');
+      button.disabled = false;
+      button.textContent = '3D ENGINE UNAVAILABLE';
+      throw lastError;
+    }
   }
 }
 try { (()=>{
 const $=id=>document.getElementById(id),canvas=$('world'),intro=$('intro'),hud=$('hud'),mobile=$('mobile'),fatal=$('fatal'),toast=$('toast'),scare=$('scare');
+window.startNightmarePark=()=>{if(window.__nightmareLaunchWatch)clearTimeout(window.__nightmareLaunchWatch);begin()};
 let scene,camera,renderer,clock,active=false,yaw=0,pitch=0,soundOn=false,audio=null,master=null,lastScare=0,scareTimer=0,ambience=null;
 const solids=[],actors=[],zones=[],keys={f:0,b:0,l:0,r:0,run:0},moveInput={x:0,y:0},found=new Set();const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 const mat=(c,r=.88,m=0,e=0)=>new THREE.MeshStandardMaterial({color:c,roughness:r,metalness:m,emissive:e,emissiveIntensity:e?1.2:0});
@@ -510,7 +515,6 @@ function begin(e){
 }
 const enterButton=$('enter');
 enterButton.type='button';
-window.startNightmarePark=()=>{if(window.__nightmareLaunchWatch)clearTimeout(window.__nightmareLaunchWatch);begin()};
 if(window.__nightmareLaunchRequested)window.startNightmarePark();
 
 addEventListener('keydown',e=>{const k=e.key.toLowerCase();if(k==='w'||k==='arrowup')keys.f=1;if(k==='s'||k==='arrowdown')keys.b=1;if(k==='a'||k==='arrowleft')keys.l=1;if(k==='d'||k==='arrowright')keys.r=1;if(k==='shift')keys.run=1});
