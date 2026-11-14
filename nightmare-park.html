@@ -33,7 +33,7 @@ header{position:absolute;z-index:4;top:0;left:0;right:0;padding:14px 17px;displa
 <body>
 <canvas id="world"></canvas>
 <header><a href="index.html">KAEVORYN STUDIOS<small>CREATE THE IMPOSSIBLE</small></a><span style="font-size:9px;letter-spacing:.2em;color:#c58d9b">AFTER DARK · NO WAY OUT</span></header>
-<div id="intro"><div class="panel"><div class="eyebrow">A PLACE THAT SHOULD NOT EXIST</div><h1>THE<br> NIGHTMARE<br> PARK</h1><p>Beyond the rusted gates, the midway is still running. The rides have passengers. The houses have lights on. Something is walking the paths behind you. Explore the abandoned fairground, enter its dark rides, and find the way out before the park finds you.</p><button class="enter" id="enter">ENTER THE PARK</button><div class="hint">LANDSCAPE MODE RECOMMENDED · JOYSTICK TO WALK · RIGHT PAD TO LOOK · SOUND STARTS WHEN ENABLED</div></div></div>
+<div id="intro"><div class="panel"><div class="eyebrow">A PLACE THAT SHOULD NOT EXIST</div><h1>THE<br> NIGHTMARE<br> PARK</h1><p>A vast Gothic castle rises above a haunted kingdom. Climb its grand staircase, explore the ballroom and royal library, uncover the attic and buried catacombs, and follow secret passages into rooms that were never meant to be found. Beyond the castle, ten nightmare lands wait in the fog.</p><button class="enter" id="enter">ENTER THE PARK</button><div class="hint">LANDSCAPE MODE RECOMMENDED · JOYSTICK TO WALK · RIGHT PAD TO LOOK · SOUND STARTS WHEN ENABLED</div></div></div>
 <div id="hud"><div class="hudline"><div class="chip" id="district">THE GATE</div><div class="chip" id="progress">0 / 10 NIGHTMARE LANDS</div></div><button id="soundBtn">SOUND: OFF</button><div id="toast"></div></div>
 <div id="mobile"><div class="pad" id="movePad"><div class="stick" id="stick"></div></div><div class="look" id="lookPad">LOOK<br>AROUND</div></div>
 <div id="scare"><b>◉</b><small>IT KNOWS YOU ARE HERE</small></div><div id="fatal"></div>
@@ -171,9 +171,9 @@ const stone=mat(0x69636a,.52,.28),trim=mat(0xb69a76,.42,.48),wood=mat(0x594239,.
 function arch(x,z,label,color=0xc38ad6){nightmareArchway(x,z,label,color,0)}
 function room(x,z,w,d,h,name,base=0,accent=0xc79cda){
  add(new THREE.PlaneGeometry(w,d),mat(0x514951,.8),x,base+.03,z,-Math.PI/2);
- block(x,base+h,z-d/2,w,h,.8,0x55515a);solid(x,z-d/2,w,.9);
+ const gap=Math.min(6,w*.32),side=(w-gap)/2;block(x-w/2+side/2,base+h/2,z-d/2,side,h,.8,0x55515a);block(x+w/2-side/2,base+h/2,z-d/2,side,h,.8,0x55515a);solid(x-w/2+side/2,z-d/2,side,.9);solid(x+w/2-side/2,z-d/2,side,.9);
  block(x-w/2,base+h/2,z,.8,h,d,0x55515a);solid(x-w/2,z,.9,d);block(x+w/2,base+h/2,z,.8,h,d,0x55515a);solid(x+w/2,z,.9,d);
- const gap=Math.min(6,w*.32),side=(w-gap)/2;block(x-w/2+side/2,base+h/2,z+d/2,side,h,.8,0x55515a);block(x+w/2-side/2,base+h/2,z+d/2,side,h,.8,0x55515a);solid(x-w/2+side/2,z+d/2,side,.9);solid(x+w/2-side/2,z+d/2,side,.9);
+ block(x-w/2+side/2,base+h/2,z+d/2,side,h,.8,0x55515a);block(x+w/2-side/2,base+h/2,z+d/2,side,h,.8,0x55515a);solid(x-w/2+side/2,z+d/2,side,.9);solid(x+w/2-side/2,z+d/2,side,.9);
  block(x,base+h,z,w+1,.55,d+1,0x282934);arch(x,z+d/2,name,accent);
  for(const sx of [x-w*.38,x+w*.38])for(const sz of [z-d*.25,z+d*.12]){block(sx,base+3.2,sz,.35,1.2,.35,0x594239);add(new THREE.SphereGeometry(.28,9,8),new THREE.MeshBasicMaterial({color:0xffc078}),sx,base+4,sz);light(sx,base+4,sz,0xffb56e,1.25,15)}
  sign(x,base+h*.62,z-d/2+.55,name.toUpperCase());
@@ -205,7 +205,7 @@ room(-59,-20,23,23,10,'The Royal Dungeon',-8,0xa84b56);
 room(59,-20,23,23,10,'The Forgotten Crypt',-8,0x7795b8);
 room(0,-75,25,24,11,'The Forbidden Attic',9,0xc5a36e);
 room(31,-75,22,22,10,'The Moon Observatory',9,0x89a9d7);
-path(0,28,80,6);path(0,-8,80,6);path(0,54,50,6);path(0,-63,65,5);
+path(0,28,80,6);path(0,0,80,6);path(0,-8,80,6);path(0,-34,80,6);path(0,54,50,6);path(0,-63,65,5);
 // Main foyer — red carpet, tall pillars, chandeliers, throne and twin grand staircases.
 add(new THREE.PlaneGeometry(18,21),new THREE.MeshStandardMaterial({color:0x662f4b,roughness:.9}),0,.08,13,-Math.PI/2);
 for(const x of [-9,9])for(const z of [4,12,20]){add(new THREE.CylinderGeometry(.62,.82,11,12),stone,x,5.5,z);add(new THREE.CylinderGeometry(1.05,1.05,.55,12),trim,x,.45,z);add(new THREE.CylinderGeometry(1.05,1.05,.55,12),trim,x,10.5,z)}
@@ -245,10 +245,10 @@ for(let i=0;i<5;i++){block(-8+i*4,10,-84,2.5,1.5,2,0x4b3933);block(-8+i*4,10.8,-
 add(new THREE.TorusGeometry(3,.12,8,28),trim,0,14,-68).rotation.x=Math.PI/2;light(0,15,-75,0xffd18a,2.5,30);
 warp('ATTIC STAIR RETURN',-9,-63,'The attic staircase descends into the Great Foyer.',0,1.7,12);
 add(new THREE.CylinderGeometry(.35,.55,8,12),trim,31,12,-75,Math.PI/2,0,Math.PI/2);add(new THREE.SphereGeometry(1.2,12,10),new THREE.MeshStandardMaterial({color:0x7ba5db,emissive:0x314e79,emissiveIntensity:.8}),31,13,-75);add(new THREE.SphereGeometry(3,20,16),new THREE.MeshBasicMaterial({color:0xd6d9e4}),31,15,-84);light(31,13,-75,0x7ba5db,2,20);
-warp('OBSERVATORY STAIR',40,-64,'The moonlit observatory stair returns to the upper attic landing.',0,10.7,-75);
+warp('OBSERVATORY STAIR',40,-64,'The moonlit observatory stair returns to the upper attic landing.',0,10.7,-75);warp('THE OBSERVATORY DOOR',9,-75,'A narrow upper passage opens into the moon observatory.',31,10.7,-75);
 // Hidden Witching Parlour behind a portrait, with a glowing ritual circle.
 room(-59,30,18,18,9,'The Witching Parlour',0,0x9e6eb8);for(let i=0;i<9;i++){const a=i*Math.PI*2/9;block(-59+Math.cos(a)*5,2,30+Math.sin(a)*5,.12,4,.12,0x9a7a67);light(-59+Math.cos(a)*5,4,30+Math.sin(a)*5,0x9e6eb8,.6,9)}
-add(new THREE.SphereGeometry(1.5,16,12),new THREE.MeshStandardMaterial({color:0x8b5db3,emissive:0x48265e,emissiveIntensity:.8}),-59,3,30);warp('THE WITCHING CIRCLE',-59,20,'The floor sigil wakes. A hidden chamber answers behind the portrait wall.',-59,1.7,30);
+add(new THREE.SphereGeometry(1.5,16,12),new THREE.MeshStandardMaterial({color:0x8b5db3,emissive:0x48265e,emissiveIntensity:.8}),-59,3,30);warp('THE WITCHING CIRCLE',-59,20,'The floor sigil wakes. A hidden chamber answers behind the portrait wall.',-59,1.7,30);warp('THE WITCHING PARLOUR RETURN',-59,39,'The hidden parlour door swings back toward the castle grounds.',0,1.7,12);
 // Castle courtyard gardens and readable lanterns.
 for(const x of [-42,42])for(const z of [40,8,-28]){block(x,.9,z,8,1.8,8,0x4c4a4f);add(new THREE.CylinderGeometry(1,1.35,1.2,12),stone,x,2.4,z);add(new THREE.SphereGeometry(.8,12,10),mat(0xaaa09a),x,3.5,z);light(x,4,z,0xd49b75,1.2,18)}
 for(let z=100;z>=-95;z-=17)for(const x of [-10,10]){block(x,3,z,.35,6,.35,0x635c60);light(x,5,z,0xffc783,1.35,18)}
