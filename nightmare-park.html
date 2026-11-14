@@ -240,13 +240,74 @@ function lancet(x,y,z,w,h,color){
  // Castle wings leave a broad central gate and forecourt open.
 block(-17,10,18,16,20,30,0x4a4850);solid(-17,18,16,30);
 block(17,10,18,16,20,30,0x4a4850);solid(17,18,16,30);
-block(0,16,2,24,32,27,0x393944);solid(0,2,24,27);
+// The central keep is a real walk-in great hall, not a solid block.
+path(0,2,22,27);
+block(-11.4,16,2,1.4,32,27,0x393944);solid(-11.4,2,1.6,27);
+block(11.4,16,2,1.4,32,27,0x393944);solid(11.4,2,1.6,27);
+block(0,16,-11.4,24,32,1.4,0x393944);solid(0,-11.4,24,1.6);
+block(0,32,2,24,1.2,27,0x393944);
 block(0,29,-4,28,2,29,0x5a5358);
 block(-17,20,2,18,1.2,32,0x5a5358);block(17,20,2,18,1.2,32,0x5a5358);
-for(const [x,z,r,h,c] of [[-25,33,4.4,32,0x202538],[25,33,4.4,32,0x202538],[-25,3,3.6,27,0x252038],[25,3,3.6,27,0x252038],[-9,-13,3.8,43,0x18223b],[9,-13,3.8,43,0x251b37],[0,4,5.2,52,0x202b49],[0,31,3.4,37,0x241b35]])castleTower(x,z,r,h,c);
+for(const [x,z,r,h,c] of [[-25,33,4.4,32,0x202538],[25,33,4.4,32,0x202538],[-25,3,3.6,27,0x252038],[25,3,3.6,27,0x252038],[-9,-13,3.8,43,0x18223b],[9,-13,3.8,43,0x251b37],[0,31,3.4,37,0x241b35]])castleTower(x,z,r,h,c);
  // Grand central pointed entrance, stained glass, and a welcoming but eerie courtyard.
 nightmareArch(0,39,'THE NIGHTMARE CASTLE',0xc28cda,1.65);
 for(const [x,y,w,h,c] of [[-17,12,2.1,6,0x7b4e9e],[17,12,2.1,6,0x7b4e9e],[-8,20,2.3,8,0x477db7],[8,20,2.3,8,0x9c456d],[0,27,3.1,10,0xc49a5b],[-17,23,1.7,5,0x6b82b8],[17,23,1.7,5,0xb15a76]])lancet(x,y,33,w,h,c);
+
+ // THE GREAT HALL: furnished, lit, and fully walkable from the main gate.
+ const hallFloor=add(new THREE.PlaneGeometry(21.5,26),mat(0x39313a,.76),0,.08,2,-Math.PI/2);
+ const hallRug=add(new THREE.PlaneGeometry(7,22),new THREE.MeshStandardMaterial({color:0x54253f,roughness:.92}),0,.11,2,-Math.PI/2);
+ for(const x of [-8.7,8.7]){
+   for(const z of [-7,-1,5,11]){
+     const column=add(new THREE.CylinderGeometry(.65,.85,29,10),mat(0x77717a,.48),x,14.5,z);
+     add(new THREE.CylinderGeometry(1.05,1.05,.65,10),mat(0xb69a72,.42,.45),x,1,z);
+     add(new THREE.CylinderGeometry(1.05,1.05,.65,10),mat(0xb69a72,.42,.45),x,28.3,z);
+     light(x,22,z,0x8a6ac2,.65,14);
+   }
+ }
+ // High vaulted ribs and a sequence of chandeliers illuminate the full room.
+ for(const z of [-7,1,9]){
+   const rib=add(new THREE.TorusGeometry(8.6,.22,8,32,Math.PI),mat(0x8c7c78,.48,.3),0,25,z);
+   rib.rotation.z=Math.PI;
+   const chain=add(new THREE.CylinderGeometry(.055,.055,4,7),mat(0x5e514a),0,29,z);
+   const chandelier=add(new THREE.CylinderGeometry(1.7,2.2,.35,12),mat(0xb69a72,.35,.65),0,26.6,z);
+   for(let k=0;k<8;k++){const a=k*Math.PI/4;const candle=add(new THREE.CylinderGeometry(.09,.12,1.05,7),mat(0xf1d7a0),Math.cos(a)*1.65,27.25,z+Math.sin(a)*1.65);light(Math.cos(a)*1.65,28,z+Math.sin(a)*1.65,0xffb96e,.45,7)}
+   light(0,25,z,0xb17be0,1.7,20);
+ }
+ // Royal dais, high-backed throne, and a stained-glass feature wall.
+ block(0,.45,-7,12,.9,5,0x6d5960);
+ block(0,2.2,-9,5,3.2,1.3,0x4b3748);
+ block(-2.3,2.4,-7.8,1,3.8,1,0x66506a);block(2.3,2.4,-7.8,1,3.8,1,0x66506a);
+ const throneBack=add(new THREE.ConeGeometry(2.5,4.8,5),mat(0x493348),0,5.8,-9.1);
+ const throneSeat=add(new THREE.BoxGeometry(4.3,.65,2.5),mat(0xb69a72,.4,.45),0,3.9,-7.6);
+ for(const x of [-1.4,1.4])add(new THREE.SphereGeometry(.38,10,8),mat(0xd2ae70,.3,.6),x,7.8,-9.1);
+ for(const x of [-5.8,-3.5,3.5,5.8]){
+   const window=add(new THREE.PlaneGeometry(1.45,7),new THREE.MeshBasicMaterial({color:x<0?0x7351a0:0x3f80a6,transparent:true,opacity:.8,side:THREE.DoubleSide}),x,17,-10.55);
+   add(new THREE.ConeGeometry(.8,1.2,4),mat(0xb69a72),x,21,-10.5);
+   light(x,17,-8.5,x<0?0x8d5dc9:0x4b9ac7,.7,12);
+ }
+ // Tables, benches, and treasure chests make the hall feel inhabited.
+ for(const z of [-2,5]){
+   block(-4,1.5,z,4.5,.45,2,0x67483c);block(4,1.5,z,4.5,.45,2,0x67483c);
+   for(const x of [-5.5,-2.5,2.5,5.5])block(x,.65,z, .35,1.3,.35,0x4d3935);
+   for(const x of [-4,4]){
+     block(x,.8,z+2.2,3.8,.35,.55,0x51403b);
+     const chest=add(new THREE.BoxGeometry(1.5,1.15,1.1),mat(0x493342,.45,.4),x,.65,z-1.5);
+     add(new THREE.BoxGeometry(1.58,.16,1.16),mat(0xb69a72,.4,.55),x,1.25,z-1.5);
+   }
+ }
+ // Wall torches cast warm pools of light between the columns.
+ for(const side of [-1,1])for(const z of [-8,-2,4,10]){
+   const x=side*10.55;
+   add(new THREE.BoxGeometry(.35,1.3,.35),mat(0x77604b),x,8,z);
+   add(new THREE.SphereGeometry(.28,8,8),new THREE.MeshBasicMaterial({color:0xffb15e}),x,9,z);
+   light(x,9,z,0xffa34e,1.2,13);
+ }
+ // The entry remains wide open; collision is limited to the actual hall walls and furnishings.
+ zone('THE GREAT HALL',0,3,'Enter the castle. The royal hall is lit, furnished, and waiting.');
+ // A slender central lantern crowns the keep without filling its interior.
+ add(new THREE.CylinderGeometry(.7,.95,7,10),mat(0x77717a,.4),0,37,2);
+ add(new THREE.ConeGeometry(2.4,5.5,10),mat(0x252b40,.3,.5),0,43.2,2);
+ light(0,39,2,0x9870d2,2.4,28);
  // GRAND CASTLE UPGRADE: layered roofs, carved stonework, illuminated galleries and royal banners.
  const paleStone=mat(0x68636b,.34,.62),deepStone=mat(0x302e39,.3,.72),roofSlate=mat(0x242b3c,.28,.68),warmGold=mat(0xc5a36e,.38,.68);
  // Broad pitched roof silhouettes give both wings a much taller fairytale profile.
