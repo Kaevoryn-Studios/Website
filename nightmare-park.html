@@ -163,6 +163,7 @@ sign(73,27,54,'THE ABANDONED KINGDOM');
 // NIGHTMARE CASTLE — monumental keep, sharpened roofline and a guarded drawbridge.
 const castleStone=mat(0x292b32,.12,.82),castleTrim=mat(0x75665f,.35,.72);
 block(73,24,69,19,8,17,0x292a31); // raised central keep
+solid(73,69,19,17);
 block(73,29,69,21,.8,19,0x4a4144); // crown ledge
 for(const [x,z,h] of [[56,62,33],[90,62,33],[58,83,25],[88,83,25]]){
   const spire=new THREE.Mesh(new THREE.ConeGeometry(4.5,11,8),mat(0x171a22));spire.position.set(x,h+5.5,z);scene.add(spire);
