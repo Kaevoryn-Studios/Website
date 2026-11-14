@@ -34,7 +34,7 @@ header{position:absolute;z-index:4;top:0;left:0;right:0;padding:14px 17px;displa
 <canvas id="world"></canvas>
 <header><a href="index.html">KAEVORYN STUDIOS<small>CREATE THE IMPOSSIBLE</small></a><span style="font-size:9px;letter-spacing:.2em;color:#c58d9b">AFTER DARK · NO WAY OUT</span></header>
 <div id="intro"><div class="panel"><div class="eyebrow">A PLACE THAT SHOULD NOT EXIST</div><h1>THE<br> NIGHTMARE<br> PARK</h1><p>A vast Gothic castle rises above a haunted kingdom. Climb its grand staircase, explore the ballroom and royal library, uncover the attic and buried catacombs, and follow secret passages into rooms that were never meant to be found. Beyond the castle, ten nightmare lands wait in the fog.</p><button class="enter" id="enter">ENTER THE PARK</button><div class="hint">LANDSCAPE MODE RECOMMENDED · JOYSTICK TO WALK · RIGHT PAD TO LOOK · SOUND STARTS WHEN ENABLED</div></div></div>
-<div id="hud"><div class="hudline"><div class="chip" id="district">THE GATE</div><div class="chip" id="progress">0 / 10 NIGHTMARE LANDS</div></div><button id="soundBtn">SOUND: OFF</button><div id="toast"></div></div>
+<div id="hud"><div class="hudline"><div class="chip" id="district">THE GATE</div><div class="chip" id="progress">0 / 20 PARK & CASTLE DISCOVERIES</div></div><button id="soundBtn">SOUND: OFF</button><div id="toast"></div></div>
 <div id="mobile"><div class="pad" id="movePad"><div class="stick" id="stick"></div></div><div class="look" id="lookPad">LOOK<br>AROUND</div></div>
 <div id="scare"><b>◉</b><small>IT KNOWS YOU ARE HERE</small></div><div id="fatal"></div>
 <script>
@@ -248,7 +248,7 @@ add(new THREE.CylinderGeometry(.35,.55,8,12),trim,31,12,-75,Math.PI/2,0,Math.PI/
 warp('OBSERVATORY STAIR',40,-64,'The moonlit observatory stair returns to the upper attic landing.',0,10.7,-75);warp('THE OBSERVATORY DOOR',9,-75,'A narrow upper passage opens into the moon observatory.',31,10.7,-75);
 // Hidden Witching Parlour behind a portrait, with a glowing ritual circle.
 room(-59,30,18,18,9,'The Witching Parlour',0,0x9e6eb8);for(let i=0;i<9;i++){const a=i*Math.PI*2/9;block(-59+Math.cos(a)*5,2,30+Math.sin(a)*5,.12,4,.12,0x9a7a67);light(-59+Math.cos(a)*5,4,30+Math.sin(a)*5,0x9e6eb8,.6,9)}
-add(new THREE.SphereGeometry(1.5,16,12),new THREE.MeshStandardMaterial({color:0x8b5db3,emissive:0x48265e,emissiveIntensity:.8}),-59,3,30);warp('THE WITCHING CIRCLE',-59,20,'The floor sigil wakes. A hidden chamber answers behind the portrait wall.',-59,1.7,30);warp('THE WITCHING PARLOUR RETURN',-59,39,'The hidden parlour door swings back toward the castle grounds.',0,1.7,12);
+add(new THREE.SphereGeometry(1.5,16,12),new THREE.MeshStandardMaterial({color:0x8b5db3,emissive:0x48265e,emissiveIntensity:.8}),-59,3,30);warp('THE WITCHING CIRCLE',-59,20,'The floor sigil wakes. A hidden chamber answers behind the portrait wall.',-59,1.7,30);warp('THE WITCHING PARLOUR RETURN',-50,39,'The hidden parlour door swings back toward the castle grounds.',0,1.7,12);
 // Castle courtyard gardens and readable lanterns.
 for(const x of [-42,42])for(const z of [40,8,-28]){block(x,.9,z,8,1.8,8,0x4c4a4f);add(new THREE.CylinderGeometry(1,1.35,1.2,12),stone,x,2.4,z);add(new THREE.SphereGeometry(.8,12,10),mat(0xaaa09a),x,3.5,z);light(x,4,z,0xd49b75,1.2,18)}
 for(let z=100;z>=-95;z-=17)for(const x of [-10,10]){block(x,3,z,.35,6,.35,0x635c60);light(x,5,z,0xffc783,1.35,18)}
