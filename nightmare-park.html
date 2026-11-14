@@ -108,6 +108,35 @@ block(73,19,56,18,2,4,0x24252a);block(73,8,56,7,16,2,0x27282d);
 tower(56,62,3.2,31,0x4a4549);tower(90,62,3.2,31,0x4a4549);
 tower(58,83,2.5,23,0x403d43);tower(88,83,2.5,23,0x403d43);
 door(73,56,5,9);sign(73,27,54,'THE ABANDONED KINGDOM');
+// NIGHTMARE CASTLE — monumental keep, sharpened roofline and a guarded drawbridge.
+const castleStone=mat(0x292b32,.12,.82),castleTrim=mat(0x75665f,.35,.72);
+block(73,24,69,19,8,17,0x292a31); // raised central keep
+block(73,29,69,21,.8,19,0x4a4144); // crown ledge
+for(const [x,z,h] of [[56,53,38],[90,53,38],[56,87,35],[90,87,35]]){
+  const spire=new THREE.Mesh(new THREE.ConeGeometry(4.5,11,8),mat(0x171a22));spire.position.set(x,h+5.5,z);scene.add(spire);
+  const finial=new THREE.Mesh(new THREE.SphereGeometry(.48,10,8),new THREE.MeshBasicMaterial({color:0xc58b65}));finial.position.set(x,h+11.2,z);scene.add(finial);
+  block(x,h-1,z,6,1,6,0x5b5050);
+}
+for(let x=61;x<=85;x+=4){
+  block(x,21,53,2.2,3.4,1.8,0x4a4549);
+  block(x,21,86,2.2,3.4,1.8,0x4a4549);
+}
+// Tall lancet windows on the front wall, glowing like cursed stained glass.
+for(const [x,y,w,h,c] of [[65,15,2.2,5,0x8e304b],[73,17,3,7,0xc07855],[81,15,2.2,5,0x573e91]]){
+  const frame=new THREE.Mesh(new THREE.PlaneGeometry(w+.55,h+.55),new THREE.MeshBasicMaterial({color:0x17171d}));frame.position.set(x,y,56.48);scene.add(frame);
+  const glass=new THREE.Mesh(new THREE.PlaneGeometry(w,h),new THREE.MeshBasicMaterial({color:c,transparent:true,opacity:.88,side:THREE.DoubleSide}));glass.position.set(x,y,56.5);scene.add(glass);
+  block(x,y,56.42,.12,h, .12,0x9c806a);
+  light(x,y,55.5,c,.65,13);
+}
+// Drawbridge deck and chains leading to the castle gate.
+for(let i=0;i<8;i++)block(73,.65,46+i*1.25,9,.38,1.08,i%2?0x51433e:0x665347);
+for(const x of [68.2,77.8]){
+  const chain=new THREE.Mesh(new THREE.CylinderGeometry(.09,.09,10,8),mat(0x514a49));chain.position.set(x,4,50);chain.rotation.x=Math.PI/2;scene.add(chain);
+  block(x,2,55,.5,4,.5,0x514a49);
+}
+light(73,10,54,0xc52e48,3.2,28);
+sign(73,8,43,'NIGHTMARE CASTLE');
+
 block(73,3,54,12,6,1,0x201b20);
 for(let i=0;i<7;i++){const x=45+i*8;block(x,4,91,7,8,8,i%2?0x494348:0x38383d);solid(x,91,7,8);block(x,8,91,7,.7,8,0x252329);tower(x-2.5,89,1.1,12,0x49444b);light(x,4,86,0xa34b4d,1.2,15)}
 // broken royal statue and execution square
@@ -116,7 +145,7 @@ for(let i=0;i<8;i++){const x=54+i*5,z=101+(i%2)*4;block(x,.9,z,.6,1.8,.35,0x7770
 // catacomb entrance tucked behind the throne wall
 block(73,3,88,13,6,3,0x28252a);door(73,0,4,4);sign(73,7,86,'ROYAL CATACOMBS');
 light(73,8,53,0xa52b42,4,36);light(42,5,60,0xd08b62,2,22);fog(72,78,36);
-ghost(82,78,1.6,true);ghost(62,92,.9);zone('THE ABANDONED KINGDOM',70,77,'The kingdom fell centuries ago. The throne is occupied, and the catacombs are still open.');
+ghost(82,78,1.6,true);ghost(62,92,.9);zone('NIGHTMARE CASTLE · THE ABANDONED KINGDOM',70,77,'The kingdom fell centuries ago. The throne is occupied, and the catacombs are still open.');
 // LAND DETAIL PASS — give every district a recognizable silhouette and its own story
 // Haunted Forest: twisted dead trees surrounding the manor approach
 for(let i=0;i<18;i++){
