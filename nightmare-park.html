@@ -180,6 +180,38 @@ wayfindingSign(-10,-8,[{arrow:'←',label:'BLACKWATER'},{arrow:'→',label:'THE 
 wayfindingSign(10,-87,[{arrow:'←',label:'WARD 13'},{arrow:'→',label:'THE FURNACE'},{arrow:'↑',label:'THE SILENT CHAPEL'}],Math.PI);
 wayfindingSign(49,77,[{arrow:'↑',label:'THE ABANDONED KINGDOM'},{arrow:'←',label:'ROYAL CATACOMBS'}],Math.PI/2);
 wayfindingSign(10,108,[{arrow:'↓',label:'MIDWAY & PARK EXIT'},{arrow:'↑',label:'THE ABANDONED KINGDOM'}],0);
+// ATMOSPHERIC DETAIL PASS — moving set pieces and stronger land identities.
+// Dreadfall Manor: a lit entrance canopy, cracked stone approach and warning lanterns.
+for(const x of [-43,-33]){
+  block(x,5,-13,1.1,10,.8,0x454047);
+  const sconce=add(new THREE.SphereGeometry(.28,10,8),new THREE.MeshBasicMaterial({color:0xffb56c}),x,7,-13);
+  light(x,7,-13,0xff824d,1.7,16);
+}
+block(-38,7,-16,15,.55,2.2,0x30282c);
+// The Abandoned Kingdom: torn royal standards that sway above the ruined walls.
+for(const [x,z,color] of [[64,55,0x7e263b],[82,55,0x7e263b],[58,82,0x8d704f],[88,82,0x8d704f]]){
+  const pole=add(new THREE.CylinderGeometry(.07,.1,9,7),mat(0x82715f),x,13,z);
+  const cloth=add(new THREE.PlaneGeometry(2.8,3.8),new THREE.MeshStandardMaterial({color,roughness:.9,side:THREE.DoubleSide,transparent:true,opacity:.94}),x+1.35,15,z);
+  actors.push({kind:'banner',obj:cloth,phase:Math.random()*6});
+}
+// Inferno Ridge: visible flame vents along the lava field.
+for(const [x,z] of [[61,-88],[82,-80],[101,-96],[72,-105],[92,-115]]){
+  const vent=add(new THREE.ConeGeometry(1.15,4.8,9),new THREE.MeshBasicMaterial({color:0xff5728,transparent:true,opacity:.72,depthWrite:false}),x,2.5,z);
+  const core=add(new THREE.ConeGeometry(.48,3.1,8),new THREE.MeshBasicMaterial({color:0xffc15b,transparent:true,opacity:.82,depthWrite:false}),x,2.1,z);
+  actors.push({kind:'fireJet',obj:vent,core,phase:Math.random()*6});
+  light(x,2.4,z,0xff5b28,1.8,15);
+}
+// Blackwater Bay: broken pier posts and cold blue marker lights around the water.
+for(let i=0;i<7;i++){
+  const x=17+i*7;
+  block(x,1.5,-78,.55,3,.55,0x49423e);
+  if(i%2===0)light(x,2.7,-78,0x5da9b5,.8,12);
+}
+// The Silent Chapel: a slow-turning bell above the nave.
+const bell=new THREE.Group();
+const bellBody=new THREE.Mesh(new THREE.CylinderGeometry(.48,.82,1.25,12),mat(0x82745f));bellBody.position.y=0;bell.add(bellBody);
+const bellLip=new THREE.Mesh(new THREE.TorusGeometry(.78,.09,8,16),mat(0x9d8869));bellLip.position.y=-.58;bell.add(bellLip);
+bell.position.set(0,19,-151);scene.add(bell);actors.push({kind:'bell',obj:bell,phase:0});
 // SPOOKY LIGHTING PASS — readable paths, haunted lanterns and drifting spectral wisps
 // Warm lantern pools lead visitors between the ten lands without removing the night atmosphere.
 for(const [x,z,color] of [[-8,76,0xffbd79],[8,61,0x9edcff],[-8,29,0xd58cff],[8,-15,0xff8b70],[-8,-57,0x9fe8dd],[8,-99,0xd6a0ff],[-50,42,0xffa56f],[-27,45,0x9edcff],[29,45,0xffbd79],[52,-3,0xd58cff],[-50,-82,0x9fe8dd],[51,-82,0xff8b70],[63,83,0xffbd79],[85,83,0x9edcff]]){
@@ -204,7 +236,7 @@ ghost(-8,-22,1.4,true);ghost(28,-85,1.2,true);
 function say(t){toast.textContent=t;toast.classList.add('on');setTimeout(()=>toast.classList.remove('on'),4400)}
 function blocked(x,z){return solids.some(b=>Math.abs(x-b.x)<b.w/2+.5&&Math.abs(z-b.z)<b.d/2+.5)}
 function move(dt){const f=clamp(keys.f-keys.b-moveInput.y,-1,1),s=clamp(keys.r-keys.l+moveInput.x,-1,1);if(!f&&!s)return;const speed=keys.run?8:5.1,len=Math.hypot(f,s)||1,fx=-Math.sin(yaw),fz=-Math.cos(yaw),rx=Math.cos(yaw),rz=-Math.sin(yaw),dx=(fx*f+rx*s)/len*speed*dt,dz=(fz*f+rz*s)/len*speed*dt,nx=clamp(camera.position.x+dx,-108,108),nz=clamp(camera.position.z+dz,-153,113);if(!blocked(nx,camera.position.z))camera.position.x=nx;if(!blocked(camera.position.x,nz))camera.position.z=nz}
-function update(dt){move(dt);camera.rotation.order='YXZ';camera.rotation.y=yaw;camera.rotation.x=pitch;const p=camera.position,now=performance.now();for(const a of actors){a.phase=(a.phase||0)+dt;if(a.kind==='flicker')a.obj.intensity=a.p*(.82+Math.sin(a.phase*3)*.12+(Math.random()>.997?-.65:0));if(a.kind==='fog'){a.obj.position.x=a.home.x+Math.sin(a.phase*.2)*3;a.obj.position.z=a.home.z+Math.cos(a.phase*.17)*2}if(a.kind==='ghost'){a.obj.position.y=Math.sin(a.phase*1.4)*.15;a.obj.rotation.y=Math.sin(a.phase*.5)*.2}if(a.kind==='stalker'){const dx=p.x-a.obj.position.x,dz=p.z-a.obj.position.z,d=Math.hypot(dx,dz);if(d<28&&d>5){a.obj.position.x+=dx/d*dt*.8;a.obj.position.z+=dz/d*dt*.8;a.obj.lookAt(p.x,1.4,p.z)}else if(d>=28){a.obj.position.x+=(a.home.x-a.obj.position.x)*dt*.12;a.obj.position.z+=(a.home.z-a.obj.position.z)*dt*.12}a.obj.position.y=Math.sin(a.phase*2)*.1;if(d<7&&now-lastScare>17000){lastScare=now;scareTimer=now+360;scare.classList.add('on');if(soundOn)stinger()}}if(a.kind==='lanternGlow')a.obj.material.opacity=.09+(.07*(.5+.5*Math.sin(a.phase*2.4)));if(a.kind==='wisps'){const ar=a.obj.geometry.attributes.position;for(let i=0;i<ar.count;i++){let y=ar.getY(i)+Math.sin(a.phase+i*.3)*dt*.16;if(y>7)y=1;ar.setY(i,y);ar.setX(i,ar.getX(i)+Math.sin(a.phase*.7+i)*dt*.12)}ar.needsUpdate=true}if(a.kind==='carousel')a.obj.rotation.y+=dt*.24;if(a.kind==='drop'){const cycle=(a.phase%13)/13;a.obj.position.y=cycle<.65?2+cycle/.65*42:44-(cycle-.65)/.35*42}if(a.kind==='train'){a.t=(a.t+dt*.055)%1;const pt=a.curve.getPointAt(a.t),tan=a.curve.getTangentAt(a.t);a.obj.position.copy(pt);a.obj.rotation.y=Math.atan2(tan.x,tan.z)}if(a.kind==='boat'){a.obj.position.y=.8+Math.sin(a.phase*1.4)*.2;a.obj.rotation.z=Math.sin(a.phase)*.035;a.obj.position.x=38+Math.sin(a.phase*.35)*2}if(a.kind==='bat'){a.obj.position.x=a.home.x+Math.sin(a.phase*.7)*3;a.obj.position.z=a.home.z+Math.cos(a.phase*.6)*4;a.obj.position.y=a.home.y+Math.sin(a.phase*2)*1.2}if(a.kind==='ash'){const ar=a.obj.geometry.attributes.position;for(let i=0;i<ar.count;i++){let y=ar.getY(i)+dt*.18;if(y>25)y=-1;ar.setY(i,y)}ar.needsUpdate=true}}
+function update(dt){move(dt);camera.rotation.order='YXZ';camera.rotation.y=yaw;camera.rotation.x=pitch;const p=camera.position,now=performance.now();for(const a of actors){a.phase=(a.phase||0)+dt;if(a.kind==='flicker')a.obj.intensity=a.p*(.82+Math.sin(a.phase*3)*.12+(Math.random()>.997?-.65:0));if(a.kind==='fog'){a.obj.position.x=a.home.x+Math.sin(a.phase*.2)*3;a.obj.position.z=a.home.z+Math.cos(a.phase*.17)*2}if(a.kind==='ghost'){a.obj.position.y=Math.sin(a.phase*1.4)*.15;a.obj.rotation.y=Math.sin(a.phase*.5)*.2}if(a.kind==='stalker'){const dx=p.x-a.obj.position.x,dz=p.z-a.obj.position.z,d=Math.hypot(dx,dz);if(d<28&&d>5){a.obj.position.x+=dx/d*dt*.8;a.obj.position.z+=dz/d*dt*.8;a.obj.lookAt(p.x,1.4,p.z)}else if(d>=28){a.obj.position.x+=(a.home.x-a.obj.position.x)*dt*.12;a.obj.position.z+=(a.home.z-a.obj.position.z)*dt*.12}a.obj.position.y=Math.sin(a.phase*2)*.1;if(d<7&&now-lastScare>17000){lastScare=now;scareTimer=now+360;scare.classList.add('on');if(soundOn)stinger()}}if(a.kind==='lanternGlow')a.obj.material.opacity=.09+(.07*(.5+.5*Math.sin(a.phase*2.4)));if(a.kind==='banner')a.obj.rotation.z=Math.sin(a.phase*1.25)*.075;if(a.kind==='fireJet'){const pulse=.78+.22*Math.sin(a.phase*5);a.obj.scale.y=pulse;a.obj.material.opacity=.5+.25*pulse;a.core.scale.y=.72+.28*Math.sin(a.phase*6+1)}if(a.kind==='bell')a.obj.rotation.z=Math.sin(a.phase*1.1)*.16;if(a.kind==='wisps'){const ar=a.obj.geometry.attributes.position;for(let i=0;i<ar.count;i++){let y=ar.getY(i)+Math.sin(a.phase+i*.3)*dt*.16;if(y>7)y=1;ar.setY(i,y);ar.setX(i,ar.getX(i)+Math.sin(a.phase*.7+i)*dt*.12)}ar.needsUpdate=true}if(a.kind==='carousel')a.obj.rotation.y+=dt*.24;if(a.kind==='drop'){const cycle=(a.phase%13)/13;a.obj.position.y=cycle<.65?2+cycle/.65*42:44-(cycle-.65)/.35*42}if(a.kind==='train'){a.t=(a.t+dt*.055)%1;const pt=a.curve.getPointAt(a.t),tan=a.curve.getTangentAt(a.t);a.obj.position.copy(pt);a.obj.rotation.y=Math.atan2(tan.x,tan.z)}if(a.kind==='boat'){a.obj.position.y=.8+Math.sin(a.phase*1.4)*.2;a.obj.rotation.z=Math.sin(a.phase)*.035;a.obj.position.x=38+Math.sin(a.phase*.35)*2}if(a.kind==='bat'){a.obj.position.x=a.home.x+Math.sin(a.phase*.7)*3;a.obj.position.z=a.home.z+Math.cos(a.phase*.6)*4;a.obj.position.y=a.home.y+Math.sin(a.phase*2)*1.2}if(a.kind==='ash'){const ar=a.obj.geometry.attributes.position;for(let i=0;i<ar.count;i++){let y=ar.getY(i)+dt*.18;if(y>25)y=-1;ar.setY(i,y)}ar.needsUpdate=true}}
 if(now>scareTimer)scare.classList.remove('on');let near=null,best=1e9;for(const z of zones){const d=Math.hypot(p.x-z.x,p.z-z.z);if(d<best){best=d;near=z}}if(near&&best<28){$('district').textContent=near.name;if(best<12&&!found.has(near.name)){found.add(near.name);$('progress').textContent=found.size+' / '+zones.length+' NIGHTMARE ZONES';say(near.desc)}}}
 function frame(){if(!active)return;requestAnimationFrame(frame);const dt=Math.min(clock.getDelta(),.04);update(dt);renderer.render(scene,camera)}
 function startAudio(){audio=audio||new(window.AudioContext||window.webkitAudioContext)();audio.resume();if(!ambience){master=audio.createGain();master.gain.value=.16;master.connect(audio.destination);const osc=audio.createOscillator(),filter=audio.createBiquadFilter(),gain=audio.createGain();osc.type='sawtooth';osc.frequency.value=43;filter.type='lowpass';filter.frequency.value=105;gain.gain.value=.16;osc.connect(filter).connect(gain).connect(master);osc.start();ambience={osc,gain}}}
