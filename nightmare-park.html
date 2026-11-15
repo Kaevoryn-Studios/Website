@@ -461,8 +461,48 @@ const ashCount=220,ashPos=new Float32Array(ashCount*3);for(let i=0;i<ashCount;i+
 for(const [x,z] of [[-10,62],[10,62],[-30,48],[30,48],[-30,5],[30,5],[-10,-75],[10,-75]])lampPost(x,z,0xffbd69);
 zone('THE MIDWAY',0,34,'The midway is alive with lights, games and rides. Something watches from the funhouse.');
 zone('THE ENTRANCE',0,86,'The ticket booth is still open. The park has been waiting for you.');
+buildSevenNightmares();
 }
 
+}
+function buildSevenNightmares(){
+scene.clear();solids.length=0;actors.length=0;zones.length=0;found.clear();camera.position.set(0,1.7,108);yaw=0;pitch=0;
+scene.background=new THREE.Color(0x111722);scene.fog=new THREE.FogExp2(0x20232d,.00105);
+scene.add(new THREE.HemisphereLight(0xd9d9e8,0x29242b,1.65));const moon=new THREE.DirectionalLight(0xbac8df,1.55);moon.position.set(-45,85,65);scene.add(moon);
+const ground=add(new THREE.PlaneGeometry(250,330),mat(0x292b30),0,-.12,-20,-Math.PI/2);
+const wood=mat(0x49352e),steel=mat(0x454b52,.55,.7),glass=new THREE.MeshStandardMaterial({color:0x8da5b4,metalness:.45,roughness:.2,transparent:true,opacity:.28});
+function road(x,z,w,d){add(new THREE.PlaneGeometry(w,d),mat(0x34343a),x,.025,z,-Math.PI/2)}
+function wall(x,y,z,w,h,d,c=0x39343a){block(x,y,z,w,h,d,c);solid(x,z,w,d)}
+function glow(x,y,z,c=0xffb36a){const l=new THREE.PointLight(c,1.8,24);l.position.set(x,y,z);scene.add(l);actors.push({kind:'flicker',obj:l,p:1.8,phase:Math.random()*7})}
+function sign(x,y,z,t,c='#f0d8c9'){const a=document.createElement('canvas');a.width=768;a.height=150;const q=a.getContext('2d');q.fillStyle='#100e12';q.fillRect(0,0,768,150);q.strokeStyle=c;q.lineWidth=7;q.strokeRect(8,8,752,134);q.fillStyle=c;q.font='bold 49px Georgia';q.textAlign='center';q.fillText(t,384,94);const tx=new THREE.CanvasTexture(a);add(new THREE.PlaneGeometry(15,3),new THREE.MeshBasicMaterial({map:tx}),x,y,z)}
+function house(x,z,w=20,d=15,h=10,c=0x403b3d){wall(x-w/2+.4,h/2,z,w-.8,h,d*.12,c);wall(x+w/2-.4,h/2,z,w-.8,h,d*.12,c);wall(x,h/2,z-d/2,w,.8,d,c);wall(x-w/2,h/2,z+d/2,.8,h,d,c);wall(x+w/2,h/2,z+d/2,.8,h,d,c);wall(x-(w-5)/4,h/2,z+d/2,(w-5)/2,h,.8,c);wall(x+(w-5)/4,h/2,z+d/2,(w-5)/2,h,.8,c);block(x,h+.25,z,w+1,.5,d+1,0x25242b);block(x,2.2,z+d/2+.08,4.5,4.4,.18,0x171417);for(const wx of [x-w*.29,x+w*.29]){block(wx,5,z+d/2+.12,2.3,2.7,.2,0x17151a);glow(wx,5,z+d/2+1,0xb65b4b)}}
+function tree(x,z,h=10){add(new THREE.CylinderGeometry(.25,.6,h*.5,7),wood,x,h*.25,z);for(let i=0;i<4;i++)add(new THREE.ConeGeometry(2.2-i*.3,h*.3,7),mat(i%2?0x252c2b:0x30302e),x+(Math.random()-.5)*1.5,h*.6+i*h*.07,z+(Math.random()-.5)*1.5)}
+function cabin(x,z){house(x,z,12,10,6,0x554036);const r=add(new THREE.ConeGeometry(9,4,4),mat(0x292426),x,8,z);r.rotation.y=Math.PI/4}
+function apparition(x,z){const g=new THREE.Group();const robe=new THREE.Mesh(new THREE.ConeGeometry(1.15,3.7,12),mat(0xb8b8bd,.6));robe.position.y=1.9;g.add(robe);const head=new THREE.Mesh(new THREE.SphereGeometry(.58,14,12),mat(0xd7d0c7));head.position.y=3.9;g.add(head);g.position.set(x,0,z);scene.add(g);actors.push({kind:'ghost',obj:g,home:g.position.clone(),phase:Math.random()*8})}
+road(0,-18,13,270);road(0,83,46,15);road(0,34,110,12);road(0,-48,110,12);road(0,-115,110,12);
+for(const z of [85,48,5,-35,-78,-120]){for(const x of [-7,7]){block(x,3,z,.28,6,.28,0x28272b);glow(x,5.5,z,0xffbd72)}}
+for(let x=-116;x<=116;x+=8){wall(x,3,-166,.55,6,.7,0x343137);wall(x,3,119,.55,6,.7,0x343137)}
+for(let z=-166;z<=119;z+=8){wall(-118,3,z,.7,6,.55,0x343137);wall(118,3,z,.7,6,.55,0x343137)}
+for(let i=0;i<70;i++){const x=-112+Math.random()*224,z=-158+Math.random()*270;if(Math.abs(x)>48||Math.abs(z)>90)tree(x,z,7+Math.random()*9)}
+wall(-13,8,101,2,16,2,0x4b4145);wall(13,8,101,2,16,2,0x4b4145);block(0,16,101,29,1.2,2.4,0x29262c);sign(0,12,99,'THE SEVEN NIGHTMARES','#e6a5a0');glow(0,10,96,0xd75a59);
+block(-23,2,87,9,4,6,0x393238);sign(-23,3.5,83,'TICKETS','#e4c49a');
+// 1. Dream street and the furnace maze.
+road(-70,29,42,12);for(let i=0;i<4;i++){const x=-91+i*14;house(x,8,12,11,8,i%2?0x493d3b:0x383338);tree(x+5,0,9)}sign(-70,11,20,'ASH STREET','#d98d83');house(-70,-18,27,17,12,0x393338);for(let i=0;i<5;i++){const x=-91+i*9;add(new THREE.CylinderGeometry(.8,.95,15,12),steel,x,7,-49);glow(x,12,-49,0xff533d)}zone('ASH STREET · THE DREAM DISTRICT',-70,25,'Every bedroom light turns on as you pass. The boiler room is still running.');apparition(-61,-33);
+// 2. Autumn suburb and the watcher’s house.
+road(70,29,42,12);for(let i=0;i<5;i++){const x=49+i*10;house(x,9,9,10,7,i%2?0x55504b:0x3e3a3a);for(let k=0;k<9;k++)add(new THREE.SphereGeometry(.22,6,5),mat(k%2?0x9c4d2d:0xc17a3c),x-3+Math.random()*6,.12,5+Math.random()*7)}house(72,-18,28,18,13,0x373438);sign(72,14,-28,'THE LAST HOUSE','#d3a47a');glow(72,5,-28,0xd98c45);zone('MAPLE LANE · THE SHADOW HOUSE',70,26,'A silhouette stands behind the upstairs curtain. When you look again, the window is empty.');apparition(83,-8);
+// 3. Camp Blackwater with cabins, lake, dock and watchtower.
+road(-73,-62,40,11);add(new THREE.CircleGeometry(24,48),new THREE.MeshStandardMaterial({color:0x102c35,metalness:.35,roughness:.22}),-73,.015,-83,-Math.PI/2);for(let i=0;i<7;i++){const a=i*Math.PI*2/7,x=-73+Math.cos(a)*35,z=-83+Math.sin(a)*35;cabin(x,z);tree(x+7,z+4,11)}for(let i=0;i<8;i++)block(-73+i*2.4,.3,-59,2,.35,3,0x4a392f);for(let i=0;i<8;i++)block(-73,.3,-83+i*2.3,5,.45,2,0x5b4738);for(const x of [-91,-55]){block(x,7,-80,1,14,1,0x57483d);block(x,14,-80,7,1,7,0x57483d)}sign(-73,8,-47,'CAMP BLACKWATER','#c4d4c6');zone('CAMP BLACKWATER · THE LAKE',-73,-68,'The cabins are locked from the outside. Something is moving beneath the black water.');apparition(-73,-91);
+// 4. The glass reliquary, a house of mirrored rooms and trapped spirits.
+road(0,-56,42,10);house(0,-81,32,22,14,0x353941);for(const x of [-15.5,15.5])for(const z of [-91,-72]){add(new THREE.BoxGeometry(.22,10,.22),glass,x,7,z);glow(x,8,z,0x7cb9d6)}for(let i=0;i<6;i++){const x=-12+i*4.8;block(x,1.1,-81,1.4,2.2,1.2,0x242831);add(new THREE.SphereGeometry(.48,12,10),mat(0xd2c9bf),x,2.7,-81)}sign(0,16,-94,'THE GLASS HOUSE','#a9d9e9');zone('THE GLASS HOUSE · THE THIRTEEN',0,-68,'The walls reflect a room that is not behind you. Never count the figures twice.');apparition(-9,-78);apparition(8,-86);apparition(0,-97);
+// 5. The hunting road, wrecked chapel and abandoned truck.
+road(72,-75,17,105);for(let i=0;i<14;i++)tree(56+Math.random()*34,-30-i*7,9+Math.random()*6);house(72,-105,24,19,11,0x353236);sign(72,13,-117,'THE CREEPER CHAPEL','#d8b58d');const truck=add(new THREE.BoxGeometry(10,4,17),mat(0x353b3d,.75,.5),72,2,-57);block(72,4.5,-63,9,1,8,0x20272a);for(const x of [68,76])for(const z of [-63,-51])add(new THREE.CylinderGeometry(1.1,1.1,.7,14),mat(0x171719),x,1,z,Math.PI/2);zone('MILE 66 · THE HUNTING ROAD',72,-72,'The truck is empty, but its engine is warm. A shadow passes over the moon above the chapel.');
+// 6. The industrial test facility: brutalist corridors and puzzle chambers.
+road(0,-120,52,12);for(let i=0;i<5;i++){const x=-24+i*12;wall(x,7,-143,1,14,28,0x44464b);for(let z=-154;z<-132;z+=7){block(x,2,z,1.3,3,2,0x25282d);glow(x,3,z,i%2?0xb83b3e:0xd5a35f)}}wall(-15,6,-145,1,12,24,0x4a4142);wall(15,6,-145,1,12,24,0x4a4142);block(0,12,-157,31,1,3,0x24252a);sign(0,10,-159,'THE RED TEST FACILITY','#ed7e70');for(let i=0;i<4;i++){const z=-151+i*6;block(0,1.2,z,7,2.4,5,0x34383e);block(0,2.7,z,5,.3,3,0x8d3037);glow(0,3.1,z,0xe14c43)}zone('THE RED TEST FACILITY · NO EXIT',0,-130,'One door is open. The other doors are listening. Find the release before the lights go out.');
+// 7. The convergence house and final hidden threshold.
+house(0,61,24,16,10,0x38343b);sign(0,12,51,'THE HOUSE BETWEEN','#d7b0a7');zone('THE HOUSE BETWEEN · THE FINAL NIGHTMARE',0,65,'All six nightmares meet beneath this house. The final door has appeared.');
+for(let i=0;i<20;i++){const x=-105+Math.random()*210,z=-150+Math.random()*255;const chain=add(new THREE.CylinderGeometry(.045,.045,3+Math.random()*4,5),steel,x,5+Math.random()*5,z);chain.rotation.z=(Math.random()-.5)*.12}
+for(const [x,z] of [[-100,48],[100,48],[-103,-105],[102,-112],[-38,-143],[39,-143]])apparition(x,z);
+const mistMat=new THREE.MeshBasicMaterial({color:0xa7aab5,transparent:true,opacity:.055,depthWrite:false});for(const [x,z] of [[-70,20],[70,20],[-73,-82],[0,-82],[72,-90],[0,-140]]){const g=new THREE.Group();for(let i=0;i<7;i++){const p=new THREE.Mesh(new THREE.SphereGeometry(1,9,7),mistMat);p.scale.set(4+Math.random()*5,.28,2+Math.random()*3);p.position.set((Math.random()-.5)*8,.25,(Math.random()-.5)*5);g.add(p)}g.position.set(x,0,z);scene.add(g);actors.push({kind:'fog',obj:g,home:g.position.clone(),phase:Math.random()*8})}
 }
 function say(t){toast.textContent=t;toast.classList.add('on');setTimeout(()=>toast.classList.remove('on'),4400)}
 function blocked(x,z){return solids.some(b=>Math.abs(x-b.x)<b.w/2+.5&&Math.abs(z-b.z)<b.d/2+.5)}
