@@ -709,8 +709,67 @@ const lake=add(new THREE.CircleGeometry(15,48),new THREE.MeshStandardMaterial({c
   fog(92,-43,17);fog(65,-37,13);ghost(99,-39,1.6,true);
   zone('CREEPER’S HARVEST · THE CORNFIELD',80,-22,'Search the abandoned farm, truck and corn maze. Keep an eye on the barn roofline — something with wings is hunting above the fields.');
 }
-// Park 6: industrial Sawworks with furnace and giant gears.
-manor(-80,-112,20,15,0x38343a);for(let k=0;k<4;k++){const gear=add(new THREE.TorusGeometry(3.4,.55,8,24),iron,-91+k*7,9,-133);gear.rotation.y=Math.PI/2;for(let a=0;a<8;a++){const an=a*Math.PI/4;block(-91+k*7+Math.cos(an)*3.8,9+Math.sin(an)*3.8,-133,.8,.8,.8,0x9b3b3b)}}for(let k=0;k<4;k++)lamp(-88+k*5,-99,0xf04a37);
+// Park 6: THE SAWWORKS — a sprawling furnace factory and machinery yard.
+{
+  manor(-80,-112,20,15,0x38343a);
+  // Reinforce the manor as a factory: iron ribs, warning bands and a furnace mouth.
+  block(-80,2.8,-105.72,8,5.6,.28,0x17171b);
+  block(-80,2.2,-105.5,5.2,3.7,.18,0xb83d2e);
+  const furnaceGlow=add(new THREE.PlaneGeometry(4.4,2.8),new THREE.MeshBasicMaterial({color:0xff6b32}),-80,2.7,-105.38);
+  const furnaceLight=new THREE.PointLight(0xff4a25,2.8,30);furnaceLight.position.set(-80,3.2,-102);scene.add(furnaceLight);
+  for(const x of [-88,-72]){block(x,8,-105.6,.55,16,.65,0x747078);block(x,1,-105.6,.8,2,.9,0x39353b)}
+  // Four tall smokestacks, collars and animated smoke plumes.
+  for(let k=0;k<4;k++){
+    const x=-94+k*9,z=-119-(k%2)*3;
+    add(new THREE.CylinderGeometry(1.45,2,22,12),mat(0x45464c,.7,.5),x,11,z);
+    add(new THREE.TorusGeometry(1.55,.22,8,16),mat(0x8d4b3d),x,19,z);
+    block(x,22.4,z,3.6,.55,3.6,0x37383e);
+    const smoke=add(new THREE.SphereGeometry(1.7,10,8),new THREE.MeshBasicMaterial({color:0x7c7882,transparent:true,opacity:.18,depthWrite:false}),x,25,z);
+    actors.push({kind:'fog',obj:smoke,home:smoke.position.clone(),phase:k*1.7});
+    solid(x,z,3.5,3.5);
+  }
+  // Giant exposed gears on the rear wall, with visible teeth and animated rotation.
+  for(let k=0;k<4;k++){
+    const x=-94+k*9,y=9,z=-133;
+    const gearGroup=new THREE.Group();
+    const ring=new THREE.Mesh(new THREE.TorusGeometry(3.4,.48,10,32),iron);gearGroup.add(ring);
+    const hub=new THREE.Mesh(new THREE.CylinderGeometry(.85,.85,.9,16),mat(0x9a7770));hub.rotation.x=Math.PI/2;gearGroup.add(hub);
+    for(let a=0;a<12;a++){const an=a*Math.PI/6,tooth=new THREE.Mesh(new THREE.BoxGeometry(.85,.75,.8),mat(0x9b3b3b));tooth.position.set(Math.cos(an)*3.65,Math.sin(an)*3.65,0);gearGroup.add(tooth)}
+    gearGroup.position.set(x,y,z);gearGroup.rotation.y=Math.PI/2;scene.add(gearGroup);actors.push({kind:'wheel',obj:gearGroup,phase:k*.6});
+    block(x,y,z+1,.3,9,.3,0x59535a);
+  }
+  // Two heavy conveyor runs with rollers and a row of dark metal crates.
+  for(const side of [-1,1]){
+    const x=-80+side*10;
+    block(x,1.2,-124,3,1,25,0x393c43);block(x,1.85,-124,3.2,.22,25,0x77727a);
+    for(let z=-135;z<=-113;z+=3)add(new THREE.CylinderGeometry(.42,.42,3.3,10),iron,x,1.2,z,0,0,Math.PI/2);
+    for(let k=0;k<3;k++)block(x,3,-133+k*7,2.2,2.4,2.2,0x34343a);
+    solid(x,-124,3.2,25);
+  }
+  // Overhead gantry and hanging chains frame a factory service lane.
+  for(const x of [-94,-66])block(x,12,-123,.65,24,.65,0x4e5058);
+  block(-80,23,-123,29,.8,.8,0x73727a);
+  for(let k=0;k<5;k++){
+    const x=-90+k*5;
+    const chain=add(new THREE.CylinderGeometry(.055,.055,4,6),iron,x,20,-123);
+    block(x,17.6,-123,.75,.5,.75,0x8a3e36);
+  }
+  // A red hazard-striped service door and glowing warning lamps.
+  block(-80,5,-105.48,4.4,9,.28,0x28272c);
+  for(let k=0;k<8;k++)block(-82.8+k*.8,1.2,-105.25,.36,.24,.08,k%2?0xe5a13d:0x27272b);
+  for(let k=0;k<6;k++)lamp(-96+k*6,-99,k%2?0xff633f:0xe0a04d);
+  // Side yard: stacked pipes, pressure tanks and a broken cooling tower.
+  for(let k=0;k<5;k++){
+    const x=-103+k*3,z=-91;
+    add(new THREE.CylinderGeometry(.38,.38,13,10),iron,x,4,z,Math.PI/2);
+    block(x,7,z,.7,.5,.7,0x6e5960);
+  }
+  for(const x of [-103,-97]){add(new THREE.CylinderGeometry(1.5,1.5,8,12),mat(0x51545a),x,4,-145);add(new THREE.TorusGeometry(1.55,.18,8,18),iron,x,7.8,-145)}
+  // Furnace heat shimmer lights, drifting ash, and a discovery inside the works.
+  fog(-80,-121,22);fog(-99,-133,13);
+  const ash=add(new THREE.Points(new THREE.BufferGeometry(),new THREE.PointsMaterial({color:0xe19a65,size:.11,transparent:true,opacity:.55})),new THREE.PointsMaterial(),-80,4,-125);
+  zone('THE SAWWORKS · FURNACE AND GEAR HALL',-80,-111,'Enter the old factory yard. Follow the furnace glow past the conveyor lines and look up at the turning gear wall.');
+}
 // Park 7: blood carnival tents and rotating wheel.
 for(let k=0;k<3;k++){const tent=add(new THREE.ConeGeometry(8,9,8),mat(k%2?0x6e284e:0xb34759),-40+k*9,5,-113);tent.scale.z=1.2}const wheel=new THREE.Group();wheel.add(new THREE.Mesh(new THREE.TorusGeometry(8,.35,8,32),gold));for(let a=0;a<12;a++){const an=a*Math.PI/6,spoke=new THREE.Mesh(new THREE.BoxGeometry(.18,16,.18),iron);spoke.rotation.z=-an;wheel.add(spoke);const gondola=new THREE.Mesh(new THREE.BoxGeometry(1.5,1.5,1.3),mat(a%2?0x8d3150:0x443d61));gondola.position.set(Math.cos(an)*8,Math.sin(an)*8,0);wheel.add(gondola)}wheel.position.set(-40,14,-137);scene.add(wheel);actors.push({kind:'wheel',obj:wheel,phase:0});
 // Park 8: drowned kingdom shipwreck and flooded ruins.
