@@ -4,272 +4,87 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#080b18">
-<meta name="description" content="Kaevoryn Holiday Magic — a year-round window projection and synchronized spectacle concept.">
+<meta name="description" content="Kaevoryn Holiday Magic — immersive seasonal worlds and celebrations throughout the year.">
 <title>Kaevoryn Holiday Magic — Kaevoryn Studios</title>
 <link rel="stylesheet" href="../site.css">
 <style>
-:root{--hm-cyan:#8ceeff;--hm-violet:#b9a1ff;--hm-gold:#f5d38a}
-.hm-hero{text-align:center;padding:58px 0 28px}.hm-hero h1{font-size:clamp(38px,7vw,76px);line-height:1.02;letter-spacing:-.05em;margin:8px 0;background:linear-gradient(100deg,#fff,var(--hm-cyan),var(--hm-violet));color:transparent;background-clip:text}.hm-hero p{max-width:720px;margin:12px auto;color:#b7c6dc}.hm-kicker{color:var(--hm-cyan);font-size:10px;letter-spacing:3px;text-transform:uppercase}
-.hm-stage-wrap{border:1px solid #8ceeff44;border-radius:22px;background:linear-gradient(145deg,#101a32dd,#0b1022f2);padding:clamp(12px,3vw,24px);box-shadow:0 24px 80px #0006}.hm-stage-head{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:14px}.hm-stage-head h2{font-size:14px;letter-spacing:2px;margin:0}.hm-status{font-size:11px;color:#b9c8de}.hm-windows{display:grid;grid-template-columns:1fr 1fr;gap:12px}.hm-window{position:relative;min-height:270px;overflow:hidden;border:8px solid #28354e;border-radius:12px;background:#07101e;box-shadow:inset 0 0 35px #0009,0 0 0 1px #a8dfff33;isolation:isolate}.hm-window:before{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;background:linear-gradient(90deg,#b8d9ff18 1px,transparent 1px),linear-gradient(#b8d9ff18 1px,transparent 1px);background-size:50% 100%,100% 50%}.hm-window:after{content:"";position:absolute;z-index:3;inset:0;pointer-events:none;background:linear-gradient(115deg,#fff2,transparent 26%,transparent 72%,#fff1)}
-.hm-scene{position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:18px;background:radial-gradient(ellipse at 50% 70%,#275078aa,transparent 58%),linear-gradient(#101a3a,#14233b 58%,#080d19);transition:filter .5s,background .5s}.hm-scene .moon{position:absolute;width:76px;height:76px;border-radius:50%;right:14%;top:13%;background:#e9f3ff;box-shadow:0 0 35px #d6ecffb0}.hm-scene .horizon{position:absolute;left:-5%;right:-5%;bottom:-2px;height:38%;background:linear-gradient(145deg,#101d34,#070d1b);clip-path:polygon(0 55%,15% 15%,28% 60%,44% 5%,59% 57%,75% 12%,100% 62%,100% 100%,0 100%)}.hm-scene .scene-symbol{position:relative;z-index:1;font-size:clamp(42px,7vw,76px);filter:drop-shadow(0 0 18px #9feaff99);animation:hm-float 4s ease-in-out infinite}.hm-scene .scene-name{position:absolute;z-index:1;left:8px;right:8px;bottom:14px;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#effaff;text-shadow:0 2px 8px #000}.hm-window.outside .hm-scene{filter:saturate(1.18) brightness(1.12)}.hm-window.inside .hm-scene{filter:saturate(.9) brightness(.88)}
-.hm-snow,.hm-particles{position:absolute;inset:0;z-index:1;pointer-events:none;background-image:radial-gradient(circle,#fff 1px,transparent 1.8px),radial-gradient(circle,#c9eaff 1px,transparent 2px);background-size:37px 49px,71px 83px;background-position:0 0,20px 15px;opacity:.45;animation:hm-fall 8s linear infinite}
-.hm-beam{position:absolute;z-index:1;top:-20%;left:50%;height:140%;width:3px;background:linear-gradient(transparent,#b4f5ff,#fff,transparent);filter:blur(2px);opacity:0;transform:rotate(25deg);animation:hm-beam 5s ease-in-out infinite}
-.hm-stage.lights-on .hm-window{box-shadow:inset 0 0 35px #0008,0 0 24px var(--hm-light,#8ceeff66),0 0 0 1px #a8dfff55}
-.hm-stage.lights-on .hm-beam{opacity:.4}
-.hm-stage.show-running .hm-scene-symbol{animation-duration:1.8s}
-.hm-stage.show-running .hm-particles{opacity:.8}
-@keyframes hm-float{50%{transform:translateY(-10px) scale(1.04)}}@keyframes hm-fall{to{background-position:0 420px,20px 500px}}@keyframes hm-beam{50%{transform:rotate(-25deg);opacity:.65}}
-.hm-projectors{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px}.hm-output{min-width:0}.hm-output:nth-child(1),.hm-output:nth-child(2){grid-column:span 3}.hm-output:nth-child(3),.hm-output:nth-child(4),.hm-output:nth-child(5){grid-column:span 2}.hm-output-label{display:flex;justify-content:space-between;gap:6px;align-items:center;margin:0 2px 7px;color:#eaf8ff;font-size:10px;font-weight:800;letter-spacing:1px}.hm-output-label span{color:var(--hm-cyan);font-size:8px;letter-spacing:1px}.hm-output .hm-window{min-height:190px;border-width:5px}.hm-output .scene-symbol{font-size:clamp(32px,5vw,58px)}
-.hm-controls{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:14px}.hm-control{padding:12px;border:1px solid #35415d;border-radius:12px;background:#0a1122}.hm-control label{display:block;font-size:10px;letter-spacing:1px;color:#c5d5eb;margin-bottom:7px}.hm-control select,.hm-control input{width:100%;accent-color:var(--hm-cyan)}.hm-control select{background:#101a30;color:#fff;border:1px solid #3b4c6b;border-radius:8px;padding:9px}.hm-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.hm-btn{border:1px solid #60718f;border-radius:10px;background:#15213a;color:#f4f8ff;padding:10px 14px;font-weight:700;font-size:12px}.hm-btn.primary{background:linear-gradient(100deg,#9cefff,#c4b0ff);border:0;color:#101426}.hm-btn:focus-visible,.hm-control select:focus-visible,.hm-control input:focus-visible{outline:2px solid white;outline-offset:3px}.hm-note{font-size:11px;color:#aebed4;margin:12px 0 0}.hm-sections{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;padding:30px 0 65px}.hm-info{border:1px solid #8ceeff30;border-radius:16px;padding:18px;background:#10182ccc}.hm-info h3{margin:0 0 7px;font-size:14px}.hm-info p{margin:0;color:#b5c3d8;font-size:13px}.hm-usb-export{margin-top:15px;padding-top:13px;border-top:1px solid #ffffff22}.hm-usb-export p{font-size:11px!important;color:#b9c8dc!important;margin:8px 0 0}.hm-connection{margin:22px 0;border:1px solid #b9a1ff55;border-radius:18px;padding:clamp(14px,3vw,22px);background:linear-gradient(135deg,#10182c,#17142d)}.hm-connection h2{margin:0 0 8px;color:#eaf8ff;font-size:18px;letter-spacing:1px}.hm-connection>p,.hm-connection-detail p{color:#b9c8dc;font-size:13px}.hm-connection-picker{max-width:360px;margin:14px 0}.hm-connection-picker label{display:block;margin-bottom:7px;color:#c5d5eb;font-size:10px;letter-spacing:1px;font-weight:800}.hm-connection-picker select{width:100%;padding:11px;border-radius:9px;border:1px solid #536789;background:#101a30;color:white}.hm-connection-detail{border:1px solid #8ceeff35;border-radius:12px;padding:15px;background:#080f20}.hm-connection-detail h3{margin:0 0 7px;color:var(--hm-cyan);font-size:14px;letter-spacing:1px}.hm-connection-detail p{margin:7px 0}.hm-connection-status{padding-top:8px;border-top:1px solid #ffffff20;font-size:11px!important;color:#f3d99b!important}
-.hm-projector-setup{margin:22px 0;border:1px solid #8ceeff38;border-radius:18px;padding:clamp(14px,3vw,22px);background:#0b1325}.hm-projector-setup h2{font-size:16px;letter-spacing:1.5px;margin:0 0 6px}.hm-projector-setup>p{color:#afc0d8;font-size:12px;line-height:1.5}.hm-projector-controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.hm-projector-card{padding:14px;border:1px solid #ffffff20;border-radius:12px;background:#101b30;min-width:0}.hm-projector-card h3{font-size:12px;letter-spacing:1px;color:var(--hm-cyan);margin:0 0 12px}.hm-projector-card label{display:block;font-size:9px;letter-spacing:1px;color:#c5d5eb;margin:10px 0 5px}.hm-projector-card select{width:100%;background:#0a1122;color:white;border:1px solid #3b4c6b;border-radius:8px;padding:8px}.hm-projector-card input{width:100%;accent-color:var(--hm-cyan)}.hm-display-target{font-size:10px!important;color:#8fa5c4!important;margin:8px 0!important}.hm-setup-note{color:#f0d99d!important;font-size:11px!important}@media(max-width:720px){.hm-projector-controls{grid-template-columns:1fr}}
-.hm-warning{border-left:3px solid var(--hm-gold);padding:12px 15px;background:#f5d38a0d;color:#d6ddec;font-size:12px;margin:0 0 55px}
-@media(max-width:720px){.hm-projectors{grid-template-columns:repeat(2,minmax(0,1fr))}.hm-output:nth-child(n){grid-column:span 1}.hm-output:first-child{grid-column:span 2}.hm-output .hm-window{min-height:165px}.hm-controls{grid-template-columns:repeat(2,minmax(0,1fr))}.hm-sections{grid-template-columns:1fr}}
-@media(prefers-reduced-motion:reduce){.hm-scene-symbol,.hm-snow,.hm-particles,.hm-beam{animation:none!important}}
-
-body.projector-mode{margin:0!important;background:#050914!important;overflow:hidden}
-body.projector-mode .site-header,body.projector-mode .hm-hero,body.projector-mode .hm-stage-head,body.projector-mode .hm-controls,body.projector-mode .hm-actions,body.projector-mode .hm-note,body.projector-mode .hm-sections,body.projector-mode .hm-warning,body.projector-mode .site-footer,body.projector-mode .skip-link{display:none!important}
-body.projector-mode main{margin:0!important;padding:0!important;max-width:none!important}
-body.projector-mode .hm-stage-wrap{position:fixed;inset:0;border:0;border-radius:0;padding:0;background:#050914;box-shadow:none}
-body.projector-mode .hm-stage{width:100%;height:100%;filter:none!important}
-body.projector-mode .hm-projectors{display:block;width:100%;height:100%}
-body.projector-mode .hm-output{display:none!important;position:absolute;inset:0;width:100%;height:100%}
-body.projector-mode .hm-output.is-active{display:block!important}
-body.projector-mode .hm-output-label{position:absolute;z-index:10;top:12px;left:14px;margin:0;padding:6px 9px;border-radius:7px;background:#07101dcc;color:#eaf8ff;font-size:11px}
-body.projector-mode .hm-output-label span{margin-left:8px}
-body.projector-mode .hm-output .hm-window{position:absolute;inset:0;min-height:0;width:100%;height:100%;border:0;border-radius:0;box-shadow:none}
-body.projector-mode .hm-output .hm-scene .scene-symbol{font-size:clamp(72px,16vw,220px)}
-body.projector-mode .hm-output .hm-scene .scene-name{font-size:clamp(14px,2vw,28px);bottom:7%}
-.hm-reality{margin:0 0 22px;border:1px solid #8ceeff38;border-radius:18px;padding:clamp(16px,3vw,24px);background:linear-gradient(135deg,#101b32,#0a1020)}.hm-reality h2{margin:0 0 8px;font-size:clamp(19px,3vw,25px)}.hm-reality-intro{margin:0 0 16px;color:#b8c8dc;font-size:13px;max-width:760px}.hm-plan{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.hm-plan article{border:1px solid #ffffff18;border-radius:12px;padding:14px;background:#080f20}.hm-plan b{display:block;color:#eafaff;font-size:12px;margin-bottom:6px}.hm-plan p{margin:0;color:#aebed4;font-size:12px;line-height:1.55}.hm-ports{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}.hm-port{border:1px solid #8ceeff55;border-radius:99px;padding:6px 10px;color:#dffaff;font-size:11px}.hm-reality-foot{margin:12px 0 0;color:#f0d99d;font-size:11px;line-height:1.5}@media(max-width:720px){.hm-plan{grid-template-columns:1fr}}
-
-.hm-stage.calibration-mode .hm-window{outline:2px solid #fff;outline-offset:-3px}
-.hm-stage.calibration-mode .hm-window:before{z-index:8;background-image:linear-gradient(90deg,#ffffffa8 1px,transparent 1px),linear-gradient(#ffffffa8 1px,transparent 1px);background-size:10% 10%;opacity:.85}
-.hm-stage.calibration-mode .hm-scene:after{content:"";position:absolute;z-index:9;inset:8%;border:2px solid #fff;background:linear-gradient(90deg,transparent calc(50% - 1px),#fff calc(50% - 1px),#fff calc(50% + 1px),transparent calc(50% + 1px)),linear-gradient(transparent calc(50% - 1px),#fff calc(50% - 1px),#fff calc(50% + 1px),transparent calc(50% + 1px));pointer-events:none}
-.hm-stage.calibration-mode .hm-scene .scene-symbol{opacity:.18}
-.hm-stage.calibration-mode .hm-scene .scene-name{z-index:10;background:#000b;padding:6px}
-body.projector-mode .hm-stage.calibration-mode .hm-output-label{display:block!important}
-
-
-.hm-stage.identification-mode .hm-output:nth-child(1) .hm-scene{background:linear-gradient(135deg,#163d68,#07101e)}
-.hm-stage.identification-mode .hm-output:nth-child(2) .hm-scene{background:linear-gradient(135deg,#164d3d,#07101e)}
-.hm-stage.identification-mode .hm-output:nth-child(3) .hm-scene{background:linear-gradient(135deg,#684018,#07101e)}
-.hm-stage.identification-mode .hm-output:nth-child(4) .hm-scene{background:linear-gradient(135deg,#4b286f,#07101e)}
-.hm-stage.identification-mode .hm-output:nth-child(5) .hm-scene{background:linear-gradient(135deg,#71313a,#07101e)}
-.hm-stage.identification-mode .hm-scene .scene-symbol{font-size:clamp(80px,17vw,230px);font-weight:900;color:#fff;text-shadow:0 0 30px #fff9}
-.hm-stage.identification-mode .hm-scene .scene-name{font-size:clamp(12px,2vw,25px);background:#0009;padding:8px}
-
-/* Full-body storybook artwork replaces tiny floating emoji figures. */
-.hm-scene .hm-art{position:absolute;z-index:1;inset:0 5% 0;width:90%;height:100%;display:flex;align-items:flex-end;justify-content:center;overflow:visible;filter:drop-shadow(0 9px 12px #0008)}
-.hm-scene .hm-art svg{display:block;width:100%;height:100%;overflow:visible}
-.hm-art .figure{transform-box:fill-box;transform-origin:center bottom;animation:hm-character-breathe 3.8s ease-in-out infinite}
-.hm-art .figure:nth-of-type(even){animation-delay:-1.3s}
-.hm-art .ground-shadow{fill:#020713;opacity:.42}
-.hm-art .snow-body{fill:#f3f8ff;stroke:#9ab9d5;stroke-width:3}
-.hm-art .coat{fill:#b52f42;stroke:#641b2a;stroke-width:3}
-.hm-art .trim{fill:#fff4df;stroke:#b6c9dd;stroke-width:2}
-.hm-art .skin{fill:#f0bd91;stroke:#9b654e;stroke-width:2}
-.hm-art .boots{fill:#302a38;stroke:#090d19;stroke-width:3}
-.hm-art .scarf{fill:#c52d45;stroke:#75182b;stroke-width:2}
-.hm-art .gold{fill:#f6ce72;stroke:#94652a;stroke-width:2}
-.hm-art .wood{fill:#70472e;stroke:#35251e;stroke-width:3}
-.hm-art .green{fill:#176b50;stroke:#0b392f;stroke-width:3}
-.hm-art .antler{fill:none;stroke:#e7d6b7;stroke-width:7;stroke-linecap:round;stroke-linejoin:round}
-.hm-art .eye{fill:#182033}
-@keyframes hm-character-breathe{50%{transform:translateY(-4px)}}
-body.projector-mode .hm-output .hm-scene .hm-art{inset:0 8% 0;width:84%;height:100%}
-@media(prefers-reduced-motion:reduce){.hm-art .figure{animation:none!important}}
-
-
-/* Give the illustrated world a little life: snowfall, warm windows and character-specific motion. */
-.hm-scene{isolation:isolate}
-.hm-scene:before{content:"";position:absolute;inset:0;pointer-events:none;z-index:2;opacity:.55;background-image:radial-gradient(circle,#fff 0 1.4px,transparent 2px),radial-gradient(circle,#d8f4ff 0 1px,transparent 2px);background-size:83px 83px,127px 127px;background-position:0 0,31px 42px;animation:hm-snow-drift 13s linear infinite}
-.hm-art{pointer-events:none}
-.hm-art .figure{animation:hm-character-breathe 3.8s ease-in-out infinite}
-.hm-art .figure:nth-of-type(2n){animation-delay:-1.2s}
-.hm-art .figure:nth-of-type(3n){animation-delay:-2.1s}
-.hm-art svg[aria-label*="snowman"] .figure{animation:hm-snowman-sway 5s ease-in-out infinite}
-.hm-art svg[aria-label*="village"] .figure{animation:hm-villager-bounce 2.7s ease-in-out infinite}
-.hm-art svg[aria-label*="Santa"] .figure:nth-of-type(2){animation:hm-reindeer-flight 1.1s ease-in-out infinite}
-.hm-art svg[aria-label*="Santa"] .figure:nth-of-type(3){animation:hm-reindeer-flight 1.1s ease-in-out -0.55s infinite}
-.hm-art svg[aria-label*="standing in snow"] .figure{animation:hm-reindeer-breathe 2.4s ease-in-out infinite}
-.hm-art svg[aria-label*="Christmas tree"] .figure{animation:hm-elf-work 2.2s ease-in-out infinite}
-.hm-art svg[aria-label*="Christmas tree"] circle{animation:hm-ornament-glow 2.5s ease-in-out infinite alternate}
-.hm-art svg[aria-label*="Christmas tree"] circle:nth-of-type(even){animation-delay:-1.2s}
-.hm-art svg[aria-label*="standing in snow"] .figure path:nth-of-type(5),
-.hm-art svg[aria-label*="standing in snow"] .figure path:nth-of-type(6){transform-box:fill-box;transform-origin:top center;animation:hm-hoof-step 1.1s ease-in-out infinite alternate}
-@keyframes hm-snow-drift{to{background-position:0 260px,31px 302px}}
-@keyframes hm-snowman-sway{0%,100%{transform:rotate(-1deg) translateY(0)}50%{transform:rotate(1deg) translateY(-3px)}}
-@keyframes hm-villager-bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
-@keyframes hm-reindeer-flight{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-9px) rotate(2deg)}}
-@keyframes hm-reindeer-breathe{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
-@keyframes hm-hoof-step{to{transform:rotate(7deg)}}
-@keyframes hm-elf-work{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-4px) rotate(-2deg)}}
-@keyframes hm-ornament-glow{from{filter:drop-shadow(0 0 1px #ffd987);opacity:.8}to{filter:drop-shadow(0 0 9px #fff1a8);opacity:1}}
-@media(prefers-reduced-motion:reduce){.hm-scene:before,.hm-art *{animation:none!important}}
-
-
-/* Anchor illustrated scenes to the lower edge of their window. */
-.hm-scene .hm-art{top:0!important;bottom:0!important;height:100%!important;align-items:stretch!important}
-.hm-scene .hm-art svg{width:100%;height:100%;object-fit:contain;object-position:center bottom}
-.hm-scene .hm-art svg[aria-label*="village"],
-.hm-scene .hm-art svg[aria-label*="Christmas tree"],
-.hm-scene .hm-art svg[aria-label*="snowman"]{transform:translateY(1%)}
-
-/* Cinematic scene entrances and layered snowfall. */
-.hm-art{opacity:1;will-change:opacity,transform}
-.hm-art.hm-art-enter{animation:hm-art-arrive .82s cubic-bezier(.2,.75,.25,1) both}
-@keyframes hm-art-arrive{0%{opacity:0;transform:translateY(15px) scale(.975);filter:blur(3px)}65%{opacity:1;filter:blur(0)}100%{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}}
-.hm-scene .hm-snow,.hm-scene .hm-particles{background-image:
-radial-gradient(circle,#fff 0 1.2px,transparent 1.9px),
-radial-gradient(circle,#dff6ff 0 2px,transparent 2.8px),
-radial-gradient(circle,#fff 0 1px,transparent 1.7px),
-radial-gradient(circle,#bdeaff 0 1.5px,transparent 2.2px);
-background-size:43px 57px,91px 113px,137px 151px,67px 89px;
-background-position:0 0,22px 17px,61px 39px,11px 47px;
-animation:hm-layered-snow 11s linear infinite;
-}
-.hm-scene .hm-snow{opacity:.72;filter:drop-shadow(0 0 3px #d8f5ff88)}
-.hm-scene .hm-particles{opacity:.42;animation-duration:17s;animation-direction:reverse}
-@keyframes hm-layered-snow{to{background-position:0 520px,22px 697px,61px 391px,11px 589px}}
-.hm-art svg[aria-label*="village"] .figure{animation:hm-villager-sway 3.4s ease-in-out infinite}
-.hm-art svg[aria-label*="village"] .figure:nth-of-type(2){animation-delay:-1.7s}
-@keyframes hm-villager-sway{0%,100%{transform:translateY(0) rotate(-.5deg)}50%{transform:translateY(-4px) rotate(.8deg)}}
-.hm-art svg[aria-label*="snowman"] .figure{transform-origin:50% 85%}
-.hm-art svg[aria-label*="Santa"] .figure:first-of-type{animation:hm-santa-bob 2.8s ease-in-out infinite}
-@keyframes hm-santa-bob{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-4px) rotate(-1deg)}}
-@media(prefers-reduced-motion:reduce){.hm-art.hm-art-enter{animation:none!important}.hm-scene .hm-snow,.hm-scene .hm-particles{animation:none!important}}
-
-
-/* Holiday-specific worlds: each selection changes the full scene palette and atmosphere. */
-.hm-stage.holiday-halloween .hm-scene{background:radial-gradient(ellipse at 50% 72%,#6b2368aa,transparent 55%),linear-gradient(#160d2c,#35133d 58%,#100919)}
-.hm-stage.holiday-halloween .hm-scene .moon{background:#f4d9b2;box-shadow:0 0 42px #ff8c3dbb}
-.hm-stage.holiday-halloween .hm-scene .horizon{background:linear-gradient(145deg,#3a214b,#100919)}
-.hm-stage.holiday-halloween .hm-scene .scene-symbol{filter:drop-shadow(0 0 20px #ff7b32bb)}
-.hm-stage.holiday-halloween .hm-snow,.hm-stage.holiday-halloween .hm-particles{background-image:radial-gradient(circle,#ff9b45 0 2px,transparent 3px),radial-gradient(circle,#c78cff 0 1.5px,transparent 2.5px),radial-gradient(circle,#fff1cc 0 1px,transparent 2px);background-size:47px 59px,83px 97px,131px 113px;filter:drop-shadow(0 0 4px #ff8a38)}
-.hm-stage.holiday-thanksgiving .hm-scene{background:radial-gradient(ellipse at 50% 72%,#a85b1aaa,transparent 58%),linear-gradient(#311b20,#754024 58%,#21131b)}
-.hm-stage.holiday-thanksgiving .hm-scene .moon{background:#ffd99a;box-shadow:0 0 40px #ffb34caa}
-.hm-stage.holiday-thanksgiving .hm-scene .horizon{background:linear-gradient(145deg,#75452c,#21131b)}
-.hm-stage.holiday-thanksgiving .hm-scene .scene-symbol{filter:drop-shadow(0 0 18px #ffbb55bb)}
-.hm-stage.holiday-thanksgiving .hm-snow,.hm-stage.holiday-thanksgiving .hm-particles{background-image:radial-gradient(ellipse,#e7a451 0 2px,transparent 3px),radial-gradient(ellipse,#c96b3a 0 2px,transparent 3px),radial-gradient(circle,#ffe0a0 0 1px,transparent 2px);background-size:67px 49px,103px 87px,139px 111px}
-.hm-stage.holiday-christmas .hm-scene{background:radial-gradient(ellipse at 50% 70%,#275078aa,transparent 58%),linear-gradient(#101a3a,#14233b 58%,#080d19)}
-.hm-stage.holiday-newyear .hm-scene{background:radial-gradient(ellipse at 50% 35%,#243d80aa,transparent 55%),linear-gradient(#050b24,#171b48 60%,#080816)}
-.hm-stage.holiday-newyear .hm-scene .moon{background:#e6d8ff;box-shadow:0 0 46px #a99affbb}
-.hm-stage.holiday-newyear .hm-scene .horizon{background:linear-gradient(145deg,#25295e,#080816)}
-.hm-stage.holiday-newyear .hm-scene .scene-symbol{filter:drop-shadow(0 0 22px #ffe49c)}
-.hm-stage.holiday-newyear .hm-snow,.hm-stage.holiday-newyear .hm-particles{background-image:radial-gradient(circle,#fff4c6 0 2px,transparent 3px),radial-gradient(circle,#8beaff 0 1.5px,transparent 2.5px),radial-gradient(circle,#e4b7ff 0 2px,transparent 3px);background-size:41px 53px,73px 89px,109px 121px}
-.hm-stage.holiday-valentine .hm-scene{background:radial-gradient(ellipse at 50% 70%,#9f315f99,transparent 58%),linear-gradient(#321126,#72264d 58%,#190b1c)}
-.hm-stage.holiday-valentine .hm-scene .moon{background:#ffd8e8;box-shadow:0 0 42px #ff8bbbbb}
-.hm-stage.holiday-valentine .hm-scene .horizon{background:linear-gradient(145deg,#702b51,#190b1c)}
-.hm-stage.holiday-valentine .hm-scene .scene-symbol{filter:drop-shadow(0 0 20px #ff83b5bb)}
-.hm-stage.holiday-valentine .hm-snow,.hm-stage.holiday-valentine .hm-particles{background-image:radial-gradient(circle,#ff9fc8 0 2px,transparent 3px),radial-gradient(circle,#fff0f6 0 1.5px,transparent 2.5px),radial-gradient(circle,#e879ad 0 2px,transparent 3px);background-size:53px 67px,89px 103px,127px 131px}
-.hm-stage.holiday-easter .hm-scene{background:radial-gradient(ellipse at 50% 72%,#478b72aa,transparent 58%),linear-gradient(#163b47,#5b8b78 58%,#102b2c)}
-.hm-stage.holiday-easter .hm-scene .moon{background:#fff0bf;box-shadow:0 0 40px #fff0bbaa}
-.hm-stage.holiday-easter .hm-scene .horizon{background:linear-gradient(145deg,#548a65,#102b2c)}
-.hm-stage.holiday-easter .hm-scene .scene-symbol{filter:drop-shadow(0 0 18px #fff0b9bb)}
-.hm-stage.holiday-easter .hm-snow,.hm-stage.holiday-easter .hm-particles{background-image:radial-gradient(circle,#ffc9e5 0 2px,transparent 3px),radial-gradient(circle,#fff0a8 0 1.5px,transparent 2.5px),radial-gradient(circle,#b5efff 0 2px,transparent 3px);background-size:59px 71px,97px 107px,127px 139px}
-.hm-stage.holiday-july4 .hm-scene{background:radial-gradient(ellipse at 50% 38%,#234a8caa,transparent 56%),linear-gradient(#07142f,#142b58 60%,#080d19)}
-.hm-stage.holiday-july4 .hm-scene .moon{background:#f4f6ff;box-shadow:0 0 40px #dbe7ffbb}
-.hm-stage.holiday-july4 .hm-scene .horizon{background:linear-gradient(145deg,#243c64,#080d19)}
-.hm-stage.holiday-july4 .hm-scene .scene-symbol{filter:drop-shadow(0 0 22px #ffdf9c)}
-.hm-stage.holiday-july4 .hm-snow,.hm-stage.holiday-july4 .hm-particles{background-image:radial-gradient(circle,#ff596f 0 2px,transparent 3px),radial-gradient(circle,#fff 0 1.5px,transparent 2.5px),radial-gradient(circle,#62b5ff 0 2px,transparent 3px);background-size:61px 73px,89px 101px,127px 139px}
-.hm-stage.holiday-birthday .hm-scene{background:radial-gradient(ellipse at 50% 70%,#7d3d91aa,transparent 58%),linear-gradient(#20133f,#48265e 58%,#100b20)}
-.hm-stage.holiday-birthday .hm-scene .moon{background:#ffe7a4;box-shadow:0 0 42px #ffd16abb}
-.hm-stage.holiday-birthday .hm-scene .horizon{background:linear-gradient(145deg,#503060,#100b20)}
-.hm-stage.holiday-birthday .hm-scene .scene-symbol{filter:drop-shadow(0 0 20px #ffd16abb)}
-.hm-stage.holiday-birthday .hm-snow,.hm-stage.holiday-birthday .hm-particles{background-image:radial-gradient(circle,#ff8acb 0 2px,transparent 3px),radial-gradient(circle,#ffe27c 0 1.5px,transparent 2.5px),radial-gradient(circle,#8beaff 0 2px,transparent 3px);background-size:43px 59px,79px 97px,113px 127px}
-/* Keep Christmas character art exclusive to Christmas; other holidays use their own themed symbols and worlds. */
-.hm-stage:not(.holiday-christmas) .hm-art{display:block}
-.hm-stage:not(.holiday-christmas) .hm-scene .scene-symbol{display:none}
-@keyframes hm-holiday-symbol{0%,100%{transform:translateY(0) scale(1) rotate(-2deg)}50%{transform:translateY(-9px) scale(1.08) rotate(2deg)}}
-@media(prefers-reduced-motion:reduce){.hm-stage:not(.holiday-christmas) .hm-scene .scene-symbol{animation:none!important}}
-
-/* Five-screen synchronized holiday finale. */
-.hm-finale-burst{position:absolute;inset:-12%;z-index:0;pointer-events:none;opacity:0;transform:scale(.55);background:radial-gradient(ellipse at 50% 48%,#fff8d9a8 0, #ffe7a455 13%,#8beaff22 34%,transparent 66%);mix-blend-mode:screen}
-.finale-mode .hm-scene .hm-finale-burst{animation:hm-finale-bloom 3.8s ease-out both}
-.finale-mode .hm-scene:nth-child(2) .hm-finale-burst{animation-delay:.12s}
-.finale-mode .hm-scene:nth-child(3) .hm-finale-burst{animation-delay:.24s}
-.finale-mode .hm-scene:nth-child(4) .hm-finale-burst{animation-delay:.36s}
-.finale-mode .hm-scene:nth-child(5) .hm-finale-burst{animation-delay:.48s}
-.finale-mode .hm-scene .scene-symbol{animation:hm-finale-symbol 1.15s ease-in-out 2}
-.finale-mode.lights-on .hm-scene .hm-beam{opacity:.78!important;animation:hm-finale-beam 1.25s ease-in-out 3}
-.finale-mode .hm-scene .hm-art{filter:drop-shadow(0 0 13px #ffe7a9aa)}
-@keyframes hm-finale-bloom{0%{opacity:0;transform:scale(.55)}18%{opacity:1;transform:scale(1.05)}48%{opacity:.48;transform:scale(1.18)}72%{opacity:.88;transform:scale(1.28)}100%{opacity:.12;transform:scale(1.42)}}
-@keyframes hm-finale-symbol{0%,100%{filter:drop-shadow(0 0 18px #9feaff99);transform:scale(1)}50%{filter:drop-shadow(0 0 34px #fff0b9);transform:scale(1.16)}}
-@keyframes hm-finale-beam{0%,100%{filter:brightness(1);opacity:.3}50%{filter:brightness(2.1);opacity:.9}}
-@media(prefers-reduced-motion:reduce){.finale-mode .hm-scene .hm-finale-burst,.finale-mode .hm-scene .scene-symbol,.finale-mode .hm-scene .hm-beam{animation:none!important}.finale-mode .hm-scene .hm-finale-burst{opacity:.25;transform:none}}
-
-/* Christmas collection: larger cinematic stage and a 23-world selector. */
-.hm-christmas-selector{grid-column:1/-1;border-color:#c69a5b66;background:linear-gradient(120deg,#171d2b,#241a1a)}
-.hm-christmas-selector label{color:#f5d9a3!important}
-.hm-christmas-selector select{font-size:14px;padding:13px!important;border-color:#b98b4c!important;background:#111827!important}
-.hm-christmas-selector p{margin:8px 0 0;color:#c7d2df;font-size:11px;line-height:1.5}
-.hm-stage-wrap{padding:clamp(10px,2vw,18px);background:linear-gradient(145deg,#111827,#080d18);border-color:#c59b5b55}
-.hm-projectors{gap:8px}
-.hm-output:nth-child(1){grid-column:span 6!important}
-.hm-output:nth-child(1) .hm-window{min-height:clamp(280px,48vw,620px);border-width:5px}
-.hm-output:nth-child(n+2){grid-column:span 1!important}
-.hm-output:nth-child(n+2) .hm-window{min-height:clamp(130px,17vw,220px);border-width:4px}
-.hm-scene{padding:0!important;background:linear-gradient(#071326,#1b3049 58%,#d8e5ed 100%)}
-.hm-scene .scene-symbol{display:none!important}
-.hm-scene .hm-art{inset:0!important;width:100%!important;height:100%!important;align-items:stretch!important;filter:none!important}
-.hm-scene .hm-art svg{width:100%!important;height:100%!important;object-fit:cover!important;object-position:center bottom!important}
-.hm-scene .scene-name{z-index:12;left:18px;right:18px;bottom:16px;font-size:clamp(10px,1.1vw,16px);letter-spacing:.2em;text-shadow:0 2px 8px #000,0 0 18px #000;background:linear-gradient(90deg,#06101dcc,transparent);padding:10px 14px;text-align:left}
-.hm-scene:before{opacity:.25}
-.hm-scene .hm-snow,.hm-scene .hm-particles{z-index:6;opacity:.8;filter:drop-shadow(0 0 2px #fff)}
-.hm-scene .hm-beam{z-index:7;width:12%;left:30%;filter:blur(18px);background:linear-gradient(transparent,#fff8d5aa,transparent);opacity:.24}
-.hm-stage.show-running .hm-scene .hm-beam{animation:hm-real-searchlight 7s ease-in-out infinite}
-@keyframes hm-real-searchlight{0%,100%{transform:translateX(-35%) rotate(17deg);opacity:.12}50%{transform:translateX(190%) rotate(-12deg);opacity:.52}}
-.hm-stage.lights-on .hm-output .hm-window{box-shadow:inset 0 0 55px #0008,0 0 20px #f4d79b33}
-body.projector-mode .hm-output .hm-scene .hm-art{inset:0!important;width:100%!important;height:100%!important}
-body.projector-mode .hm-output .hm-scene .scene-name{font-size:clamp(16px,2.2vw,30px);bottom:4%;left:3%;right:3%}
-@media(max-width:720px){.hm-output:nth-child(1){grid-column:span 2!important}.hm-output:nth-child(n+2){grid-column:span 1!important}.hm-output:nth-child(1) .hm-window{min-height:260px}.hm-christmas-selector{grid-column:1/-1}}
-
-
-/* First world polish: warm, grounded alpine village details and atmospheric movement. */
-.hm-scene .hm-art svg .village-window{filter:drop-shadow(0 0 11px #ffbd6277)}
-.hm-scene .hm-art svg .window-frame{fill:#30251f;stroke:#b7a18a;stroke-width:5}
-.hm-scene .hm-art svg .window-glass{fill:#ffc66e;stroke:#ffe1a0;stroke-width:2;animation:village-window-glow 5.5s ease-in-out infinite alternate}
-.hm-scene .hm-art svg .window-cross{fill:none;stroke:#65452f;stroke-width:7;stroke-linecap:round}
-.hm-scene .hm-art svg .window-sheen{fill:none;stroke:#fff2c8;stroke-width:3;stroke-linecap:round;opacity:.65}
-.hm-scene .hm-art svg .village-window:nth-of-type(even) .window-glass{animation-delay:-2.2s}
-.hm-scene .hm-art svg .village-window-frames{filter:drop-shadow(0 5px 4px #08121c99)}
-.hm-scene .hm-art svg .chimney-smoke{transform-box:fill-box;transform-origin:50% 100%;animation:village-smoke 7s ease-in-out infinite}
-.hm-scene .hm-art svg .village-houses{filter:drop-shadow(0 14px 10px #07101b88)}
-@keyframes village-window-glow{0%{opacity:.76}45%{opacity:1}100%{opacity:.84}}
-@keyframes village-smoke{0%{opacity:.12;transform:translateY(8px) scale(.8)}50%{opacity:.55;transform:translateY(-16px) scale(1.12)}100%{opacity:.12;transform:translateY(-34px) scale(1.25)}}
-.hm-scene .hm-art svg .village-lights{filter:drop-shadow(0 0 8px #ffcb6b)}
-.hm-scene .hm-art svg .village-lantern{filter:drop-shadow(0 0 12px #ffc86b88)}
-.hm-scene .hm-art svg .lantern-flame{transform-box:fill-box;transform-origin:50% 100%;animation:village-lantern-flicker 2.4s ease-in-out infinite alternate}
-.hm-scene .hm-art svg .lantern-halo{animation:village-lantern-halo 3.2s ease-in-out infinite alternate;transform-box:fill-box;transform-origin:center}
-@keyframes village-lantern-flicker{0%{opacity:.78;transform:scale(.94)}35%{opacity:1;transform:scale(1.06)}70%{opacity:.86;transform:scale(.98)}100%{opacity:1;transform:scale(1.03)}}
-@keyframes village-lantern-halo{from{opacity:.1;transform:scale(.88)}to{opacity:.28;transform:scale(1.18)}}
-.hm-scene .hm-art svg .village-tree-snow{filter:drop-shadow(0 2px 4px #d8efff99)}
-.hm-scene .hm-art svg .village-path{filter:drop-shadow(0 7px 7px #62788a55)}
-.hm-scene .hm-art svg .village-path>path:first-child{opacity:.96}
-.hm-scene .hm-art svg .village-path>path:nth-child(2){animation:village-path-sparkle 5s ease-in-out infinite alternate}
-@keyframes village-path-sparkle{from{opacity:.35}to{opacity:.9}}
-.hm-scene .hm-art svg .village-tree-ornaments{filter:drop-shadow(0 0 7px #ffe3a2)}
-.hm-scene .hm-art svg .village-tree-ornaments circle{animation:village-ornament-glow 3.6s ease-in-out infinite alternate}
-.hm-scene .hm-art svg .village-tree-ornaments circle:nth-child(even){animation-delay:-1.8s}
-@keyframes village-ornament-glow{from{opacity:.65}to{opacity:1;filter:brightness(1.4)}}
-.hm-scene .hm-art svg .village-lights circle{animation:village-bulb-twinkle 2.8s ease-in-out infinite alternate}
-.hm-scene .hm-art svg .village-lights circle:nth-child(3n){animation-delay:-1.1s}
-.hm-scene .hm-art svg .village-lights circle:nth-child(3n + 1){animation-delay:-2s}
-@keyframes village-bulb-twinkle{from{opacity:.55}to{opacity:1;filter:brightness(1.35)}}
-.hm-scene .hm-snow{mix-blend-mode:screen}
-.hm-stage.show-running .hm-scene .hm-art svg .window-glow{animation-duration:4s}
-
-
-/* Keep every scene's snow falling downward; the reverse particle layer made flakes appear to rise. */
-.hm-scene .hm-snow,.hm-scene .hm-particles{animation-direction:normal!important}
-.hm-scene .hm-particles{animation-duration:15s!important}
-
-
-/* Prevent projector artwork from drifting vertically during scene changes. */
-.hm-scene .hm-art,.hm-scene .hm-art.hm-art-enter{transform:none!important;animation:hm-art-fade-in .65s ease both!important}
-@keyframes hm-art-fade-in{from{opacity:.35}to{opacity:1}}
-.hm-output .hm-scene{transform:translate(0,0)!important}
-.hm-art .figure{animation:none!important}
-
+:root{--hm-ice:#9cecff;--hm-violet:#b9a4ff;--hm-gold:#ffe0a0;--hm-bg:#080b18}
+*{box-sizing:border-box}
+body{background:radial-gradient(ellipse at 50% 0%,#17264b 0,#0b1020 44%,#070a13 100%);color:#f5f7ff}
+.hm-wrap{width:min(1180px,calc(100% - 32px));margin:auto}
+.hm-hero{position:relative;overflow:hidden;text-align:center;padding:78px 16px 52px;isolation:isolate}
+.hm-hero:before,.hm-hero:after{content:"";position:absolute;z-index:-1;border-radius:50%;filter:blur(2px);pointer-events:none}
+.hm-hero:before{width:520px;height:520px;left:50%;top:-390px;transform:translateX(-50%);background:#61cfff24;box-shadow:0 0 130px 70px #8068ff18}
+.hm-hero:after{inset:0;background-image:radial-gradient(#d9f6ff99 1px,transparent 1.6px),radial-gradient(#b8a6ff88 1px,transparent 1.5px);background-size:83px 83px,127px 127px;background-position:10px 20px,55px 4px;opacity:.35;animation:starDrift 35s linear infinite}
+.hm-kicker{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--hm-ice);font-weight:800}
+.hm-hero h1{font-size:clamp(38px,7vw,78px);line-height:.98;letter-spacing:-.055em;margin:18px 0;background:linear-gradient(100deg,#fff 10%,#a8edff 48%,#c5a9ff 85%);background-clip:text;color:transparent}
+.hm-hero p{max-width:690px;margin:18px auto;color:#bac9df;font-size:clamp(14px,2vw,17px);line-height:1.7}
+.hm-hero .hm-tag{display:inline-flex;align-items:center;gap:9px;margin-top:12px;padding:10px 16px;border:1px solid #a9eaff3d;border-radius:99px;background:#a8dfff0b;color:#eaf9ff;font-size:10px;letter-spacing:2px}
+.hm-section-head{display:flex;justify-content:space-between;align-items:end;gap:16px;margin:42px 0 16px}
+.hm-section-head h2{font-size:clamp(21px,3vw,30px);margin:6px 0 0;letter-spacing:-.03em}
+.hm-section-head p{margin:0;color:#91a3bd;font-size:12px;max-width:430px;line-height:1.6}
+.hm-stage{--a:#1b4264;--b:#18254a;--c:#080f24;position:relative;min-height:390px;overflow:hidden;border:1px solid #9edfff38;border-radius:26px;background:linear-gradient(160deg,var(--a),var(--b) 55%,var(--c));box-shadow:0 28px 90px #0008,inset 0 0 90px #8edfff0a;isolation:isolate;transition:background .6s}
+.hm-stage:before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 74%,#fff3,transparent 45%),linear-gradient(180deg,#08132600 45%,#050914bb);z-index:-1}
+.hm-stage:after{content:"";position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(#fff 1px,transparent 1.8px),radial-gradient(#d9edff 1px,transparent 2px);background-size:57px 57px,103px 103px;background-position:0 0,31px 19px;opacity:.28;animation:starDrift 24s linear infinite}
+.hm-stage[data-theme="christmas"]{--a:#174e59;--b:#19355a;--c:#081626}
+.hm-stage[data-theme="halloween"]{--a:#48204c;--b:#241a45;--c:#0c1024}
+.hm-stage[data-theme="thanksgiving"]{--a:#75432d;--b:#4c2a36;--c:#171528}
+.hm-stage[data-theme="newyear"]{--a:#1b2e69;--b:#25204f;--c:#080d24}
+.hm-stage[data-theme="valentine"]{--a:#793b65;--b:#48264f;--c:#1a122b}
+.hm-stage[data-theme="easter"]{--a:#4d877e;--b:#355f6e;--c:#14283b}
+.hm-stage[data-theme="july4"]{--a:#1d4c7e;--b:#252b59;--c:#0b122b}
+.hm-stage[data-theme="birthday"]{--a:#69427c;--b:#39326d;--c:#15172f}
+.hm-stage[data-theme="stpatrick"]{--a:#1e654d;--b:#194c4b;--c:#0b2027}
+.hm-stage[data-theme="mothers"]{--a:#865078;--b:#573b70;--c:#201832}
+.hm-stage[data-theme="fathers"]{--a:#315b79;--b:#263e68;--c:#101a31}
+.hm-stage[data-theme="hanukkah"]{--a:#214b83;--b:#263a72;--c:#101a38}
+.hm-stage[data-theme="diwali"]{--a:#87472e;--b:#56284a;--c:#1d1734}
+.hm-stage[data-theme="lunar"]{--a:#8b303b;--b:#56243e;--c:#20162e}
+.hm-stage[data-theme="graduation"]{--a:#3a4e7c;--b:#342c66;--c:#11162f}
+.hm-stage[data-theme="summer"]{--a:#3a7a8a;--b:#315a78;--c:#142a43}
+.hm-stage-top{position:absolute;z-index:3;left:22px;right:22px;top:20px;display:flex;justify-content:space-between;gap:12px;align-items:center}
+.hm-live{display:inline-flex;gap:8px;align-items:center;border:1px solid #d4efff33;border-radius:99px;background:#07132388;padding:8px 12px;color:#d8f6ff;font-size:9px;letter-spacing:2px}
+.hm-live i{width:7px;height:7px;border-radius:50%;background:#76f1ce;box-shadow:0 0 12px #76f1ce;display:inline-block}
+.hm-count{font-size:10px;color:#d6e7f9;letter-spacing:1px}
+.hm-sky-orb{position:absolute;width:105px;height:105px;right:14%;top:17%;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,#fff2b8 48%,#ffc66c 75%);box-shadow:0 0 45px #ffdf9a99,0 0 110px #ffd68b55;opacity:.85;animation:orbPulse 5s ease-in-out infinite}
+.hm-mountains{position:absolute;bottom:0;left:-5%;right:-5%;height:45%;background:linear-gradient(150deg,#172b43,#0a1528);clip-path:polygon(0 65%,13% 20%,23% 55%,40% 0,56% 55%,70% 18%,85% 62%,100% 25%,100% 100%,0 100%);opacity:.9}
+.hm-ground{position:absolute;bottom:-2%;left:-5%;right:-5%;height:24%;border-radius:50% 50% 0 0;background:linear-gradient(#d8efff,#8caec4 26%,#263d56 30%,#101a2d 100%);box-shadow:0 -10px 45px #c5eaff33}
+.hm-landmark{position:absolute;z-index:2;left:50%;bottom:12%;transform:translateX(-50%);font-size:clamp(95px,17vw,190px);line-height:1;filter:drop-shadow(0 12px 22px #0008) drop-shadow(0 0 24px #fff5);animation:landmarkFloat 5s ease-in-out infinite;white-space:nowrap}
+.hm-glow-ring{position:absolute;z-index:1;width:min(55vw,440px);height:70px;bottom:12%;left:50%;transform:translateX(-50%);border:1px solid #d8f7ff66;border-radius:50%;box-shadow:0 0 32px #b2eaff55,inset 0 0 25px #b2eaff33}
+.hm-stage-copy{position:absolute;z-index:4;bottom:24px;left:20px;right:20px;text-align:center;text-shadow:0 2px 18px #000}
+.hm-stage-copy .eyebrow{font-size:9px;letter-spacing:4px;color:#c5efff;text-transform:uppercase}
+.hm-stage-copy h2{font-size:clamp(23px,4vw,39px);letter-spacing:-.03em;margin:7px 0}
+.hm-stage-copy p{margin:0 auto;max-width:600px;color:#d6e4f4;font-size:12px;line-height:1.6}
+.hm-stage-actions{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin:18px 0 0}
+.hm-btn{border:1px solid #9edfff55;background:#0d1b31;color:#eaf8ff;border-radius:12px;padding:12px 17px;font:inherit;font-size:11px;font-weight:800;letter-spacing:1px;cursor:pointer;transition:.2s}
+.hm-btn:hover{transform:translateY(-2px);border-color:#a9edff;background:#16304c}
+.hm-btn.primary{background:linear-gradient(100deg,#3e91b6,#7566c5);border:0;color:white;box-shadow:0 8px 26px #526dbe44}
+.hm-btn[aria-pressed="true"]{border-color:#a8f1d5;color:#a8f1d5}
+.hm-holiday-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.hm-holiday-card{position:relative;min-height:130px;text-align:left;border:1px solid #8ebce02c;border-radius:17px;padding:16px;background:linear-gradient(145deg,#17243c,#0d1427);color:#f5f8ff;cursor:pointer;overflow:hidden;transition:transform .2s,border-color .2s,background .2s}
+.hm-holiday-card:before{content:"";position:absolute;width:110px;height:110px;right:-30px;bottom:-44px;border-radius:50%;background:var(--card-glow,#8ceeff);filter:blur(30px);opacity:.22}
+.hm-holiday-card:hover{transform:translateY(-3px);border-color:#a7eaff88}
+.hm-holiday-card[aria-pressed="true"]{border-color:#a6eaff;background:linear-gradient(145deg,#203b58,#171d3d);box-shadow:0 0 0 1px #a6eaff33,0 12px 30px #0005}
+.hm-holiday-card .emoji{font-size:27px;display:block;margin-bottom:11px;filter:drop-shadow(0 0 12px #fff5)}
+.hm-holiday-card strong{display:block;font-size:13px;position:relative}
+.hm-holiday-card small{display:block;color:#94a9c5;font-size:10px;margin-top:5px;position:relative}
+.hm-experiences{margin:36px 0 58px;padding:24px;border:1px solid #92caff25;border-radius:22px;background:linear-gradient(145deg,#111c32cc,#0b1020cc)}
+.hm-experience-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.hm-experience-head h2{font-size:20px;margin:0}
+.hm-experience-head p{font-size:11px;color:#96a9c5;margin:5px 0 0}
+.hm-experience-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.hm-experience{display:flex;align-items:center;gap:12px;min-height:68px;padding:12px;border:1px solid #a1c8e022;border-radius:13px;background:#101a2d;color:#eaf3ff;text-align:left;cursor:pointer;transition:.2s}
+.hm-experience:hover,.hm-experience.active{border-color:#9cecff88;background:#1a2a46}
+.hm-experience .num{color:#86dff4;font-size:10px;letter-spacing:1px}
+.hm-experience .exp-emoji{font-size:23px}
+.hm-experience strong{font-size:11px;line-height:1.35}
+.hm-footnote{text-align:center;color:#8295b1;font-size:11px;line-height:1.7;margin:24px auto 50px;max-width:700px}
+@keyframes starDrift{to{background-position:0 500px,31px 600px}}
+@keyframes orbPulse{50%{transform:scale(1.06);box-shadow:0 0 60px #ffdf9acc,0 0 130px #ffd68b77}}
+@keyframes landmarkFloat{50%{transform:translate(-50%,-9px) scale(1.025)}}
+@media(max-width:760px){.hm-holiday-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.hm-experience-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.hm-stage{min-height:350px}.hm-hero{padding-top:56px}}
+@media(max-width:460px){.hm-wrap{width:min(100% - 22px,1180px)}.hm-holiday-card{min-height:118px;padding:13px}.hm-experience-grid{grid-template-columns:1fr}.hm-experiences{padding:15px}.hm-stage-top{left:12px;right:12px;top:12px}.hm-count{font-size:8px}.hm-stage-copy{bottom:19px}.hm-sky-orb{width:75px;height:75px;right:12%;top:20%}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;scroll-behavior:auto!important;transition:none!important}}
 </style>
 </head>
 <body>
@@ -279,203 +94,81 @@ body.projector-mode .hm-output .hm-scene .scene-name{font-size:clamp(16px,2.2vw,
 <nav class="primary-nav" aria-label="Primary navigation"><a href="../index.html">HOME</a><a href="../projects.html" aria-current="page">PROJECTS</a><a href="../explore.html">EXPLORE</a><a href="../shows.html">SHOWS</a><a href="../vision.html">VISION</a><a href="../contact.html">CONNECT</a></nav>
 </div></header>
 <main id="main-content">
-<section class="hm-hero"><p class="hm-kicker">A YEAR OF WONDER · A LIVING WINDOW EXPERIENCE</p><h1>KAEVORYN HOLIDAY MAGIC</h1><p>Turn ordinary windows into extraordinary worlds. Seasonal stories, synchronized sound, coordinated lighting, and a little impossible magic — all year long.</p></section>
-<section class="hm-stage-wrap" aria-labelledby="hm-stage-title">
-<div class="hm-stage-head"><div><p class="hm-kicker">THE FIRST PROTOTYPE</p><h2 id="hm-stage-title">THE LIVING WINDOW STAGE</h2></div><div class="hm-status" id="hm-status" aria-live="polite">Standby · Choose a holiday to begin</div></div>
-<div class="hm-stage" id="hm-stage">
-<div class="hm-projectors" aria-label="Five synchronized projector previews">
-<div class="hm-output"><div class="hm-output-label">PROJECTOR 1 <span>MAIN SCENE</span></div><div class="hm-window inside"><div class="hm-scene"><span class="moon"></span><span class="horizon"></span><span class="hm-finale-burst" aria-hidden="true"></span><span class="hm-snow"></span><span class="hm-beam"></span><span class="scene-symbol" id="hm-symbol-0">✨</span><span class="hm-art" aria-hidden="true"></span><span class="scene-name" id="hm-name-0">Main scene</span></div></div></div>
-<div class="hm-output"><div class="hm-output-label">PROJECTOR 2 <span>WINDOW A</span></div><div class="hm-window outside"><div class="hm-scene"><span class="moon"></span><span class="horizon"></span><span class="hm-finale-burst" aria-hidden="true"></span><span class="hm-particles"></span><span class="hm-beam"></span><span class="scene-symbol" id="hm-symbol-1">✨</span><span class="hm-art" aria-hidden="true"></span><span class="scene-name" id="hm-name-1">Window A</span></div></div></div>
-<div class="hm-output"><div class="hm-output-label">PROJECTOR 3 <span>WINDOW B</span></div><div class="hm-window outside"><div class="hm-scene"><span class="moon"></span><span class="horizon"></span><span class="hm-finale-burst" aria-hidden="true"></span><span class="hm-particles"></span><span class="hm-beam"></span><span class="scene-symbol" id="hm-symbol-2">✨</span><span class="hm-art" aria-hidden="true"></span><span class="scene-name" id="hm-name-2">Window B</span></div></div></div>
-<div class="hm-output"><div class="hm-output-label">PROJECTOR 4 <span>WINDOW C</span></div><div class="hm-window outside"><div class="hm-scene"><span class="moon"></span><span class="horizon"></span><span class="hm-finale-burst" aria-hidden="true"></span><span class="hm-particles"></span><span class="hm-beam"></span><span class="scene-symbol" id="hm-symbol-3">✨</span><span class="hm-art" aria-hidden="true"></span><span class="scene-name" id="hm-name-3">Window C</span></div></div></div>
-<div class="hm-output"><div class="hm-output-label">PROJECTOR 5 <span>SPECIAL EFFECTS</span></div><div class="hm-window inside"><div class="hm-scene"><span class="moon"></span><span class="horizon"></span><span class="hm-finale-burst" aria-hidden="true"></span><span class="hm-snow"></span><span class="hm-beam"></span><span class="scene-symbol" id="hm-symbol-4">✨</span><span class="hm-art" aria-hidden="true"></span><span class="scene-name" id="hm-name-4">Finale & effects</span></div></div></div>
-</div>
-<div class="hm-controls">
-<div class="hm-control"><label for="hm-holiday">HOLIDAY WORLD</label><select id="hm-holiday"><option value="halloween">Halloween</option><option value="thanksgiving">Thanksgiving</option><option value="christmas" selected>Christmas</option><option value="newyear">New Year's Eve</option><option value="valentine">Valentine's Day</option><option value="easter">Easter / Spring</option><option value="july4">Independence Day</option><option value="birthday">Birthday Celebration</option></select></div><div class="hm-control hm-christmas-selector" id="hm-christmas-selector-wrap"><label for="hm-christmas-world">CHOOSE YOUR CHRISTMAS EXPERIENCE · 23 WORLDS</label><select id="hm-christmas-world"><option value="0">01 · Enchanted Christmas Village</option><option value="1">02 · Santa's Midnight Flight</option><option value="2">03 · The Grand Christmas Tree</option><option value="3">04 · Santa's Toy Workshop</option><option value="4">05 · Enchanted Winter Forest</option><option value="5">06 · Christmas Castle</option><option value="6">07 · Northern Lights</option><option value="7">08 · Christmas Eve Spectacular</option><option value="8">09 · The Christmas Express</option><option value="9">10 · Reindeer Valley</option><option value="10">11 · The Crystal Ice Palace</option><option value="11">12 · Gingerbread Wonderland</option><option value="12">13 · The Magic of Christmas Eve</option><option value="13">14 · Christmas Market</option><option value="14">15 · Angels of Christmas</option><option value="15">16 · The Frozen Wonderland</option><option value="16">17 · Santa's Sky Adventure</option><option value="17">18 · The Royal Christmas Ball</option><option value="18">19 · Krampus</option><option value="19">20 · The Nightmare Before Christmas</option><option value="20">21 · Naughty / Drunk Santa</option><option value="21">22 · The Christmas Bugler</option><option value="22">23 · The Christmas Story</option></select><p id="hm-world-description">A cinematic winter village with warm windows, layered snowdrifts, and distant mountain depth.</p></div>
-<div class="hm-control"><label for="hm-mode">SHOW CONTROL</label><select id="hm-mode"><option value="manual">Manual control</option><option value="automatic">Automatic show</option></select></div>
-<div class="hm-control"><label for="hm-brightness">LIGHT INTENSITY <output id="hm-brightness-value">65%</output></label><input id="hm-brightness" type="range" min="0" max="100" value="65"></div>
-<div class="hm-control"><label for="hm-effects">MAGICAL EFFECT</label><select id="hm-effects"><option value="sparkle">Starlight & sparkles</option><option value="snow">Falling snow</option><option value="beam">Magic beams</option><option value="glow">Enchanted glow</option><option value="off">Effects off</option></select></div>
-</div>
-<section class="hm-connection" aria-labelledby="hm-connection-title"><h2 id="hm-connection-title">CHOOSE YOUR PLAYBACK SETUP</h2><p>Kaevoryn Holiday Magic is being prepared for three ways to run the five-scene experience.</p><div class="hm-connection-picker"><label for="hm-connection-mode">YOUR SETUP</label><select id="hm-connection-mode"><option value="laptop">Laptop playback</option><option value="desktop">Desktop playback</option><option value="usb">USB playback</option></select></div><div class="hm-connection-detail" id="hm-connection-detail" aria-live="polite"><div class="hm-usb-export"><button class="hm-btn primary" id="hm-usb-export" type="button">⇩ DOWNLOAD FIVE USB PLAYER FILES</button><p id="hm-usb-status" aria-live="polite">Export creates five standalone animated HTML players for browser playback from USB. These are not projector-native video files.</p></div><h3>LAPTOP PLAYBACK</h3><p>Run the show from a laptop and extend its display to the projectors. The laptop's graphics hardware and available video outputs must support the number of independent screens. A basic HDMI splitter duplicates the same picture.</p><p class="hm-connection-status">CURRENT STAGE: Browser-based five-output prototype. Hardware compatibility still needs checking.</p></div></section>
-<section class="hm-projector-setup" aria-labelledby="hm-setup-title">
-<h2 id="hm-setup-title">INDIVIDUAL PROJECTOR SETUP</h2>
-<p>Choose a scene for each output and frame its preview independently. Move each browser output window to the matching Windows display manually.</p>
-<div class="hm-projector-controls">
-<article class="hm-projector-card" data-projector="1"><h3>PROJECTOR 1</h3><label for="hm-role-1">SCENE ASSIGNMENT</label><select id="hm-role-1" class="hm-role"><option value="0">Main Scene</option><option value="1">Window A</option><option value="2">Window B</option><option value="3">Window C</option><option value="4">Special Effects</option></select><p class="hm-display-target">Output window: Projector 1 · Display placement is manual</p><label for="hm-x-1">HORIZONTAL POSITION <output id="hm-xv-1">0</output></label><input id="hm-x-1" class="hm-x" type="range" min="-20" max="20" value="0"><label for="hm-y-1">VERTICAL POSITION <output id="hm-yv-1">0</output></label><input id="hm-y-1" class="hm-y" type="range" min="-20" max="20" value="0"><label for="hm-z-1">PREVIEW ZOOM <output id="hm-zv-1">100%</output></label><input id="hm-z-1" class="hm-z" type="range" min="70" max="140" value="100"></article><article class="hm-projector-card" data-projector="2"><h3>PROJECTOR 2</h3><label for="hm-role-2">SCENE ASSIGNMENT</label><select id="hm-role-2" class="hm-role"><option value="0">Main Scene</option><option value="1">Window A</option><option value="2">Window B</option><option value="3">Window C</option><option value="4">Special Effects</option></select><p class="hm-display-target">Output window: Projector 2 · Display placement is manual</p><label for="hm-x-2">HORIZONTAL POSITION <output id="hm-xv-2">0</output></label><input id="hm-x-2" class="hm-x" type="range" min="-20" max="20" value="0"><label for="hm-y-2">VERTICAL POSITION <output id="hm-yv-2">0</output></label><input id="hm-y-2" class="hm-y" type="range" min="-20" max="20" value="0"><label for="hm-z-2">PREVIEW ZOOM <output id="hm-zv-2">100%</output></label><input id="hm-z-2" class="hm-z" type="range" min="70" max="140" value="100"></article><article class="hm-projector-card" data-projector="3"><h3>PROJECTOR 3</h3><label for="hm-role-3">SCENE ASSIGNMENT</label><select id="hm-role-3" class="hm-role"><option value="0">Main Scene</option><option value="1">Window A</option><option value="2">Window B</option><option value="3">Window C</option><option value="4">Special Effects</option></select><p class="hm-display-target">Output window: Projector 3 · Display placement is manual</p><label for="hm-x-3">HORIZONTAL POSITION <output id="hm-xv-3">0</output></label><input id="hm-x-3" class="hm-x" type="range" min="-20" max="20" value="0"><label for="hm-y-3">VERTICAL POSITION <output id="hm-yv-3">0</output></label><input id="hm-y-3" class="hm-y" type="range" min="-20" max="20" value="0"><label for="hm-z-3">PREVIEW ZOOM <output id="hm-zv-3">100%</output></label><input id="hm-z-3" class="hm-z" type="range" min="70" max="140" value="100"></article><article class="hm-projector-card" data-projector="4"><h3>PROJECTOR 4</h3><label for="hm-role-4">SCENE ASSIGNMENT</label><select id="hm-role-4" class="hm-role"><option value="0">Main Scene</option><option value="1">Window A</option><option value="2">Window B</option><option value="3">Window C</option><option value="4">Special Effects</option></select><p class="hm-display-target">Output window: Projector 4 · Display placement is manual</p><label for="hm-x-4">HORIZONTAL POSITION <output id="hm-xv-4">0</output></label><input id="hm-x-4" class="hm-x" type="range" min="-20" max="20" value="0"><label for="hm-y-4">VERTICAL POSITION <output id="hm-yv-4">0</output></label><input id="hm-y-4" class="hm-y" type="range" min="-20" max="20" value="0"><label for="hm-z-4">PREVIEW ZOOM <output id="hm-zv-4">100%</output></label><input id="hm-z-4" class="hm-z" type="range" min="70" max="140" value="100"></article><article class="hm-projector-card" data-projector="5"><h3>PROJECTOR 5</h3><label for="hm-role-5">SCENE ASSIGNMENT</label><select id="hm-role-5" class="hm-role"><option value="0">Main Scene</option><option value="1">Window A</option><option value="2">Window B</option><option value="3">Window C</option><option value="4">Special Effects</option></select><p class="hm-display-target">Output window: Projector 5 · Display placement is manual</p><label for="hm-x-5">HORIZONTAL POSITION <output id="hm-xv-5">0</output></label><input id="hm-x-5" class="hm-x" type="range" min="-20" max="20" value="0"><label for="hm-y-5">VERTICAL POSITION <output id="hm-yv-5">0</output></label><input id="hm-y-5" class="hm-y" type="range" min="-20" max="20" value="0"><label for="hm-z-5">PREVIEW ZOOM <output id="hm-zv-5">100%</output></label><input id="hm-z-5" class="hm-z" type="range" min="70" max="140" value="100"></article>
-</div><p class="hm-setup-note">These controls adjust content inside each browser output. They do not change Windows display numbering, move windows between monitors, or perform true projection mapping / edge blending.</p></section>
-<div class="hm-actions"><button class="hm-btn primary" id="hm-start" type="button">▶ START THE SHOW</button><button class="hm-btn" id="hm-next" type="button">NEXT SCENE ↗</button><button class="hm-btn" id="hm-launch" type="button">▣ OPEN 5 PROJECTOR WINDOWS</button><button class="hm-btn" id="hm-sound" type="button" aria-pressed="false">♫ SOUND: OFF</button><button class="hm-btn" id="hm-lights" type="button" aria-pressed="true">✧ LIGHTS: ON</button><button class="hm-btn" id="hm-calibrate" type="button" aria-pressed="false">▦ CALIBRATION: OFF</button><button class="hm-btn" id="hm-identify" type="button" aria-pressed="false"># IDENTIFY PROJECTORS: OFF</button><button class="hm-btn" id="hm-stop" type="button">■ STOP</button></div>
-<p class="hm-note" id="hm-caption">Preview mode: all five projector previews are synchronized. Choose a holiday and start the show.</p>
+<section class="hm-hero">
+<div class="hm-kicker">A NEW WORLD FOR EVERY SEASON</div>
+<h1>KAEVORYN<br>HOLIDAY MAGIC</h1>
+<p>Step into a year-round celebration of wonder. Explore enchanted seasonal worlds, spectacular holiday moments, and magical experiences made to bring every celebration to life.</p>
+<div class="hm-tag"><span>✧</span> IMAGINATION MADE POSSIBLE <span>✧</span></div>
 </section>
-<section class="hm-sections" aria-label="Experience features">
-<article class="hm-info"><h3>✧ Five coordinated scenes</h3><p>Each planned output has its own scene role, while the show controller keeps scene timing together.</p></article>
-<article class="hm-info"><h3>♫ Music & atmosphere</h3><p>Plan original holiday soundtracks, ambient audio, cues, and effects timed to each scene.</p></article>
-<article class="hm-info"><h3>⚡ Real-world effects</h3><p>Lighting, fog, and outdoor effects will need compatible controllers and safety-tested hardware; browser animations alone cannot operate them.</p></article>
+<div class="hm-wrap">
+<div class="hm-section-head"><div><div class="hm-kicker">THE FEATURED WORLD</div><h2 id="hm-feature-heading">Enchanted Christmas Village</h2></div><p id="hm-feature-intro">A living winter wonderland, glowing with warm lights, snow-covered rooftops, and the feeling that something magical is about to happen.</p></div>
+<section class="hm-stage" id="hm-stage" data-theme="christmas" aria-label="Animated holiday world preview">
+<div class="hm-stage-top"><span class="hm-live"><i></i> WORLD ACTIVE</span><span class="hm-count" id="hm-stage-count">CHRISTMAS · EXPERIENCE 01</span></div>
+<div class="hm-sky-orb" aria-hidden="true"></div><div class="hm-mountains" aria-hidden="true"></div><div class="hm-ground" aria-hidden="true"></div><div class="hm-glow-ring" aria-hidden="true"></div>
+<div class="hm-landmark" id="hm-landmark" aria-hidden="true">🏘️</div>
+<div class="hm-stage-copy"><div class="eyebrow" id="hm-stage-eyebrow">THE CHRISTMAS COLLECTION</div><h2 id="hm-stage-title">Enchanted Christmas Village</h2><p id="hm-stage-description">Follow the glowing village path as snow drifts beneath a sky full of winter stars.</p></div>
 </section>
-<section class="hm-reality" aria-labelledby="hm-reality-title">
-<p class="hm-kicker">FROM BROWSER PREVIEW TO REAL INSTALLATION</p>
-<h2 id="hm-reality-title">THE FIVE-PROJECTOR CONNECTION PLAN</h2>
-<p class="hm-reality-intro">The goal is five separately addressable projector feeds from one Windows desktop. The browser prototype is the show-control concept; the computer's graphics hardware and a projection-mapping/output system provide the physical picture feeds.</p>
-<div class="hm-ports"><span class="hm-port">HDMI</span><span class="hm-port">DisplayPort</span><span class="hm-port">VGA</span></div>
-<div class="hm-plan">
-<article><b>01 · Computer outputs</b><p>Choose a Windows desktop with a graphics setup verified to drive five independent displays at the projectors' actual resolutions and refresh rates. A common four-output gaming GPU may not be enough by itself.</p></article>
-<article><b>02 · Correct signal conversion</b><p>Use HDMI or DisplayPort for digital feeds where possible. Use a proper active HDMI-to-VGA or DisplayPort-to-VGA converter only for a projector that needs VGA. VGA carries video, not audio.</p></article>
-<article><b>03 · Extend, map & test</b><p>Set Windows to Extend, identify each display, assign Projectors 1–5, then align and mask each image to its window or projection surface. Test one projector at a time before running the full show.</p></article>
+<div class="hm-stage-actions"><button class="hm-btn primary" id="hm-next" type="button">✧ DISCOVER NEXT EXPERIENCE</button><button class="hm-btn" id="hm-auto" type="button" aria-pressed="false">▶ AUTO-EXPLORE: OFF</button></div>
+<div class="hm-section-head"><div><div class="hm-kicker">CELEBRATE ALL YEAR</div><h2>Choose Your Holiday World</h2></div><p>Every celebration opens its own atmosphere, signature colors, and collection of magical moments.</p></div>
+<section class="hm-holiday-grid" id="hm-holiday-grid" aria-label="Holiday collections"></section>
+<section class="hm-experiences" aria-labelledby="hm-experience-title">
+<div class="hm-experience-head"><div><h2 id="hm-experience-title">Christmas Experiences</h2><p id="hm-experience-subtitle">23 unique worlds to explore</p></div><span class="hm-kicker" id="hm-experience-count">23 EXPERIENCES</span></div>
+<div class="hm-experience-grid" id="hm-experience-grid"></div>
+</section>
+<p class="hm-footnote">Kaevoryn Holiday Magic is an evolving creative experience. Each world is designed as its own celebration, with room for richer animation, original music, lighting moments, and new seasonal adventures.</p>
 </div>
-<p class="hm-reality-foot">Important: a basic HDMI splitter duplicates one picture; it does not create five independent scenes. We will not choose a graphics card, dock, adapter, or splitter until the exact projector inputs and computer output hardware are confirmed. The calibration grid is a visual alignment aid only; precise edge blending, masking and geometric warping require projection-mapping software or projector hardware that supports those adjustments.</p>
-</section>
-<p class="hm-warning"><strong>What works today:</strong> the page provides five browser preview panels, five launchable output windows, and same-browser-window synchronization for show state. <strong>What is not connected yet:</strong> five physical projector signals, per-projector calibration/warping, smart lights, fog, and outdoor equipment. Those require suitable Windows display hardware and compatible external controllers.</p>
 </main>
-<footer class="site-footer"><div class="footer-brand">KAEVORYN STUDIOS</div><div class="footer-mantra">CREATE THE IMPOSSIBLE</div><p>Kaevoryn Holiday Magic · A year of wonder.</p><a href="../projects.html">Return to Projects</a></footer>
+<footer class="site-footer"><div class="footer-brand">KAEVORYN STUDIOS</div><div class="footer-mantra">CREATE THE IMPOSSIBLE</div><p>Kaevoryn Holiday Magic · A world of wonder for every celebration.</p><a href="../projects.html">Return to Projects</a></footer>
 <script>
 (function(){
 "use strict";
-var scenes={
-halloween:[["🎃","The lanterns awaken"],["👻","A whisper beyond the glass"],["🦇","Shadows take flight"],["🏚️","The haunted house appears"],["✨","The magic fades into night"]],
-thanksgiving:[["🍂","Autumn leaves begin to fall"],["🌽","A harvest of golden light"],["🦃","A little Thanksgiving wonder"],["🕯️","Warmth gathers at home"],["❤️","A moment to be grateful"]],
-christmas:[["❄️","Enchanted Christmas Village"],["🛷","Santa's Midnight Flight"],["🎄","The Grand Christmas Tree"],["🧸","Santa's Toy Workshop"],["🌲","Enchanted Winter Forest"],["🏰","Christmas Castle"],["🌌","Northern Lights"],["🎆","Christmas Eve Spectacular"],["🚂","The Christmas Express"],["🦌","Reindeer Valley"],["💎","The Crystal Ice Palace"],["🍬","Gingerbread Wonderland"],["🌙","The Magic of Christmas Eve"],["🏘️","Christmas Market"],["👼","Angels of Christmas"],["⛸️","The Frozen Wonderland"],["🎈","Santa's Sky Adventure"],["💃","The Royal Christmas Ball"],["👹","Krampus"],["🎃","The Nightmare Before Christmas"],["🥴","Naughty / Drunk Santa"],["🎺","The Christmas Bugler"],["⭐","The Christmas Story"]],
-newyear:[["🌌","The night sky opens"],["🕰️","The final moments approach"],["🎆","A thousand lights rise"],["🥂","A new beginning"],["✨","Welcome to a new year"]],
-valentine:[["💗","A little light of love"],["🌹","Roses bloom in the window"],["🦋","Hearts drift through the air"],["💞","A world filled with warmth"],["✨","Love lights the night"]],
-easter:[["🌷","Spring awakens"],["🐇","A visitor in the garden"],["🥚","Color blooms everywhere"],["🦋","Butterflies take flight"],["🌈","A bright new beginning"]],
-july4:[["🌟","The evening sky glows"],["🗽","A celebration begins"],["🎆","Fireworks fill the sky"],["✨","A brilliant summer night"],["🇺🇸","A night to remember"]],
-birthday:[["🎈","The celebration begins"],["🎂","Make a wish"],["🎉","Let the magic shine"],["🎁","A surprise is waiting"],["✨","A spectacular birthday finale"]]
-};
-var holiday=document.getElementById("hm-holiday"),mode=document.getElementById("hm-mode"),stage=document.getElementById("hm-stage"),status=document.getElementById("hm-status"),caption=document.getElementById("hm-caption"),brightness=document.getElementById("hm-brightness"),effects=document.getElementById("hm-effects"),soundBtn=document.getElementById("hm-sound"),lightsBtn=document.getElementById("hm-lights"),startBtn=document.getElementById("hm-start");
-var christmasWorld=document.getElementById("hm-christmas-world"),worldDescription=document.getElementById("hm-world-description");
-var worldDescriptions=["A cinematic winter village with warm windows and deep mountain layers.","A sweeping moonlit sleigh journey over the sleeping village.","A towering evergreen with warm lights and deep forest framing.","A working toy workshop glowing against the winter night.","A dense winter forest with snow-laden branches.","A grand winter castle above the snowy valley.","An expansive aurora sweeping across the night sky.","A dramatic fireworks finale above the winter landscape.","A steam train crossing a snow-covered mountain pass.","A reindeer sanctuary in a snowy woodland.","A monumental palace of ice and refracted light.","A richly detailed gingerbread town with warm windows.","A quiet midnight sky and bright winter star.","A bustling outdoor Christmas market with lanterns and stalls.","A luminous angelic winter scene with sweeping wings of light.","A frozen lake reflecting the village lights.","A spectacular airborne journey above the rooftops.","A grand festive ballroom glowing with gold light.","A dark folklore encounter in a stormy alpine village.","A crooked gothic Christmas town beneath an eerie moon.","A comic, chaotic Santa scene with scattered presents.","A brass bugler on a snowy rooftop for a grand fanfare.","A Bethlehem night with a stable, shepherds, and the Star of Bethlehem."];
-function updateWorldDescription(){if(christmasWorld&&worldDescription)worldDescription.textContent=worldDescriptions[Number(christmasWorld.value)||0];}
-var index=0,running=false,timer=null,audio=null,oscillators=[],soundOn=false,lightsOn=true,calibrationOn=false,identifyOn=false;
-var connectionMode=document.getElementById("hm-connection-mode"),connectionDetail=document.getElementById("hm-connection-detail");
-var connectionGuides={laptop:["LAPTOP PLAYBACK","Run the show from a laptop and extend its display to the projectors. The laptop graphics hardware and available video outputs must support five independent screens. A basic HDMI splitter duplicates one picture.","CURRENT STAGE: Browser-based five-output prototype. Check the laptop's actual display-output limits before relying on five screens."],desktop:["DESKTOP PLAYBACK","A Windows desktop with a graphics card and output configuration that supports five independent displays is the strongest route for a fully synchronized show. The exact graphics card matters; many cards support up to four displays, not five.","CURRENT STAGE: Browser-based five-output prototype. A compatible five-display graphics setup must be selected and tested."],usb:["USB PLAYBACK","We can prepare five separate holiday scene video files for USB. Each projector must support video playback from USB, or use a small HDMI media player. Five independent files need a coordinated start method to stay synchronized; a USB stick alone does not provide that.","CURRENT STAGE: USB export is a planned feature, not a working download yet. Projector USB playback formats and synchronization must be confirmed first."]};
-function exportUsbPlayers(){
-var theme=holiday.value,label=holiday.options[holiday.selectedIndex].text,done=0;
-var status=document.getElementById("hm-usb-status");
-status.textContent="Preparing five players. Your browser may ask permission for multiple downloads.";
-for(var p=0;p<5;p++){
-(function(role){
-var scene=(scenes[theme]||scenes.christmas)[role];
-var art=theme==="christmas"?christmasWorldArt(Number(christmasWorld&&christmasWorld.value)||0,role):holidayArt(theme,role);
-var html='<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Kaevoryn '+label+' Projector '+(role+1)+'</title><style>*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#080b18;color:white;font-family:Segoe UI,Arial,sans-serif}.screen{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;background:radial-gradient(ellipse at 50% 75%,#263d64,#111a35 48%,#080b18 85%)}.screen:before{content:"";position:absolute;inset:0;background-image:radial-gradient(circle,#fff 1px,transparent 2px),radial-gradient(circle,#8ceeff 1px,transparent 2px);background-size:83px 83px,127px 127px;animation:snow 18s linear infinite;pointer-events:none}.art{width:min(86vw,1000px);height:min(70vh,650px);display:flex;align-items:flex-end;justify-content:center;animation:arrive 1s ease both,breath 5s ease-in-out 1s infinite}.art svg{width:100%;height:100%;overflow:visible}.ground-shadow{fill:#020713;opacity:.42}.snow-body{fill:#f3f8ff;stroke:#9ab9d5;stroke-width:3}.coat{fill:#b52f42;stroke:#641b2a;stroke-width:3}.trim{fill:#fff4df;stroke:#b6c9dd;stroke-width:2}.skin{fill:#f0bd91;stroke:#9b654e;stroke-width:2}.boots{fill:#302a38;stroke:#090d19;stroke-width:3}.scarf{fill:#c52d45;stroke:#75182b;stroke-width:2}.gold{fill:#f6ce72;stroke:#94652a;stroke-width:2}.wood{fill:#70472e;stroke:#35251e;stroke-width:3}.green{fill:#176b50;stroke:#0b392f;stroke-width:3}.antler{fill:none;stroke:#e7d6b7;stroke-width:7;stroke-linecap:round;stroke-linejoin:round}.eye{fill:#182033}.figure{animation:figure 3.4s ease-in-out infinite;transform-box:fill-box;transform-origin:center bottom}.title{font-size:clamp(20px,4vw,46px);font-weight:800;letter-spacing:.12em;text-align:center;text-shadow:0 0 22px #8ceeff88;margin:2vh 20px}.sub{font-size:clamp(12px,1.8vw,18px);color:#c8d8ed;letter-spacing:.18em;text-align:center;text-transform:uppercase;margin:0 20px}.number{position:absolute;top:18px;left:22px;color:#8ceeff;font-size:12px;letter-spacing:.2em}@keyframes snow{to{background-position:0 420px,35px 475px}}@keyframes arrive{from{opacity:0;transform:translateY(24px) scale(.96);filter:blur(8px)}to{opacity:1;transform:none;filter:blur(0)}}@keyframes breath{50%{transform:translateY(-7px)}}@keyframes figure{50%{transform:translateY(-5px)}}@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important}}</style></head><body><main class="screen"><div class="number">KAEVORYN HOLIDAY MAGIC · PROJECTOR '+(role+1)+'</div><div class="art">'+art+'</div><h1 class="title">'+scene[1]+'</h1><p class="sub">'+label+' · WINDOW '+(role+1)+'</p></main></body></html>';
-var blob=new Blob([html],{type:"text/html;charset=utf-8"}),url=URL.createObjectURL(blob),a=document.createElement("a");
-a.href=url;a.download="kaevoryn-"+theme+"-projector-"+(role+1)+".html";document.body.appendChild(a);a.click();a.remove();
-window.setTimeout(function(){URL.revokeObjectURL(url);},30000);
-window.setTimeout(function(){done++;if(done===5)status.textContent="Five "+label+" browser-player files downloaded. Copy them to USB and open each in a browser on a playback device. These are animated HTML files, not MP4 videos or direct projector-USB media.";},100);
-})(p);
-}
-}
-function updateConnectionGuide(){var g=connectionGuides[connectionMode.value]||connectionGuides.laptop;connectionDetail.innerHTML="<h3>"+g[0]+"</h3><p>"+g[1]+"</p><p class='hm-connection-status'>"+g[2]+"</p>";}
-var projectorSettings=[{role:0,x:0,y:0,z:100},{role:1,x:0,y:0,z:100},{role:2,x:0,y:0,z:100},{role:3,x:0,y:0,z:100},{role:4,x:0,y:0,z:100}];
-var projectorId=Number(new URLSearchParams(window.location.search).get("projector"))||0;
-var syncChannel=("BroadcastChannel" in window)?new BroadcastChannel("kaevoryn-holiday-magic-sync"):null;
-if(projectorId>=1&&projectorId<=5){document.body.classList.add("projector-mode");document.querySelectorAll(".hm-output")[projectorId-1].classList.add("is-active");document.title="Projector "+projectorId+" · Kaevoryn Holiday Magic";}
-function current(){return scenes[holiday.value]||scenes.christmas}
-function holidayArt(theme,role){
-var palette={halloween:["#ff9b45","#a879ff","#32143e"],thanksgiving:["#ffd078","#d4773d","#49251f"],newyear:["#ffe7a0","#8beaff","#24265c"],valentine:["#ff9fc8","#ff5f91","#541d42"],easter:["#fff0a8","#b7edc9","#315c55"],july4:["#fff","#ff596f","#173d77"],birthday:["#ffe27c","#ff8acb","#49305f"]};
-var p=palette[theme]||["#8ceeff","#b9a1ff","#203454"];
-var item=(scenes[theme]||scenes.christmas)[role%5],symbol=item[0],shape="";
-if(theme==="halloween"){shape=["<path d='M180 270Q145 225 180 180Q210 140 240 180Q275 225 240 270Z' fill='"+p[0]+"' stroke='#5b2a18' stroke-width='7'/><path d='M210 177l8-24 16 8' fill='#5d8c43' stroke='#253c2a' stroke-width='5'/>","<path d='M160 250Q160 160 230 160Q300 160 300 250Q280 285 230 285Q180 285 160 250Z' fill='#f4f1e9' stroke='"+p[1]+"' stroke-width='7'/><circle cx='207' cy='220' r='8' fill='#29172f'/><circle cx='253' cy='220' r='8' fill='#29172f'/>","<path d='M100 230Q155 125 220 210Q285 125 350 230Q290 205 220 270Q160 205 100 230Z' fill='#24182f' stroke='"+p[1]+"' stroke-width='7'/>","<path d='M120 290V190L220 110L320 190V290Z' fill='#24182f' stroke='"+p[0]+"' stroke-width='8'/><path d='M195 290V225Q220 190 245 225V290' fill='#ff9b45'/>","<path d='M220 110L245 185L325 195L265 245L280 325L220 285L160 325L175 245L115 195L195 185Z' fill='"+p[0]+"' stroke='#fff0c2' stroke-width='6'/>"][role%5];}
-else if(theme==="thanksgiving"){shape=["<path d='M220 130Q80 150 130 285Q220 265 220 130M225 140Q350 80 340 245Q260 275 225 140' fill='"+p[0]+"' stroke='#8d4a28' stroke-width='7'/>","<path d='M140 270Q220 90 300 270Z' fill='#e2ad4b' stroke='#8b542d' stroke-width='8'/><path d='M220 120V270M170 175L220 220L270 175' stroke='#fff0b9' stroke-width='8' fill='none'/>","<path d='M220 180Q130 130 120 230Q150 290 220 260Q290 290 320 230Q310 130 220 180Z' fill='#b96837' stroke='#63341f' stroke-width='7'/><circle cx='220' cy='170' r='38' fill='#dca06a'/>","<path d='M220 110V290M155 170H285M165 230H275' stroke='"+p[0]+"' stroke-width='13' stroke-linecap='round'/><path d='M220 105Q165 65 150 115Q175 160 220 145Q265 160 290 115Q275 65 220 105Z' fill='#fff0c8'/>","<path d='M220 110L250 190L335 195L270 250L290 330L220 285L150 330L170 250L105 195L190 190Z' fill='"+p[0]+"'/>"][role%5];}
-else{shape="<circle cx='220' cy='215' r='105' fill='"+p[2]+"' stroke='"+p[1]+"' stroke-width='9'/><path d='M220 75L245 175L350 190L270 255L290 355L220 300L150 355L170 255L90 190L195 175Z' fill='"+p[0]+"' stroke='"+p[1]+"' stroke-width='7'/>";}
-return "<svg viewBox='0 0 440 360' preserveAspectRatio='xMidYMax meet' role='img' aria-label='"+theme+" holiday scene: "+item[1]+"'><ellipse cx='220' cy='330' rx='145' ry='15' fill='#050914' opacity='.45'/>"+shape+"<text x='220' y='220' text-anchor='middle' font-size='72' font-family='Segoe UI Emoji,Apple Color Emoji,Noto Color Emoji,sans-serif'>"+symbol+"</text><circle cx='85' cy='95' r='7' fill='"+p[0]+"'/><circle cx='350' cy='105' r='5' fill='"+p[1]+"'/><path d='M75 285l12-22 12 22m235-20 12-22 12 22' stroke='"+p[0]+"' stroke-width='5' fill='none' stroke-linecap='round'/></svg>";
-}
-function characterArt(role){var art=["<svg viewBox=\"0 0 600 345\" preserveAspectRatio=\"xMidYMax meet\" role=\"img\" aria-label=\"A full-bodied snowman with hat, scarf, twig arms and boots, standing in a snowy landscape\"><ellipse class=\"ground-shadow\" cx=\"300\" cy=\"322\" rx=\"120\" ry=\"18\"/><g class=\"figure\"><path d=\"M220 185 L155 145 M380 185 L445 145\" stroke=\"#805337\" stroke-width=\"12\" stroke-linecap=\"round\"/><circle class=\"snow-body\" cx=\"300\" cy=\"260\" r=\"88\"/><circle class=\"snow-body\" cx=\"300\" cy=\"150\" r=\"62\"/><circle class=\"snow-body\" cx=\"300\" cy=\"75\" r=\"43\"/><path class=\"boots\" d=\"M235 316h55v22h-72q-10-8 17-22m82 0h55l17 22h-72z\"/><path class=\"scarf\" d=\"M246 126q54 24 108 0l-8 25q-48 22-92 0z\"/><path class=\"scarf\" d=\"M330 143l28 5-5 72-27-8z\"/><path class=\"wood\" d=\"M263 20h74l-9-38h-56z\" /><path class=\"gold\" d=\"M250 23h100v13H250z\"/><circle class=\"eye\" cx=\"284\" cy=\"72\" r=\"5\"/><circle class=\"eye\" cx=\"316\" cy=\"72\" r=\"5\"/><path d=\"M300 82l-36 9 36 7\" fill=\"#e98c42\" stroke=\"#a85428\" stroke-width=\"2\"/><path d=\"M282 105q18 13 36 0\" fill=\"none\" stroke=\"#8b4e42\" stroke-width=\"3\" stroke-linecap=\"round\"/><circle cx=\"300\" cy=\"188\" r=\"7\" fill=\"#263349\"/><circle cx=\"300\" cy=\"218\" r=\"7\" fill=\"#263349\"/><circle cx=\"300\" cy=\"248\" r=\"7\" fill=\"#263349\"/></g></svg>","<svg viewBox=\"0 0 600 345\" preserveAspectRatio=\"xMidYMax meet\" role=\"img\" aria-label=\"A glowing winter village with two full-bodied people waving outside their homes\"><ellipse class=\"ground-shadow\" cx=\"300\" cy=\"325\" rx=\"250\" ry=\"17\"/><path d=\"M20 225L125 130l110 95v105H20z\" fill=\"#354c68\" stroke=\"#17253c\" stroke-width=\"5\"/><path d=\"M15 225l110-105 116 105\" fill=\"#8ceeff\" stroke=\"#d7f5ff\" stroke-width=\"10\"/><path d=\"M370 220l85-80 110 80v110H370z\" fill=\"#62445d\" stroke=\"#30233e\" stroke-width=\"5\"/><path d=\"M360 220l95-93 120 93\" fill=\"#c8a4e6\" stroke=\"#f4eaff\" stroke-width=\"9\"/><g fill=\"#ffd987\"><rect x=\"75\" y=\"245\" width=\"42\" height=\"52\" rx=\"5\"/><rect x=\"160\" y=\"245\" width=\"42\" height=\"52\" rx=\"5\"/><rect x=\"420\" y=\"238\" width=\"38\" height=\"50\" rx=\"5\"/><rect x=\"485\" y=\"238\" width=\"38\" height=\"50\" rx=\"5\"/></g><g class=\"figure\" transform=\"translate(245 158)\"><circle class=\"skin\" cx=\"0\" cy=\"0\" r=\"24\"/><path d=\"M-25-8q5-38 45-22l10 25z\" fill=\"#4c2d25\"/><path class=\"coat\" d=\"M-28 28q28-16 56 0l18 90h-92z\"/><path class=\"trim\" d=\"M-8 30h16l8 75H-16z\"/><path class=\"skin\" d=\"M-28 38l-35-43-10 9 28 55 20 5m62-26 35-43 10 9-28 55-20 5\" /><path class=\"boots\" d=\"M-35 115h28v43h-35zM8 115h28v43H8z\"/></g><g class=\"figure\" transform=\"translate(350 177)\"><circle class=\"skin\" cx=\"0\" cy=\"0\" r=\"22\"/><path d=\"M-23-10q7-29 42-13l7 19z\" fill=\"#d9b17a\"/><path fill=\"#6b80a9\" stroke=\"#33415d\" stroke-width=\"3\" d=\"M-25 25q25-13 50 0l18 83h-86z\"/><path class=\"skin\" d=\"M-25 36l-32-24-8 9 24 43 18 3m48-31 32-24 8 9-24 43-18 3\"/><path class=\"boots\" d=\"M-30 106h26v45h-34zM7 106h26v45H7z\"/></g></svg>","<svg viewBox=\"0 0 600 345\" preserveAspectRatio=\"xMidYMax meet\" role=\"img\" aria-label=\"Santa in a complete red suit riding a detailed sleigh pulled by full-bodied reindeer\"><ellipse class=\"ground-shadow\" cx=\"310\" cy=\"315\" rx=\"245\" ry=\"16\"/><path d=\"M65 220q60 60 160 22l-18 35q-95 36-158-22z\" fill=\"#a62c43\" stroke=\"#5c1b2d\" stroke-width=\"6\"/><path d=\"M70 278q100 34 175-6\" fill=\"none\" stroke=\"#e7bf67\" stroke-width=\"8\"/><g class=\"figure\" transform=\"translate(160 130)\"><circle class=\"skin\" cx=\"0\" cy=\"0\" r=\"25\"/><path d=\"M-23 5q18 45 48 0l-3 25q-23 35-44 0z\" fill=\"#fff\"/><path class=\"coat\" d=\"M-33 28q35-20 67 0l17 92h-102z\"/><path class=\"trim\" d=\"M-8 30h16l10 80H-18z\"/><path class=\"boots\" d=\"M-28 116h25v40h-31zM8 116h25v40H8z\"/><path class=\"skin\" d=\"M-30 42l-30 35 10 10 35-24m47-21 29 26-9 12-34-18\"/><path class=\"trim\" d=\"M-28-25q28-25 55 0l-6 12h-43z\"/><path class=\"coat\" d=\"M-28-24l-8-26 42 15 28-18-7 34z\"/></g><g class=\"figure\" transform=\"translate(365 170)\"><ellipse cx=\"0\" cy=\"0\" rx=\"48\" ry=\"27\" fill=\"#9a633b\" stroke=\"#51331f\" stroke-width=\"4\"/><path d=\"M35-10q30-40 54-16l-8 35-42 9z\" fill=\"#9a633b\" stroke=\"#51331f\" stroke-width=\"4\"/><circle cx=\"72\" cy=\"-5\" r=\"4\" class=\"eye\"/><path d=\"M65-28l-8-29 21 22m-7-14 18-24 2 34\" class=\"antler\"/><path d=\"M-25 20l-8 85m25-82-3 82m42-86 4 86m-22-83 18 83\" stroke=\"#70452d\" stroke-width=\"12\" stroke-linecap=\"round\"/><path d=\"M-38 104h15m2 0h14m35 0h15m-3 0h14\" stroke=\"#34271f\" stroke-width=\"9\" stroke-linecap=\"round\"/></g><g class=\"figure\" transform=\"translate(475 195) scale(.82)\"><ellipse cx=\"0\" cy=\"0\" rx=\"42\" ry=\"24\" fill=\"#b27b4a\" stroke=\"#51331f\" stroke-width=\"4\"/><path d=\"M32-10q28-36 50-15l-6 32-40 7z\" fill=\"#b27b4a\" stroke=\"#51331f\" stroke-width=\"4\"/><circle cx=\"65\" cy=\"-4\" r=\"4\" class=\"eye\"/><path d=\"M58-24l-5-26 18 20m-4-13 17-21 2 30\" class=\"antler\"/><path d=\"M-22 18l-8 85m22-82-3 82m37-86 4 86m-20-83 18 83\" stroke=\"#805333\" stroke-width=\"11\" stroke-linecap=\"round\"/></g></svg>","<svg viewBox=\"0 0 600 345\" preserveAspectRatio=\"xMidYMax meet\" role=\"img\" aria-label=\"A full-bodied reindeer standing in snow, with four legs, hooves, face and branching antlers\"><ellipse class=\"ground-shadow\" cx=\"300\" cy=\"322\" rx=\"150\" ry=\"17\"/><g class=\"figure\"><ellipse cx=\"290\" cy=\"170\" rx=\"112\" ry=\"58\" fill=\"#a56c40\" stroke=\"#50301e\" stroke-width=\"5\"/><path d=\"M360 145q44-82 94-48l10 70-74 37z\" fill=\"#a56c40\" stroke=\"#50301e\" stroke-width=\"5\"/><path d=\"M435 154q30 28 47 2l-9 35q-32 13-49-14z\" fill=\"#6f392e\"/><circle class=\"eye\" cx=\"431\" cy=\"130\" r=\"6\"/><ellipse cx=\"469\" cy=\"176\" rx=\"11\" ry=\"8\" fill=\"#c64b51\"/><path class=\"antler\" d=\"M425 92l-12-42m12 42-30-27m30 27 17-35m-17 35 37-14m-55 2-2-25m-10-2-20-18\"/><path class=\"antler\" d=\"M455 93l17-42m-17 42 29-26m-29 26-17-35m17 35-35-14m45 7 4-25\"/><path d=\"M215 203l-8 91m45-88-5 88m90-90 7 90m32-92 8 92\" stroke=\"#71472e\" stroke-width=\"17\" stroke-linecap=\"round\"/><path d=\"M199 293h20m26 0h20m88 0h20m22 0h20\" stroke=\"#262330\" stroke-width=\"12\" stroke-linecap=\"round\"/><path d=\"M180 164q-38-28-51-5\" fill=\"none\" stroke=\"#71472e\" stroke-width=\"9\" stroke-linecap=\"round\"/></g></svg>","<svg viewBox=\"0 0 600 345\" preserveAspectRatio=\"xMidYMax meet\" role=\"img\" aria-label=\"A towering decorated Christmas tree with full-bodied little elves standing beside it\"><ellipse class=\"ground-shadow\" cx=\"300\" cy=\"325\" rx=\"220\" ry=\"17\"/><path class=\"green\" d=\"M300 28l-75 95h45l-78 90h55l-95 100h296l-95-100h55l-78-90h45z\"/><path d=\"M300 300v45\" stroke=\"#70472e\" stroke-width=\"28\"/><path d=\"M300 25l-11 24 11-5 11 5z\" class=\"gold\"/><path d=\"M245 130q55 45 110 0m-155 90q100 60 200 0m-255 80q155 70 310 0\" fill=\"none\" stroke=\"#f5d38a\" stroke-width=\"7\"/><g fill=\"#ffda82\" stroke=\"#855b30\" stroke-width=\"2\"><circle cx=\"300\" cy=\"90\" r=\"10\"/><circle cx=\"248\" cy=\"160\" r=\"9\"/><circle cx=\"352\" cy=\"170\" r=\"9\"/><circle cx=\"210\" cy=\"240\" r=\"10\"/><circle cx=\"390\" cy=\"245\" r=\"10\"/><circle cx=\"300\" cy=\"270\" r=\"11\"/></g><g class=\"figure\" transform=\"translate(135 225)\"><circle class=\"skin\" cx=\"0\" cy=\"0\" r=\"19\"/><path class=\"green\" d=\"M-18-14l18-30 18 30z\"/><path class=\"coat\" d=\"M-22 20h44l12 65h-68z\"/><path class=\"trim\" d=\"M-7 22h14l5 54H-12z\"/><path class=\"skin\" d=\"M-20 30l-28 25 8 8 29-16m31-17 28 25-8 8-29-16\"/><path class=\"boots\" d=\"M-18 82h15v35h-21zM5 82h15v35H5z\"/></g><g class=\"figure\" transform=\"translate(465 230)\"><circle class=\"skin\" cx=\"0\" cy=\"0\" r=\"19\"/><path class=\"green\" d=\"M-18-14l18-30 18 30z\"/><path fill=\"#315a9a\" stroke=\"#1a3156\" stroke-width=\"3\" d=\"M-22 20h44l12 65h-68z\"/><path class=\"trim\" d=\"M-7 22h14l5 54H-12z\"/><path class=\"skin\" d=\"M-20 30l-28 25 8 8 29-16m31-17 28 25-8 8-29-16\"/><path class=\"boots\" d=\"M-18 82h15v35h-21zM5 82h15v35H5z\"/></g></svg>"];return art[role]||art[0];}
-
-var christmasMotifs=[
-"<g class='village-houses'><g><path d='M75 610L355 365 635 610V820H75Z' fill='#354354' stroke='#dbe4e9' stroke-width='13'/><path d='M45 620L355 330 665 620' fill='none' stroke='#f4f6f5' stroke-width='31'/><path d='M95 605L355 380 615 605' fill='none' stroke='#aebfca' stroke-width='8'/><path d='M145 820V680Q145 620 210 620H270Q335 620 335 680V820' fill='#172536' stroke='#9eacb8' stroke-width='12'/><path d='M380 820V680Q380 620 445 620H505Q570 620 570 680V820' fill='#172536' stroke='#9eacb8' stroke-width='12'/><g class='village-window' transform='translate(136 478)'><rect class='window-frame' width='100' height='120' rx='4'/><rect class='window-glass' x='8' y='8' width='84' height='104' rx='2'/><path class='window-cross' d='M50 8V112M8 60H92'/><path class='window-sheen' d='M13 13V43' /></g><g class='village-window' transform='translate(465 478)'><rect class='window-frame' width='100' height='120' rx='4'/><rect class='window-glass' x='8' y='8' width='84' height='104' rx='2'/><path class='window-cross' d='M50 8V112M8 60H92'/><path class='window-sheen' d='M13 13V43'/></g><path d='M115 615Q355 565 595 615' fill='none' stroke='#e8eef0' stroke-width='14'/><rect x='510' y='390' width='48' height='112' fill='#4b5662' stroke='#dce4e8' stroke-width='8'/><path class='chimney-smoke' d='M535 380q-45-45 0-82t0-70' fill='none' stroke='#dce8ed' stroke-width='13' opacity='.45'/></g><g><path d='M890 650L1130 435 1370 650V830H890Z' fill='#473e42' stroke='#dce5e9' stroke-width='12'/><path d='M855 660L1130 405 1405 660' fill='none' stroke='#f5f6f3' stroke-width='28'/><path d='M950 645V560Q950 510 1000 510H1060Q1110 510 1110 560V645M1160 645V560Q1160 510 1210 510H1270Q1320 510 1320 560V645' fill='#192638' stroke='#aab7c0' stroke-width='10'/><g class='village-window' transform='translate(982 547)'><rect class='window-frame' width='96' height='76' rx='4'/><rect class='window-glass' x='7' y='7' width='82' height='62' rx='2'/><path class='window-cross' d='M48 7V69M7 38H89'/><path class='window-sheen' d='M15 15V38'/></g><g class='village-window' transform='translate(1208 547)'><rect class='window-frame' width='96' height='76' rx='4'/><rect class='window-glass' x='7' y='7' width='82' height='62' rx='2'/><path class='window-cross' d='M48 7V69M7 38H89'/><path class='window-sheen' d='M15 15V38'/></g><path d='M1070 830V700Q1130 630 1190 700V830' fill='#192638' stroke='#aebbc4' stroke-width='10'/><path d='M910 660Q1130 610 1350 660' fill='none' stroke='#eef3f4' stroke-width='13'/></g><g fill='#142f2b' stroke='#31594d' stroke-width='9'><path d='M5 825L110 500 215 825zM1350 835L1470 470 1590 835z'/><path d='M25 700h170m-150-90h130m-110-90h90M1370 700h200m-180-100h160m-140-100h120' fill='none' stroke='#dbe6e5' stroke-width='11'/></g><g class='village-tree-snow' fill='none' stroke='#eaf4f5' stroke-width='13' stroke-linecap='round'><path d='M28 700l82-28 82 28M45 610l65-24 65 24M1370 700l100-30 100 30M1395 600l75-25 75 25'/><path d='M65 760l45-16 45 16M1425 760l45-16 45 16' stroke-width='9' opacity='.9'/></g><g class='village-tree-ornaments'><circle cx='110' cy='650' r='12' fill='#e8b85f'/><circle cx='150' cy='720' r='10' fill='#a8dff0'/><circle cx='1470' cy='650' r='12' fill='#e8b85f'/><circle cx='1510' cy='720' r='10' fill='#a8dff0'/></g><g fill='#ffd98b' class='window-glow'><circle cx='760' cy='685' r='18'/><circle cx='825' cy='735' r='13'/></g><g class='village-lantern'><ellipse cx='770' cy='730' rx='105' ry='24' fill='#ffcf79' opacity='.13'/><path d='M770 820V690l-35-40h70l-35 40' fill='#352d29' stroke='#c4a47a' stroke-width='7'/><path d='M770 670v-62' stroke='#d8b87d' stroke-width='8'/><circle class='lantern-flame' cx='770' cy='600' r='18' fill='#ffcf79'/><circle class='lantern-halo' cx='770' cy='600' r='43' fill='#ffcf79' opacity='.16'/></g><path d='M0 825Q240 800 480 830T960 820T1440 825T1600 815' fill='none' stroke='#fff' stroke-width='15' opacity='.9'/><g class='village-lights'><path d='M115 612Q355 665 595 612M905 655Q1130 705 1355 655' fill='none' stroke='#23303b' stroke-width='7'/><g fill='#ffd56f'><circle cx='150' cy='623' r='11'/><circle cx='220' cy='637' r='10'/><circle cx='290' cy='646' r='11'/><circle cx='360' cy='649' r='10'/><circle cx='430' cy='646' r='11'/><circle cx='500' cy='635' r='10'/><circle cx='560' cy='620' r='11'/><circle cx='950' cy='665' r='10'/><circle cx='1020' cy='680' r='11'/><circle cx='1090' cy='688' r='10'/><circle cx='1160' cy='690' r='11'/><circle cx='1230' cy='684' r='10'/><circle cx='1300' cy='670' r='11'/></g></g><g class='village-path'><path d='M700 900Q760 860 720 825Q690 795 770 770' fill='none' stroke='#eaf2f6' stroke-width='112' opacity='.9'/><path d='M700 900Q760 860 720 825Q690 795 770 770' fill='none' stroke='#fff' stroke-width='5' stroke-dasharray='22 18' opacity='.75'/><path d='M700 900Q760 860 720 825Q690 795 770 770' fill='none' stroke='#b8cbd7' stroke-width='5' stroke-dasharray='3 18' opacity='.7'/><g fill='#9eafbb' opacity='.65'><ellipse cx='704' cy='876' rx='5' ry='9' transform='rotate(-24 704 876)'/><ellipse cx='730' cy='858' rx='5' ry='9' transform='rotate(24 730 858)'/><ellipse cx='723' cy='835' rx='5' ry='9' transform='rotate(-24 723 835)'/><ellipse cx='742' cy='818' rx='5' ry='9' transform='rotate(24 742 818)'/></g></g></g>",
-"<g transform='translate(300 130)' fill='#9b352e' stroke='#e7c98b' stroke-width='12'><path d='M30 390Q180 330 340 390L300 500H70Z'/><path d='M90 360Q120 260 240 270Q300 290 330 360Z'/><circle cx='155' cy='260' r='62' fill='#e8e5dc'/><path d='M105 210q45-110 120-15l-12 28h-95z' fill='#9e2d32'/><path d='M330 350Q510 250 650 310' fill='none' stroke='#b98c5c' stroke-width='15'/><g fill='#80583d' stroke='#d9c7a4'><ellipse cx='680' cy='300' rx='95' ry='42'/><path d='M735 270q70-100 115-25l-20 75-90 8z'/><path d='M800 250l-28-75 50 45 38-65 10 88' fill='none' stroke-width='14'/><path d='M610 330l-18 115m72-112-5 112m75-115 8 115m65-115 15 115' fill='none' stroke-width='20'/></g></g>",
-"<g><path d='M800 90L560 430h140L500 700h600L900 430h140z' fill='#14513d' stroke='#244c3d' stroke-width='18'/><path d='M800 95v660' stroke='#7c5736' stroke-width='46'/><path d='M630 440Q800 540 970 440M570 600Q800 720 1030 600' fill='none' stroke='#f4d58b' stroke-width='15'/><g fill='#ffd979'><circle cx='800' cy='250' r='26'/><circle cx='690' cy='450' r='24'/><circle cx='920' cy='480' r='25'/><circle cx='620' cy='620' r='24'/><circle cx='980' cy='620' r='24'/></g><path d='M800 45l20 48 52 5-40 34 12 50-44-27-44 27 12-50-40-34 52-5z' fill='#f8df9b'/></g>",
-"<g><path d='M150 610h480v190H150zM190 520h400v90H190z' fill='#533d35' stroke='#c9b18d' stroke-width='12'/><path d='M110 525l240-160 280 160' fill='#633e36' stroke='#e5d5c1' stroke-width='22'/><g fill='#ffce76'><rect x='220' y='650' width='75' height='100'/><rect x='390' y='650' width='75' height='100'/></g><path d='M720 690q120-170 240 0' fill='none' stroke='#d9b56e' stroke-width='20'/></g>",
-"<g fill='#0c302b' stroke='#31564c' stroke-width='10'><path d='M190 820L330 300 470 820zM420 820L590 210 760 820zM880 820L1040 280 1200 820zM1120 820L1260 390 1400 820z'/></g><g fill='#f2d28b'><circle cx='590' cy='450' r='13'/><circle cx='1040' cy='530' r='12'/><circle cx='330' cy='550' r='10'/></g>",
-"<g><path d='M180 630L420 360 660 630v180H180zM850 610L1080 340 1320 610v200H850z' fill='#303b50' stroke='#e3eaf0' stroke-width='22'/><path d='M145 635L420 330 695 635M810 615L1080 310 1360 615' fill='none' stroke='#fff' stroke-width='26'/><g fill='#ffdb8b'><rect x='300' y='660' width='90' height='100'/><rect x='1000' y='650' width='90' height='110'/></g></g>",
-"<path d='M0 250Q250 80 500 240T1000 210T1600 180' fill='none' stroke='#5ed3d4' stroke-width='75' opacity='.5'/><path d='M0 280Q280 130 560 280T1120 250T1600 220' fill='none' stroke='#a6a0ff' stroke-width='42' opacity='.55'/>",
-"<g fill='none' stroke='#ffda8a' stroke-width='14'><path d='M800 110v220m-110-110h220m-188-78 156 156m0-156L722 298'/><circle cx='800' cy='220' r='115'/><path d='M250 160v150m-75-75h150m850-65v160m-80-80h160'/></g>",
-"<g><path d='M100 640L380 420 660 640v170H100z' fill='#354456' stroke='#e4edf2' stroke-width='14'/><path d='M60 650L380 390 700 650' fill='none' stroke='#fff' stroke-width='26'/><path d='M760 710h540v70H760z' fill='#7b4935'/><circle cx='930' cy='690' r='50' fill='#d6e8ef'/><circle cx='1120' cy='690' r='50' fill='#d6e8ef'/></g>",
-"<g fill='#8a5b35' stroke='#3c2b20' stroke-width='12'><ellipse cx='560' cy='520' rx='190' ry='100'/><path d='M650 470q100-160 190-80l20 130-150 80z'/><path d='M790 430l-30-140 90 100 70-120 10 150' fill='none' stroke='#e7d7b9' stroke-width='20'/><path d='M420 600l-35 170m120-160-10 160m180-170 10 170m100-170 15 170' fill='none' stroke-width='34'/></g>",
-"<g><path d='M260 700L520 270h560l260 430z' fill='#9bc8e4' opacity='.45' stroke='#d8f5ff' stroke-width='14'/><path d='M430 700L800 130l370 570M520 700L800 300l280 400' fill='none' stroke='#e8faff' stroke-width='18'/></g>",
-"<g fill='#b97c42' stroke='#6a4129' stroke-width='10'><path d='M240 650L800 300 1360 650v160H240z'/><path d='M360 500l120-180 120 180M950 500l120-180 120 180' fill='#f4c77d'/></g><g fill='#fff0c2'><circle cx='420' cy='580' r='24'/><circle cx='1180' cy='580' r='24'/></g>",
-"<g><path d='M800 90v170' stroke='#e9e1d3' stroke-width='12'/><circle cx='800' cy='300' r='170' fill='#fff0c2' opacity='.92'/><path d='M800 90l35 115 120 0-98 70 38 118-95-73-95 73 38-118-98-70h120z' fill='#fff4c8'/></g>",
-"<g><path d='M120 650h360v160H120zM620 620h360v190H620zM1120 650h360v160h-360z' fill='#674735' stroke='#cba56d' stroke-width='12'/><path d='M90 650l210-180 210 180M590 620l210-210 210 210M1090 650l210-180 210 180' fill='#9a5941' stroke='#f2dfbd' stroke-width='16'/><g fill='#ffd98b'><rect x='230' y='690' width='80' height='90'/><rect x='740' y='670' width='90' height='110'/><rect x='1240' y='690' width='80' height='90'/></g></g>",
-"<g fill='#e7e1d8' stroke='#aab9c7' stroke-width='8'><path d='M800 190q-90 100-170 260 110-25 170-110 60 85 170 110-80-160-170-260z'/><path d='M800 430v260' stroke-width='30'/><circle cx='800' cy='170' r='50'/></g>",
-"<g><ellipse cx='800' cy='730' rx='470' ry='60' fill='#dff6ff' opacity='.6'/><path d='M330 700Q800 780 1270 700' fill='none' stroke='#fff' stroke-width='12'/></g>",
-"<g><path d='M520 480q280-280 560 0l-90 210H610z' fill='#9c3b37' stroke='#e9c889' stroke-width='14'/><path d='M800 220v260' stroke='#f0d79a' stroke-width='12'/><path d='M790 220q-180-130-230 0 100 120 240 40 140 80 240-40-50-130-230 0' fill='#d8a55e' stroke='#f0d79a' stroke-width='10'/></g>",
-"<g fill='#281b2a' stroke='#b28a62' stroke-width='12'><path d='M150 780V430l170-150 160 150v350zM650 780V330l170-180 180 180v450zM1150 780V450l160-140 160 140v330z'/></g><g fill='#ffad55'><rect x='230' y='550' width='55' height='100'/><rect x='760' y='500' width='65' height='110'/><rect x='1280' y='570' width='55' height='90'/></g>",
-"<g fill='#271d32' stroke='#a997b7' stroke-width='10'><path d='M100 790V440l180-190 190 190v350M570 790V390l220-220 220 220v400M1120 790V450l160-180 180 180v340'/></g><g fill='#ffad60'><circle cx='300' cy='600' r='34'/><circle cx='800' cy='550' r='38'/><circle cx='1300' cy='620' r='34'/></g>",
-"<g transform='translate(780 350)'><path d='M-160 150q30-150 180-140 110 5 170 130l-35 130H-125z' fill='#a12f32' stroke='#e9d5c1' stroke-width='14'/><circle cx='5' cy='35' r='65' fill='#e8c5a4'/><path d='M-60 0q40-110 135-40l20 45z' fill='#9c2931'/><path d='M-100 170l-90 160m250-160 80 150' stroke='#e9d5c1' stroke-width='28'/></g>",
-"<g><path d='M220 730L1380 730' stroke='#8b5a3b' stroke-width='22'/><path d='M420 730V470l380-240 380 240v260' fill='#523b32' stroke='#e6d4b8' stroke-width='18'/><path d='M590 730V560q210-230 420 0v170' fill='#0b1220' stroke='#bca88c' stroke-width='12'/><path d='M800 120l-30 90h60z' fill='#fff1b0'/><circle cx='800' cy='110' r='42' fill='#fff1b0'/></g>"
+var collections=[
+{key:"christmas",name:"Christmas",emoji:"🎄",sub:"23 magical experiences",glow:"#7ce8d0",intro:"A living winter wonderland, glowing with warm lights, snow-covered rooftops, and the feeling that something magical is about to happen.",scenes:[["🏘️","Enchanted Christmas Village","Follow the glowing village path as snow drifts beneath a sky full of winter stars."],["🛷","Santa's Midnight Flight","Soar above sleeping rooftops as Santa's sleigh streaks across the moonlit sky."],["🎄","The Grand Christmas Tree","A towering evergreen awakens with thousands of lights and shimmering ornaments."],["🧸","Santa's Toy Workshop","Discover a bustling workshop filled with toys, tiny helpers, and golden sparks."],["🌲","Enchanted Winter Forest","Wander through a quiet forest where every branch glitters with fresh snow."],["🏰","Christmas Castle","Enter a majestic castle dressed in festive lights and winter finery."],["🌌","Northern Lights","Watch ribbons of color dance above a frozen wilderness."],["🎆","Christmas Eve Spectacular","A sky-wide celebration brings the magic of Christmas Eve to life."],["🚂","The Christmas Express","Ride a glowing train through snowy mountains and sparkling valleys."],["🦌","Reindeer Valley","Meet Santa's reindeer in a magical valley beneath the northern stars."],["💎","The Crystal Ice Palace","Explore a palace of luminous ice, crystal towers, and frozen reflections."],["🍬","Gingerbread Wonderland","Step into a sweet world of candy cottages, gumdrop paths, and sugar-snow."],["🌙","The Magic of Christmas Eve","A peaceful, star-filled night glows with the promise of Christmas morning."],["🏘️","Christmas Market","Stroll through festive stalls, lanterns, music, and warm holiday cheer."],["👼","Angels of Christmas","A radiant celebration filled with gentle light and soaring winter beauty."],["⛸️","The Frozen Wonderland","Glide into a sparkling world of ice, snow, and shimmering frozen lakes."],["🎈","Santa's Sky Adventure","Follow a spectacular airborne journey over a world transformed by Christmas."],["💃","The Royal Christmas Ball","A grand festive ballroom comes alive with elegance, music, and magic."],["👹","Krampus","A darker winter legend emerges from the shadows of an enchanted alpine night."],["🎃","The Nightmare Before Christmas","A curious collision of spooky shadows and unmistakable holiday wonder."],["🥴","Naughty Santa","A mischievous, chaotic Christmas comedy adventure."],["🎺","The Christmas Bugler","A triumphant holiday fanfare echoes across a glowing winter landscape."],["⭐","The Christmas Story","A luminous retelling of the wonder, hope, and meaning of Christmas."]]},
+{key:"halloween",name:"Halloween",emoji:"🎃",sub:"Haunted nights & eerie delights",glow:"#ff9b55",intro:"Enter a moonlit world of haunted mansions, twisting shadows, strange creatures, and thrilling Halloween surprises.",scenes:[["🏚️","The Haunted Estate","A forgotten mansion awakens beneath a blood-orange moon."],["🎃","Pumpkin Hollow","Lantern-lit paths wind through a village of giant glowing pumpkins."],["👻","Ghostlight Graveyard","Whispers and ghostly lights drift between ancient headstones."],["🦇","Midnight Flight","Bats sweep across a stormy sky above the sleeping town."],["🕸️","The Witching Hour","A spellbound forest shimmers with strange lights and mystery."]]},
+{key:"thanksgiving",name:"Thanksgiving",emoji:"🍂",sub:"Harvest warmth & gratitude",glow:"#e6a45e",intro:"Celebrate the golden colors of autumn, the warmth of home, and a harvest filled with gratitude.",scenes:[["🍁","Golden Autumn Valley","Brilliant leaves drift through a sunlit valley."],["🌽","The Harvest Festival","A lively harvest celebration glows with lanterns and fall colors."],["🦃","Thanksgiving Gathering","A welcoming home fills with warmth, family, and festive cheer."],["🍎","Apple Orchard","Explore a peaceful orchard beneath a canopy of autumn leaves."],["🕯️","A Moment of Gratitude","Soft candlelight and falling leaves create a peaceful finale."]]},
+{key:"newyear",name:"New Year's Eve",emoji:"🎆",sub:"Countdowns & dazzling skies",glow:"#8ba9ff",intro:"Count down to a new beginning beneath a breathtaking sky of fireworks, stars, and celebration.",scenes:[["🌌","The Midnight Sky","A deep velvet sky opens above a glowing city."],["🕰️","The Final Countdown","The final seconds sparkle with anticipation."],["🎆","A Thousand Lights","A spectacular fireworks celebration fills the night."],["🥂","A New Beginning","Golden light welcomes the year ahead."],["✨","Midnight Magic","A brilliant finale bursts into a sky full of stars."]]},
+{key:"valentine",name:"Valentine's Day",emoji:"💗",sub:"Romance, roses & glowing hearts",glow:"#ff8fbd",intro:"A dreamy celebration of love, glowing roses, floating hearts, and soft romantic light.",scenes:[["💗","A Little Light of Love","A heart of light awakens in a dreamy evening garden."],["🌹","The Rose Garden","A pathway of glowing roses blooms beneath the stars."],["🦋","Wings of Romance","Luminous butterflies drift through a garden of color."],["💞","A World of Warmth","A beautiful world glows with warmth and affection."],["✨","Love Lights the Night","A sparkling finale fills the sky with hearts."]]},
+{key:"easter",name:"Easter & Spring",emoji:"🌷",sub:"New beginnings & springtime",glow:"#a6e7bd",intro:"Welcome spring with blooming gardens, playful discoveries, colorful eggs, and bright new beginnings.",scenes:[["🌷","The Spring Garden","Flowers bloom across a sunlit landscape."],["🐇","The Enchanted Bunny Trail","Follow a playful trail through a magical garden."],["🥚","The Great Easter Egg Hunt","Colorful eggs appear in a garden full of surprises."],["🦋","Butterfly Meadow","Butterflies dance above fields of spring flowers."],["🌈","A Bright New Beginning","A rainbow rises over a fresh, green world."]]},
+{key:"july4",name:"Independence Day",emoji:"🇺🇸",sub:"Summer nights & fireworks",glow:"#83baff",intro:"Celebrate a summer night with brilliant fireworks, patriotic colors, and a sky alive with light.",scenes:[["🌅","Summer Evening","The sky deepens into a brilliant summer twilight."],["🗽","A Celebration Begins","A proud celebration glows beneath the stars."],["🎆","Fireworks Over the Night","Colorful fireworks illuminate the horizon."],["⭐","Stars & Stripes","A radiant display fills the sky with red, white, and blue."],["✨","A Night to Remember","A grand summer finale lights up the night."]]},
+{key:"birthday",name:"Birthday",emoji:"🎂",sub:"Big wishes & joyful surprises",glow:"#d69cff",intro:"Make a wish and step into a colorful celebration filled with music, confetti, presents, and spectacular surprises.",scenes:[["🎈","The Celebration Begins","Colorful balloons rise into a sky of sparkling lights."],["🎂","Make a Wish","A magical birthday cake glows as the candles shimmer."],["🎉","Confetti Celebration","A joyful burst of color fills the world."],["🎁","A Surprise Is Waiting","A mysterious gift opens to reveal a world of wonder."],["🌟","The Birthday Finale","A dazzling celebration brings the big moment to life."]]},
+{key:"stpatrick",name:"St. Patrick's Day",emoji:"☘️",sub:"Emerald magic & lucky charms",glow:"#7be2a4",intro:"Follow a trail of emerald light into a whimsical world of rainbows, lucky charms, and hidden gold.",scenes:[["☘️","The Emerald Isle","Rolling green hills glow beneath a bright sky."],["🌈","The Rainbow Bridge","A brilliant rainbow leads toward a secret valley."],["🍀","The Lucky Grove","A magical grove sparkles with lucky charms."],["🪙","The Hidden Pot of Gold","Golden light reveals a treasure at the rainbow's end."]]},
+{key:"mothers",name:"Mother's Day",emoji:"💐",sub:"Flowers, beauty & appreciation",glow:"#f4a9d0",intro:"A graceful garden celebration filled with flowers, gentle light, and heartfelt appreciation.",scenes:[["💐","A Garden of Flowers","A garden blooms in a thousand beautiful colors."],["🦋","Butterfly Wishes","Butterflies drift through a peaceful floral world."],["🌸","The Blossom Walk","A path of blossoms glows in the afternoon light."],["💖","A Heartfelt Celebration","A warm, radiant tribute fills the garden."]]},
+{key:"fathers",name:"Father's Day",emoji:"🏆",sub:"Adventure & appreciation",glow:"#85c6e8",intro:"A bold celebration of adventure, treasured memories, and the people who show us the way.",scenes:[["🏕️","The Great Adventure","A scenic mountain escape opens beneath a wide blue sky."],["🚀","Beyond the Horizon","A daring journey launches into a world of possibility."],["🏆","The Hall of Legends","A golden tribute celebrates unforgettable moments."],["🌠","A Night of Memories","A sky full of stars brings the celebration home."]]},
+{key:"hanukkah",name:"Hanukkah",emoji:"🕎",sub:"Lights, tradition & togetherness",glow:"#83bfff",intro:"Celebrate the Festival of Lights with radiant blues, golden accents, and a warm glow of togetherness.",scenes:[["🕎","The Festival of Lights","A beautiful display of light glows in the winter evening."],["⭐","A Starry Celebration","Stars shimmer above a peaceful blue-and-gold world."],["🕯️","The Golden Glow","Warm candlelight creates a scene of reflection."],["🎁","A Season of Togetherness","A joyful gathering brings the celebration to life."]]},
+{key:"diwali",name:"Diwali",emoji:"🪔",sub:"Festival of lights & color",glow:"#ffb56d",intro:"A radiant festival world filled with glowing lamps, brilliant color, intricate patterns, and celebration.",scenes:[["🪔","The Festival of Lights","Rows of glowing lamps illuminate the evening."],["🌺","The Flower Courtyard","Bright flowers and colorful patterns fill a grand courtyard."],["🎆","A Sky of Celebration","Fireworks sparkle above a city of lights."],["✨","The Light Within","A golden finale celebrates hope and new beginnings."]]},
+{key:"lunar",name:"Lunar New Year",emoji:"🏮",sub:"Lanterns, dragons & new beginnings",glow:"#ff8e83",intro:"Welcome a new year with glowing lanterns, festive colors, and the spectacular energy of a dragon celebration.",scenes:[["🏮","The Lantern Festival","Thousands of lanterns illuminate the night."],["🐉","The Dragon Dance","A magnificent dragon winds through a festive street."],["🧧","Fortune & Good Wishes","A bright celebration welcomes luck and prosperity."],["🎇","A Brilliant New Year","A spectacular finale lights the sky."]]},
+{key:"graduation",name:"Graduation",emoji:"🎓",sub:"Milestones & new horizons",glow:"#a5aaff",intro:"Celebrate a milestone with a world of achievement, bright possibilities, and the adventure ahead.",scenes:[["🎓","The Big Achievement","A proud moment shines beneath a sky of stars."],["📚","The Journey","A path of learning opens into new horizons."],["🎉","The Celebration","A joyful burst of confetti marks the occasion."],["🚀","The Next Chapter","A new adventure launches toward the future."]]},
+{key:"summer",name:"Summer Celebration",emoji:"☀️",sub:"Sunshine, beaches & warm nights",glow:"#f4d27b",intro:"Escape into a glowing summer world of sunlit shores, ocean breezes, and magical nights beneath the stars.",scenes:[["☀️","Golden Summer","Warm sunlight spills across a bright landscape."],["🏖️","The Beach Escape","A peaceful beach shimmers beside a turquoise sea."],["🌴","Tropical Paradise","Palm trees sway above a colorful island."],["🌅","Summer Sunset","A brilliant sunset closes the day in color."]]}
 ];
-function christmasWorldArt(world,role){
-var view=role===2?"180 0 1240 900":role===3?"0 80 1600 820":"0 0 1600 900";
-var stars="<g fill='#fff8dc' opacity='.85'><circle cx='130' cy='120' r='3'/><circle cx='260' cy='210' r='2'/><circle cx='470' cy='90' r='3'/><circle cx='1160' cy='120' r='3'/><circle cx='1380' cy='205' r='2'/><circle cx='1510' cy='90' r='3'/><circle cx='960' cy='170' r='2'/></g>";
-var trees="<g fill='#0b332c' stroke='#183f39' stroke-width='8'><path d='M30 820L150 390 270 820zM210 820L350 320 490 820zM1190 820L1320 350 1450 820zM1370 820L1490 420 1610 820z'/></g>";
-var ground="<path d='M0 770Q180 720 360 770T720 760T1080 770T1440 755T1600 770V900H0Z' fill='#f0f5f7'/><path d='M0 835Q240 790 480 840T960 830T1440 840T1600 830V900H0Z' fill='#c4d4dd'/><path d='M0 862Q260 825 510 870T1030 862T1600 858V900H0Z' fill='#e8f0f4'/><g fill='none' stroke='#fff' stroke-width='8' opacity='.8'><path d='M0 786Q190 752 360 786T720 778T1080 788T1600 778'/><path d='M80 850q130-20 245 5m720-2q150-28 280-4'/></g><g fill='#fff' opacity='.72'><circle cx='90' cy='805' r='13'/><circle cx='340' cy='815' r='9'/><circle cx='890' cy='812' r='12'/><circle cx='1510' cy='800' r='15'/></g>";
-return "<svg viewBox='"+view+"' preserveAspectRatio='xMidYMid slice' role='img' aria-label='Cinematic Christmas scene: "+worldDescriptions[world]+"' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='sky' x2='0' y2='1'><stop stop-color='#071326'/><stop offset='.62' stop-color='#263d55'/><stop offset='1' stop-color='#a9bac7'/></linearGradient><radialGradient id='warm'><stop stop-color='#ffdb8b' stop-opacity='.95'/><stop offset='1' stop-color='#ffdb8b' stop-opacity='0'/></radialGradient><filter id='soft'><feGaussianBlur stdDeviation='15'/></filter></defs><rect width='1600' height='900' fill='url(#sky)'/><circle cx='1280' cy='180' r='88' fill='#f5f0dc' opacity='.9'/><circle cx='1280' cy='180' r='140' fill='#dcecff' opacity='.14' filter='url(#soft)'/>"+stars+"<path d='M0 560L210 300 400 520 640 260 850 535 1110 290 1360 530 1510 360 1600 480V900H0Z' fill='#24364a' opacity='.78'/><path d='M0 650L240 440 430 640 700 390 920 650 1160 430 1390 650 1600 480V900H0Z' fill='#536a7c' opacity='.86'/>"+trees+"<ellipse cx='330' cy='690' rx='220' ry='150' fill='url(#warm)' opacity='.45'/><ellipse cx='1120' cy='690' rx='220' ry='150' fill='url(#warm)' opacity='.4'/>"+ground+(christmasMotifs[world]||christmasMotifs[0])+"<g fill='#fff' opacity='.9'><circle cx='180' cy='760' r='5'/><circle cx='520' cy='800' r='4'/><circle cx='1090' cy='785' r='6'/><circle cx='1420' cy='750' r='4'/></g></svg>";
+var selected=0,sceneIndex=0,autoTimer=null;
+var grid=document.getElementById("hm-holiday-grid"),experienceGrid=document.getElementById("hm-experience-grid"),stage=document.getElementById("hm-stage");
+var heading=document.getElementById("hm-feature-heading"),intro=document.getElementById("hm-feature-intro"),landmark=document.getElementById("hm-landmark"),title=document.getElementById("hm-stage-title"),description=document.getElementById("hm-stage-description"),eyebrow=document.getElementById("hm-stage-eyebrow"),count=document.getElementById("hm-stage-count"),expTitle=document.getElementById("hm-experience-title"),expSub=document.getElementById("hm-experience-subtitle"),expCount=document.getElementById("hm-experience-count");
+function renderCards(){
+grid.innerHTML=collections.map(function(c,i){return '<button class="hm-holiday-card" type="button" data-index="'+i+'" aria-pressed="'+(i===selected)+'" style="--card-glow:'+c.glow+'"><span class="emoji">'+c.emoji+'</span><strong>'+c.name+'</strong><small>'+c.sub+'</small></button>';}).join("");
+grid.querySelectorAll("button").forEach(function(b){b.addEventListener("click",function(){selectCollection(Number(this.dataset.index));});});
 }
-
-function applyProjectorSettings(){
-var outputs=stage.querySelectorAll(".hm-output");var roleNames=["MAIN SCENE","WINDOW A","WINDOW B","WINDOW C","SPECIAL EFFECTS"];
-projectorSettings.forEach(function(cfg,p){var output=outputs[p];if(!output)return;var scene=output.querySelector(".hm-scene");output.querySelector(".hm-output-label").innerHTML="PROJECTOR "+(p+1)+" <span>"+roleNames[cfg.role]+"</span>";scene.style.transform="translate("+cfg.x+"%, "+cfg.y+"%) scale("+cfg.z/100+")";scene.style.transformOrigin="center center";});
+function renderExperiences(){
+var c=collections[selected];
+expTitle.textContent=c.name+" Experiences";
+expSub.textContent=c.scenes.length+" unique moments to explore";
+expCount.textContent=String(c.scenes.length).padStart(2,"0")+" EXPERIENCES";
+experienceGrid.innerHTML=c.scenes.map(function(s,i){return '<button type="button" class="hm-experience'+(i===sceneIndex?' active':'')+'" data-scene="'+i+'" aria-pressed="'+(i===sceneIndex)+'"><span class="num">'+String(i+1).padStart(2,"0")+'</span><span class="exp-emoji">'+s[0]+'</span><strong>'+s[1]+'</strong></button>';}).join("");
+experienceGrid.querySelectorAll("button").forEach(function(b){b.addEventListener("click",function(){showScene(Number(this.dataset.scene));});});
 }
-function render(){
-var sequence=current(),roles=["MAIN SCENE","WINDOW A","WINDOW B","WINDOW C","SPECIAL EFFECTS"];if(christmasWorld){var isChristmas=holiday.value==="christmas";document.getElementById("hm-christmas-selector-wrap").style.display=isChristmas?"block":"none";if(isChristmas){christmasWorld.value=String(index%23);updateWorldDescription();}}
-for(var p=0;p<5;p++){var item=sequence[index%sequence.length];document.getElementById("hm-symbol-"+p).textContent=identifyOn?String(p+1):item[0];var art=stage.querySelectorAll(".hm-art")[p];if(art){art.classList.remove("hm-art-enter");art.innerHTML=identifyOn?"":(holiday.value==="christmas"?christmasWorldArt(index%23,Number(projectorSettings[p].role)):holidayArt(holiday.value,(index+Number(projectorSettings[p].role))%sequence.length));void art.offsetWidth;art.classList.add("hm-art-enter");}document.getElementById("hm-name-"+p).textContent=identifyOn?"CONNECT PROJECTOR "+(p+1):item[1];}
-status.textContent=(running?"SHOW RUNNING":"PREVIEW READY")+" · "+holiday.options[holiday.selectedIndex].text+" · SCENE "+(index+1)+" / "+current().length;
-caption.textContent="Five projector previews are advancing together on one show clock. Each output displays its own scene position.";
-stage.style.setProperty("--hm-light", "rgba(126,234,255,"+(Number(brightness.value)/100)+")");
-stage.style.filter="brightness("+(0.55+Number(brightness.value)/220)+")";
-stage.classList.toggle("lights-on",lightsOn);
-stage.classList.toggle("calibration-mode",calibrationOn);
-stage.classList.toggle("identification-mode",identifyOn);
-stage.classList.toggle("show-running",running);
-stage.classList.toggle("finale-mode",index===current().length-1&&!identifyOn);
-stage.classList.remove("holiday-halloween","holiday-thanksgiving","holiday-christmas","holiday-newyear","holiday-valentine","holiday-easter","holiday-july4","holiday-birthday");
-stage.classList.add("holiday-"+holiday.value);
-applyProjectorSettings();
-stage.querySelectorAll(".hm-snow,.hm-particles").forEach(function(el){el.style.display=effects.value==="off"?"none":"block";el.style.opacity=effects.value==="off"?"0":(effects.value==="glow"?"0.18":"");});
-stage.querySelectorAll(".hm-beam").forEach(function(el){el.style.opacity=effects.value==="beam"?"0.65":"0";});
-if(effects.value==="snow"){stage.querySelectorAll(".hm-snow").forEach(function(el){el.style.opacity=".9";});}
-if(syncChannel&&!projectorId){syncChannel.postMessage({type:"state",holiday:holiday.value,index:index,running:running,brightness:brightness.value,effects:effects.value,lightsOn:lightsOn,calibrationOn:calibrationOn,identifyOn:identifyOn,projectorSettings:projectorSettings});}
+function showScene(i){
+var c=collections[selected];sceneIndex=(i+c.scenes.length)%c.scenes.length;var s=c.scenes[sceneIndex];
+stage.dataset.theme=c.key;heading.textContent=s[1];intro.textContent=s[2];landmark.textContent=s[0];title.textContent=s[1];description.textContent=s[2];eyebrow.textContent="THE "+c.name.toUpperCase()+" COLLECTION";count.textContent=c.name.toUpperCase()+" · EXPERIENCE "+String(sceneIndex+1).padStart(2,"0");
+experienceGrid.querySelectorAll("button").forEach(function(b,j){b.classList.toggle("active",j===sceneIndex);b.setAttribute("aria-pressed",String(j===sceneIndex));});
 }
-function scheduleNext(){if(timer){clearTimeout(timer);timer=null;}if(running&&mode.value==="automatic"){var finale=index===current().length-1;timer=setTimeout(function(){if(!running)return;index=(index+1)%current().length;render();scheduleNext();},finale?7200:4200);}}
-function next(){index=(index+1)%current().length;render();if(running&&mode.value==="automatic")scheduleNext();}
-function stop(){running=false;if(timer){clearTimeout(timer);timer=null;}stage.classList.remove("show-running");startBtn.textContent="▶ START THE SHOW";status.textContent="Standby · Show stopped";render();}
-function start(){if(running){stop();return;}running=true;startBtn.textContent="Ⅱ PAUSE / STOP";render();if(mode.value==="automatic"){scheduleNext();}else{status.textContent="MANUAL SHOW · Use NEXT SCENE to advance";}}
-function initAudio(){
-var AC=window.AudioContext||window.webkitAudioContext;if(!AC){caption.textContent="Audio is not supported in this browser.";return false;}
-if(!audio){audio=new AC();var master=audio.createGain();master.gain.value=.035;master.connect(audio.destination);var notes=[261.63,329.63,392,523.25];notes.forEach(function(freq,i){var o=audio.createOscillator(),g=audio.createGain();o.type="sine";o.frequency.value=freq;g.gain.value=.13/(i+1);o.connect(g);g.connect(master);o.start();oscillators.push(o);});audio._master=master;}
-if(audio.state==="suspended")audio.resume();return true;
+function selectCollection(i){
+selected=i;sceneIndex=0;var c=collections[selected];grid.querySelectorAll("button").forEach(function(b,j){b.setAttribute("aria-pressed",String(j===selected));});renderExperiences();showScene(0);
 }
-holiday.addEventListener("change",function(){index=0;stop();render();});
-if(christmasWorld){christmasWorld.addEventListener("change",function(){index=Number(this.value)||0;stop();updateWorldDescription();render();});updateWorldDescription();}
-mode.addEventListener("change",function(){if(running){stop();start();}});
-document.getElementById("hm-next").addEventListener("click",next);
-document.getElementById("hm-launch").addEventListener("click",function(){
-var opened=0;
-for(var n=1;n<=5;n++){var w=window.open(window.location.pathname+"?projector="+n,"kaevoryn-projector-"+n);if(w)opened++;}
-caption.textContent=opened===5?"Five projector windows opened. Move each window to its projector display, then use fullscreen (F11).":"Your browser opened "+opened+" of 5 windows. Allow pop-ups for this site and try again.";
-if(syncChannel)syncChannel.postMessage({type:"request-state"});
+document.getElementById("hm-next").addEventListener("click",function(){showScene(sceneIndex+1);});
+document.getElementById("hm-auto").addEventListener("click",function(){
+if(autoTimer){clearInterval(autoTimer);autoTimer=null;this.textContent="▶ AUTO-EXPLORE: OFF";this.setAttribute("aria-pressed","false");}
+else{autoTimer=setInterval(function(){showScene(sceneIndex+1);},5500);this.textContent="Ⅱ AUTO-EXPLORE: ON";this.setAttribute("aria-pressed","true");}
 });
-if(syncChannel){
-syncChannel.onmessage=function(event){
-var msg=event.data||{};
-if(msg.type==="request-state"&&!projectorId){syncChannel.postMessage({type:"state",holiday:holiday.value,index:index,running:running,brightness:brightness.value,effects:effects.value,lightsOn:lightsOn,calibrationOn:calibrationOn,identifyOn:identifyOn,projectorSettings:projectorSettings});}
-if(msg.type==="state"&&projectorId){
-holiday.value=msg.holiday;index=msg.index;running=msg.running;brightness.value=msg.brightness;effects.value=msg.effects;lightsOn=msg.lightsOn;calibrationOn=!!msg.calibrationOn;identifyOn=!!msg.identifyOn;if(Array.isArray(msg.projectorSettings)&&msg.projectorSettings.length===5){projectorSettings=msg.projectorSettings;}document.getElementById("hm-identify").textContent=identifyOn?"# IDENTIFY PROJECTORS: ON":"# IDENTIFY PROJECTORS: OFF";document.getElementById("hm-identify").setAttribute("aria-pressed",String(identifyOn));document.getElementById("hm-calibrate").textContent=calibrationOn?"▦ CALIBRATION: ON":"▦ CALIBRATION: OFF";document.getElementById("hm-calibrate").setAttribute("aria-pressed",String(calibrationOn));render();
-}
-};
-if(projectorId)syncChannel.postMessage({type:"request-state"});
-}
-startBtn.addEventListener("click",function(){if(running&&mode.value==="automatic"){stop();return;}start();});
-document.getElementById("hm-stop").addEventListener("click",stop);
-soundBtn.addEventListener("click",function(){soundOn=!soundOn;if(soundOn){if(initAudio()){soundBtn.textContent="♫ SOUND: ON";soundBtn.setAttribute("aria-pressed","true");}else{soundOn=false;}}else{if(audio&&audio._master)audio._master.gain.setTargetAtTime(0,audio.currentTime,.08);soundBtn.textContent="♫ SOUND: OFF";soundBtn.setAttribute("aria-pressed","false");}if(soundOn&&audio&&audio._master)audio._master.gain.setTargetAtTime(.035,audio.currentTime,.12);});
-lightsBtn.addEventListener("click",function(){lightsOn=!lightsOn;lightsBtn.textContent=lightsOn?"✧ LIGHTS: ON":"✧ LIGHTS: OFF";lightsBtn.setAttribute("aria-pressed",String(lightsOn));render();});
-document.getElementById("hm-calibrate").addEventListener("click",function(){calibrationOn=!calibrationOn;this.textContent=calibrationOn?"▦ CALIBRATION: ON":"▦ CALIBRATION: OFF";this.setAttribute("aria-pressed",String(calibrationOn));caption.textContent=calibrationOn?"Calibration grid active on all five outputs. Use projector lens shift, focus, zoom and keystone controls to align the image; this page does not electronically warp the picture.":"Calibration grid off. Return to the holiday preview.";render();});
-document.getElementById("hm-identify").addEventListener("click",function(){identifyOn=!identifyOn;this.textContent=identifyOn?"# IDENTIFY PROJECTORS: ON":"# IDENTIFY PROJECTORS: OFF";this.setAttribute("aria-pressed",String(identifyOn));caption.textContent=identifyOn?"Identification mode: each output has a unique color and large number. Match each numbered screen to its physical projector, then turn this mode off.":"Identification mode off. Holiday scenes restored.";render();});
-document.querySelectorAll(".hm-projector-card").forEach(function(card){var p=Number(card.getAttribute("data-projector"))-1;card.querySelector(".hm-role").addEventListener("change",function(){projectorSettings[p].role=Number(this.value);render();});["x","y","z"].forEach(function(key){var input=card.querySelector(".hm-"+key);input.addEventListener("input",function(){projectorSettings[p][key]=Number(this.value);var out=document.getElementById("hm-"+key+"v-"+(p+1));out.textContent=key==="z"?this.value+"%":this.value;render();});});});
-document.getElementById("hm-usb-export").addEventListener("click",exportUsbPlayers);
-connectionMode.addEventListener("change",updateConnectionGuide);
-updateConnectionGuide();
-brightness.addEventListener("input",function(){document.getElementById("hm-brightness-value").textContent=brightness.value+"%";render();});
-effects.addEventListener("change",render);
-render();
+renderCards();selectCollection(0);
 })();
 </script>
 </body>
