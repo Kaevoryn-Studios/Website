@@ -144,41 +144,46 @@ function setAct(n){act=Math.max(0,Math.min(4,n));updateAct()}
 function audioStart(){
  try{
   const AC=window.AudioContext||window.webkitAudioContext;
-  if(!AC){$('caption').textContent='This browser does not support audio. Try Chrome.';return}
-  if(!audio) audio=new AC();
-  if(audio.state==='suspended') audio.resume();
-  if(!master){master=audio.createGain();master.gain.value=.95;master.connect(audio.destination)}
-  if(!ambience){
-   const n=audio.createBuffer(1,audio.sampleRate*2,audio.sampleRate),data=n.getChannelData(0);
-   for(let i=0;i<data.length;i++)data[i]=Math.random()*2-1;
-   const wind=audio.createBufferSource();wind.buffer=n;wind.loop=true;
-   const filter=audio.createBiquadFilter();filter.type='lowpass';filter.frequency.value=620;
-   const wg=audio.createGain();wg.gain.value=.24;
-   wind.connect(filter);filter.connect(wg);wg.connect(master);wind.start();
-   const drone=audio.createOscillator(),dg=audio.createGain(),df=audio.createBiquadFilter();
-   drone.type='sine';drone.frequency.value=49;df.type='lowpass';df.frequency.value=115;dg.gain.value=.16;
-   drone.connect(df);df.connect(dg);dg.connect(master);drone.start();
-   ambience={wind,drone};
-  }
-  soundOn=true;$('sound').textContent='SOUND: ON';$('sound').setAttribute('aria-pressed','true');
-  $('caption').textContent='Audio engine active. Tap TEST SOUND to verify your speakers.';
- }catch(e){$('caption').textContent='Audio could not start in this browser. Try Chrome and tap SOUND again.'}
+  if(!AC){$('caption').textContent='This browser does not support Web Audio. Open this page in Chrome.';return}
+  if(!audio)audio=new AC();
+  if(!master){master=audio.createGain();master.connect(audio.destination)}
+  master.gain.setValueAtTime(.9,audio.currentTime);
+  const resume=audio.state==='suspended'?audio.resume():Promise.resolve();
+  resume.then(()=>{
+   if(!ambience){
+    const n=audio.createBuffer(1,audio.sampleRate*2,audio.sampleRate),d=n.getChannelData(0);
+    for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;
+    const src=audio.createBufferSource();src.buffer=n;src.loop=true;
+    const lp=audio.createBiquadFilter();lp.type='lowpass';lp.frequency.value=650;
+    const gain=audio.createGain();gain.gain.value=.2;src.connect(lp);lp.connect(gain);gain.connect(master);src.start();
+    const osc=audio.createOscillator(),og=audio.createGain();osc.type='sine';osc.frequency.value=48;og.gain.value=.12;osc.connect(og);og.connect(master);osc.start();
+    ambience={wind:src,drone:osc};
+   }
+   soundOn=true;$('sound').textContent='SOUND: ON';$('sound').setAttribute('aria-pressed','true');
+   $('caption').textContent='Audio engine running. Tap TEST SOUND now.';
+  }).catch(()=>{$('caption').textContent='The browser blocked audio startup. Open this page in Chrome and try again.'});
+ }catch(e){$('caption').textContent='Audio startup error: '+(e.message||'unknown error')}
 }
-function testAudio(){
- if(!soundOn){audioStart()}
- if(!audio||!master)return;
- if(audio.state==='suspended')audio.resume();
- const now=audio.currentTime;
- [523.25,659.25,783.99].forEach((hz,i)=>{
-  const o=audio.createOscillator(),g=audio.createGain();
-  o.type='sine';o.frequency.setValueAtTime(hz,now+i*.24);
-  g.gain.setValueAtTime(.0001,now+i*.24);
-  g.gain.linearRampToValueAtTime(.32,now+i*.24+.035);
-  g.gain.exponentialRampToValueAtTime(.0001,now+i*.24+.42);
-  o.connect(g);g.connect(master);o.start(now+i*.24);o.stop(now+i*.24+.45);
- });
- burstNoise(.85,.65,.48,950);
- $('caption').textContent='Sound test playing · three bright notes, followed by a thunder-like hit.';
+async function testAudio(){
+ try{
+  if(!audio)audio=new (window.AudioContext||window.webkitAudioContext)();
+  if(!master){master=audio.createGain();master.connect(audio.destination)}
+  await audio.resume();
+  master.gain.setValueAtTime(.95,audio.currentTime);
+  const t=audio.currentTime;
+  [440,554.37,659.25,880].forEach((hz,i)=>{
+   const o=audio.createOscillator(),g=audio.createGain(),at=t+i*.32;
+   o.type='sine';o.frequency.value=hz;
+   g.gain.setValueAtTime(.0001,at);g.gain.linearRampToValueAtTime(.55,at+.025);g.gain.setValueAtTime(.55,at+.18);g.gain.exponentialRampToValueAtTime(.0001,at+.55);
+   o.connect(g);g.connect(master);o.start(at);o.stop(at+.58);
+  });
+  const noise=audio.createBuffer(1,Math.floor(audio.sampleRate*.8),audio.sampleRate),d=noise.getChannelData(0);
+  for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*(1-i/d.length);
+  const src=audio.createBufferSource(),filter=audio.createBiquadFilter(),ng=audio.createGain();
+  src.buffer=noise;filter.type='lowpass';filter.frequency.value=1000;ng.gain.value=.65;src.connect(filter);filter.connect(ng);ng.connect(master);src.start(t+1.5);
+  soundOn=true;$('sound').textContent='SOUND: ON';$('sound').setAttribute('aria-pressed','true');
+  $('caption').textContent='TEST PLAYING: four loud tones, then a thunder-like burst. If silent, the browser/device is blocking Web Audio.';
+ }catch(e){$('caption').textContent='Sound test failed: '+(e.message||'audio unavailable')+'. Try opening the link in Chrome.'}
 }
 function burstNoise(delay,duration,volume,filterFreq){const length=Math.ceil(audio.sampleRate*duration),buf=audio.createBuffer(1,length,audio.sampleRate),d=buf.getChannelData(0);for(let i=0;i<length;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/length,2);const src=audio.createBufferSource();src.buffer=buf;const f=audio.createBiquadFilter();f.type='lowpass';f.frequency.value=filterFreq;const g=audio.createGain();g.gain.setValueAtTime(.0001,audio.currentTime+delay);g.gain.linearRampToValueAtTime(volume,audio.currentTime+delay+.04);g.gain.exponentialRampToValueAtTime(.0001,audio.currentTime+delay+duration);src.connect(f);f.connect(g);g.connect(master);src.start(audio.currentTime+delay)}
 function tone(freq,dur,type,vol,delay,endFreq){const o=audio.createOscillator(),g=audio.createGain(),now=audio.currentTime+delay;o.type=type;o.frequency.setValueAtTime(freq,now);if(endFreq)o.frequency.exponentialRampToValueAtTime(endFreq,now+dur);g.gain.setValueAtTime(.0001,now);g.gain.linearRampToValueAtTime(vol,now+.035);g.gain.exponentialRampToValueAtTime(.0001,now+dur);o.connect(g);g.connect(master);o.start(now);o.stop(now+dur+.04)}
@@ -196,7 +201,7 @@ function stopSound(){
 function begin(){started=true;elapsed=0;last=performance.now();setAct(0);$('cue').textContent='ACT I · THE PATCH WAKES';$('begin').textContent='NEXT ACT';if(soundOn)soundCue()}
 function next(){if(!started){begin();return}if(act<4){setAct(act+1);elapsed=[0,12,25,38,55][act];if(soundOn)soundCue()}else{begin()}}
 $('begin').addEventListener('click',next);$('restart').addEventListener('click',()=>{started=false;elapsed=0;setAct(0);$('begin').textContent='BEGIN THE SHOW';$('cue').textContent='PRE-SHOW · WAITING FOR YOU';$('fill').style.width='0%';seed()});
-$('sound').addEventListener('click',()=>{if(soundOn)stopSound();else{if(master)master.gain.setTargetAtTime(.95,audio.currentTime,.08);audioStart()}});$('testSound').addEventListener('click',testAudio);
+$('sound').addEventListener('click',()=>{if(soundOn)stopSound();else audioStart()});$('testSound').addEventListener('click',testAudio);
 function frame(now){let dt=Math.min(.05,(now-last)/1000||0);last=now;if(started){elapsed+=dt;let thresholds=[0,12,25,38,55];let target=elapsed<12?0:elapsed<25?1:elapsed<38?2:elapsed<55?3:4;if(target!==act){setAct(target);if(soundOn)soundCue()}if(elapsed>75){started=false;$('begin').textContent='PLAY AGAIN';$('cue').textContent='THE PATCH IS AWAKE · REPLAY WHENEVER YOU LIKE';$('fill').style.width='100%'}else $('fill').style.width=Math.min(100,elapsed/75*100)+'%'}draw(now/1000);requestAnimationFrame(frame)}
 addEventListener('resize',resize);resize();setAct(0);requestAnimationFrame(frame);
 })();
