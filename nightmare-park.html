@@ -492,7 +492,7 @@ for(let z=-165;z<=119;z+=8){block(-118,2,z,.6,4,.5,0x39303d);block(118,2,z,.6,4,
 pave(0,88,26,60,0x443642);pave(0,53,20,26,0x41313e);gate(0,101,'THE THRESHOLD',0xc17a8e);
 for(const x of [-16,16]){pillar(x,89,23,1.5,0x554252);spike(x,27,89,7,2,0x342433)}
 sign(0,14,85,'YOU WERE NOT MEANT TO WAKE');zoneAt('THE THRESHOLD · THE WORLD BENEATH SLEEP',0,76,'The air feels warm. The stone beneath your feet pulses like a sleeping heart. The path descends into the first dream.');
-for(let i=0;i<22;i++)tree((Math.random()-.5)*100,63+Math.random()*30,7+Math.random()*8);
+for(let i=0;i<22;i++){const side=Math.random()<.5?-1:1;tree(side*(19+Math.random()*34),63+Math.random()*30,7+Math.random()*8)}
 // THE ORIGIN — a colossal heart suspended inside a ring of broken monoliths.
 pave(0,25,46,68,0x39303d);gate(0,48,'THE ORIGIN',0xc86a82);
 for(let i=0;i<13;i++){const a=i*Math.PI*2/13,x=Math.cos(a)*26,z=20+Math.sin(a)*26,h=11+(i%4)*4;pillar(x,z,h,1.2,0x51404e);spike(x,h+2,z,5,1.4,0x392536)}
@@ -509,7 +509,7 @@ for(const x of [-31,31]){tower(x,-31,3,32,0x332637);for(let y=8;y<30;y+=5)lanter
 sign(0,32,-50,'THE FEAR ENGINE');zoneAt('THE NIGHTMARE FORGE · THE FEAR ENGINE',0,-24,'The Forge takes memories and turns them into living things. The machinery is breathing. Something is being made behind the furnace doors.');
 // LIVING FOREST — impossible trees, root bridges, hanging cocoons and watchers.
 pave(-70,-34,22,105,0x302b37);gate(-70,13,'THE LIVING FOREST',0x8b6ca7);
-for(let i=0;i<30;i++){const x=-111+Math.random()*82,z=-111+Math.random()*143;tree(x,z,12+Math.random()*18);if(i%3===0)fog(x,z,16)}
+for(let i=0;i<30;i++){const side=Math.random()<.5?-1:1,x=side<0?-111+Math.random()*24:-54+Math.random()*24,z=-111+Math.random()*143;tree(x,z,12+Math.random()*18);if(i%3===0)fog(x,z,16)}
 for(let i=0;i<10;i++){const x=-106+i*8,z=-47+Math.sin(i*.8)*12;root(x,15,z,x+5,2,z+12,.65,0x513047)}
 for(let i=0;i<7;i++){const x=-101+i*9,z=-67-(i%2)*10;const c=add(new THREE.SphereGeometry(1.25,12,10),new THREE.MeshStandardMaterial({color:0x756071,roughness:.5,emissive:0x30152e,emissiveIntensity:.4}),x,8,z);c.scale.set(.8,1.8,.8);add(new THREE.CylinderGeometry(.035,.035,7,6),bone,x,13,z);actors.push({kind:'lanternGlow',obj:c,phase:i})}
 ghost(-94,-45,1.8,true);ghost(-57,-91,1.35,false);ghost(-84,-12,1.25,false);sign(-70,18,-100,'THE TREES ARE LISTENING');zoneAt('THE LIVING FOREST · THE ROOT MAZE',-72,-55,'The trunks tighten around the path. Roots slide across the ground. Do not follow the whispering voice between the trees.');
@@ -536,7 +536,7 @@ const eye=new THREE.Group(),socket=new THREE.Mesh(new THREE.SphereGeometry(9,24,
 for(let i=0;i<12;i++){const a=i*Math.PI/6;root(Math.cos(a)*9,18,-151,Math.cos(a)*25,1,-151+Math.sin(a)*9,.75,0x6b2948)}
 const abyssLight=new THREE.PointLight(0xd42c59,6,90);abyssLight.position.set(0,15,-139);scene.add(abyssLight);actors.push({kind:'flicker',obj:abyssLight,p:6,phase:0});sign(0,34,-158,'THE THING THAT DREAMS YOU');ghost(-30,-139,1.7,false);ghost(30,-139,1.7,false);zoneAt('THE ABYSS · THE THING THAT DREAMS YOU',0,-139,'The world ends here. The enormous eye is awake. The voice in your head is not your own.');
 // Atmospheric density: a forest of silhouettes, drifting ash and pools of colored light.
-for(let i=0;i<70;i++){const x=(Math.random()-.5)*220,z=-158+Math.random()*260;tree(x,z,6+Math.random()*13)}
+for(let i=0;i<70;i++){const z=-158+Math.random()*260;let x;do{x=(Math.random()-.5)*220}while(Math.abs(x)<27||Math.abs(x+70)<17||Math.abs(x-70)<19);tree(x,z,6+Math.random()*13)}
 for(const [x,z,c] of [[-30,30,0xd66b8a],[30,30,0x8c78c8],[-70,-20,0x9b78ba],[70,-20,0xd18b67],[0,-85,0x9d7acb],[72,-105,0xd15b70],[0,-140,0xd83d61]]){lantern(x,z,c,5);fog(x,z,24)}
 for(let i=0;i<22;i++){const x=-108+Math.random()*216,z=-150+Math.random()*245,b=add(new THREE.SphereGeometry(.2,7,6),new THREE.MeshBasicMaterial({color:0x09070e}),x,11+Math.random()*19,z);actors.push({kind:'bat',obj:b,home:b.position.clone(),phase:Math.random()*8})}
 ghost(-44,2,1.2,false);ghost(42,-48,1.15,false);ghost(-42,-76,1.1,false);
