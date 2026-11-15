@@ -592,8 +592,58 @@ const lake=add(new THREE.CircleGeometry(15,48),new THREE.MeshStandardMaterial({c
   ghost(17,-20,1.8,true);
   zone('CAMP BLOODMOON · THE RANGER’S GROUNDS',-20,-7,'Explore the ranger cabins, follow the timber dock into the cursed lake, and search the forest watchtower for what the moonlight reveals.');
 }
-// Park 4: spirit containment glass house and ghost cages.
-block(40,7,-5,18,14,13,0x333d4a);for(let dx of [-6,0,6]){const pane=add(new THREE.BoxGeometry(4.8,9,.22),new THREE.MeshStandardMaterial({color:0x8b9ec5,transparent:true,opacity:.32,metalness:.5,roughness:.12}),40+dx,7,1);for(const side of [-1,1])block(40+dx+side*2.5,7,1,.18,10,.35,0xa9a5c6)}for(let k=0;k<5;k++){const ring=add(new THREE.TorusGeometry(2.2,.16,8,24),mat(0x8e7bba,.35,.4),31+k*4,6,-22);ring.rotation.y=Math.PI/2;lamp(31+k*4,-22,0x9f8be1)}
+// Park 4: THIRTEEN GHOSTS — walk into a glass spirit-containment house.
+{
+  const frame=0x7f8da4,steel=0x303b4b;
+  const glass=new THREE.MeshStandardMaterial({color:0x8db8d8,transparent:true,opacity:.19,metalness:.42,roughness:.12,side:THREE.DoubleSide,depthWrite:false});
+  const violetGlass=new THREE.MeshStandardMaterial({color:0x9b79c8,transparent:true,opacity:.24,metalness:.35,roughness:.12,side:THREE.DoubleSide,depthWrite:false});
+  // Foundation and a clearly open central entrance.
+  block(40,.18,-5,22,.36,17,0x343a46);
+  block(29.5,7,-5,.8,14,.8,steel);block(50.5,7,-5,.8,14,.8,steel);
+  block(40,13.8,-5,22,.65,17,steel);
+  // Tall glass perimeter walls, split into visible framed bays.
+  for(const z of [-13.1,3.1])for(let x=32;x<=48;x+=4){
+    const p=new THREE.Mesh(new THREE.BoxGeometry(3.75,11,.16),glass);p.position.set(x,7,z);scene.add(p);
+    block(x-2,7,z,.22,12,.32,frame);block(x+2,7,z,.22,12,.32,frame);
+  }
+  for(const x of [29.7,50.3])for(let z=-11;z<=1;z+=4){
+    const p=new THREE.Mesh(new THREE.BoxGeometry(.16,11,3.75),glass);p.position.set(x,7,z);scene.add(p);
+    block(x,7,z-2,.32,12,.22,frame);block(x,7,z+2,.32,12,.22,frame);
+  }
+  // Heavy roof ribs and a luminous containment spine.
+  for(let x=31;x<=49;x+=3){block(x,13.35,-5,.18,.28,16,0xa5b3c8)}
+  for(let z=-12;z<=2;z+=4)block(40,13.45,z,21,.2,.2,0x9aa8c0);
+  block(40,1.2,-5,1.2,2.4,1.2,0x4e5268);
+  add(new THREE.SphereGeometry(.72,16,12),new THREE.MeshBasicMaterial({color:0x9bdcff}),40,2.8,-5);
+  // Three visible spirit chambers within the glass hall.
+  for(const x of [34,40,46]){
+    const pane=new THREE.Mesh(new THREE.BoxGeometry(4.1,8,.12),violetGlass);pane.position.set(x,5,-5);scene.add(pane);
+    for(const side of [-1,1])block(x+side*2.1,5,-5,.22,9,.28,frame);
+    const ring=add(new THREE.TorusGeometry(1.8,.14,10,32),mat(0x9c82d0,.45,.3),x,5.4,-7.2);ring.rotation.y=Math.PI/2;
+    const core=add(new THREE.SphereGeometry(.55,14,10),new THREE.MeshBasicMaterial({color:0xb4dfff}),x,5.4,-7.3);
+    const glow=new THREE.PointLight(0x8c9dff,.9,13);glow.position.set(x,5.5,-7);scene.add(glow);
+  }
+  // Walk-in central doors stand open on either side of the threshold.
+  block(37.2,4.2,3.05,.35,8,.5,0x66738b);block(42.8,4.2,3.05,.35,8,.5,0x66738b);
+  // Exterior containment pylons and five floating spectral cages.
+  for(let k=0;k<5;k++){
+    const x=25+k*7.5,z=-23-(k%2)*3;
+    block(x,3,z,.65,6,.65,steel);
+    const ring=add(new THREE.TorusGeometry(2.1,.16,8,28),mat(k%2?0x8e7bba:0x73a8d0,.35,.35),x,6.2,z);ring.rotation.y=Math.PI/2;
+    const cage=add(new THREE.SphereGeometry(.95,14,10),new THREE.MeshBasicMaterial({color:k%2?0xb89be8:0x9ad8ee,transparent:true,opacity:.17,wireframe:true}),x,6.2,z);
+    const l=new THREE.PointLight(k%2?0x9d77db:0x67b9d7,.8,16);l.position.set(x,6,z);scene.add(l);
+    ghost(x,z,1.25,k%2===0);
+  }
+  // Side laboratories, warning lamps and a marked approach.
+  for(const x of [25,55]){
+    block(x,4,-5,5,8,6,0x343b49);block(x,8,-5,5.5,.5,6.5,steel);
+    for(let z=-6;z<=-4;z+=2)lamp(x,z,0x9b7be0);
+    solid(x,-5,5,6);
+  }
+  for(let x=29;x<=51;x+=5)lamp(x,4,0x8ba9e8);
+  solid(29.5,-5,.8,17);solid(50.5,-5,.8,17);solid(40,-13,22,.8);solid(40,3,22,.8);
+  zone('THIRTEEN GHOSTS · THE GLASS HOUSE',40,-5,'Enter the glass spirit house, inspect its three containment chambers, and search the spectral cages outside for the escaped entities.');
+}
 // Park 5: Creeper barn, wrecked truck and winged predator.
 block(80,6,-5,19,12,13,0x57402f);const barn=add(new THREE.ConeGeometry(13,7,4),mat(0x3b2927),80,15,-5);barn.rotation.y=Math.PI/4;block(80,4,1,5,8,.3,0x241b1a);block(70,2,-25,10,3,5,0x38383a);for(let dx of [-4,4])add(new THREE.CylinderGeometry(1.2,1.2,.7,12),dark,70+dx,.9,-27,Math.PI/2);ghost(88,-20,1.8,true);
 // Park 6: industrial Sawworks with furnace and giant gears.
