@@ -1054,7 +1054,7 @@ manor(80,-111,19,17,0x403448);for(let k=0;k<5;k++){const rib=add(new THREE.Torus
     const a=k*Math.PI*2/9,radius=29+(k%3)*4,x=80+Math.cos(a)*radius,z=-139+Math.sin(a)*radius,y=5+(k%4)*3;
     const rock=add(new THREE.DodecahedronGeometry(2.5+(k%3),1),abyssStone,x,y,z);rock.rotation.set(a*.4,a,a*.2);
     const spike=add(new THREE.ConeGeometry(1.1,4,5),voidMetal,x,y-3,z);spike.rotation.z=Math.cos(a)*.35;
-    actors.push({kind:'float',obj:rock,home:rock.position.clone(),phase:k*.8});
+    actors.push({kind:'crystal',obj:rock,home:rock.position.clone(),phase:k*.8});
     const chain=add(new THREE.CylinderGeometry(.08,.08,y+9,6),voidMetal,x,y/2+4,z);
   }
   // A ritual dais and fractured obelisk sit behind the eye, away from the entry route.
