@@ -74,14 +74,60 @@ function drawSky(t){
  let g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,'#100d25');g.addColorStop(.52,'#24152c');g.addColorStop(1,'#100b18');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
  let mx=W*.78,my=H*.2,mr=Math.min(W,H)*.075;
  let halo=ctx.createRadialGradient(mx,my,mr*.2,mx,my,mr*3.8);halo.addColorStop(0,'#ffe2a866');halo.addColorStop(.3,'#e59c5540');halo.addColorStop(1,'#e59c5500');ctx.fillStyle=halo;ctx.fillRect(mx-mr*4,my-mr*4,mr*8,mr*8);
- ctx.fillStyle='#f5d9ad';ctx.beginPath();ctx.arc(mx,my,mr,0,Math.PI*2);ctx.fill();
- ctx.fillStyle='#b88c83';for(let i=0;i<7;i++){ctx.globalAlpha=.16;ctx.beginPath();ctx.arc(mx+Math.sin(i*4)*mr*.4,my+Math.cos(i*3)*mr*.4,mr*rand(.1,.23),0,Math.PI*2);ctx.fill()}ctx.globalAlpha=1;
+ ctx.fillStyle='#f5d9ad';ctx.beginPath();ctx.arc(mx,my,mr,0,Math.PI*2);ctx.fill();ctx.save();ctx.beginPath();ctx.arc(mx,my,mr,0,Math.PI*2);ctx.clip();let moonShade=ctx.createLinearGradient(mx-mr,my-mr,mx+mr,my+mr);moonShade.addColorStop(0,'rgba(255,255,230,.25)');moonShade.addColorStop(1,'rgba(40,37,56,.45)');ctx.fillStyle=moonShade;ctx.fillRect(mx-mr,my-mr,mr*2,mr*2);ctx.restore();
+ ctx.fillStyle='#b88c83';for(let i=0;i<7;i++){ctx.globalAlpha=.16;ctx.beginPath();ctx.arc(mx+Math.sin(i*4)*mr*.4,my+Math.cos(i*3)*mr*.4,mr*(.1+(i%3)*.04),0,Math.PI*2);ctx.fill()}ctx.globalAlpha=1;
  for(let i=0;i<85;i++){let x=(i*127.7)%W,y=(i*73.3)%(H*.56);ctx.fillStyle='rgba(255,232,204,'+(.18+.5*(.5+.5*Math.sin(t*1.2+i)))+')';ctx.fillRect(x,y,1.4,1.4)}
 }
 function drawFarField(t){
  ctx.fillStyle='#151020';ctx.beginPath();ctx.moveTo(0,H*.62);for(let x=0;x<=W;x+=30)ctx.lineTo(x,H*.58+Math.sin(x*.009+t*.1)*H*.025);ctx.lineTo(W,H);ctx.lineTo(0,H);ctx.fill();
  ctx.fillStyle='#0b0a12';ctx.beginPath();ctx.moveTo(0,H*.73);for(let x=0;x<=W;x+=18)ctx.lineTo(x,H*.7+Math.sin(x*.018)*9);ctx.lineTo(W,H);ctx.lineTo(0,H);ctx.fill();
  for(const c of corn){let sway=reduced?0:Math.sin(t*.7+c.phase)*7;ctx.strokeStyle='#171b17';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(c.x,H*.79);ctx.quadraticCurveTo(c.x+c.lean+sway,H*.79-c.h*.55,c.x+c.lean+sway*1.4,H*.79-c.h);ctx.stroke();ctx.fillStyle='#283022';for(let j=0;j<3;j++){let yy=H*.79-c.h*(.25+j*.19);ctx.beginPath();ctx.ellipse(c.x+c.lean*.3+sway*.3,yy,12,4,-.5*c.side,0,Math.PI*2);ctx.fill()}}
+}
+function drawCinematicField(t){
+ // Distant tree line with irregular crowns and layered moon haze.
+ for(let layer=0;layer<3;layer++){
+  const base=H*(.57+layer*.055),step=layer===0?34:25;
+  ctx.fillStyle=['#11101a','#0d1014','#090d10'][layer];
+  ctx.beginPath();ctx.moveTo(0,base+35);
+  for(let x=-20;x<W+40;x+=step){
+   const h=18+((Math.sin(x*.071+layer*8)+1)*.5)*48;
+   ctx.lineTo(x,base-h);ctx.lineTo(x+step*.35,base-h-8);ctx.lineTo(x+step*.7,base-h*.55);
+  }
+  ctx.lineTo(W,H);ctx.lineTo(0,H);ctx.closePath();ctx.fill();
+ }
+ // Moon shafts and low mist over the far rows.
+ ctx.save();ctx.globalCompositeOperation='screen';
+ for(let i=0;i<5;i++){
+  const x=W*(.58+i*.085),beam=ctx.createLinearGradient(x, H*.25,x-90,H*.83);
+  beam.addColorStop(0,'rgba(191,194,219,.075)');beam.addColorStop(1,'rgba(191,194,219,0)');
+  ctx.fillStyle=beam;ctx.beginPath();ctx.moveTo(x-12,H*.24);ctx.lineTo(x+16,H*.24);ctx.lineTo(x-105,H*.83);ctx.lineTo(x-165,H*.83);ctx.closePath();ctx.fill();
+ }
+ ctx.restore();
+ // Furrowed soil with damp highlights and scattered straw.
+ const ground=ctx.createLinearGradient(0,H*.68,0,H);
+ ground.addColorStop(0,'#211b20');ground.addColorStop(.35,'#171317');ground.addColorStop(1,'#08090c');
+ ctx.fillStyle=ground;ctx.fillRect(0,H*.68,W,H*.32);
+ for(let row=0;row<9;row++){
+  const y=H*(.72+row*.038),alpha=.11-row*.008;
+  ctx.strokeStyle='rgba(121,91,72,'+alpha+')';ctx.lineWidth=1+row*.35;
+  ctx.beginPath();ctx.moveTo(0,y);
+  for(let x=0;x<=W;x+=24)ctx.lineTo(x,y+Math.sin(x*.012+row)*3+Math.sin(x*.035)*1.5);
+  ctx.stroke();
+ }
+ for(let i=0;i<180;i++){
+  const x=(i*97.31)%W,y=H*(.69+((i*31)%300)/1000),len=3+(i%7)*1.5;
+  ctx.strokeStyle=i%3?'rgba(126,103,75,.28)':'rgba(187,151,99,.25)';
+  ctx.lineWidth=.7;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+len,y-2-(i%4));ctx.stroke();
+ }
+ // Small weeds and broken stalks silhouette the foreground.
+ for(let i=0;i<46;i++){
+  const x=(i*137.7)%W,y=H*(.78+(i%7)*.027),h=12+(i%5)*7;
+  ctx.strokeStyle=i%2?'#171b16':'#28231d';ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.moveTo(x,y);ctx.quadraticCurveTo(x-5,y-h*.55,x+(i%2?7:-8),y-h);ctx.stroke();
+ }
+ // Subtle film grain texture, fixed pattern so it doesn't flicker.
+ ctx.fillStyle='rgba(220,205,190,.025)';
+ for(let i=0;i<500;i++){const x=(i*193.17)%W,y=(i*89.73)%H;ctx.fillRect(x,y,1,1)}
 }
 function pumpkin(p,t,finale){
  let growth=started?Math.min(1,p.grow):0,scale=p.s*(.2+.8*growth),x=p.x,y=p.y,rx=36*scale,ry=29*scale;if(scale<.12)return;
@@ -90,6 +136,11 @@ function pumpkin(p,t,finale){
  const shell=ctx.createRadialGradient(-rx*.35,-ry*.52,2,rx*.25,ry*.3,rx*1.8);shell.addColorStop(0,'#ffb35c');shell.addColorStop(.22,'#ed842e');shell.addColorStop(.58,'#b94d20');shell.addColorStop(.86,'#73301c');shell.addColorStop(1,'#351b18');
  for(let k=-3;k<=3;k++){let offset=k*rx*.205,bulge=1-Math.abs(k)*.105;ctx.fillStyle=shell;ctx.beginPath();ctx.ellipse(offset,0,rx*.29,ry*bulge,0,0,Math.PI*2);ctx.fill();ctx.strokeStyle='rgba(64,27,15,.32)';ctx.lineWidth=1.4*scale;ctx.stroke()}
  ctx.save();ctx.globalAlpha=.22;ctx.strokeStyle='#ffd18b';ctx.lineWidth=2*scale;ctx.beginPath();ctx.ellipse(-rx*.25,-ry*.28,rx*.16,ry*.5,-.18,-2.2,-.8);ctx.stroke();ctx.restore();
+ // Natural skin speckling, shallow scars and damp highlights.
+ ctx.save();ctx.globalAlpha=.23;
+ for(let n=0;n<38;n++){let a=n*2.399,rr=Math.sqrt((n+.5)/38)*.88,px=Math.cos(a)*rx*rr,py=Math.sin(a)*ry*rr;
+ ctx.fillStyle=n%4?'#4b2418':'#ffd08b';ctx.beginPath();ctx.ellipse(px,py,Math.max(.45,scale*.8),Math.max(.35,scale*.55),a,0,Math.PI*2);ctx.fill()}
+ ctx.restore();
  let stem=ctx.createLinearGradient(0,-ry-20*scale,0,-ry);stem.addColorStop(0,'#77713a');stem.addColorStop(.5,'#514b2a');stem.addColorStop(1,'#302b1c');ctx.fillStyle=stem;ctx.beginPath();ctx.moveTo(-4*scale,-ry*.8);ctx.quadraticCurveTo(-7*scale,-ry-19*scale,4*scale,-ry-23*scale);ctx.quadraticCurveTo(9*scale,-ry-16*scale,3*scale,-ry*.78);ctx.fill();
  ctx.fillStyle='#59663a';ctx.beginPath();ctx.ellipse(12*scale,-ry-14*scale,12*scale,4*scale,-.4,0,Math.PI*2);ctx.fill();
  p.lit+=((started&&act>=1?(finale?1:.58):0)-p.lit)*.045;
@@ -131,7 +182,7 @@ function drawMagic(t,vis){
  ctx.restore();
 }
 function draw(t){
- ctx.clearRect(0,0,W,H);drawSky(t);drawFarField(t);
+ ctx.clearRect(0,0,W,H);drawSky(t);drawFarField(t);drawCinematicField(t);
  const grow=started?Math.max(0,Math.min(1,(elapsed-8)/16)):0;
  pumpkins.forEach((p,i)=>{p.grow=reduced&&started?1:Math.max(p.grow,grow*Math.min(1,Math.max(0,(elapsed-8-i*.35)/12)));pumpkin(p,t,act===4)});
  scarecrow(t,act>=2?(act===2?Math.min(1,(elapsed-25)/8):1):0);
