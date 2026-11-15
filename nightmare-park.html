@@ -63,7 +63,7 @@ header span{color:#e8c79a!important;text-shadow:0 0 12px #b9784b66}
 <canvas id="world"></canvas>
 <header><a href="index.html">KAEVORYN STUDIOS<small>CREATE THE IMPOSSIBLE</small></a><span style="font-size:9px;letter-spacing:.2em;color:#c58d9b">THE MIDNIGHT KINGDOM · TEN REALMS AFTER DARK</span></header>
 <div id="intro"><div class="panel"><div class="eyebrow">A PLACE THAT SHOULD NOT EXIST</div><h1>THE<br> NIGHTMARE<br> PARK</h1><p>Beyond the gates lies a forgotten fairytale kingdom. Follow lantern-lit streets to a towering castle, wander its grand foyer, ballroom, library and royal chambers, then climb to the forbidden attic or descend into the catacombs. Ten strange lands surround the castle, each hiding a story, a secret and something watching from the dark.</p><button class="enter" id="enter">ENTER THE PARK</button><div class="hint">LANDSCAPE MODE RECOMMENDED · EXPLORE THE CASTLE & TEN REALMS · SOUND IS OPTIONAL</div></div></div>
-<div id="hud"><div class="hudline"><div class="chip" id="district">THE GATE</div><div class="chip" id="progress">0 / 20 KINGDOM DISCOVERIES</div></div><button id="soundBtn">SOUND: OFF</button><div id="toast"></div></div>
+<div id="hud"><div class="hudline"><div class="chip" id="district">THE GATE</div><div class="chip" id="progress">0 / 20 PARK DISCOVERIES</div></div><button id="soundBtn">SOUND: OFF</button><div id="toast"></div></div>
 <div id="mobile"><div class="pad" id="movePad"><div class="stick" id="stick"></div></div><div class="look" id="lookPad">LOOK<br>AROUND</div></div>
 <div id="scare"><b>◉</b><small>IT KNOWS YOU ARE HERE</small></div><div id="fatal"></div>
 <script>
@@ -387,53 +387,80 @@ for(let i=0;i<18;i++){const x=(Math.random()-.5)*190,z=-145+Math.random()*250;co
 ghost(-28,38,1.3,true);ghost(30,-18,1.1,false);ghost(58,28,1.2,true);
 const n=300,pos=new Float32Array(n*3);for(let i=0;i<n;i++){pos[i*3]=(Math.random()-.5)*220;pos[i*3+1]=Math.random()*24;pos[i*3+2]=-25+(Math.random()-.5)*250}const ashGeo=new THREE.BufferGeometry();ashGeo.setAttribute('position',new THREE.BufferAttribute(pos,3));const ash=new THREE.Points(ashGeo,new THREE.PointsMaterial({color:0xb9bdc9,size:.13,transparent:true,opacity:.42}));scene.add(ash);actors.push({kind:'ash',obj:ash});
 zone('THE GREAT HALL',0,12,'The castle is open. Explore the halls, upper floors, hidden rooms and lower catacombs.');
-// THE ECLIPSE CITADEL — a new monumental foreground castle, built as real walk-up geometry.
-const citadelStone=mat(0x514b59,.62,.22),citadelTrim=mat(0xc3a477,.42,.42),citadelRoof=mat(0x25283b,.38,.48);
-function citadelTower(x,z,r,h,roofColor=0x33334d){
- add(new THREE.CylinderGeometry(r*.9,r*1.12,h,12),citadelStone,x,h/2,z);
- add(new THREE.CylinderGeometry(r*1.24,r*1.24,.8,12),citadelTrim,x,h*.76,z);
- add(new THREE.ConeGeometry(r*1.55,h*.43,8),mat(roofColor,.4,.35),x,h+h*.19,z);
- add(new THREE.ConeGeometry(.22,4.8,8),citadelTrim,x,h+h*.43,z);
- solid(x,z,r*1.8,r*1.8);
- for(let yy=5;yy<h-2;yy+=7){const glow=yy%2?0xf1bb78:0x9bbde8;add(new THREE.PlaneGeometry(1.5,3.6),new THREE.MeshBasicMaterial({color:glow,side:THREE.DoubleSide}),x,yy,z+r*.92);light(x,yy,z+r*1.3,glow,.65,12)}
-}
-function citadelWindow(x,y,z,w=2.2,h=5,c=0xf4c37e){
- add(new THREE.PlaneGeometry(w,h),new THREE.MeshBasicMaterial({color:c,side:THREE.DoubleSide}),x,y,z);
- add(new THREE.ConeGeometry(w*.58,h*.24,3),citadelTrim,x,y+h*.61,z);
- light(x,y,z+1,c,.8,14);
-}
-for(const x of [-25,25])citadelTower(x,65,5.2,37,x<0?0x3c3049:0x263e50);
-for(const x of [-14,14])citadelTower(x,61,3.7,27,x<0?0x49324c:0x293c52);
-// Raised central spire sits above the open entrance rather than blocking the walkway.
-add(new THREE.CylinderGeometry(4.8,5.5,18,12),citadelStone,0,40,65);
-add(new THREE.CylinderGeometry(6.2,6.2,.8,12),citadelTrim,0,33,65);
-add(new THREE.ConeGeometry(8.2,10,8),citadelRoof,0,54,65);
-add(new THREE.ConeGeometry(.24,4.8,8),citadelTrim,0,61,65);
-for(const y of [37,43,49])citadelWindow(0,y,60,2.6,4.2,0xf2c17c);
-block(-13,17,65,12,34,3,0x514b59);solid(-13,65,12,3);
-block(13,17,65,12,34,3,0x514b59);solid(13,65,12,3);
-block(0,35,65,15,4,3,0x514b59);
-add(new THREE.ConeGeometry(12,9,4),citadelRoof,0,44,65,0,Math.PI/4);
-for(const x of [-19,-8,8,19])for(const y of [10,19,28])citadelWindow(x,y,62,2,4.5,(x+y)%2?0xf3bb78:0x9bc9e8);
-for(const x of [-8,8]){block(x,5,83,2.4,10,2.5,0x665c65);block(x,10.4,83,3.2,.8,3.1,0xc3a477);light(x,7,81,0xffc27b,1.8,20)}
-// Deep, open central arch: the approach remains walkable.
-add(new THREE.BoxGeometry(8,2,3),citadelTrim,0,28,65);
-add(new THREE.BoxGeometry(2,18,3),citadelTrim,-5,9,65);
-add(new THREE.BoxGeometry(2,18,3),citadelTrim,5,9,65);
-add(new THREE.TorusGeometry(5,0.48,10,32,Math.PI),citadelTrim,0,18,65,0,0,Math.PI);
-steps(0,88,10,16,.78,.42,0,-1);
-path(0,78,18,24);
-add(new THREE.PlaneGeometry(12,16),new THREE.MeshStandardMaterial({color:0x273342,metalness:.38,roughness:.3}),0,.04,57,-Math.PI/2);
-for(let i=0;i<7;i++){const x=-4.5+i*1.5;add(new THREE.BoxGeometry(.13,9,.16),citadelTrim,x,8,56);add(new THREE.BoxGeometry(1.4,.13,.16),citadelTrim,x,8,56)}
-// Jewel-lit balconies and a great eclipse crest make the new skyline unmistakable.
-for(const x of [-18,18]){block(x,22,60,9,.65,7,0x78677a);for(let k=-2;k<=2;k++)block(x+k*1.7,23,56.7,.16,1.5,.16,0xc3a477)}
-add(new THREE.TorusGeometry(4.2,.42,12,48),citadelTrim,0,39,60);
-add(new THREE.SphereGeometry(3.1,24,18),new THREE.MeshBasicMaterial({color:0x151827}),0,39,60);
-add(new THREE.TorusGeometry(5.1,.12,8,48),new THREE.MeshBasicMaterial({color:0x8f6bb8}),0,39,60);
-light(0,39,55,0x9e75d5,2.8,34);
-zone('THE ECLIPSE CITADEL',0,72,'The new citadel rises above the kingdom. Its eclipse crest marks the hidden royal entrance.');
+// NIGHTMARE PARK: AFTER DARK — complete horror-amusement-park rebuild.
+scene.clear();solids.length=0;actors.length=0;zones.length=0;found.clear();
+camera.position.set(0,1.7,116);yaw=0;pitch=0;
+scene.background=new THREE.Color(0x101321);scene.fog=new THREE.FogExp2(0x24202d,.00155);
+scene.add(new THREE.HemisphereLight(0xc8d3e4,0x27202a,1.45));
+const moonlight=new THREE.DirectionalLight(0xb7c7e0,1.65);moonlight.position.set(-65,90,55);scene.add(moonlight);
+const carnivalFill=new THREE.DirectionalLight(0xffb47b,.55);carnivalFill.position.set(70,38,30);scene.add(carnivalFill);
+const groundMat=mat(0x292a30,.98),asphalt=mat(0x39363b,.94),curb=mat(0x75635b,.85),iron=mat(0x25252d,.58,.48),rust=mat(0x78463d,.78,.18),cream=mat(0xd0b995,.85),red=mat(0x8f263d,.72,.12);
+add(new THREE.PlaneGeometry(250,330),groundMat,0,-.82,-22,-Math.PI/2);
+function road(x,z,w,d){add(new THREE.PlaneGeometry(w,d),asphalt,x,.025,z,-Math.PI/2);for(const side of [-1,1])add(new THREE.BoxGeometry(w,.16,.34),curb,x,.11,z+side*(d/2-.18))}
+function lampPost(x,z,color=0xffb65c){block(x,2.5,z,.28,5,.28,0x343039);block(x,5.05,z,.9,.18,.9,0x51404a);const bulb=add(new THREE.SphereGeometry(.35,12,10),new THREE.MeshBasicMaterial({color}),x,5.5,z);light(x,5.5,z,color,2.2,23);return bulb}
+function carnivalSign(x,y,z,label,color='#ffd18b',w=8){const c=document.createElement('canvas');c.width=1024;c.height=220;const q=c.getContext('2d');q.fillStyle='#160d15';q.fillRect(0,0,1024,220);q.strokeStyle=color;q.lineWidth=12;q.shadowColor=color;q.shadowBlur=20;q.strokeRect(12,12,1000,196);q.fillStyle='#fff0d8';q.textAlign='center';q.textBaseline='middle';q.font='bold 78px Georgia';q.shadowColor=color;q.shadowBlur=16;q.fillText(label.toUpperCase(),512,112,940);const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;add(new THREE.PlaneGeometry(w,1.9),new THREE.MeshBasicMaterial({map:t,transparent:true,toneMapped:false,side:THREE.DoubleSide}),x,y,z)}
+function booth(x,z,label,accent=0xd34c62){const g=new THREE.Group();const wood=mat(0x533b36),stripe=mat(accent),roofMat=mat(0x29232d);const base=new THREE.Mesh(new THREE.BoxGeometry(8,4.5,6),wood);base.position.y=2.25;g.add(base);const counter=new THREE.Mesh(new THREE.BoxGeometry(8.5,1.15,1),cream);counter.position.set(0,1.5,3.2);g.add(counter);const awning=new THREE.Mesh(new THREE.ConeGeometry(5.6,2.1,4),stripe);awning.scale.set(1,.7,.7);awning.position.set(0,5.1,0);awning.rotation.y=Math.PI/4;g.add(awning);for(let i=0;i<7;i++){const panel=new THREE.Mesh(new THREE.BoxGeometry(1.05,1.1,.12),i%2?stripe:cream);panel.position.set(-3+i,4.25,3.05);g.add(panel)}g.position.set(x,0,z);scene.add(g);solid(x,z,8.5,6.5);carnivalSign(x,6.3,z+3.12,label,accent===0xd34c62?'#ff7286':'#ffd18b',7);light(x,5.6,z+3,accent,1.5,18)}
+function facade(x,z,w,h,label,accent=0xb63b55){block(x,h/2,z,w,h,3,0x38333a);block(x,h,z,w+2,.8,4,0x24232c);for(const side of [-1,1]){block(x+side*(w/2-.8),h/2,z-1,.7,h,1,0x55464a);for(let yy=3;yy<h-2;yy+=4){const win=add(new THREE.PlaneGeometry(1.6,2.4),new THREE.MeshBasicMaterial({color:accent,transparent:true,opacity:.72,side:THREE.DoubleSide}),x+side*(w/2-.8),yy,z-1.56);light(x+side*(w/2-.8),yy,z-2,accent,.55,10)}}block(x,h*.56,z-1.9,5,6,.22,0x14121a);carnivalSign(x,h+1.9,z-2.05,label,'#ff8b83',Math.min(w,15));light(x,h*.65,z-4,accent,2.5,30);solid(x,z,w,3.5)}
+// Main entrance: ticket windows, turnstiles and a broad open midway beyond.
+for(let x=-116;x<=116;x+=8){block(x,2, -164,.45,4,.55,0x3c373c);block(x,2,116,.45,4,.55,0x3c373c)}
+for(let z=-164;z<=116;z+=8){block(-116,2,z,.55,4,.45,0x3c373c);block(116,2,z,.55,4,.45,0x3c373c)}
+road(0,83,26,68);road(0,42,42,28);road(0,8,34,55);road(0,-42,26,54);road(0,-95,24,50);
+road(-34,48,78,14);road(34,48,78,14);road(-52,4,14,100);road(52,4,14,100);road(0,-75,116,13);road(-34,-112,78,12);road(34,-112,78,12);
+block(-15,5,102,1.2,10,2,0x51434a);block(15,5,102,1.2,10,2,0x51434a);block(-15,10,102,3,1,3,0xb18a65);block(15,10,102,3,1,3,0xb18a65);block(0,9,102,30,1.2,2,0x51434a);
+carnivalSign(0,12,100,'NIGHTMARE PARK · AFTER DARK','#ffb45e',26);
+for(const x of [-8,-4,0,4,8]){block(x,1.2,91,.28,2.4,.28,0x9a7b64);block(x,2.5,91,.9,.16,.4,0xc4a27b)}
+facade(-22,91,13,8,'TICKETS',0xffb85e);road(0,72,22,22);
+for(const x of [-10,10]){lampPost(x,84,0xffbd70);lampPost(x,66,0xff8b6c)}
+// Midway paving, strings of bulbs, pennants and rows of working carnival stalls.
+for(let z=63;z>=-4;z-=12){for(let x=-28;x<=28;x+=7)lampPost(x,z,(x+z)%2?0xffbd65:0xf16a76)}
+for(const x of [-24,-12,12,24]){const wire=add(new THREE.CylinderGeometry(.035,.035,58,5),iron,x,11,28,0,0,Math.PI/2);wire.rotation.z=Math.PI/2;for(let i=0;i<9;i++){const z=55-i*7;const b=add(new THREE.SphereGeometry(.22,8,7),new THREE.MeshBasicMaterial({color:i%2?0xffb45c:0xff5d75}),x,10.7,z);light(x,10.7,z,i%2?0xffb45c:0xff5d75,.45,9)}}
+booth(-22,30,'RING TOSS',0xd34c62);booth(-11,30,'PRIZE PALACE',0xe0a34e);booth(11,30,'CANDY & CURIOS',0x4d9b9a);booth(22,30,'FREAK SHOW',0x9b65ad);
+booth(-22,8,'CORN DOGS',0xe0a34e);booth(-11,8,'POPCORN',0xd34c62);booth(11,8,'SKEE BALL',0x4d9b9a);booth(22,8,'THE CLAW',0x9b65ad);
+for(let i=0;i<8;i++){const x=-27+i*7.7;const pennant=add(new THREE.ConeGeometry(.85,1.7,3),mat(i%2?0x8f263d:0xe0a34e),x,8,18);pennant.rotation.z=Math.PI}
+facade(0,-12,25,15,'THE MIDWAY FUNHOUSE',0xd34c62);carnivalSign(0,5,-9,'LAUGH WHILE YOU CAN','#ffcf75',20);
+// Giant Ferris wheel with a real rotating rim, spokes and gondolas.
+const wheel=new THREE.Group();const wheelR=19,wheelX=-72,wheelZ=24;
+const rimGeo=new THREE.TorusGeometry(wheelR,.48,10,64);wheel.add(new THREE.Mesh(rimGeo,mat(0xb9a18b,.4,.55)));
+for(let i=0;i<16;i++){const a=i*Math.PI/8;const spoke=new THREE.Mesh(new THREE.BoxGeometry(.22,wheelR*2,.24),iron);spoke.rotation.z=-a;wheel.add(spoke);const hub=new THREE.Mesh(new THREE.BoxGeometry(2.3,.5,1.3),mat(0xb48a58));hub.position.set(Math.cos(a)*wheelR,Math.sin(a)*wheelR,0);wheel.add(hub);const gondola=new THREE.Group();const basket=new THREE.Mesh(new THREE.BoxGeometry(2.2,2.1,2),mat(i%2?0x9b304a:0x345b67));basket.position.y=-1;gondola.add(basket);const roof=new THREE.Mesh(new THREE.BoxGeometry(2.8,.25,2.4),cream);roof.position.y=.15;gondola.add(roof);gondola.position.set(Math.cos(a)*wheelR,Math.sin(a)*wheelR,0);wheel.add(gondola)}
+wheel.position.set(wheelX,26,wheelZ);scene.add(wheel);actors.push({kind:'wheel',obj:wheel,phase:0});
+for(const x of [wheelX-8,wheelX+8]){const leg=add(new THREE.CylinderGeometry(.6,.9,30,8),iron,x,15,wheelZ,0,0,x<wheelX?.28:-.28);solid(x,wheelZ,2,3)}
+add(new THREE.CylinderGeometry(2,2,4,12),mat(0x9d8a75),wheelX,25,wheelZ);light(wheelX,28,wheelZ,0xffb45e,3.5,50);carnivalSign(wheelX,52,wheelZ,'THE DEVIL’S WHEEL','#ff6c72',18);
+zone('THE DEVIL’S WHEEL',wheelX,24,'The Ferris wheel keeps turning. A gondola swings even when the wheel stops.');
+// Steel roller coaster with hills, a loop, supports and a moving train.
+const coasterPts=[[-44,5,-42],[-62,17,-50],[-82,28,-72],[-94,16,-96],[-75,8,-120],[-45,20,-132],[-15,31,-115],[5,12,-89],[22,7,-58],[42,15,-38]];
+const coasterCurve=new THREE.CatmullRomCurve3(coasterPts.map(p=>new THREE.Vector3(...p)));
+add(new THREE.TubeGeometry(coasterCurve,260,.58,10,false),mat(0xb43d52,.35,.55));
+const rail2=coasterCurve.clone();const pts2=coasterCurve.getPoints(260).map(p=>new THREE.Vector3(p.x,p.y+.9,p.z));const curve2=new THREE.CatmullRomCurve3(pts2);add(new THREE.TubeGeometry(curve2,260,.27,8,false),mat(0xd3b28b,.35,.5));
+for(let i=0;i<=22;i++){const p=coasterCurve.getPoint(i/22);if(i%2===0){const h=Math.max(2,p.y);block(p.x,h/2,p.z,.65,h,.65,0x45434b)}}
+const train=new THREE.Group();for(let i=0;i<4;i++){const car=new THREE.Mesh(new THREE.BoxGeometry(2.8,1.35,3.1),mat(i%2?0x9a263f:0x252c3d,.42,.4));car.position.z=i*3.3;train.add(car);for(let side of [-1,1]){const seat=new THREE.Mesh(new THREE.BoxGeometry(.9,.65,1.1),cream);seat.position.set(side*.65,1, i*3.3);train.add(seat)}}scene.add(train);actors.push({kind:'train',obj:train,curve:coasterCurve,t:0});zone('THE REDLINE COASTER',-72,-94,'The train races the broken skyline. The last car is always occupied.');
+// Tower drop ride, with a carriage that climbs then plunges.
+const dropX=72,dropZ=20;for(let i=0;i<8;i++){const a=i*Math.PI/4;const x=dropX+Math.cos(a)*3.5,z=dropZ+Math.sin(a)*3.5;block(x,25,z,.45,50,.45,0x5a5357)}
+for(const y of [3,49]){add(new THREE.TorusGeometry(4.8,.28,8,24),iron,dropX,y,dropZ)}
+const dropCar=add(new THREE.BoxGeometry(10,2,8),mat(0x9e3047,.4,.35),dropX,12,dropZ);for(let x=-4;x<=4;x+=2)block(dropX+x,14,dropZ,1,.35,7,0xe1c48f);actors.push({kind:'drop',obj:dropCar,phase:0});light(dropX,50,dropZ,0xff536b,3,44);carnivalSign(dropX,57,dropZ,'THE LAST DROP','#ff697d',17);zone('THE LAST DROP',dropX,20,'The carriage pauses at the top. Then every light goes out.');
+// Swinging pirate ship.
+const ship=new THREE.Group();const hull=add(new THREE.CapsuleGeometry(3.3,12,5,12),mat(0x6f283d),0,0,0);hull.rotation.z=Math.PI/2;ship.add(hull);const mast=new THREE.Mesh(new THREE.BoxGeometry(.7,22,.7),iron);mast.position.y=12;ship.add(mast);ship.position.set(75,14,-38);scene.add(ship);actors.push({kind:'swing',obj:ship,phase:0});block(75,10,-38,2,20,2,iron.color.getHex());carnivalSign(75,29,-38,'THE WIDOWMAKER','#ff9c64',16);zone('THE WIDOWMAKER',75,-38,'The pirate ship swings higher than its chains should allow.');
+// Haunted attractions are large walk-in facades, not castles or menu portals.
+facade(-75,-8,25,18,'DREADFALL HAUNTED HOUSE',0xb43b59);for(const x of [-83,-75,-67]){block(x,1.8,-5,1.2,3.6,.5,0x19161c);add(new THREE.SphereGeometry(.12,8,8),new THREE.MeshBasicMaterial({color:0xff293e}),x,2.8,-5.3)}zone('DREADFALL HAUNTED HOUSE',-75,-8,'A silhouette crosses the upstairs windows. The entry door is standing open.');
+facade(76,-88,27,17,'WARD 13 · NO EXIT',0x67a5a0);for(let i=0;i<5;i++){const x=65+i*5.5;const bed=block(x,.8,-82,3,.5,5,0xb9b8b0);block(x,1.3,-84,2.8,.25,2,0x5a6970)}zone('WARD 13',76,-88,'A heart monitor beeps from a room with no patient.');
+facade(-72,-82,24,16,'THE DOLLHOUSE',0xb66e9c);for(let i=0;i<6;i++){const x=-81+i*3.5;const doll=add(new THREE.SphereGeometry(.7,12,10),mat(0xcab8a8),x,2,-76);for(const side of [-1,1])add(new THREE.SphereGeometry(.1,8,8),new THREE.MeshBasicMaterial({color:0x120c12}),x+side*.22,2.05,-76.6)}zone('THE DOLLHOUSE',-72,-82,'Every doll has turned to face the midway.');
+facade(0,-146,32,19,'THE PHANTOM THEATER',0x9876bd);for(let i=0;i<8;i++){const x=-13+i*3.7;const mask=add(new THREE.SphereGeometry(.72,12,10),mat(i%2?0xe5d9c7:0x29212d),x,3,-139);mask.scale.set(1,.8,.4)}zone('THE PHANTOM THEATER',0,-146,'The curtains move. The theater has been closed for forty years.');
+// Haunted carousel, miniature train station, and spinning carnival ride.
+const carousel=new THREE.Group();carousel.add(new THREE.Mesh(new THREE.CylinderGeometry(.7,1,10,14),mat(0x9c7b55)));const canopy=new THREE.Mesh(new THREE.ConeGeometry(11,4.5,16),mat(0x8b263f));canopy.position.y=11;carousel.add(canopy);
+for(let i=0;i<12;i++){const a=i*Math.PI/6;const horse=new THREE.Mesh(new THREE.CapsuleGeometry(.42,1.5,5,9),mat(i%2?0xd7c6a4:0x685765));horse.position.set(Math.cos(a)*7,4,Math.sin(a)*7);carousel.add(horse);const pole=new THREE.Mesh(new THREE.CylinderGeometry(.06,.06,7,7),cream);pole.position.set(Math.cos(a)*7,5,Math.sin(a)*7);carousel.add(pole)}
+carousel.position.set(30,0,-94);scene.add(carousel);actors.push({kind:'carousel',obj:carousel,phase:0});carnivalSign(30,17,-94,'THE LAST CAROUSEL','#ffca74',15);zone('THE LAST CAROUSEL',30,-94,'The music plays backwards. One horse has fresh muddy footprints.');
+// A boarded-up midway arcade and crooked carnival game props.
+facade(38,62,18,11,'THE PRIZE SHACK',0xe0a34e);for(let i=0;i<5;i++){const target=add(new THREE.CylinderGeometry(.7,.7,.2,16),mat(0xc53c54),30+i*4,2,68,Math.PI/2);add(new THREE.SphereGeometry(.2,8,8),new THREE.MeshBasicMaterial({color:0xffe1a2}),30+i*4,2.2,68)}
+// Twisted perimeter trees, broken benches, flickering marquee lamps and low fog.
+function deadTree(x,z,h=8){const trunk=add(new THREE.CylinderGeometry(.2,.55,h,7),mat(0x29262b),x,h/2,z);for(let i=0;i<4;i++){const limb=add(new THREE.CylinderGeometry(.08,.18,h*.45,6),mat(0x29262b),x+(Math.random()-.5)*2,h*.68,z+(Math.random()-.5)*2);limb.rotation.z=(Math.random()-.5)*1.5}}
+for(let i=0;i<48;i++){const x=(Math.random()-.5)*220,z=-150+Math.random()*260;if(Math.abs(x)>62||z<-118||z>100)deadTree(x,z,5+Math.random()*9)}
+for(const [x,z,c] of [[-38,55,0xffb35c],[38,55,0xff687b],[-38,-20,0x9d6ec0],[38,-20,0x64a9a4],[-38,-96,0xff9b62],[38,-96,0x9d6ec0],[0,-126,0xffc16d]]){lampPost(x,z,c);fog(x,z,18)}
+ghost(-32,45,1.15,true);ghost(43,-12,1.2,false);ghost(49,-106,1.1,true);
+for(let i=0;i<14;i++){const x=-105+Math.random()*210,z=-150+Math.random()*260;const bat=add(new THREE.SphereGeometry(.18,7,6),new THREE.MeshBasicMaterial({color:0x111018}),x,10+Math.random()*15,z);actors.push({kind:'bat',obj:bat,home:bat.position.clone(),phase:Math.random()*7})}
+const ashCount=220,ashPos=new Float32Array(ashCount*3);for(let i=0;i<ashCount;i++){ashPos[i*3]=(Math.random()-.5)*220;ashPos[i*3+1]=Math.random()*22;ashPos[i*3+2]=-145+Math.random()*250}const ashGeo=new THREE.BufferGeometry();ashGeo.setAttribute('position',new THREE.BufferAttribute(ashPos,3));const ash=new THREE.Points(ashGeo,new THREE.PointsMaterial({color:0xd5c3bd,size:.12,transparent:true,opacity:.4}));scene.add(ash);actors.push({kind:'ash',obj:ash});
+for(const [x,z] of [[-10,62],[10,62],[-30,48],[30,48],[-30,5],[30,5],[-10,-75],[10,-75]])lampPost(x,z,0xffbd69);
+zone('THE MIDWAY',0,34,'The midway is alive with lights, games and rides. Something watches from the funhouse.');
+zone('THE ENTRANCE',0,86,'The ticket booth is still open. The park has been waiting for you.');
 
-installPrismaticKingdomLayout();
 }
 function say(t){toast.textContent=t;toast.classList.add('on');setTimeout(()=>toast.classList.remove('on'),4400)}
 function blocked(x,z){return solids.some(b=>Math.abs(x-b.x)<b.w/2+.5&&Math.abs(z-b.z)<b.d/2+.5)}
@@ -447,7 +474,7 @@ if(a.kind==='beacon'){a.obj.scale.setScalar(.9+.15*Math.sin(a.phase*2.3));a.obj.
 if(a.kind==='motes'){const ar=a.obj.geometry.attributes.position;for(let i=0;i<ar.count;i++){let y=ar.getY(i)+dt*(.16+(i%5)*.035);if(y>30)y=1;ar.setY(i,y);ar.setX(i,ar.getX(i)+Math.sin(a.phase+i*.11)*dt*.035)}ar.needsUpdate=true}
 if(a.kind==='storm'){if(now/1000>a.next){a.obj.material.opacity=.95;a.flash.intensity=3.4;a.flashEnd=now+125;a.next=now/1000+11+Math.random()*12;if(soundOn)playFx('thunder')}if(now>a.flashEnd){a.obj.material.opacity=0;a.flash.intensity=0}}
 if(a.kind==='floatBook'){a.obj.position.y=a.home.y+Math.sin(a.phase*1.8)*.45;a.obj.rotation.y=Math.sin(a.phase*.8)*.25;}if(a.kind==='banner')a.obj.rotation.z=Math.sin(a.phase*1.25)*.075;if(a.kind==='fireJet'){const pulse=.78+.22*Math.sin(a.phase*5);a.obj.scale.y=pulse;a.obj.material.opacity=.5+.25*pulse;a.core.scale.y=.72+.28*Math.sin(a.phase*6+1)}if(a.kind==='bell')a.obj.rotation.z=Math.sin(a.phase*1.1)*.16;if(a.kind==='wisps'){const ar=a.obj.geometry.attributes.position;for(let i=0;i<ar.count;i++){let y=ar.getY(i)+Math.sin(a.phase+i*.3)*dt*.16;if(y>7)y=1;ar.setY(i,y);ar.setX(i,ar.getX(i)+Math.sin(a.phase*.7+i)*dt*.12)}ar.needsUpdate=true}if(a.kind==='carousel')a.obj.rotation.y+=dt*.24;if(a.kind==='drop'){const cycle=(a.phase%13)/13;a.obj.position.y=cycle<.65?2+cycle/.65*42:44-(cycle-.65)/.35*42}if(a.kind==='train'){a.t=(a.t+dt*.055)%1;const pt=a.curve.getPointAt(a.t),tan=a.curve.getTangentAt(a.t);a.obj.position.copy(pt);a.obj.rotation.y=Math.atan2(tan.x,tan.z)}if(a.kind==='boat'){a.obj.position.y=.8+Math.sin(a.phase*1.4)*.2;a.obj.rotation.z=Math.sin(a.phase)*.035;a.obj.position.x=38+Math.sin(a.phase*.35)*2}if(a.kind==='bat'){a.obj.position.x=a.home.x+Math.sin(a.phase*.7)*3;a.obj.position.z=a.home.z+Math.cos(a.phase*.6)*4;a.obj.position.y=a.home.y+Math.sin(a.phase*2)*1.2}if(a.kind==='ash'){const ar=a.obj.geometry.attributes.position;for(let i=0;i<ar.count;i++){let y=ar.getY(i)+dt*.18;if(y>25)y=-1;ar.setY(i,y)}ar.needsUpdate=true}}
-if(now>scareTimer)scare.classList.remove('on');let near=null,best=1e9;for(const z of zones){const d=Math.hypot(p.x-z.x,p.z-z.z);if(d<best){best=d;near=z}}if(near&&best<28){$('district').textContent=near.name;if(best<12&&!found.has(near.name)){found.add(near.name);$('progress').textContent=found.size+' / '+zones.length+' KINGDOM DISCOVERIES';say(near.desc);if(soundOn)playFx('discovery');if(near.warp&&now>(window.__nightmareWarpAt||0)){window.__nightmareWarpAt=now+1800;camera.position.set(near.warp.x,near.warp.y,near.warp.z);pitch=0;yaw=0;if(soundOn)playFx('portal');say('SECRET PASSAGE OPENED · '+near.name)}}}}
+if(now>scareTimer)scare.classList.remove('on');let near=null,best=1e9;for(const z of zones){const d=Math.hypot(p.x-z.x,p.z-z.z);if(d<best){best=d;near=z}}if(near&&best<28){$('district').textContent=near.name;if(best<12&&!found.has(near.name)){found.add(near.name);$('progress').textContent=found.size+' / '+zones.length+' PARK DISCOVERIES';say(near.desc);if(soundOn)playFx('discovery');if(near.warp&&now>(window.__nightmareWarpAt||0)){window.__nightmareWarpAt=now+1800;camera.position.set(near.warp.x,near.warp.y,near.warp.z);pitch=0;yaw=0;if(soundOn)playFx('portal');say('SECRET PASSAGE OPENED · '+near.name)}}}}
 function frame(){if(!active)return;requestAnimationFrame(frame);const dt=Math.min(clock.getDelta(),.04);update(dt);renderer.render(scene,camera)}
 function startAudio(){audio=audio||new(window.AudioContext||window.webkitAudioContext)();audio.resume();if(!master){master=audio.createGain();master.gain.value=.18;master.connect(audio.destination)}else master.gain.setTargetAtTime(.18,audio.currentTime,.25);if(!ambience){const osc=audio.createOscillator(),filter=audio.createBiquadFilter(),gain=audio.createGain();osc.type='sawtooth';osc.frequency.value=42;filter.type='lowpass';filter.frequency.value=125;gain.gain.value=.12;osc.connect(filter).connect(gain).connect(master);osc.start();const shimmer=audio.createOscillator(),shimmerGain=audio.createGain();shimmer.type='sine';shimmer.frequency.value=110;shimmerGain.gain.value=.025;shimmer.connect(shimmerGain).connect(master);shimmer.start();const n=audio.createBuffer(1,audio.sampleRate*2,audio.sampleRate),data=n.getChannelData(0);for(let i=0;i<data.length;i++)data[i]=(Math.random()*2-1)*.55;const noise=audio.createBufferSource(),nf=audio.createBiquadFilter(),ng=audio.createGain();noise.buffer=n;noise.loop=true;nf.type='lowpass';nf.frequency.value=360;ng.gain.value=.075;noise.connect(nf).connect(ng).connect(master);noise.start();ambience={osc,shimmer,noise}}}
 function playFx(type='discovery'){if(!audio||!master||!soundOn)return;const t=audio.currentTime,o=audio.createOscillator(),g=audio.createGain(),f=audio.createBiquadFilter();o.connect(f);f.connect(g);g.connect(master);if(type==='discovery'){o.type='sine';o.frequency.setValueAtTime(523,t);o.frequency.exponentialRampToValueAtTime(1046,t+.22);o.frequency.exponentialRampToValueAtTime(784,t+.5);f.type='lowpass';f.frequency.value=2200;g.gain.setValueAtTime(.001,t);g.gain.exponentialRampToValueAtTime(.23,t+.035);g.gain.exponentialRampToValueAtTime(.001,t+.65);o.start(t);o.stop(t+.68)}else if(type==='portal'){o.type='triangle';o.frequency.setValueAtTime(170,t);o.frequency.exponentialRampToValueAtTime(720,t+.28);o.frequency.exponentialRampToValueAtTime(90,t+.8);f.type='lowpass';f.frequency.value=1300;g.gain.setValueAtTime(.001,t);g.gain.exponentialRampToValueAtTime(.3,t+.08);g.gain.exponentialRampToValueAtTime(.001,t+.85);o.start(t);o.stop(t+.9)}else if(type==='thunder'){o.type='sawtooth';o.frequency.setValueAtTime(75,t);o.frequency.exponentialRampToValueAtTime(28,t+1.1);f.type='lowpass';f.frequency.value=170;g.gain.setValueAtTime(.001,t);g.gain.exponentialRampToValueAtTime(.32,t+.04);g.gain.exponentialRampToValueAtTime(.001,t+1.2);o.start(t);o.stop(t+1.25)}else{o.type='sine';o.frequency.setValueAtTime(440,t);o.frequency.exponentialRampToValueAtTime(660,t+.08);f.type='lowpass';f.frequency.value=1800;g.gain.setValueAtTime(.001,t);g.gain.exponentialRampToValueAtTime(.08,t+.01);g.gain.exponentialRampToValueAtTime(.001,t+.16);o.start(t);o.stop(t+.18)}}
@@ -465,7 +492,7 @@ function begin(e){
   $('progress').textContent='0 / '+zones.length+' KINGDOM DISCOVERIES';
   active=true;
   intro.classList.add('hide');hud.classList.add('show');mobile.classList.add('show');
-  say('Welcome to the Midnight Kingdom. The castle doors are open — and the ten realms are waiting.');
+  say('Welcome to Nightmare Park. The midway is open. The rides never stopped.');
   frame();
  }catch(err){
   console.error('Nightmare Park launch failed:',err);
