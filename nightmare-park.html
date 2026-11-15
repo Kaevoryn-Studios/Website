@@ -644,8 +644,71 @@ const lake=add(new THREE.CircleGeometry(15,48),new THREE.MeshStandardMaterial({c
   solid(29.5,-5,.8,17);solid(50.5,-5,.8,17);solid(40,-13,22,.8);solid(40,3,22,.8);
   zone('THIRTEEN GHOSTS · THE GLASS HOUSE',40,-5,'Enter the glass spirit house, inspect its three containment chambers, and search the spectral cages outside for the escaped entities.');
 }
-// Park 5: Creeper barn, wrecked truck and winged predator.
-block(80,6,-5,19,12,13,0x57402f);const barn=add(new THREE.ConeGeometry(13,7,4),mat(0x3b2927),80,15,-5);barn.rotation.y=Math.PI/4;block(80,4,1,5,8,.3,0x241b1a);block(70,2,-25,10,3,5,0x38383a);for(let dx of [-4,4])add(new THREE.CylinderGeometry(1.2,1.2,.7,12),dark,70+dx,.9,-27,Math.PI/2);ghost(88,-20,1.8,true);
+// Park 5: CREEPER'S HARVEST — a weather-beaten farmstead swallowed by corn.
+{
+  const timber=0x59402f, rust=0x713c2e;
+  // Barn frontage: sliding doors, loft opening, cross-braced timber and warm slits of light.
+  block(80,6,-5,19,12,13,timber);const barnRoof=add(new THREE.ConeGeometry(13,7,4),mat(0x30272a),80,15,-5);barnRoof.rotation.y=Math.PI/4;
+  block(80,4,1.62,6.2,8,.32,0x211b1c);block(76.9,4,1.82,.22,8,.25,0x9a6844);block(83.1,4,1.82,.22,8,.25,0x9a6844);
+  block(80,10,-.5,4.8,2.4,.2,0x21191a);block(80,10.1,-.34,3.8,.18,.18,0xb9784d);
+  for(const x of [71,89]){block(x,6,1.55,.35,12,.4,0x8c5c3d);lamp(x,1,0xe59a53)}
+  for(const x of [73,87]){const brace=block(x,4,1.78,5.5,.22,.22,0xa06c47);brace.rotation.z=x<80?-.7:.7}
+  solid(80,-5,19,13);
+  // Leaning grain silo and rusted water tank on the far side of the barn.
+  add(new THREE.CylinderGeometry(3.2,3.6,13,16),mat(0x59605b,.65,.5),94,6,-8);
+  const siloTop=add(new THREE.ConeGeometry(4,2.8,16),mat(0x343a39),94,13.8,-8);
+  block(94,1,-8,7,1,7,0x424641);solid(94,-8,7,7);
+  // Abandoned farm truck: cab, bed, windows, grille, headlights and four distinct wheels.
+  block(70,2.5,-25,11,2.2,5.5,0x454342);block(67.4,4.2,-25,5.4,3.5,5.2,0x593b32);
+  block(67.4,4.25,-22.34,4.4,2.1,.12,0x82939a);block(67.4,4.25,-27.65,4.4,2.1,.12,0x82939a);
+  block(64.65,2.9,-22.1,.25,1.3,.2,0x9a8c72);block(70.1,2.9,-22.1,.25,1.3,.2,0x9a8c72);
+  block(64.45,2.2,-22.05,.25,.55,.2,0xf0c47b);block(75.2,2.2,-25, .3,.7,5.4,0x292b2b);
+  for(const x of [66,74])for(const z of [-27.2,-22.8]){
+    const wheel=add(new THREE.CylinderGeometry(1.05,1.05,.72,14),dark,x,1.1,z,Math.PI/2);
+    add(new THREE.CylinderGeometry(.42,.42,.76,12),mat(0x77716b),x,1.1,z,Math.PI/2);
+  }
+  solid(70,-25,12,7);
+  // Corn rows form a maze on both sides; the central approach stays open.
+  for(const side of [-1,1])for(let row=0;row<5;row++){
+    const x=80+side*(12+row*3.1);
+    for(let n=0;n<8;n++){
+      const z=-17-n*4.2;
+      const stalk=add(new THREE.CylinderGeometry(.08,.16,3.4,6),mat(0x6b7440),x,1.7,z);
+      for(let leaf=0;leaf<3;leaf++){const blade=add(new THREE.ConeGeometry(.18,2.2,5),mat(leaf%2?0x7d8545:0x465c36),x+(leaf-1)*.38,1.8+leaf*.35,z);blade.rotation.z=(leaf-1)*.75}
+      if(n%2===0){const cob=add(new THREE.SphereGeometry(.19,7,6),mat(0xd1ad4f),x+.16,2.1,z+.12);cob.scale.set(.7,1.8,.7)}
+    }
+  }
+  // A broken fence and scattered hay bales frame the farm lane.
+  for(let side of [-1,1])for(let n=0;n<5;n++){
+    const x=80+side*(7+n*4),z=-39;
+    block(x,1.1,z,3.2,2.2,.22,0x514033);
+    for(const y of [0.7,1.6])block(x, y,z+.15,3.2,.12,.12,0x9a7851);
+  }
+  for(const [x,z] of [[60,-8],[62,-12],[98,-18],[97,-23]]){const bale=add(new THREE.CylinderGeometry(1.2,1.2,2.4,12),mat(0x9a7947),x,1.2,z,Math.PI/2);bale.rotation.z=.08}
+  // A scarecrow watches the lane from a crooked post.
+  block(91,3,-30,.35,6,.35,0x6d5038);block(91,4.8,-30,4.2,.32,.32,0x6d5038);
+  add(new THREE.SphereGeometry(.85,10,8),mat(0x78604c),91,6.4,-30);
+  block(91,5.4,-30,2.2,2.4,.5,0x493b34);lamp(91,-30,0xd7a34d);
+  // The winged predator: a large dark body, hooked head, claws and broad ragged wings.
+  const beast=new THREE.Group();
+  beast.add(new THREE.Mesh(new THREE.SphereGeometry(2.2,16,12),mat(0x191b20)));
+  const head=new THREE.Mesh(new THREE.SphereGeometry(1.05,14,10),mat(0x282329));head.position.set(0,1.8,-.25);beast.add(head);
+  const beak=new THREE.Mesh(new THREE.ConeGeometry(.48,1.7,7),mat(0x9c6743));beak.position.set(0,1.25,-1.15);beak.rotation.x=-.55;beast.add(beak);
+  for(const side of [-1,1]){
+    const wing=new THREE.Mesh(new THREE.BoxGeometry(8,.22,2.8),mat(0x26212a));wing.position.set(side*4,1.1,.1);wing.rotation.z=side*-.18;beast.add(wing);
+    for(let k=0;k<4;k++){const feather=new THREE.Mesh(new THREE.ConeGeometry(.52,3.2,5),mat(0x302632));feather.position.set(side*(5.3+k*.7),.55,-1.2+k*.65);feather.rotation.z=side*-.65;beast.add(feather)}
+    const claw=new THREE.Mesh(new THREE.ConeGeometry(.22,1.3,6),mat(0x9c7652));claw.position.set(side*.85,-1.65,-.2);claw.rotation.z=Math.PI;beast.add(claw);
+  }
+  beast.position.set(91,13,-17);beast.rotation.y=-.4;scene.add(beast);
+  const eyeMat=new THREE.MeshBasicMaterial({color:0xff342f});
+  for(const side of [-1,1]){const eye=new THREE.Mesh(new THREE.SphereGeometry(.16,8,6),eyeMat);eye.position.set(side*.38,2.02,-1.05);beast.add(eye)}
+  actors.push({kind:'float',obj:beast,home:beast.position.clone(),phase:1.7});
+  // A wrecked scare-haunted outbuilding and sickly field lanterns.
+  block(61,3,-45,8,6,7,0x3e3533);const shedRoof=add(new THREE.ConeGeometry(6,3,4),mat(0x29272b),61,7.5,-45);shedRoof.rotation.y=Math.PI/4;solid(61,-45,8,7);
+  for(const [x,z] of [[59,-28],[101,-32],[61,-52],[99,-51]])lamp(x,z,0xb5a15a);
+  fog(92,-43,17);fog(65,-37,13);ghost(99,-39,1.6,true);
+  zone('CREEPER’S HARVEST · THE CORNFIELD',80,-22,'Search the abandoned farm, truck and corn maze. Keep an eye on the barn roofline — something with wings is hunting above the fields.');
+}
 // Park 6: industrial Sawworks with furnace and giant gears.
 manor(-80,-112,20,15,0x38343a);for(let k=0;k<4;k++){const gear=add(new THREE.TorusGeometry(3.4,.55,8,24),iron,-91+k*7,9,-133);gear.rotation.y=Math.PI/2;for(let a=0;a<8;a++){const an=a*Math.PI/4;block(-91+k*7+Math.cos(an)*3.8,9+Math.sin(an)*3.8,-133,.8,.8,.8,0x9b3b3b)}}for(let k=0;k<4;k++)lamp(-88+k*5,-99,0xf04a37);
 // Park 7: blood carnival tents and rotating wheel.
