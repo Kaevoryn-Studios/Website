@@ -62,8 +62,8 @@ header span{color:#e8c79a!important;text-shadow:0 0 12px #b9784b66}
 <body>
 <canvas id="world"></canvas>
 <header><a href="index.html">KAEVORYN STUDIOS<small>CREATE THE IMPOSSIBLE</small></a><span style="font-size:9px;letter-spacing:.2em;color:#c58d9b">NIGHTMARE · THE WORLD BENEATH SLEEP</span></header>
-<div id="intro"><div class="panel"><div class="eyebrow">YOU HAVE ENTERED THE PLACE WHERE NIGHTMARES ARE BORN</div><h1>NIGHTMARE<br>WORLD</h1><p>This is where nightmares are born, where they are made, and where they live. Walk through the Origin, the Nightmare Forge, the Living Forest, the Forgotten Village, the Nightmare Cathedral, the Fleshless Kingdom and the Abyss. The world is alive. It knows you are here.</p><button class="enter" id="enter">ENTER THE NIGHTMARE</button><div class="hint">LANDSCAPE MODE RECOMMENDED · THE WORLD IS NOT SAFE · SOUND IS OPTIONAL</div></div></div>
-<div id="hud"><div class="hudline"><div class="chip" id="district">THE GATE</div><div class="chip" id="progress">0 / 7 NIGHTMARE DISTRICTS</div></div><button id="soundBtn">SOUND: OFF</button><div id="toast"></div></div>
+<div id="intro"><div class="panel"><div class="eyebrow">YOU HAVE ENTERED THE PLACE WHERE NIGHTMARES ARE BORN</div><h1>NIGHTMARE<br>WORLD</h1><p>This is where nightmares are born, where they are made, and where they live. Ten colossal nightmare arches lead to ten completely different parks. Walk beneath each arch to enter its own world: dream suburb, Halloween graveyard, cursed camp, ghost house, harvest grounds, sawworks, blood carnival, drowned kingdom, bone cathedral and the Abyss. Each land has its own landmarks, creatures and atmosphere.</p><button class="enter" id="enter">ENTER THE NIGHTMARE</button><div class="hint">LANDSCAPE MODE RECOMMENDED · THE WORLD IS NOT SAFE · SOUND IS OPTIONAL</div></div></div>
+<div id="hud"><div class="hudline"><div class="chip" id="district">THE GATE</div><div class="chip" id="progress">0 / 10 NIGHTMARE PARKS</div></div><button id="soundBtn">SOUND: OFF</button><div id="toast"></div></div>
 <div id="mobile"><div class="pad" id="movePad"><div class="stick" id="stick"></div></div><div class="look" id="lookPad">LOOK<br>AROUND</div></div>
 <div id="scare"><b>◉</b><small>IT KNOWS YOU ARE HERE</small></div><div id="fatal"></div>
 <script>
@@ -466,80 +466,51 @@ buildSevenNightmares();
 
 }
 function buildSevenNightmares(){
-scene.clear();solids.length=0;actors.length=0;zones.length=0;found.clear();
-camera.position.set(0,1.7,108);yaw=0;pitch=0;
-scene.background=new THREE.Color(0x100d1d);scene.fog=new THREE.FogExp2(0x211528,.00105);
-scene.add(new THREE.HemisphereLight(0xc9b7df,0x21131f,1.7));
-const moon=new THREE.DirectionalLight(0xa9b6df,1.9);moon.position.set(-60,100,70);scene.add(moon);
-const fill=new THREE.DirectionalLight(0xb94a62,.58);fill.position.set(75,38,-80);scene.add(fill);
-const ground=mat(0x292433,.98),obsidian=mat(0x17151f,.72,.22),bone=mat(0x75616a,.86,.08),flesh=mat(0x5b263d,.7,.08),iron=mat(0x3b3943,.5,.72),ember=mat(0xb74646,.42,.12),gold=mat(0xb68b61,.48,.38);
-add(new THREE.PlaneGeometry(260,350),ground,0,-.7,-20,-Math.PI/2);
-function pave(x,z,w,d,c=0x38313f){add(new THREE.PlaneGeometry(w,d),mat(c,.95),x,.02,z,-Math.PI/2)}
-function wall(x,y,z,w,h,d,c=0x39313e){block(x,y,z,w,h,d,c);solid(x,z,w,d)}
-function pillar(x,z,h=15,r=1.1,c=0x514653){add(new THREE.CylinderGeometry(r*.82,r,h,10),mat(c),x,h/2,z);add(new THREE.CylinderGeometry(r*1.35,r*1.35,.65,10),gold,x,.4,z);add(new THREE.CylinderGeometry(r*1.25,r*1.25,.55,10),bone,x,h-.2,z);solid(x,z,r*1.8,r*1.8)}
-function spike(x,y,z,h,r=.8,c=0x342633){add(new THREE.ConeGeometry(r,h,7),mat(c),x,y,z)}
-function arch(x,z,label,c=0xb14c70,w=18,h=15){for(const side of [-1,1]){pillar(x+side*w/2,z,h,1.2,0x4c3b4b);spike(x+side*w/2,h+1,z,4,1.5,0x382638);const l=new THREE.PointLight(c,2.4,34);l.position.set(x+side*w/2,h*.65,z-1);scene.add(l);actors.push({kind:'flicker',obj:l,p:2.4,phase:Math.random()*8})}block(x,h,z,w+2,1.2,2,0x302735);const curve=new THREE.CatmullRomCurve3([new THREE.Vector3(x-w/2,h,z),new THREE.Vector3(x-w*.43,h+4,z),new THREE.Vector3(x-w*.25,h+7,z),new THREE.Vector3(x,h+8,z),new THREE.Vector3(x+w*.25,h+7,z),new THREE.Vector3(x+w*.43,h+4,z),new THREE.Vector3(x+w/2,h,z)]);add(new THREE.TubeGeometry(curve,32,.72,8,false),mat(0x66505e,.7,.25),0,0,0);sign(x,h+1.4,z-1,label,false)}
-function root(x1,y1,z1,x2,y2,z2,r=.45,c=0x493044){const curve=new THREE.CatmullRomCurve3([new THREE.Vector3(x1,y1,z1),new THREE.Vector3((x1+x2)/2,y1+2,(z1+z2)/2),new THREE.Vector3(x2,y2,z2)]);add(new THREE.TubeGeometry(curve,18,r,7,false),mat(c,.82,.04),0,0,0)}
-function tree(x,z,h=14){add(new THREE.CylinderGeometry(.35,.9,h*.62,8),obsidian,x,h*.31,z);for(let j=0;j<5;j++){const a=j*Math.PI*2/5;const limb=add(new THREE.CylinderGeometry(.12,.34,h*.52,7),obsidian,x+Math.cos(a)*h*.18,h*.68,z+Math.sin(a)*h*.18);limb.rotation.z=-Math.cos(a)*.7;limb.rotation.x=Math.sin(a)*.7;spike(x+Math.cos(a)*h*.34,h*.92,z+Math.sin(a)*h*.34,3,.45,0x382536)}}
-function lantern(x,z,c=0xe3a05f,y=4){const b=add(new THREE.SphereGeometry(.32,10,8),new THREE.MeshBasicMaterial({color:c}),x,y,z);const l=new THREE.PointLight(c,2.1,26);l.position.set(x,y,z);scene.add(l);actors.push({kind:'flicker',obj:l,p:2.1,phase:Math.random()*8});return b}
-function gate(x,z,name,c){arch(x,z,name,c,22,18);pave(x,z-15,14,30,0x40313e)}
-function tower(x,z,r,h,c=0x3b2a3b){add(new THREE.CylinderGeometry(r*.7,r,h,10),mat(c),x,h/2,z);add(new THREE.ConeGeometry(r*1.55,h*.38,10),obsidian,x,h+h*.18,z);solid(x,z,r*1.5,r*1.5)}
-function house(x,z,w=13,h=9,c=0x493b43){wall(x-w/2,h/2,z,w,h,.7,c);wall(x+w/2,h/2,z,.7,h,12,c);wall(x-w/2,h/2,z,.7,h,12,c);wall(x,h/2,z+6,w,h,.7,c);const a=add(new THREE.BoxGeometry(w*.75,.55,14),obsidian,x-w*.2,h+1.6,z);a.rotation.z=-.48;const b=add(new THREE.BoxGeometry(w*.75,.55,14),obsidian,x+w*.2,h+1.6,z);b.rotation.z=.48;for(const wx of [x-w*.28,x+w*.28]){block(wx,5,z+6.42,2.1,2.5,.12,0x211c28);block(wx,5,z+6.5,1.5,1.9,.05,0xb56a63);lantern(wx,z+8,0xffa36b,5)}block(x,2,z+6.5,2.8,4,.16,0x1d1922)}
-function zoneAt(name,x,z,desc){zone(name,x,z,desc)}
-// THRESHOLD — the gate is the last ordinary structure in this world.
-for(let x=-118;x<=118;x+=8){block(x,2,119,.5,4,.6,0x39303d);block(x,2,-165,.5,4,.6,0x39303d)}
-for(let z=-165;z<=119;z+=8){block(-118,2,z,.6,4,.5,0x39303d);block(118,2,z,.6,4,.5,0x39303d)}
-pave(0,88,34,60,0x443642);pave(0,53,24,26,0x41313e);arch(0,101,'NIGHTMARE PARK',0xd8a36f,36,25);block(0,12.5,101,23,1.1,1.8,0x302735);for(const side of [-1,1]){pillar(side*18,101,25,2.1,0x655064);spike(side*18,28,101,7,2.2,0x3b263b);const crest=add(new THREE.TorusGeometry(3.1,.48,10,28),mat(0xb98c68,.45,.45),side*18,22,99);crest.rotation.y=Math.PI/2}
-for(const x of [-16,16]){pillar(x,89,23,1.5,0x554252);spike(x,27,89,7,2,0x342433)}
-sign(0,14,85,'YOU WERE NOT MEANT TO WAKE');zoneAt('THE THRESHOLD · THE WORLD BENEATH SLEEP',0,76,'The air feels warm. The stone beneath your feet pulses like a sleeping heart. The path descends into the first dream.');
-for(let i=0;i<22;i++){const side=Math.random()<.5?-1:1;tree(side*(19+Math.random()*34),63+Math.random()*30,7+Math.random()*8)}
-// THE ORIGIN — a colossal heart suspended inside a ring of broken monoliths.
-pave(0,25,46,68,0x39303d);gate(0,48,'THE ORIGIN',0xc86a82);
-for(let i=0;i<13;i++){const a=i*Math.PI*2/13,x=Math.cos(a)*26,z=20+Math.sin(a)*26,h=11+(i%4)*4;pillar(x,z,h,1.2,0x51404e);spike(x,h+2,z,5,1.4,0x392536)}
-const heart=new THREE.Group(),core=new THREE.Mesh(new THREE.SphereGeometry(5,24,18),new THREE.MeshStandardMaterial({color:0x6e243e,roughness:.3,emissive:0x4c1028,emissiveIntensity:.8}));core.scale.set(1,1.18,.82);heart.add(core);for(const side of [-1,1]){const lobe=new THREE.Mesh(new THREE.SphereGeometry(3.4,18,14),flesh);lobe.position.set(side*2.1,2.3,0);heart.add(lobe)}heart.position.set(0,15,20);scene.add(heart);actors.push({kind:'heartPulse',obj:heart,phase:0});
-for(let i=0;i<8;i++){const a=i*Math.PI/4;root(Math.cos(a)*8,12,20+Math.sin(a)*8,Math.cos(a)*22,1,20+Math.sin(a)*22,.42,0x6d3047)}
-const heartLight=new THREE.PointLight(0xd83b61,5,65);heartLight.position.set(0,15,20);scene.add(heartLight);actors.push({kind:'flicker',obj:heartLight,p:5,phase:0});sign(0,27,18,'THE FIRST NIGHTMARE');zoneAt('THE ORIGIN · THE FIRST NIGHTMARE',0,13,'A heart hangs in the air. Every beat sends a tremor through the ground. This is where the first nightmare began.');
-// THE FORGE — machinery, furnace chambers and a living fear engine.
-pave(0,-23,64,48,0x332b3a);gate(0,-3,'THE NIGHTMARE FORGE',0xe15a67);
-for(const x of [-24,-12,12,24]){pillar(x,-30,29,1.7,0x4a3443);for(const y of [7,15,23])add(new THREE.TorusGeometry(4,.28,8,24),ember,x,y,-30)}
-for(const z of [-43,-29,-15])for(const x of [-18,18]){const p=add(new THREE.CylinderGeometry(.8,1.2,22,12),iron,x,12,z);p.rotation.z=Math.PI/2}
-add(new THREE.CylinderGeometry(10,13,5,16,1,true),mat(0x54263c,.48,.24),0,3,-31);add(new THREE.SphereGeometry(5,20,14),new THREE.MeshBasicMaterial({color:0xd94b58,transparent:true,opacity:.82}),0,5,-31);lantern(0,-31,0xff4c62,7);
-for(let i=0;i<9;i++){const flame=add(new THREE.ConeGeometry(.8,4+Math.random()*3,8),new THREE.MeshBasicMaterial({color:i%2?0xe44d62:0xffa04f,transparent:true,opacity:.72}),-28+i*7,3,-49);actors.push({kind:'fireJet',obj:flame,phase:Math.random()*6})}
-for(const x of [-31,31]){tower(x,-31,3,32,0x332637);for(let y=8;y<30;y+=5)lantern(x,-31,0xd74c65,y)}
-sign(0,32,-50,'THE FEAR ENGINE');zoneAt('THE NIGHTMARE FORGE · THE FEAR ENGINE',0,-24,'The Forge takes memories and turns them into living things. The machinery is breathing. Something is being made behind the furnace doors.');
-// LIVING FOREST — impossible trees, root bridges, hanging cocoons and watchers.
-pave(-70,-34,22,105,0x302b37);gate(-70,13,'THE LIVING FOREST',0x8b6ca7);
-for(let i=0;i<30;i++){const side=Math.random()<.5?-1:1,x=side<0?-111+Math.random()*24:-54+Math.random()*24,z=-111+Math.random()*143;tree(x,z,12+Math.random()*18);if(i%3===0)fog(x,z,16)}
-for(let i=0;i<10;i++){const x=-106+i*8,z=-47+Math.sin(i*.8)*12;root(x,15,z,x+5,2,z+12,.65,0x513047)}
-for(let i=0;i<7;i++){const x=-101+i*9,z=-67-(i%2)*10;const c=add(new THREE.SphereGeometry(1.25,12,10),new THREE.MeshStandardMaterial({color:0x756071,roughness:.5,emissive:0x30152e,emissiveIntensity:.4}),x,8,z);c.scale.set(.8,1.8,.8);add(new THREE.CylinderGeometry(.035,.035,7,6),bone,x,13,z);actors.push({kind:'lanternGlow',obj:c,phase:i})}
-ghost(-94,-45,1.8,true);ghost(-57,-91,1.35,false);ghost(-84,-12,1.25,false);sign(-70,18,-100,'THE TREES ARE LISTENING');zoneAt('THE LIVING FOREST · THE ROOT MAZE',-72,-55,'The trunks tighten around the path. Roots slide across the ground. Do not follow the whispering voice between the trees.');
-// THE FORGOTTEN VILLAGE — houses, dead cars, lit windows and residents that should not exist.
-pave(70,-32,25,104,0x3a3039);gate(70,13,'THE FORGOTTEN VILLAGE',0xd18b67);
-for(let i=0;i<6;i++){const z=14-i*17;house(54,z,13,8+i%2*2,i%2?0x51414a:0x40363f);house(87,z,13,8,i%2?0x40363f:0x59444b);if(i%2===0){block(70,.9,z-7,5,1.8,9,0x262b34);for(const xx of [68,72])for(const zz of [z-10,z-4])add(new THREE.CylinderGeometry(.65,.65,.4,10),mat(0x101116),xx,.8,zz,Math.PI/2)}}
-for(let i=0;i<12;i++){const x=49+(i%4)*13,z=-68+Math.floor(i/4)*8;block(x,1,z,1.3,2,.35,0x75656a);add(new THREE.SphereGeometry(.38,8,8),bone,x,2.2,z)}
-ghost(70,-72,1.55,true);sign(70,19,-96,'NO ONE LIVES HERE');zoneAt('THE FORGOTTEN · THE VILLAGE THAT DREAMS',70,-39,'Every house has a light on. Every window shows the same room. A figure stands in the street, but its shadow points toward you.');
-// NIGHTMARE CATHEDRAL — rib vaults, stained light and a choir of trapped silhouettes.
-pave(0,-87,58,58,0x302637);gate(0,-58,'THE NIGHTMARE CATHEDRAL',0x9e7bc4);
-for(const x of [-25,-17,-9,9,17,25]){pillar(x,-91,34,1.35,0x4b3a53);spike(x,38,-91,8,2,0x33253f)}
-for(let i=0;i<5;i++){const rib=add(new THREE.TorusGeometry(18-i*1.6,.6,8,48),bone,0,17-i*.7,-91);rib.scale.y=.92}
-for(let i=0;i<9;i++){const x=-23+i*5.7,c=[0x8d4e80,0x4b6b91,0xb54e60][i%3];add(new THREE.PlaneGeometry(3.2,10),new THREE.MeshBasicMaterial({color:c,transparent:true,opacity:.68,side:THREE.DoubleSide}),x,15,-118);lantern(x,-119,[0xc76b9a,0x739acb,0xd15b68][i%3],15)}
-const bell=add(new THREE.TorusGeometry(2.2,.38,10,28),gold,0,29,-91);bell.rotation.x=Math.PI/2;actors.push({kind:'bell',obj:bell,phase:0});ghost(-12,-100,1.25,false);ghost(13,-104,1.2,false);sign(0,40,-119,'THE CHOIR OF THE UNWAKING');zoneAt('THE NIGHTMARE CATHEDRAL · THE UNWAKING',0,-91,'The cathedral is built from ribs and black stone. The choir has no mouths. Their song comes from beneath the floor.');
-// FLESHLESS KINGDOM — broken citadels and a giant that hunts the paths.
-pave(72,-101,28,64,0x342b3a);gate(72,-67,'THE FLESHLESS KINGDOM',0xb46c83);
-for(const x of [48,70,94]){tower(x,-111,4,35,0x3b2b3a);for(let y=7;y<34;y+=6)lantern(x,-111,0xc35a72,y)}
-for(let i=0;i<8;i++){const x=43+i*8,z=-83-(i%3)*13,shard=add(new THREE.DodecahedronGeometry(3+i%3,0),mat(0x4a3d50,.8,.18),x,10+(i%4)*5,z);shard.rotation.set(i*.4,i*.7,i*.2)}
-const giant=new THREE.Group(),gb=new THREE.Mesh(new THREE.CapsuleGeometry(3,12,6,10),obsidian),gh=new THREE.Mesh(new THREE.SphereGeometry(3.1,14,12),bone);gb.position.y=10;gh.position.set(0,19,-.4);giant.add(gb,gh);for(const side of [-1,1]){const e=new THREE.Mesh(new THREE.SphereGeometry(.42,10,8),new THREE.MeshBasicMaterial({color:0xff344e}));e.position.set(side*1.1,19.3,-3);giant.add(e);const arm=new THREE.Mesh(new THREE.CylinderGeometry(.8,1.1,11,9),obsidian);arm.position.set(side*4,10,-.2);arm.rotation.z=side*.35;giant.add(arm)}giant.position.set(72,0,-103);scene.add(giant);actors.push({kind:'stalker',obj:giant,home:giant.position.clone(),phase:0});sign(72,41,-128,'THE KINGDOM OF THE UNMADE');zoneAt('THE FLESHLESS KINGDOM · THE UNMADE',72,-104,'The citadel is full of empty thrones. The giants are not guarding the kingdom. They are searching for their names.');
-// THE ABYSS — floating stone, a colossal eye and the thing that dreams you.
-pave(0,-139,74,30,0x241d30);gate(0,-121,'THE ABYSS',0xe14c66);
-for(let i=0;i<18;i++){const x=(Math.random()-.5)*100,z=-127-Math.random()*37,y=3+Math.random()*17,rock=add(new THREE.DodecahedronGeometry(2+Math.random()*4,0),mat(0x3c3447,.92,.12),x,y,z);rock.rotation.set(Math.random(),Math.random(),Math.random())}
-const eye=new THREE.Group(),socket=new THREE.Mesh(new THREE.SphereGeometry(9,24,18),obsidian),iris=new THREE.Mesh(new THREE.SphereGeometry(4.1,24,18),new THREE.MeshStandardMaterial({color:0xa62c52,emissive:0x64132d,emissiveIntensity:1.2,roughness:.2})),pupil=new THREE.Mesh(new THREE.SphereGeometry(1.3,16,12),new THREE.MeshBasicMaterial({color:0x08060c}));socket.scale.set(1.4,.68,.5);iris.position.z=-3.5;iris.scale.y=.68;pupil.position.set(0,0,-6.8);eye.add(socket,iris,pupil);eye.position.set(0,19,-151);scene.add(eye);
-for(let i=0;i<12;i++){const a=i*Math.PI/6;root(Math.cos(a)*9,18,-151,Math.cos(a)*25,1,-151+Math.sin(a)*9,.75,0x6b2948)}
-const abyssLight=new THREE.PointLight(0xd42c59,6,90);abyssLight.position.set(0,15,-139);scene.add(abyssLight);actors.push({kind:'flicker',obj:abyssLight,p:6,phase:0});sign(0,34,-158,'THE THING THAT DREAMS YOU');ghost(-30,-139,1.7,false);ghost(30,-139,1.7,false);zoneAt('THE ABYSS · THE THING THAT DREAMS YOU',0,-139,'The world ends here. The enormous eye is awake. The voice in your head is not your own.');
-// Atmospheric density: a forest of silhouettes, drifting ash and pools of colored light.
-for(let i=0;i<70;i++){const z=-158+Math.random()*260;let x;do{x=(Math.random()-.5)*220}while(Math.abs(x)<27||Math.abs(x+70)<17||Math.abs(x-70)<19);tree(x,z,6+Math.random()*13)}
-for(const [x,z,c] of [[-30,30,0xd66b8a],[30,30,0x8c78c8],[-70,-20,0x9b78ba],[70,-20,0xd18b67],[0,-85,0x9d7acb],[72,-105,0xd15b70],[0,-140,0xd83d61]]){lantern(x,z,c,5);fog(x,z,24)}
-for(let i=0;i<22;i++){const x=-108+Math.random()*216,z=-150+Math.random()*245,b=add(new THREE.SphereGeometry(.2,7,6),new THREE.MeshBasicMaterial({color:0x09070e}),x,11+Math.random()*19,z);actors.push({kind:'bat',obj:b,home:b.position.clone(),phase:Math.random()*8})}
-ghost(-44,2,1.2,false);ghost(42,-48,1.15,false);ghost(-42,-76,1.1,false);
+scene.clear();solids.length=0;actors.length=0;zones.length=0;found.clear();camera.position.set(0,1.7,112);yaw=0;pitch=0;
+scene.background=new THREE.Color(0x080b16);scene.fog=new THREE.FogExp2(0x171321,.00072);scene.add(new THREE.HemisphereLight(0xd6c5dc,0x1a1720,1.65));
+const moon=new THREE.DirectionalLight(0xc3c7e0,1.65);moon.position.set(-65,95,75);scene.add(moon);
+const ground=mat(0x34313a,.98),stone=mat(0x51434b,.9),dark=mat(0x17151e,.7,.2),iron=mat(0x45414b,.48,.65),gold=mat(0xb58a61,.46,.45),bone=mat(0x98877e,.82);
+add(new THREE.PlaneGeometry(260,360),ground,0,-.72,-25,-Math.PI/2);
+function pave(x,z,w,d,c=0x4a4147){add(new THREE.PlaneGeometry(w,d),mat(c,.94),x,.025,z,-Math.PI/2)}
+function tree(x,z,h=12,c=0x211b25){add(new THREE.CylinderGeometry(.35,.85,h*.65,8),mat(c),x,h*.32,z);for(let k=0;k<4;k++){const a=k*Math.PI/2,l=add(new THREE.CylinderGeometry(.12,.32,h*.48,7),mat(c),x+Math.cos(a)*h*.16,h*.7,z+Math.sin(a)*h*.16);l.rotation.z=-Math.cos(a)*.62;l.rotation.x=Math.sin(a)*.62}}
+function lamp(x,z,c=0xffbd83){block(x,2,z,.35,4,.35,0x393039);add(new THREE.SphereGeometry(.42,10,8),new THREE.MeshBasicMaterial({color:c}),x,4.2,z);const l=new THREE.PointLight(c,1.7,24);l.position.set(x,4.2,z);scene.add(l);actors.push({kind:'flicker',obj:l,p:1.7,phase:Math.random()*7})}
+function board(label,color){const c=document.createElement('canvas');c.width=1200;c.height=240;const q=c.getContext('2d');q.fillStyle='#100d13';q.fillRect(0,0,1200,240);q.strokeStyle='#'+new THREE.Color(color).getHexString();q.lineWidth=12;q.strokeRect(10,10,1180,220);q.fillStyle='#f5e9df';q.font='bold 82px Georgia';q.textAlign='center';q.textBaseline='middle';q.shadowColor=q.strokeStyle;q.shadowBlur=18;q.fillText(label.toUpperCase(),600,122,1110);const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;return new THREE.MeshBasicMaterial({map:t,toneMapped:false})}
+function grandArch(x,z,label,color){
+ const g=new THREE.Group(),edge=mat(0x76616a,.68,.35),pm=mat(0x403640,.88),trim=mat(color,.42,.48);
+ for(const side of [-1,1]){const p=new THREE.Mesh(new THREE.BoxGeometry(2.5,17,2.8),pm);p.position.set(side*9.2,8.5,0);g.add(p);for(const y of [2.2,5.5,8.8,12.1,15.4]){const band=new THREE.Mesh(new THREE.BoxGeometry(2.72,.28,3.02),edge);band.position.set(side*9.2,y,0);g.add(band)}const foot=new THREE.Mesh(new THREE.BoxGeometry(3.6,1.1,3.8),gold);foot.position.set(side*9.2,.55,0);g.add(foot);const fin=new THREE.Mesh(new THREE.ConeGeometry(1.35,5.2,6),dark);fin.position.set(side*9.2,20.1,0);g.add(fin);const eye=new THREE.Mesh(new THREE.SphereGeometry(.36,12,10),new THREE.MeshBasicMaterial({color}));eye.position.set(side*9.2,12.5,1.48);g.add(eye)}
+ const arc=new THREE.Mesh(new THREE.TorusGeometry(9.2,.9,12,48,Math.PI),edge);arc.position.set(0,16.8,0);g.add(arc);const inner=new THREE.Mesh(new THREE.TorusGeometry(8.2,.18,8,48,Math.PI),trim);inner.position.set(0,16.8,.08);g.add(inner);
+ const crest=new THREE.Mesh(new THREE.OctahedronGeometry(2.15,1),trim);crest.position.set(0,24.5,0);g.add(crest);const plaque=new THREE.Mesh(new THREE.BoxGeometry(18.8,3.2,.8),dark);plaque.position.set(0,27.5,.15);g.add(plaque);const lettering=new THREE.Mesh(new THREE.PlaneGeometry(18.2,2.65),board(label,color));lettering.position.set(0,27.5,.58);g.add(lettering);
+ for(const side of [-1,1]){const chain=new THREE.Mesh(new THREE.CylinderGeometry(.07,.07,4.5,7),iron);chain.position.set(side*7.8,13.7,.6);g.add(chain)}
+ const glow=new THREE.PointLight(color,3.2,38);glow.position.set(0,11,3);g.add(glow);g.position.set(x,0,z);scene.add(g);solids.push({x:x-9.2,z,w:2.5,d:2.8},{x:x+9.2,z,w:2.5,d:2.8});
+}
+function manor(x,z,w=17,h=13,c=0x41313d){block(x,h/2,z,w,h,12,c);const roof=add(new THREE.ConeGeometry(w*.78,7,4),dark,x,h+3,z);roof.rotation.y=Math.PI/4;for(const dx of [-w*.27,0,w*.27]){block(x+dx,6,z+6.1,2.1,3.1,.16,0x17151c);block(x+dx,6,z+6.22,1.25,2.1,.08,0xe5a36b)}block(x,3,z+6.3,3.2,6,.3,0x211a25)}
+const names=[['FREDDY’S NIGHTMARE','Elm Street · The Dream Stalkers',0xb63d58],['HALLOWEEN HOLLOW','The Shape in the Harvest Moon',0xe18b43],['CAMP BLOODMOON','The Lake That Never Sleeps',0x5d9b9d],['THIRTEEN GHOSTS','The Glass House of Spirits',0x8f75c9],['CREEPER’S HARVEST','The Roadside Feeding Grounds',0xc6a04f],['THE SAWWORKS','The House of Unfinished Games',0xd94b4b],['BLOOD CARNIVAL','The Midway of Lost Souls',0xd85d91],['DROWNED KINGDOM','The Sunken Dead',0x4e9eae],['BONE CATHEDRAL','The Choir Beneath the Earth',0xb5a0d5],['THE ABYSS','Where the Last Nightmare Lives',0x9b315b]];
+const xs=[-80,-40,0,40,80],fz=38,bz=-78;
+pave(0,91,38,68,0x55474a);pave(0,61,210,24,0x50464a);pave(0,-13,210,12,0x484047);pave(102,-18,7,205,0x5a4a49);pave(0,-78,205,10,0x51464a);
+for(let i=0;i<10;i++){const row=i<5?0:1,col=i%5,x=xs[col],z=row?bz:fz;grandArch(x,z,names[i][0],names[i][2]);pave(x,z-20,25,43,[0x463b46,0x4b3c3a,0x34464a,0x413a50,0x4b4437,0x41363a,0x4b3544,0x31474c,0x3d3549,0x302d3b][i]);zone(names[i][0]+' · '+names[i][1],x,z-22,'Walk beneath the grand arch and enter '+names[i][1]+'. This land has its own landmarks, creatures and atmosphere.')}
+ // Park 1: crooked dream suburb and boiler-room pipes.
+manor(-80,4,17,13,0x43303b);manor(-72,-18,15,11,0x382b39);for(let k=0;k<5;k++){const p=add(new THREE.CylinderGeometry(.45,.6,15,10),iron,-91+k*5,7,-17);p.rotation.z=Math.PI/2}add(new THREE.SphereGeometry(5,18,14),new THREE.MeshBasicMaterial({color:0xb52d4a}),-80,25,-31);ghost(-80,-20,1.5,true);
+// Park 2: Halloween manor and pumpkin graveyard.
+manor(-40,4,18,14,0x51403a);for(let k=0;k<9;k++){const x=-49+(k%3)*8,z=-22+Math.floor(k/3)*7;add(new THREE.SphereGeometry(1.05,12,10),mat(0xd8782f),x,1,z);add(new THREE.CylinderGeometry(.13,.18,.5,7),mat(0x34442b),x,2,z)}for(let k=0;k<7;k++)block(-54+k*4,1.4,-34,1.1,2.8,.25,0x81756c);
+// Park 3: cursed lake, cabins and pines.
+const lake=add(new THREE.CircleGeometry(12,36),new THREE.MeshStandardMaterial({color:0x183c49,metalness:.55,roughness:.18}),0,.08,-23);lake.rotation.x=-Math.PI/2;for(const dx of [-8,8]){block(dx,3,-4,11,6,9,0x55443a);const roof=add(new THREE.ConeGeometry(8,5,4),mat(0x302c31),dx,8,-4);roof.rotation.y=Math.PI/4}for(let k=0;k<8;k++)tree(-13+k*3,-31-(k%2)*4,10,0x20372e);for(let k=0;k<5;k++)block(-2+k*1.4,.35,-22,1.2,.45,16,0x72543c);ghost(8,-24,1.4,false);
+// Park 4: spirit containment glass house and ghost cages.
+block(40,7,-5,18,14,13,0x333d4a);for(let dx of [-6,0,6]){const pane=add(new THREE.BoxGeometry(4.8,9,.22),new THREE.MeshStandardMaterial({color:0x8b9ec5,transparent:true,opacity:.32,metalness:.5,roughness:.12}),40+dx,7,1);for(const side of [-1,1])block(40+dx+side*2.5,7,1,.18,10,.35,0xa9a5c6)}for(let k=0;k<5;k++){const ring=add(new THREE.TorusGeometry(2.2,.16,8,24),mat(0x8e7bba,.35,.4),31+k*4,6,-22);ring.rotation.y=Math.PI/2;lamp(31+k*4,-22,0x9f8be1)}
+// Park 5: Creeper barn, wrecked truck and winged predator.
+block(80,6,-5,19,12,13,0x57402f);const barn=add(new THREE.ConeGeometry(13,7,4),mat(0x3b2927),80,15,-5);barn.rotation.y=Math.PI/4;block(80,4,1,5,8,.3,0x241b1a);block(70,2,-25,10,3,5,0x38383a);for(let dx of [-4,4])add(new THREE.CylinderGeometry(1.2,1.2,.7,12),dark,70+dx,.9,-27,Math.PI/2);ghost(88,-20,1.8,true);
+// Park 6: industrial Sawworks with furnace and giant gears.
+manor(-80,-112,20,15,0x38343a);for(let k=0;k<4;k++){const gear=add(new THREE.TorusGeometry(3.4,.55,8,24),iron,-91+k*7,9,-133);gear.rotation.y=Math.PI/2;for(let a=0;a<8;a++){const an=a*Math.PI/4;block(-91+k*7+Math.cos(an)*3.8,9+Math.sin(an)*3.8,-133,.8,.8,.8,0x9b3b3b)}}for(let k=0;k<4;k++)lamp(-88+k*5,-99,0xf04a37);
+// Park 7: blood carnival tents and rotating wheel.
+for(let k=0;k<3;k++){const tent=add(new THREE.ConeGeometry(8,9,8),mat(k%2?0x6e284e:0xb34759),-40+k*9,5,-113);tent.scale.z=1.2}const wheel=new THREE.Group();wheel.add(new THREE.Mesh(new THREE.TorusGeometry(8,.35,8,32),gold));for(let a=0;a<12;a++){const an=a*Math.PI/6,spoke=new THREE.Mesh(new THREE.BoxGeometry(.18,16,.18),iron);spoke.rotation.z=-an;wheel.add(spoke);const gondola=new THREE.Mesh(new THREE.BoxGeometry(1.5,1.5,1.3),mat(a%2?0x8d3150:0x443d61));gondola.position.set(Math.cos(an)*8,Math.sin(an)*8,0);wheel.add(gondola)}wheel.position.set(-40,14,-137);scene.add(wheel);actors.push({kind:'wheel',obj:wheel,phase:0});
+// Park 8: drowned kingdom shipwreck and flooded ruins.
+add(new THREE.PlaneGeometry(30,30),new THREE.MeshStandardMaterial({color:0x17414b,metalness:.4,roughness:.2,transparent:true,opacity:.86}),40,.12,-132,-Math.PI/2);block(40,4,-128,22,3,7,0x342a2d);block(40,12,-128,.65,18,.65,0x65513c);block(34,14,-128,12,.5,.5,0x8b7351);for(let k=0;k<5;k++)tower(28+k*6,-145,1.5,8+k%2*5,0x465157);
+// Park 9: bone cathedral and rib-vault skyline.
+manor(80,-111,19,17,0x403448);for(let k=0;k<5;k++){const rib=add(new THREE.TorusGeometry(8-k*.7,.45,8,32,Math.PI),bone,80,15,-130-k*3)}for(let k=0;k<7;k++)tower(70+k*3.2,-143,1.2,12+k%3*5,0x75627c);lamp(80,-94,0xc6a4ed);
+// Park 10: abyssal eye, floating stone and rootless void.
+const eye=new THREE.Group();eye.add(new THREE.Mesh(new THREE.SphereGeometry(7,24,18),dark));const iris=new THREE.Mesh(new THREE.SphereGeometry(3.2,20,14),new THREE.MeshStandardMaterial({color:0xb52c58,emissive:0x70152e,emissiveIntensity:1.1}));iris.position.z=-5;eye.add(iris);const pupil=new THREE.Mesh(new THREE.SphereGeometry(1.1,14,10),new THREE.MeshBasicMaterial({color:0x05040a}));pupil.position.z=-7.8;eye.add(pupil);eye.position.set(80,17,-137);scene.add(eye);for(let k=0;k<9;k++){const rock=add(new THREE.DodecahedronGeometry(2+Math.random()*2,0),mat(0x46404e),66+Math.random()*28,4+Math.random()*13,-120-Math.random()*25);rock.rotation.set(Math.random(),Math.random(),Math.random())}ghost(91,-139,1.6,false);
+for(let i=0;i<70;i++){const x=(Math.random()-.5)*240,z=-160+Math.random()*280;if(Math.abs(x)>106||Math.abs(x)<-1)tree(x,z,5+Math.random()*8,i%2?0x201b25:0x29212a)}
+for(let i=0;i<10;i++){const x=xs[i%5],z=i<5?fz:bz;lamp(x-13,z+4,names[i][2]);lamp(x+13,z+4,names[i][2])}
+zone('THE NIGHTMARE WORLD · GRAND ARRIVAL COURT',0,83,'Ten colossal nightmare arches lead to ten different worlds. Choose a gateway and walk beneath it to enter.');
 }
 function say(t){toast.textContent=t;toast.classList.add('on');setTimeout(()=>toast.classList.remove('on'),4400)}
 function blocked(x,z){return solids.some(b=>Math.abs(x-b.x)<b.w/2+.5&&Math.abs(z-b.z)<b.d/2+.5)}
