@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#090711"><title>The House That Should Not Exist | Kaevoryn Studios</title>
+<style>
+:root{color-scheme:dark;--gold:#d8a65c;--cyan:#9dd9e8;--ink:#090711}*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#090711;color:#f3eee7;font-family:Georgia,serif}#stage{position:fixed;inset:0;background:radial-gradient(ellipse at 50% 32%,#333047 0,#141321 48%,#07060c 100%)}canvas{width:100%;height:100%;display:block}.hud{position:fixed;inset:0;pointer-events:none;display:flex;flex-direction:column;justify-content:space-between;padding:clamp(14px,3vw,34px)}.brand{font:600 10px/1.5 system-ui;letter-spacing:.28em;color:#d5b783;text-shadow:0 0 18px #d5a45c66}.title{font-size:clamp(22px,4vw,46px);letter-spacing:.08em;text-transform:uppercase;text-shadow:0 4px 30px #000;max-width:700px}.sub{font:11px system-ui;letter-spacing:.22em;color:#c8bdc8;margin-top:8px}.controls{pointer-events:auto;display:flex;gap:9px;flex-wrap:wrap;align-items:center}.controls button{border:1px solid #b99a6b88;background:#100e19d9;color:#f7ead6;padding:12px 16px;border-radius:2px;font:600 10px system-ui;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;backdrop-filter:blur(8px)}.controls button.primary{background:#9d7137;color:#130e0b;border-color:#e0bb7d}.controls button:active{transform:scale(.98)}#status{font:10px system-ui;letter-spacing:.16em;color:#d8c6a7;margin-left:6px}.hint{font:10px system-ui;letter-spacing:.12em;color:#b9aeb8;text-shadow:0 2px 8px #000}.flash{position:fixed;inset:0;background:#fff;opacity:0;pointer-events:none}#caption{position:fixed;left:50%;bottom:17%;transform:translateX(-50%);font:clamp(12px,2vw,17px) system-ui;letter-spacing:.2em;text-transform:uppercase;color:#eee1cf;text-shadow:0 2px 18px #000;opacity:0;transition:opacity 1s;text-align:center;width:90%}.hide{display:none!important}@media(max-width:600px){.hud{padding:14px}.title{max-width:90%}.controls button{padding:10px 11px;font-size:9px}.hint{max-width:75%}}
+</style></head>
+<body><div id="stage"><canvas id="c"></canvas></div><div class="flash" id="flash"></div><div class="hud"><div><div class="brand">KAEVORYN STUDIOS · CREATE THE IMPOSSIBLE</div><div class="title">The House That Should Not Exist</div><div class="sub">A FIVE-ACT WINDOW PROJECTION EXPERIENCE</div></div><div><div class="controls"><button class="primary" id="begin">Begin the haunting</button><button id="next">Next scene</button><button id="sound">Enable sound</button><button id="full">Projector view</button><span id="status">READY · SOUND OFF</span></div><div class="hint">Tap BEGIN to awaken the house · Use NEXT SCENE to explore each act</div></div></div><div id="caption"></div>
+<script>
+(()=>{'use strict';
+const canvas=document.getElementById('c'),ctx=canvas.getContext('2d'),flash=document.getElementById('flash'),caption=document.getElementById('caption'),status=document.getElementById('status');
+let w=0,h=0,dpr=1,started=false,act=0,last=0,t=0,audio=null,master=null,soundOn=false,raf=0;
+const names=['THE AWAKENING','SOMETHING BEHIND THE WALLS','THE IMPOSSIBLE HALLWAY','THE HOUSE COMES ALIVE','THE FINAL VISITOR'];
+const lines=['The house has been waiting for you.','Do not answer the scratching.','It is getting closer.','The house knows you are here.','There is no door behind you.'];
+function resize(){dpr=Math.min(devicePixelRatio||1,2);w=innerWidth;h=innerHeight;canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);ctx.setTransform(dpr,0,0,dpr,0,0)}addEventListener('resize',resize);resize();
+function rng(n){return (Math.sin(n*127.1+78.2)*43758.5453)%1}
+function polygon(points,fill,stroke){ctx.beginPath();points.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.closePath();ctx.fillStyle=fill;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=2;ctx.stroke()}}
+function glow(x,y,r,color){const g=ctx.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,color);g.addColorStop(1,'transparent');ctx.fillStyle=g;ctx.fillRect(x-r,y-r,r*2,r*2)}
+function drawHouse(){
+ const horizon=h*.72, cx=w*.5, scale=Math.min(w/1000,h/600);
+ // distant storm sky and moon
+ const sky=ctx.createLinearGradient(0,0,0,h);sky.addColorStop(0,'#080812');sky.addColorStop(.55,'#282538');sky.addColorStop(1,'#09080e');ctx.fillStyle=sky;ctx.fillRect(0,0,w,h);
+ glow(w*.78,h*.2,Math.min(w,h)*.22,'#b8b8ce20');
+ ctx.fillStyle='#d2c8b5';ctx.beginPath();ctx.arc(w*.78,h*.2,Math.min(w,h)*.055,0,Math.PI*2);ctx.fill();ctx.fillStyle='#282538';ctx.beginPath();ctx.arc(w*.8,h*.185,Math.min(w,h)*.05,0,Math.PI*2);ctx.fill();
+ // bare trees
+ for(let i=0;i<16;i++){let x=(i/15)*w,base=h*.78,ht=(.15+Math.abs(rng(i))* .28)*h;ctx.strokeStyle='#08070d';ctx.lineWidth=3+Math.abs(rng(i+5))*5;ctx.beginPath();ctx.moveTo(x,base);ctx.lineTo(x+Math.sin(t*.15+i)*8,base-ht);for(let b=0;b<4;b++){let yy=base-ht*(.3+b*.16),xx=x+Math.sin(t*.15+i)*8;ctx.moveTo(xx,yy);ctx.lineTo(xx+(rng(i*9+b)-.5)*ht*.7,yy-ht*.25)}ctx.stroke()}
+ // ground
+ const ground=ctx.createLinearGradient(0,h*.68,0,h);ground.addColorStop(0,'#25202a');ground.addColorStop(1,'#08070b');ctx.fillStyle=ground;ctx.fillRect(0,h*.68,w,h*.32);
+ // mansion silhouette and facade
+ const houseW=Math.min(w*.68,760),houseH=Math.min(h*.62,520),left=cx-houseW/2,top=h*.23;
+ polygon([[left-houseW*.08,h*.75],[left-houseW*.04,top+houseH*.2],[cx-houseW*.22,top+houseH*.2],[cx-houseW*.22,top-houseH*.06],[cx,top-houseH*.25],[cx+houseW*.22,top-houseH*.06],[cx+houseW*.22,top+houseH*.2],[left+houseW+houseW*.04,top+houseH*.2],[left+houseW+houseW*.08,h*.75]],'#100e18','#514454');
+ polygon([[left,top+houseH*.2],[left+houseW,top+houseH*.2],[left+houseW*.02,h*.75],[left-houseW*.02,h*.75]],'#292332','#66566a');
+ // roof planes
+ polygon([[left-houseW*.08,top+houseH*.2],[cx,top-houseH*.25],[cx,top+houseH*.2]],'#171420','#5e5264');
+ polygon([[cx,top-houseH*.25],[left+houseW+houseW*.08,top+houseH*.2],[cx,top+houseH*.2]],'#0d0c14','#5e5264');
+ // central tower
+ polygon([[cx-houseW*.13,top+houseH*.02],[cx,top-houseH*.34],[cx+houseW*.13,top+houseH*.02]],'#191522','#76657a');
+ polygon([[cx-houseW*.11,top+houseH*.02],[cx+houseW*.11,top+houseH*.02],[cx+houseW*.1,h*.75],[cx-houseW*.1,h*.75]],'#30293a','#76657a');
+ // windows
+ const cols=5;for(let i=0;i<cols;i++){let x=left+houseW*(.12+i*.19),y=top+houseH*.33+(i===2?-houseH*.1:0),ww=houseW*.075,hh=houseH*.19;drawWindow(x,y,ww,hh,i)}
+ // entry and steps
+ const doorW=houseW*.14,doorH=houseH*.34;polygon([[cx-doorW/2,h*.75],[cx-doorW/2, h*.75-doorH],[cx+doorW/2,h*.75-doorH],[cx+doorW/2,h*.75]],'#09070d','#8b765e');
+ ctx.beginPath();ctx.arc(cx,h*.75-doorH,doorW/2,Math.PI,0);ctx.strokeStyle='#8b765e';ctx.lineWidth=3;ctx.stroke();
+ for(let i=0;i<5;i++){let yy=h*.75+i*h*.035;polygon([[cx-doorW*(.6+i*.18),yy],[cx+doorW*(.6+i*.18),yy],[cx+doorW*(.6+i*.18),yy+7],[cx-doorW*(.6+i*.18),yy+7]],'#47404a','#83727c')}
+ // fog layers
+ for(let i=0;i<8;i++){let x=((i*173+t*12)%(w+260))-130,y=h*(.72+i*.025);glow(x,y,100+Math.sin(t+i)*35,'#b7b4c51a')}
+}
+function drawWindow(x,y,ww,hh,i){ctx.fillStyle='#090811';ctx.fillRect(x-3,y-3,ww+6,hh+6);let lit=act>=0;ctx.fillStyle=lit?'#c18a4c':'#111';ctx.fillRect(x,y,ww,hh);ctx.strokeStyle='#796a6b';ctx.lineWidth=3;ctx.strokeRect(x,y,ww,hh);ctx.beginPath();ctx.moveTo(x+ww/2,y);ctx.lineTo(x+ww/2,y+hh);ctx.moveTo(x,y+hh*.55);ctx.lineTo(x+ww,y+hh*.55);ctx.stroke();if(lit){glow(x+ww/2,y+hh*.5,ww*1.7,'#e5a35420');let flick=.7+Math.sin(t*3+i)*.15;ctx.fillStyle='rgba(255,187,91,'+flick+')';ctx.fillRect(x+ww*.12,y+hh*.1,ww*.76,hh*.8)}}
+function drawHall(){let cx=w/2,top=h*.12,bottom=h*.88,vanY=h*.44;polygon([[0,0],[w,0],[w,bottom],[0,bottom]],'#171421');polygon([[0,0],[cx,vanY],[cx,bottom],[0,bottom]],'#2a2332');polygon([[w,0],[cx,vanY],[cx,bottom],[w,bottom]],'#211c2b');polygon([[0,bottom],[cx,vanY],[w,bottom]],'#3c303b');for(let i=0;i<8;i++){let z=(i+1)/8,x1=cx+(0-cx)*z,x2=cx+(w-cx)*z,y=vanY+(bottom-vanY)*z;ctx.strokeStyle='#8b7180';ctx.globalAlpha=.3;ctx.beginPath();ctx.moveTo(x1,y);ctx.lineTo(x2,y);ctx.stroke();ctx.globalAlpha=1}for(let side of [-1,1])for(let i=0;i<4;i++){let z=.25+i*.18,x=cx+side*w*z*.45,y=vanY+(bottom-vanY)*z;ctx.fillStyle='#09080e';ctx.fillRect(x-22*z,y-48*z,44*z,80*z);ctx.strokeStyle='#a18472';ctx.strokeRect(x-22*z,y-48*z,44*z,80*z)}glow(cx,vanY,100,'#d7b47a30');}
+function apparition(x,y,s){ctx.save();ctx.translate(x,y);ctx.scale(s,s);let sway=Math.sin(t*1.2)*8;ctx.globalAlpha=.82;glow(0,-45,85,'#b5d5df28');ctx.fillStyle='#d5d4d0';ctx.beginPath();ctx.moveTo(-20,-75);ctx.quadraticCurveTo(-38,-58,-28,-25);ctx.lineTo(-42,20);ctx.quadraticCurveTo(-20,12,-8,28);ctx.quadraticCurveTo(6,10,20,25);ctx.quadraticCurveTo(35,12,42,25);ctx.lineTo(28,-25);ctx.quadraticCurveTo(42,-65,12,-78);ctx.closePath();ctx.fill();ctx.fillStyle='#17131b';ctx.beginPath();ctx.ellipse(-9,-48,4,8,0,0,7);ctx.ellipse(10,-48,4,8,0,0,7);ctx.fill();ctx.restore()}
+function drawAct(){if(act===2){drawHall();let s=Math.min(w,h)/650;apparition(w/2+Math.sin(t*.6)*10,h*.54,s)}else if(act===1){drawHouse();for(let i=0;i<4;i++){let x=w*(.18+i*.21),y=h*(.45+Math.sin(t*2+i)*.012);ctx.strokeStyle='#b8a1a5';ctx.lineWidth=3;ctx.globalAlpha=.5+Math.sin(t*5+i)*.35;ctx.beginPath();ctx.moveTo(x-25,y);ctx.quadraticCurveTo(x,y+Math.sin(t*4+i)*20,x+25,y+10);ctx.stroke();ctx.globalAlpha=1}}else{drawHouse();if(act===3){for(let i=0;i<3;i++){let x=w*(.27+i*.23),y=h*.45;ctx.save();ctx.translate(x,y);ctx.rotate(Math.sin(t*2+i)*.08);ctx.strokeStyle='#c5a77b';ctx.lineWidth=3;ctx.strokeRect(-22,-34,44,68);ctx.fillStyle='#9b7954';ctx.fillRect(-18,-30,36,60);ctx.fillStyle='#17121a';ctx.beginPath();ctx.arc(0,-8,10,0,Math.PI*2);ctx.fill();ctx.restore()}apparition(w*.73,h*.56,Math.min(w,h)/900)}if(act===4){apparition(w*.5+Math.sin(t*.3)*20,h*.52,Math.min(w,h)/260);glow(w*.5,h*.5,Math.min(w,h)*.4,'#d9e6ed22')}}}
+function draw(ts){if(!last)last=ts;let dt=Math.min((ts-last)/1000,.04);last=ts;t+=dt;ctx.clearRect(0,0,w,h);drawAct();if(started){let vign=ctx.createRadialGradient(w/2,h/2,Math.min(w,h)*.25,w/2,h/2,Math.max(w,h)*.72);vign.addColorStop(0,'transparent');vign.addColorStop(1,'#020107b8');ctx.fillStyle=vign;ctx.fillRect(0,0,w,h)}raf=requestAnimationFrame(draw)}
+function setAct(n){act=(n+5)%5;caption.textContent=lines[act];caption.style.opacity=1;setTimeout(()=>caption.style.opacity=0,3600);if(soundOn)cue(act)}
+function initAudio(){if(audio)return;const AC=window.AudioContext||window.webkitAudioContext;if(!AC){status.textContent='AUDIO NOT SUPPORTED';return}audio=new AC();master=audio.createGain();master.gain.value=.24;master.connect(audio.destination)}
+function tone(freq,dur,type='sine',vol=.08){if(!audio||!soundOn)return;let o=audio.createOscillator(),g=audio.createGain();o.type=type;o.frequency.setValueAtTime(freq,audio.currentTime);g.gain.setValueAtTime(.0001,audio.currentTime);g.gain.exponentialRampToValueAtTime(vol,audio.currentTime+.08);g.gain.exponentialRampToValueAtTime(.0001,audio.currentTime+dur);o.connect(g);g.connect(master);o.start();o.stop(audio.currentTime+dur+.03)}
+function noise(dur,vol){if(!audio||!soundOn)return;let n=Math.floor(audio.sampleRate*dur),buf=audio.createBuffer(1,n,audio.sampleRate),d=buf.getChannelData(0);for(let i=0;i<n;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/n,2);let src=audio.createBufferSource(),g=audio.createGain();src.buffer=buf;g.gain.value=vol;src.connect(g);g.connect(master);src.start()}
+function cue(a){if(a===0){tone(58,2,'sawtooth',.12);tone(220,1.4,'sine',.06)}if(a===1){noise(1.4,.13);tone(42,2,'sawtooth',.09)}if(a===2){tone(110,2,'triangle',.09);noise(1,.07)}if(a===3){tone(70,1.4,'sawtooth',.13);setTimeout(()=>tone(330,.8,'sine',.07),500)}if(a===4){noise(2,.18);tone(38,3,'sawtooth',.14)}}
+document.getElementById('begin').addEventListener('click',()=>{started=true;setAct(0);document.getElementById('begin').textContent='Restart haunting';});
+document.getElementById('next').addEventListener('click',()=>{started=true;setAct(act+1)});
+document.getElementById('sound').addEventListener('click',async()=>{initAudio();if(!audio)return;try{await audio.resume();soundOn=true;status.textContent='SOUND ON · TESTING';document.getElementById('sound').textContent='Sound enabled';tone(440,.22,'sine',.12);setTimeout(()=>tone(220,.45,'sine',.12),260);setTimeout(()=>noise(.55,.12),600); }catch(e){status.textContent='AUDIO BLOCKED · TAP AGAIN'}});
+document.getElementById('full').addEventListener('click',async()=>{try{if(!document.fullscreenElement)await document.documentElement.requestFullscreen();else await document.exitFullscreen()}catch(e){status.textContent='FULLSCREEN UNAVAILABLE'}});
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&audio)audio.suspend();else if(audio&&soundOn)audio.resume()});
+setAct(0);cancelAnimationFrame(raf);raf=requestAnimationFrame(draw);
+})();
+</script></body></html>
