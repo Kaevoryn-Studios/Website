@@ -40,9 +40,9 @@ button:focus-visible{outline:3px solid #fff;outline-offset:3px}
 <section class="story"><div class="kicker" id="act">ACT I · THE PATCH WAKES</div><h1 id="title">THE HAUNTED<br>PUMPKIN PATCH</h1><p id="desc">The moon rises over an empty field. Beneath the soil, something magical begins to stir.</p></section>
 <section class="hud" aria-label="Show controls">
 <div><div class="cue" id="cue">PRE-SHOW · WAITING FOR YOU</div><div id="caption">A quiet wind moves through the corn.</div></div>
-<div class="controls"><button class="primary" id="begin">BEGIN THE SHOW</button><button id="sound" aria-pressed="false">ENABLE SOUND</button><button id="restart">RESTART</button></div>
+<div class="controls"><button class="primary" id="begin">BEGIN THE SHOW</button><button id="sound" aria-pressed="false">SOUND: OFF</button><button id="testSound">TEST SOUND</button><button id="restart">RESTART</button></div>
 <div class="progress"><i id="fill"></i></div>
-<p id="hint">For sound: tap SOUND once, then BEGIN THE SHOW. Raise device volume; external speakers give room-filling playback. Press F11 for full-screen projection.</p>
+<p id="hint">FIRST: tap SOUND: ON, then TEST SOUND. You should hear three clear tones and a low thunder hit. Then BEGIN THE SHOW. Use the device media volume (not ringtone volume).</p>
 </section>
 <script>
 (()=>{
@@ -142,22 +142,61 @@ function draw(t){
 function updateAct(){let a=acts[act];$('act').textContent=a[0];$('title').innerHTML=a[1];$('desc').textContent=a[2];$('cue').textContent='SHOW CUE '+(act+1)+' / 5';$('caption').textContent=a[3];$('fill').style.width=(act/4*100)+'%'}
 function setAct(n){act=Math.max(0,Math.min(4,n));updateAct()}
 function audioStart(){
- try{const AC=window.AudioContext||window.webkitAudioContext;if(!AC){$('caption').textContent='This browser does not support web audio.';return}audio=audio||new AC();audio.resume().then(()=>{if(soundOn)return;
- master=audio.createGain();master.gain.value=.9;master.connect(audio.destination);
- const n=audio.createBuffer(1,audio.sampleRate*3,audio.sampleRate),data=n.getChannelData(0);for(let i=0;i<data.length;i++)data[i]=Math.random()*2-1;
- const wind=audio.createBufferSource();wind.buffer=n;wind.loop=true;const low=audio.createBiquadFilter();low.type='lowpass';low.frequency.value=420;const wg=audio.createGain();wg.gain.value=.13;wind.connect(low);low.connect(wg);wg.connect(master);wind.start();
- const drone=audio.createOscillator(),dg=audio.createGain(),df=audio.createBiquadFilter();drone.type='triangle';drone.frequency.value=54;df.type='lowpass';df.frequency.value=150;dg.gain.value=.075;drone.connect(df);df.connect(dg);dg.connect(master);drone.start();
- ambience={wind,drone};soundOn=true;$('sound').textContent='SOUND: ON';$('sound').setAttribute('aria-pressed','true');$('caption').textContent='Sound enabled · wind is moving through the patch.';soundCue()})}catch(e){$('caption').textContent='Audio could not start. Check device media volume and tap SOUND again.'}
+ try{
+  const AC=window.AudioContext||window.webkitAudioContext;
+  if(!AC){$('caption').textContent='This browser does not support audio. Try Chrome.';return}
+  if(!audio) audio=new AC();
+  if(audio.state==='suspended') audio.resume();
+  if(!master){master=audio.createGain();master.gain.value=.95;master.connect(audio.destination)}
+  if(!ambience){
+   const n=audio.createBuffer(1,audio.sampleRate*2,audio.sampleRate),data=n.getChannelData(0);
+   for(let i=0;i<data.length;i++)data[i]=Math.random()*2-1;
+   const wind=audio.createBufferSource();wind.buffer=n;wind.loop=true;
+   const filter=audio.createBiquadFilter();filter.type='lowpass';filter.frequency.value=620;
+   const wg=audio.createGain();wg.gain.value=.24;
+   wind.connect(filter);filter.connect(wg);wg.connect(master);wind.start();
+   const drone=audio.createOscillator(),dg=audio.createGain(),df=audio.createBiquadFilter();
+   drone.type='sine';drone.frequency.value=49;df.type='lowpass';df.frequency.value=115;dg.gain.value=.16;
+   drone.connect(df);df.connect(dg);dg.connect(master);drone.start();
+   ambience={wind,drone};
+  }
+  soundOn=true;$('sound').textContent='SOUND: ON';$('sound').setAttribute('aria-pressed','true');
+  $('caption').textContent='Audio engine active. Tap TEST SOUND to verify your speakers.';
+ }catch(e){$('caption').textContent='Audio could not start in this browser. Try Chrome and tap SOUND again.'}
+}
+function testAudio(){
+ if(!soundOn){audioStart()}
+ if(!audio||!master)return;
+ if(audio.state==='suspended')audio.resume();
+ const now=audio.currentTime;
+ [523.25,659.25,783.99].forEach((hz,i)=>{
+  const o=audio.createOscillator(),g=audio.createGain();
+  o.type='sine';o.frequency.setValueAtTime(hz,now+i*.24);
+  g.gain.setValueAtTime(.0001,now+i*.24);
+  g.gain.linearRampToValueAtTime(.32,now+i*.24+.035);
+  g.gain.exponentialRampToValueAtTime(.0001,now+i*.24+.42);
+  o.connect(g);g.connect(master);o.start(now+i*.24);o.stop(now+i*.24+.45);
+ });
+ burstNoise(.85,.65,.48,950);
+ $('caption').textContent='Sound test playing · three bright notes, followed by a thunder-like hit.';
 }
 function burstNoise(delay,duration,volume,filterFreq){const length=Math.ceil(audio.sampleRate*duration),buf=audio.createBuffer(1,length,audio.sampleRate),d=buf.getChannelData(0);for(let i=0;i<length;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/length,2);const src=audio.createBufferSource();src.buffer=buf;const f=audio.createBiquadFilter();f.type='lowpass';f.frequency.value=filterFreq;const g=audio.createGain();g.gain.setValueAtTime(.0001,audio.currentTime+delay);g.gain.linearRampToValueAtTime(volume,audio.currentTime+delay+.04);g.gain.exponentialRampToValueAtTime(.0001,audio.currentTime+delay+duration);src.connect(f);f.connect(g);g.connect(master);src.start(audio.currentTime+delay)}
 function tone(freq,dur,type,vol,delay,endFreq){const o=audio.createOscillator(),g=audio.createGain(),now=audio.currentTime+delay;o.type=type;o.frequency.setValueAtTime(freq,now);if(endFreq)o.frequency.exponentialRampToValueAtTime(endFreq,now+dur);g.gain.setValueAtTime(.0001,now);g.gain.linearRampToValueAtTime(vol,now+.035);g.gain.exponentialRampToValueAtTime(.0001,now+dur);o.connect(g);g.connect(master);o.start(now);o.stop(now+dur+.04)}
-function soundCue(){if(!soundOn||!audio||!master)return;burstNoise(0,1.7,.2,700);tone(58,1.8,'sine',.2,0,42);if(act>=1){burstNoise(.3,1.1,.23,1100);tone(92,.8,'sawtooth',.12,.25,45);tone(392,.7,'sine',.09,.5)}if(act>=2){tone(155,1.2,'sawtooth',.13,.05,72);tone(880,.65,'sine',.12,.5);burstNoise(.2,.8,.13,1800)}if(act>=3){tone(660,1.5,'sine',.1,.1,880);tone(990,1.1,'sine',.08,.4,740);burstNoise(.1,1.5,.1,3200)}if(act===4){burstNoise(0,2.2,.36,1800);tone(48,2,'sine',.27,0,28);[392,494,587,784,988].forEach((n,i)=>tone(n,1.8,'sine',.11,i*.12))}}
-function stopSound(){if(!audio)return;soundOn=false;if(master)master.gain.setTargetAtTime(0,audio.currentTime,.12);if(ambience){try{ambience.wind.stop();ambience.drone.stop()}catch(e){}}ambience=null;$('sound').textContent='SOUND: OFF';$('sound').setAttribute('aria-pressed','false');$('caption').textContent='Sound off · tap SOUND to enable the haunted atmosphere.'}
+function soundCue(){if(!soundOn||!audio||!master)return;if(audio.state==='suspended')audio.resume();burstNoise(0,1.4,.34,650);tone(52,1.7,'sine',.24,0,34);if(act>=1){burstNoise(.2,1,.32,1200);tone(110,.8,'sawtooth',.18,.2,48);tone(440,.65,'sine',.15,.48)}if(act>=2){tone(165,1.1,'sawtooth',.2,.05,68);tone(880,.7,'sine',.16,.5);burstNoise(.15,.8,.22,1800)}if(act>=3){tone(660,1.4,'sine',.16,.1,880);tone(990,1,'sine',.13,.4,740);burstNoise(.1,1.3,.2,3000)}if(act===4){burstNoise(0,2,.5,1800);tone(42,2,'sine',.32,0,26);[392,494,587,784,988].forEach((n,i)=>tone(n,1.8,'sine',.16,i*.12))}}
+function stopSound(){
+ if(!audio)return;
+ soundOn=false;
+ if(master)master.gain.setTargetAtTime(0,audio.currentTime,.08);
+ if(ambience){try{ambience.wind.stop();ambience.drone.stop()}catch(e){}}
+ ambience=null;
+ $('sound').textContent='SOUND: OFF';$('sound').setAttribute('aria-pressed','false');
+ $('caption').textContent='Sound is off. Tap SOUND: ON to reactivate audio.';
+}
 
 function begin(){started=true;elapsed=0;last=performance.now();setAct(0);$('cue').textContent='ACT I · THE PATCH WAKES';$('begin').textContent='NEXT ACT';if(soundOn)soundCue()}
 function next(){if(!started){begin();return}if(act<4){setAct(act+1);elapsed=[0,12,25,38,55][act];if(soundOn)soundCue()}else{begin()}}
 $('begin').addEventListener('click',next);$('restart').addEventListener('click',()=>{started=false;elapsed=0;setAct(0);$('begin').textContent='BEGIN THE SHOW';$('cue').textContent='PRE-SHOW · WAITING FOR YOU';$('fill').style.width='0%';seed()});
-$('sound').addEventListener('click',()=>soundOn?stopSound():audioStart());
+$('sound').addEventListener('click',()=>{if(soundOn)stopSound();else{if(master)master.gain.setTargetAtTime(.95,audio.currentTime,.08);audioStart()}});$('testSound').addEventListener('click',testAudio);
 function frame(now){let dt=Math.min(.05,(now-last)/1000||0);last=now;if(started){elapsed+=dt;let thresholds=[0,12,25,38,55];let target=elapsed<12?0:elapsed<25?1:elapsed<38?2:elapsed<55?3:4;if(target!==act){setAct(target);if(soundOn)soundCue()}if(elapsed>75){started=false;$('begin').textContent='PLAY AGAIN';$('cue').textContent='THE PATCH IS AWAKE · REPLAY WHENEVER YOU LIKE';$('fill').style.width='100%'}else $('fill').style.width=Math.min(100,elapsed/75*100)+'%'}draw(now/1000);requestAnimationFrame(frame)}
 addEventListener('resize',resize);resize();setAct(0);requestAnimationFrame(frame);
 })();
