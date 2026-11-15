@@ -840,8 +840,87 @@ const lake=add(new THREE.CircleGeometry(15,48),new THREE.MeshStandardMaterial({c
   fog(-40,-124,22);fog(-56,-132,13);ghost(-27,-124,1.35,true);
   zone('BLOOD CARNIVAL · THE DEVIL’S WHEEL',-40,-136,'Enter the striped big tops, explore the Laughing House and look up at the turning wheel. The gondolas never stop moving.');
 }
-// Park 8: drowned kingdom shipwreck and flooded ruins.
-add(new THREE.PlaneGeometry(30,30),new THREE.MeshStandardMaterial({color:0x17414b,metalness:.4,roughness:.2,transparent:true,opacity:.86}),40,.12,-132,-Math.PI/2);block(40,4,-128,22,3,7,0x342a2d);block(40,12,-128,.65,18,.65,0x65513c);block(34,14,-128,12,.5,.5,0x8b7351);for(let k=0;k<5;k++)tower(28+k*6,-145,1.5,8+k%2*5,0x465157);
+// Park 8: THE DROWNED KINGDOM — shipwreck harbour, sunken palace and flooded causeway.
+{
+  const deepStone=mat(0x34464b,.9,.22),seaStone=mat(0x53696a,.82,.24),barnacle=mat(0x788d82,.8,.25),shipWood=mat(0x382b30,.88,.2),sailCloth=mat(0x9b7770,.95),seaGlow=new THREE.MeshBasicMaterial({color:0x39c6c4});
+  // Flooded basin around a raised, walkable causeway. Water stays below the path surface.
+  const waterMat=new THREE.MeshStandardMaterial({color:0x0c5964,metalness:.48,roughness:.22,transparent:true,opacity:.78});
+  add(new THREE.PlaneGeometry(46,62),waterMat,40,.18,-127,-Math.PI/2);
+  const causeway=add(new THREE.PlaneGeometry(8,58),mat(0x656b68,.92),40,.58,-127,-Math.PI/2);
+  for(const side of [-1,1]){
+    block(40+side*4.2,.95,-127,.55,.8,58,0x455456);
+    for(let z=-101;z>=-151;z-=7){
+      block(40+side*5.5,.42,z,2.3,.6,2.2,0x596d69);
+      const rune=add(new THREE.SphereGeometry(.18,8,7),seaGlow,40+side*5.5,.82,z);light(40+side*5.5,1,z,0x35d4d0,.55,8);
+    }
+  }
+  // The drowned flagship: curved hull, broken deck, ribs, stern and torn sails.
+  const hull=new THREE.Group();
+  const keel=new THREE.Mesh(new THREE.SphereGeometry(1,24,16),shipWood);keel.scale.set(13,3.2,4.1);keel.position.y=3;hull.add(keel);
+  const deck=new THREE.Mesh(new THREE.BoxGeometry(23,1.1,7.1),mat(0x665044));deck.position.y=5.4;hull.add(deck);
+  for(let side of [-1,1])for(let i=0;i<9;i++){
+    const rib=new THREE.Mesh(new THREE.BoxGeometry(.55,3.2,1),shipWood);rib.position.set(-10+i*2.5,4.5,side*3.4);rib.rotation.x=side*.18;hull.add(rib);
+  }
+  for(let x of [-8,-3,3,8]){
+    const mast=new THREE.Mesh(new THREE.CylinderGeometry(.24,.42,19,10),mat(0x4b3935));mast.position.set(x,14,0);hull.add(mast);
+    const yard=new THREE.Mesh(new THREE.CylinderGeometry(.13,.13,10,8),brass7);yard.rotation.z=Math.PI/2;yard.position.set(x,18,0);hull.add(yard);
+    const sail=new THREE.Mesh(new THREE.PlaneGeometry(7,8),sailCloth);sail.position.set(x,14,0.12);sail.rotation.z=(x%2?-.12:.08);hull.add(sail);
+    const tear=new THREE.Mesh(new THREE.PlaneGeometry(2.2,3.2),mat(0x49383d));tear.position.set(x+1.5,12.5,.16);hull.add(tear);
+  }
+  const stern=new THREE.Mesh(new THREE.BoxGeometry(5,7,6),mat(0x4b3438));stern.position.set(10,7,0);hull.add(stern);
+  for(let y=0;y<3;y++)for(let x=-1;x<=1;x++){const p=new THREE.Mesh(new THREE.SphereGeometry(.24,8,8),new THREE.MeshBasicMaterial({color:0xffb45e}));p.position.set(10+x*1.25,6+y*1.35,3.06);hull.add(p)}
+  hull.position.set(40,0,-135);hull.rotation.y=-.12;scene.add(hull);solid(40,-135,25,9);
+  // Broken prow figurehead and hanging anchor chain.
+  const prow=add(new THREE.ConeGeometry(1.4,5,6),barnacle,26,5,-135);prow.rotation.z=-Math.PI/2;
+  for(let i=0;i<12;i++){const link=add(new THREE.TorusGeometry(.28,.07,6,10),iron,27+i*.42,2.2-i*.12,-139);link.rotation.x=Math.PI/2}
+  // Sunken palace: twin towers, fractured arches, columns and glowing windows.
+  for(const side of [-1,1]){
+    const tx=40+side*16,tz=-143;
+    block(tx,7,tz,5,14,5,0x39474b);block(tx,14.5,tz,7,1.2,7,0x667b78);
+    const roof=add(new THREE.ConeGeometry(4.4,6,5),deepStone,tx,18,tz);roof.rotation.y=.3;
+    for(let y=5;y<=11;y+=3){const win=add(new THREE.PlaneGeometry(1.2,2),new THREE.MeshBasicMaterial({color:0x43d0ca,emissive:0x176b70}),tx,y,tz-2.56);light(tx,y,tz-3,0x39d5d0,.9,13)}
+    solid(tx,tz,5.5,5.5);
+  }
+  for(let x of [31,49]){
+    block(x,5,-119,.8,10,.8,0x687d78);const cap=add(new THREE.TorusGeometry(1.1,.22,8,16),barnacle,x,10,-119);cap.rotation.x=Math.PI/2;
+  }
+  const arch=new THREE.Group();
+  arch.add(new THREE.Mesh(new THREE.TorusGeometry(8,.7,10,32,Math.PI),seaStone));
+  arch.position.set(40,8,-119);scene.add(arch);
+  block(32,4,-119,1.5,8,2,0x596c68);block(48,4,-119,1.5,8,2,0x596c68);
+  // Broken bridge fragments and submerged stone platforms flank the main causeway.
+  for(let side of [-1,1])for(let i=0;i<4;i++){
+    const x=40+side*(10+i*3.5),z=-105-i*10;
+    const slab=block(x,.5,z,5,.8,5,0x596763);slab.rotation.y=(i%2?-.18:.22);
+    if(i%2===0){block(x,2.1,z,1,3,1,0x53635f);add(new THREE.TorusGeometry(.9,.18,7,14),barnacle,x,3.7,z)}
+  }
+  // Coral gardens, sea fans and bioluminescent growths.
+  for(let i=0;i<18;i++){
+    const x=40+(Math.random()-.5)*38,z=-99-Math.random()*53;
+    const coral=add(new THREE.CylinderGeometry(.12,.5,2+Math.random()*3,7),mat(i%2?0x9c536e:0x398c91),x,1.1,z);
+    for(let b=0;b<3;b++){const branch=add(new THREE.CylinderGeometry(.06,.16,1.7,6),mat(i%2?0xc17b83:0x55b9b1),x+(Math.random()-.5)*1.4,2.2+Math.random(),z+(Math.random()-.5)*1.4);branch.rotation.z=(Math.random()-.5)*1.2}
+    const pearl=add(new THREE.SphereGeometry(.22,8,7),new THREE.MeshBasicMaterial({color:i%2?0x73f5df:0xb68aff}),x,2.4,z);light(x,2.5,z,i%2?0x47e2d2:0x9874ff,.4,7);
+  }
+  // A colossal sea serpent circles the wreck, suspended just above the water.
+  const serpent=new THREE.Group(),serpentMat=mat(0x173e49,.35,.65);
+  for(let i=0;i<9;i++){
+    const seg=new THREE.Mesh(new THREE.SphereGeometry(1.35-i*.075,12,10),serpentMat);
+    seg.position.set(Math.sin(i*.48)*5,0,i*2.2);seg.scale.set(1,1,1.5);serpent.add(seg);
+  }
+  const head=new THREE.Mesh(new THREE.ConeGeometry(1.7,4,8),mat(0x235b61,.3,.7));head.rotation.x=Math.PI/2;head.position.set(0,.3,-2);serpent.add(head);
+  for(let side of [-1,1]){const eye=add(new THREE.SphereGeometry(.2,8,8),new THREE.MeshBasicMaterial({color:0xff465e}),0,0,0);eye.position.set(side*.8,.55,-3);serpent.add(eye)}
+  serpent.position.set(54,2,-133);scene.add(serpent);actors.push({kind:'float',obj:serpent,home:serpent.position.clone(),phase:2.4});
+  // Drifting jellyfish lanterns above the flooded ruins.
+  for(let i=0;i<7;i++){
+    const j=new THREE.Group(),bell=new THREE.Mesh(new THREE.SphereGeometry(1,12,10,0,Math.PI*2,0,Math.PI/2),new THREE.MeshBasicMaterial({color:i%2?0x66d9d4:0x9c79d9,transparent:true,opacity:.78}));j.add(bell);
+    for(let t=0;t<5;t++){const tentacle=new THREE.Mesh(new THREE.CylinderGeometry(.035,.07,2.8,6),new THREE.MeshBasicMaterial({color:0x8bded7,transparent:true,opacity:.55}));tentacle.position.set((t-2)*.28,-1.35,0);j.add(tentacle)}
+    j.position.set(24+Math.random()*32,5+Math.random()*7,-105-Math.random()*43);scene.add(j);actors.push({kind:'float',obj:j,home:j.position.clone(),phase:i*1.4});
+    light(j.position.x,j.position.y,j.position.z,0x48d8d0,.55,12);
+  }
+  for(const [x,z] of [[20,-111],[60,-112],[23,-148],[57,-151]]){const buoy=add(new THREE.SphereGeometry(.8,10,8),new THREE.MeshBasicMaterial({color:0xe3a15c}),x,1,z);light(x,1,z,0xffa65e,.65,10)}
+  fog(40,-128,24);fog(55,-145,15);ghost(25,-137,1.5,false);
+  zone('THE DROWNED KINGDOM · THE WRECK OF NO RETURN',40,-128,'Cross the raised stone causeway, explore the ruined palace and shipwreck, and watch the dark water for movement beneath the surface.');
+}
 // Park 9: bone cathedral and rib-vault skyline.
 manor(80,-111,19,17,0x403448);for(let k=0;k<5;k++){const rib=add(new THREE.TorusGeometry(8-k*.7,.45,8,32,Math.PI),bone,80,15,-130-k*3)}for(let k=0;k<7;k++)tower(70+k*3.2,-143,1.2,12+k%3*5,0x75627c);lamp(80,-94,0xc6a4ed);
 // Park 10: abyssal eye, floating stone and rootless void.
