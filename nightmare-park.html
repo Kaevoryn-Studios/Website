@@ -474,7 +474,7 @@ function buildSevenNightmares(){
   const moon=new THREE.DirectionalLight(0xc8d3e4,1.7);moon.position.set(-55,95,60);moon.castShadow=true;scene.add(moon);
   const fill=new THREE.DirectionalLight(0xa58c99,.55);fill.position.set(65,35,-70);scene.add(fill);
   add(new THREE.PlaneGeometry(240,330),mat(0x34343a),0,-.15,-20,-Math.PI/2);
-  const wood=mat(0x49372f),dark=mat(0x211f25),iron=mat(0x394047,.52,.68),stone=mat(0x625d59),rust=mat(0x795044),roof=mat(0x292832),glass=new THREE.MeshStandardMaterial({color:0x91aab8,metalness:.42,roughness:.2,transparent:true,opacity:.42});
+  const wood=mat(0x49372f),dark=mat(0x211f25),iron=mat(0x394047,.52,.68),stone=mat(0x625d59),rust=mat(0x795044),red=mat(0x8f263d,.72,.12),roof=mat(0x292832),glass=new THREE.MeshStandardMaterial({color:0x91aab8,metalness:.42,roughness:.2,transparent:true,opacity:.42});
   function road(x,z,w,d,c=0x35363b){add(new THREE.PlaneGeometry(w,d),mat(c,.98),x,.02,z,-Math.PI/2)}
   function wall(x,y,z,w,h,d,c=0x403a3c){block(x,y,z,w,h,d,c);solid(x,z,w,d)}
   function lamp(x,z,c=0xffc17d,h=5){block(x,.55,z,.32,1.1,.32,iron);block(x,h-.35,z,.8,.25,.8,iron);const b=add(new THREE.SphereGeometry(.26,10,8),new THREE.MeshBasicMaterial({color:c}),x,h,z);const l=new THREE.PointLight(c,1.6,25);l.position.set(x,h,z);scene.add(l);actors.push({kind:'flicker',obj:l,p:1.6,phase:Math.random()*7});return b}
