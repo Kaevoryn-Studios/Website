@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<meta name="theme-color" content="#08090d"><title>THE MIDNIGHT KINGDOM | Kaevoryn Studios</title>
+<meta name="theme-color" content="#08090d"><title>NIGHTMARE PARK: THE SEVEN NIGHTMARES | Kaevoryn Studios</title>
 <style>
 *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#08090d;color:#f4edf0;font-family:Arial,system-ui,sans-serif}#world{position:fixed;inset:0;width:100%;height:100%;touch-action:none}
 header{position:absolute;z-index:4;top:0;left:0;right:0;padding:14px 17px;display:flex;justify-content:space-between;align-items:center;background:linear-gradient(#08090df2,transparent);pointer-events:none}header a{color:#fff;text-decoration:none;font-size:10px;font-weight:900;letter-spacing:.2em;pointer-events:auto}header small{display:block;color:#c77c8b;font-size:8px;letter-spacing:.25em}
@@ -61,9 +61,9 @@ header span{color:#e8c79a!important;text-shadow:0 0 12px #b9784b66}
 </head>
 <body>
 <canvas id="world"></canvas>
-<header><a href="index.html">KAEVORYN STUDIOS<small>CREATE THE IMPOSSIBLE</small></a><span style="font-size:9px;letter-spacing:.2em;color:#c58d9b">THE MIDNIGHT KINGDOM · TEN REALMS AFTER DARK</span></header>
-<div id="intro"><div class="panel"><div class="eyebrow">A PLACE THAT SHOULD NOT EXIST</div><h1>THE<br> NIGHTMARE<br> PARK</h1><p>Beyond the rusted gates, the midway is still running. The rides have passengers. The games are waiting. Walk beneath the carnival lights, explore haunted attractions, and find out why the park never closed.</p><button class="enter" id="enter">ENTER THE PARK</button><div class="hint">LANDSCAPE MODE RECOMMENDED · EXPLORE THE MIDWAY & HAUNTED RIDES · SOUND IS OPTIONAL</div></div></div>
-<div id="hud"><div class="hudline"><div class="chip" id="district">THE GATE</div><div class="chip" id="progress">0 / 20 PARK DISCOVERIES</div></div><button id="soundBtn">SOUND: OFF</button><div id="toast"></div></div>
+<header><a href="index.html">KAEVORYN STUDIOS<small>CREATE THE IMPOSSIBLE</small></a><span style="font-size:9px;letter-spacing:.2em;color:#c58d9b">NIGHTMARE PARK · THE SEVEN NIGHTMARES</span></header>
+<div id="intro"><div class="panel"><div class="eyebrow">A PLACE THAT SHOULD NOT EXIST</div><h1>THE<br> NIGHTMARE<br> PARK</h1><p>Six legendary horror nightmares collide inside one enormous walkable world. Enter the dream streets, stalker suburb, cursed summer camp, haunted glass house, hunting road and red test facility. Seven districts. One way in. No promise of a way out.</p><button class="enter" id="enter">ENTER THE PARK</button><div class="hint">LANDSCAPE MODE RECOMMENDED · EXPLORE ALL SEVEN DISTRICTS · SOUND IS OPTIONAL</div></div></div>
+<div id="hud"><div class="hudline"><div class="chip" id="district">THE GATE</div><div class="chip" id="progress">0 / 7 NIGHTMARE DISTRICTS</div></div><button id="soundBtn">SOUND: OFF</button><div id="toast"></div></div>
 <div id="mobile"><div class="pad" id="movePad"><div class="stick" id="stick"></div></div><div class="look" id="lookPad">LOOK<br>AROUND</div></div>
 <div id="scare"><b>◉</b><small>IT KNOWS YOU ARE HERE</small></div><div id="fatal"></div>
 <script>
@@ -531,10 +531,10 @@ function begin(e){
  fatal.classList.remove('show');fatal.textContent='';
  try{
   build();
-  $('progress').textContent='0 / '+zones.length+' KINGDOM DISCOVERIES';
+  $('progress').textContent='0 / '+zones.length+' NIGHTMARE DISTRICTS';
   active=true;
   intro.classList.add('hide');hud.classList.add('show');mobile.classList.add('show');
-  say('Welcome to Nightmare Park. The midway is open. The rides never stopped.');
+  say('Welcome to the Seven Nightmares. Six horrors have become one world. Keep moving.');
   frame();
  }catch(err){
   console.error('Nightmare Park launch failed:',err);
