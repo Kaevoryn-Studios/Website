@@ -416,6 +416,7 @@ function begin(e){
  fatal.classList.remove('show');fatal.textContent='';
  try{
   build();
+  $('progress').textContent='0 / '+zones.length+' KINGDOM DISCOVERIES';
   active=true;
   intro.classList.add('hide');hud.classList.add('show');mobile.classList.add('show');
   say('Welcome to the Midnight Kingdom. The castle doors are open — and the ten realms are waiting.');
