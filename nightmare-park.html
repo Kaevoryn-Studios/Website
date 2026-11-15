@@ -541,7 +541,57 @@ manor(-40,4,18,14,0x51403a);for(let k=0;k<9;k++){const x=-49+(k%3)*8,z=-22+Math.
   zone('THE HOLLOW FAMILY CRYPT',-40,-43,'Follow the lantern path through the moonlit graveyard to the sealed Hollow family crypt.');
 }
 // Park 3: cursed lake, cabins and pines.
-const lake=add(new THREE.CircleGeometry(12,36),new THREE.MeshStandardMaterial({color:0x183c49,metalness:.55,roughness:.18}),0,.08,-23);lake.rotation.x=-Math.PI/2;for(const dx of [-8,8]){block(dx,3,-4,11,6,9,0x55443a);const roof=add(new THREE.ConeGeometry(8,5,4),mat(0x302c31),dx,8,-4);roof.rotation.y=Math.PI/4}for(let k=0;k<8;k++)tree(-13+k*3,-31-(k%2)*4,10,0x20372e);for(let k=0;k<5;k++)block(-2+k*1.4,.35,-22,1.2,.45,16,0x72543c);ghost(8,-24,1.4,false);
+const lake=add(new THREE.CircleGeometry(15,48),new THREE.MeshStandardMaterial({color:0x183c49,metalness:.55,roughness:.18}),0,.08,-23);lake.rotation.x=-Math.PI/2;for(const dx of [-8,8]){block(dx,3,-4,11,6,9,0x55443a);const roof=add(new THREE.ConeGeometry(8,5,4),mat(0x302c31),dx,8,-4);roof.rotation.y=Math.PI/4;solid(dx,-4,11,9)}for(let k=0;k<8;k++)tree(-13+k*3,-31-(k%2)*4,10,0x20372e);for(let k=0;k<5;k++)block(-2+k*1.4,.35,-22,1.2,.45,16,0x72543c);ghost(8,-24,1.4,false);
+// CAMP BLOODMOON — expanded lakeside grounds, ranger cabins and deep forest.
+{
+  const wood=0x49372e,roofMat=mat(0x29272b),waterGlow=new THREE.PointLight(0x4b9ab1,1.1,34);
+  waterGlow.position.set(0,3,-23);scene.add(waterGlow);
+  // Weathered ranger cabins sit beyond the shoreline, not across the main approach.
+  for(const side of [-1,1]){
+    const x=side*21,z=-7;
+    block(x,3.5,z,10,7,9,wood);block(x,7.3,z,11,1.1,10,0x342a29);
+    const r=add(new THREE.ConeGeometry(8,4.8,4),roofMat,x,10.1,z);r.rotation.y=Math.PI/4;
+    block(x,2.2,z+4.62,2.1,4.4,.22,0x20191a);
+    for(const wx of [-2.8,2.8]){const pane=add(new THREE.PlaneGeometry(1.6,1.7),new THREE.MeshBasicMaterial({color:side<0?0xffa45e:0x9cc8d4}),x+wx,4.6,z+4.56);if(side>0)pane.material.color.setHex(0x9cc8d4)}
+    block(x,1.1,z+6,4, .35,3,0x5a4739);solid(x,z,10,9);
+    lamp(x+side*6,z+4,side<0?0xffa45e:0x91b8d0);
+  }
+  // A proper timber entrance sign, supported by two posts.
+  for(const x of [-25,-13]){block(x,3,4,.55,6,.55,0x49352c);block(x,6.2,4,.8,.7,.8,0x77604b)}
+  block(-19,6.1,4,13,.8,.7,0x49352c);
+  const campSign=board('CAMP BLOODMOON',0x9b3f59);
+  const signMesh=new THREE.Mesh(new THREE.PlaneGeometry(10,2),new THREE.MeshBasicMaterial({map:campSign,transparent:true}));
+  signMesh.position.set(-19,6.2,3.58);scene.add(signMesh);
+  // Shoreline boulders and reeds frame the water without closing the dock.
+  for(let k=0;k<22;k++){
+    const a=k/22*Math.PI*2,x=Math.cos(a)*15.5,z=-23+Math.sin(a)*15.5;
+    const rock=add(new THREE.DodecahedronGeometry(1.1+(k%4)*.28,0),mat(k%2?0x41444a:0x555158),x,.65,z);
+    rock.rotation.set(k*.31,k*.67,k*.19);
+    if(k%3===0)for(let j=0;j<3;j++){const reed=add(new THREE.CylinderGeometry(.035,.07,1.8,5),mat(0x59634a),x+(j-1)*.22,1.25,z+.3);reed.rotation.z=(j-1)*.13}
+  }
+  // Long dock and a small abandoned rowboat.
+  for(let k=0;k<9;k++){block(-1.4+k*.35,.38,-12-k*.95,1.15,.38,2.5,0x72543c)}
+  for(const x of [-2.4,2.4])for(let z=-12;z>=-20;z-=3)block(x,.35,z,.25,.65,.25,0x49372e);
+  block(5,.55,-23,5,.65,2.2,0x49352f);block(5,.95,-23,.25,.5,1.5,0x80644b);
+  // Campfire clearing on the west bank.
+  const fireRing=add(new THREE.TorusGeometry(1.5,.28,8,20),mat(0x77706a),-21,.35,-27);fireRing.rotation.x=Math.PI/2;
+  const flame=add(new THREE.ConeGeometry(.62,2.1,7),new THREE.MeshBasicMaterial({color:0xff7437}),-21,1.35,-27);
+  const fireLight=new THREE.PointLight(0xff7138,2.2,20);fireLight.position.set(-21,2,-27);scene.add(fireLight);
+  for(let k=0;k<7;k++){const a=k*Math.PI*2/7;const log=block(-21+Math.cos(a)*2,.32,-27+Math.sin(a)*2,1.7,.42,.42,0x44312a);log.rotation.y=a}
+  // Watchtower overlooking the lake.
+  block(22,5,-34,1.1,10,1.1,0x514033);block(27,5,-34,1.1,10,1.1,0x514033);
+  block(24.5,9.8,-34,7,1,7,0x5b4939);block(24.5,12,-34,7.5,1,7.5,0x3b302c);
+  for(const x of [22,27])for(const z of [-37.5,-30.5])block(x,7.2,z,.3,4,.3,0x69533e);
+  solid(24.5,-34,7,7);lamp(24.5,-34,0xff594c);
+  // Outer pines create a dense silhouette while leaving the paths open.
+  for(let k=0;k<16;k++){
+    const a=k/16*Math.PI*2,x=Math.cos(a)*29,z=-23+Math.sin(a)*27;
+    tree(x,z,12+(k%4)*2,k%2?0x20372e:0x292c30);
+  }
+  fog(-15,-18,15);fog(14,-29,18);
+  ghost(17,-20,1.8,true);
+  zone('CAMP BLOODMOON · THE RANGER’S GROUNDS',-20,-7,'Explore the ranger cabins, follow the timber dock into the cursed lake, and search the forest watchtower for what the moonlight reveals.');
+}
 // Park 4: spirit containment glass house and ghost cages.
 block(40,7,-5,18,14,13,0x333d4a);for(let dx of [-6,0,6]){const pane=add(new THREE.BoxGeometry(4.8,9,.22),new THREE.MeshStandardMaterial({color:0x8b9ec5,transparent:true,opacity:.32,metalness:.5,roughness:.12}),40+dx,7,1);for(const side of [-1,1])block(40+dx+side*2.5,7,1,.18,10,.35,0xa9a5c6)}for(let k=0;k<5;k++){const ring=add(new THREE.TorusGeometry(2.2,.16,8,24),mat(0x8e7bba,.35,.4),31+k*4,6,-22);ring.rotation.y=Math.PI/2;lamp(31+k*4,-22,0x9f8be1)}
 // Park 5: Creeper barn, wrecked truck and winged predator.
