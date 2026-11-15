@@ -143,7 +143,7 @@ function pumpkin(p,t,finale){
  ctx.restore();
  let stem=ctx.createLinearGradient(0,-ry-20*scale,0,-ry);stem.addColorStop(0,'#77713a');stem.addColorStop(.5,'#514b2a');stem.addColorStop(1,'#302b1c');ctx.fillStyle=stem;ctx.beginPath();ctx.moveTo(-4*scale,-ry*.8);ctx.quadraticCurveTo(-7*scale,-ry-19*scale,4*scale,-ry-23*scale);ctx.quadraticCurveTo(9*scale,-ry-16*scale,3*scale,-ry*.78);ctx.fill();
  ctx.fillStyle='#59663a';ctx.beginPath();ctx.ellipse(12*scale,-ry-14*scale,12*scale,4*scale,-.4,0,Math.PI*2);ctx.fill();
- p.lit+=((started&&act>=1?(finale?1:.58):0)-p.lit)*.045;
+ p.lit+=((started?(finale?1:.82):0)-p.lit)*.075;
  if(p.lit>.04){
   ctx.save();ctx.globalAlpha=p.lit;ctx.globalCompositeOperation='screen';ctx.shadowColor='#ff9c35';ctx.shadowBlur=27*scale;ctx.fillStyle='#ffd078';
   const blink=(Math.sin(t*1.65+(p.facePhase||0))>0.985)?0.12:1,look=Math.sin(t*.9+(p.facePhase||0))*rx*.025;
@@ -217,7 +217,7 @@ function draw(t){
  ctx.clearRect(0,0,W,H);drawSky(t);drawFarField(t);drawCinematicField(t);
  const grow=started?Math.max(0,Math.min(1,(elapsed-8)/16)):0;
  pumpkins.forEach((p,i)=>{p.grow=reduced&&started?1:Math.max(p.grow,grow*Math.min(1,Math.max(0,(elapsed-8-i*.35)/12)));pumpkin(p,t,act===4)});
- scarecrow(t,act>=2?(act===2?Math.min(1,(elapsed-25)/8):1):0);
+ scarecrow(t,started?1:0);
  ghosts.forEach(g=>ghost(g,t,act>=3?Math.min(1,(elapsed-35)/8):0));
  drawAtmosphere(t,act>=3?1:.45);drawMagic(t,act>=4?Math.min(1,(elapsed-55)/5):0);
  if(act===4){let pulse=.5+.5*Math.sin(t*3);let flash=ctx.createRadialGradient(W*.5,H*.72,10,W*.5,H*.72,Math.max(W,H)*.75);flash.addColorStop(0,'rgba(255,177,75,'+(.18*pulse)+')');flash.addColorStop(.5,'rgba(160,91,255,'+(.1*pulse)+')');flash.addColorStop(1,'rgba(0,0,0,0)');ctx.fillStyle=flash;ctx.fillRect(0,0,W,H)}
