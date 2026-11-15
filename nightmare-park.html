@@ -755,8 +755,7 @@ const lake=add(new THREE.CircleGeometry(15,48),new THREE.MeshStandardMaterial({c
     block(x,17.6,-123,.75,.5,.75,0x8a3e36);
   }
   // A red hazard-striped service door and glowing warning lamps.
-  block(-80,5,-105.48,4.4,9,.28,0x28272c);
-  for(let k=0;k<8;k++)block(-82.8+k*.8,1.2,-105.25,.36,.24,.08,k%2?0xe5a13d:0x27272b);
+  for(let k=0;k<8;k++)block(-82.8+k*.8,.45,-105.25,.36,.24,.08,k%2?0xe5a13d:0x27272b);
   for(let k=0;k<6;k++)lamp(-96+k*6,-99,k%2?0xff633f:0xe0a04d);
   // Side yard: stacked pipes, pressure tanks and a broken cooling tower.
   for(let k=0;k<5;k++){
@@ -767,7 +766,6 @@ const lake=add(new THREE.CircleGeometry(15,48),new THREE.MeshStandardMaterial({c
   for(const x of [-103,-97]){add(new THREE.CylinderGeometry(1.5,1.5,8,12),mat(0x51545a),x,4,-145);add(new THREE.TorusGeometry(1.55,.18,8,18),iron,x,7.8,-145)}
   // Furnace heat shimmer lights, drifting ash, and a discovery inside the works.
   fog(-80,-121,22);fog(-99,-133,13);
-  const ash=add(new THREE.Points(new THREE.BufferGeometry(),new THREE.PointsMaterial({color:0xe19a65,size:.11,transparent:true,opacity:.55})),new THREE.PointsMaterial(),-80,4,-125);
   zone('THE SAWWORKS · FURNACE AND GEAR HALL',-80,-111,'Enter the old factory yard. Follow the furnace glow past the conveyor lines and look up at the turning gear wall.');
 }
 // Park 7: blood carnival tents and rotating wheel.
