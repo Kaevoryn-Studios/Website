@@ -508,9 +508,9 @@ add(new THREE.PlaneGeometry(30,30),new THREE.MeshStandardMaterial({color:0x17414
 manor(80,-111,19,17,0x403448);for(let k=0;k<5;k++){const rib=add(new THREE.TorusGeometry(8-k*.7,.45,8,32,Math.PI),bone,80,15,-130-k*3)}for(let k=0;k<7;k++)tower(70+k*3.2,-143,1.2,12+k%3*5,0x75627c);lamp(80,-94,0xc6a4ed);
 // Park 10: abyssal eye, floating stone and rootless void.
 const eye=new THREE.Group();eye.add(new THREE.Mesh(new THREE.SphereGeometry(7,24,18),dark));const iris=new THREE.Mesh(new THREE.SphereGeometry(3.2,20,14),new THREE.MeshStandardMaterial({color:0xb52c58,emissive:0x70152e,emissiveIntensity:1.1}));iris.position.z=-5;eye.add(iris);const pupil=new THREE.Mesh(new THREE.SphereGeometry(1.1,14,10),new THREE.MeshBasicMaterial({color:0x05040a}));pupil.position.z=-7.8;eye.add(pupil);eye.position.set(80,17,-137);scene.add(eye);for(let k=0;k<9;k++){const rock=add(new THREE.DodecahedronGeometry(2+Math.random()*2,0),mat(0x46404e),66+Math.random()*28,4+Math.random()*13,-120-Math.random()*25);rock.rotation.set(Math.random(),Math.random(),Math.random())}ghost(91,-139,1.6,false);
-for(let i=0;i<70;i++){const x=(Math.random()-.5)*240,z=-160+Math.random()*280;if(Math.abs(x)>106||Math.abs(x)<-1)tree(x,z,5+Math.random()*8,i%2?0x201b25:0x29212a)}
+for(let i=0;i<70;i++){const x=(Math.random()-.5)*240,z=-160+Math.random()*280;if(Math.abs(x)>106)tree(x,z,5+Math.random()*8,i%2?0x201b25:0x29212a)}
 for(let i=0;i<10;i++){const x=xs[i%5],z=i<5?fz:bz;lamp(x-13,z+4,names[i][2]);lamp(x+13,z+4,names[i][2])}
-zone('THE NIGHTMARE WORLD · GRAND ARRIVAL COURT',0,83,'Ten colossal nightmare arches lead to ten different worlds. Choose a gateway and walk beneath it to enter.');
+// The central court is a shared arrival space; only the ten themed parks count as discoveries.
 }
 function say(t){toast.textContent=t;toast.classList.add('on');setTimeout(()=>toast.classList.remove('on'),4400)}
 function blocked(x,z){return solids.some(b=>Math.abs(x-b.x)<b.w/2+.5&&Math.abs(z-b.z)<b.d/2+.5)}
