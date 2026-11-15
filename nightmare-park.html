@@ -842,7 +842,7 @@ const lake=add(new THREE.CircleGeometry(15,48),new THREE.MeshStandardMaterial({c
 }
 // Park 8: THE DROWNED KINGDOM — shipwreck harbour, sunken palace and flooded causeway.
 {
-  const deepStone=mat(0x34464b,.9,.22),seaStone=mat(0x53696a,.82,.24),barnacle=mat(0x788d82,.8,.25),shipWood=mat(0x382b30,.88,.2),sailCloth=mat(0x9b7770,.95),seaGlow=new THREE.MeshBasicMaterial({color:0x39c6c4});
+  const brass8=mat(0xc39a62,.38,.62),deepStone=mat(0x34464b,.9,.22),seaStone=mat(0x53696a,.82,.24),barnacle=mat(0x788d82,.8,.25),shipWood=mat(0x382b30,.88,.2),sailCloth=mat(0x9b7770,.95),seaGlow=new THREE.MeshBasicMaterial({color:0x39c6c4});
   // Flooded basin around a raised, walkable causeway. Water stays below the path surface.
   const waterMat=new THREE.MeshStandardMaterial({color:0x0c5964,metalness:.48,roughness:.22,transparent:true,opacity:.78});
   add(new THREE.PlaneGeometry(46,62),waterMat,40,.18,-127,-Math.PI/2);
@@ -863,7 +863,7 @@ const lake=add(new THREE.CircleGeometry(15,48),new THREE.MeshStandardMaterial({c
   }
   for(let x of [-8,-3,3,8]){
     const mast=new THREE.Mesh(new THREE.CylinderGeometry(.24,.42,19,10),mat(0x4b3935));mast.position.set(x,14,0);hull.add(mast);
-    const yard=new THREE.Mesh(new THREE.CylinderGeometry(.13,.13,10,8),brass7);yard.rotation.z=Math.PI/2;yard.position.set(x,18,0);hull.add(yard);
+    const yard=new THREE.Mesh(new THREE.CylinderGeometry(.13,.13,10,8),brass8);yard.rotation.z=Math.PI/2;yard.position.set(x,18,0);hull.add(yard);
     const sail=new THREE.Mesh(new THREE.PlaneGeometry(7,8),sailCloth);sail.position.set(x,14,0.12);sail.rotation.z=(x%2?-.12:.08);hull.add(sail);
     const tear=new THREE.Mesh(new THREE.PlaneGeometry(2.2,3.2),mat(0x49383d));tear.position.set(x+1.5,12.5,.16);hull.add(tear);
   }
@@ -920,6 +920,94 @@ const lake=add(new THREE.CircleGeometry(15,48),new THREE.MeshStandardMaterial({c
   for(const [x,z] of [[20,-111],[60,-112],[23,-148],[57,-151]]){const buoy=add(new THREE.SphereGeometry(.8,10,8),new THREE.MeshBasicMaterial({color:0xe3a15c}),x,1,z);light(x,1,z,0xffa65e,.65,10)}
   fog(40,-128,24);fog(55,-145,15);ghost(25,-137,1.5,false);
   zone('THE DROWNED KINGDOM · THE WRECK OF NO RETURN',40,-128,'Cross the raised stone causeway, explore the ruined palace and shipwreck, and watch the dark water for movement beneath the surface.');
+}
+// Park 9: THE BONE CATHEDRAL — walk beneath the ribs of an ancient bone-built cathedral.
+{
+  const cathedralStone=mat(0x655b68,.9,.18),boneWhite=mat(0xd0c3b2,.82,.08),boneShadow=mat(0x827487,.8,.12),glass9=new THREE.MeshBasicMaterial({color:0x9b74dc,transparent:true,opacity:.82,side:THREE.DoubleSide}),candle9=new THREE.MeshBasicMaterial({color:0xffd49a});
+  // Broad approach and raised cathedral floor; the central aisle remains unobstructed.
+  add(new THREE.PlaneGeometry(13,42),mat(0x4a414d,.96),80,.12,-126,-Math.PI/2);
+  add(new THREE.PlaneGeometry(27,29),cathedralStone,80,.18,-137,-Math.PI/2);
+  for(const side of [-1,1]){
+    // Tall outer buttresses and ribbed towers frame the entrance.
+    for(let k=0;k<4;k++){
+      const x=80+side*(10.2+k*1.35),z=-124-k*5.2,h=15+(k%2)*5;
+      block(x,h/2,z,1.5,h,2.2,0x514754);
+      const fin=add(new THREE.ConeGeometry(1.35,4,4),boneWhite,x,h+1.5,z);fin.rotation.y=Math.PI/4;
+      solid(x,z,1.8,2.5);
+    }
+    // Side chapels and exterior bone ossuaries.
+    block(80+side*12,5.5,-139,3.8,11,13,0x3e3744);
+    for(let k=0;k<5;k++){
+      const skull=add(new THREE.SphereGeometry(.62,12,9),boneWhite,80+side*(15+Math.random()*2),.8+Math.random()*.5,-123-k*5);
+      skull.scale.set(1,.78,.9);
+      const rib=add(new THREE.TorusGeometry(1.05,.18,7,14,Math.PI),boneShadow,80+side*(15+Math.random()*2),1.2,-125-k*4.5);rib.rotation.y=side*.22;
+    }
+  }
+  // Front facade: two massive piers leave a clear six-metre walk-through portal.
+  block(71.5,9,-121,3,18,2.4,0x514653);block(88.5,9,-121,3,18,2.4,0x514653);
+  block(80,17.2,-121,14,2,2.4,0x514653);
+  for(const x of [71.5,88.5]){
+    const capital=add(new THREE.CylinderGeometry(1.9,1.5,1.1,8),boneWhite,x,18.8,-121);
+    const pinnacle=add(new THREE.ConeGeometry(2.1,5,4),cathedralStone,x,21.6,-121);pinnacle.rotation.y=Math.PI/4;
+    const rose=add(new THREE.TorusGeometry(2.6,.3,9,24),boneWhite,x,13.3,-122.35);rose.scale.set(1,1.25,1);
+  }
+  // Pointed gothic arch built from paired stone ribs, not a flat picture.
+  const leftArch=block(76.8,10,-122,1,12,1,0xb9a9a0);leftArch.rotation.z=-.55;
+  const rightArch=block(83.2,10,-122,1,12,1,0xb9a9a0);rightArch.rotation.z=.55;
+  const keystone=add(new THREE.ConeGeometry(1.1,2.4,4),boneWhite,80,16,-122);keystone.rotation.z=Math.PI;
+  // Stained-glass rose window above the open portal.
+  const roseGlass=add(new THREE.CircleGeometry(3.1,32),glass9,80,13.4,-122.15);roseGlass.scale.y=1.22;
+  for(let k=0;k<12;k++){const angle=k*Math.PI/6;const spoke=add(new THREE.BoxGeometry(.12,5.9,.12),boneWhite,80,13.4,-122.28);spoke.rotation.z=angle;}
+  light(80,14,-117,0xb18aff,2.4,25);
+  // Nave side walls and rear apse; the entry and middle aisle stay open.
+  for(const side of [-1,1]){
+    block(80+side*13,7,-137,1.5,14,31,0x514653);
+    solid(80+side*13,-137,1.8,31);
+    for(let k=0;k<4;k++){
+      const x=80+side*(9.8),z=-126-k*7;
+      block(x,7,z,1.2,14,1.4,0x756779);
+      const ribTop=add(new THREE.ConeGeometry(1.25,3,4),boneWhite,x,15.2,z);ribTop.rotation.y=Math.PI/4;
+      const window=add(new THREE.PlaneGeometry(2.8,6),glass9,80+side*12.12,8,z);window.rotation.y=side*Math.PI/2;
+      light(80+side*11,8,z,0x9873df,.55,9);
+    }
+  }
+  block(80,7,-152,27,14,1.5,0x514653);solid(80,-152,27,1.8);
+  // High rib-vaults span overhead, leaving a cathedral-scale interior.
+  function ribBeam(x1,y1,z1,x2,y2,z2,r,material){
+    const start=new THREE.Vector3(x1,y1,z1),end=new THREE.Vector3(x2,y2,z2),delta=end.clone().sub(start);
+    const mesh=new THREE.Mesh(new THREE.CylinderGeometry(r,r,delta.length(),8),material);
+    mesh.position.copy(start.add(end).multiplyScalar(.5));mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),delta.normalize());scene.add(mesh);return mesh;
+  }
+  for(let z=-124;z>=-149;z-=6){
+    ribBeam(67,15,z,80,25,z,.42,boneWhite);ribBeam(80,25,z,93,15,z,.42,boneWhite);
+    ribBeam(67,15,z,67,1,z,.32,boneShadow);ribBeam(93,15,z,93,1,z,.32,boneShadow);
+  }
+  // Rows of pillars flank the aisle; collision keeps visitors on the walkable floor.
+  for(const side of [-1,1])for(let z=-127;z>=-146;z-=6){
+    const x=80+side*8.5;
+    block(x,5.5,z,1.35,11,1.35,0x76697a);
+    const cap=add(new THREE.CylinderGeometry(1.05,.9,.8,8),boneWhite,x,11.2,z);
+    solid(x,z,1.6,1.6);
+  }
+  // Distant altar, suspended bone chandelier and warm candle points.
+  block(80,1.4,-147,8,2.8,3.2,0x302934);
+  block(80,3.3,-147,5.8,.6,2.3,0xb3a1a0);
+  const altarArch=add(new THREE.TorusGeometry(3.1,.35,9,24,Math.PI),boneWhite,80,7,-148);altarArch.rotation.y=Math.PI;
+  const chandelier=new THREE.Group();
+  for(let k=0;k<8;k++){const a=k*Math.PI/4,x=Math.cos(a)*3,z=Math.sin(a)*3;const arm=new THREE.Mesh(new THREE.CylinderGeometry(.12,.12,3,7),boneWhite);arm.position.set(x,0,z);arm.rotation.z=Math.PI/2;chandelier.add(arm);const flame=new THREE.Mesh(new THREE.SphereGeometry(.22,8,7),candle9);flame.position.set(x,1.5,z);chandelier.add(flame)}
+  const ring=new THREE.Mesh(new THREE.TorusGeometry(3,.2,8,24),boneWhite);ring.rotation.x=Math.PI/2;chandelier.add(ring);chandelier.position.set(80,18,-135);scene.add(chandelier);light(80,17,-135,0xffc78a,1.5,18);
+  for(const x of [74,86])for(const z of [-128,-138,-148]){const c=add(new THREE.CylinderGeometry(.16,.23,1.8,8),boneWhite,x,1,z);const f=add(new THREE.SphereGeometry(.2,8,7),candle9,x,2,z);light(x,2,z,0xffbd75,.35,7)}
+  // Exterior spires rise above the roofline, with a moonlit purple crown.
+  for(let k=0;k<7;k++){
+    const x=68+k*4,z=-155,h=19+(k%3)*5;
+    const shaft=add(new THREE.CylinderGeometry(.75,1.15,h,8),cathedralStone,x,h/2,z);
+    const tip=add(new THREE.ConeGeometry(1.6,6,6),boneWhite,x,h+2.8,z);
+    for(let side of [-1,1]){const fin=add(new THREE.ConeGeometry(.45,4,5),boneShadow,x+side*1.1,h*.72,z);fin.rotation.z=side*.35}
+    solid(x,z,1.8,1.8);
+  }
+  fog(80,-124,19);fog(68,-147,13);fog(94,-147,13);
+  ghost(91,-143,1.35,false);
+  zone('THE BONE CATHEDRAL · THE LAST SANCTUARY','80'|0,-132,'Walk beneath the towering rib vaults, pass the stained-glass entrance and explore the candlelit nave and ancient altar.');
 }
 // Park 9: bone cathedral and rib-vault skyline.
 manor(80,-111,19,17,0x403448);for(let k=0;k<5;k++){const rib=add(new THREE.TorusGeometry(8-k*.7,.45,8,32,Math.PI),bone,80,15,-130-k*3)}for(let k=0;k<7;k++)tower(70+k*3.2,-143,1.2,12+k%3*5,0x75627c);lamp(80,-94,0xc6a4ed);
