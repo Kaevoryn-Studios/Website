@@ -768,8 +768,78 @@ const lake=add(new THREE.CircleGeometry(15,48),new THREE.MeshStandardMaterial({c
   fog(-80,-121,22);fog(-99,-133,13);
   zone('THE SAWWORKS · FURNACE AND GEAR HALL',-80,-111,'Enter the old factory yard. Follow the furnace glow past the conveyor lines and look up at the turning gear wall.');
 }
-// Park 7: blood carnival tents and rotating wheel.
-for(let k=0;k<3;k++){const tent=add(new THREE.ConeGeometry(8,9,8),mat(k%2?0x6e284e:0xb34759),-40+k*9,5,-113);tent.scale.z=1.2}const wheel=new THREE.Group();wheel.add(new THREE.Mesh(new THREE.TorusGeometry(8,.35,8,32),gold));for(let a=0;a<12;a++){const an=a*Math.PI/6,spoke=new THREE.Mesh(new THREE.BoxGeometry(.18,16,.18),iron);spoke.rotation.z=-an;wheel.add(spoke);const gondola=new THREE.Mesh(new THREE.BoxGeometry(1.5,1.5,1.3),mat(a%2?0x8d3150:0x443d61));gondola.position.set(Math.cos(an)*8,Math.sin(an)*8,0);wheel.add(gondola)}wheel.position.set(-40,14,-137);scene.add(wheel);actors.push({kind:'wheel',obj:wheel,phase:0});
+// Park 7: BLOOD CARNIVAL — a fully dressed midway and giant rotating ride.
+{
+  const carnivalIron=mat(0x292831,.48,.62),brass7=mat(0xc39a62,.38,.62),canvasCream=mat(0xd9c39b),canvasRed=mat(0x8e263f),canvasViolet=mat(0x563451);
+  // The Devil's Wheel: large rim, sixteen spokes, detailed gondolas and braced supports.
+  const bloodWheel=new THREE.Group(),wheelRadius=12,wheelX=-40,wheelZ=-143;
+  bloodWheel.add(new THREE.Mesh(new THREE.TorusGeometry(wheelRadius,.48,10,64),brass7));
+  bloodWheel.add(new THREE.Mesh(new THREE.TorusGeometry(wheelRadius-.65,.12,8,64),carnivalIron));
+  for(let a=0;a<16;a++){
+    const angle=a*Math.PI/8,spoke=new THREE.Mesh(new THREE.BoxGeometry(.24,wheelRadius*2,.28),carnivalIron);
+    spoke.rotation.z=-angle;bloodWheel.add(spoke);
+    const gondola=new THREE.Group();
+    const basket=new THREE.Mesh(new THREE.BoxGeometry(2.05,2.25,1.9),mat(a%2?0x8f2947:0x344b62,.45,.28));basket.position.y=-1.08;gondola.add(basket);
+    const roof=new THREE.Mesh(new THREE.ConeGeometry(1.55,.8,4),brass7);roof.position.y=.5;roof.rotation.y=Math.PI/4;gondola.add(roof);
+    const rail=new THREE.Mesh(new THREE.BoxGeometry(2.2,.16,2.05),canvasCream);rail.position.y=-.15;gondola.add(rail);
+    gondola.position.set(Math.cos(angle)*wheelRadius,Math.sin(angle)*wheelRadius,0);bloodWheel.add(gondola);
+  }
+  bloodWheel.position.set(wheelX,17,wheelZ);scene.add(bloodWheel);actors.push({kind:'wheel',obj:bloodWheel,phase:0});
+  for(const side of [-1,1]){
+    const leg=add(new THREE.CylinderGeometry(.62,.9,26,10),carnivalIron,wheelX+side*7.5,13,wheelZ,0,0,side*.34);
+    block(wheelX+side*7.5,.7,wheelZ,3,1.4,4,0x4c3b42);solid(wheelX+side*7.5,wheelZ,3.4,4.4);
+    const brace=add(new THREE.CylinderGeometry(.22,.28,18,8),brass7,wheelX+side*3.8,9,wheelZ+1,0,0,side*.42);
+  }
+  add(new THREE.CylinderGeometry(1.4,1.7,3,16),brass7,wheelX,17,wheelZ);
+  const wheelGlow=new THREE.PointLight(0xff5577,3.4,48);wheelGlow.position.set(wheelX,20,wheelZ);scene.add(wheelGlow);
+  // Two enormous striped big-top tents, with visible entrance awnings and guy ropes.
+  for(let t=0;t<2;t++){
+    const tx=-55+t*30,tz=-112,base=new THREE.Mesh(new THREE.CylinderGeometry(8.2,8.2,.7,16),carnivalIron);base.position.set(tx,.35,tz);scene.add(base);
+    for(let panel=0;panel<12;panel++){
+      const sector=new THREE.Mesh(new THREE.ConeGeometry(8,10,3,1,false,panel*Math.PI/6,Math.PI/6),panel%2?canvasCream:canvasRed);
+      sector.position.set(tx,5.5,tz);scene.add(sector);
+    }
+    add(new THREE.CylinderGeometry(.24,.3,12,10),brass7,tx,6,tz);
+    add(new THREE.SphereGeometry(.8,12,10),new THREE.MeshBasicMaterial({color:0xffcf78}),tx,12.1,tz);
+    // Open tent mouth with rolled-back red flaps.
+    block(tx-2.15,2.1,tz-7.8,.55,4.2,.55,0x8b263f);block(tx+2.15,2.1,tz-7.8,.55,4.2,.55,0x8b263f);
+    block(tx-1.1,4.15,tz-7.8,2.4,.35,.55,0xd9c39b);block(tx+1.1,4.15,tz-7.8,2.4,.35,.55,0xd9c39b);
+    for(let side of [-1,1]){const rope=add(new THREE.CylinderGeometry(.035,.035,7,5),carnivalIron,tx+side*6,2.4,tz+4,0,0,side*.55);block(tx+side*6,.25,tz+4,.6,.5,.6,0x51434a)}
+    solid(tx,tz,16.5,15.5);
+    const tentLamp=new THREE.PointLight(t?0xb86cff:0xff6a78,1.8,24);tentLamp.position.set(tx,7,tz-7);scene.add(tentLamp);
+  }
+  // Haunted funhouse: crooked frontage, open black doorway and warped glowing windows.
+  block(-40,5,-119,20,10,3.5,0x332832);block(-40,10.5,-119,23,1,4.5,0x1d1721);
+  for(let side of [-1,1]){
+    block(-40+side*9,5.2,-121,1.2,10.4,1.1,0x80505c);
+    for(let y of [3,7]){const win=add(new THREE.PlaneGeometry(3.2,2.1),new THREE.MeshBasicMaterial({color:side===1?0x8e4d9b:0xe25a69,transparent:true,opacity:.78,side:THREE.DoubleSide}),-40+side*5.4,y,-121.1);win.rotation.z=side*.12}
+  }
+  block(-40,8,-121,5.5,4,.2,0x120d16);block(-43.1,2.2,-121.3,.45,4.4,.5,0x9d3c4f);block(-36.9,2.2,-121.3,.45,4.4,.5,0x9d3c4f);
+  // Timber sign mounted above the facade.
+  block(-40,12,-121,16,2.1,.7,0x241820);block(-40,12.1,-121.42,14.8,1.45,.08,0xb93e58);
+  const marqueeCanvas=document.createElement('canvas');marqueeCanvas.width=768;marqueeCanvas.height=120;const marqueeCtx=marqueeCanvas.getContext('2d');marqueeCtx.fillStyle='#fff0d5';marqueeCtx.font='bold 58px Georgia';marqueeCtx.textAlign='center';marqueeCtx.fillText('THE LAUGHING HOUSE',384,78);const marqueeTexture=new THREE.CanvasTexture(marqueeCanvas);
+  add(new THREE.PlaneGeometry(14,1.5),new THREE.MeshBasicMaterial({map:marqueeTexture,transparent:true,side:THREE.DoubleSide}),-40,12.1,-121.48);
+  solid(-40,-119,20.5,4.5);
+  // Ticket booths and prize stalls are kept to the sides of the central approach.
+  for(let side of [-1,1]){
+    const bx=-40+side*14,bz=-96;
+    block(bx,2.2,bz,7,4.4,5.5,0x52383a);block(bx,4.65,bz,7.8,.65,6.1,0x8d2947);
+    block(bx,1.55,bz-2.85,7.5,1.05,.45,0xd0b995);
+    for(let n=0;n<5;n++){const bulb=add(new THREE.SphereGeometry(.2,8,7),new THREE.MeshBasicMaterial({color:n%2?0xffc45e:0xff5f83}),bx-2.8+n*1.4,4.2,bz-2.9);const glow=new THREE.PointLight(n%2?0xffc45e:0xff5f83,.35,8);glow.position.copy(bulb.position);scene.add(glow)}
+    solid(bx,bz,7.5,6);
+  }
+  // Carnival lamp strings frame the midway without blocking its walking line.
+  for(const side of [-1,1]){
+    for(let z=-91;z>=-137;z-=11){
+      block(-40+side*9,4.2,z,.22,8.4,.22,0x3a3038);
+      block(-40+side*9,8.45,z,1.4,.22,1.4,0x76513e);
+      const bulb=add(new THREE.SphereGeometry(.38,10,8),new THREE.MeshBasicMaterial({color:side===1?0xffbd68:0xff5c85}),-40+side*9,8.8,z);
+      const glow=new THREE.PointLight(side===1?0xffbd68:0xff5c85,1.15,17);glow.position.copy(bulb.position);scene.add(glow);
+    }
+  }
+  fog(-40,-124,22);fog(-56,-132,13);ghost(-27,-124,1.35,true);
+  zone('BLOOD CARNIVAL · THE DEVIL’S WHEEL',-40,-136,'Enter the striped big tops, explore the Laughing House and look up at the turning wheel. The gondolas never stop moving.');
+}
 // Park 8: drowned kingdom shipwreck and flooded ruins.
 add(new THREE.PlaneGeometry(30,30),new THREE.MeshStandardMaterial({color:0x17414b,metalness:.4,roughness:.2,transparent:true,opacity:.86}),40,.12,-132,-Math.PI/2);block(40,4,-128,22,3,7,0x342a2d);block(40,12,-128,.65,18,.65,0x65513c);block(34,14,-128,12,.5,.5,0x8b7351);for(let k=0;k<5;k++)tower(28+k*6,-145,1.5,8+k%2*5,0x465157);
 // Park 9: bone cathedral and rib-vault skyline.
